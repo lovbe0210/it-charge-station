@@ -1,0 +1,112 @@
+.container {
+  width: auto;
+  height: 55px;
+  background: #fff;
+  margin-top: 5px;
+  margin-bottom: 1px;
+
+
+  // 当点击搜索框时的ui效果，绿色边框加输入框向右扩展
+  .changeColor {
+    .index-module_input {
+      border: 1px solid #25b864;
+      margin-right: 40px;
+    }
+  }
+
+  // 下面兩個css屬性表示在输入框hover时的状态
+  .index-module_input {
+    border: var(--border);
+  }
+  .index-module_input:hover {
+    border: var(--border-hover);
+  }
+
+  .index-module_input {
+    width: 160px;
+    -webkit-transition: width .1s ease-in-out;
+    transition: width .1s ease-in-out;
+    border-color: #d9d9d9;
+    cursor: default!important;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    min-width: 0;
+    padding: 4.5px 11px;
+    color: #595959;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    transition: all .3s;
+    display: inline-flex;
+    .search-input {
+      padding: 0;
+      border: none;
+      outline: none;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-variant: tabular-nums;
+      list-style: none;
+      font-feature-settings: "tnum";
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      min-width: 0;
+      color: #595959;
+      font-size: 14px;
+      line-height: 1.5;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #fff;
+      border-radius: 4px;
+      transition: all .3s;
+    }
+    .search-input:focus{
+      border-style: solid;
+      border-color: #fff
+    }
+    .search-input:placeholder-shown {
+      text-overflow: ellipsis;
+    }
+  }
+  .navbar {
+    #logo {
+      height: 32px;
+    }
+    #title {
+      color: #262626;
+      font-size: 15px;
+      font-weight: 800
+    }
+  }
+
+  // 菜单栏
+  .menu {
+    font-size: 14px;
+    margin-left: 8px;
+    .mr-2 {
+      span {
+        color: #595959
+      }
+    }
+  }
+
+  // 登陆注册
+  .login-regist {
+    .login {
+      border: 1px solid #d9d9d9;
+      color:#595959;
+      width: 55px;
+      margin-right: 5px;
+      margin-left: 50px
+    }
+    .login:hover {
+      border: 1px solid #25b864;
+      color:#25b864
+    }
+  }
+}

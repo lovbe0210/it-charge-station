@@ -1,32 +1,49 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <div id="app" >
+    <router-view></router-view>
   </div>
 </template>
 
-<style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+  import Vue from 'vue'
+  // 引入bootstrap所需
+  import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+  import 'bootstrap/dist/css/bootstrap.css'
+  import 'bootstrap-vue/dist/bootstrap-vue.css'
+  // 引入ViewUI样式和组件
+  import ViewUI from 'view-design';
+  // import { Menu, MenuItem, Submenu, List, ListItem, ListItemMeta } from 'view-design';
+  import 'view-design/dist/styles/iview.css';
 
-#nav {
-  padding: 30px;
+  // 安装bootstrap和图标库
+  Vue.use(BootstrapVue).use(IconsPlugin).use(ViewUI);
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+  export default {
+    name: 'App',
+    created () {
+      // 在页面加载时读取sessionStorage里的状态信息
+      if (sessionStorage.getItem("store")) {
+        this.$store.replaceState(
+          Object.assign(
+            {},
+            this.$store.state,
+            JSON.parse(sessionStorage.getItem("store"))
+          )
+        );
+      }
+      // 在页面刷新时将vuex里的信息保存到sessionStorage里
+      window.addEventListener("beforeunload", () => {
+        sessionStorage.setItem("store", JSON.stringify(this.$store.state));
+      });
     }
   }
-}
+</script>
+
+<style lang="less">
+  // 全局css
+  // 为了支持在CSS中能调整大小，将box-sizing 中的 content-box 属性替换为 border-box，这样可以确保填充padding不会影响到元素的最终宽度计算，
+  // 但会导致某些第三方软件（如 Google Maps 、 Google Custom Search Engine）出现问题。
+  .selector-for-some-widget {
+    box-sizing: content-box;
+  }
 </style>
