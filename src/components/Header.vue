@@ -92,7 +92,7 @@
                 class="login"
                 variant="outline-*"
                 size="sm"
-                @click="$whereGo('login')"
+                to="/login"
               >登录
               </b-button>
               <b-button

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../views/Index.vue'
 import Recommend from '@/components/Recommend'
+import Login from '@/components/Login'
 
 Vue.use(VueRouter)
 
@@ -10,7 +11,11 @@ const routes = [
     path: '/',
     name: 'Index',
     component: Index,
-    redirect: '/recommend',
+    redirect: {
+      name: 'Recommend',
+      params: { index: 'true' }
+    },
+    // redirect: '/recommend',
     children: [
       {
         path: 'follow',
@@ -29,6 +34,11 @@ const routes = [
         component: () => import('@/components/Hot')
       }
     ]
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   }
 ]
 

@@ -41,15 +41,10 @@
     data () {
       return {}
     },
-    props: ['activeName'],
     computed: {
-      /*activeName() {
+      activeName() {
         return this.$store.state.activeName;
-      }*/
-    },
-    beforeRouteEnter (to, from, next) {
-      console.log(to + '--' + from + '--' + next)
-      next();
+      }
     },
     methods: {
       /**
