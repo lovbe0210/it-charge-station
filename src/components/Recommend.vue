@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <b-container fluid>
       <List item-layout="vertical" :loading="loading">
         <ListItem v-for="item in data" :key="item.id">
           <ListItemMeta :title="item.title"/>
@@ -21,7 +21,7 @@
           </template>
         </ListItem>
       </List>
-    </div>
+    </b-container>
 </template>
 
 <script>

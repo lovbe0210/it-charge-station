@@ -1,12 +1,11 @@
 <template>
-  <div class="container">
-    <b-container class="bv-example-row">
+    <b-container class="container">
       <b-row>
-        <b-col cols="8">
+        <b-col :cols="AdaptiveCols">
           <!--主体页面选择-->
           <div class="top-show">
             <Menu mode="horizontal" :active-name="activeName" @on-select="onSelect" class="top">
-              <MenuItem name="follow" class="route" to="/follow" :on-select="onSelect">
+              <MenuItem name="follow" to="/follow" :on-select="onSelect">
                 关注
               </MenuItem>
               <MenuItem name="recommend" to="/recommend" :on-select="onSelect">
@@ -32,7 +31,6 @@
     <!-- 推荐和个人收藏 -->
 
 
-  </div>
 </template>
 
 <script>
@@ -42,13 +40,19 @@
       return {}
     },
     computed: {
-      activeName() {
-        return this.$store.state.activeName;
+      // 从vuex中获取上一次的选中菜单项
+      activeName () {
+        return this.$store.state.activeName
+      },
+      // 判断页面是手机页面还是pc页面，如果是手机页面则进行全屏显示
+      AdaptiveCols () {
+        // flag值其实表的是
+        return this.$store.state.isPhone ? 12 : 8
       }
     },
     methods: {
       /**
-       * 当切
+       * 当前选择的显示项
        * @param activeName
        */
       onSelect (activeName) {

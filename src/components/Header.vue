@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <div class="container">
-      <b-navbar class="navbar navbar-expand-lg navbar-light " toggleable="lg" type="light">
+  <b-container  fluid>
+      <b-navbar class="navbar navbar-expand-lg navbar-light " toggleable="xl" type="light">
         <!-- logo -->
         <b-navbar-brand to="/">
           <img src="../assets/logo.png" id="logo">
@@ -9,9 +8,14 @@
         </b-navbar-brand>
 
         <!-- 移动端收集框 -->
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-navbar-toggle target="nav-collapse" toggleable="true" class="navbar-toggle">
+          <template #default="{ expanded }">
+            <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
+            <b-icon v-else icon="chevron-bar-down"></b-icon>
+          </template>
+        </b-navbar-toggle>
 
-        <b-collapse id="nav-collapse" is-nav>
+        <b-collapse id="nav-collapse" is-nav @show="disableNav(true)" @hidden="disableNav(false)">
           <!-- 搜索框 -->
           <b-navbar-nav :fill="true" align="center">
             <div v-bind:class="{changeColor:style.changeBorderColor}" id="search_wrapp">
@@ -86,7 +90,7 @@
           </b-navbar-nav>
 
           <!--未登录功能栏-->
-          <b-navbar-nav v-else :fill="true" align="center">
+          <b-navbar-nav v-else class="ml-auto" :fill="true" align="center">
             <div class="login-regist">
               <b-button
                 class="login"
@@ -108,13 +112,12 @@
         </b-collapse>
 
       </b-navbar>
-    </div>
-  </div>
+  </b-container>
 </template>
 
 <script>
   export default {
-    name: 'customHeader',
+    name: 'Header',
     data () {
       return {
         style: {
@@ -148,13 +151,18 @@
           {
             title: '中间件',
             viewName: 'index'
+          },
+          {
+            title: '怀疑人生',
+            viewName: 'index'
           }
-        ]
+        ],
+        flag: false
       }
     },
 
     computed: {
-      styleObject: function () {
+      styleObject () {
         return {
           '--border': this.style.border,
           '--border-hover': this.style.boderHover
@@ -165,6 +173,9 @@
       // ui交互，改变输入框的大小和颜色
       changeBorder (flag) {
         this.style.changeBorderColor = flag
+      },
+      disableNav (flag) {
+        this.$store.commit('changeShowContext', flag)
       },
       dealNotReadCount (item) {
         switch (item.menuKey) {
@@ -197,10 +208,6 @@
           this.reload()
         })
       }
-    },
-
-    mounted () {
-      // 计算自身的组件高度，方便顶部固定的时候，设置边距
     }
   }
 </script>

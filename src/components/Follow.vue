@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <b-container fluid>
       我的关注
-    </div>
+    </b-container>
 </template>
 
 <script>

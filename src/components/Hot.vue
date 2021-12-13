@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-container fluid>
     <b-card-group columns>
       <b-card
         title="Card title that wraps to a new line"
@@ -58,7 +58,7 @@
         </template>
       </b-card>
     </b-card-group>
-  </div>
+  </b-container>
 </template>
 
 <script>
