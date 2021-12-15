@@ -7,9 +7,10 @@
 <script>
   import Vue from 'vue'
   // 引入bootstrap所需
-  import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+  import { BootstrapVue, IconsPlugin, BIcon } from 'bootstrap-vue'
   import 'bootstrap/dist/css/bootstrap.css'
   import 'bootstrap-vue/dist/bootstrap-vue.css'
+  import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
   // 引入ViewUI样式和组件
   import ViewUI from 'view-design'
   // import { Menu, MenuItem, Submenu, List, ListItem, ListItemMeta } from 'view-design';
@@ -17,7 +18,7 @@
 
   // 安装bootstrap和图标库
   Vue.use(BootstrapVue).use(IconsPlugin).use(ViewUI)
-
+  Vue.component('BIcon', BIcon)
   export default {
     name: 'App',
     created () {
@@ -54,4 +55,12 @@
   .selector-for-some-widget {
     box-sizing: content-box;
   }
+
+  [class*="col-"]{
+    position: relative;
+    min-height: 1px;
+    padding-right: 10px;
+    padding-left: 15px;
+  }
+
 </style>

@@ -1,0 +1,64 @@
+// 定义行高
+@line-height: 127.61px;
+.container {
+  .list-group {
+    .item {
+      margin-bottom: 25px;
+      height: @line-height;
+      .text {
+        width: auto;
+      }
+
+      .img-thumbnail {
+        width: 100%;
+        height: @line-height;
+      }
+
+      .title {
+        margin-bottom: 14px;
+        span {
+          font-family: Verdana, Geneva, sans-serif, "Chinese Quote", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
+          color: #262626;
+          font-weight: 600;
+          font-size: 16px;
+          line-height: 25px;
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+
+      .description {
+        width: auto;
+        height: 45px;
+        margin-bottom: 15px;
+        span {
+          color: #8c8c8c;
+          margin-top: 8px;
+          display: -webkit-box;
+          max-height: 44px;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          line-height: 23px;
+          height: 44px;
+        }
+      }
+
+      .item-icons {
+        padding: 6px 0 0 0;
+        font-size: 13px;
+        color: #535353;
+        svg {
+          font-size: 14px;
+        }
+        span{
+          float: right;
+        }
+      }
+    }
+
+  }
+}

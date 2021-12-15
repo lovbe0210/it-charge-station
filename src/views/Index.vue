@@ -6,7 +6,7 @@
     <b-row v-if="!showContext">
       <Body :activeName="activeName" @onSelect="onSelect"/>
     </b-row>
-    <b-row>
+    <b-row v-if="!showContext">
       我是foot
     </b-row>
   </b-container>
