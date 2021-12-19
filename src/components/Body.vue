@@ -16,6 +16,8 @@
         </Menu>
         <router-view class="show"></router-view>
       </b-col>
+
+      <!-- 右侧页面 -->
       <b-col v-if="!this.$store.state.isPhone" cols="4" class="hosted">
         <div class="featured-notes">
           <div class="text">
@@ -42,17 +44,15 @@
           </div>
           <div class="topic">
             <b-list-group flush>
-              <b-list-group-item class="flex-column align-items-start" v-for="item in data" :key="item.id">
+              <b-list-group-item class="flex-column align-items-start" v-for="item in topics" :key="item.id">
                 <div class="title">
                   <b-link to="/login">
                     <span class="title">{{item.title}}</span>
                   </b-link>
                 </div>
-
                 <span class="desc">
                   {{item.description}}
                 </span>
-
                 <small class="icon">
                   <b-icon icon="journal-text" style="margin-right: 6px"/>
                   2233
@@ -65,9 +65,39 @@
             </b-list-group>
           </div>
         </div>
+        <div class="creator-ranking">
+          <div class="text">
+            创作者排行榜
+            <b-link class="more">
+              完整榜单
+              <b-icon icon="chevron-right"></b-icon>
+            </b-link>
+            <hr>
+          </div>
+          <b-list-group class="rank">
+            <b-list-group-item href="#some-link" v-for="item in creators" :key="item.id">
+              <b-avatar variant="info" :src="item.avatar"/>
+              <div class="info">
+                <b-row>
+                    <span class="nick-name">
+                      {{item.nickName}}
+                    </span>
+                  <span :class="`iconfont icon-level`+item.level"/>
+                </b-row>
+                <span class="tag">
+                    {{item.tag.toString().replace(/,/g,' @ ')}}
+                </span>
+              </div>
+
+
+            </b-list-group-item>
+          </b-list-group>
+        </div>
+
+        <!-- 返回顶部 -->
         <BackTop :height="800" :bottom="250">
           <div class="to-top">
-            <b-icon icon="chevron-bar-up"  v-b-tooltip.hover.left.v-secondary="'返回顶部'"/>
+            <b-icon icon="chevron-bar-up" v-b-tooltip.hover.left.v-secondary="'返回顶部'"/>
             <br>
           </div>
         </BackTop>
@@ -83,7 +113,7 @@
     name: 'Body',
     data () {
       return {
-        data: [
+        topics: [
           {
             id: '001',
             title: 'MySQL精讲30篇让你一次性学够还不够啊',
@@ -115,6 +145,36 @@
             url: '/',
             src: require('@/assets/img/6.jpg'),
             title: 'title3'
+          }
+        ],
+        creators: [
+          {
+            id: '001',
+            avatar: require('@/assets/avatar/01.jpg'),
+            level: '6',
+            nickName: '昵称多的字数需要限',
+            tag: ['自我驱动', '坚持不懈', '目标大厂', '年薪百万']
+          },
+          {
+            id: '002',
+            avatar: require('@/assets/avatar/02.jpg'),
+            level: '0',
+            nickName: 'lovbe0210',
+            tag: ['创新', '原创']
+          },
+          {
+            id: '003',
+            avatar: require('@/assets/avatar/03.jpg'),
+            level: '5',
+            nickName: 'lovbe0210',
+            tag: ['全栈', '用心写文']
+          },
+          {
+            id: '004',
+            avatar: require('@/assets/avatar/02.jpg'),
+            level: '2',
+            nickName: 'lovbe0210',
+            tag: ['前段', '用心写文']
           }
         ]
       }
@@ -160,4 +220,5 @@
 
 <style scoped lang="less">
   @import "./css/body.less";
+  @import "../assets/font_class/iconfont.css";
 </style>
