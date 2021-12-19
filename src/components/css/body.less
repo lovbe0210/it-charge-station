@@ -1,21 +1,28 @@
 .container {
   //width: auto;
   height: auto;
+  padding-left: 1px;
+  padding-right: 1px;
+  margin-right: 1px;
   background: #fff;
   margin-bottom: 1px;
   line-height: 1.5;
+
   .top-show {
     .top {
       margin-bottom: 30px;
     }
+
     ul > a {
       color: #595959;
       font-size: 14px;
     }
+
     ul > a:hover {
       color: #595959;
       border-bottom: 0px solid #E5E5E5
     }
+
     ul > a.ivu-menu-item-active {
       color: #262626;
       font-weight: 900;
@@ -24,22 +31,74 @@
   }
 
   .hosted {
-    margin-top: 20px;
+    margin-top: 50px;
+
     .text {
       color: #262626;
       font-weight: 900;
+      margin-left: 15px;
+
+      .more {
+        font-weight: normal;
+        font-size: 12px;
+        float: right;
+        margin-right: 65px;
+        color: #979595;
+      }
+
       hr {
-        margin-top: 18px;
+        margin-top: 15px;
+        width: 83%;
       }
     }
-    .item {
-      margin-top: 29px;
-      img {
-        margin-left: 10px;
-        background-size: contain;
-        width: 80%;
-        height: auto;
+
+    .swipe {
+      margin-top: 20px;
+      margin-bottom: 25px;
+    }
+
+    .topic {
+      width: 80%;
+      margin-left: 15px;
+      margin-top: 10px;
+      .list-group-item {
+        padding-left: 1px;
+        padding-right: 1px;
+        padding-top: 10px;
+        .title {
+          color: #262626;
+          font-size:16px;
+          font-weight: 600;
+          margin-bottom: 5px;
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .desc {
+          margin-bottom: 10px;
+          color: #8c8c8c;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       }
+    }
+  }
+
+  .to-top {
+    padding: 10px;
+    color: #8c8c8c;
+    text-align: center;
+    font-size: 35px;
+    position: fixed;
+    cursor: pointer;
+    right: 10px;
+    :hover {
+      //background-color: #25b864;
+
     }
   }
 

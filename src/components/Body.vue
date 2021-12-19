@@ -17,198 +17,110 @@
         <router-view class="show"></router-view>
       </b-col>
       <b-col v-if="!this.$store.state.isPhone" cols="4" class="hosted">
-        <!--        <Swiper v-if="list.length > 0">-->
-        <!--          <Slide v-for="(item,index) in list" :key="index">-->
-        <!--          </Slide>-->
-        <!--        </Swiper>-->
-        <div class="text">
-          精选
-          <hr>
+        <div class="featured-notes">
+          <div class="text">
+            精选笔记
+            <b-link class="more">
+              更多
+              <b-icon icon="chevron-right"></b-icon>
+            </b-link>
+            <hr>
+          </div>
+          <div class="swipe">
+            <carousel-swipe :interval="5000" :images="images"></carousel-swipe>
+            <!--          <carousel-swipe :interval="5000" style="position: fixed; top: 100px;"></carousel-swipe>-->
+          </div>
         </div>
-        <Swiper interval="5000" class="item">
-          <Slide v-for="item in imgList" :key="item.id">
-            <img :src="item.url" :alt="item.title" />
-          </Slide>
-        </Swiper>
+        <div class="recommend-topics">
+          <div class="text">
+            推荐专题
+            <b-link class="more">
+              更多
+              <b-icon icon="chevron-right"></b-icon>
+            </b-link>
+            <hr>
+          </div>
+          <div class="topic">
+            <b-list-group flush>
+              <b-list-group-item class="flex-column align-items-start" v-for="item in data" :key="item.id">
+                <div class="title">
+                  <b-link to="/login">
+                    <span class="title">{{item.title}}</span>
+                  </b-link>
+                </div>
+
+                <span class="desc">
+                  {{item.description}}
+                </span>
+
+                <small class="icon">
+                  <b-icon icon="journal-text" style="margin-right: 6px"/>
+                  2233
+                  <b-icon icon="book-half" style="margin-left: 10px;margin-right: 6px;"/>
+                  11223
+                  <b-icon icon="star-fill" style="margin-left: 10px;margin-right: 6px;"/>
+                  11223
+                </small>
+              </b-list-group-item>
+            </b-list-group>
+          </div>
+        </div>
+        <BackTop :height="800" :bottom="250">
+          <div class="to-top">
+            <b-icon icon="chevron-bar-up"  v-b-tooltip.hover.left.v-secondary="'返回顶部'"/>
+            <br>
+          </div>
+        </BackTop>
       </b-col>
     </b-row>
   </b-container>
-
-
-  <!-- 推荐和个人收藏 -->
-
-
 </template>
 
 <script>
-  import { Swiper, Slide } from 'vue-swiper-component'
+  import CarouselSwipe from '@/components/common/CarouselSwipe'
 
   export default {
     name: 'Body',
     data () {
       return {
-        imgList: [
+        data: [
           {
-            url: require('@/assets/img/1.jpg'),
-            title: 'img1',
-            id: '001'
+            id: '001',
+            title: 'MySQL精讲30篇让你一次性学够还不够啊',
+            description: '很多朋友会提出语的困惑'
           },
           {
-            url: require('@/assets/img/2.jpg'),
-            title: 'img2',
-            id: '002'
+            id: '002',
+            title: 'This is title 2',
+            description: 'This is description, this is description, this is description.this is description.this is description.this is description.'
           },
           {
-            url: require('@/assets/img/3.jpg'),
-            title: 'img3',
-            id: '003'
+            id: '003',
+            title: 'This is title 3',
+            description: 'This is description, this is description, this is description.'
+          }
+        ],
+        images: [
+          {
+            url: '/',
+            src: require('@/assets/img/2.jpg'),
+            title: 'title1title1title1title1title1title1tititle1title1title1title1title1title1tle1title1title1title1'
           },
           {
-            url: require('@/assets/img/4.jpg'),
-            title: 'img4',
-            id: '004'
+            url: '/',
+            src: require('@/assets/img/4.jpg'),
+            title: 'title2'
           },
           {
-            url: require('@/assets/img/5.jpg'),
-            title: 'img5',
-            id: '005'
-          },
-          {
-            url: require('@/assets/img/6.jpg'),
-            title: 'img6',
-            id: '006'
-          },
-          {
-            url: require('@/assets/img/7.jpg'),
-            title: 'img7',
-            id: '007'
-          },
-          {
-            url: require('@/assets/img/8.jpg'),
-            title: 'img8',
-            id: '008'
-          },
-          {
-            url: require('@/assets/img/9.jpg'),
-            title: 'img9',
-            id: '009'
-          },
-          {
-            url: require('@/assets/img/10.jpg'),
-            title: 'img10',
-            id: '010'
-          },
-          {
-            url: require('@/assets/img/11.gif'),
-            title: 'img11',
-            id: '011'
-          },
-          {
-            url: require('@/assets/img/12.jpg'),
-            title: 'img12',
-            id: '012'
-          },
-          {
-            url: require('@/assets/img/13.jpg'),
-            title: 'img13',
-            id: '013'
-          },
-          {
-            url: require('@/assets/img/14.gif'),
-            title: 'img14',
-            id: '014'
-          },
-          {
-            url: require('@/assets/img/15.jpg'),
-            title: 'img15',
-            id: '015'
-          },
-          {
-            url: require('@/assets/img/16.jpg'),
-            title: 'img16',
-            id: '016'
-          },
-          {
-            url: require('@/assets/img/17.jpg'),
-            title: 'img17',
-            id: '017'
-          },
-          {
-            url: require('@/assets/img/18.jpg'),
-            title: 'img18',
-            id: '018'
-          },
-          {
-            url: require('@/assets/img/19.jpg'),
-            title: 'img19',
-            id: '019'
-          },
-          {
-            url: require('@/assets/img/20.jpg'),
-            title: 'img20',
-            id: '020'
-          },
-          {
-            url: require('@/assets/img/21.jpg'),
-            title: 'img21',
-            id: '021'
-          },
-          {
-            url: require('@/assets/img/22.jpg'),
-            title: 'img22',
-            id: '022'
-          },
-          {
-            url: require('@/assets/img/23.jpg'),
-            title: 'img23',
-            id: '023'
-          },
-          {
-            url: require('@/assets/img/24.jpg'),
-            title: 'img24',
-            id: '024'
-          },
-          {
-            url: require('@/assets/img/25.jpg'),
-            title: 'img25',
-            id: '025'
-          },
-          {
-            url: require('@/assets/img/26.jpg'),
-            title: 'img26',
-            id: '026'
-          },
-          {
-            url: require('@/assets/img/27.jpg'),
-            title: 'img27',
-            id: '027'
-          },
-          {
-            url: require('@/assets/img/28.jpg'),
-            title: 'img28',
-            id: '028'
-          },
-          {
-            url: require('@/assets/img/29.jpg'),
-            title: 'img29',
-            id: '029'
-          },
-          {
-            url: require('@/assets/img/30.jpg'),
-            title: 'img30',
-            id: '030'
-          },
-          {
-            url: require('@/assets/img/31.jpg'),
-            title: 'img31',
-            id: '031'
+            url: '/',
+            src: require('@/assets/img/6.jpg'),
+            title: 'title3'
           }
         ]
       }
     },
     components: {
-      Swiper,
-      Slide
+      CarouselSwipe
     },
     computed: {
       // 从vuex中获取上一次的选中菜单项
@@ -227,7 +139,21 @@
        */
       onSelect (activeName) {
         this.$store.commit('changeActiveRoute', activeName)
+      },
+      topHover (flag) {
+        console.log(flag)
       }
+    },
+    mounted () {
+      setInterval(() => {
+        for (let i = 0; i < this.images.length; i++) {
+          this.$set(this.images, i, {
+            url: '/',
+            src: require('@/assets/img/' + Math.ceil(Math.random() * 31) + '.jpg'),
+            title: 'title' + i
+          })
+        }
+      }, 13000)
     }
   }
 </script>

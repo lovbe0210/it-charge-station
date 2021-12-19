@@ -145,16 +145,15 @@
             viewName: 'index'
           },
           {
-            title: '源码分享',
-            viewName: 'index'
-          },
-          {
             title: '中间件',
             viewName: 'index'
           },
           {
-            title: '怀疑人生',
+            title: 'bug的一生',
             viewName: 'index'
+          },
+          {
+            title: '五味陈杂'
           }
         ],
         flag: false

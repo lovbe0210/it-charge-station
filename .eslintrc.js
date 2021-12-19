@@ -24,6 +24,7 @@ module.exports = {
     // 句末分号
     'semi': "off",
     'no-multiple-empty-lines': "off",
-    'spaced-comment': "off"
+    'spaced-comment': "off",
+    'padded-blocks': "off"
   }
 }

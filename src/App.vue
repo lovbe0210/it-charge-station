@@ -6,6 +6,7 @@
 
 <script>
   import Vue from 'vue'
+  import infiniteScroll from 'vue-infinite-scroll'
   // 引入bootstrap所需
   import { BootstrapVue, IconsPlugin, BIcon } from 'bootstrap-vue'
   import 'bootstrap/dist/css/bootstrap.css'
@@ -17,7 +18,7 @@
   import 'view-design/dist/styles/iview.css'
 
   // 安装bootstrap和图标库
-  Vue.use(BootstrapVue).use(IconsPlugin).use(ViewUI)
+  Vue.use(BootstrapVue).use(IconsPlugin).use(ViewUI).use(infiniteScroll)
   Vue.component('BIcon', BIcon)
   export default {
     name: 'App',
@@ -56,11 +57,16 @@
     box-sizing: content-box;
   }
 
-  [class*="col-"]{
+  [class*="col-"] {
     position: relative;
     min-height: 1px;
     padding-right: 10px;
     padding-left: 15px;
+  }
+
+  body {
+    //font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+    font-family: "PingFang SC", Microsoft YaHei, Helvetica, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
   }
 
 </style>
