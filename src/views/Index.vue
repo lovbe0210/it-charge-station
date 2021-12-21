@@ -42,4 +42,8 @@
 </script>
 
 <style lang="less" scoped>
+  .row {
+    background-color: #fff;
+    margin-bottom: 6px;
+  }
 </style>

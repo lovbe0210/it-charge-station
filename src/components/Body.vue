@@ -93,6 +93,23 @@
             </b-list-group-item>
           </b-list-group>
         </div>
+        <div class="persona-lization">
+<!--          <div class="dev-status">-->
+<!--            开发进度-->
+<!--            <hr>-->
+<!--            <textarea rows="4" type="textarea" placeholder="编辑开发进度" maxlength="150"-->
+<!--                      class="be-textarea_inner"></textarea>-->
+<!--            <div class="be-input-word-counter">0/150</div>-->
+<!--          </div>-->
+          <div class="content">
+            <div class="be-textarea be-input--append" id="i-ann-content"><!----><textarea rows="4" type="textarea"
+                                                                                          placeholder="编辑我的空间公告"
+                                                                                          maxlength="150"
+                                                                                          class="be-textarea_inner"></textarea>
+              <div class="be-input-word-counter">2/150</div><!----></div>
+          </div>
+        </div>
+
 
         <!-- 返回顶部 -->
         <BackTop :height="800" :bottom="250">
