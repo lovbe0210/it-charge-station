@@ -10,7 +10,12 @@ export default new Vuex.Store({
     // 手机页面的菜单栏的状态，true为打开，false为关闭，默认关闭
     showContext: false,
     // 自适应页面宽度
-    isPhone: false
+    isPhone: false,
+    // 首页的flag内容
+    flagContent: {
+      timestamp: new Date().getTime(),
+      content: ''
+    }
   },
 
   // 直接操作state中的数据(commit)
@@ -38,6 +43,14 @@ export default new Vuex.Store({
      */
     isPhone (state, value) {
       state.isPhone = value
+    },
+    /**
+     * 更新首页的flag内容
+     * @param state
+     * @param value
+     */
+    editFlagContent(state, value) {
+      state.flagContent.content = value
     }
 
   },

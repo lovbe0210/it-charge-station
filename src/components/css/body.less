@@ -169,184 +169,74 @@
 
       .dev-status {
         margin-top: 15px;
-        margin-left: 28px;
+        margin-left: 24px;
         font-size: 14px;
         font-weight: 700;
-        :hover {
-          border-color: #25b864;
+
+        span {
+          margin-left: 8px;
         }
+
         hr {
           margin-top: 10px;
-          margin-left: 2px;
-          width: 87%;
+          margin-left: 8px;
+          width: 85%;
         }
 
-        textarea {
-          width: 95%;
-          //height: 158px;
-          min-height: 158px;
-          max-height: 328px;
-          font-size: 12px;
-          font-family: Microsoft Yahei;
-          padding: 10px;
-          margin: -10px 0 0 -11px;
-          border: 1px solid transparent;
-          border-radius: 4px;
-          //box-sizing: content-box;
-          //display: block;
-          //line-height: 20px;
-
-          //border: 1px solid #ccd0d7;
-          border-radius: 4px;
-          outline: none;
-          box-sizing: border-box;
-          resize: none;
-          transition: all .3s ease;
-          outline: none;
-          -webkit-writing-mode: horizontal-tb !important;
-          text-rendering: auto;
-          color: -internal-light-dark(black, white);
-          letter-spacing: normal;
-          word-spacing: normal;
-          line-height: normal;
-          text-transform: none;
-          text-indent: 0px;
-          text-shadow: none;
-          display: inline-block;
-          text-align: start;
-          appearance: auto;
-          -webkit-rtl-ordering: logical;
-          cursor: text;
-          white-space: pre-wrap;
-          overflow-wrap: break-word;
-          background-color: -internal-light-dark(rgb(255, 255, 255), rgb(59, 59, 59));
-          column-count: initial !important;
-          border-image: initial;
-        }
-
-        .be-input-word-counter {
-          pointer-events: none;
-          position: absolute;
-          //opacity: 0;
-          //filter: alp ha(opacity=0);
-          //transition: opacity .2s ease;
-          //right: 0;
-          //bottom: 0;
-          //height: 30px;
-          //min-width: 40px;
-          //padding: 0 10px;
-          //line-height: 30px;
-          //text-align: center;
-          //font-size: 12px;
-          //color: #99a2aa;
-          //border-radius: 4px;
-        }
-
-      }
-
-      .content {
-        margin: 0;
-        padding: 0;
-        border: 0;
-        vertical-align: baseline;
-        word-break: break-word;
-        display: block;
-        #i-ann-content {
-          color: #6d757a;
-          line-height: 20px;
-          textarea {
-            width: 306px;
-            height: 172px;
-            color: #6d757a;
-            font-size: 12px;
-            font-family: Microsoft Yahei;
-            line-height: 20px;
-            padding: 10px;
-            margin: -10px 0 0 -11px;
-            border: 1px solid transparent;
-            border-radius: 4px;
-            box-sizing: content-box;
-          }
-          .be-textarea_inner {
-            display: block;
-            width: 100%;
-            line-height: 20px;
-            height: 118px;
-            padding: 0 5px;
-            border: 1px solid #ccd0d7;
-            border-radius: 4px;
-            outline: none;
-            box-sizing: border-box;
-            resize: none;
-            transition: all .3s ease;
-          }
-          textarea {
-            -webkit-writing-mode: horizontal-tb !important;
-            //font-style: ;
-            //font-variant-ligatures: ;
-            //font-variant-caps: ;
-            //font-variant-numeric: ;
-            //font-variant-east-asian: ;
-            //font-weight: ;
-            //font-stretch: ;
-            //font-size: ;
-            font-family: monospace;
-            text-rendering: auto;
-            color: -internal-light-dark(black, white);
-            letter-spacing: normal;
-            word-spacing: normal;
-            line-height: normal;
-            text-transform: none;
-            text-indent: 0px;
-            text-shadow: none;
-            display: inline-block;
-            text-align: start;
-            appearance: auto;
-            -webkit-rtl-ordering: logical;
-            //resize: auto;
-            cursor: text;
-            white-space: pre-wrap;
-            overflow-wrap: break-word;
-            background-color: -internal-light-dark(rgb(255, 255, 255), rgb(59, 59, 59));
-            column-count: initial !important;
-            margin: 0em;
-            border-width: 1px;
-            border-style: solid;
-            border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
-            border-image: initial;
-            padding: 2px;
-          }
-        }
-        .be-textarea {
-          margin: 0;
-          padding: 0;
-          border: 0;
+        .content {
+          width: 90%;
           vertical-align: baseline;
           word-break: break-word;
-          position: relative;
-          color: #222;
-          font-size: 14px;
-          border-radius: 4px;
-          position: relative;
-          color: #222;
-          font-size: 14px;
-          border-radius: 4px;
-        }
-        .be-input-word-counter {
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          height: 30px;
-          min-width: 40px;
-          padding: 0 10px;
-          line-height: 30px;
-          text-align: center;
-          font-size: 12px;
-          color: #99a2aa;
-          border-radius: 4px;
+          display: block;
+
+          #i-ann-content {
+            position: relative;
+            :hover {
+              border-color: #25b864;
+              border-style: solid;
+              border-width: 1px;
+              .be-input-word-counter {
+                border: none;
+              }
+            }
+
+            .be-textarea_inner {
+              display: block;
+              width: 100%;
+              padding: 8px 0 0 8px;
+              outline: none;
+              resize: none;
+              transition: all .3s ease;
+              line-height: 21px;
+            }
+
+            textarea {
+              border-color: #FFFFFF;
+              border-style: solid;
+              border-width: 1px;
+              width: 306px;
+              height: 152px;
+              color: #6d757a;
+              font-size: 13px;
+              font-family: Microsoft Yahei;
+              border-radius: 4px;
+            }
+          }
+
+          .be-input-word-counter {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            height: 30px;
+            min-width: 40px;
+            padding: 0 10px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 12px;
+            //color: #FFFFFF;
+          }
         }
       }
-
 
     }
   }

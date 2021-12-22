@@ -88,25 +88,22 @@
                     {{item.tag.toString().replace(/,/g,' @ ')}}
                 </span>
               </div>
-
-
             </b-list-group-item>
           </b-list-group>
         </div>
         <div class="persona-lization">
-<!--          <div class="dev-status">-->
-<!--            开发进度-->
-<!--            <hr>-->
-<!--            <textarea rows="4" type="textarea" placeholder="编辑开发进度" maxlength="150"-->
-<!--                      class="be-textarea_inner"></textarea>-->
-<!--            <div class="be-input-word-counter">0/150</div>-->
-<!--          </div>-->
-          <div class="content">
-            <div class="be-textarea be-input--append" id="i-ann-content"><!----><textarea rows="4" type="textarea"
-                                                                                          placeholder="编辑我的空间公告"
-                                                                                          maxlength="150"
-                                                                                          class="be-textarea_inner"></textarea>
-              <div class="be-input-word-counter">2/150</div><!----></div>
+          <div class="dev-status">
+            <span>
+              我的Flag
+            </span>
+            <hr>
+            <div class="content">
+              <div class="be-textarea be-input--append" id="i-ann-content">
+                <textarea rows="4" type="textarea" placeholder="编辑我的空间公告" maxlength="150" v-model="flagContent" class="be-textarea_inner" @blur="isEditable(false)"
+                          @focus="isEditable(true)"></textarea>
+                <div class="be-input-word-counter" v-bind:style="wordCount">{{contentCount}}/150</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -193,7 +190,11 @@
             nickName: 'lovbe0210',
             tag: ['前段', '用心写文']
           }
-        ]
+        ],
+        flagContent: '',
+        wordCount: {
+          color: '#6d757a;'
+        }
       }
     },
     components: {
@@ -207,6 +208,9 @@
       // 判断页面是手机页面还是pc页面，如果是手机页面则进行全屏显示
       adaptiveCols () {
         return this.$store.state.isPhone ? 12 : 8
+      },
+      contentCount () {
+        return this.flagContent.length
       }
     },
     methods: {
@@ -217,16 +221,27 @@
       onSelect (activeName) {
         this.$store.commit('changeActiveRoute', activeName)
       },
-      topHover (flag) {
-        console.log(flag)
+      isEditable (flag) {
+        if (flag) {
+          // 获取焦点，主要干一件事：显示字数
+          this.wordCount.color = '#6d757a;'
+          console.log(flag ? '我得到焦点' : '我失去焦点')
+        } else {
+          console.log(flag ? '我得到焦点' : '我失去焦点')
+          // 失去焦点，更新内容
+          this.$store.commit('editFlagContent', this.flagContent)
+          this.wordCount.color = '#FFFFFF;'
+        }
       }
     },
     mounted () {
+      // 从store中获取今日flag并赋值给flagcontent
+      this.flagContent = this.$store.state.flagContent.content
       setInterval(() => {
         for (let i = 0; i < this.images.length; i++) {
           this.$set(this.images, i, {
             url: '/',
-            src: require('@/assets/img/' + Math.ceil(Math.random() * 31) + '.jpg'),
+            src: `require('@/assets/img/' + Math.ceil(Math.random() * 31) + '.jpg')`,
             title: 'title' + i
           })
         }

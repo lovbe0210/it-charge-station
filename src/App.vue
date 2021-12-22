@@ -45,6 +45,32 @@
         // pc页面
         this.$store.commit('isPhone', false)
       }
+    },
+
+    mounted () {
+      window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
+      window.addEventListener('unload', e => this.unloadHandler(e))
+    },
+    destroyed () {
+      window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e))
+      window.removeEventListener('unload', e => this.unloadHandler(e))
+    },
+    methods: {
+      beforeunloadHandler () {
+        this._beforeUnload_time = new Date().getTime()
+      },
+      unloadHandler (e) {
+        this._gap_time = new Date().getTime() - this._beforeUnload_time
+        debugger
+        //判断是窗口关闭还是刷新
+        if (this._gap_time <= 5) {
+          //如果是登录状态，关闭窗口前，移除用户
+          if (!this.showLoginButton) {
+            // 1. 退出登录
+            // 2. 数据持久化
+          }
+        }
+      }
     }
   }
 </script>
