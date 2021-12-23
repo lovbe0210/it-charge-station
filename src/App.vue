@@ -6,6 +6,7 @@
 
 <script>
   import Vue from 'vue'
+  // 无限滚动
   import infiniteScroll from 'vue-infinite-scroll'
   // 引入bootstrap所需
   import { BootstrapVue, IconsPlugin, BIcon } from 'bootstrap-vue'
@@ -22,7 +23,7 @@
   Vue.component('BIcon', BIcon)
   export default {
     name: 'App',
-    created() {
+    created () {
       // 在页面加载时读取sessionStorage里的状态信息
       if (sessionStorage.getItem('store')) {
         this.$store.replaceState(

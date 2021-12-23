@@ -105,64 +105,71 @@
     }
 
     .rank {
-      width: 80%;
-      margin-left: 15px;
-      margin-top: 20px;
+        width: 80%;
+        margin-left: 15px;
+        margin-top: 20px;
 
-      .list-group-item {
-        border: none;
-        padding: 1px 20px 12px 20px;
-      }
-
-      .b-avatar {
-        width: 3rem;
-        height: 3rem;
-        float: left;
-        margin-top: 0.5rem;
-      }
-
-      .info {
-        margin-left: 60px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin-bottom: 3px;
-
-        .row {
-          margin-left: 0;
-          margin-right: 0;
+        .list-group-item {
+          border: none;
+          padding: 1px 20px 12px 20px;
         }
 
-        .nick-name {
-          font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial;
-          width: auto;
-          margin-top: 6px;
-          margin-right: 5px;
-          font-size: 15px;
-          font-weight: 400;
-          color: #333;
-          display: block;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-          text-overflow: ellipsis;
+        .b-avatar {
+          width: 3rem;
+          height: 3rem;
+          float: left;
+          margin-top: 0.5rem;
         }
 
-        .iconfont {
-          font-size: 25px;
-        }
-
-        .tag {
-          color: #8c8c8c;
-          display: block;
-          overflow: hidden;
-          text-overflow: ellipsis;
+        .info {
+          margin-left: 60px;
           white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          margin-bottom: 3px;
+
+          .row {
+            margin-left: 0;
+            margin-right: 0;
+          }
+
+          .nick-name {
+            font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial;
+            width: auto;
+            margin-top: 6px;
+            margin-right: 5px;
+            font-size: 15px;
+            font-weight: 400;
+            color: #333;
+            display: block;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .iconfont {
+            font-size: 25px;
+          }
+
+          .tag {
+            color: #8c8c8c;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
         }
       }
-    }
 
+    .hasFixed {
+      position: fixed;
+      top: 0;
+      width: 352px;
+      //margin-right: 100px;
+      z-index: 1000; //视情况而定，需不需要
+    }
     .persona-lization {
-      width: 100%;
+      //width: 100%;
       border-style: solid hidden hidden hidden;
       border-width: 10px;
       border-color: #F4F5F7;
@@ -257,7 +264,6 @@
           border-color: #FFFFFF;
         }
       }
-
     }
   }
 

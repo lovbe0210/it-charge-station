@@ -91,8 +91,8 @@
             </b-list-group-item>
           </b-list-group>
         </div>
-        <div class="persona-lization">
-          <div class="flag-content">
+        <div class="persona-lization" ref="fixedElement">
+          <div class="flag-content" :class="{'hasFixed': needFixed == true}">
             <span>
               我的Flag
             </span>
@@ -109,6 +109,9 @@
                           @focus="isEditable(true)">
                 </textarea>
               <div class="be-input-word-counter" v-show="focused">{{contentLength}}/150</div>
+            </div>
+            <div >
+              guanyu
             </div>
           </div>
         </div>
@@ -198,7 +201,9 @@
         ],
         flagContent: '',
         focused: false,
-        hovered: false
+        hovered: false,
+        needFixed: false,
+        fixedHeight: '99999px'
       }
     },
     components: {
@@ -237,11 +242,26 @@
       },
       isHover (flag) {
         this.hovered = flag
+      },
+      handleScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        // if (scrollTop > 1140) {
+        if (scrollTop > this.fixedHeight) {
+          this.needFixed = true;
+        } else {
+          this.needFixed = false;
+        }
       }
     },
     mounted () {
+      // 给window添加一个滚动监听事件
+      window.addEventListener('scroll', this.handleScroll);
       // 从store中获取今日flag并赋值给flagContent
-      this.flagContent = this.$store.state.flagContent.content
+      this.flagContent = this.$store.state.flagContent.content;
+      // 获取元素高度
+      this.$nextTick(() => {
+        this.fixedHeight = this.$refs.fixedElement.getBoundingClientRect().top;
+      });
       setInterval(() => {
         for (let i = 0; i < this.images.length; i++) {
           this.$set(this.images, i, {
@@ -251,6 +271,10 @@
           })
         }
       }, 13000)
+    },
+    destroyed () {
+      // 释放监听
+      window.removeEventListener('scroll', this.handleScroll)
     }
   }
 </script>
