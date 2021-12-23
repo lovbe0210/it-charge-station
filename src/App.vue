@@ -22,7 +22,7 @@
   Vue.component('BIcon', BIcon)
   export default {
     name: 'App',
-    created () {
+    created() {
       // 在页面加载时读取sessionStorage里的状态信息
       if (sessionStorage.getItem('store')) {
         this.$store.replaceState(
@@ -45,30 +45,29 @@
         // pc页面
         this.$store.commit('isPhone', false)
       }
+      // 加载flag内容到store中
+      this.$store.commit('editFlagContent', localStorage.getItem("flagContent"))
     },
 
-    mounted () {
+    mounted() {
       window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
       window.addEventListener('unload', e => this.unloadHandler(e))
     },
-    destroyed () {
+    destroyed() {
       window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e))
       window.removeEventListener('unload', e => this.unloadHandler(e))
     },
     methods: {
-      beforeunloadHandler () {
+      beforeunloadHandler() {
         this._beforeUnload_time = new Date().getTime()
       },
-      unloadHandler (e) {
+      unloadHandler(e) {
         this._gap_time = new Date().getTime() - this._beforeUnload_time
         debugger
         //判断是窗口关闭还是刷新
         if (this._gap_time <= 5) {
-          //如果是登录状态，关闭窗口前，移除用户
-          if (!this.showLoginButton) {
-            // 1. 退出登录
-            // 2. 数据持久化
-          }
+          // 关闭窗口，将flag信息保存到localStorage中
+          localStorage.setItem('flagContent', this.$store.state.flagContent.content);
         }
       }
     }
