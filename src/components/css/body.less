@@ -111,6 +111,7 @@
 
       .list-group-item {
         border: none;
+        padding: 1px 20px 12px 20px;
       }
 
       .b-avatar {
@@ -137,7 +138,7 @@
           width: auto;
           margin-top: 6px;
           margin-right: 5px;
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 400;
           color: #333;
           display: block;
@@ -160,7 +161,6 @@
       }
     }
 
-
     .persona-lization {
       width: 100%;
       border-style: solid hidden hidden hidden;
@@ -176,6 +176,7 @@
 
         span {
           margin-left: 8px;
+          color: #000000;
         }
 
         hr {
@@ -184,53 +185,17 @@
           width: 85%;
         }
 
-        //.changeColor {
-        //  //.index-module_input {
-        //  border: 1px solid #25b864;
-        //  //margin-right: 40px;
-        //  //}
-        //}
-
-        //.b-textarea:hover {
-        //  border: 1px solid #25b864;
-        //}
-
-        // 下面兩個css屬性表示在输入框hover时的状态
-        //.index-module_input {
-        //  border: var(--border);
-        //}
-        .flag-content_input:hover {
-          border: var(--border-hover);
-        }
-
         .textarea-wrapper {
-          position: relative;
-          .be-input-word-counter {
-            position: absolute;
-            right: 25px;
-            bottom: 0;
-            padding: 0 10px;
-            line-height: 30px;
-            text-align: center;
-            font-size: 12px;
-            color: cadetblue;
-          }
-        }
-
-        .flag-content_input {
           width: 90%;
-          --border-hover: 1px solid #25b864;
+          margin-left:2px;
           -webkit-transition: width .1s ease-in-out;
           transition: width .1s ease-in-out;
-          border-color: #d9d9d9;
           cursor: default !important;
           display: inline-block;
 
           min-width: 0;
-          padding: 4.5px 11px;
+          padding: 4.5px 0;
           color: #595959;
-          font-size: 14px;
-          line-height: 1.5;
           background-color: #fff;
           background-image: none;
           //border: 1px solid #d9d9d9;
@@ -241,106 +206,55 @@
           .be-textarea_inner {
             position: relative;
             display: block;
-            padding: 8px 0 0 8px;
+            padding: 4px 0 0 4px;
             outline: none;
             resize: none;
             transition: all .3s ease;
-            line-height: 21px;
+            line-height: 20px;
             border-color: #FFFFFF;
-            border-style: solid;
-            border-width: 1px;
-            width: 306px;
-            height: 152px;
-            color: #6d757a;
-            font-size: 13px;
-            //padding: 0;
-            //border: none;
-            //outline: none;
-            //box-sizing: border-box;
-            //margin: 0;
-            //padding: 0;
-            //font-variant: tabular-nums;
-            //list-style: none;
-            //font-feature-settings: "tnum";
-            //position: relative;
-            //display: inline-block;
-            //width: 100%;
-            //min-width: 0;
-            //color: #595959;
-            //font-size: 14px;
-            //line-height: 1.5;
-            //background-color: #fff;
-            //background-image: none;
-            //border: 1px solid #fff;
-            //border-radius: 4px;
-            //transition: all .3s;
-
-
-
-
+            width: 100%;
+            height: 133px;
+            color: #62686c;
+            font-size: 12.5px;
+            font-family: Microsoft Yahei;
           }
 
-          //.search-input:focus{
-          //  border-style: solid;
-          //  border-color: #fff
-          //}
-          //.search-input:placeholder-shown {
-          //  text-overflow: ellipsis;
-          //}
+          .be-textarea_inner::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+          }
+          .be-textarea_inner::-webkit-scrollbar-thumb {
+            border-radius: 3px;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            background-color: #c3c3c3;
+          }
+          .be-textarea_inner::-webkit-scrollbar-track {
+            background-color: transparent;
+          }
         }
 
-        .content {
-          width: 90%;
-          //vertical-align: baseline;
-          //word-break: break-word;
-          //display: block;
+        .textarea-wrapper {
+          position: relative;
+          border-style: solid;
+          border-width: 1px;
+          .be-input-word-counter {
+            position: absolute;
+            right: 5px;
+            bottom: 0;
+            padding: 0 10px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #8c8c8c;
+          }
+        }
 
-          //#i-ann-content {
-          //  position: relative;
-          //  //:hover {
-          //  //  border-color: #25b864;
-          //  //  border-style: solid;
-          //  //  border-width: 1px;
-          //  //  .be-input-word-counter {
-          //  //    border: none;
-          //  //  }
-          //  //}
-          //
-          //  .be-textarea_inner {
-          //    display: block;
-          //    width: 100%;
-          //    padding: 8px 0 0 8px;
-          //    outline: none;
-          //    resize: none;
-          //    transition: all .3s ease;
-          //    line-height: 21px;
-          //  }
-          //
-          //  textarea {
-          //    border-color: #FFFFFF;
-          //    border-style: solid;
-          //    border-width: 1px;
-          //    width: 306px;
-          //    height: 152px;
-          //    color: #6d757a;
-          //    font-size: 13px;
-          //    font-family: Microsoft Yahei;
-          //    border-radius: 4px;
-          //  }
-          //}
-
-          //.be-input-word-counter {
-          //  position: absolute;
-          //  right: 0;
-          //  bottom: 0;
-          //  height: 30px;
-          //  min-width: 40px;
-          //  padding: 0 10px;
-          //  line-height: 30px;
-          //  text-align: center;
-          //  font-size: 12px;
-          //  //color: #FFFFFF;
-          //}
+        .hover-border {
+          border-color: #25b864;
+        }
+        .primeval-border {
+          border-color: #FFFFFF;
         }
       }
 
@@ -355,11 +269,6 @@
     position: fixed;
     cursor: pointer;
     right: 10px;
-
-    :hover {
-      //background-color: #25b864;
-
-    }
   }
 
 }

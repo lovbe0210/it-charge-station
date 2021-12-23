@@ -96,26 +96,20 @@
             <span>
               我的Flag
             </span>
-            <hr>
-            <div class="textarea-wrapper">
-              <span class="flag-content_input">
+            <hr :class="{'primeval-border':changeBorder}">
+            <div class="textarea-wrapper"
+                 :class="{'hover-border':changeBorder,'primeval-border':!changeBorder}"
+                 @mouseenter="isHover(true)"
+                 @mouseleave="isHover(false)">
                 <textarea rows="4" type="textarea" placeholder="编辑我的空间公告"
                           maxlength="150" v-model="flagContent"
-                          class="be-textarea_inner" :style="styleBorder"
+                          class="be-textarea_inner"
+                          :style="changeBorder ? '' : `overflow-y:hidden`"
                           @blur="isEditable(false)"
                           @focus="isEditable(true)">
                 </textarea>
-              </span>
-              <div class="be-input-word-counter" v-show="style.changeBorderColor">{{contentCount}}/150</div>
+              <div class="be-input-word-counter" v-show="focused">{{contentLength}}/150</div>
             </div>
-            <!--<div class="content">
-              <span class="be-textarea" v-bind:class="{changeColor:style.changeBorderColor}" :style="styleObject">
-&lt;!&ndash;                  <textarea rows="4" type="textarea" placeholder="编辑我的空间公告" maxlength="150"&ndash;&gt;
-&lt;!&ndash;                            v-model="flagContent" class="be-textarea_inner" @blur="isEditable(false)"&ndash;&gt;
-&lt;!&ndash;                            @focus="isEditable(true)"></textarea>&ndash;&gt;
-&lt;!&ndash;                <div class="be-input-word-counter" v-bind:style="wordCount">{{contentCount}}/150</div>&ndash;&gt;
-              </span>
-            </div>-->
           </div>
         </div>
 
@@ -136,7 +130,7 @@
 
   export default {
     name: 'Body',
-    data() {
+    data () {
       return {
         topics: [
           {
@@ -203,11 +197,8 @@
           }
         ],
         flagContent: '',
-        style: {
-          border: '1px solid #25b864',
-          borderHover: '1px solid #25b864',
-          changeBorderColor: false
-        }
+        focused: false,
+        hovered: false
       }
     },
     components: {
@@ -215,26 +206,18 @@
     },
     computed: {
       // 从vuex中获取上一次的选中菜单项
-      activeName() {
+      activeName () {
         return this.$store.state.activeName
       },
       // 判断页面是手机页面还是pc页面，如果是手机页面则进行全屏显示
-      adaptiveCols() {
+      adaptiveCols () {
         return this.$store.state.isPhone ? 12 : 8
       },
-      contentCount() {
-        return this.flagContent.length
+      contentLength () {
+        return this.flagContent == null ? 0 : this.flagContent.length
       },
-      // flag输入框ui
-      styleHover() {
-        return {
-          '--border-hover': this.style.borderHover
-        }
-      },
-      styleBorder() {
-        return {
-          'border': this.style.border
-        }
+      changeBorder () {
+        return this.focused ? true : this.hovered
       }
     },
     methods: {
@@ -242,27 +225,22 @@
        * 当前选择的显示项
        * @param activeName
        */
-      onSelect(activeName) {
+      onSelect (activeName) {
         this.$store.commit('changeActiveRoute', activeName)
       },
-      isEditable(flag) {
-        if (flag) {
-          // 获取焦点，主要干一件事：显示字数
-          console.log(flag ? '我得到焦点' : '我失去焦点')
-          // 强制显示边框
-          this.style.border = '1px solid #25b864';
-        } else {
-          console.log(flag ? '我得到焦点' : '我失去焦点')
+      isEditable (flag) {
+        if (!flag) {
           // 失去焦点，更新内容
-          // this.$store.commit('editFlagContent', this.flagContent)
-          this.style.border = '1px solid #FFFFFF';
+          this.$store.commit('editFlagContent', this.flagContent)
         }
-        this.style.changeBorderColor = flag
-
+        this.focused = flag
+      },
+      isHover (flag) {
+        this.hovered = flag
       }
     },
-    mounted() {
-      // 从store中获取今日flag并赋值给flagcontent
+    mounted () {
+      // 从store中获取今日flag并赋值给flagContent
       this.flagContent = this.$store.state.flagContent.content
       setInterval(() => {
         for (let i = 0; i < this.images.length; i++) {
