@@ -83,17 +83,23 @@
     box-sizing: content-box;
   }
 
-  [class*="col-"] {
+  /*[class*="container"] {*/
+  /*  */
+  /*}*/
+  [class*="col"],[class*="row"],[class*="container"] {
     position: relative;
     min-height: 1px;
-    padding-right: 10px;
-    padding-left: 15px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  [class*="container"] {
+    max-width: 1200px;
   }
 
   body {
     //font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
     font-family: "PingFang SC", Microsoft YaHei, Helvetica, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
-    background-color: #F4F5F7;
+    background-color: #A5CCF4;
   }
 
 </style>

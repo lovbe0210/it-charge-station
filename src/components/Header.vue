@@ -1,5 +1,5 @@
 <template>
-  <b-container  fluid>
+  <b-row  fluid>
       <b-navbar class="navbar navbar-expand-lg navbar-light " toggleable="xl" type="light">
         <!-- logo -->
         <b-navbar-brand to="/">
@@ -108,7 +108,7 @@
         </b-collapse>
 
       </b-navbar>
-  </b-container>
+  </b-row>
 </template>
 
 <script>

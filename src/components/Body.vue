@@ -1,6 +1,6 @@
 <template>
-  <b-container>
-    <b-row>
+  <b-row class="body-row">
+<!--    <b-row>-->
       <b-col :cols="adaptiveCols" class="top-show">
         <!--主体页面选择-->
         <Menu mode="horizontal" :active-name="activeName" @on-select="onSelect" class="top">
@@ -124,8 +124,8 @@
           </div>
         </BackTop>
       </b-col>
-    </b-row>
-  </b-container>
+<!--    </b-row>-->
+  </b-row>
 </template>
 
 <script>

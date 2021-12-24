@@ -1,18 +1,18 @@
-.container {
+// 定义边框颜色
+@border_color: #000000;
+.body-row {
   //width: auto;
   height: auto;
-  padding-left: 1px;
+  padding-left: 0;
   padding-right: 1px;
   margin-right: 1px;
   background: #fff;
-  margin-bottom: 1px;
-  line-height: 1.5;
+  border-style: solid none none none;
+  border-width: 6px;
+  //border-color: #F4F5F7;
+  border-color: @border_color;
 
   .top-show {
-    border-style: solid;
-    border-width: 6px;
-    border-color: #F4F5F7;
-
     .top {
       margin-bottom: 30px;
     }
@@ -35,9 +35,9 @@
   }
 
   .hosted {
-    border-style: solid;
+    border-style: none solid;
     border-width: 6px;
-    border-color: #F4F5F7;
+    border-color: @border_color;
     padding-right: 0;
     padding-left: 0;
 

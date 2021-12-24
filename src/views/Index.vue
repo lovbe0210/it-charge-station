@@ -1,11 +1,11 @@
 <template>
   <b-container class="index">
-    <b-row>
+<!--    <b-row>-->
       <Header/>
-    </b-row>
-    <b-row v-if="!showContext">
-      <Body :activeName="activeName" @onSelect="onSelect"/>
-    </b-row>
+<!--    </b-row>-->
+<!--    <b-row >-->
+      <Body :activeName="activeName" @onSelect="onSelect" v-if="!showContext"/>
+<!--    </b-row>-->
   </b-container>
 </template>
 
