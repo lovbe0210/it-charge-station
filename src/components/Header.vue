@@ -1,5 +1,5 @@
 <template>
-  <b-row  fluid>
+  <b-row  fluid class="header-row enable-background">
       <b-navbar class="navbar navbar-expand-lg navbar-light " toggleable="xl" type="light">
         <!-- logo -->
         <b-navbar-brand to="/">
@@ -8,7 +8,7 @@
         </b-navbar-brand>
 
         <!-- 移动端收集框 -->
-        <b-navbar-toggle target="nav-collapse" toggleable="true" class="navbar-toggle">
+        <b-navbar-toggle target="nav-collapse" toggleable="true" :style="{marginLeft:(maxWidth>0?maxWidth + 'px;':'')}">
           <template #default="{ expanded }">
             <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
             <b-icon v-else icon="chevron-bar-down"></b-icon>
@@ -18,7 +18,7 @@
         <b-collapse id="nav-collapse" is-nav @show="disableNav(true)" @hidden="disableNav(false)">
           <!-- 搜索框 -->
           <b-navbar-nav :fill="true" align="center">
-            <div v-bind:class="{changeColor:style.changeBorderColor}" id="search_wrapp">
+            <div :class="{changeColor:style.changeBorderColor}" id="search_wrapp">
             <span class="index-module_input" :style="styleObject">
               <span class="search_icon">
                 <svg
@@ -34,7 +34,7 @@
                 ></path>
                 </svg>
               </span>
-              <input placeholder="请输入搜索关键字..." class="search-input" maxlength="250"
+              <input placeholder="请输入搜索关键字..." class="search-input enable-background" maxlength="250"
                 @blur="changeBorder(false)"
                 @focus="changeBorder(true)"
               >
@@ -152,7 +152,8 @@
             title: '五味陈杂'
           }
         ],
-        flag: false
+        flag: false,
+        maxWidth: null
       }
     },
 
@@ -203,10 +204,16 @@
           this.reload()
         })
       }
+    },
+    mounted () {
+      if (this.$store.state.isPhone) {
+        this.maxWidth = document.documentElement.clientWidth;
+      }
     }
   }
 </script>
 
 <style lang="less" scoped>
+  @import './css/common-var.less';
   @import "./css/header.less";
 </style>

@@ -1,19 +1,15 @@
-// 定义边框颜色
-@border_color: #000000;
 .body-row {
-  //width: auto;
   height: auto;
   padding-left: 0;
-  padding-right: 1px;
-  margin-right: 1px;
-  background: #fff;
-  border-style: solid none none none;
-  border-width: 6px;
-  //border-color: #F4F5F7;
-  border-color: @border_color;
+  padding-right: 0;
+  margin-right: auto;
+  margin-left: auto;
 
+  // 左侧div
   .top-show {
+
     .top {
+      border-radius: 3px;
       margin-bottom: 30px;
     }
 
@@ -24,7 +20,7 @@
 
     ul > a:hover {
       color: #595959;
-      border-bottom: 0px solid #E5E5E5
+      border-bottom: 0px solid #e5e5e5
     }
 
     ul > a.ivu-menu-item-active {
@@ -32,47 +28,52 @@
       font-weight: 900;
       border-bottom: 2px solid #262626;
     }
+
+  }
+
+  // 右侧div
+  .col-lg-3 {
+    flex: 0 0 32%;
+    max-width: 32%;
+    min-width: 312.02px;
   }
 
   .hosted {
-    border-style: none solid;
-    border-width: 6px;
-    border-color: @border_color;
-    padding-right: 0;
-    padding-left: 0;
+    margin-right: auto;
+    margin-left: auto;
 
     .text {
       color: #262626;
       font-weight: 900;
-      margin-left: 30px;
+      margin-left: 40px;
 
       .more {
         font-weight: normal;
         font-size: 12px;
         float: right;
-        margin-right: 65px;
+        margin-right: 55px;
         color: #979595;
       }
 
       hr {
         margin-top: 15px;
-        width: 83%;
+        width: 86%;
       }
     }
 
     .featured-notes {
-      margin-top: 50px;
+      padding-top: 40px;
     }
 
     .swipe {
       margin-top: 20px;
       margin-bottom: 25px;
-      margin-left: 15px;
+      margin-left: 25px;
     }
 
     .topic {
       width: 80%;
-      margin-left: 30px;
+      margin-left: 40px;
       margin-top: 10px;
       margin-bottom: 10px;
 
@@ -83,7 +84,7 @@
 
         .title {
           color: #262626;
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 600;
           margin-bottom: 3px;
           display: block;
@@ -105,77 +106,75 @@
     }
 
     .rank {
-        width: 80%;
-        margin-left: 15px;
-        margin-top: 20px;
+      width: 80%;
+      margin-left: 40px;
+      margin-top: 20px;
 
-        .list-group-item {
-          border: none;
-          padding: 1px 20px 12px 20px;
-        }
-
-        .b-avatar {
-          width: 3rem;
-          height: 3rem;
-          float: left;
-          margin-top: 0.5rem;
-        }
-
-        .info {
-          margin-left: 60px;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          margin-bottom: 3px;
-
-          .row {
-            margin-left: 0;
-            margin-right: 0;
-          }
-
-          .nick-name {
-            font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial;
-            width: auto;
-            margin-top: 6px;
-            margin-right: 5px;
-            font-size: 15px;
-            font-weight: 400;
-            color: #333;
-            display: block;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-
-          .iconfont {
-            font-size: 25px;
-          }
-
-          .tag {
-            color: #8c8c8c;
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-        }
+      .list-group-item {
+        border: none;
+        padding: 1px 20px 12px 20px;
       }
 
+      .b-avatar {
+        width: 3rem;
+        height: 3rem;
+        float: left;
+        margin-top: 0.5rem;
+      }
+
+      .info {
+        margin-left: 60px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 3px;
+
+        .row {
+          margin-left: 0;
+          margin-right: 0;
+        }
+
+        .nick-name {
+          font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial;
+          width: auto;
+          margin-top: 6px;
+          margin-right: 5px;
+          font-size: 15px;
+          font-weight: 400;
+          color: #333;
+          display: block;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .iconfont {
+          font-size: 25px;
+        }
+
+        .tag {
+          color: #8c8c8c;
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    // 吸顶效果
     .hasFixed {
       position: fixed;
       top: 0;
-      width: 352px;
-      //margin-right: 100px;
-      z-index: 1000; //视情况而定，需不需要
+      max-width: 384px;
+      width: 100%;
+      z-index: 1000;
     }
-    .persona-lization {
-      //width: 100%;
-      border-style: solid hidden hidden hidden;
-      border-width: 10px;
-      border-color: #F4F5F7;
-      margin-top: 15px;
 
-      .flag-content {
+    .persona-lization {
+      padding-top: 5px;
+
+      .site-content {
         margin-top: 15px;
         margin-left: 24px;
         font-size: 14px;
@@ -183,68 +182,56 @@
 
         span {
           margin-left: 8px;
-          color: #000000;
+          color: #262626;
         }
 
         hr {
           margin-top: 10px;
           margin-left: 8px;
-          width: 85%;
+          width: 89%;
         }
 
         .textarea-wrapper {
           width: 90%;
-          margin-left:2px;
-          -webkit-transition: width .1s ease-in-out;
-          transition: width .1s ease-in-out;
-          cursor: default !important;
-          display: inline-block;
-
-          min-width: 0;
-          padding: 4.5px 0;
-          color: #595959;
-          background-color: #fff;
-          background-image: none;
-          //border: 1px solid #d9d9d9;
-          border-radius: 4px;
-          transition: all .3s;
-          display: inline-flex;
-
+          margin-left: 6px;
           .be-textarea_inner {
-            position: relative;
             display: block;
-            padding: 4px 0 0 4px;
+            padding: 4.5px 0 0 1px;
             outline: none;
             resize: none;
             transition: all .3s ease;
             line-height: 20px;
-            border-color: #FFFFFF;
+            border-radius: 3px;
+            //border-color: @background-color-base;
             width: 100%;
             height: 133px;
-            color: #62686c;
+            color: #595959;
             font-size: 12.5px;
             font-family: Microsoft Yahei;
-          }
-
-          .be-textarea_inner::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-          }
-          .be-textarea_inner::-webkit-scrollbar-thumb {
-            border-radius: 3px;
-            -moz-border-radius: 3px;
-            -webkit-border-radius: 3px;
-            background-color: #c3c3c3;
-          }
-          .be-textarea_inner::-webkit-scrollbar-track {
             background-color: transparent;
           }
+
+          //.be-textarea_inner::-webkit-scrollbar {
+          //  width: 6px;
+          //  height: 6px;
+          //}
+          //
+          //.be-textarea_inner::-webkit-scrollbar-thumb {
+          //  border-radius: 3px;
+          //  -moz-border-radius: 3px;
+          //  -webkit-border-radius: 3px;
+          //  //background-color: #c3c3c3;
+          //}
+          //
+          //.be-textarea_inner::-webkit-scrollbar-track {
+          //  //background-color: transparent;
+          //}
         }
 
+        // 定位字数限制
         .textarea-wrapper {
           position: relative;
-          border-style: solid;
-          border-width: 1px;
+
           .be-input-word-counter {
             position: absolute;
             right: 5px;
@@ -260,21 +247,26 @@
         .hover-border {
           border-color: #25b864;
         }
+
         .primeval-border {
-          border-color: #FFFFFF;
+          border-color: @background-color-base;
+        }
+      }
+
+      .about {
+        position: relative;
+
+        .ivu-back-top {
+          position: absolute;
+          padding: 10px;
+          color: #8c8c8c;
+          text-align: center;
+          font-size: 35px;
+          position: fixed;
+          cursor: pointer;
+          right: 60px;
         }
       }
     }
   }
-
-  .to-top {
-    padding: 10px;
-    color: #8c8c8c;
-    text-align: center;
-    font-size: 35px;
-    position: fixed;
-    cursor: pointer;
-    right: 10px;
-  }
-
 }

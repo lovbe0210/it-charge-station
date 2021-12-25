@@ -3,9 +3,6 @@
                @mouseleave.stop="handleGo">
     <!--图片轮播区域-->
     <transition-group :name="'list-'+ (direction === 'forward' ? 'in' : 'out')" tag="ul" class="swipe_list">
-      <!--      <li style="color:green">-->
-      <!--        hah-->
-      <!--      </li>-->
       <li v-for="(item,index) in images" :key="index+1" class="list-item" v-show="index===currentIndex">
         <a :href="item.url" target="_blank">
           <img alt="" :src="item.src">
@@ -18,16 +15,10 @@
         <span v-for="(item,index) in images" :class="{'active':index===currentIndex}"
               :key="index" @mouseover="handleChange(index)"></span>
     </div>
-    <!--        &lt;!&ndash;左右控制，使用elementUI 的图标&ndash;&gt;-->
-    <!--        <div class="swipe_control" v-bind:id="'swipe_control'+id" v-show="control">-->
-    <!--          <i class="el-icon-arrow-left prev" v-on:click="handleChange(prevIndex)"></i>-->
-    <!--          <i class="el-icon-arrow-right next" v-on:click="handleChange(nextIndex)"></i>-->
-    <!--        </div>-->
     <!--底部标题-->
     <div class="swipe_title" v-for="(item,index) in images" v-show="index===currentIndex" :key="index">
       <div class="text">{{item.title}}</div>
     </div>
-    <!--    <div class="swipe_bottom"></div>-->
   </b-container>
 </template>
 
@@ -51,7 +42,7 @@
       },
       swipeWidth: {
         type: String,
-        default: '80%'
+        default: '83%'
       },
       swipeHeight: {
         type: String,
@@ -140,6 +131,7 @@
   .carousel_swipe {
     text-align: center;
     margin-left: 15px;
+    border-radius: 4px;
   }
 
   /*切换到下一张的变化*/

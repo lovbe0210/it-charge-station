@@ -8,7 +8,7 @@
       </BackTop>
       <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
         <b-row v-for="item in data" :key="item.id" fluid="true" class="item">
-          <b-col :cols="isPhone ? 12 : 8" class="text">
+          <b-col :cols="isPhone || item.avatar == null ? 12 : 8" class="text">
             <b-link to="/login">
               <div class="title">
                 <span>{{item.title}}</span>
@@ -25,13 +25,12 @@
               <b-icon icon="book-half" style="margin-left: 20px;margin-right: 10px;"/>
               11223
               <div>
-                来自🕊
-                <b-link to="/follow"><span>语雀精选</span></b-link>
+                来自🕊<b-link to="/follow"><span>语雀精选</span></b-link>
               </div>
             </div>
           </b-col>
-          <b-col v-if="!isPhone" cols="4" fluid class="image">
-            <b-img right thumbnail fluid :src="item.avatar" alt="Image 1"/>
+          <b-col v-if="!isPhone && item.avatar != null" cols="4" fluid class="image">
+            <b-img right fluid rounded :src="item.avatar" alt="Image 1"/>
           </b-col>
         </b-row>
       </div>
@@ -64,7 +63,7 @@
             id: '001',
             title: '臻默：整理100+语雀小技巧之后，我们开始了知识管理的大航海大巷哈',
             description: '缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了',
-            avatar: require('@/assets/img/1.jpg'),
+            // avatar: require('@/assets/img/1.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
           {

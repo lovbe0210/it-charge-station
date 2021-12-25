@@ -1,6 +1,11 @@
 <template>
   <div id="app">
     <router-view></router-view>
+<!--    <component :is="style">-->
+<!--      .enable-background {-->
+<!--        background-color: {{baseBackgroundColor}};-->
+<!--      }-->
+<!--    </component>-->
   </div>
 </template>
 
@@ -47,28 +52,34 @@
         this.$store.commit('isPhone', false)
       }
       // 加载flag内容到store中
-      this.$store.commit('editFlagContent', localStorage.getItem("flagContent"))
+      this.$store.commit('editFlagContent', localStorage.getItem('flagContent'))
     },
-
-    mounted() {
-      window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
-      window.addEventListener('unload', e => this.unloadHandler(e))
+    computed: {
+      baseBackgroundColor () {
+        return 'rgb(255, 255, 255);'
+      }
     },
-    destroyed() {
-      window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e))
-      window.removeEventListener('unload', e => this.unloadHandler(e))
+    mounted () {
+      // window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
+      // window.addEventListener('unload', e => this.unloadHandler(e))
+      this.$el.style.setProperty('--colorStyle', this.baseBackgroundColor
+      )
+    },
+    destroyed () {
+      // window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e))
+      // window.removeEventListener('unload', e => this.unloadHandler(e))
     },
     methods: {
-      beforeunloadHandler() {
+      beforeunloadHandler () {
         this._beforeUnload_time = new Date().getTime()
       },
-      unloadHandler(e) {
+      unloadHandler (e) {
         this._gap_time = new Date().getTime() - this._beforeUnload_time
         debugger
         //判断是窗口关闭还是刷新
         if (this._gap_time <= 5) {
           // 关闭窗口，将flag信息保存到localStorage中
-          localStorage.setItem('flagContent', this.$store.state.flagContent.content);
+          localStorage.setItem('flagContent', this.$store.state.flagContent.content)
         }
       }
     }
@@ -76,6 +87,7 @@
 </script>
 
 <style lang="less">
+  @import './components/css/common-var.less';
   // 全局css
   // 为了支持在CSS中能调整大小，将box-sizing 中的 content-box 属性替换为 border-box，这样可以确保填充padding不会影响到元素的最终宽度计算，
   // 但会导致某些第三方软件（如 Google Maps 、 Google Custom Search Engine）出现问题。
@@ -86,20 +98,41 @@
   /*[class*="container"] {*/
   /*  */
   /*}*/
-  [class*="col"],[class*="row"],[class*="container"] {
+  [class*="col"], [class*="row"], [class*="container"] {
     position: relative;
     min-height: 1px;
     padding-right: 0;
     padding-left: 0;
+    /*margin-right: 0;*/
+    /*margin-left: 0;*/
   }
+
   [class*="container"] {
     max-width: 1200px;
   }
 
-  body {
-    //font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
-    font-family: "PingFang SC", Microsoft YaHei, Helvetica, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
-    background-color: #A5CCF4;
+  .col {
+    width: 12px;
+    flex-grow: 0;
   }
 
+  // 统一设置背景色和圆角
+  .enable-background {
+    background: @background-color-base;
+    border-radius: 3px;
+  }
+
+  body {
+    // 全局字体
+    font-family: "PingFang SC", Microsoft YaHei, Helvetica, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
+    // 主题色
+    background-color: @background-color-base;
+    /*background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);*/
+    background-image: url("./assets/bacc.png");
+    // 平铺
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    // 固定在屏幕上，不随滚动轴滚动
+    background-attachment:fixed
+  }
 </style>

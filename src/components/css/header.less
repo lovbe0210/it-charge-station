@@ -1,6 +1,11 @@
-.container {
+.header-row {
   width: 100%;
-  height: 55px;
+  height: 60px;
+  padding-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 12px;
+  justify-content: center;
   // 当点击搜索框时的ui效果，绿色边框加输入框向右扩展
   .changeColor {
     .index-module_input {
@@ -13,6 +18,7 @@
   .index-module_input {
     border: var(--border);
   }
+
   .index-module_input:hover {
     border: var(--border-hover);
   }
@@ -21,8 +27,8 @@
     width: 160px;
     -webkit-transition: width .1s ease-in-out;
     transition: width .1s ease-in-out;
-    border-color: #d9d9d9;
-    cursor: default!important;
+    //border-color: #d9d9d9;
+    cursor: default !important;
     position: relative;
     display: inline-block;
     width: 100%;
@@ -31,12 +37,11 @@
     color: #595959;
     font-size: 14px;
     line-height: 1.5;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #d9d9d9;
+    //border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all .3s;
     display: inline-flex;
+
     .search-input {
       padding: 0;
       border: none;
@@ -54,24 +59,26 @@
       color: #595959;
       font-size: 14px;
       line-height: 1.5;
-      background-color: #fff;
-      background-image: none;
-      border: 1px solid #fff;
+      background-color: @background-color-base;
       border-radius: 4px;
       transition: all .3s;
     }
-    .search-input:focus{
-      border-style: solid;
-      border-color: #fff
-    }
+
     .search-input:placeholder-shown {
       text-overflow: ellipsis;
     }
   }
+
   .navbar {
+    //background-color: #FFFFFF;
+    padding: 0.5rem 0 0 0;
+    .navbar-brand {
+      padding: 0;
+    }
     #logo {
       height: 32px;
     }
+
     #title {
       color: #262626;
       font-size: 15px;
@@ -80,14 +87,16 @@
     }
   }
 
-  .avbar-toggle {
-    background-color: #fff
+  .navbar-toggler {
+    background-color: #FFFFFF;
+    width: 40px;
   }
 
   // 菜单栏
   .menu {
     font-size: 14px;
     margin-left: 8px;
+
     .mr-2 {
       span {
         color: #595959
@@ -98,16 +107,18 @@
   // 登陆注册
   .login-regist {
     margin-right: 20px;
+
     .login {
       border: 1px solid #d9d9d9;
-      color:#595959;
+      color: #595959;
       width: 55px;
       margin-right: 5px;
       margin-left: 5px;
     }
+
     .login:hover {
       border: 1px solid #25b864;
-      color:#25b864
+      color: #25b864
     }
   }
 }

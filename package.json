@@ -10,6 +10,7 @@
   "dependencies": {
     "babel-plugin-import": "^1.13.3",
     "bootstrap-vue": "^2.21.2",
+    "compression-webpack-plugin": "^5.0.0",
     "core-js": "^3.6.5",
     "swiper": "^7.3.2",
     "view-design": "^4.7.0",
@@ -33,8 +34,9 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.2.2",
-    "less": "^3.0.4",
-    "less-loader": "^5.0.0",
+    "image-webpack-loader": "^8.0.1",
+    "less": "^2.7.3",
+    "less-loader": "^4.1.0",
     "vue-template-compiler": "^2.6.11"
   }
 }

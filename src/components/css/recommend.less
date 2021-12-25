@@ -2,24 +2,41 @@
 @line-height: 127.61px;
 .container {
   .list-group {
+    .row {
+      margin-right: 15px;
+      margin-left: 15px;
+    }
+
     .item {
       margin-bottom: 25px;
-      padding: 0 0 0 0;
+
       height: @line-height;
+
       .text {
         width: auto;
+        padding: 0 15px 0 12px;
       }
 
-      .img-thumbnail {
-        width: 100%;
-        height: @line-height;
+      .image {
+        padding: 0 10px 0 8px;
+
+        .img-fluid {
+          width: 100%;
+          height: auto;
+          height: @line-height;
+          overflow: hidden;
+          transform: translateY(0);
+          border-radius: 16px;
+        }
       }
 
       .title {
         margin-bottom: 14px;
+
         :hover {
           color: #2D7DF0;
         }
+
         span {
           color: #262626;
           font-weight: 600;
@@ -36,6 +53,7 @@
         width: auto;
         height: 45px;
         margin-bottom: 15px;
+
         span {
           color: #8c8c8c;
           margin-top: 8px;
@@ -54,14 +72,18 @@
         padding: 6px 0 0 0;
         font-size: 13px;
         color: #535353;
+
         svg {
           font-size: 14px;
         }
-        div{
+
+        div {
           float: right;
+
           :hover {
             color: #535353;
           }
+
           span {
             color: #535353;
           }

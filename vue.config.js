@@ -5,5 +5,5 @@
  */
 module.exports = {
   // 根路径  @ is an alias to /src
-  publicPath: process.env.NODE_ENV === 'production' ? '/production-sub-path/' : '/'
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/'
 }

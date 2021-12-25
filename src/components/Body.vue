@@ -1,24 +1,27 @@
 <template>
   <b-row class="body-row">
-<!--    <b-row>-->
-      <b-col :cols="adaptiveCols" class="top-show">
-        <!--主体页面选择-->
-        <Menu mode="horizontal" :active-name="activeName" @on-select="onSelect" class="top">
-          <MenuItem name="follow" to="/follow" :on-select="onSelect">
-            关注
-          </MenuItem>
-          <MenuItem name="recommend" to="/recommend" :on-select="onSelect">
-            推荐
-          </MenuItem>
-          <MenuItem name="hot" to="/hot" :on-select="onSelect">
-            专题
-          </MenuItem>
-        </Menu>
-        <router-view class="show"></router-view>
-      </b-col>
+    <b-col :cols="adaptiveCols" class="enable-background top-show">
+      <!--主体页面选择-->
+      <Menu mode="horizontal" :active-name="activeName" @on-select="onSelect" class="top">
+        <MenuItem name="follow" to="/follow" :on-select="onSelect">
+          关注
+        </MenuItem>
+        <MenuItem name="recommend" to="/recommend" :on-select="onSelect">
+          推荐
+        </MenuItem>
+        <MenuItem name="hot" to="/hot" :on-select="onSelect">
+          专题
+        </MenuItem>
+      </Menu>
+      <router-view class="show"></router-view>
+    </b-col>
 
-      <!-- 右侧页面 -->
-      <b-col v-if="!this.$store.state.isPhone" cols="4" class="hosted">
+    <b-col class="only-style" style="width: 13px" md="auto">
+    </b-col>
+
+    <!-- 右侧页面 -->
+    <b-col v-if="!this.$store.state.isPhone" lg="3" md="auto" class="hosted">
+      <div class="enable-background">
         <div class="featured-notes">
           <div class="text">
             精选笔记
@@ -30,7 +33,6 @@
           </div>
           <div class="swipe">
             <carousel-swipe :interval="5000" :images="images"></carousel-swipe>
-            <!--          <carousel-swipe :interval="5000" style="position: fixed; top: 100px;"></carousel-swipe>-->
           </div>
         </div>
         <div class="recommend-topics">
@@ -91,40 +93,44 @@
             </b-list-group-item>
           </b-list-group>
         </div>
+      </div>
+
+      <div class="only-style" style="height: 13px"></div>
+
+      <div :class="{'hasFixed': needFixed == true}" class="enable-background">
         <div class="persona-lization" ref="fixedElement">
-          <div class="flag-content" :class="{'hasFixed': needFixed == true}">
+          <div class="site-content">
             <span>
               我的Flag
             </span>
             <hr :class="{'primeval-border':changeBorder}">
             <div class="textarea-wrapper"
-                 :class="{'hover-border':changeBorder,'primeval-border':!changeBorder}"
                  @mouseenter="isHover(true)"
                  @mouseleave="isHover(false)">
-                <textarea rows="4" type="textarea" placeholder="编辑我的空间公告"
+                <textarea rows="4" type="textarea" placeholder="编辑我的空间公告" :class="{'hover-border':changeBorder,'primeval-border':!changeBorder}"
                           maxlength="150" v-model="flagContent"
                           class="be-textarea_inner"
-                          :style="changeBorder ? '' : `overflow-y:hidden`"
                           @blur="isEditable(false)"
                           @focus="isEditable(true)">
                 </textarea>
               <div class="be-input-word-counter" v-show="focused">{{contentLength}}/150</div>
             </div>
-            <div >
-              guanyu
-            </div>
+
           </div>
         </div>
+        <div class="about">
+          guanyu
 
+        </div>
         <!-- 返回顶部 -->
-        <BackTop :height="800" :bottom="250">
+        <BackTop :height="800" :bottom="150" :right="338">
           <div class="to-top">
             <b-icon icon="chevron-bar-up" v-b-tooltip.hover.left.v-secondary="'返回顶部'"/>
             <br>
           </div>
         </BackTop>
-      </b-col>
-<!--    </b-row>-->
+      </div>
+    </b-col>
   </b-row>
 </template>
 
@@ -243,25 +249,27 @@
       isHover (flag) {
         this.hovered = flag
       },
-      handleScroll() {
+      handleScroll () {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
         // if (scrollTop > 1140) {
         if (scrollTop > this.fixedHeight) {
-          this.needFixed = true;
+          this.needFixed = true
         } else {
-          this.needFixed = false;
+          this.needFixed = false
         }
       }
     },
     mounted () {
-      // 给window添加一个滚动监听事件
-      window.addEventListener('scroll', this.handleScroll);
-      // 从store中获取今日flag并赋值给flagContent
-      this.flagContent = this.$store.state.flagContent.content;
-      // 获取元素高度
-      this.$nextTick(() => {
-        this.fixedHeight = this.$refs.fixedElement.getBoundingClientRect().top;
-      });
+      if (!this.$store.state.isPhone) {
+        // 给window添加一个滚动监听事件
+        window.addEventListener('scroll', this.handleScroll)
+        // 从store中获取今日flag并赋值给flagContent
+        this.flagContent = this.$store.state.flagContent.content
+        // 获取元素高度
+        this.$nextTick(() => {
+          this.fixedHeight = this.$refs.fixedElement.getBoundingClientRect().top
+        })
+      }
       setInterval(() => {
         for (let i = 0; i < this.images.length; i++) {
           this.$set(this.images, i, {
@@ -280,6 +288,7 @@
 </script>
 
 <style scoped lang="less">
+  @import './css/common-var.less';
   @import "./css/body.less";
   @import "../assets/font_class/iconfont.css";
 </style>
