@@ -38,6 +38,10 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
 6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
 
+#### 为了全局主题对源码CSS做了微调
+1. 改动bootstrap.css中的list-group-item组件的背景色，注释掉5568和5585行；
+2. 改动viewui.css中的ivu-menu-item组件背景色，由于viewui.css已经做了mini处理，因此全局查找该组件直接删掉即可。
+
 首页完工图：
 ![输入图片说明](%E9%A6%96%E9%A1%B5%E5%AE%8C%E5%B7%A5%E5%9B%BE.png)
 自定义主题：
