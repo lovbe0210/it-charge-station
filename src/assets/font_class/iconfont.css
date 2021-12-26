@@ -1,45 +1,53 @@
 @font-face {
-  font-family: "iconfont"; /* Project id 3029751 */
-  /* Color fonts */
-  src:
-       url('iconfont.woff2?t=1639933163183') format('woff2'),
-       url('iconfont.woff?t=1639933163183') format('woff'),
-       url('iconfont.ttf?t=1639933163183') format('truetype');
+    font-family: "iconfont"; /* Project id 3029751 */
+    /* Color fonts */
+    src: url('iconfont.woff2?t=1639933163183') format('woff2'),
+    url('iconfont.woff?t=1639933163183') format('woff'),
+    url('iconfont.ttf?t=1639933163183') format('truetype'),
+    url('iconfont.ttf?t=1640513123865') format('truetype');
 }
 
 .iconfont {
-  font-family: "iconfont" !important;
-  font-size: 16px;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .icon-level0:before {
-  content: "\e6cb";
+    content: "\e6cb";
 }
 
 .icon-level1:before {
-  content: "\e6cc";
+    content: "\e6cc";
 }
 
 .icon-level2:before {
-  content: "\e6cd";
+    content: "\e6cd";
 }
 
 .icon-level3:before {
-  content: "\e6ce";
+    content: "\e6ce";
 }
 
 .icon-level4:before {
-  content: "\e6cf";
+    content: "\e6cf";
 }
 
 .icon-level5:before {
-  content: "\e6d0";
+    content: "\e6d0";
 }
 
 .icon-level6:before {
-  content: "\e6d1";
+    content: "\e6d1";
+}
+
+.icon-top:before {
+    content: "\e664";
+}
+
+.icon-setting:before {
+    content: "\e6c3";
 }
 

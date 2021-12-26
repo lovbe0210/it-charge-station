@@ -103,7 +103,6 @@
             <span>
               我的Flag
             </span>
-            <hr :class="{'primeval-border':changeBorder}">
             <div class="textarea-wrapper"
                  @mouseenter="isHover(true)"
                  @mouseleave="isHover(false)">
@@ -120,15 +119,15 @@
         </div>
         <div class="about">
           guanyu
-
         </div>
         <!-- 返回顶部 -->
-        <BackTop :height="800" :bottom="150" :right="338">
-          <div class="to-top">
-            <b-icon icon="chevron-bar-up" v-b-tooltip.hover.left.v-secondary="'返回顶部'"/>
-            <br>
-          </div>
-        </BackTop>
+        <back-top></back-top>
+<!--        <BackTop :height="800" :bottom="150" :right="300">-->
+<!--          <div class="to-top">-->
+<!--            <span style="font-size:32px" class="iconfont icon-top"/>-->
+<!--          </div>-->
+<!--        </BackTop>-->
+
       </div>
     </b-col>
   </b-row>
@@ -136,6 +135,7 @@
 
 <script>
   import CarouselSwipe from '@/components/common/CarouselSwipe'
+  import BackTop from '@/components/common/BackTop'
 
   export default {
     name: 'Body',
@@ -185,14 +185,14 @@
           },
           {
             id: '002',
-            avatar: require('@/assets/avatar/02.jpg'),
+            avatar: require('@/assets/avatar/03.jpg'),
             level: '0',
             nickName: 'lovbe0210',
             tag: ['创新', '原创']
           },
           {
             id: '003',
-            avatar: require('@/assets/avatar/03.jpg'),
+            avatar: require('@/assets/avatar/01.jpg'),
             level: '5',
             nickName: 'lovbe0210',
             tag: ['全栈', '用心写文']
@@ -213,7 +213,7 @@
       }
     },
     components: {
-      CarouselSwipe
+      CarouselSwipe, BackTop
     },
     computed: {
       // 从vuex中获取上一次的选中菜单项

@@ -25,6 +25,7 @@ module.exports = {
     'semi': "off",
     'no-multiple-empty-lines': "off",
     'spaced-comment': "off",
-    'padded-blocks': "off"
+    'padded-blocks': "off",
+    'prefer-const': "off"
   }
 }

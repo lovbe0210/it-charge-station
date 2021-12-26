@@ -1,11 +1,6 @@
 <template>
   <div id="app">
     <router-view></router-view>
-<!--    <component :is="style">-->
-<!--      .enable-background {-->
-<!--        background-color: {{baseBackgroundColor}};-->
-<!--      }-->
-<!--    </component>-->
   </div>
 </template>
 
@@ -28,6 +23,12 @@
   Vue.component('BIcon', BIcon)
   export default {
     name: 'App',
+    data () {
+      return {
+        // baseBackgroundColor: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)'
+        baseBackgroundColor: require('@/assets/bacc.png')
+      }
+    },
     created () {
       // 在页面加载时读取sessionStorage里的状态信息
       if (sessionStorage.getItem('store')) {
@@ -54,11 +55,11 @@
       // 加载flag内容到store中
       this.$store.commit('editFlagContent', localStorage.getItem('flagContent'))
     },
-    computed: {
-      baseBackgroundColor () {
-        return 'rgb(255, 255, 255);'
-      }
-    },
+    // computed: {
+    //   baseBackgroundColor () {
+    //     return 'rgb(255, 255, 255);'
+    //   }
+    // },
     mounted () {
       // window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
       // window.addEventListener('unload', e => this.unloadHandler(e))
