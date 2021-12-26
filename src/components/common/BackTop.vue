@@ -21,7 +21,7 @@
     props: {
       customHeight: {
         type: Number,
-        default: 800 // 单位默认px
+        default: 600 // 单位默认px
       }
     },
     watch: {

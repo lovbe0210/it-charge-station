@@ -99,7 +99,7 @@
 
       <div :class="{'hasFixed': needFixed == true}" class="enable-background">
         <div class="persona-lization" ref="fixedElement">
-          <div class="site-content">
+          <div class="user-flag">
             <span>
               我的Flag
             </span>
@@ -117,8 +117,12 @@
 
           </div>
         </div>
+        <div class="line"><hr></div>
+        <div class="links">
+          常用链接
+        </div>
         <div class="about">
-          guanyu
+          关于本站
         </div>
         <!-- 返回顶部 -->
         <back-top></back-top>

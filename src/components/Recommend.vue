@@ -20,10 +20,12 @@
               </span>
             </div>
             <div class="item-icons">
-              <b-icon icon="hand-thumbs-up" style="margin-right: 10px"/>
+              <b-icon icon="hand-thumbs-up" style="margin-right: 8px"/>
               2233
-              <b-icon icon="book-half" style="margin-left: 20px;margin-right: 10px;"/>
+              <b-icon icon="book-half" style="margin-left: 10px;margin-right: 8px;"/>
               11223
+              <b-icon icon="clock" style="margin-left: 10px;margin-right: 8px;"/>
+              2021-12-27 02:12:34
               <div>
                 来自🕊<b-link to="/follow"><span>语雀精选</span></b-link>
               </div>
