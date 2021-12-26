@@ -40,7 +40,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 #### 为了全局主题对源码CSS做了微调
 1. 改动bootstrap.css中的list-group-item组件的背景色，注释掉5568和5585行；
-2. 改动viewui.css中的ivu-menu-item组件背景色，由于viewui.css已经做了mini处理，因此全局查找该组件直接删掉即可。
+2. 改动viewui.css中的ivu-menu-item组件背景色，由于viewui.css已经做了mini处理，因此全局查找该组件直接删掉即可；
+3. 改动bootstrap-vue.css中的tip指令组件背景色，修改字体颜色和背景色2315行、2318行、2323、2324。
 
 首页完工图：
 ![输入图片说明](%E9%A6%96%E9%A1%B5%E5%AE%8C%E5%B7%A5%E5%9B%BE.png)
