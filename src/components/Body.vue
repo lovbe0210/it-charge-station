@@ -95,10 +95,8 @@
         </div>
       </div>
 
-      <div class="only-style" style="height: 13px"></div>
-
-      <div :class="{'hasFixed': needFixed == true}" class="enable-background">
-        <div class="persona-lization" ref="fixedElement">
+      <div :class="{'hasFixed': needFixed == true}" ref="fixedElement">
+        <div class="persona-lization enable-background">
           <div class="user-flag">
             <span>
               我的Flag
@@ -106,7 +104,8 @@
             <div class="textarea-wrapper"
                  @mouseenter="isHover(true)"
                  @mouseleave="isHover(false)">
-                <textarea rows="4" type="textarea" placeholder="编辑我的空间公告" :class="{'hover-border':changeBorder,'primeval-border':!changeBorder}"
+                <textarea rows="4" type="textarea" placeholder="编辑我的空间公告"
+                          :class="{'hover-border':changeBorder,'primeval-border':!changeBorder}"
                           maxlength="150" v-model="flagContent"
                           class="be-textarea_inner"
                           @blur="isEditable(false)"
@@ -117,21 +116,27 @@
 
           </div>
         </div>
-        <div class="line"><hr></div>
-        <div class="links">
-          常用链接
+        <div class="site-info enable-background">
+          <div class="links">
+            常用链接:
+            <span v-for="(item,index) in links" :key="index">
+            <a :href="item.url" target="_blank">{{item.title}}</a>
+          </span>
+
+          </div>
+          <div class="about">
+            <span class="first"><a href="">关于本站</a></span>
+            <span><a href="">意见反馈</a></span>
+          </div>
+          <div class="contact">
+            <span class="iconfont icon-github"/>
+            <span class="iconfont icon-gitee"/>
+            <span class="iconfont icon-qqqun"/>
+          </div>
         </div>
-        <div class="about">
-          关于本站
-        </div>
+
         <!-- 返回顶部 -->
         <back-top></back-top>
-<!--        <BackTop :height="800" :bottom="150" :right="300">-->
-<!--          <div class="to-top">-->
-<!--            <span style="font-size:32px" class="iconfont icon-top"/>-->
-<!--          </div>-->
-<!--        </BackTop>-->
-
       </div>
     </b-col>
   </b-row>
@@ -209,6 +214,20 @@
             tag: ['前段', '用心写文']
           }
         ],
+        links: [
+          {
+            title: '编程自学之路',
+            url: 'https://www.r2coding.com'
+          },
+          {
+            title: '陌溪LearningNotes',
+            url: 'https://gitee.com/moxi159753/LearningNotes'
+          },
+          {
+            title: '千古前段笔记',
+            url: 'https://web.qianguyihao.com/'
+          }
+        ],
         flagContent: '',
         focused: false,
         hovered: false,
@@ -217,7 +236,8 @@
       }
     },
     components: {
-      CarouselSwipe, BackTop
+      CarouselSwipe,
+      BackTop
     },
     computed: {
       // 从vuex中获取上一次的选中菜单项

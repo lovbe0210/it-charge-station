@@ -120,7 +120,7 @@
   // 统一设置背景色和圆角
   .enable-background {
     background: @background-color-base;
-    border-radius: 3px;
+    border-radius: 5px;
   }
 
   body {

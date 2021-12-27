@@ -1,18 +1,26 @@
 @font-face {
-    font-family: "iconfont"; /* Project id 3029751 */
-    /* Color fonts */
-    src: url('iconfont.woff2?t=1639933163183') format('woff2'),
-    url('iconfont.woff?t=1639933163183') format('woff'),
-    url('iconfont.ttf?t=1639933163183') format('truetype'),
-    url('iconfont.ttf?t=1640513123865') format('truetype');
+  font-family: "iconfont"; /* Project id 3029751 */
+  /* Color fonts */
+  src:
+       url('iconfont.woff2?t=1640622606985') format('woff2'),
+       url('iconfont.woff?t=1640622606985') format('woff'),
+       url('iconfont.ttf?t=1640622606985') format('truetype');
 }
 
 .iconfont {
-    font-family: "iconfont" !important;
-    font-size: 16px;
-    font-style: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-github:before {
+  content: "\e972";
+}
+
+.icon-gitee:before {
+  content: "\e60d";
 }
 
 .icon-level0:before {
@@ -49,5 +57,9 @@
 
 .icon-setting:before {
     content: "\e6c3";
+}
+
+.icon-qqqun:before {
+    content: "\e600";
 }
 
