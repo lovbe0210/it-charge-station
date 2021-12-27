@@ -43,6 +43,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 2. 改动viewui.css中的ivu-menu-item组件背景色，由于viewui.css已经做了mini处理，因此全局查找该组件直接删掉即可；
 3. 改动bootstrap-vue.css中的tip指令组件背景色，修改字体颜色和背景色2315行、2318行、2323、2324。
 
+#### npm下载问题
+1. 对于image-webpack-loader引起的下载失败，hosts文件配置  151.101.72.133 raw.githubusercontent.com
 首页完工图：
 ![输入图片说明](%E9%A6%96%E9%A1%B5%E5%AE%8C%E5%B7%A5%E5%9B%BE.png)
 自定义主题：
