@@ -45,7 +45,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 #### npm下载问题
 1. 对于image-webpack-loader引起的下载失败，hosts文件配置  151.101.72.133 raw.githubusercontent.com
-首页完工图：
+######首页完工图：
 ![输入图片说明](%E9%A6%96%E9%A1%B5%E5%AE%8C%E5%B7%A5%E5%9B%BE.png)
 自定义主题：
 ![输入图片说明](%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%BB%E9%A2%98.png)
