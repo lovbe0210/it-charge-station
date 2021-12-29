@@ -27,7 +27,6 @@
     width: 160px;
     -webkit-transition: width .1s ease-in-out;
     transition: width .1s ease-in-out;
-    //border-color: #d9d9d9;
     cursor: default !important;
     position: relative;
     display: inline-block;
@@ -37,7 +36,6 @@
     color: #595959;
     font-size: 14px;
     line-height: 1.5;
-    //border: 1px solid #d9d9d9;
     border-radius: 4px;
     transition: all .3s;
     display: inline-flex;
@@ -59,7 +57,6 @@
       color: #595959;
       font-size: 14px;
       line-height: 1.5;
-      //background-color: @background-color-base;
       border-radius: 4px;
       transition: all .3s;
       background-color: transparent;
@@ -107,19 +104,33 @@
 
   // 登陆注册
   .login-regist {
-    margin-right: 20px;
-
     .login {
-      border: 1px solid #d9d9d9;
-      color: #595959;
-      width: 55px;
-      margin-right: 5px;
-      margin-left: 5px;
+      width: auto;
+      border: 1px solid #9e9d9d;
+      color: #535353;
+      margin: 0 10px 0 55px;
     }
-
-    .login:hover {
+    :hover {
       border: 1px solid #25b864;
       color: #25b864
+    }
+  }
+
+  // 公用部分
+  .charge {
+    background: #25b864;
+    border-radius:3px;
+    .btn {
+      height: 30.8px;
+      padding: 0 6px 0 6px;
+      //border-radius:3px;
+    }
+    .icon-charge {
+      font-size: 19px;
+      margin-right: 3px;
+    }
+    .write {
+      color: #FFFFFF;
     }
   }
 }

@@ -26,6 +26,7 @@ module.exports = {
     'no-multiple-empty-lines': "off",
     'spaced-comment': "off",
     'padded-blocks': "off",
-    'prefer-const': "off"
+    'prefer-const': "off",
+    'no-constant-condition': "off"
   }
 }

@@ -13,7 +13,7 @@
             <img src="@/assets/logo.png" width="150px">
           </div>
           <div class="text-center mb-4">
-            <h5>知识库，你身边的智谷星</h5>
+            <h5>及时充电，才能走得更远</h5>
           </div>
           <!-- Form -->
           <form class="px-3">

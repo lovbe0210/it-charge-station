@@ -93,18 +93,22 @@
                 variant="outline-*"
                 size="sm"
                 to="/login"
-              >登录
-              </b-button>
-              <b-button
-                variant="success outline-light"
-                size="sm"
-                class="regist"
-                @click="$whereGo('register')"
-              >快速注册
+              >登录/注册
               </b-button>
             </div>
           </b-navbar-nav>
 
+          <b-navbar-nav class="ml-auto" :fill="true" align="center">
+            <div class="charge">
+              <b-button
+                class="write"
+                variant="outline-*"
+                size="sm"
+                to="/login"
+              ><span class="iconfont icon-charge"></span>充会电
+              </b-button>
+            </div>
+          </b-navbar-nav>
         </b-collapse>
 
       </b-navbar>

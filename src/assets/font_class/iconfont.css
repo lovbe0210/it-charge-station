@@ -63,3 +63,7 @@
     content: "\e600";
 }
 
+.icon-charge:before {
+    content: "\e72c";
+}
+

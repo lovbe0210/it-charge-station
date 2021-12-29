@@ -123,10 +123,12 @@
             <a :href="item.url" target="_blank">{{item.title}}</a>
           </span>
 
+            <div class="chicken-soup">{{chickenSoup}}</div>
+
           </div>
           <div class="about">
             <span class="first"><a href="">关于本站</a></span>
-            <span><a href="">意见反馈</a></span>
+            <span><a href="">BUG反馈</a></span>
           </div>
           <div class="contact">
             <span class="iconfont icon-github"/>
@@ -253,6 +255,16 @@
       },
       changeBorder () {
         return this.focused ? true : this.hovered
+      },
+      chickenSoup () {
+        let content = '每日一句心灵鸡汤'
+        // 请求接口
+        content = ''
+        if (!true) {
+          return content
+        } else {
+          return '每日一句心灵鸡汤'
+        }
       }
     },
     methods: {
