@@ -54,42 +54,31 @@
           </b-navbar-nav>
 
           <!-- 用户已登录功能栏 -->
-          <b-navbar-nav v-if="this.$store.getters.loginStatus" class="ml-auto" :fill="true" align="center">
-            <div class="user-info">
-              <b-button variant="dark" @click="$whereGo('articleEdit')">
-                <c-svg-icon icon-class="edit-w" margin-none/>
-                创作投稿
-              </b-button>
-
+          <b-navbar-nav v-if="!this.$store.getters.loginStatus" class="ml-auto" :fill="true" align="center">
+            <b-row class="user-info">
               <!--用户快捷导航-->
-              <b-nav-item-dropdown variant="b-popover-dark" class="mx-3" right>
-                <template v-slot:button-content>
-                  <span class="font-weight-bold">{{ $userStore('nickname') }}</span>
-                </template>
-                <b-dropdown-item @click="$personInfoGo($userStore('openId'))">我的首页</b-dropdown-item>
-                <b-dropdown-item @click="$whereGo('')">帮助和反馈</b-dropdown-item>
-                <b-dropdown-item @click="logout">退出登录</b-dropdown-item>
-              </b-nav-item-dropdown>
+              <Dropdown transfer>
+                <b-link to="/accountCenter">
+                  <span class="iconfont icon-avatar-man" style="font-size:1.2rem;"></span>
+                </b-link>
+                <DropdownMenu slot="list">
+                  <div style="width:60px;height:60px;">
+                    haha
+                  </div>
+                </DropdownMenu>
+              </Dropdown>
+              <div class="msg">
+<!--                <Badge dot>-->
+                  <b-link to="#">消息</b-link>
+<!--                </Badge>-->
+              </div>
 
-              <!--用户消息-->
-              <Badge :count="this.$store.getters.notReadCount">
-                <b-nav-item-dropdown text="动态信息" right>
-                  <b-dropdown-item
-                    v-for="item of messageMenu"
-                    @click="chooseMessage(item)"
-                    :key="item.menuKey"
-                  >
-                    <span>{{ item.menuValue }}</span>
-                    <Badge :count="dealNotReadCount(item)"/>
-                  </b-dropdown-item>
-                </b-nav-item-dropdown>
-              </Badge>
-            </div>
+            </b-row>
           </b-navbar-nav>
 
           <!--未登录功能栏-->
           <b-navbar-nav v-else class="ml-auto" :fill="true" align="center">
-            <div class="login-regist">
+            <div class="login-register">
               <b-button
                 class="login"
                 variant="outline-*"
@@ -100,6 +89,7 @@
             </div>
           </b-navbar-nav>
 
+          <!-- 公共部分 -->
           <b-navbar-nav class="ml-auto" :fill="true" align="center">
             <div class="charge">
               <b-button
@@ -107,7 +97,7 @@
                 variant="outline-*"
                 size="sm"
                 to="/login"
-              ><span class="iconfont icon-charge"></span>充会电
+              ><span class="iconfont icon-charge"></span>写笔记
               </b-button>
             </div>
           </b-navbar-nav>

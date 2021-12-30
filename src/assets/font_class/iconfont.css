@@ -71,3 +71,11 @@
     content: "\e72c";
 }
 
+.icon-avatar-man:before {
+    content: "\e61a";
+}
+
+.icon-avatar-woman:before {
+    content: "\e625";
+}
+
