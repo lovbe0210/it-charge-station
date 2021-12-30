@@ -128,8 +128,8 @@
     font-family: "PingFang SC", Microsoft YaHei, Helvetica, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
     // 主题色
     background-color: @background-color-base;
-    /*background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);*/
-    background-image: url("./assets/bacc.png");
+    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+    background-image: url("./assets/bacc_1.png");
     // 平铺
     background-repeat: no-repeat;
     background-size: 100% auto;

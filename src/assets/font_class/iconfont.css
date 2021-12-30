@@ -63,6 +63,10 @@
     content: "\e600";
 }
 
+.icon-logo:before {
+    content: "\e605";
+}
+
 .icon-charge:before {
     content: "\e72c";
 }

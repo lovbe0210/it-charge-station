@@ -3,8 +3,8 @@
       <b-navbar class="navbar navbar-expand-lg navbar-light " toggleable="xl" type="light">
         <!-- logo -->
         <b-navbar-brand to="/">
-          <img src="../assets/logo.png" id="logo">
-          <a id="title">知识库</a>
+          <span class="iconfont icon-logo"></span>
+          <a id="title">IT充电站</a>
         </b-navbar-brand>
 
         <!-- 移动端收集框 -->
@@ -55,34 +55,36 @@
 
           <!-- 用户已登录功能栏 -->
           <b-navbar-nav v-if="this.$store.getters.loginStatus" class="ml-auto" :fill="true" align="center">
-            <b-button variant="dark" @click="$whereGo('articleEdit')">
-              <c-svg-icon icon-class="edit-w" margin-none/>
-              创作投稿
-            </b-button>
+            <div class="user-info">
+              <b-button variant="dark" @click="$whereGo('articleEdit')">
+                <c-svg-icon icon-class="edit-w" margin-none/>
+                创作投稿
+              </b-button>
 
-            <!--用户快捷导航-->
-            <b-nav-item-dropdown variant="b-popover-dark" class="mx-3" right>
-              <template v-slot:button-content>
-                <span class="font-weight-bold">{{ $userStore('nickname') }}</span>
-              </template>
-              <b-dropdown-item @click="$personInfoGo($userStore('openId'))">我的首页</b-dropdown-item>
-              <b-dropdown-item @click="$whereGo('')">帮助和反馈</b-dropdown-item>
-              <b-dropdown-item @click="logout">退出登录</b-dropdown-item>
-            </b-nav-item-dropdown>
-
-            <!--用户消息-->
-            <Badge :count="this.$store.getters.notReadCount">
-              <b-nav-item-dropdown text="动态信息" right>
-                <b-dropdown-item
-                  v-for="item of messageMenu"
-                  @click="chooseMessage(item)"
-                  :key="item.menuKey"
-                >
-                  <span>{{ item.menuValue }}</span>
-                  <Badge :count="dealNotReadCount(item)"/>
-                </b-dropdown-item>
+              <!--用户快捷导航-->
+              <b-nav-item-dropdown variant="b-popover-dark" class="mx-3" right>
+                <template v-slot:button-content>
+                  <span class="font-weight-bold">{{ $userStore('nickname') }}</span>
+                </template>
+                <b-dropdown-item @click="$personInfoGo($userStore('openId'))">我的首页</b-dropdown-item>
+                <b-dropdown-item @click="$whereGo('')">帮助和反馈</b-dropdown-item>
+                <b-dropdown-item @click="logout">退出登录</b-dropdown-item>
               </b-nav-item-dropdown>
-            </Badge>
+
+              <!--用户消息-->
+              <Badge :count="this.$store.getters.notReadCount">
+                <b-nav-item-dropdown text="动态信息" right>
+                  <b-dropdown-item
+                    v-for="item of messageMenu"
+                    @click="chooseMessage(item)"
+                    :key="item.menuKey"
+                  >
+                    <span>{{ item.menuValue }}</span>
+                    <Badge :count="dealNotReadCount(item)"/>
+                  </b-dropdown-item>
+                </b-nav-item-dropdown>
+              </Badge>
+            </div>
           </b-navbar-nav>
 
           <!--未登录功能栏-->
