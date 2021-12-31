@@ -1,6 +1,6 @@
 <template>
   <b-row  fluid class="header-row enable-background">
-      <b-navbar class="navbar navbar-expand-lg navbar-light " toggleable="xl" type="light">
+      <b-navbar class="navbar-expand-lg navbar-light" toggleable="xl" type="light">
         <!-- logo -->
         <b-navbar-brand to="/">
           <span class="iconfont icon-logo"></span>
@@ -59,7 +59,7 @@
               <!--用户快捷导航-->
               <Dropdown transfer>
                 <b-link to="/accountCenter">
-                  <span class="iconfont icon-avatar-man" style="font-size:1.2rem;"></span>
+                  <span class="iconfont icon-avatar-man" style="margin-top: -50px;font-size:1.2rem;"></span>
                 </b-link>
                 <DropdownMenu slot="list">
                   <div style="width:60px;height:60px;">
