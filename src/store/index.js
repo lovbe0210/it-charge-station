@@ -5,6 +5,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    userInfo: {
+      token: '06ba1e5d8dcd4bf7b27ed10c6a202766'
+    },
     // 首页显示激活的菜单项
     activeName: 'recommend',
     // 手机页面的菜单栏的状态，true为打开，false为关闭，默认关闭
@@ -51,11 +54,16 @@ export default new Vuex.Store({
      */
     editFlagContent(state, value) {
       state.flagContent.content = value
+    },
+    /**
+     * 退出登录
+     * @param state
+     * @param value
+     */
+    clearUserInfo (state, value) {
+      console.log(value)
+      state.userInfo = {}
+      localStorage.removeItem('modelTexturesId')
     }
-
-  },
-
-  // 间接操作state中的数据(dispatch)
-  actions: {},
-  modules: {}
+  }
 })

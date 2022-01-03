@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <b-list-group>
-      <BackTop :height="10" :bottom="80" v-if="isPhone">
+      <BackTop :height="300" :bottom="50" v-if="isPhone">
         <div class="to-top">
           <b-icon icon="arrow-bar-up"></b-icon>
         </div>
@@ -19,17 +19,20 @@
                 {{item.description}}
               </span>
             </div>
-            <div class="item-icons">
-              <b-icon icon="hand-thumbs-up" style="margin-right: 8px"/>
-              2233
-              <b-icon icon="book-half" style="margin-left: 10px;margin-right: 8px;"/>
-              11223
-              <b-icon icon="clock" style="margin-left: 10px;margin-right: 8px;"/>
-              2021-12-27 02:12:34
+            <b-row class="item-icons">
               <div>
-                来自🕊<b-link to="/follow"><span>语雀精选</span></b-link>
+                <span class="iconfont icon-like1"></span> 2233
               </div>
-            </div>
+              <div>
+                <span class="iconfont icon-collected"></span> 11223
+              </div>
+              <div>
+                <span class="iconfont icon-read"></span> 777
+              </div>
+              <div class="from">
+                来自🕊<b-link to="/follow"><span >语雀精选</span></b-link>
+              </div>
+            </b-row>
           </b-col>
           <b-col v-if="!isPhone && item.avatar != null" cols="4" fluid class="image">
             <b-img right fluid rounded :src="item.avatar" alt="Image 1"/>
@@ -108,13 +111,11 @@
       }
     },
     computed: {
-      /**
-       * 判断页面是手机页面还是pc页面，如果是手机页面则进行全屏显示
-       * @returns {boolean}
-       */
+      // 判断页面是手机页面还是pc页面，如果是手机页面则进行全屏显示
       isPhone () {
         return this.$store.state.isPhone
       },
+      // 设置无限滚动条目数
       busy () {
         return this.count > 100
       }
@@ -132,7 +133,6 @@
             }
           )
         }
-        console.log(this.data)
       }
     }
   }
@@ -140,6 +140,7 @@
 
 <style scoped lang="less">
   @import "./css/recommend.less";
+  @import "./css/common-var";
 
   .t-scroll {
     position: relative;
@@ -148,9 +149,8 @@
 
   .to-top {
     padding: 10px;
-    color: #589D1D;
+    color: @border-color;
     text-align: center;
-    /*margin-right: 10px;*/
     font-size: 30px;
   }
 </style>

@@ -26,8 +26,7 @@
           <div class="text">
             精选笔记
             <b-link class="more">
-              更多
-              <b-icon icon="chevron-right"></b-icon>
+              更多<span class="iconfont icon-more"></span>
             </b-link>
             <hr>
           </div>
@@ -39,8 +38,7 @@
           <div class="text">
             推荐专题
             <b-link class="more">
-              更多
-              <b-icon icon="chevron-right"></b-icon>
+              更多<span class="iconfont icon-more"></span>
             </b-link>
             <hr>
           </div>
@@ -55,14 +53,17 @@
                 <span class="desc">
                   {{item.description}}
                 </span>
-                <small class="icon">
-                  <b-icon icon="journal-text" style="margin-right: 6px"/>
-                  2233
-                  <b-icon icon="book-half" style="margin-left: 10px;margin-right: 6px;"/>
-                  11223
-                  <b-icon icon="star-fill" style="margin-left: 10px;margin-right: 6px;"/>
-                  11223
-                </small>
+                <b-row class="icon">
+                  <div>
+                    <span class="iconfont icon-article"></span> 2233
+                  </div>
+                  <div>
+                    <span class="iconfont icon-collected"></span> 11223
+                  </div>
+                  <div>
+                    <span class="iconfont icon-like1"></span> 11223
+                  </div>
+                </b-row>
               </b-list-group-item>
             </b-list-group>
           </div>
@@ -71,8 +72,7 @@
           <div class="text">
             创作者排行榜
             <b-link class="more">
-              完整榜单
-              <b-icon icon="chevron-right"></b-icon>
+              完整榜单<span class="iconfont icon-more"></span>
             </b-link>
             <hr>
           </div>
@@ -191,19 +191,19 @@
             id: '001',
             avatar: require('@/assets/avatar/01.jpg'),
             level: '6',
-            nickName: '昵称多的字数需要限',
+            nickName: '昵称多的字数需要限制',
             tag: ['自我驱动', '坚持不懈', '目标大厂', '年薪百万']
           },
           {
             id: '002',
-            avatar: require('@/assets/avatar/03.jpg'),
+            avatar: 'https://tvax4.sinaimg.cn/large/718153f4gy1gxuwa18v4jj20m80rsqa3.jpg',
             level: '0',
             nickName: 'lovbe0210',
             tag: ['创新', '原创']
           },
           {
             id: '003',
-            avatar: require('@/assets/avatar/01.jpg'),
+            avatar: require('@/assets/avatar/03.jpg'),
             level: '5',
             nickName: 'lovbe0210',
             tag: ['全栈', '用心写文']
@@ -285,9 +285,9 @@
       isHover (flag) {
         this.hovered = flag
       },
+      // 视窗固定
       handleScroll () {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        // if (scrollTop > 1140) {
         if (scrollTop > this.fixedHeight) {
           this.needFixed = true
         } else {

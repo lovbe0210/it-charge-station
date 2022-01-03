@@ -1,10 +1,10 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
-  src:
-       url('iconfont.woff2?t=1640622606985') format('woff2'),
-       url('iconfont.woff?t=1640622606985') format('woff'),
-       url('iconfont.ttf?t=1640622606985') format('truetype');
+  src: 
+       url('iconfont.woff2?t=1641231083807') format('woff2'),
+       url('iconfont.woff?t=1641231083807') format('woff'),
+       url('iconfont.ttf?t=1641231083807') format('truetype');
 }
 
 .iconfont {
@@ -15,6 +15,70 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-more:before {
+  content: "\e60b";
+}
+
+.icon-personal-man:before {
+  content: "\e619";
+}
+
+.icon-read:before {
+  content: "\e603";
+}
+
+.icon-article:before {
+  content: "\e7d3";
+}
+
+.icon-like1:before {
+  content: "\e602";
+}
+
+.icon-like2:before {
+  content: "\e651";
+}
+
+.icon-collected:before {
+  content: "\e621";
+}
+
+.icon-collect:before {
+  content: "\e601";
+}
+
+.icon-personal-woman:before {
+  content: "\e654";
+}
+
+.icon-creation-center:before {
+  content: "\e690";
+}
+
+.icon-exit:before {
+  content: "\e973";
+}
+
+.icon-avatar-man:before {
+  content: "\e61a";
+}
+
+.icon-avatar-woman:before {
+  content: "\e625";
+}
+
+.icon-logo:before {
+  content: "\e605";
+}
+
+.icon-charge:before {
+  content: "\e72c";
+}
+
+.icon-qqqun:before {
+  content: "\e600";
+}
+
 .icon-github:before {
   content: "\e972";
 }
@@ -23,59 +87,39 @@
   content: "\e60d";
 }
 
-.icon-level0:before {
-    content: "\e6cb";
-}
-
-.icon-level1:before {
-    content: "\e6cc";
-}
-
-.icon-level2:before {
-    content: "\e6cd";
-}
-
-.icon-level3:before {
-    content: "\e6ce";
-}
-
-.icon-level4:before {
-    content: "\e6cf";
-}
-
-.icon-level5:before {
-    content: "\e6d0";
-}
-
-.icon-level6:before {
-    content: "\e6d1";
+.icon-setting:before {
+  content: "\e6c3";
 }
 
 .icon-top:before {
-    content: "\e664";
+  content: "\e664";
 }
 
-.icon-setting:before {
-    content: "\e6c3";
+.icon-level0:before {
+  content: "\e6cb";
 }
 
-.icon-qqqun:before {
-    content: "\e600";
+.icon-level1:before {
+  content: "\e6cc";
 }
 
-.icon-logo:before {
-    content: "\e605";
+.icon-level2:before {
+  content: "\e6cd";
 }
 
-.icon-charge:before {
-    content: "\e72c";
+.icon-level3:before {
+  content: "\e6ce";
 }
 
-.icon-avatar-man:before {
-    content: "\e61a";
+.icon-level4:before {
+  content: "\e6cf";
 }
 
-.icon-avatar-woman:before {
-    content: "\e625";
+.icon-level5:before {
+  content: "\e6d0";
+}
+
+.icon-level6:before {
+  content: "\e6d1";
 }
 

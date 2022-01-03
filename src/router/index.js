@@ -4,6 +4,12 @@ import Index from '../views/Index.vue'
 import Recommend from '@/components/Recommend'
 import Login from '@/components/Login'
 
+// 解决router.push报重复路由错误，实际并没有重复
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 Vue.use(VueRouter)
 
 const routes = [

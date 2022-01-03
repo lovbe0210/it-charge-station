@@ -8,9 +8,9 @@
   justify-content: center;
 
   .navbar {
-    padding: 0 18px 0 18px;
+    padding: 0 ;
     .icon-logo {
-      font-size:1.2rem;
+      font-size:1.3rem;
     }
     #title {
       color: #262626;
@@ -23,7 +23,7 @@
   // 当点击搜索框时的ui效果，绿色边框加输入框向右扩展
   .changeColor {
     .index-module_input {
-      border: 1px solid #25b864;
+      border: 1px solid @border-color;
       margin-right: 40px;
     }
   }
@@ -47,7 +47,7 @@
     width: 100%;
     min-width: 0;
     padding: 4.5px 11px;
-    color: #595959;
+    color: @font-color;
     font-size: 14px;
     line-height: 1.5;
     border-radius: 4px;
@@ -68,7 +68,7 @@
       display: inline-block;
       width: 100%;
       min-width: 0;
-      color: #595959;
+      color: @font-color;
       font-size: 14px;
       line-height: 1.5;
       border-radius: 4px;
@@ -87,27 +87,59 @@
     padding: 0;
   }
 
+  .navbar-collapse {
+    height: 65px;
+  }
+
   // 菜单栏
   .menu {
     font-size: 15px;
-    margin-left: 8px;
+    margin: 0 20px 0 20px;
 
     .mr-2 {
       span {
-        color: #595959
+        color: @font-color;
       }
     }
   }
 
   // 已登录
   .user-info {
-    padding: 0 10px 0 20px;
-    margin-right: 10px;
-    height:65px;
-    line-height: 65px;
+    margin-right: 5px;
+    .dropdown-header {
+      margin-left: 5px;
+      padding: 0 5px 5px 15px;
+      .nickName {
+        font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial;
+        width: auto;
+        font-size: 15px;
+        font-weight: 400;
+        color: @nick_name-color;
+        .iconfont {
+          margin-left: 5px;
+          font-size: 22px;
+        }
+      }
+      .counter {
+        margin-left: 10px;
+       font-size: 13px;
+      }
+    }
     .msg {
+      margin-left: -10px;
+      margin-top:10px;
       font-size: 15px;
-      padding-left: 20px;
+      position: relative;
+      a {
+        color:@font-color;
+      }
+      .c-badge {
+        background: red;
+        border: 3px solid red;
+        border-radius:100%;
+        position:absolute;
+        right: 3px;
+      }
     }
   }
 
@@ -122,14 +154,14 @@
       margin: 0 10px 0 25px;
     }
     :hover {
-      border: 1px solid #25b864;
-      color: #25b864
+      border: 1px solid @border-color;
+      color: @border-color;
     }
   }
 
   // 公用部分
   .charge {
-    background: #25b864;
+    background: @border-color;
     border-radius:3px;
     .btn {
       height: 31px;

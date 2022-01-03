@@ -1,11 +1,7 @@
 <template>
   <b-container class="index">
-<!--    <b-row>-->
       <Header/>
-<!--    </b-row>-->
-<!--    <b-row >-->
       <Body :activeName="activeName" @onSelect="onSelect" v-if="!showContext"/>
-<!--    </b-row>-->
   </b-container>
 </template>
 

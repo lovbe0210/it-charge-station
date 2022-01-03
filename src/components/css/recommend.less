@@ -52,7 +52,7 @@
       .description {
         width: auto;
         height: 45px;
-        margin-bottom: 15px;
+        margin-bottom: 5px;
 
         span {
           color: #8c8c8c;
@@ -69,27 +69,34 @@
       }
 
       .item-icons {
-        padding: 6px 0 0 0;
+        //padding: 6px 0 0 0;
+        margin: 0;
         font-size: 13px;
         color: #535353;
+        //position: relative;
 
-        svg {
-          font-size: 14px;
-        }
-
-        div {
-          float: right;
-
+        .from {
+          position: absolute;
+          right:0;
+          top: 50%;
+          transform: translateY(-50%);
           :hover {
             color: #535353;
           }
-
           span {
             color: #535353;
+            font-size: 13px;
           }
         }
+
+        div {
+          margin-right: 8px;
+          span {
+            font-size: 19px;
+          }
+        }
+
       }
     }
-
   }
 }

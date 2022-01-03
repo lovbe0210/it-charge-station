@@ -3,7 +3,7 @@
     <div class="back-top" v-show="backTopShow" @click="backTop">
       <span class="iconfont icon-top"/>
     </div>
-    <div class="setting" v-show="backTopShow" v-b-tooltip.hover.leftbottom.v-secondary :title="title" @click="changeAAA">
+    <div class="setting" v-show="backTopShow" v-b-tooltip.hover.leftbottom.v-secondary :title="title" @click="changeuserInfo">
       <span class="iconfont icon-setting"/>
     </div>
   </div>
@@ -56,7 +56,7 @@
           }
         });
       },
-      changeAAA() {
+      changeuserInfo() {
         alert('设置全局主题')
       }
     },
