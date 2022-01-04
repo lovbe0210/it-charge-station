@@ -38,11 +38,11 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
 6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
 
-#### 为了全局主题对源码CSS做了微调（其实是我菜不知道怎么自定义主题ヽ(ﾟ∀ﾟ*)ﾉ━━━ｩ♪）
+#### 为了全局主题对源码CSS做了微调（其实是我菜不知道怎么覆盖这些第三方的CSSヽ(ﾟ∀ﾟ*)ﾉ━ｩ♪）
 1. 改动bootstrap.css中的list-group-item组件的背景色，注释掉5568和5585行；
 2. 改动viewui.css中的ivu-menu-item组件背景色，由于viewui.css已经做了mini处理，因此全局查找.ivu-menu-light直接删掉即可；
 3. 改动bootstrap-vue.css中的tip指令组件背景色，修改字体颜色和背景色2315行、2318行、2323、2324；
-4. 改动bootstrap.css中的按钮聚焦是的轮廓，直接注释掉那个边框颜色2548行，注释掉2528行的按钮padding设置；
+4. 改动bootstrap.css中的按钮聚焦是的轮廓，直接注释掉那个边框颜色2548行,修改2547行的outline为none，注释掉2528行的按钮padding设置；
 5. 改动bootstrap.css中的按钮组中的padding边框设计，注释掉3137行；
 6. 改动bootstrap.css中的dropMenu的
 

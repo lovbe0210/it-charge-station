@@ -8,10 +8,12 @@
   justify-content: center;
 
   .navbar {
-    padding: 0 ;
+    padding: 0;
+
     .icon-logo {
-      font-size:1.3rem;
+      font-size: 1.3rem;
     }
+
     #title {
       color: #262626;
       font-size: 1.1rem;
@@ -106,39 +108,58 @@
   // 已登录
   .user-info {
     margin-right: 5px;
+
     .dropdown-header {
-      margin-left: 5px;
-      padding: 0 5px 5px 15px;
+      padding: 0 5px 5px 10px;
+
       .nickName {
         font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial;
         width: auto;
         font-size: 15px;
         font-weight: 400;
         color: @nick_name-color;
+
         .iconfont {
           margin-left: 5px;
           font-size: 22px;
         }
       }
+
       .counter {
         margin-left: 10px;
-       font-size: 13px;
+        font-size: 13px;
       }
     }
+
     .msg {
       margin-left: -10px;
-      margin-top:10px;
-      font-size: 15px;
-      position: relative;
-      a {
-        color:@font-color;
+      .nav-link {
+        margin: 4.5px 8px 4.5px 8px;
+        padding: 15px 0 15px 0;
+        :hover {
+          text-decoration:none;
+        }
+        :visited {
+          text-decoration:none;
+        }
+        span {
+          font-size: 15px;
+          color: @font-color;
+        }
       }
+
       .c-badge {
         background: red;
         border: 3px solid red;
-        border-radius:100%;
-        position:absolute;
-        right: 3px;
+        border-radius: 100%;
+        position: absolute;
+        right: -4px;
+      }
+
+      .msg-badge {
+        margin-left: 25px;
+        width: 35px;
+        height: 8px;
       }
     }
   }
@@ -153,6 +174,7 @@
       color: #535353;
       margin: 0 10px 0 25px;
     }
+
     :hover {
       border: 1px solid @border-color;
       color: @border-color;
@@ -162,16 +184,19 @@
   // 公用部分
   .charge {
     background: @border-color;
-    border-radius:3px;
+    border-radius: 3px;
+
     .btn {
       height: 31px;
       padding: 0 8px 0 8px;
-      border-radius:3px;
+      border-radius: 3px;
     }
+
     .icon-charge {
       font-size: 19px;
       margin-right: 3px;
     }
+
     .write {
       color: #FFFFFF;
     }

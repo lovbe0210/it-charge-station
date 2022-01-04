@@ -57,16 +57,16 @@
         <!-- 用户已登录功能栏 -->
         <b-navbar-nav v-if="loginStatus" class="ml-auto user-info" :fill="true" align="center">
           <!--用户快捷导航-->
-          <b-nav-item class="mr-2" @mouseenter="isHover(true)" @mouseleave="isHover(false)">
-            <b-dropdown size="lg" variant="link" no-caret ref="dropdown">
+          <b-nav-item class="mr-2" @mouseenter="isHover('personalDp')" @mouseleave="isHover('personalDp')">
+            <b-dropdown size="lg" variant="link" no-caret ref="personalDp">
               <template #button-content>
-                <b-avatar size="2.5rem" src="https://tva1.sinaimg.cn/large/718153f4gy1gxuwa0i6g0j20m80rsdln.jpg">
+                <b-avatar size="47px" src="https://tva1.sinaimg.cn/large/718153f4gy1gxuwa0i6g0j20m80rsdln.jpg">
                   <span v-if="0" class="iconfont icon-avatar-man" style="font-size:1.8rem;"></span>
                 </b-avatar>
               </template>
               <b-dropdown-header id="dropdown-header">
                 <div class="nickName">
-                  <span class="nick-name">限制长度10个字</span>
+                  <span class="nick-name">限制长度10个字服了</span>
                   <span :class="`iconfont icon-level`+5"/>
                 </div>
                 <div class="counter">
@@ -87,7 +87,7 @@
                   </div>
                 </div>
               </b-dropdown-header>
-              <b-dropdown-item to="/haha" link-class="person-center">
+              <b-dropdown-item to="/haha">
                 <span class="iconfont icon-personal-woman" style="font-size:17px;margin-left:5px;"></span>
                 <span style="font-size: 15px;">个人主页</span>
               </b-dropdown-item>
@@ -102,9 +102,29 @@
             </b-dropdown>
           </b-nav-item>
 
-          <b-nav-item class="msg mr-2">
-            <div class="c-badge" v-if="1"></div>
-            <b-link to="/messageMenu">消息</b-link>
+          <b-nav-item class="msg mr-2"  @mouseenter="isHover('msgDp')" @mouseleave="isHover('msgDp')">
+            <b-dropdown size="md" variant="link" no-caret ref="msgDp">
+              <template #button-content>
+                <div class="c-badge" v-if="1"></div>
+                <span>消息</span>
+              </template>
+              <b-dropdown-item to="/msgMenu/comment" link-class="person-center">
+                <span style="font-size: 15px;">回复我的</span>
+                <Badge :count="10" overflow-count="99" class="msg-badge"></Badge>
+              </b-dropdown-item>
+              <b-dropdown-item to="/msgMenu/like">
+                <span style="font-size: 15px;">收到的赞</span>
+                <Badge :count="100" overflow-count="99" class="msg-badge"></Badge>
+              </b-dropdown-item>
+              <b-dropdown-item to="/msgMenu/system">
+                <span style="font-size: 15px;">系统通知</span>
+                <Badge :count="35" overflow-count="99" class="msg-badge"></Badge>
+              </b-dropdown-item>
+              <b-dropdown-item to="/msgMenu/personal">
+                <span style="font-size: 15px;">我的消息</span>
+                <Badge :count="8" overflow-count="99" class="msg-badge"></Badge>
+              </b-dropdown-item>
+            </b-dropdown>
           </b-nav-item>
         </b-navbar-nav>
 
@@ -142,7 +162,7 @@
 <script>
   export default {
     name: 'Header',
-    data () {
+    data() {
       return {
         style: {
           border: '1px solid #d9d9d9',
@@ -186,44 +206,45 @@
     },
 
     computed: {
-      styleObject () {
+      styleObject() {
         return {
           '--border': this.style.border,
           '--border-hover': this.style.borderHover
         }
       },
-      loginStatus () {
+      loginStatus() {
         let userInfo = this.$store.state.userInfo
         return userInfo !== null && userInfo.token && userInfo.token.length === 32
       }
     },
     methods: {
       // ui交互，改变输入框的大小和颜色
-      changeBorder (flag) {
+      changeBorder(flag) {
         this.style.changeBorderColor = flag
       },
-      disableNav (flag) {
+      disableNav(flag) {
         this.$store.commit('changeShowContext', flag)
       },
-      isHover (flag) {
-        // console.log(flag ? '进入' : '出去')
+      isHover(flag) {
         let event = {
           type: 'click',
           keyCode: '-1',
-          preventDefault: function () {
-          },
-          stopPropagation: function () {
-          }
+          preventDefault: function () {},
+          stopPropagation: function () {}
         }
-        this.$refs.dropdown.toggle(event)
+        if (flag === 'personalDp') {
+          this.$refs.personalDp.toggle(event)
+        } else if (flag === 'msgDp') {
+          this.$refs.msgDp.toggle(event)
+        }
       },
       // 选择消息类型并跳转到对应类型详情页面
-      chooseMessage (item) {
+      chooseMessage(item) {
         this.$router.push({ name: item.menuKey })
       },
 
       // 请求登出，删除服务器token信息
-      logout () {
+      logout() {
         // 先隐藏dropdown，然后退出登录
         this.isHover()
         this.$store.commit('clearUserInfo', '我是传递的值')
@@ -240,25 +261,29 @@
         })*/
       }
     },
-    mounted () {
-      console.log(this.$store.state.flagContent)
-      console.log(this.$store.state.userInfo)
-
+    mounted() {
       if (this.$store.state.isPhone) {
         this.maxWidth = document.documentElement.clientWidth
       }
 
       // 判断是点击触发的切换事件还是自定义触发的
-      this.$refs.dropdown.$on('toggle', bvEvent => {
+      this.$refs.personalDp.$on('toggle', bvEvent => {
         if (bvEvent.keyCode !== '-1') {
           bvEvent.preventDefault()
           this.$router.push('/accCenter')
         }
       })
+      this.$refs.msgDp.$on('toggle', bvEvent => {
+        if (bvEvent.keyCode !== '-1') {
+          bvEvent.preventDefault()
+          this.$router.push('/msgMenu')
+        }
+      })
     },
-    beforeDestroy () {
+    beforeDestroy() {
       // 关闭监听的事件
-      this.$refs.dropdown.$off('toggle')
+      this.$refs.personalDp.$off('toggle')
+      this.$refs.msgDp.$off('toggle')
     }
   }
 </script>
