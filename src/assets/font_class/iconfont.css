@@ -1,10 +1,10 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
-  src: 
-       url('iconfont.woff2?t=1641260780726') format('woff2'),
-       url('iconfont.woff?t=1641260780726') format('woff'),
-       url('iconfont.ttf?t=1641260780726') format('truetype');
+  src:
+       url('iconfont.woff2?t=1641397982119') format('woff2'),
+       url('iconfont.woff?t=1641397982119') format('woff'),
+       url('iconfont.ttf?t=1641397982119') format('truetype');
 }
 
 .iconfont {
@@ -13,6 +13,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-left:before {
+  content: "\e640";
+}
+
+.icon-right:before {
+  content: "\e974";
 }
 
 .icon-more:before {

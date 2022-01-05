@@ -165,7 +165,7 @@
     data() {
       return {
         style: {
-          border: '1px solid #d9d9d9',
+          border: '1px solid #9e9d9d',
           borderHover: '1px solid #00AE9D',
           changeBorderColor: false
         },

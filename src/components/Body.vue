@@ -9,7 +9,7 @@
         <MenuItem name="recommend" to="/recommend" :on-select="onSelect">
           推荐
         </MenuItem>
-        <MenuItem name="hot" to="/hot" :on-select="onSelect">
+        <MenuItem name="hot" to="/topic" :on-select="onSelect">
           专题
         </MenuItem>
       </Menu>

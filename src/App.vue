@@ -99,16 +99,11 @@
     box-sizing: content-box;
   }
 
-  /*[class*="container"] {*/
-  /*  */
-  /*}*/
   [class*="col"], [class*="row"], [class*="container"] {
     position: relative;
     min-height: 1px;
     padding-right: 0;
     padding-left: 0;
-    /*margin-right: 0;*/
-    /*margin-left: 0;*/
   }
 
   [class*="container"] {
