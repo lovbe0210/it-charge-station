@@ -63,7 +63,7 @@
 
 <script>
   export default {
-    name: 'Hot',
+    name: 'Topic',
     data () {
       return {}
     }

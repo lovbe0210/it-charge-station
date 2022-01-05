@@ -35,9 +35,9 @@ const routes = [
         component: Recommend
       },
       {
-        path: 'hot',
-        name: 'Hot',
-        component: () => import('@/components/Hot')
+        path: 'topic',
+        name: 'Topic',
+        component: () => import('@/components/Topic')
       }
     ]
   },
