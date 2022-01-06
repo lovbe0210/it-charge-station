@@ -1,25 +1,32 @@
 <template>
   <b-container fluid>
-      <div v-if="1">
+      <b-row v-if="1" class="creator-avatar">
+        <Button ghost type="text" style="outline:none;">
+          <span class="iconfont icon-left"/>
+        </Button>
         <b-avatar-group overlap="0.65">
-          <Button ghost type="text" style="outline:none;">
-            <span class="iconfont icon-left disabled"/>
-          </Button>
-          <b-link href="#some-link" v-for="item in creators" :key="item.id">
+          <b-link v-for="item in creators" :key="item.id" class="creator-item">
             <b-avatar :src="item.avatar">
               <span v-if="1" class="iconfont icon-avatar-man" style="font-size:1.8rem;"></span>
               <div class="c-badge" v-if="1"></div>
             </b-avatar>
             <p style="width:62px;font-size:12px;">{{item.nickName}}</p>
           </b-link>
-          <Button ghost type="text" disabled><span class="iconfont icon-right"></span></Button>
         </b-avatar-group>
+        <Button ghost type="text" disabled>
+          <span class="iconfont icon-right"/>
+        </Button>
+      </b-row>
+    <b-row v-else class="creator-avatar">
+      <div>
+        去 <b-link>发现</b-link> 优秀的创作者
       </div>
-      <div v-else>去 <b-link>发现</b-link> 优秀的创作者
-      </div>
-    <b-row>
-      <div v-if="0"></div>
-      <div v-else>暂无动态更新，先去 <b-link>推荐</b-link> 看看</div>
+    </b-row>
+    <b-row v-if="0">
+
+    </b-row>
+    <b-row v-else>
+      <div>暂无动态更新，先去 <b-link>推荐</b-link> 看看</div>
     </b-row>
   </b-container>
 </template>

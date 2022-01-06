@@ -38,11 +38,6 @@
         )
       }
 
-      // 在页面刷新时将vuex里的信息保存到sessionStorage里
-      window.addEventListener('beforeunload', () => {
-        localStorage.setItem('store', JSON.stringify(this.$store.state))
-      })
-
       // 判断是手机页面还是pc页面
       if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
         // 手机端
@@ -76,6 +71,8 @@
     },
     methods: {
       beforeunloadHandler () {
+        // 在页面刷新时将vuex里的信息保存到sessionStorage里
+        localStorage.setItem('store', JSON.stringify(this.$store.state))
         this._beforeUnload_time = new Date().getTime()
       },
       unloadHandler (e) {
