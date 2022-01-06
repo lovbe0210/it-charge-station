@@ -2,9 +2,9 @@
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
   src:
-       url('iconfont.woff2?t=1641397982119') format('woff2'),
-       url('iconfont.woff?t=1641397982119') format('woff'),
-       url('iconfont.ttf?t=1641397982119') format('truetype');
+       url('iconfont.woff2?t=1641485582676') format('woff2'),
+       url('iconfont.woff?t=1641485582676') format('woff'),
+       url('iconfont.ttf?t=1641485582676') format('truetype');
 }
 
 .iconfont {
@@ -13,6 +13,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-left-hover:before {
+  content: "\e975";
+}
+
+.icon-right-hover:before {
+  content: "\e976";
 }
 
 .icon-left:before {
