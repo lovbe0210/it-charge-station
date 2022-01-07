@@ -1,7 +1,7 @@
 .container {
   .row {
     justify-content: center;
-    margin: 13px 35px;
+    margin: 15px 35px;
     padding: 15px 10px;
     width: 90%;
     align-items: center;
@@ -21,11 +21,38 @@
       .creator-item {
         margin: 0 11px;
         text-align: center;
-        .b-avatar {
-          width: 3rem;
-          height: 3rem;
+        .avatar-wrapper {
+          .b-avatar {
+            width: 3rem;
+            height: 3rem;
+          }
+          .c-badge {
+            background: @badge_color;
+            border: 3px solid @badge_color;
+            border-radius: 100%;
+            position: absolute;
+            margin: -10px 0 0 45px;
+            //right: 5px;
+            //bottom: 7px;
+          }
         }
       }
+    }
+  }
+
+  .creator-trend {
+
+  }
+
+  ._blank {
+    .row {
+      margin : 0;
+      padding: 0;
+      width : 100%;
+      border: none;
+    }
+    .iconfont {
+      font-size:50px;
     }
   }
 }

@@ -1,10 +1,10 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
-  src:
-       url('iconfont.woff2?t=1641485582676') format('woff2'),
-       url('iconfont.woff?t=1641485582676') format('woff'),
-       url('iconfont.ttf?t=1641485582676') format('truetype');
+  src: 
+       url('iconfont.woff2?t=1641542859654') format('woff2'),
+       url('iconfont.woff?t=1641542859654') format('woff'),
+       url('iconfont.ttf?t=1641542859654') format('truetype');
 }
 
 .iconfont {
@@ -13,6 +13,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-creator-b:before {
+  content: "\e6b9";
+}
+
+.icon-trend_b:before {
+  content: "\e623";
 }
 
 .icon-left-hover:before {

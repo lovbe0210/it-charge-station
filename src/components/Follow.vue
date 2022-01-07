@@ -2,37 +2,49 @@
   <b-container fluid>
     <b-row v-if="1" class="creator-avatar">
       <Button ghost type="text" @click="previous()">
-          <span :class="hoverClass?'iconfont icon-left-hover':'iconfont icon-left'"
-                @mouseenter="isHover(true)" @mouseleave="isHover(false)"/>
+          <span :class="leftHoverClass?'iconfont icon-left-hover':'iconfont icon-left'"
+                @mouseenter="isHover('left',true)" @mouseleave="isHover('left',false)"/>
       </Button>
       <b-avatar-group overlap="0.65">
         <b-link v-for="item in creators" :key="item.id" class="creator-item">
-          <b-avatar :src="item.avatar">
-            <span v-if="0" class="iconfont icon-avatar-man" style="font-size:1.8rem;"></span>
-            <div class="c-badge" v-if="0"></div>
-          </b-avatar>
+          <div class="avatar-wrapper">
+            <b-avatar :src="item.avatar">
+              <span v-if="!item.avatar" class="iconfont icon-avatar-man" style="font-size:1.8rem;"></span>
+            </b-avatar>
+            <div class="c-badge" v-if="1"></div>
+          </div>
           <p style="width:62px;font-size:12px;margin-top:8px;">{{item.nickName}}</p>
         </b-link>
       </b-avatar-group>
       <Button ghost type="text" @click="next()">
-          <span :class="hoverClass?'iconfont icon-right-hover':'iconfont icon-right'"
-                @mouseenter="isHover(true)" @mouseleave="isHover(false)"/>
+          <span :class="rightHoverClass?'iconfont icon-right-hover':'iconfont icon-right'"
+                @mouseenter="isHover('right',true)" @mouseleave="isHover('right',false)"/>
       </Button>
     </b-row>
     <b-row v-else class="creator-avatar">
-      <div>
-        去
-        <b-link>发现</b-link>
-        优秀的创作者
+      <div class="_blank">
+        <b-row>
+          <span class="iconfont icon-creator-b"></span>
+        </b-row>
+        <b-row>
+          空空如也，去
+          <b-link>发现</b-link>
+        </b-row>
       </div>
     </b-row>
-    <b-row v-if="0">
+    <b-row v-if="0" class="creator-trend">
 
     </b-row>
-    <b-row v-else>
-      <div>暂无动态更新，先去
-        <b-link>推荐</b-link>
-        看看
+    <b-row v-else class="creator-trend">
+      <div class="_blank">
+        <b-row>
+          <span class="iconfont icon-trend_b" style="font-size:50px;"></span>
+        </b-row>
+        <b-row>
+          暂无动态更新，先去
+          <b-link>推荐</b-link>
+          看看
+        </b-row>
       </div>
     </b-row>
   </b-container>
@@ -41,12 +53,12 @@
 <script>
   export default {
     name: 'Follow',
-    data () {
+    data() {
       return {
         creators: [
           {
             id: '000',
-            avatar: 'https://tvax4.sinaimg.cn/large/718153f4gy1gy1oaw1rojj20u018w78c.jpg',
+            avatar: '',
             nickName: '查看全部'
           },
           {
@@ -80,17 +92,22 @@
             nickName: 'lovbe0210'
           }
         ],
-        hoverClass: false
+        leftHoverClass: false,
+        rightHoverClass: false
       }
     },
     methods: {
-      isHover (flag) {
-        this.hoverClass = flag
+      isHover(position, flag) {
+        if (position === 'left') {
+          this.leftHoverClass = flag;
+        } else {
+          this.rightHoverClass = flag;
+        }
       },
-      previous () {
+      previous() {
         console.log('previous page')
       },
-      next () {
+      next() {
         console.log('next page')
       }
     }
