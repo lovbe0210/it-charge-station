@@ -18,8 +18,8 @@
       <b-collapse id="nav-collapse" is-nav @show="disableNav(true)" @hidden="disableNav(false)">
         <!-- 搜索框 -->
         <b-navbar-nav :fill="true" align="center">
-          <div :class="{changeColor:style.changeBorderColor}" id="search_wrapp">
-            <span class="index-module_input" :style="styleObject">
+          <div :class="{changeColor:changeBorderColor}" id="search_wrapp">
+            <span class="index-module_input">
               <span class="search_icon">
                 <svg
                   viewBox="64 64 896 896"
@@ -60,7 +60,7 @@
           <b-nav-item class="mr-2" @mouseenter="isHover('personalDp')" @mouseleave="isHover('personalDp')">
             <b-dropdown size="lg" variant="link" no-caret ref="personalDp">
               <template #button-content>
-                <b-avatar size="47px" src="https://tva1.sinaimg.cn/large/718153f4gy1gxuwa0i6g0j20m80rsdln.jpg">
+                <b-avatar size="47px" src="https://tva3.sinaimg.cn/large/718153f4gy1gy47gg8nutj20m80m8te2.jpg">
                   <span v-if="0" class="iconfont icon-avatar-man" style="font-size:1.8rem;"></span>
                 </b-avatar>
               </template>
@@ -102,7 +102,7 @@
             </b-dropdown>
           </b-nav-item>
 
-          <b-nav-item class="msg mr-2"  @mouseenter="isHover('msgDp')" @mouseleave="isHover('msgDp')">
+          <b-nav-item class="msg mr-2" @mouseenter="isHover('msgDp')" @mouseleave="isHover('msgDp')">
             <b-dropdown size="md" variant="link" no-caret ref="msgDp">
               <template #button-content>
                 <div class="c-badge" v-if="1"></div>
@@ -154,7 +154,6 @@
           </div>
         </b-navbar-nav>
       </b-collapse>
-
     </b-navbar>
   </b-row>
 </template>
@@ -164,11 +163,7 @@
     name: 'Header',
     data() {
       return {
-        style: {
-          border: '1px solid #9e9d9d',
-          borderHover: '1px solid #00AE9D',
-          changeBorderColor: false
-        },
+        changeBorderColor: false,
         messageMenu: [],
         searchKey: '',
         quickLink: [
@@ -220,7 +215,7 @@
     methods: {
       // ui交互，改变输入框的大小和颜色
       changeBorder(flag) {
-        this.style.changeBorderColor = flag
+        this.changeBorderColor = flag
       },
       disableNav(flag) {
         this.$store.commit('changeShowContext', flag)
@@ -229,8 +224,11 @@
         let event = {
           type: 'click',
           keyCode: '-1',
-          preventDefault: function () {},
-          stopPropagation: function () {}
+          preventDefault: function () {
+          },
+          // 为了构造event时间提供的方法，无实际意义
+          stopPropagation: function () {
+          }
         }
         if (flag === 'personalDp') {
           this.$refs.personalDp.toggle(event)
@@ -266,24 +264,30 @@
         this.maxWidth = document.documentElement.clientWidth
       }
 
-      // 判断是点击触发的切换事件还是自定义触发的
-      this.$refs.personalDp.$on('toggle', bvEvent => {
-        if (bvEvent.keyCode !== '-1') {
-          bvEvent.preventDefault()
-          this.$router.push('/accCenter')
-        }
-      })
-      this.$refs.msgDp.$on('toggle', bvEvent => {
-        if (bvEvent.keyCode !== '-1') {
-          bvEvent.preventDefault()
-          this.$router.push('/msgMenu')
-        }
-      })
+      // 判断是点击触发的切换事件还是自定义触发的,注意未登录状态下是没有这两个refs的，因此需要加以判断
+      if (this.$refs.personalDp) {
+        this.$refs.personalDp.$on('toggle', bvEvent => {
+          if (bvEvent.keyCode !== '-1') {
+            bvEvent.preventDefault()
+            this.$router.push('/accCenter')
+          }
+        })
+        this.$refs.msgDp.$on('toggle', bvEvent => {
+          if (bvEvent.keyCode !== '-1') {
+            bvEvent.preventDefault()
+            this.$router.push('/msgMenu')
+          }
+        })
+      }
+
     },
     beforeDestroy() {
       // 关闭监听的事件
-      this.$refs.personalDp.$off('toggle')
-      this.$refs.msgDp.$off('toggle')
+      if (this.$refs.personalDp) {
+        this.$refs.personalDp.$off('toggle')
+        this.$refs.msgDp.$off('toggle')
+      }
+
     }
   }
 </script>

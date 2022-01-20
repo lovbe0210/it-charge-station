@@ -77,7 +77,7 @@
             <hr>
           </div>
           <b-list-group class="rank">
-            <b-list-group-item href="#some-link" v-for="item in creators" :key="item.id">
+            <b-list-group-item to="some-link" v-for="item in creators" :key="item.id">
               <b-avatar variant="info" :src="item.avatar"/>
               <div class="info">
                 <b-row>

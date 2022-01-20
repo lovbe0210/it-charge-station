@@ -1,72 +1,68 @@
 <template>
-  <b-container class="container-fluid">
-    <div class="row">
-      <!-- IMAGE CONTAINER BEGIN -->
-      <div class="col-lg-6 col-md-6 d-none d-md-block infinity-image-container"></div>
-      <!-- IMAGE CONTAINER END -->
-
-      <!-- FORM CONTAINER BEGIN -->
-      <div class="col-lg-6 col-md-6 infinity-form-container">
-        <div class="col-lg-9 col-md-12 col-sm-8 col-xs-12 infinity-form">
-          <!-- Company Logo -->
-          <div class="text-center mb-3 mt-5">
-            <img src="@/assets/logo.png" width="150px">
-          </div>
-          <div class="text-center mb-4">
-            <h5>及时充电，才能走得更远</h5>
-          </div>
-          <!-- Form -->
-          <form class="px-3">
-            <!-- Input Box -->
-            <div class="form-input">
-              <span><i class="fa fa-envelope"></i></span>
-              <input type="email" name="" placeholder="手机/邮箱" tabindex="10" required>
-            </div>
-            <div class="form-input">
-              <span><i class="fa fa-lock"></i></span>
-              <input type="password" name="" placeholder="密码" required>
-            </div>
-            <div class="row mb-3">
-              <!--Remember Checkbox -->
-              <div class="col-auto d-flex align-items-center">
-                <div class="custom-control custom-checkbox">
-                  <input type="checkbox" class="custom-control-input" id="cb1">
-                  <label class="custom-control-label" for="cb1">Remember me</label>
-                </div>
-              </div>
-            </div>
-
-            <!-- Login Button -->
-            <div class="mb-3">
-              <button type="submit" class="btn btn-block">Login</button>
-            </div>
-            <!-- Forget Password -->
-            <div class="text-right">
-              <a href="reset.html" class="forget-link">忘记密码</a>
-            </div>
-
-            <div class="text-center mb-5" style="color: #777;">
-              <a class="register-link" href="register.html">注册账号</a>
-            </div>
-          </form>
+  <div class="fullscreen-wrapper">
+    <b-container>
+      <div class="form-box" ref="formBox">
+        <div :class="['register-box', hidden ? 'hidden' : '']">
+          <h1>register</h1>
+          <input type="text" placeholder="用户名">
+          <input type="email" placeholder="邮箱">
+          <input type="password" placeholder="密码">
+          <input type="password" placeholder="确认密码">
+          <button @click="register">注册</button>
         </div>
-        <!-- FORM END -->
+        <div :class="['login-box', hidden ? '' : 'hidden']">
+          <h1>login</h1>
+          <input type="text" placeholder="用户名">
+          <input type="password" placeholder="密码">
+          <button @click="login">登陆</button>
+        </div>
       </div>
-      <!-- FORM CONTAINER END -->
-    </div>
-  </b-container>
+      <div class="con-box left">
+        <span class="iconfont icon-logo"></span>
+        <h2>欢饮来到it充电站</h2>
+        <img src="../assets/img/1.jpg" alt="">
+        <p>已有账号</p>
+        <button @click="toLogin">去登陆</button>
+      </div>
+      <div class="con-box right">
+        <span class="iconfont icon-logo"></span>
+        <h2>不停的充电，才能走的更远</h2>
+        <img src="../assets/img/2.jpg" alt="">
+        <p>没有账号？</p>
+        <button @click="toRegister">去注册</button>
+      </div>
+    </b-container>
+  </div>
 </template>
 
 <script>
   export default {
-    name: 'LoginOrRegist',
-    data () {
-      return {}
+    name: 'LoginOrRegister',
+    data() {
+      return {
+        hidden: true
+      }
+    },
+    methods: {
+      register() {
+        // 注册
+      },
+      login() {
+        // 登陆
+      },
+      toLogin() {
+        this.hidden = true
+        this.$refs.formBox.style.setProperty("--translateX", "translateX(0%)")
+      },
+      toRegister() {
+        this.hidden = false
+        this.$refs.formBox.style.setProperty("--translateX", "translateX(80%)")
+      }
     }
   }
 </script>
 
 <style scoped lang="less">
+  @import './css/common-var.less';
   @import "./css/login-register.less";
-  /*@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap");*/
 </style>

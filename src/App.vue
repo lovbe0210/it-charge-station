@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" ref="app">
     <router-view></router-view>
   </div>
 </template>
@@ -20,13 +20,13 @@
   Vue.use(BootstrapVue).use(ViewUI).use(infiniteScroll)
   export default {
     name: 'App',
-    data () {
+    data() {
       return {
-        // baseBackgroundColor: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)'
-        baseBackgroundColor: require('@/assets/bacc.png')
+        // background: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)'
+        background: 'url(https://tvax3.sinaimg.cn/large/718153f4gy1gy1ob6nxj1j20lo0ot41b.jpg)'
       }
     },
-    created () {
+    created() {
       // 在页面加载时读取localStorage里的状态信息加载到vuex中
       if (localStorage.getItem('store')) {
         this.$store.replaceState(
@@ -58,24 +58,26 @@
       //  font-size: 100px;
       //}
     },
-    mounted () {
+    mounted() {
+      // 加载背景
+      this.$refs.app.style.setProperty("--background", this.background);
+
       window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
       window.addEventListener('unload', e => this.unloadHandler(e))
-      this.$el.style.setProperty('--colorStyle', this.baseBackgroundColor
-      )
+      // this.$el.style.setProperty('--colorStyle', this.baseBackgroundColor)
     },
-    destroyed () {
+    destroyed() {
       // 页面关闭时销毁监听
       window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e))
       window.removeEventListener('unload', e => this.unloadHandler(e))
     },
     methods: {
-      beforeunloadHandler () {
+      beforeunloadHandler() {
         // 在页面刷新时将vuex里的信息保存到sessionStorage里
         localStorage.setItem('store', JSON.stringify(this.$store.state))
         this._beforeUnload_time = new Date().getTime()
       },
-      unloadHandler (e) {
+      unloadHandler(e) {
         this._gap_time = new Date().getTime() - this._beforeUnload_time
         //判断是窗口关闭还是刷新
         if (this._gap_time <= 5) {
@@ -118,17 +120,18 @@
     border-radius: 5px;
   }
 
-  body {
+  #app {
     // 全局字体
     font-family: "PingFang SC", Microsoft YaHei, Helvetica, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
     // 主题色
     background-color: @background-color-base;
-    background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
-    background-image: url("./assets/bacc_1.png");
+    /*background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);*/
+    background-image: var(--background);
+    /*background-image: url("./assets/bacc_1.png");*/
     // 平铺
     background-repeat: no-repeat;
     background-size: 100% auto;
     // 固定在屏幕上，不随滚动轴滚动
-    background-attachment: fixed
+    background-attachment: fixed;
   }
 </style>

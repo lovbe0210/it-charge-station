@@ -2,9 +2,9 @@
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
   src: 
-       url('iconfont.woff2?t=1641542859654') format('woff2'),
-       url('iconfont.woff?t=1641542859654') format('woff'),
-       url('iconfont.ttf?t=1641542859654') format('truetype');
+       url('iconfont.woff2?t=1642583720988') format('woff2'),
+       url('iconfont.woff?t=1642583720988') format('woff'),
+       url('iconfont.ttf?t=1642583720988') format('truetype');
 }
 
 .iconfont {
@@ -15,12 +15,20 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-creator-b:before {
-  content: "\e6b9";
+.icon-comment:before {
+  content: "\e618";
 }
 
-.icon-trend_b:before {
-  content: "\e623";
+.icon-no-follow:before {
+  content: "\e604";
+}
+
+.icon-all-flush:before {
+  content: "\e80c";
+}
+
+.icon-blank:before {
+  content: "\e6c4";
 }
 
 .icon-left-hover:before {

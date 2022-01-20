@@ -44,10 +44,19 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 3. 改动bootstrap-vue.css中的tip指令组件背景色，修改字体颜色和背景色2315行、2318行、2323、2324；
 4. 改动bootstrap.css中的按钮聚焦是的轮廓，直接注释掉那个边框颜色2548行,修改2547行的outline为none，注释掉2528行的按钮padding设置；
 5. 改动bootstrap.css中的按钮组中的padding边框设计，注释掉3137行；
-6. 改动bootstrap.css中的dropMenu的
+6. 改动bootstrap.css中的dropMenu，这个发现可以直接在index.html中覆盖
+7. 改动bootstrap.css中的card背景色和边框，直接注释4776和4778行
 
 #### npm下载问题
 1. 对于image-webpack-loader引起的下载失败，hosts文件配置  151.101.72.133 raw.githubusercontent.com  
+
+#### 探索到的新大陆
+1. 动态修改style中的参数
+    在css中使用transform: var(--translateX);表示transform属性使用名为--translateX的变量进行复制
+    在js中，使用ref="refsDom"标记元素，然后使用this.$refs.refsDom.style.setProperty("--translateX", "translateX(80%)")为变量赋值
+    背景色的动态切换分渐变色和图片，其中图片需加上url参数：如下
+        渐变色变量 background: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)' 
+        图片变量 background: 'url(https://tvax3.sinaimg.cn/large/718153f4gy1gy1ob6nxj1j20lo0ot41b.jpg)'
 ##### 首页完工图：
 ![输入图片说明](%E9%A6%96%E9%A1%B5%E5%AE%8C%E5%B7%A5%E5%9B%BE.png)
 ##### 自定义主题：
