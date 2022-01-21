@@ -7,7 +7,7 @@
 
   .container {
     background-color: @background-color-base;
-    width: 800px;
+    width: 50%;
     height: 650px;
     border-radius: 5px;
     /* 阴影 */
@@ -17,16 +17,16 @@
 
     .form-box {
       position: absolute;
-      top: -10%;
-      left: 5%;
-      background-color: #d3b7d8;
-      width: 400px;
+      top: -4%;
+      left: 7%;
+      background-image: @background-color-gradient;
+      width: 42%;
       height: 700px;
       border-radius: 5px;
       box-shadow: 2px 0 10px rgba(0,0,0,0.1);
       display: flex;
-      justify-content: center;
-      align-items: center;
+      //justify-content: center;
+      //align-items: center;
       z-index: 111;
       /* 动画过度 加速后减速 */
       transition: 0.5s ease-in-out;
@@ -55,8 +55,30 @@
         letter-spacing: 5px;
       }
 
+      .search-input {
+        padding: 0;
+        border: none;
+        outline: none;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-variant: tabular-nums;
+        list-style: none;
+        font-feature-settings: "tnum";
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        min-width: 0;
+        color: @font-color;
+        font-size: 14px;
+        line-height: 1.5;
+        border-radius: 4px;
+        transition: all .3s;
+        background-color: transparent;
+      }
+
       input {
-        background-color: #ffffff;
+        background-color: transparent;
         width: 70%;
         color: @background-color-base;
         border: none;
@@ -65,24 +87,24 @@
         text-indent: 10px;
         margin: 8px 0;
         font-size: 14px;
-        letter-spacing: 2px;
+        letter-spacing: 1px;
       }
-
-      input::placeholder {
-        color: #000000;
+      input:placeholder-shown {
+        text-overflow: ellipsis;
       }
       input:focus {
-        color: #a262ad;
+        color: #ffffff;
         outline: none;
-        border-bottom: 1px solid #a262ad;
-        transition: 0.5s;
+        border-bottom: 1px solid #ffffff;
+        transition: 0.3s;
       }
-      input:focus::placeholder {
-        opacity: 0;
+      input::-webkit-input-placeholder {
+        color: @background-color-base;
       }
+
       button {
-        width: 70%;
-        margin-top: 35px;
+        width: 80px;
+        //margin-top: 35px;
         background-color: #f6f6f6;
         outline: none;
         border-radius: 8px;
@@ -99,47 +121,36 @@
       }
     }
 
-
-
     .con-box {
       width: 50%;
       /* 弹性布局 垂直排列 居中 */
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      //justify-content: center;
       align-items: center;
       /* 绝对定位 居中 */
       position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-
-      h2 {
-        color: #8e9aaf;
-        font-size: 25px;
+      top: 20%;
+      //transform: translateY(-50%);
+      .icon-logo {
+        font-size: 60px;
+      }
+      .logo-title {
+        font-size: 30px;
         font-weight: bold;
-        letter-spacing: 3px;
-        text-align: center;
-        margin-bottom: 4px;
-      }
-      p {
-        font-size: 12px;
         letter-spacing: 2px;
-        color: #8e9aaf;
-        text-align: center;
+        margin: 12px 0;
       }
-      span {
-        color: #d3b7d8;
+      .bless {
+        font-size: 15px;
+        margin: 0 0 15px 15px;
       }
-      img {
-        width: 150px;
-        height: 150px;
-        opacity: 0.9;
-        margin: 40px 0;
-      }
+
       button {
+        width: 85px;
         margin-top: 3%;
         background-color: #ffffff;
-        border: 1px solid #d3b7d8;
+        border: 1px solid @border-color_normal;
         padding: 6px 10px;
         border-radius: 5px;
         letter-spacing: 1px;
@@ -147,8 +158,8 @@
         cursor: pointer;
       }
       button:hover {
-        background-color: #d3b7d8;
-        color: #ffffff;
+        border: 1px solid @border-color_hover;
+        color: @border-color_hover;
       }
     }
 

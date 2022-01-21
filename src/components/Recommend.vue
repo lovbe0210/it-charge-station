@@ -8,7 +8,7 @@
       </BackTop>
       <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
         <b-row v-for="item in data" :key="item.id" fluid="true" class="item">
-          <b-col :cols="isPhone || item.avatar == null ? 12 : 8" class="text">
+          <b-col :cols="isPhone || item.preview == null ? 12 : 8" class="text">
             <b-link to="/login">
               <div class="title">
                 <span>{{item.title}}</span>
@@ -34,8 +34,8 @@
               </div>
             </b-row>
           </b-col>
-          <b-col v-if="!isPhone && item.avatar != null" cols="4" fluid class="image">
-            <b-img right fluid rounded :src="item.avatar" alt="Image 1"/>
+          <b-col v-if="!isPhone && item.preview != null" cols="4" fluid class="image">
+            <b-img right fluid rounded :src="item.preview" alt="Image 1"/>
           </b-col>
         </b-row>
       </div>
@@ -68,42 +68,42 @@
             id: '001',
             title: '臻默：整理100+语雀小技巧之后，我们开始了知识管理的大航海大巷哈',
             description: '缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了',
-            // avatar: require('@/assets/img/1.jpg'),
+            // preview: require('@/assets/img/1.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
           {
             id: '002',
             title: 'This is title 2',
             description: 'This is description, this is description, this is description.',
-            avatar: require('@/assets/img/2.jpg'),
+            preview: require('@/assets/img/2.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
           {
             id: '003',
             title: 'This is title 3',
             description: 'This is description, this is description, this is description.',
-            avatar: require('@/assets/img/3.jpg'),
+            preview: require('@/assets/img/3.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
           {
             id: '004',
             title: '臻默：整理100+语雀小技巧之后，我们开始了知识管理的大航海',
             description: '缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了',
-            avatar: require('@/assets/img/4.jpg'),
+            preview: require('@/assets/img/4.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
           {
             id: '005',
             title: 'This is title 5',
             description: 'This is description, this is description, this is description.',
-            avatar: require('@/assets/img/5.jpg'),
+            preview: require('@/assets/img/5.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
           {
             id: '006',
             title: 'This is title 6',
             description: 'This is description, this is description, this is description.',
-            avatar: require('@/assets/img/6.jpg'),
+            preview: require('@/assets/img/6.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           }
         ],
@@ -128,7 +128,7 @@
               id: '00' + (this.data.length + 1),
               title: 'This is title ' + '00' + this.data.length,
               description: this.data.length % 2 === 0 ? '我是偶数title @~@' : '我是奇数title @…@',
-              avatar: require('@/assets/img/' + Math.ceil(Math.random() * 31) + '.jpg'),
+              preview: require('@/assets/img/' + Math.ceil(Math.random() * 31) + '.jpg'),
               content: this.data.length % 2 === 0 ? '我是偶数content @~@' : '我是偶数content @…@'
             }
           )
@@ -149,7 +149,7 @@
 
   .to-top {
     padding: 10px;
-    color: @border-color;
+    color: @border-color_hover;
     text-align: center;
     font-size: 30px;
   }

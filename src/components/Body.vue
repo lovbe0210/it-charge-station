@@ -104,7 +104,7 @@
             <div class="textarea-wrapper"
                  @mouseenter="isHover(true)"
                  @mouseleave="isHover(false)">
-                <textarea rows="4" type="textarea" placeholder="编辑我的空间公告"
+                <textarea rows="4" type="textarea" placeholder="立个flag？来吧"
                           :class="{'hover-border':changeBorder,'primeval-border':!changeBorder}"
                           maxlength="150" v-model="flagContent"
                           class="be-textarea_inner"

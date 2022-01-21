@@ -23,7 +23,7 @@
     data() {
       return {
         // background: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)'
-        background: 'url(https://tvax3.sinaimg.cn/large/718153f4gy1gy1ob6nxj1j20lo0ot41b.jpg)'
+        background: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
       }
     },
     created() {
