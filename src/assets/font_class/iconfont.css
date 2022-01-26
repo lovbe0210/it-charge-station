@@ -2,9 +2,9 @@
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
   src: 
-       url('iconfont.woff2?t=1642583720988') format('woff2'),
-       url('iconfont.woff?t=1642583720988') format('woff'),
-       url('iconfont.ttf?t=1642583720988') format('truetype');
+       url('iconfont.woff2?t=1643082925209') format('woff2'),
+       url('iconfont.woff?t=1643082925209') format('woff'),
+       url('iconfont.ttf?t=1643082925209') format('truetype');
 }
 
 .iconfont {
@@ -13,6 +13,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-qq:before {
+  content: "\e611";
+}
+
+.icon-wechat:before {
+  content: "\e669";
 }
 
 .icon-comment:before {

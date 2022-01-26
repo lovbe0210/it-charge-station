@@ -46,6 +46,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 5. 改动bootstrap.css中的按钮组中的padding边框设计，注释掉3137行；
 6. 改动bootstrap.css中的dropMenu，这个发现可以直接在index.html中覆盖
 7. 改动bootstrap.css中的card背景色和边框，直接注释4776和4778行
+8. 改动viewui.css中的组件tabs间距，全局查找.ivu-tabs-nav .ivu-tabs-tab然后删除margin-right: 16px;修改padding: 8px 16px为padding:8px 5px;
+9. 改动viewui.css中的组件tabs下划线，直接去掉，全局查找.ivu-tabs-ink-bar然后删除background-color:#2d8cf0;全局查找.ivu-tabs-bar然后删除border-bottom:1px solid #dcdee2;
+10. 改动viewui.css中的组件tabs标签字体hover效果，直接删掉.ivu-tabs-nav .ivu-tabs-tab:hover{color:#515A6E}
 
 #### npm下载问题
 1. 对于image-webpack-loader引起的下载失败，hosts文件配置  151.101.72.133 raw.githubusercontent.com  

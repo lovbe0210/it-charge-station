@@ -64,7 +64,6 @@
 
       window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
       window.addEventListener('unload', e => this.unloadHandler(e))
-      // this.$el.style.setProperty('--colorStyle', this.baseBackgroundColor)
     },
     destroyed() {
       // 页面关闭时销毁监听

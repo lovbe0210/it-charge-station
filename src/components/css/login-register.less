@@ -9,141 +9,103 @@
     background-color: @background-color-base;
     width: 50%;
     height: 650px;
-    border-radius: 5px;
+    // border-radius: 5px;
     /* 阴影 */
-    box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
+    // box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
     /* 相对定位 */
     position: relative;
 
+    .hidden {
+      display: none;
+      transition: 0.8s;
+    }
+
     .form-box {
       position: absolute;
-      top: -4%;
-      left: 7%;
-      background-image: @background-color-gradient;
+      // top: -4%;
+      right: 7%;
+      // background-image: @background-color-gradient;
+      background-color:#ffffff;
       width: 42%;
-      height: 700px;
+      height: 650px;
       border-radius: 5px;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-      display: flex;
-      //justify-content: center;
-      //align-items: center;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+      // display: flex;
+      // justify-content: center;
+      // align-items: center;
       z-index: 111;
       /* 动画过度 加速后减速 */
-      transition: 0.5s ease-in-out;
+      transition: 0.4s ease-in-out;
       transform: var(--translateX);
 
+      .logo {
+        margin: 50px 0 10px 0;
+        justify-content: center;
+        .icon-logo {
+          font-size: 60px;
+        }
+      }
+      
       .register-box, .login-box {
-        /* 弹性布局 垂直排列*/
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-      }
-
-      .hidden {
-        display: none;
-        transition: 0.5s;
-      }
-
-      h1 {
-        text-align: center;
-        margin-bottom: 25px;
-        /* 大写 */
-        text-transform: uppercase;
-        color: #ffffff;
-        /* 字符间距 */
-        letter-spacing: 5px;
-      }
-
-      .search-input {
-        padding: 0;
-        border: none;
-        outline: none;
-        box-sizing: border-box;
         margin: 0;
-        padding: 0;
-        font-variant: tabular-nums;
-        list-style: none;
-        font-feature-settings: "tnum";
-        position: relative;
-        display: inline-block;
-        width: 100%;
-        min-width: 0;
-        color: @font-color;
-        font-size: 14px;
-        line-height: 1.5;
-        border-radius: 4px;
-        transition: all .3s;
-        background-color: transparent;
+        justify-content: center;
+        .login-btn {
+          margin-top: 30px;
+        }
+        .login-foot {
+          margin: 0;
+          display: block;
+          .aggregate-login {
+            margin: 40px 0 10px 30%;
+          }
+          .iconfont {
+            margin-left: 5%;
+            font-size: 28px;
+          }
+          .forget {
+            margin-left: 30%;
+            a {
+              margin-right: 10px;
+            }
+          }
+        }
       }
 
-      input {
-        background-color: transparent;
-        width: 70%;
-        color: @background-color-base;
-        border: none;
-        border-bottom: 1px solid rgba(255,255,255,0.4);
-        padding: 10px 0;
-        text-indent: 10px;
-        margin: 8px 0;
+      .quick-register {
         font-size: 14px;
-        letter-spacing: 1px;
-      }
-      input:placeholder-shown {
-        text-overflow: ellipsis;
-      }
-      input:focus {
-        color: #ffffff;
-        outline: none;
-        border-bottom: 1px solid #ffffff;
-        transition: 0.3s;
-      }
-      input::-webkit-input-placeholder {
-        color: @background-color-base;
-      }
-
-      button {
-        width: 80px;
-        //margin-top: 35px;
-        background-color: #f6f6f6;
-        outline: none;
-        border-radius: 8px;
-        padding: 13px;
-        color: #a262ad;
-        letter-spacing: 2px;
-        border: none;
-        cursor: pointer;
-      }
-      button:hover {
-        background-color: #a262ad;
-        color: #f6f6f6;
-        transition: background-color 0.5s ease;
+        font-weight: 600;
+        margin-bottom: -5px;
       }
     }
 
     .con-box {
       width: 50%;
       /* 弹性布局 垂直排列 居中 */
-      display: flex;
+      // display: flex;
       flex-direction: column;
       //justify-content: center;
       align-items: center;
       /* 绝对定位 居中 */
       position: absolute;
-      top: 20%;
+      top: 15%;
       //transform: translateY(-50%);
-      .icon-logo {
-        font-size: 60px;
-      }
       .logo-title {
         font-size: 30px;
         font-weight: bold;
         letter-spacing: 2px;
         margin: 12px 0;
       }
-      .bless {
+      .blessL {
         font-size: 15px;
-        margin: 0 0 15px 15px;
+        margin: 20px 0 15px 16%;
+      }
+      .blessR {
+        font-size: 15px;
+        margin: 20px 0 15px 4%;
+      }
+
+      .btn-foot {
+        margin-left: 12%;
       }
 
       button {
@@ -164,10 +126,10 @@
     }
 
     .left {
-      left: -2%
+      left: 13%;
     }
     .right{
-      right: -2%;
+      right: -12%;
     }
 
   }
