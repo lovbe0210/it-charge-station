@@ -200,11 +200,11 @@ export default {
     },
     toLogin() {
       this.hidden = false;
-      this.$refs.formBox.style.setProperty('--translateX', 'translateX(0%)');
+      this.$refs.formBox.style.setProperty('--translateX', 'translateX(0)');
     },
     toRegister() {
       this.hidden = true;
-      this.$refs.formBox.style.setProperty('--translateX', 'translateX(-105%)');
+      this.$refs.formBox.style.setProperty('--translateX', 'translateX(-110%)');
     },
     loginSubmit(flag) {
       if (flag) {

@@ -4,9 +4,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #ffffff;
+  background-image: url("../../assets/img/111.png");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  // 固定在屏幕上，不随滚动轴滚动
+  background-attachment: fixed;
 
   .container {
-    background-color: @background-color-base;
+    //background-color: @background-color-base;
     width: 50%;
     height: 650px;
     // border-radius: 5px;
@@ -24,7 +30,7 @@
       position: absolute;
       // top: -4%;
       right: 7%;
-      // background-image: @background-color-gradient;
+       //background-image: @background-color-gradient;
       background-color:#ffffff;
       width: 42%;
       height: 650px;
@@ -87,7 +93,7 @@
       align-items: center;
       /* 绝对定位 居中 */
       position: absolute;
-      top: 15%;
+      top: 10%;
       //transform: translateY(-50%);
       .logo-title {
         font-size: 30px;
@@ -126,10 +132,10 @@
     }
 
     .left {
-      left: 13%;
+      left: 18%;
     }
     .right{
-      right: -12%;
+      right: -3%;
     }
 
   }
