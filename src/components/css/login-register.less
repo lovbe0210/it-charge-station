@@ -12,13 +12,8 @@
   background-attachment: fixed;
 
   .container {
-    //background-color: @background-color-base;
     width: 50%;
     height: 650px;
-    // border-radius: 5px;
-    /* 阴影 */
-    // box-shadow: 5px 5px 5px rgba(0,0,0,0.1);
-    /* 相对定位 */
     position: relative;
 
     .hidden {
@@ -30,15 +25,13 @@
       position: absolute;
       // top: -4%;
       right: 7%;
-       //background-image: @background-color-gradient;
-      background-color:#ffffff;
+      background-image: url("../../assets/login_form_bg.jpg");
+      background-repeat: no-repeat;
+      background-size: 100% auto;
       width: 42%;
-      height: 650px;
+      height: 720px;
       border-radius: 5px;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-      // display: flex;
-      // justify-content: center;
-      // align-items: center;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
       z-index: 111;
       /* 动画过度 加速后减速 */
       transition: 0.4s ease-in-out;
@@ -47,29 +40,36 @@
       .logo {
         margin: 50px 0 10px 0;
         justify-content: center;
+
         .icon-logo {
           font-size: 60px;
         }
       }
-      
+
       .register-box, .login-box {
         margin: 0;
         justify-content: center;
+
         .login-btn {
           margin-top: 30px;
         }
+
         .login-foot {
           margin: 0;
           display: block;
+
           .aggregate-login {
-            margin: 40px 0 10px 30%;
+            margin: 30px 0 10px 30%;
           }
+
           .iconfont {
             margin-left: 5%;
             font-size: 28px;
           }
+
           .forget {
             margin-left: 30%;
+
             a {
               margin-right: 10px;
             }
@@ -101,10 +101,12 @@
         letter-spacing: 2px;
         margin: 12px 0;
       }
+
       .blessL {
         font-size: 15px;
         margin: 20px 0 15px 16%;
       }
+
       .blessR {
         font-size: 15px;
         margin: 20px 0 15px 4%;
@@ -125,6 +127,7 @@
         outline: none;
         cursor: pointer;
       }
+
       button:hover {
         border: 1px solid @border-color_hover;
         color: @border-color_hover;
@@ -134,7 +137,8 @@
     .left {
       left: 18%;
     }
-    .right{
+
+    .right {
       right: -3%;
     }
 

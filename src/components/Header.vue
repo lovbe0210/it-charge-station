@@ -71,7 +71,7 @@
                 </div>
                 <div class="counter">
                   <div>
-                    笔记
+                    创作
                     <b-link to="/editerator" style="color:rgba(16,16,16,0.95);font-weight:600;">23</b-link>
                     篇
                   </div>
@@ -201,12 +201,6 @@
     },
 
     computed: {
-      styleObject() {
-        return {
-          '--border': this.style.border,
-          '--border-hover': this.style.borderHover
-        }
-      },
       loginStatus() {
         let userInfo = this.$store.state.userInfo
         return userInfo !== null && userInfo.token && userInfo.token.length === 32
@@ -249,7 +243,6 @@
         this.$Message.success({
           content: '已成功退出当前用户，记得回来看看哦'
         })
-        console.log(this.$store.state.userInfo)
         /*this.$apis.logout().then(() => {
           // dispatch 异步操作this,调用action里的发放 | commit 同步操作this,调用mutations里的方法
           this.$store.commit('clearUserInfo')

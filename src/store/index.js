@@ -61,9 +61,15 @@ export default new Vuex.Store({
      * @param value
      */
     clearUserInfo (state, value) {
-      console.log(value)
       state.userInfo = {}
-      localStorage.removeItem('modelTexturesId')
+    },
+    /**
+     * 登录，保存userinfo
+     * @param state
+     * @param value
+     */
+    login (state, value) {
+      state.userInfo = value
     }
   }
 })

@@ -1,5 +1,8 @@
 <template>
   <b-container fluid>
+    <b-row class="header-row">
+      <b-link><span>最多收藏</span><span class="iconfont icon-order-by"></span></b-link>
+    </b-row>
     <b-card-group columns>
       <b-card
         title="Card title that wraps to a new line"
@@ -65,11 +68,14 @@
   export default {
     name: 'Topic',
     data () {
-      return {}
+      return {
+
+      }
     }
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+  @import "./css/topic.less";
+  @import "./css/common-var";
 </style>

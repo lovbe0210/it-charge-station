@@ -128,6 +128,7 @@
 </script>
 
 <style scoped lang="less">
+   @import "../css/common-var";
   .carousel_swipe {
     text-align: center;
     margin-left: 15px;
@@ -236,7 +237,7 @@
     filter: alpha(Opacity=60);
     -moz-opacity: 0.5;
     opacity: 0.7;
-    background-color: #595959;
+    background-color: @light-font-color;
     position: absolute;
     line-height: 30px;
     height: 30px;

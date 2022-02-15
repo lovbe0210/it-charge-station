@@ -49,6 +49,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 8. 改动viewui.css中的组件tabs间距，全局查找.ivu-tabs-nav .ivu-tabs-tab然后删除margin-right: 16px;修改padding: 8px 16px为padding:8px 5px;
 9. 改动viewui.css中的组件tabs下划线，直接去掉，全局查找.ivu-tabs-ink-bar然后删除background-color:#2d8cf0;全局查找.ivu-tabs-bar然后删除border-bottom:1px solid #dcdee2;
 10. 改动viewui.css中的组件tabs标签字体hover效果，直接删掉.ivu-tabs-nav .ivu-tabs-tab:hover{color:#515A6E}
+11. 改动viewui.css中的组件tabs标签字体active效果，改变.ivu-tabs-nav .ivu-tabs-tab-active{color:#2d8cf0}中的属性为：{color:#515a6e;font-size: 14px;font-weight: 600} 
 
 #### npm下载问题
 1. 对于image-webpack-loader引起的下载失败，hosts文件配置  151.101.72.133 raw.githubusercontent.com  
