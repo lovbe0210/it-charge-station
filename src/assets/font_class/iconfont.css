@@ -1,10 +1,13 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
-  src: 
-       url('iconfont.woff2?t=1644939752959') format('woff2'),
-       url('iconfont.woff?t=1644939752959') format('woff'),
-       url('iconfont.ttf?t=1644939752959') format('truetype');
+  src:
+       /*url('iconfont.woff2?t=1644939752959') format('woff2'),*/
+       /*url('iconfont.woff?t=1644939752959') format('woff'),*/
+       /*url('iconfont.ttf?t=1644939752959') format('truetype');*/
+      url('//at.alicdn.com/t/font_3029751_orcy2krkshi.woff2?t=1646816351518') format('woff2'),
+      url('//at.alicdn.com/t/font_3029751_orcy2krkshi.woff?t=1646816351518') format('woff'),
+      url('//at.alicdn.com/t/font_3029751_orcy2krkshi.ttf?t=1646816351518') format('truetype');
 }
 
 .iconfont {

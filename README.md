@@ -56,7 +56,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 #### 探索到的新大陆
 1. 动态修改style中的参数
-    在css中使用transform: var(--translateX);表示transform属性使用名为--translateX的变量进行复制
+    在css中使用transform: var(--translateX);表示transform属性使用名为--translateX的变量进行赋值
     在js中，使用ref="refsDom"标记元素，然后使用this.$refs.refsDom.style.setProperty("--translateX", "translateX(80%)")为变量赋值
     背景色的动态切换分渐变色和图片，其中图片需加上url参数：如下
         渐变色变量 background: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)' 

@@ -55,9 +55,9 @@
           {{item.previewContent}}
         </b-card-text>
         <b-card-text class="small text-muted">
-          <span class="iconfont icon-personal-man"></span>{{item.nickName}}
-          <span class="iconfont icon-comment" style="margin-left: 5px;"></span>{{item.commentCount}}
-          <span class="iconfont icon-like1" style="margin-left: 5px;"></span>{{item.likeCount}}
+          <span class="iconfont icon-personal-man"></span><span>{{item.nickName}}</span>
+          <span class="iconfont icon-comment" style="margin-left: 5px;"></span><span>{{item.commentCount}}</span>
+          <span class="iconfont icon-like1" style="margin-left: 5px;"></span><span>{{item.likeCount}}</span>
         </b-card-text>
         <hr v-if="index !== creatorTrend.length-1">
       </b-card>

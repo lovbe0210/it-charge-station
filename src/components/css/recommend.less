@@ -34,11 +34,11 @@
         margin-bottom: 14px;
 
         :hover {
-          color: #2D7DF0;
+          color: #00B5E5;
         }
 
         span {
-          color: #262626;
+          color: var(--title-color);
           font-weight: 600;
           font-size: 16px;
           line-height: 25px;
@@ -55,7 +55,7 @@
         margin-bottom: 5px;
 
         span {
-          color: @font-color;
+          color: var(--font-color);
           margin-top: 8px;
           display: -webkit-box;
           max-height: 44px;
@@ -72,8 +72,7 @@
         //padding: 6px 0 0 0;
         margin: 0;
         font-size: 13px;
-        color: #535353;
-        //position: relative;
+        color: var(--font-color);
 
         .from {
           position: absolute;
@@ -81,10 +80,10 @@
           top: 50%;
           transform: translateY(-50%);
           :hover {
-            color: #535353;
+            color: var(--font-color);
           }
           span {
-            color: #535353;
+            color: var(--font-color);
             font-size: 13px;
           }
         }

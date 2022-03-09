@@ -118,10 +118,12 @@
         </div>
         <div class="site-info enable-background">
           <div class="links">
-            常用链接:
+            <span>
+              常用链接:
+            </span>
             <span v-for="(item,index) in links" :key="index">
-            <a :href="item.url" target="_blank">{{item.title}}</a>
-          </span>
+              <a :href="item.url" target="_blank">{{item.title}}</a>
+            </span>
 
             <div class="chicken-soup">{{chickenSoup}}</div>
 

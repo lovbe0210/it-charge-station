@@ -22,6 +22,14 @@
     name: 'App',
     data() {
       return {
+        // 主題色
+        // themeColor: '#8EC5FC',
+        themeColor: 'rgba(255,255,255,0.89)',
+        // 字体颜色
+        fontColor: '#747474',
+        // 标题颜色
+        titleColor: '#343434',
+        // 背景色
         // background: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)'
         background: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
       }
@@ -61,6 +69,9 @@
     mounted() {
       // 加载背景
       this.$refs.app.style.setProperty("--background", this.background);
+      this.$refs.app.style.setProperty("--theme-color", this.themeColor);
+      this.$refs.app.style.setProperty("--font-color", this.fontColor);
+      this.$refs.app.style.setProperty("--title-color", this.titleColor);
 
       window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
       window.addEventListener('unload', e => this.unloadHandler(e))
@@ -113,20 +124,17 @@
     flex-grow: 0;
   }
 
-  // 统一设置背景色和圆角
+  // 统一设置各个主题背景色和边框圆角
   .enable-background {
-    background: @background-color-base;
+    background: var(--theme-color);
     border-radius: 5px;
   }
 
   #app {
     // 全局字体
     font-family: "PingFang SC", Microsoft YaHei, Helvetica, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
-    // 主题色
-    background-color: @background-color-base;
-    /*background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);*/
+    // 全局背景，可以是渐变色，可以是图片
     background-image: var(--background);
-    /*background-image: url("./assets/bacc_1.png");*/
     // 平铺
     background-repeat: no-repeat;
     background-size: 100% auto;

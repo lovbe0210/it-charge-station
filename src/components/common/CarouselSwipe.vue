@@ -237,7 +237,7 @@
     filter: alpha(Opacity=60);
     -moz-opacity: 0.5;
     opacity: 0.7;
-    background-color: @light-font-color;
+    background-color: #595959;
     position: absolute;
     line-height: 30px;
     height: 30px;

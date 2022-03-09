@@ -44,9 +44,10 @@
         p {
           width: 62px;
           font-size: 12px;
-          color: @font-color;
+          color: var(--font-color);
           margin-top: 8px;
         }
+
         p:hover {
           color: @font-hover;
         }
@@ -58,17 +59,23 @@
     .card-body {
       padding: 0 1.25rem;
     }
+
     .card {
       width: 100%;
+
       .card-title {
+        color: var(--title-color);
         position: relative;
+
         .b-avatar {
           margin-top: 20px;
         }
+
         span {
           margin-left: 15px;
           font-size: 15px;
         }
+
         .time {
           position: absolute;
           font-size: 13px;
@@ -76,11 +83,17 @@
           bottom: 0;
         }
       }
+
       .card-text {
         margin-left: 65px;
+        color: var(--font-color);
       }
+
       .text-muted {
         margin: 8px 0 10px 65px;
+        span {
+          color: var(--font-color);
+        }
       }
     }
   }

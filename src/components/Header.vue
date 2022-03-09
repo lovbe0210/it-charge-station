@@ -57,7 +57,7 @@
         <!-- 用户已登录功能栏 -->
         <b-navbar-nav v-if="loginStatus" class="ml-auto user-info" :fill="true" align="center">
           <!--用户快捷导航-->
-          <b-nav-item class="mr-2" @mouseenter="isHover('personalDp')" @mouseleave="isHover('personalDp')">
+          <b-nav-item class="avatar mr-2" @mouseenter="isHover('personalDp')" @mouseleave="isHover('personalDp')">
             <b-dropdown size="lg" variant="link" no-caret ref="personalDp">
               <template #button-content>
                 <b-avatar size="47px" src="https://tva3.sinaimg.cn/large/718153f4gy1gy47gg8nutj20m80m8te2.jpg">
