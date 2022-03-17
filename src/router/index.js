@@ -49,7 +49,7 @@ const routes = [
   {
     path: '/writeCenter',
     name: 'WriteCenter',
-    component: () => import('@/components/WriteCenter')
+    component: () => import('@/views/WriteCenter')
   }
 ]
 

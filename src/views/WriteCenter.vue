@@ -25,6 +25,6 @@
 </script>
 
 <style scoped lang="less">
-  @import './css/common-var.less';
-  @import './css/editor.less';
+  @import '../components/css/common-var.less';
+  @import '../components/css/editor.less';
 </style>
