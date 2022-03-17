@@ -1,9 +1,7 @@
 .container {
-  .row {
+  .header-row {
     margin-right: 40px;
     margin-left: 40px;
-  }
-  .header-row {
     .ivu-dropdown {
       margin-top: -10px;
       position: absolute;
@@ -16,11 +14,26 @@
   }
 
   .topic-row {
-    margin-top: 20px;
-    .card {
-      border: 1px solid rgba(0, 0, 0, 0.125);;
-      span {
-        font-weight: 900;
+    margin: 20px 16px 0 40px;
+    .topic-card {
+      width: 230px;
+      margin: 0 18px 10px 0;
+      padding: 0px;
+      border: none;
+      background-color: #1c272f;
+      background-image: linear-gradient(135deg, #1c272f 0%, #281a2c 44%, #311727 100%);
+      font-family: Rubik,Avenir,Helvetica,Arial,sans-serif;
+      .title {
+        color: #ffffff;
+        font-weight: 800;
+        font-size: 1.5rem;
+        line-height: 2rem;
+      }
+      .desc {
+        color: #bebebe;
+        font-size: 1rem;
+        line-height: 1.5rem;
+        margin-bottom: 0.5rem;
       }
     }
   }

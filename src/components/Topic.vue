@@ -14,9 +14,10 @@
       </Dropdown>
     </b-row>
     <b-row class="topic-row">
-      <Card style="width:350px" v-for="item in topicList" :key="item.uid">
-        <b-img :src="item.coverUrl"/>
-        <p>{{item.describe}}</p>
+      <Card v-for="item in topicList" :key="item.uid" class="topic-card">
+        <b-img :src="item.coverUrl" height="200px" width="230" :rounded="true"/>
+        <p class="title">{{item.title}}</p>
+        <p class="desc">{{item.describe}}</p>
       </Card>
     </b-row>
   </b-container>
