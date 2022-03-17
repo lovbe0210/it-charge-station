@@ -45,6 +45,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/writeCenter',
+    name: 'WriteCenter',
+    component: () => import('@/components/WriteCenter')
   }
 ]
 

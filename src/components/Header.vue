@@ -45,12 +45,17 @@
 
         <!-- 菜单栏 -->
         <b-navbar-nav class="menu" :fill="true" align="center">
-          <b-nav-item
-            v-for="item of quickLink"
-            class="mr-2"
-            @click="$whereGo(item.viewName)"
-            :key="item.title">
-            <span>{{ item.title }}</span>
+          <b-nav-item v-for="item of quickLink" class="mr-2" @click="$whereGo(item.viewName)" :key="item.uid">
+            <Dropdown trigger="hover" :transfer="true" @on-click="sortBy">
+              <a href="javascript:void(0)">
+                <span>{{item.menuName}}</span>
+              </a>
+              <DropdownMenu slot="list">
+                <DropdownItem v-for="item in item.children" :key="item.uid">
+                  {{item.menuName}}
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </b-nav-item>
         </b-navbar-nav>
 
@@ -144,12 +149,8 @@
         <!-- 公共部分 -->
         <b-navbar-nav class="ml-auto" :fill="true" align="center">
           <div class="charge">
-            <b-button
-              class="write"
-              variant="outline-*"
-              size="sm"
-              to="/login"
-            ><span class="iconfont icon-charge"></span>写笔记
+            <b-button class="write" variant="outline-*" size="sm" to="/writeCenter" >
+              <span class="iconfont icon-charge"/>写笔记
             </b-button>
           </div>
         </b-navbar-nav>
@@ -168,31 +169,70 @@
         searchKey: '',
         quickLink: [
           {
-            title: '计算机与网络',
-            viewName: ''
+            uid: 'sdfsf55',
+            menuName: '计算机与网络',
+            children: [
+              {
+                uid: 'asds01',
+                menuName: '计算机基础'
+              },
+              {
+                uid: 'asds02',
+                menuName: '操作系统'
+              },
+              {
+                uid: 'asds03',
+                menuName: '网络安全'
+              }
+            ]
           },
           {
-            title: '编程语言',
-            viewName: ''
+            uid: 'asdas34213',
+            menuName: '编程语言',
+            children: [
+              {
+                uid: '2342sdfsdfs',
+                menuName: 'Java'
+              },
+              {
+                uid: '2342dsdfsdf',
+                menuName: 'C语言'
+              },
+              {
+                uid: '2342dsdfsdf',
+                menuName: 'C++'
+              }
+            ]
           },
           {
-            title: '数据库',
-            viewName: 'index'
+            uid: 'sdfs453',
+            menuName: '数据库',
+            children: [
+              {
+                uid: 'e65dfgdf',
+                menuName: 'Mysql'
+              },
+              {
+                uid: 'dfgd4634',
+                menuName: 'Oracle'
+              }
+            ]
           },
           {
-            title: '算法',
-            viewName: 'index'
+            uid: 'sgfg566',
+            menuName: '算法'
           },
           {
-            title: '中间件',
-            viewName: 'index'
+            uid: 'dfg345g',
+            menuName: '中间件'
           },
           {
-            title: 'bug的一生',
-            viewName: 'index'
+            uid: '4564gdgd',
+            menuName: 'bug的一生'
           },
           {
-            title: '五味陈杂'
+            uid: 'sdgf6567',
+            menuName: '五味陈杂'
           }
         ],
         flag: false,
