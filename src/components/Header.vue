@@ -149,7 +149,7 @@
         <!-- 公共部分 -->
         <b-navbar-nav class="ml-auto" :fill="true" align="center">
           <div class="charge">
-            <b-button class="write" variant="outline-*" size="sm" to="/writeCenter" >
+            <b-button class="write" variant="outline-*" size="sm" @click="toWriteCenter">
               <span class="iconfont icon-charge"/>写笔记
             </b-button>
           </div>
@@ -162,7 +162,7 @@
 <script>
   export default {
     name: 'Header',
-    data() {
+    data () {
       return {
         changeBorderColor: false,
         messageMenu: [],
@@ -241,20 +241,20 @@
     },
 
     computed: {
-      loginStatus() {
+      loginStatus () {
         let userInfo = this.$store.state.userInfo
         return userInfo !== null && userInfo.token && userInfo.token.length === 32
       }
     },
     methods: {
       // ui交互，改变输入框的大小和颜色
-      changeBorder(flag) {
+      changeBorder (flag) {
         this.changeBorderColor = flag
       },
-      disableNav(flag) {
+      disableNav (flag) {
         this.$store.commit('changeShowContext', flag)
       },
-      isHover(flag) {
+      isHover (flag) {
         let event = {
           type: 'click',
           keyCode: '-1',
@@ -271,12 +271,12 @@
         }
       },
       // 选择消息类型并跳转到对应类型详情页面
-      chooseMessage(item) {
+      chooseMessage (item) {
         this.$router.push({ name: item.menuKey })
       },
 
       // 请求登出，删除服务器token信息
-      logout() {
+      logout () {
         // 先隐藏dropdown，然后退出登录
         this.isHover()
         this.$store.commit('clearUserInfo', '我是传递的值')
@@ -290,9 +290,15 @@
             content: '已成功退出当前用户，记得回来看看哦'
           })
         })*/
+      },
+      toWriteCenter () {
+        let routeUrl = this.$router.resolve({
+          path: '/writeCenter'
+        })
+        window.open(routeUrl.href, '_blank')
       }
     },
-    mounted() {
+    mounted () {
       if (this.$store.state.isPhone) {
         this.maxWidth = document.documentElement.clientWidth
       }
@@ -314,7 +320,7 @@
       }
 
     },
-    beforeDestroy() {
+    beforeDestroy () {
       // 关闭监听的事件
       if (this.$refs.personalDp) {
         this.$refs.personalDp.$off('toggle')

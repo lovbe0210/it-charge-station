@@ -1,23 +1,23 @@
 <template>
   <div class="editor-wrapp">
-    <b-container fluid class="editor">
-
+    <b-row class="editor-header">
+      <span>无标题文章</span>
+    </b-row>
+    <b-row>
       <editor></editor>
-    </b-container>
+    </b-row>
   </div>
 </template>
 
 <script>
   import Editor from '@/components/common/Editor'
+
   export default {
     name: 'Follow',
-    data() {
-      return {
-      }
+    data () {
+      return {}
     },
-    methods: {
-
-    },
+    methods: {},
     components: {
       Editor
     }
