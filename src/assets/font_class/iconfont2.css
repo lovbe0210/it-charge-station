@@ -1,0 +1,32 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 3029751 */
+  /* Color fonts */
+  src:
+      url('//at.alicdn.com/t/font_3272463_yej4iswv36.woff2?t=1648121681947') format('woff2');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-like:before {
+  content: "\e606";
+}
+
+.icon-home:before {
+  content: "\e61d";
+}
+
+.icon-new-doc:before {
+  content: "\e64b";
+}
+
+.icon-quick-start:before {
+  content: "\e8b6";
+}
+
+

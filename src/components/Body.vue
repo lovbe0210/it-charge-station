@@ -328,5 +328,4 @@
 <style scoped lang="less">
   @import './css/common-var.less';
   @import "./css/body.less";
-  @import "../assets/font_class/iconfont.css";
 </style>
