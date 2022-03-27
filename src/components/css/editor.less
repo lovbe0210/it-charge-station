@@ -1,15 +1,14 @@
 .editor-wrapp {
+  font-family: Chinese Quote,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif;
   .row {
     margin: 0;
   }
   height: 100vh;
   background: #ffffff;
 
-
   .editor-header {
-    //margin-bottom: 10px;
-    height: 3.8rem;
-    //background-color: #00ae9d;
+    height: 60px;
+    border-bottom: 1px solid #eeeeee;
     .mock-hover {
       background-color: #eeeeee;
     }
@@ -18,7 +17,6 @@
       width: 60px;
       height: 60px;
       border-right: 1px solid #eeeeee;
-      border-bottom: 1px solid #eeeeee;
       display: flex;
       -webkit-box-align: center;
       justify-content: center;
@@ -26,20 +24,85 @@
       .start-dropdown {
         width: 30px;
         height: 30px;
-        //margin: 20px 0 0 20px;
         border-radius: 2px;
         // 水平垂直居中
         display: flex;
         justify-content: center;
         align-items: center;
         .iconfont {
-          font-size: 26px;
+          font-size: 17px;
+
         }
       }
     }
 
+    .title-info {
+      .list-group-item {
+        border: none;
+        padding: 0 0 0 16px;
+      }
+
+      .iconfont {
+        font-size: 14px;
+        margin-left: 5px;
+      }
+      .title {
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 16px;
+        color: #262626;
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-top: 8px;
+      }
+      .author-info {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 12px;
+        margin-top: 1px;
+        a {
+          color: #8c8c8c;
+        }
+        .update-time {
+          color: #AFAFAF;
+          font-size: 12px;
+        }
+      }
+
+    }
+
 
   }
+
+  .editor-setting {
+    position: absolute;
+    height: 60px;
+    right: 30px;
+    display: flex;
+    -webkit-box-align: center;
+    justify-content: center;
+    align-items: center;
+    .update-btn {
+      width: 60px;
+      margin-right: 30px;
+      color: @light-font-color;
+      border: 1px solid @border-color_normal;
+    }
+
+    .update-btn:hover {
+      color: @border-color_hover;
+      border: 1px solid @border-color_hover;
+    }
+
+    .iconfont {
+      font-size: 20px;
+    }
+  }
+
 }
 
 

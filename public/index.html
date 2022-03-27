@@ -60,27 +60,49 @@
         }
 
         /* 写作中心开始菜单tip标签中的list-group-item的边框处理,间距以及内边距 */
-        .tips-content .tooltip-inner {
+        .menu-content .tooltip-inner {
             padding: 4px 0 4px 8px;
         }
-        .tips-content .tooltip-inner .list-group .list-group-item{
+
+        .menu-content .tooltip-inner .list-group .list-group-item {
             border: none;
             text-align: left;
             padding: 10px 15px 8px 15px;
         }
-        .tips-content .tooltip-inner .list-group .list-group-item .ivu-dropdown .ivu-select-dropdown .ivu-dropdown-menu{
+
+        .menu-content .tooltip-inner .list-group .list-group-item .ivu-dropdown .ivu-select-dropdown .ivu-dropdown-menu {
+            margin-bottom: 0;
+        }
+
+        .setting-content .tooltip-inner {
+            padding: 4px 0 4px 0;
+            max-width: 240px;
+            width: 240px;
+        }
+
+        .setting-content .tooltip-inner .list-group .list-group-item {
+            border: none;
+            text-align: left;
+            display: flex;
+            align-items: start;
+            padding: 10px 15px 8px 16px;
+            width: 240px;
+            color: #000000;
+        }
+
+        .setting-content .tooltip-inner .list-group .list-group-item .ivu-dropdown .ivu-select-dropdown .ivu-dropdown-menu {
             margin-bottom: 0;
         }
     </style>
 </head>
 
 <body>
-    <noscript>
-        <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
-                Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
+<noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+        Please enable it to continue.</strong>
+</noscript>
+<div id="app"></div>
+<!-- built files will be auto injected -->
 </body>
 
 </html>

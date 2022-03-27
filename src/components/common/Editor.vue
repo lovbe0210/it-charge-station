@@ -65,4 +65,7 @@
 </script>
 
 <style scoped lang="less">
+  .editor-toolbar {
+    border-top: none;
+  }
 </style>
