@@ -63,6 +63,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
         渐变色变量 background: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)' 
         图片变量 background: 'url(https://tvax3.sinaimg.cn/large/718153f4gy1gy1ob6nxj1j20lo0ot41b.jpg)'
 2. iconfont字体中的Unicode值可以自定义修改，当同时引入多个css图标文件时如果有些图标失效不起作用，检查是不是Unicode值重复了。
+3. 使用promise可以轻松的等待异步任务执行完成再继续执行后面的代码
 ##### 首页完工图：
 ![输入图片说明](%E9%A6%96%E9%A1%B5%E5%AE%8C%E5%B7%A5%E5%9B%BE.png)
 ##### 自定义主题：

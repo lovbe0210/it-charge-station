@@ -22,10 +22,9 @@
         <b-button class="update-btn" variant="outline-*" size="sm" @click="updateDocConten" id="update-btn">
           更新
         </b-button>
-        <b-button id="editor-setting" @click="showSetting">
+        <Button id="editor-setting" @click="showSetting">
           <span class="iconfont icon-edit-more"/>
-        </b-button>
-
+        </Button>
       </div>
     </b-row>
     <b-row>
@@ -74,7 +73,8 @@
       </div>
     </b-tooltip>
     <b-tooltip target="editor-setting" placement="bottomleft" delay="250" triggers="focus"
-               variant="secondary" custom-class="setting-content" id="set-wrap" boundary-padding="55" style="width: 500px;">
+               variant="secondary" custom-class="setting-content" id="set-wrap" boundary-padding="55"
+               style="width: 500px;">
       <b-list-group flush>
         <b-list-group-item to="/">
           <span class="iconfont icon-setting" style="margin-right: 10px;font-size: 18px;"></span>
@@ -98,9 +98,9 @@
           <span style="margin-left: 30px;">删除</span>
         </b-list-group-item>
         <b-list-group-item style="color: #8c8c8c; font-size: 12px;display: block">
-            <div style="margin: 0 0 10px 30px;">字数统计：0</div>
-            <div style="margin: 0 0 10px 30px;">创建于：03-15</div>
-            <div style="margin: 0 0 10px 30px;">最后编辑于：昨天 11:20</div>
+          <div style="margin: 0 0 10px 30px;">字数统计：0</div>
+          <div style="margin: 0 0 10px 30px;">创建于：03-15</div>
+          <div style="margin: 0 0 10px 30px;">最后编辑于：昨天 11:20</div>
         </b-list-group-item>
       </b-list-group>
     </b-tooltip>
@@ -112,7 +112,7 @@
 
   export default {
     name: 'Follow',
-    data () {
+    data() {
       return {
         quickStart: [
           {
@@ -137,13 +137,13 @@
       }
     },
     methods: {
-      isHover1 (flag) {
+      isHover1(flag) {
         this.visible1 = flag
         if (flag) {
           this.$refs.menuTip1.$el.parentElement.setAttribute('style', 'margin: -5px 0 0 16px;')
         }
       },
-      isHover2 (flag) {
+      isHover2(flag) {
         this.visible2 = flag
         if (flag) {
           this.$refs.menuTip2.$el.parentElement.setAttribute('style', 'margin: -5px 0 0 16px;')
@@ -152,28 +152,31 @@
       /**
        * 手动更新文档内容
        */
-      updateDocConten () {
+      updateDocConten() {
 
       },
-      async showSetting () {
-        let flag = true
+      async showSetting() {
         let setWrap
         setTimeout(() => {
-          while (flag) {
-            setWrap = document.getElementById('set-wrap')
-            if (setWrap !== null) {
-              flag = false
-            }
-          }
-          let attribute = setWrap.getAttribute('style')
-          setWrap.setAttribute('style', attribute.replace('left: 0px', 'left: 17px'))
-        }, 195)
+          new Promise(function (resolve, reject) {
+            let interval = setInterval(() => {
+              setWrap = document.getElementById('set-wrap');
+              if (setWrap !== null) {
+                clearInterval(interval);
+                resolve();
+              }
+            }, 10);
+          }).then(() => {
+            let attribute = setWrap.getAttribute('style')
+            setWrap.setAttribute('style', attribute.replace('left: 0px', 'left: 17px'))
+          });
+        }, 150)
       }
     },
     components: {
       Editor
     },
-    mounted () {
+    mounted() {
       this.$root.$on('bv::tooltip::show', bvEvent => {
         if (bvEvent.target.id === 'menu_tips') {
           // 切换图标显示
