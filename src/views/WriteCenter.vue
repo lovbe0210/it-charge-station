@@ -8,7 +8,7 @@
       </div>
       <b-list-group class="title-info" flush>
         <b-list-group-item class="title">
-          无标题文档
+          {{doc.title === null || doc.title.length === 0 ? "无标题文档" : doc.title}}
         </b-list-group-item>
         <b-list-group-item class="author-info">
           <a href="">@福</a>
@@ -28,7 +28,7 @@
       </div>
     </b-row>
     <b-row>
-      <editor></editor>
+      <editor @updateTitle="updateTitle" :title="doc.title"></editor>
     </b-row>
 
     <b-tooltip target="menu_tips" placement="bottomright" delay="250" triggers="hover"
@@ -114,6 +114,9 @@
     name: 'Follow',
     data() {
       return {
+        doc: {
+          title: ''
+        },
         quickStart: [
           {
             uid: '234sdf',
@@ -155,7 +158,14 @@
       updateDocConten() {
 
       },
-      async showSetting() {
+      /**
+       * 为子组件定义的事件方法
+       */
+      updateTitle(titleValue) {
+        this.doc.title = titleValue;
+      },
+
+      showSetting() {
         let setWrap
         setTimeout(() => {
           new Promise(function (resolve, reject) {

@@ -108,7 +108,7 @@
           </b-nav-item>
 
           <b-nav-item class="msg mr-2" @mouseenter="isHover('msgDp')" @mouseleave="isHover('msgDp')">
-            <b-dropdown size="md" variant="link" no-caret ref="msgDp">
+            <b-dropdown size="md" variant="link" no-caret ref="msgDp" toggle-tag="div">
               <template #button-content>
                 <div class="c-badge" v-if="1"></div>
                 <span>消息</span>
