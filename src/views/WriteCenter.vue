@@ -77,7 +77,7 @@
                style="width: 500px;">
       <b-list-group flush>
         <b-list-group-item to="/">
-          <span class="iconfont icon-setting" style="margin-right: 10px;font-size: 18px;"></span>
+          <span class="iconfont icon-edit-setting" style="margin-right: 10px;font-size: 18px;"></span>
           <span>
             文档样式<span class="iconfont icon-more" style="margin-left: 100px;"></span>
             <br>
