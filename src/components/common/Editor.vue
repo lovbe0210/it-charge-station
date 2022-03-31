@@ -3,18 +3,16 @@
     <div class="amEditorVue2">
       <am-loading :loading="loading">
         <am-toolbar v-if="engine" :engine="engine" :items="items"/>
-        <div :class="['editor-wrapper', { 'editor-mobile': mobile }]">
-          <div class="editor-container">
-            <div class="editor-content">
-              <div class="title-editor">
+        <div class="editor-container">
+          <div class="editor-content">
+            <div class="title-editor">
                 <textarea class="title" v-model="doc.title" placeholder="我是一个没有标题的文章"
                           :autofocus="doc.title === null || doc.title.length === 0" maxlength="130"
                           tabindex="1" rows="1" ref="titleTextarea" @blur="updateTitle">
                 </textarea>
-              </div>
-              <div class="doc-editor" ref="container">
-                直接输入正文
-              </div>
+            </div>
+            <div class="doc-editor" ref="container">
+
             </div>
           </div>
         </div>
@@ -38,7 +36,7 @@
 
   export default {
     name: 'Editor',
-    data () {
+    data() {
       return {
         doc: {
           title: this.title
@@ -50,7 +48,7 @@
     },
     props: ["title"],
     methods: {
-      changeHeight () {
+      changeHeight() {
         let _this = this
         this.$nextTick(() => {
           let textArea = _this.$refs.titleTextarea
@@ -64,7 +62,7 @@
           }
         })
       },
-      updateTitle () {
+      updateTitle() {
         // TODO 先更新数据库然后在进行页面渲染
         this.$emit('updateTitle', this.doc.title)
       }
@@ -75,32 +73,32 @@
       // MapModal
     },
     watch: {
-      'doc.title' (newValue, oldValue) {
+      'doc.title'(newValue, oldValue) {
         if (newValue === oldValue) {
           return
         }
-        // 改变行数
-        this.changeHeight()
+        // 改变标题框的高度
+        this.changeHeight();
       }
     },
-    mounted () {
+    mounted() {
       const engine = new Engine(
         this.$refs.container,
         {
           cards: [
-            ToolbarComponent,
-            CodeBlockComponent
+            ToolbarComponent, // 左边工具栏卡片
+            CodeBlockComponent // 右边工具栏卡片
           ],
           plugins: [
-            Heading,
-            ToolbarPlugin,
-            Codeblock,
-            Bold
+            ToolbarPlugin, // 工具栏插件槽启用
+            Codeblock, // 代码块
+            Heading, // 正文
+            Bold // 加粗
           ]
         }
-      )
-      console.log(engine)
-      this.engine = engine
+      );
+      console.log(engine);
+      this.engine = engine;
     }
   }
 </script>
