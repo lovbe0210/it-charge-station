@@ -1,7 +1,7 @@
 <template>
   <b-container fluid>
     <div class="amEditorVue2">
-      <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="sdaf()"/>
+      <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
       <div class="editor-container">
         <div class="editor-content">
           <div class="title-editor">
@@ -29,8 +29,7 @@
   import Engine from '@aomao/engine'
   import Toolbar, { ToolbarPlugin, ToolbarComponent } from 'am-editor-toolbar-vue2'
   import Codeblock, { CodeBlockComponent } from 'am-editor-codeblock-vue2'
-  import Bold from '@aomao/plugin-bold'
-  import Heading from '@aomao/plugin-heading'
+  import { plugins, cards, pluginConfig } from "./config";
 
   export default {
     name: 'Editor',
@@ -108,9 +107,35 @@
         // TODO 先更新数据库然后在进行页面渲染
         this.$emit('updateTitle', this.doc.title)
       },
-      sdaf () {
-        console.log(document.getElementById('toolbar').value)
-        // document.getElementById('toolbar').style.color = 'red'
+      toolbarUI () {
+        // 选色器
+        let colorPicker
+        setTimeout(() => {
+          new Promise(function (resolve, reject) {
+            let interval = setInterval(() => {
+              colorPicker = document.getElementById('toolbar').children[0].childNodes[4]
+              if (colorPicker !== null && colorPicker !== undefined) {
+                clearInterval(interval)
+                resolve()
+              }
+            }, 10)
+          }).then(() => {
+            colorPicker.childNodes.forEach(s => {
+              s.childNodes.forEach(ss => {
+                ss.childNodes.forEach(sss => {
+                  if (sss.hasChildNodes()) {
+                    sss.childNodes.forEach(ssss => {
+                      if (ssss.hasChildNodes()) {
+                        ssss.children[0].setAttribute('width', '20px');
+                        ssss.children[0].setAttribute('height', '20px');
+                      }
+                    })
+                  }
+                })
+              })
+            })
+          })
+        }, 100)
       }
     },
     components: {
@@ -128,7 +153,7 @@
       }
     },
     mounted () {
-      const engine = new Engine(
+      /*const engine = new Engine(
         // 渲染节点即根节点
         this.$refs.container,
         // 配置项
@@ -150,12 +175,48 @@
         }
       )
       console.log(engine)
-      this.engine = engine
+      this.engine = engine*/
 
-      // ui调整，改变工具栏中某个组件的大小
-      // console.log(document.getElementById('toolbar'))
-      // let fontColorTags = document.getElementsByClassName('colorpicker-button-text')
-      // console.log(fontColorTags[0])
+      const container = this.$refs.container;
+      if (container) {
+        //实例化引擎
+        const engine = new Engine(container, {
+          // 启用的插件
+          plugins,
+          // 启用的卡片
+          cards,
+          // 所有的卡片配置
+          config: pluginConfig,
+          placeholder: '直接输入正文，也可以选择一个模板：'
+        });
+        // 设置显示成功消息UI，默认使用 console.log
+        engine.messageSuccess = (msg) => {
+          console.log(msg);
+        };
+        // 设置显示错误消息UI，默认使用 console.error
+        engine.messageError = (error) => {
+          console.log(error);
+        };
+        //卡片最大化时设置编辑页面样式
+        engine.on("card:maximize", () => {
+          $(".editor-toolbar").css("z-index", "9999").css("top", "55px");
+        });
+        engine.on("card:minimize", () => {
+          $(".editor-toolbar").css("z-index", "").css("top", "");
+        });
+        // 非协同编辑，设置编辑器值，异步渲染后回调
+        engine.setValue(value, () => {
+          this.loading = false;
+        });
+
+        // 监听编辑器值改变事件
+        engine.on("change", () => {
+          console.log("value", engine.getValue());
+          console.log("html:", engine.getHtml());
+        });
+
+        this.engine = engine;
+      }
 
       // 渲染结束后获取输入框焦点，如果没有标题就先定位到标题，如果已有标题就定位到正文
       if (this.title === null && this.title.length === 0) {

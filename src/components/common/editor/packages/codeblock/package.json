@@ -1,0 +1,38 @@
+{
+  "name": "am-editor-codeblock-vue2",
+  "version": "1.0.22",
+  "keyword": "am-editor-codeblock-vue2",
+  "description": "> TODO: description",
+  "author": "zhangbin<bjzhang.bin@163.com> yanmao <me@yanmao.cc>",
+  "homepage": "https://github.com/zb201307/am-editor-vue2#readme",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "private": false,
+  "files": [
+    "dist",
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zb201307/am-editor-vue2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zb201307/am-editor-vue2/issues"
+  },
+  "dependencies": {
+    "@aomao/engine": "^2.7.36",
+    "@babel/runtime": "^7.13.10",
+    "ant-design-vue": "^1.7.8",
+    "codemirror": "^5.63.3",
+    "lodash": "^4.17.21",
+    "vue": "^2.6.14"
+  },
+  "devDependencies": {
+    "@types/codemirror": "^5.60.5",
+    "@types/lodash": "^4.14.178"
+  },
+  "gitHead": "a6756846878acb2186b28b5f7e328f0b4f6db378"
+}

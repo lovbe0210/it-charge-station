@@ -1,0 +1,34 @@
+{
+  "name": "am-editor-map",
+  "version": "1.0.21",
+  "keyword": "am-editor-map",
+  "description": "> TODO: description",
+  "author": "zhangbin<bjzhang.bin@163.com> yanmao <me@yanmao.cc>",
+  "homepage": "https://github.com/zb201307/am-editor-vue2#readme",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "private": false,
+  "files": [
+    "dist",
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zb201307/am-editor-vue2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zb201307/am-editor-vue2/issues"
+  },
+  "dependencies": {
+    "@aomao/engine": "^2.7.36",
+    "@babel/runtime": "^7.13.10",
+    "autosize": "^5.0.1"
+  },
+  "gitHead": "a6756846878acb2186b28b5f7e328f0b4f6db378",
+  "devDependencies": {
+    "@types/autosize": "^4.0.0"
+  }
+}

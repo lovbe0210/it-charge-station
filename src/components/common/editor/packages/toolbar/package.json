@@ -1,0 +1,43 @@
+{
+  "name": "am-editor-toolbar-vue2",
+  "version": "1.0.21",
+  "description": "am-editor toolbar for vue2",
+  "keywords": [
+    "toolbar"
+  ],
+  "keyword": "am-editor-toolbar-vue2",
+  "author": "zhangbin<bjzhang.bin@163.com> yanmao <me@yanmao.cc>",
+  "homepage": "https://github.com/zb201307/am-editor-vue2#readme",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "private": false,
+  "files": [
+    "dist",
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zb201307/am-editor-vue2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zb201307/am-editor-vue2/issues"
+  },
+  "dependencies": {
+    "@aomao/engine": "^2.7.36",
+    "@babel/runtime": "^7.13.10",
+    "ant-design-vue": "^1.7.8",
+    "keymaster": "^1.6.2",
+    "lodash": "^4.17.21",
+    "tinycolor2": "^1.4.2",
+    "vue": "^2.6.14"
+  },
+  "devDependencies": {
+    "@types/keymaster": "^1.6.30",
+    "@types/lodash": "^4.14.178",
+    "@types/tinycolor2": "^1.4.3"
+  },
+  "gitHead": "a6756846878acb2186b28b5f7e328f0b4f6db378"
+}

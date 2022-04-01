@@ -108,7 +108,7 @@
 </template>
 
 <script>
-  import Editor from '@/components/common/Editor'
+  import Editor from '@/components/common/editor/Editor'
 
   export default {
     name: 'Follow',
