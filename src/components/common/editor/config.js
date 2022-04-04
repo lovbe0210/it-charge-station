@@ -1,7 +1,7 @@
 /**
  * 工具栏配置
  */
-import { PluginEntry, CardEntry, PluginOptions, NodeInterface, EngineInterface } from '@aomao/engine'
+// import { PluginEntry, CardEntry, PluginOptions, NodeInterface, EngineInterface } from '@aomao/engine'
 //引入插件 begin
 import Redo from '@aomao/plugin-redo'
 import Undo from '@aomao/plugin-undo'
@@ -35,11 +35,11 @@ import Fontfamily from '@aomao/plugin-fontfamily'
 import Status, { StatusComponent } from '@aomao/plugin-status'
 import LineHeight from '@aomao/plugin-line-height'
 import Mention, { MentionComponent } from '@aomao/plugin-mention'
-import { fontFamilyDefaultData, ToolbarPlugin, ToolbarComponent } from './packages/toolbar/src/index.ts'
-import Link from './packages/link/src/index.ts'
-import CodeBlock, { CodeBlockComponent } from './packages/codeblock/src/index.ts'
-import MapPlugin, { MapComponent } from './packages/map/src/index.ts'
-import Audio, { AudioComponent, AudioUploader } from './packages/audio/src/index.ts'
+// import { fontFamilyDefaultData, ToolbarPlugin, ToolbarComponent } from './packages/toolbar/src/index.js'
+// import Link from './packages/link/src/index.js'
+// import CodeBlock, { CodeBlockComponent } from './packages/codeblock/src/index.js'
+// import MapPlugin, { MapComponent } from './packages/map/src/index.js'
+// import Audio, { AudioComponent, AudioUploader } from './packages/audio/src/index.js'
 
 const DOMAIN = 'http://localhost:7001'
 
@@ -79,12 +79,12 @@ export let plugins = [
   Status,
   LineHeight,
   Mention,
-  Link,
-  CodeBlock,
-  ToolbarPlugin,
-  MapPlugin,
-  Audio,
-  AudioUploader,
+  // Link,
+  // CodeBlock,
+  // ToolbarPlugin,
+  // MapPlugin,
+  Audio
+  // AudioUploader,
 ]
 
 export const cards = [
@@ -96,17 +96,17 @@ export const cards = [
   VideoComponent,
   MathComponent,
   StatusComponent,
-  MentionComponent,
-  CodeBlockComponent,
-  ToolbarComponent,
-  MapComponent,
-  AudioComponent,
+  MentionComponent
+  // CodeBlockComponent,
+  // ToolbarComponent,
+  // MapComponent,
+  // AudioComponent,
 ]
 
 export const pluginConfig = {
   [Italic.pluginName]: {
     // 默认为 _ 下划线，这里修改为单个 * 号
-    markdown: '*',
+    markdown: '*'
   },
   [Image.pluginName]: {
     onBeforeRender: (status, url) => {
@@ -117,29 +117,29 @@ export const pluginConfig = {
   [ImageUploader.pluginName]: {
     file: {
       action: `${DOMAIN}/upload/image`, //图片上传
-      headers: { Authorization: 213434 },
+      headers: { Authorization: 213434 }
     },
     remote: {
-      action: `${DOMAIN}/upload/image`, //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
+      action: `${DOMAIN}/upload/image` //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
     },
-    isRemote: (src) => src.indexOf(DOMAIN) < 0,
+    isRemote: (src) => src.indexOf(DOMAIN) < 0
   },
   [FileUploader.pluginName]: {
-    action: `${DOMAIN}/upload/file`,
+    action: `${DOMAIN}/upload/file`
   },
   [VideoUploader.pluginName]: {
     action: `${DOMAIN}/upload/video`,
-    limitSize: 1024 * 1024 * 50,
+    limitSize: 1024 * 1024 * 50
   },
   [Video.pluginName]: {
     onBeforeRender: (status, url) => {
       return url + `?token=12323`
-    },
+    }
   },
-  [AudioUploader.pluginName]: {
-    action: `${DOMAIN}/upload/video`,
-    limitSize: 1024 * 1024 * 50,
-  },
+  // [AudioUploader.pluginName]: {
+  //   action: `${DOMAIN}/upload/video`,
+  //   limitSize: 1024 * 1024 * 50,
+  // },
   [Math.pluginName]: {
     action: `https://g.yanmao.cc/latex`,
     parse: (res) => {
@@ -150,7 +150,7 @@ export const pluginConfig = {
         }
       }
       return { result: false }
-    },
+    }
   },
   [Mention.pluginName]: {
     action: `${DOMAIN}/user/search`,
@@ -176,14 +176,13 @@ export const pluginConfig = {
       //   name,
       //});
       //vm.mount(layout.get<HTMLElement>()!);
-    },
+    }
   },
   [Fontsize.pluginName]: {
     //配置粘贴后需要过滤的字体大小
     filter: (fontSize) => {
       return (
-        [
-          '12px',
+        ['12px',
           '13px',
           '14px',
           '15px',
@@ -194,27 +193,27 @@ export const pluginConfig = {
           '29px',
           '32px',
           '40px',
-          '48px',
+          '48px'
         ].indexOf(fontSize) > -1
       )
-    },
+    }
   },
-  [Fontfamily.pluginName]: {
-    //配置粘贴后需要过滤的字体
-    filter: (fontfamily) => {
-      const item = fontFamilyDefaultData.find((item) =>
-        fontfamily
-          .split(',')
-          .some(
-            (name) =>
-              item.value
-                .toLowerCase()
-                .indexOf(name.replace(/"/, '').toLowerCase()) > -1
-          )
-      )
-      return item ? item.value : false
-    },
-  },
+  // [Fontfamily.pluginName]: {
+  //   //配置粘贴后需要过滤的字体
+  //   filter: (fontfamily) => {
+  //     const item = fontFamilyDefaultData.find((item) =>
+  //       fontfamily
+  //         .split(',')
+  //         .some(
+  //           (name) =>
+  //             item.value
+  //               .toLowerCase()
+  //               .indexOf(name.replace(/"/, '').toLowerCase()) > -1
+  //         )
+  //     )
+  //     return item ? item.value : false
+  //   },
+  // },
   [LineHeight.pluginName]: {
     //配置粘贴后需要过滤的行高
     filter: (lineHeight) => {
@@ -226,67 +225,67 @@ export const pluginConfig = {
       if (lineHeight === '42px') return '3'
       // 不满足条件就移除掉
       return ['1', '1.15', '1.5', '2', '2.5', '3'].indexOf(lineHeight) > -1
-    },
-  },
-  toolbar: {
-    popup: {
-      items: [
-        ['bold', 'strikethrough', 'fontcolor'],
-        {
-          icon: 'text',
-          items: ['italic', 'underline', 'backcolor', 'moremark'],
-        },
-        [
-          {
-            type: 'button',
-            name: 'image-uploader',
-            icon: 'image',
-          },
-          'link',
-          'tasklist',
-          'heading',
-        ],
-        {
-          icon: 'more',
-          items: [
-            {
-              type: 'button',
-              name: 'video-uploader',
-              icon: 'video',
-            },
-            {
-              type: 'button',
-              name: 'file-uploader',
-              icon: 'attachment',
-            },
-            {
-              type: 'button',
-              name: 'math',
-              icon: 'math',
-            },
-            {
-              type: 'button',
-              name: 'codeblock',
-              icon: 'codeblock',
-            },
-            {
-              type: 'button',
-              name: 'orderedlist',
-              icon: 'ordered-list',
-            },
-            {
-              type: 'button',
-              name: 'unorderedlist',
-              icon: 'unordered-list',
-            },
-            {
-              type: 'button',
-              name: 'hr',
-              icon: 'hr',
-            },
-          ],
-        },
-      ],
-    },
-  },
-};
+    }
+  }
+  // toolbar: {
+  //   popup: {
+  //     items: [
+  //       ['bold', 'strikethrough', 'fontcolor'],
+  //       {
+  //         icon: 'text',
+  //         items: ['italic', 'underline', 'backcolor', 'moremark']
+  //       },
+  //       [
+  //         {
+  //           type: 'button',
+  //           name: 'image-uploader',
+  //           icon: 'image'
+  //         },
+  //         'link',
+  //         'tasklist',
+  //         'heading'
+  //       ],
+  //       {
+  //         icon: 'more',
+  //         items: [
+  //           {
+  //             type: 'button',
+  //             name: 'video-uploader',
+  //             icon: 'video'
+  //           },
+  //           {
+  //             type: 'button',
+  //             name: 'file-uploader',
+  //             icon: 'attachment'
+  //           },
+  //           {
+  //             type: 'button',
+  //             name: 'math',
+  //             icon: 'math'
+  //           },
+  //           {
+  //             type: 'button',
+  //             name: 'codeblock',
+  //             icon: 'codeblock'
+  //           },
+  //           {
+  //             type: 'button',
+  //             name: 'orderedlist',
+  //             icon: 'ordered-list'
+  //           },
+  //           {
+  //             type: 'button',
+  //             name: 'unorderedlist',
+  //             icon: 'unordered-list'
+  //           },
+  //           {
+  //             type: 'button',
+  //             name: 'hr',
+  //             icon: 'hr'
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   }
+  // }
+}

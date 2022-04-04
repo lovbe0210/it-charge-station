@@ -1,5 +1,5 @@
-import { DropdownListItem } from '../types';
-import { isSupportFontFamily } from '../utils';
+import { isSupportFontFamily } from '../utils.js';
+// import { default } from 'vuex/dist/vuex'
 
 export const defaultData = [
 	{
@@ -100,27 +100,18 @@ export const defaultData = [
  * @param data key-value 键值对数据，key 名称，如果有传语言则是语言键值对的key否则就直接显示
  * @param language 语言，可选
  */
-export default (
-	data: Array<{ key: string; value: string }>,
-	language?: { [key: string]: string },
-): Array<DropdownListItem> => {
-	return data.map(({ key, value }) => {
-		const disabled =
-			key !== 'default'
-				? !value.split(',').some((v) => isSupportFontFamily(v.trim()))
-				: false;
-		return {
-			key: value,
-			faimlyName: language ? language[key] : key,
-			content: `<span style="font-family: ${value}">${
-				language ? language[key] : key
-			}</span>`,
-			hotkey: false,
-			disabled,
-			title: disabled
-				? (language && language['notInstalled']) ||
-				  'The font may not be installed'
-				: undefined,
-		};
-	});
-};
+export default (function (data, language) {
+  return data.map(({ key, value }) => {
+    const disabled = key !== 'default' ? !value.split(',').some((v) => isSupportFontFamily(v.trim())) : false;
+    return {
+      key: value,
+      faimlyName: language ? language[key] : key,
+      content: `<span style="font-family: ${value}">${
+        language ? language[key] : key
+      }</span>`,
+      hotkey: false,
+      disabled,
+      title: disabled ? (language && language['notInstalled']) || 'The font may not be installed' : undefined,
+    };
+  });
+});

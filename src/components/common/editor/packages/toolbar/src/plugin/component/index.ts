@@ -13,7 +13,7 @@ import {
 	CollapseItemProps,
 	CollapseProps,
 } from '../../types';
-import { getToolbarDefaultConfig } from '../../config';
+import { getToolbarDefaultConfig } from '../../config/index.js';
 import CollapseComponent, { CollapseComponentInterface } from './collapse';
 import ToolbarPopup from './popup';
 import './index.css';

@@ -27,8 +27,8 @@
 
 <script>
   import Engine from '@aomao/engine'
-  import Toolbar, { ToolbarPlugin, ToolbarComponent } from 'am-editor-toolbar-vue2'
-  import Codeblock, { CodeBlockComponent } from 'am-editor-codeblock-vue2'
+  import Toolbar from 'am-editor-toolbar-vue2'
+  // import Codeblock, { CodeBlockComponent } from 'am-editor-codeblock-vue2'
   import { plugins, cards, pluginConfig } from "./config";
 
   export default {
@@ -198,16 +198,16 @@
           console.log(error);
         };
         //卡片最大化时设置编辑页面样式
-        engine.on("card:maximize", () => {
-          $(".editor-toolbar").css("z-index", "9999").css("top", "55px");
-        });
-        engine.on("card:minimize", () => {
-          $(".editor-toolbar").css("z-index", "").css("top", "");
-        });
+        // engine.on("card:maximize", () => {
+        //   $(".editor-toolbar").css("z-index", "9999").css("top", "55px");
+        // });
+        // engine.on("card:minimize", () => {
+        //   $(".editor-toolbar").css("z-index", "").css("top", "");
+        // });
         // 非协同编辑，设置编辑器值，异步渲染后回调
-        engine.setValue(value, () => {
-          this.loading = false;
-        });
+        // engine.setValue(value, () => {
+        //   this.loading = false;
+        // });
 
         // 监听编辑器值改变事件
         engine.on("change", () => {

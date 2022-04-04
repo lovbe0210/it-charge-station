@@ -1,18 +1,12 @@
 import Vue from 'vue';
-import { EngineInterface } from '@aomao/engine';
-import { ToolbarItemProps } from '../types';
 import TableSelector from '../components/table.vue';
-import fontfamily, { defaultData as fontFamilyDefaultData } from './fontfamily';
+import fontfamily, { defaultData as fontFamilyDefaultData } from './fontfamily.js';
 import './index.css';
 
 export { fontfamily, fontFamilyDefaultData };
 
-export const getToolbarDefaultConfig = (
-	engine: EngineInterface,
-): Array<ToolbarItemProps> => {
-	const language = engine.language.get<{
-		[key: string]: { [key: string]: string };
-	}>('toolbar');
+export const getToolbarDefaultConfig = function( engine ) {
+	const language = engine.language.get('toolbar');
 	return [
 		{
 			type: 'collapse',
@@ -108,32 +102,17 @@ export const getToolbarDefaultConfig = (
 							placement: 'rightTop',
 							onDisabled: () => {
 								// 有激活卡片 或者没有启用插件
-								return (
-									!!engine.card.active ||
-									!engine.command.queryEnabled('table')
-								);
+								return (!!engine.card.active || !engine.command.queryEnabled('table'));
 							},
-							
-							prompt: !!engine.card.active ||
-								!engine.command.queryEnabled('table')
-									? undefined
-									: new Vue().$createElement(TableSelector, {
+
+							prompt: !!engine.card.active || !engine.command.queryEnabled('table') ? undefined : new Vue().$createElement(TableSelector, {
 										props: {
-											onSelect: (
-												event: MouseEvent,
-												rows: number,
-												cols: number,
-											) => {
-												engine.command.execute(
-													'table',
-													rows,
-													cols,
-												);
-											},
+											onSelect: ( event, rows, cols ) => {
+												engine.command.execute( 'table', rows, cols, );
+											}
 										}
-									})
-							,
-								
+									}),
+
 							icon: `<span><svg
 									width="24px"
 									height="24px"
@@ -314,9 +293,9 @@ export const getToolbarDefaultConfig = (
 							title: language['status']['title'],
 							search: 'status,label,状态',
 						},
-					],
-				},
-			],
+					]
+				}
+			]
 		},
 		{
 			type: 'button',
@@ -324,12 +303,9 @@ export const getToolbarDefaultConfig = (
 			icon: 'undo',
 			title: language['undo']['title'],
 			onDisabled: () => {
-				return (
-					!engine.command.queryState('undo') ||
-					!engine.command.queryEnabled('undo')
-				);
+				return ( !engine.command.queryState('undo') || !engine.command.queryEnabled('undo'));
 			},
-			onActive: () => false,
+			onActive: () => false
 		},
 		{
 			type: 'button',
@@ -337,12 +313,9 @@ export const getToolbarDefaultConfig = (
 			icon: 'redo',
 			title: language['redo']['title'],
 			onDisabled: () => {
-				return (
-					!engine.command.queryState('redo') ||
-					!engine.command.queryEnabled('redo')
-				);
+				return ( !engine.command.queryState('redo') || !engine.command.queryEnabled('redo'));
 			},
-			onActive: () => false,
+			onActive: () => false
 		},
 		{
 			type: 'button',
@@ -418,9 +391,7 @@ export const getToolbarDefaultConfig = (
 				{ key: '40px', content: '40px', hotkey: false },
 				{ key: '48px', content: '48px', hotkey: false },
 			].map((item) =>
-				item.key === engine.container.css('font-size')
-					? { ...item, isDefault: true }
-					: item,
+				item.key === engine.container.css('font-size') ? { ...item, isDefault: true } : item,
 			),
 			onDisabled: () => {
 				const tag = engine.command.queryState('heading') || 'p';
@@ -436,29 +407,20 @@ export const getToolbarDefaultConfig = (
 			className: 'toolbar-dropdown-fontfamily',
 			title: language['fontfamily']['title'],
 			items: fontfamily(fontFamilyDefaultData, {
-				...(language['fontfamily']['items'] as any),
+				...(language['fontfamily']['items']),
 				notInstalled: language['fontfamily']['notInstalled'],
 			}),
 			onActive: (items) => {
 				const values = engine.command.queryState('fontfamily');
-				if (!values || !Array.isArray(values) || values.length === 0)
-					return '';
-				const familys: Array<string> = values[0]
-					.split(',')
-					.map((name: string) =>
-						name.replace(/"/g, '').trim().toLowerCase(),
+				if (!values || !Array.isArray(values) || values.length === 0) return '';
+				const familys = values[0].split(',').map( (name) =>
+            name.replace(/"/g, '').trim().toLowerCase()
 					);
 				return (
-					items.find(
-						(item) =>
-							familys.indexOf(
-								(item as any)['faimlyName']
-									.trim()
-									.toLowerCase(),
-							) > -1,
-					)?.key || ''
+					items.find((item) =>
+							familys.indexOf((item)['faimlyName'].trim().toLowerCase()) > -1).key || ''
 				);
-			},
+			}
 		},
 		{
 			type: 'button',
@@ -547,7 +509,7 @@ export const getToolbarDefaultConfig = (
 			defaultActiveColor: '#F5222D',
 			buttonTitle: language['fontcolor']['title'],
 			dropdownTitle: language['fontcolor']['more'],
-			content: (color: string, stroke: string, disabled?: boolean) => {
+			content: (color, stroke, disabled) => {
 				if (disabled === true) {
 					color = '#BFBFBF';
 					stroke = '#BFBFBF';
@@ -594,7 +556,7 @@ export const getToolbarDefaultConfig = (
 			defaultActiveColor: '#FADB14',
 			buttonTitle: language['backcolor']['title'],
 			dropdownTitle: language['backcolor']['more'],
-			content: (color: string, stroke: string, disabled?: boolean) => {
+			content: (color, stroke, disabled) => {
 				if (disabled === true) {
 					color = '#BFBFBF';
 					stroke = '#BFBFBF';

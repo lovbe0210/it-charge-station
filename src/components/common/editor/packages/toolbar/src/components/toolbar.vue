@@ -22,7 +22,7 @@ import AmGroup from './group.vue'
 import locales from '../locales';
 import { getToolbarDefaultConfig,
 	fontFamilyDefaultData,
-	fontfamily, } from '../config'
+	fontfamily, } from '../config/index.js'
 
 @Component({
     components:{
@@ -106,7 +106,7 @@ export default class Toolbar extends Vue {
     //计算移动浏览器的视图变化
     calcuMobileView(){
         if(!this.engine.isFocus() || this.engine.readonly) return
-    
+
         if(this.caluTimeoutRef) clearTimeout(this.caluTimeoutRef);
         this.caluTimeoutRef = setTimeout(() => {
         const rect = (this.$refs.toolbarRef as Element | undefined)?.getBoundingClientRect()
@@ -119,7 +119,7 @@ export default class Toolbar extends Vue {
         if(isMobile) this.calcuMobileView()
         const data: Array<GroupDataProps> = [];
         const defaultConfig = getToolbarDefaultConfig(this.engine);
-        
+
         this.items.forEach(group => {
             const dataGroup: GroupDataProps = { items:[] };
             if(!Array.isArray(group)) {

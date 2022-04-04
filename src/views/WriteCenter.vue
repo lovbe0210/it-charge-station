@@ -1,5 +1,5 @@
 <template>
-  <div class="editor-wrapp">
+  <div class="editor-center">
     <b-row class="editor-header">
       <div class="dropdown-wrapp">
         <div :class="display ? 'start-dropdown mock-hover' : 'start-dropdown'" id="menu_tips">
@@ -32,7 +32,7 @@
     </b-row>
 
     <b-tooltip target="menu_tips" placement="bottomright" delay="250" triggers="hover"
-               variant="secondary" custom-class="menu-content menu-content" boundary-padding="55">
+               variant="secondary" custom-class="menu-content" boundary-padding="55">
       <b-list-group class="tip-content" flush>
         <b-list-group-item to="/" style="display: flex;align-items: center;">
           <span class="iconfont icon-home" style="margin-right: 10px;font-size: 18px;"></span>

@@ -95,7 +95,7 @@
         </div>
       </div>
 
-      <div :class="{'hasFixed': needFixed == true}" ref="fixedElement">
+      <div :class="{'hasFixed': needFixed}" ref="fixedElement">
         <div class="persona-lization enable-background">
           <div class="user-flag">
             <span>
