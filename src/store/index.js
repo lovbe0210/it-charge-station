@@ -18,6 +18,17 @@ export default new Vuex.Store({
     flagContent: {
       timestamp: new Date().getTime(),
       content: ''
+    },
+    customerSet: {
+      // 主題色
+      themeColor: 'rgba(255,255,255,0.89)',
+      // 字体颜色
+      fontColor: '#747474',
+      // 标题颜色
+      titleColor: '#343434',
+      // 背景图(可以设置渐变色和图片两种，渐变色也可以设置纯色，只要起始色和结束色相同即可)
+      // backgroundImg: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)'
+      backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
     }
   },
 
@@ -70,6 +81,14 @@ export default new Vuex.Store({
      */
     login (state, value) {
       state.userInfo = value
+    },
+    /**
+     * 自定义主题，注意这里的传参必须是一个对象
+     * @param state
+     * @param value
+     */
+    customerSet (state, value) {
+      state.customerSet = Object.assign(state.customerSet, value);
     }
   }
 })

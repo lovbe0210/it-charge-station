@@ -1,5 +1,9 @@
 <template>
   <div id="app" ref="app">
+    <div>
+      them:<input v-model="themeColor"/>
+      <button @click="changeThem">CHANGETHEm</button>
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -23,7 +27,6 @@
     data() {
       return {
         // 主題色
-        // themeColor: '#8EC5FC',
         themeColor: 'rgba(255,255,255,0.89)',
         // 字体颜色
         fontColor: '#747474',
@@ -36,14 +39,31 @@
         backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
       }
     },
+
+    computed: {
+      // 通过计算属性获取用户自定义设置主题
+      customerSet: function() {
+        return this.$store.state.customerSet
+      }
+
+    },
     created() {
       // 在页面加载时读取localStorage里的状态信息加载到vuex中
       if (localStorage.getItem('store')) {
+        // 删除空对象，避免覆盖默数据
+        let storeData = JSON.parse(localStorage.getItem('store'));
+        Object.keys(storeData).forEach(item => {
+          if (storeData[item] === '' || storeData[item] === undefined || storeData[item] === null) {
+            storeData.delete(storeData[item])
+          }
+          return storeData;
+        })
+
         this.$store.replaceState(
           Object.assign(
             {},
             this.$store.state,
-            JSON.parse(localStorage.getItem('store'))
+            storeData
           )
         )
       }
@@ -79,6 +99,17 @@
       window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
       window.addEventListener('unload', e => this.unloadHandler(e))
     },
+
+    watch: {
+      // 开启深度监视，然后实时刷新自定义主题
+      customerSet: {
+        handler() {
+          this.flushCustomerSet();
+        },
+        deep: true
+      }
+    },
+
     destroyed() {
       // 页面关闭时销毁监听
       window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e))
@@ -90,12 +121,26 @@
         localStorage.setItem('store', JSON.stringify(this.$store.state))
         this._beforeUnload_time = new Date().getTime()
       },
-      unloadHandler(e) {
+      unloadHandler() {
         this._gap_time = new Date().getTime() - this._beforeUnload_time
         //判断是窗口关闭还是刷新
         if (this._gap_time <= 5) {
           // 关闭窗口，将flag信息保存到localStorage中
           localStorage.setItem('store', JSON.stringify(this.$store.state))
+        }
+      },
+
+      flushCustomerSet() {
+        this.$refs.app.style.setProperty("--background-img", this.backgroundImg);
+        this.$refs.app.style.setProperty("--background-color", this.backgroundColor);
+        this.$refs.app.style.setProperty("--theme-color", this.$store.state.customerSet.themeColor);
+        this.$refs.app.style.setProperty("--font-color", this.fontColor);
+        this.$refs.app.style.setProperty("--title-color", this.titleColor);
+      },
+
+      changeThem() {
+        if (this.themeColor !== null && this.themeColor !== undefined && this.themeColor !== '') {
+          this.$store.commit('customerSet', { "themeColor": this.themeColor })
         }
       }
     }

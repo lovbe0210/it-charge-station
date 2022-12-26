@@ -328,4 +328,13 @@
 <style scoped lang="less">
   @import './css/common-var.less';
   @import "./css/body.less";
+
+  // 样式删除
+  .list-group-item {
+    background-color: transparent;
+  }
+
+  .ivu-menu-light {
+    background-color: transparent;
+  }
 </style>
