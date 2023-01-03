@@ -28,7 +28,7 @@
     data() {
       return {
         // 主題色
-        themeColor: 'rgba(255,255,255,0.89)',
+        themeColor: 'rgba(255,255,255)',
         // 字体颜色
         fontColor: '#747474',
         // 标题颜色

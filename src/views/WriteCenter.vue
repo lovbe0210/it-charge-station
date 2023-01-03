@@ -1,30 +1,32 @@
 <template>
   <div class="editor-center">
     <b-row class="editor-header">
-      <div class="dropdown-wrapp">
-        <div :class="display ? 'start-dropdown mock-hover' : 'start-dropdown'" id="menu_tips">
-          <span :class="display ? 'iconfont icon-menu-open' : 'iconfont icon-menu-close'"></span>
+      <div class="editor-header-wrap">
+        <div class="dropdown-wrap">
+          <div :class="display ? 'start-dropdown mock-hover' : 'start-dropdown'" id="menu_tips">
+            <span :class="display ? 'iconfont icon-menu-open' : 'iconfont icon-menu-close'"></span>
+          </div>
         </div>
-      </div>
-      <b-list-group class="title-info" flush>
-        <b-list-group-item class="title">
-          {{doc.title === null || doc.title.length === 0 ? "无标题文档" : doc.title}}
-        </b-list-group-item>
-        <b-list-group-item class="author-info">
-          <a href="">@福</a>
-          <span style="color: #d9d9d9;margin: 0 8px 0 8px;">/</span>
-          <a href="">从头开始</a>
-          <span style="color: #d9d9d9;margin: 0 8px 0 8px;">|</span>
-          <a href="" class="update-time">最后更新于今天 12:23<span class="iconfont icon-cloud"/></a>
-        </b-list-group-item>
-      </b-list-group>
-      <div class="editor-setting">
-        <b-button class="update-btn" variant="outline-*" size="sm" @click="updateDocConten" id="update-btn">
-          更新
-        </b-button>
-        <Button id="editor-setting" @click="showSetting">
-          <span class="iconfont icon-edit-more"/>
-        </Button>
+        <b-list-group class="title-info" flush>
+          <b-list-group-item class="title">
+            {{doc.title === null || doc.title.length === 0 ? '无标题文档' : doc.title}}
+          </b-list-group-item>
+          <b-list-group-item class="author-info">
+            <a href="">@福</a>
+            <span style="color: #d9d9d9;margin: 0 8px 0 8px;">/</span>
+            <a href="">从头开始</a>
+            <span style="color: #d9d9d9;margin: 0 8px 0 8px;">|</span>
+            <a href="" class="update-time">最后更新于今天 12:23<span class="iconfont icon-cloud"/></a>
+          </b-list-group-item>
+        </b-list-group>
+        <div class="editor-setting">
+          <b-button class="update-btn" variant="outline-*" size="sm" @click="updateDocConten" id="update-btn">
+            更新
+          </b-button>
+          <Button id="editor-setting">
+            <span class="iconfont icon-edit-more"/>
+          </Button>
+        </div>
       </div>
     </b-row>
     <b-row>
@@ -112,7 +114,7 @@
 
   export default {
     name: 'Follow',
-    data() {
+    data () {
       return {
         doc: {
           title: '我是标题'
@@ -140,13 +142,13 @@
       }
     },
     methods: {
-      isHover1(flag) {
+      isHover1 (flag) {
         this.visible1 = flag
         if (flag) {
           this.$refs.menuTip1.$el.parentElement.setAttribute('style', 'margin: -5px 0 0 16px;')
         }
       },
-      isHover2(flag) {
+      isHover2 (flag) {
         this.visible2 = flag
         if (flag) {
           this.$refs.menuTip2.$el.parentElement.setAttribute('style', 'margin: -5px 0 0 16px;')
@@ -155,38 +157,20 @@
       /**
        * 手动更新文档内容
        */
-      updateDocConten() {
+      updateDocConten () {
 
       },
       /**
        * 为子组件定义的事件方法
        */
-      updateTitle(titleValue) {
+      updateTitle (titleValue) {
         this.doc.title = titleValue;
-      },
-
-      showSetting() {
-        let setWrap
-        setTimeout(() => {
-          new Promise(function (resolve, reject) {
-            let interval = setInterval(() => {
-              setWrap = document.getElementById('set-wrap');
-              if (setWrap !== null) {
-                clearInterval(interval);
-                resolve();
-              }
-            }, 10);
-          }).then(() => {
-            let attribute = setWrap.getAttribute('style')
-            setWrap.setAttribute('style', attribute.replace('left: 0px', 'left: 17px'))
-          });
-        }, 150)
       }
     },
     components: {
       Editor
     },
-    mounted() {
+    mounted () {
       this.$root.$on('bv::tooltip::show', bvEvent => {
         if (bvEvent.target.id === 'menu_tips') {
           // 切换图标显示

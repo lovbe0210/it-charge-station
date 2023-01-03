@@ -1,17 +1,42 @@
 <template>
-  <b-container fluid>
+  <b-container fluid class="editor">
     <div class="amEditorVue2">
       <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
-      <div class="editor-container">
-        <div class="editor-content">
-          <div class="title-editor">
+      <div class="editor-body">
+        <div class="editor-wrap">
+          <div class="editor-wrap-content">
+            <div class="editor-wrap-box">
+              <div class="title-editor">
                 <textarea class="title" v-model="doc.title" placeholder="我是一个没有标题的文章"
                           :autofocus="doc.title === null || doc.title.length === 0" maxlength="130"
                           tabindex="1" rows="1" ref="titleTextarea" @blur="updateTitle">
                 </textarea>
+              </div>
+              <div class="doc-editor-wrap">
+                <div class="editor-engine-box">
+                  <div class="editor-engine">
+                    <div class="doc-editor" ref="container">
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
           </div>
-          <div class="doc-editor" ref="container">
-
+        </div>
+        <div class="editor-toc-sidebar">
+          <div class="editor-toc-view">
+            <div class="editor-toc-pin">
+              <span class="editor-toc-pin-text">大纲</span>
+              <div class="editor-toc-pin-wrap">
+                <div class="ne-icon ne-iconfont" data-name="pin" style="font-size: 16px;">
+                  <span class="lake-icon lake-icon-pin" style="font-size: 16px;"></span>
+                </div>
+              </div>
+            </div>
+            <div class="editor-toc-placeholder">
+              <div class="editor-toc-placeholder-tip">标题将在此展示</div>
+              <div class="editor-toc-placeholder-ind"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -212,7 +237,7 @@
         // 监听编辑器值改变事件
         engine.on("change", () => {
           console.log("value", engine.getValue());
-          console.log("html:", engine.getHtml());
+          // console.log("html:", engine.getHtml());
         });
 
         this.engine = engine;
@@ -229,91 +254,236 @@
 </script>
 
 <style scoped lang="less">
-  .editor-toolbar {
-    border-top: none;
-    /*height: 50px;*/
-
-    .editor-toolbar-content {
-      height: 50px;
-
-      .editor-toolbar-group {
-        padding: 10px 5px;
-        color: #00AE9D;
-        background: #00AE9D;
+  // 写作中心页面整体布局设置
+  .container-fluid {
+    max-width: 100%;
+    .editor {
+      height: calc(100vh - 60px);
+      position: relative;
+      .amEditorVue2 {
+        height: 100%;
+        position: relative;
       }
     }
   }
 
-  .editor-container {
+  // 编辑器工具栏区（内部group-item需要在首页index进行设置）
+  .editor-toolbar {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    padding: 0 40px;
+    margin: 0 auto;
+    border-top: none;
+    border-bottom: none;
+
+    .editor-toolbar-content {
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      position: relative;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      height: 50px;
+      color: #595959;
+    }
+  }
+
+  // 编辑器内容区
+  .editor-body {
+    height: calc(100% - 50px);
     position: relative;
 
-    // 左边的文档内容
-    .editor-content {
-      max-width: 830px;
-      padding: 0 40px;
-      margin: 0 auto;
+    // 左边文档内容
+    .editor-wrap {
+      position: relative;
+      height: 100%;
+      display: flex;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      /*overflow-x: hidden;*/
+      /*overflow-y: auto;*/
+      overflow-anchor: none;
+      -webkit-box-direction: normal;
 
-      .title-editor {
-        margin-top: 33px;
-        position: relative;
-        padding-bottom: 4px;
+      .editor-wrap-content {
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        min-width: 500px;
 
-        .title {
-          color: #262626;
-          font-weight: 700;
-          font-size: 36px;
-          max-height: 350px;
-          min-height: 32px;
-          // 此处表示font-size*1.389得到行高
-          line-height: 1.389;
-          max-width: 100%;
-          width: 100%;
-          resize: none;
-          border: none;
-          outline: none;
-          -webkit-box-shadow: none;
-          box-shadow: none;
-          padding: 0;
-          margin: 0;
-          vertical-align: bottom;
-          transition: all .3s, height 0s;
-          font-variant: tabular-nums;
-          list-style: none;
-          font-feature-settings: "tnum";
-          position: relative;
-          display: inline-block;
+        .editor-wrap-box {
+          min-width: 500px;
+          padding-bottom: 1px;
           background-color: #fff;
-          background-image: none;
-          border-radius: 4px;
-          overflow-x: hidden;
-          overflow-y: hidden;
-        }
 
-        // 设置placeholder字体颜色
-        textarea::-webkit-input-placeholder { /* WebKit browsers */
-          color: #BFBFBF;
-        }
+          .title-editor {
+            position: relative;
+            max-width: 830px;
+            padding: 0 40px 4px 40px;
+            margin: 33px auto 0 auto;
 
-        textarea::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-          color: #BFBFBF;
-        }
+            .title {
+              color: #262626;
+              font-weight: 700;
+              font-size: 36px;
+              max-height: 350px;
+              min-height: 32px;
+              // 此处表示font-size*1.389得到行高
+              line-height: 1.389;
+              max-width: 100%;
+              width: 100%;
+              resize: none;
+              border: none;
+              outline: none;
+              -webkit-box-shadow: none;
+              box-shadow: none;
+              padding: 0;
+              margin: 0;
+              vertical-align: bottom;
+              transition: all .3s, height 0s;
+              font-variant: tabular-nums;
+              list-style: none;
+              font-feature-settings: "tnum";
+              position: relative;
+              display: inline-block;
+              background-color: #fff;
+              background-image: none;
+              border-radius: 4px;
+              overflow-x: hidden;
+              overflow-y: hidden;
+            }
 
-        textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
-          color: #BFBFBF;
-        }
+            // 设置placeholder字体颜色
+            textarea::-webkit-input-placeholder { /* WebKit browsers */
+              color: #BFBFBF;
+            }
 
-        textarea::-ms-input-placeholder { /* Internet Explorer 10+ */
-          color: #BFBFBF;
+            textarea::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+              color: #BFBFBF;
+            }
+
+            textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+              color: #BFBFBF;
+            }
+
+            textarea::-ms-input-placeholder { /* Internet Explorer 10+ */
+              color: #BFBFBF;
+            }
+          }
+
+          .doc-editor-wrap {
+            position: relative;
+
+            .editor-engine-box {
+              position: relative;
+              /*overflow-anchor: none;*/
+
+              .editor-engine {
+                position: relative;
+                z-index: 1;
+                outline: none;
+                white-space: break-spaces;
+                word-break: break-word;
+                word-wrap: break-word;
+                min-height: 1024px;
+                padding: 20px 40px 90px 40px;
+                line-height: 1.74;
+                letter-spacing: .008em;
+                color: #262626;
+                font-size: 15px;
+
+                .doc-editor {
+                  max-width: 750px;
+                  margin-left: auto;
+                  margin-right: 280px;
+                  display: block;
+                  min-height: 24px;
+
+                  /*margin-top: 20px;*/
+                  /*letter-spacing: .008em;*/
+                }
+              }
+            }
+          }
+
         }
       }
 
-      .doc-editor {
-        margin-top: 20px;
-        letter-spacing: .008em;
-      }
+
+      /*max-width: 830px;*/
+      /*padding: 0 40px;*/
+      /*margin: 0 auto;*/
     }
 
     // 右边的大纲
+    .editor-toc-sidebar {
+      position: absolute;
+      width: 40px;
+      right: 15px;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: end;
+      -ms-flex-pack: end;
+      justify-content: flex-end;
+      -webkit-box-align: start;
+      -ms-flex-align: start;
+      align-items: flex-start;
+      width: -webkit-fit-content;
+      width: -moz-fit-content;
+      width: fit-content;
+      background: hsla(0,0%,100%,.8);
+      -webkit-backdrop-filter: blur(30px);
+      backdrop-filter: blur(30px);
+      z-index: 1;
+
+      .editor-toc-view {
+        position: relative;
+        width: 280px;
+        max-height: calc(100% - 50px);
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        margin-top: 35px;
+        flex-shrink: 0;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        z-index: 1;
+
+        .editor-toc-pin {
+          margin-bottom: 12px;
+          padding-top: 8px;
+          padding-left: 28px;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          height: 30px;
+          -ms-flex-negative: 0;
+          flex-shrink: 0;
+        }
+
+        .editor-toc-placeholder {
+          .editor-toc-placeholder-tip {
+            /*display: block;*/
+            font-size: 14px;
+            color: #d9d9d9;
+            padding-left: 28px;
+          }
+        }
+
+      }
+    }
   }
 
 </style>
