@@ -13,12 +13,13 @@
   // 无限滚动
   import infiniteScroll from 'vue-infinite-scroll'
   // 引入bootstrap所需
-  import { BootstrapVue } from 'bootstrap-vue'
+  import {BootstrapVue} from 'bootstrap-vue'
   import 'bootstrap/dist/css/bootstrap.css'
   import 'bootstrap-vue/dist/bootstrap-vue.css'
   // 引入ViewUI样式和组件
   import ViewUI from 'view-design'
   import 'view-design/dist/styles/iview.css'
+  import commonUtil from "@/utils/common";
 
   // 安装bootstrap和图标库
   Vue.use(BootstrapVue).use(ViewUI).use(infiniteScroll)
@@ -42,7 +43,7 @@
 
     computed: {
       // 通过计算属性获取用户自定义设置主题
-      customerSet: function() {
+      customerSet: function () {
         return this.$store.state.customerSet
       }
 
@@ -90,12 +91,7 @@
     },
     mounted() {
       // 加载背景
-      this.$refs.app.style.setProperty("--background-img", this.backgroundImg);
-      this.$refs.app.style.setProperty("--background-color", this.backgroundColor);
-      this.$refs.app.style.setProperty("--theme-color", this.themeColor);
-      this.$refs.app.style.setProperty("--font-color", this.fontColor);
-      this.$refs.app.style.setProperty("--title-color", this.titleColor);
-
+      commonUtil.flushCustomerSet(this.customerSet);
       window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
       window.addEventListener('unload', e => this.unloadHandler(e))
     },
@@ -131,16 +127,12 @@
       },
 
       flushCustomerSet() {
-        this.$refs.app.style.setProperty("--background-img", this.backgroundImg);
-        this.$refs.app.style.setProperty("--background-color", this.backgroundColor);
-        this.$refs.app.style.setProperty("--theme-color", this.$store.state.customerSet.themeColor);
-        this.$refs.app.style.setProperty("--font-color", this.fontColor);
-        this.$refs.app.style.setProperty("--title-color", this.titleColor);
+        commonUtil.flushCustomerSet(this.customerSet);
       },
 
       changeThem() {
         if (this.themeColor !== null && this.themeColor !== undefined && this.themeColor !== '') {
-          this.$store.commit('customerSet', { "themeColor": this.themeColor })
+          this.$store.commit('customerSet', {"themeColor": this.themeColor})
         }
       }
     }

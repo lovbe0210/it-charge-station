@@ -15,6 +15,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     // 大括号内不能为空
     'no-trailing-spaces': "off",
+    "object-curly-spacing": [0, "never"],
     // String必须使用单引号
     'quotes': "off",
     'quote-props': "off",
