@@ -3,7 +3,8 @@
     <div class="back-top" v-show="backTopShow" @click="backTop">
       <span class="iconfont icon-top"/>
     </div>
-    <div class="setting" v-show="backTopShow" v-b-tooltip.hover.leftbottom.v-secondary :title="title" @click="changeuserInfo">
+    <div class="setting" v-show="backTopShow" v-b-tooltip.hover.leftbottom.v-secondary :title="title"
+         @click="showCustomer()">
       <span class="iconfont icon-setting"/>
     </div>
   </div>
@@ -11,7 +12,7 @@
 <script>
   export default {
     name: 'backTop',
-    data () {
+    data() {
       return {
         scrollTop: '',
         backTopShow: false,
@@ -25,7 +26,7 @@
       }
     },
     watch: {
-      scrollTop (val) {
+      scrollTop(val) {
         if (this.scrollTop > this.customHeight) {
           this.backTopShow = true
         } else {
@@ -34,7 +35,7 @@
       }
     },
     methods: {
-      handleScroll () {
+      handleScroll() {
         this.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
         if (this.scrollTop > this.customHeight) {
           this.backTopShow = true
@@ -56,14 +57,14 @@
           }
         });
       },
-      changeuserInfo() {
-        alert('设置全局主题')
+      showCustomer() {
+        this.$store.commit('showCustomer', true)
       }
     },
-    mounted () {
+    mounted() {
       window.addEventListener('scroll', this.handleScroll)
     },
-    destroyed () {
+    destroyed() {
       window.removeEventListener('scroll', this.handleScroll)
     }
   }
@@ -71,10 +72,12 @@
 
 <style scoped lang="less">
   @import '../css/common-var.less';
+
   .top-setting {
     position: fixed;
     right: 40px;
     bottom: 80px;
+
     .back-top {
       width: 46px;
       height: 46px;
@@ -82,21 +85,25 @@
       background: #fff;
       cursor: pointer;
       box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
+
       span {
         border-radius: 50%;
         margin-left: 7.5px;
-        font-size:32px;
+        font-size: 32px;
       }
     }
-    .back-top:hover{
+
+    .back-top:hover {
       background: @background-color-base;
     }
+
     .setting {
       width: 48px;
       height: 48px;
+
       span {
         border-radius: 50%;
-        font-size:44px;
+        font-size: 44px;
       }
     }
   }

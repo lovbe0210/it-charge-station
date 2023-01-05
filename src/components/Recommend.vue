@@ -131,7 +131,8 @@
               preview: require('@/assets/img/' + Math.ceil(Math.random() * 31) + '.jpg'),
               content: this.data.length % 2 === 0 ? '我是偶数content @~@' : '我是偶数content @…@'
             }
-          )
+          );
+          this.count++;
         }
       }
     }

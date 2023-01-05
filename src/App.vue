@@ -1,8 +1,8 @@
 <template>
   <div id="app" ref="app">
     <div>
-      them:<input v-model="themeColor"/>
-      <button @click="changeThem">CHANGETHEm</button>
+<!--      them:<input v-model="themeColor"/>-->
+<!--      <button @click="changeThem">CHANGETHEm</button>-->
     </div>
     <router-view></router-view>
   </div>
@@ -79,10 +79,10 @@
       }
 
       // 配置全局消息发送
-      this.$Message.config({
-        top: 50,
-        duration: 2
-      })
+      // this.$Message.config({
+      //   top: 50,
+      //   duration: 2
+      // })
 
       // TODO 后期作为点赞收藏图标变化效果
       //.iconfont:hover {

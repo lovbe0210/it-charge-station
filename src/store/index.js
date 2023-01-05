@@ -29,7 +29,9 @@ export default new Vuex.Store({
       // 背景图(可以设置渐变色和图片两种，渐变色也可以设置纯色，只要起始色和结束色相同即可)
       // backgroundImg: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)'
       backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
-    }
+    },
+    // 显示自定义主题开关
+    showCustomer: true
   },
 
   // 直接操作state中的数据(commit)
@@ -89,6 +91,14 @@ export default new Vuex.Store({
      */
     customerSet (state, value) {
       state.customerSet = Object.assign(state.customerSet, value);
+    },
+    /**
+     * 是否显示自定义主题插件
+     * @param state
+     * @param value
+     */
+    showCustomer (state, value) {
+      state.showCustomer = value;
     }
   }
 })

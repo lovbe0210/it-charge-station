@@ -141,6 +141,15 @@
 
         <!-- 返回顶部 -->
         <back-top></back-top>
+        <!-- 自定义主题 -->
+        <Drawer  placement="bottom" :closable="false"
+                :lock-scroll="false" v-model="showCustomer">
+          <b-row>
+            <b-col cols="4">Some contents...</b-col>
+            <b-col cols="4">Some contents...</b-col>
+            <b-col cols="4">Some contents...</b-col>
+          </b-row>
+        </Drawer>
       </div>
     </b-col>
   </b-row>
@@ -152,7 +161,7 @@
 
   export default {
     name: 'Body',
-    data () {
+    data() {
       return {
         topics: [
           {
@@ -245,20 +254,20 @@
     },
     computed: {
       // 从vuex中获取上一次的选中菜单项
-      activeName () {
+      activeName() {
         return this.$store.state.activeName
       },
       // 判断页面是手机页面还是pc页面，如果是手机页面则进行全屏显示
-      adaptiveCols () {
+      adaptiveCols() {
         return this.$store.state.isPhone ? 12 : 8
       },
-      contentLength () {
+      contentLength() {
         return this.flagContent == null ? 0 : this.flagContent.length
       },
-      changeBorder () {
+      changeBorder() {
         return this.focused ? true : this.hovered
       },
-      chickenSoup () {
+      chickenSoup() {
         let content = '每日一句心灵鸡汤'
         // 请求接口
         content = ''
@@ -267,6 +276,14 @@
         } else {
           return '每日一句心灵鸡汤'
         }
+      },
+      showCustomer: {
+        get() {
+          return this.$store.state.showCustomer;
+        },
+        set(value) {
+          this.$store.commit('showCustomer', value);
+        }
       }
     },
     methods: {
@@ -274,21 +291,21 @@
        * 当前选择的显示项
        * @param activeName
        */
-      onSelect (activeName) {
+      onSelect(activeName) {
         this.$store.commit('changeActiveRoute', activeName)
       },
-      isEditable (flag) {
+      isEditable(flag) {
         if (!flag) {
           // 失去焦点，更新内容
           this.$store.commit('editFlagContent', this.flagContent)
         }
         this.focused = flag
       },
-      isHover (flag) {
+      isHover(flag) {
         this.hovered = flag
       },
       // 视窗固定
-      handleScroll () {
+      handleScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
         if (scrollTop > this.fixedHeight) {
           this.needFixed = true
@@ -297,7 +314,7 @@
         }
       }
     },
-    mounted () {
+    mounted() {
       if (!this.$store.state.isPhone) {
         // 给window添加一个滚动监听事件
         window.addEventListener('scroll', this.handleScroll)
@@ -318,7 +335,7 @@
         }
       }, 13000)
     },
-    destroyed () {
+    destroyed() {
       // 释放监听
       window.removeEventListener('scroll', this.handleScroll)
     }
