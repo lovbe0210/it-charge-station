@@ -60,6 +60,9 @@
           return storeData;
         })
 
+        // 自定义主题状态初始化
+        storeData.showCustomer = false;
+
         this.$store.replaceState(
           Object.assign(
             {},

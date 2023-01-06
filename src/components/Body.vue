@@ -142,13 +142,16 @@
         <!-- 返回顶部 -->
         <back-top></back-top>
         <!-- 自定义主题 -->
-        <Drawer  placement="bottom" :closable="false"
-                :lock-scroll="false" v-model="showCustomer">
-          <b-row>
-            <b-col cols="4">Some contents...</b-col>
-            <b-col cols="4">Some contents...</b-col>
-            <b-col cols="4">Some contents...</b-col>
-          </b-row>
+        <Drawer placement="right" v-model="showCustomer" :closable="false"
+                width="16" :lock-scroll="false" class-name="customer">
+            <div class="them">
+              <div class="title">颜色主题</div>
+            </div>
+            <div class="music">
+            </div>
+            <div class="other">
+              <div class="title">其他设置</div>
+            </div>
         </Drawer>
       </div>
     </b-col>
@@ -286,6 +289,17 @@
         }
       }
     },
+    watch: {
+      showCustomer() {
+        if (this.showCustomer) {
+          // 禁止滚轮滚动
+          document.body.addEventListener('wheel', this.tempFunction, {passive: false});
+        } else {
+          // 解除阻止
+          document.body.removeEventListener('wheel', this.tempFunction)
+        }
+      }
+    },
     methods: {
       /**
        * 当前选择的显示项
@@ -304,14 +318,18 @@
       isHover(flag) {
         this.hovered = flag
       },
-      // 视窗固定
+      // 滚动条滚动处理事件：
       handleScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        // 视窗固定
         if (scrollTop > this.fixedHeight) {
           this.needFixed = true
         } else {
           this.needFixed = false
         }
+      },
+      tempFunction(e) {
+        e.preventDefault()
       }
     },
     mounted() {
@@ -345,13 +363,4 @@
 <style scoped lang="less">
   @import './css/common-var.less';
   @import "./css/body.less";
-
-  // 样式删除
-  .list-group-item {
-    background-color: transparent;
-  }
-
-  .ivu-menu-light {
-    background-color: transparent;
-  }
 </style>

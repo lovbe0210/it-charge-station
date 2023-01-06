@@ -1,3 +1,13 @@
+@import "./common-var.less";
+// 样式删除
+.list-group-item {
+  background-color: transparent;
+}
+
+.ivu-menu-light {
+  background-color: transparent;
+}
+
 .body-row {
   height: auto;
   padding-left: 0;
@@ -315,6 +325,50 @@
 
     .back-top {
       background: @border-color_hover;
+    }
+  }
+}
+
+// 底部自定义主题栏
+/deep/ .customer {
+  .ivu-drawer {
+    height: 60%;
+    top: 40%;
+    .ivu-drawer-content {
+      background-color: transparent !important;
+      .ivu-drawer-body {
+        border-radius: 5px;
+        width: 99%;
+        padding: 0;
+        > div {
+          height: 100/3%;
+          width: 100%;
+          border-radius: 6px;
+          background-color: var(--theme-color);
+        }
+        .them {
+          .title {
+            padding: 20px 0 0 30px;
+            font-size: 1.15em;
+            color: @light-font-color;
+          }
+        }
+        .music {
+          background-image: url("../../assets/music_bacc.jpg");
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: center center;
+          // 固定在屏幕上，不随滚动轴滚动
+          //background-attachment: fixed;
+        }
+        .other {
+          .title {
+            padding: 20px 0 0 30px;
+            font-size: 1.15em;
+            color: @light-font-color;
+          }
+        }
+      }
     }
   }
 }
