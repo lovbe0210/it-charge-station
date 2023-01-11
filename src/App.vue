@@ -1,8 +1,8 @@
 <template>
   <div id="app" ref="app">
     <div>
-<!--      them:<input v-model="themeColor"/>-->
-<!--      <button @click="changeThem">CHANGETHEm</button>-->
+      <!--      them:<input v-model="themeColor"/>-->
+      <!--      <button @click="changeThem">CHANGETHEm</button>-->
     </div>
     <router-view></router-view>
   </div>
@@ -20,9 +20,11 @@
   import ViewUI from 'view-design'
   import 'view-design/dist/styles/iview.css'
   import commonUtil from "@/utils/common";
+  // 引入弹幕模块
+  import {vueBaberrage} from 'vue-baberrage'
 
   // 安装bootstrap和图标库
-  Vue.use(BootstrapVue).use(ViewUI).use(infiniteScroll)
+  Vue.use(BootstrapVue).use(ViewUI).use(infiniteScroll).use(vueBaberrage)
   export default {
     name: 'App',
     data() {

@@ -144,14 +144,18 @@
         <!-- 自定义主题 -->
         <Drawer placement="right" v-model="showCustomer" :closable="false"
                 width="16" :lock-scroll="false" class-name="customer">
-            <div class="them">
-              <div class="title">颜色主题</div>
-            </div>
-            <div class="music">
-            </div>
-            <div class="other">
-              <div class="title">其他设置</div>
-            </div>
+          <div class="them">
+            <div class="title">颜色主题</div>
+            <Button @click="addToList()"></Button>
+          </div>
+          <div class="music">
+          </div>
+          <div class="other">
+            <div class="title">回声洞</div>
+            <vue-baberrage :isShow="true" :barrageList="barrageList" :loop="false">
+
+            </vue-baberrage>
+          </div>
         </Drawer>
       </div>
     </b-col>
@@ -161,6 +165,7 @@
 <script>
   import CarouselSwipe from '@/components/common/CarouselSwipe'
   import BackTop from '@/components/common/BackTop'
+  import { MESSAGE_TYPE } from 'vue-baberrage'
 
   export default {
     name: 'Body',
@@ -248,7 +253,9 @@
         focused: false,
         hovered: false,
         needFixed: false,
-        fixedHeight: '99999px'
+        fixedHeight: '99999px',
+        currentId: 0,
+        barrageList: []
       }
     },
     components: {
@@ -330,6 +337,17 @@
       },
       tempFunction(e) {
         e.preventDefault()
+      },
+      addToList() {
+        let barrage = {
+          id: ++this.currentId,
+          avatar: require('@/assets/music_bacc.jpg'),
+          msg: '这是一条弹幕',
+          time: 5,
+          type: MESSAGE_TYPE.NORMAL
+        };
+        // debugger
+        this.barrageList.push(barrage);
       }
     },
     mounted() {
