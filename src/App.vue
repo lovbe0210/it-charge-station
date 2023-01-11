@@ -1,8 +1,8 @@
 <template>
   <div id="app" ref="app">
     <div>
-      <!--      them:<input v-model="themeColor"/>-->
-      <!--      <button @click="changeThem">CHANGETHEm</button>-->
+<!--      them:<input v-model="themColor"/>-->
+<!--      <button @click="changeThem">CHANGETHEm</button>-->
     </div>
     <router-view></router-view>
   </div>
@@ -29,17 +29,6 @@
     name: 'App',
     data() {
       return {
-        // 主題色
-        themeColor: 'rgba(255,255,255)',
-        // 字体颜色
-        fontColor: '#747474',
-        // 标题颜色
-        titleColor: '#343434',
-        // 背景色
-        backgroundColor: '#000000',
-        // 背景图
-        // backgroundImg: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)'
-        backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
       }
     },
 
@@ -48,7 +37,6 @@
       customerSet: function () {
         return this.$store.state.customerSet
       }
-
     },
     created() {
       // 在页面加载时读取localStorage里的状态信息加载到vuex中
@@ -94,13 +82,6 @@
       //  font-size: 100px;
       //}
     },
-    mounted() {
-      // 加载背景
-      commonUtil.flushCustomerSet(this.customerSet);
-      window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
-      window.addEventListener('unload', e => this.unloadHandler(e))
-    },
-
     watch: {
       // 开启深度监视，然后实时刷新自定义主题
       customerSet: {
@@ -109,6 +90,13 @@
         },
         deep: true
       }
+    },
+
+    mounted() {
+      // 加载背景
+      commonUtil.flushCustomerSet(this.customerSet);
+      window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
+      window.addEventListener('unload', e => this.unloadHandler(e))
     },
 
     destroyed() {
@@ -133,12 +121,6 @@
 
       flushCustomerSet() {
         commonUtil.flushCustomerSet(this.customerSet);
-      },
-
-      changeThem() {
-        if (this.themeColor !== null && this.themeColor !== undefined && this.themeColor !== '') {
-          this.$store.commit('customerSet', {"themeColor": this.themeColor})
-        }
       }
     }
   }

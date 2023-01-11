@@ -145,13 +145,48 @@
         <Drawer placement="right" v-model="showCustomer" :closable="false"
                 width="16" :lock-scroll="false" class-name="customer">
           <div class="them">
-            <div class="title">颜色主题</div>
-            <Button @click="addToList()"></Button>
+            <Collapse v-model="panels" simple>
+              <Panel name="1">
+                主题颜色
+                <p slot="content">
+                  <RadioGroup v-model="customerSet.themColor">
+                    <Radio label="rgba(255,255,255)" border>红色</Radio>
+                    <Radio label="rgba(122,122,122)" border>绿色</Radio>
+                    <Radio label="rgba(0,0,0)" border>黑色</Radio>
+                  </RadioGroup>
+                </p>
+              </Panel>
+              <Panel name="2">
+                背景颜色
+                <p slot="content">斯蒂夫·盖瑞·沃兹尼亚克</p>
+              </Panel>
+              <Panel name="3">
+                字体颜色
+                <p slot="content">
+                  乔纳森·伊夫是一位工业设计师</p>
+              </Panel>
+              <Panel name="4">
+                预制方案
+                <p slot="content">
+                  <RadioGroup v-model="customerSet.themColor">
+                    <Radio label="rgba(255,255,255)" border>小清新</Radio>
+                    <Radio label="rgba(122,122,122)" border>简约风</Radio>
+                    <Radio label="rgba(0,0,0)" border>原生像素</Radio>
+                  </RadioGroup>
+                </p>
+              </Panel>
+            </Collapse>
+
+
+            <!--              <div class="title">主题颜色（透明色）</div>-->
+            <!--              <div class="title">背景颜色（渐变色 图片）</div>-->
+            <!--              <div class="title">字体颜色</div>-->
+            <!--              <div class="title">标题颜色</div>-->
           </div>
           <div class="music">
           </div>
           <div class="other">
-            <div class="title">回声洞</div>
+            <Button class="title" @click="addToList">回声洞</Button>
             <vue-baberrage :isShow="true" :barrageList="barrageList" :loop="false">
 
             </vue-baberrage>
@@ -254,6 +289,7 @@
         hovered: false,
         needFixed: false,
         fixedHeight: '99999px',
+        panels: ['1', '2', '3', '4'],
         currentId: 0,
         barrageList: []
       }
@@ -264,20 +300,20 @@
     },
     computed: {
       // 从vuex中获取上一次的选中菜单项
-      activeName() {
+      activeName () {
         return this.$store.state.activeName
       },
       // 判断页面是手机页面还是pc页面，如果是手机页面则进行全屏显示
-      adaptiveCols() {
+      adaptiveCols () {
         return this.$store.state.isPhone ? 12 : 8
       },
-      contentLength() {
+      contentLength () {
         return this.flagContent == null ? 0 : this.flagContent.length
       },
-      changeBorder() {
+      changeBorder () {
         return this.focused ? true : this.hovered
       },
-      chickenSoup() {
+      chickenSoup () {
         let content = '每日一句心灵鸡汤'
         // 请求接口
         content = ''
@@ -288,19 +324,28 @@
         }
       },
       showCustomer: {
-        get() {
+        get () {
           return this.$store.state.showCustomer;
         },
-        set(value) {
+        set (value) {
           this.$store.commit('showCustomer', value);
+        }
+      },
+      // 通过计算属性获取用户自定义设置主题
+      customerSet: {
+        get () {
+          return this.$store.state.customerSet
+        },
+        set (value) {
+          this.$store.commit('customerSet', value);
         }
       }
     },
     watch: {
-      showCustomer() {
+      showCustomer () {
         if (this.showCustomer) {
           // 禁止滚轮滚动
-          document.body.addEventListener('wheel', this.tempFunction, {passive: false});
+          document.body.addEventListener('wheel', this.tempFunction, { passive: false });
         } else {
           // 解除阻止
           document.body.removeEventListener('wheel', this.tempFunction)
@@ -312,21 +357,21 @@
        * 当前选择的显示项
        * @param activeName
        */
-      onSelect(activeName) {
+      onSelect (activeName) {
         this.$store.commit('changeActiveRoute', activeName)
       },
-      isEditable(flag) {
+      isEditable (flag) {
         if (!flag) {
           // 失去焦点，更新内容
           this.$store.commit('editFlagContent', this.flagContent)
         }
         this.focused = flag
       },
-      isHover(flag) {
+      isHover (flag) {
         this.hovered = flag
       },
       // 滚动条滚动处理事件：
-      handleScroll() {
+      handleScroll () {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
         // 视窗固定
         if (scrollTop > this.fixedHeight) {
@@ -335,8 +380,13 @@
           this.needFixed = false
         }
       },
-      tempFunction(e) {
+      tempFunction (e) {
         e.preventDefault()
+      },
+      changeThem () {
+        if (this.themColor !== null && this.themColor !== undefined && this.themColor !== '') {
+          this.$store.commit('customerSet', { "themColor": this.themColor })
+        }
       },
       addToList() {
         let barrage = {
@@ -350,7 +400,7 @@
         this.barrageList.push(barrage);
       }
     },
-    mounted() {
+    mounted () {
       if (!this.$store.state.isPhone) {
         // 给window添加一个滚动监听事件
         window.addEventListener('scroll', this.handleScroll)
@@ -371,7 +421,7 @@
         }
       }, 13000)
     },
-    destroyed() {
+    destroyed () {
       // 释放监听
       window.removeEventListener('scroll', this.handleScroll)
     }

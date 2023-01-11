@@ -21,7 +21,7 @@ export default new Vuex.Store({
     },
     customerSet: {
       // 主題色
-      themeColor: 'rgba(255,255,255,0.89)',
+      themColor: 'rgba(255,255,255,0.89)',
       // 字体颜色
       fontColor: '#747474',
       // 标题颜色
@@ -31,7 +31,7 @@ export default new Vuex.Store({
       backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
     },
     // 显示自定义主题开关
-    showCustomer: true
+    showCustomer: false
   },
 
   // 直接操作state中的数据(commit)
