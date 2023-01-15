@@ -7,7 +7,7 @@ export default {
     let styleProperty =
       `--background-img: ${themProperty.backgroundImg};` +
       `--background-color: ${themProperty.backgroundColor};` +
-      `--theme-color: ${themProperty.themColor};` +
+      `--theme-color: ${themProperty.themeColor};` +
       `--font-color: ${themProperty.fontColor};` +
       `--title-color: ${themProperty.titleColor};`
     document.querySelector(':root').setAttribute('style', styleProperty)

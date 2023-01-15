@@ -143,45 +143,25 @@
         <back-top></back-top>
         <!-- 自定义主题 -->
         <Drawer placement="right" v-model="showCustomer" :closable="false"
-                width="16" :lock-scroll="false" class-name="customer">
+                width="18" :lock-scroll="false" class-name="customer">
           <div class="them">
-            <Collapse v-model="panels" simple>
-              <Panel name="1">
-                主题颜色
-                <p slot="content">
-                  <RadioGroup v-model="customerSet.themColor">
-                    <Radio label="rgba(255,255,255)" border>红色</Radio>
-                    <Radio label="rgba(122,122,122)" border>绿色</Radio>
-                    <Radio label="rgba(0,0,0)" border>黑色</Radio>
-                  </RadioGroup>
-                </p>
-              </Panel>
-              <Panel name="2">
-                背景颜色
-                <p slot="content">斯蒂夫·盖瑞·沃兹尼亚克</p>
-              </Panel>
-              <Panel name="3">
-                字体颜色
-                <p slot="content">
-                  乔纳森·伊夫是一位工业设计师</p>
-              </Panel>
-              <Panel name="4">
-                预制方案
-                <p slot="content">
-                  <RadioGroup v-model="customerSet.themColor">
-                    <Radio label="rgba(255,255,255)" border>小清新</Radio>
-                    <Radio label="rgba(122,122,122)" border>简约风</Radio>
-                    <Radio label="rgba(0,0,0)" border>原生像素</Radio>
-                  </RadioGroup>
-                </p>
-              </Panel>
-            </Collapse>
-
-
-            <!--              <div class="title">主题颜色（透明色）</div>-->
-            <!--              <div class="title">背景颜色（渐变色 图片）</div>-->
-            <!--              <div class="title">字体颜色</div>-->
-            <!--              <div class="title">标题颜色</div>-->
+            <div class="title">
+              <span class="iconfont icon-theme"/>
+              个人偏好
+            </div>
+            <div class="theme-color setting">
+              主题设置
+              <ColorPicker v-model="customerSet.themeColor" alpha size="small"/>
+            </div>
+            <div class="bacc-color setting">
+              背景设置
+              <Upload action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false">
+                <Button icon="ios-cloud-upload-outline">√已完成</Button>
+              </Upload>
+            </div>
+            <Button @click="changeThem(0)">恢复默认</Button>
+            <Button @click="changeThem(1)">预设主题一</Button>
+            <Button @click="changeThem(2)">预设主题二</Button>
           </div>
           <div class="music">
           </div>
@@ -204,7 +184,7 @@
 
   export default {
     name: 'Body',
-    data() {
+    data () {
       return {
         topics: [
           {
@@ -383,12 +363,37 @@
       tempFunction (e) {
         e.preventDefault()
       },
-      changeThem () {
-        if (this.themColor !== null && this.themColor !== undefined && this.themColor !== '') {
-          this.$store.commit('customerSet', { "themColor": this.themColor })
+      changeThem (value) {
+        let customerSet = {};
+        switch (value) {
+          case 0:
+            customerSet = {
+              themeColor: 'rgba(255,255,255,1)',
+              fontColor: '#404040',
+              titleColor: '#0a0a0a',
+              backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
+            }
+            break;
+          case 1:
+            customerSet = {
+              themeColor: 'rgba(0,0,0,1)',
+              fontColor: '#404040',
+              titleColor: '#0a0a0a',
+              backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
+            }
+            break;
+          case 2:
+            customerSet = {
+              themeColor: 'rgba(255,255,255,0.89)',
+              fontColor: '#404040',
+              titleColor: '#0a0a0a',
+              backgroundImg: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)'
+            }
+            break;
         }
+        this.$store.commit('customerSet', customerSet)
       },
-      addToList() {
+      addToList () {
         let barrage = {
           id: ++this.currentId,
           avatar: require('@/assets/music_bacc.jpg'),

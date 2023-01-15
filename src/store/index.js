@@ -21,7 +21,7 @@ export default new Vuex.Store({
     },
     customerSet: {
       // 主題色
-      themColor: 'rgba(255,255,255,0.89)',
+      themeColor: 'rgba(255,255,255,0.89)',
       // 字体颜色
       fontColor: '#747474',
       // 标题颜色

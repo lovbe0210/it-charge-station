@@ -1,7 +1,7 @@
 <template>
   <div id="app" ref="app">
     <div>
-<!--      them:<input v-model="themColor"/>-->
+<!--      them:<input v-model="themeColor"/>-->
 <!--      <button @click="changeThem">CHANGETHEm</button>-->
     </div>
     <router-view></router-view>
@@ -139,7 +139,7 @@
   }
 
   [class*="col"], [class*="row"], [class*="container"] {
-    position: relative;
+    /*position: relative;*/
     min-height: 1px;
     padding-right: 0;
     padding-left: 0;
