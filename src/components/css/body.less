@@ -64,6 +64,31 @@
   padding-right: 4px;
 }
 
+/deep/ .bacc-color {
+  .ivu-upload {
+    .ivu-btn {
+      border: 1px solid @border-color_normal;
+      background-color: transparent;
+      width: 58px;
+      height: 24px;
+      border-radius: 3px;
+      .ivu-icon {
+        line-height: 1.2;
+        font-size: 1.3rem;
+        font-weight: 550;
+      }
+    }
+    .ivu-btn:hover {
+      color: @light-font-color;
+      border-color: @border-color_hover;
+    }
+    .ivu-btn:focus {
+      box-shadow: none;
+    }
+  }
+}
+
+
 
 // -----------------------疑难杂症结束---------------------------
 
@@ -428,6 +453,28 @@
             display: flex;
             align-items: center;
             padding: 10px 15px 10px 15px;
+          }
+
+          .bacc-color {
+            .ivu-upload {
+              padding-left: 7px;
+              display: flex;
+              justify-content: center;
+              .upload-icon {
+                border: 1px solid @border-color_normal;
+                border-radius: 3px;
+                width: 58px;
+                height: 24px;
+                display: flex;
+                justify-content: center;
+              }
+              :hover {
+                border-color: @border-color_hover;
+              }
+              :focus {
+                border-color: @border-color_hover;
+              }
+            }
           }
         }
 

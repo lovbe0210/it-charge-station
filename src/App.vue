@@ -166,9 +166,8 @@
     // 全局背景，可以是渐变色，可以是图片
     background: var(--background-color);
     background-image: var(--background-img);
-    // 平铺
-    background-repeat: no-repeat;
-    background-size: 100% auto;
+    // 平铺占满全屏，效果取决于图片大小
+    background-size: cover;
     // 固定在屏幕上，不随滚动轴滚动
     background-attachment: fixed;
   }

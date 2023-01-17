@@ -146,8 +146,8 @@
                 width="18" :lock-scroll="false" class-name="customer">
           <div class="them">
             <div class="title">
-              <span class="iconfont icon-theme"/>
-              个人偏好
+<!--              <span class="iconfont icon-theme"/>-->
+              🎨 个人偏好
             </div>
             <div class="theme-color setting">
               主题设置
@@ -155,13 +155,26 @@
             </div>
             <div class="bacc-color setting">
               背景设置
-              <Upload action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false">
-                <Button icon="ios-cloud-upload-outline">√已完成</Button>
+              <Upload
+                action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false"
+                :format="['jpg','jpeg','png']" :max-size="10240" :on-progress="uploading"
+                accept="image/png, image/jpeg" :disabled="uploadStatus === 1"
+                :on-exceeded-size="handleMaxSize" :on-format-error="handleFormatError"
+                :on-success="handleServerSuccess" :on-error="handleServerError"
+              >
+                <div class="upload-icon align-items-center">
+                  <Icon :type="uploadIcon" size="24" :color="uploadStatus===3?'#00AE9D':uploadStatus===2?'red': ''"
+                        v-show="uploadStatus !== 1"/>
+                  <b-spinner style="width: 1.1rem; height: 1.1rem;color: #00AE9D;" v-show="uploadStatus === 1"/>
+                </div>
               </Upload>
             </div>
-            <Button @click="changeThem(0)">恢复默认</Button>
-            <Button @click="changeThem(1)">预设主题一</Button>
-            <Button @click="changeThem(2)">预设主题二</Button>
+            <div class="setting">
+              <Button @click="changeThem(0)" size="small">恢复默认</Button>
+              <Button @click="changeThem(1)" size="small">预设一</Button>
+              <Button @click="changeThem(2)" size="small">预设二</Button>
+              <Button @click="changeThem(3)" size="small">预设三</Button>
+            </div>
           </div>
           <div class="music">
           </div>
@@ -180,11 +193,11 @@
 <script>
   import CarouselSwipe from '@/components/common/CarouselSwipe'
   import BackTop from '@/components/common/BackTop'
-  import { MESSAGE_TYPE } from 'vue-baberrage'
+  import {MESSAGE_TYPE} from 'vue-baberrage'
 
   export default {
     name: 'Body',
-    data () {
+    data() {
       return {
         topics: [
           {
@@ -269,9 +282,11 @@
         hovered: false,
         needFixed: false,
         fixedHeight: '99999px',
-        panels: ['1', '2', '3', '4'],
         currentId: 0,
-        barrageList: []
+        barrageList: [],
+        uploadIcon: 'md-cloud-upload',
+        // 0 未上传 1上传中 2上传错误 3上传成功
+        uploadStatus: 0
       }
     },
     components: {
@@ -280,20 +295,20 @@
     },
     computed: {
       // 从vuex中获取上一次的选中菜单项
-      activeName () {
+      activeName() {
         return this.$store.state.activeName
       },
       // 判断页面是手机页面还是pc页面，如果是手机页面则进行全屏显示
-      adaptiveCols () {
+      adaptiveCols() {
         return this.$store.state.isPhone ? 12 : 8
       },
-      contentLength () {
+      contentLength() {
         return this.flagContent == null ? 0 : this.flagContent.length
       },
-      changeBorder () {
+      changeBorder() {
         return this.focused ? true : this.hovered
       },
-      chickenSoup () {
+      chickenSoup() {
         let content = '每日一句心灵鸡汤'
         // 请求接口
         content = ''
@@ -304,28 +319,33 @@
         }
       },
       showCustomer: {
-        get () {
+        get() {
           return this.$store.state.showCustomer;
         },
-        set (value) {
+        set(value) {
           this.$store.commit('showCustomer', value);
+          if (!value) {
+            // 自定义主题关闭时恢复一些状态设置
+            this.uploadStatus = 0;
+            this.uploadIcon = 'md-cloud-upload';
+          }
         }
       },
       // 通过计算属性获取用户自定义设置主题
       customerSet: {
-        get () {
+        get() {
           return this.$store.state.customerSet
         },
-        set (value) {
+        set(value) {
           this.$store.commit('customerSet', value);
         }
       }
     },
     watch: {
-      showCustomer () {
+      showCustomer() {
         if (this.showCustomer) {
           // 禁止滚轮滚动
-          document.body.addEventListener('wheel', this.tempFunction, { passive: false });
+          document.body.addEventListener('wheel', this.tempFunction, {passive: false});
         } else {
           // 解除阻止
           document.body.removeEventListener('wheel', this.tempFunction)
@@ -337,21 +357,21 @@
        * 当前选择的显示项
        * @param activeName
        */
-      onSelect (activeName) {
+      onSelect(activeName) {
         this.$store.commit('changeActiveRoute', activeName)
       },
-      isEditable (flag) {
+      isEditable(flag) {
         if (!flag) {
           // 失去焦点，更新内容
           this.$store.commit('editFlagContent', this.flagContent)
         }
         this.focused = flag
       },
-      isHover (flag) {
+      isHover(flag) {
         this.hovered = flag
       },
       // 滚动条滚动处理事件：
-      handleScroll () {
+      handleScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
         // 视窗固定
         if (scrollTop > this.fixedHeight) {
@@ -360,10 +380,10 @@
           this.needFixed = false
         }
       },
-      tempFunction (e) {
+      tempFunction(e) {
         e.preventDefault()
       },
-      changeThem (value) {
+      changeThem(value) {
         let customerSet = {};
         switch (value) {
           case 0:
@@ -371,29 +391,37 @@
               themeColor: 'rgba(255,255,255,1)',
               fontColor: '#404040',
               titleColor: '#0a0a0a',
-              backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
+              backgroundImg: 'linear-gradient(45deg, #F4F5F7 0%, #F4F5F7 100%)'
             }
             break;
           case 1:
             customerSet = {
-              themeColor: 'rgba(0,0,0,1)',
+              themeColor: 'rgba(18,18,18,1)',
               fontColor: '#404040',
               titleColor: '#0a0a0a',
-              backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
+              backgroundImg: 'linear-gradient(45deg, #0D0D0D 0%, #0D0D0D 100%)'
             }
             break;
           case 2:
             customerSet = {
-              themeColor: 'rgba(255,255,255,0.89)',
+              themeColor: 'rgba(255,255,255,0.90)',
               fontColor: '#404040',
               titleColor: '#0a0a0a',
               backgroundImg: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)'
             }
             break;
+          case 3:
+            customerSet = {
+              themeColor: 'rgba(255,255,255,0.89)',
+              fontColor: '#404040',
+              titleColor: '#0a0a0a',
+              backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
+            }
+            break;
         }
         this.$store.commit('customerSet', customerSet)
       },
-      addToList () {
+      addToList() {
         let barrage = {
           id: ++this.currentId,
           avatar: require('@/assets/music_bacc.jpg'),
@@ -403,9 +431,75 @@
         };
         // debugger
         this.barrageList.push(barrage);
+      },
+      /**
+       * 文件上传相关方法
+       */
+      uploading() {
+        this.uploadStatus = 1;
+        console.log('uploading...')
+      },
+      handleMaxSize() {
+        this.uploadIcon = 'md-close-circle';
+        this.uploadStatus = 2;
+        this.$Notice.warning({
+          title: '文件大小不得超过10MB！'
+        });
+      },
+      handleFormatError() {
+        this.uploadIcon = 'md-close-circle';
+        this.uploadStatus = 2;
+        this.$Notice.warning({
+          title: '文件格式错误，请上传正确的图片'
+        });
+      },
+      handleServerSuccess() {
+        this.uploadIcon = 'md-cloud-done';
+        this.uploadStatus = 3;
+        let tmp = Math.ceil(Math.random() * 10);
+        console.log(tmp)
+        let baccObj;
+        switch (tmp) {
+          case 1:
+            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/23451916UME.jpg)'}
+            break;
+          case 2:
+            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'}
+            break;
+          case 3:
+            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/%E6%97%A0%E6%A0%87%E9%A2%98.png)'}
+            break;
+          case 4:
+            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/b9eb713f63.jpg)'}
+            break;
+          case 5:
+            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/23451916UME.jpg)'}
+            break;
+          case 6:
+            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'}
+            break;
+          case 7:
+            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/%E6%97%A0%E6%A0%87%E9%A2%98.png)'}
+            break;
+          case 8:
+            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/b9eb713f63.jpg)'}
+            break;
+          case 9:
+            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/t01948ff2341a5d1ac3.jpg)'}
+            break;
+        }
+
+        this.$store.commit('customerSet', baccObj)
+      },
+      handleServerError() {
+        this.uploadIcon = 'md-close-circle';
+        this.uploadStatus = 2;
+        this.$Notice.warning({
+          title: '网络错误，请稍后重试！'
+        });
       }
     },
-    mounted () {
+    mounted() {
       if (!this.$store.state.isPhone) {
         // 给window添加一个滚动监听事件
         window.addEventListener('scroll', this.handleScroll)
@@ -426,7 +520,7 @@
         }
       }, 13000)
     },
-    destroyed () {
+    destroyed() {
       // 释放监听
       window.removeEventListener('scroll', this.handleScroll)
     }
