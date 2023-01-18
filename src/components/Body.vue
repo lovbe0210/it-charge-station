@@ -146,28 +146,54 @@
                 width="18" :lock-scroll="false" class-name="customer">
           <div class="them">
             <div class="title">
-<!--              <span class="iconfont icon-theme"/>-->
+              <!--              <span class="iconfont icon-theme"/>-->
               🎨 个人偏好
             </div>
             <div class="theme-color setting">
-              主题设置
+              <div class="context">
+                主题设置
+              </div>
+
               <ColorPicker v-model="customerSet.themeColor" alpha size="small"/>
             </div>
             <div class="bacc-color setting">
-              背景设置
-              <Upload
-                action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false"
-                :format="['jpg','jpeg','png']" :max-size="10240" :on-progress="uploading"
-                accept="image/png, image/jpeg" :disabled="uploadStatus === 1"
-                :on-exceeded-size="handleMaxSize" :on-format-error="handleFormatError"
-                :on-success="handleServerSuccess" :on-error="handleServerError"
-              >
+              <div class="context">
+                背景设置
+              </div>
+
+              <i-switch v-model="gradientColor" class="switch-btn" size="large"
+                        true-color="`linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)`">
+                <span slot="open">Color</span>
+                <span slot="close">Color</span>
+              </i-switch>
+              <Upload v-show="!gradientColor"
+                      action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false"
+                      :format="['jpg','jpeg','png']" :max-size="10240" :on-progress="uploading"
+                      accept="image/png, image/jpeg" :disabled="uploadStatus === 1"
+                      :on-exceeded-size="handleMaxSize" :on-format-error="handleFormatError"
+                      :on-success="handleServerSuccess" :on-error="handleServerError">
                 <div class="upload-icon align-items-center">
+                  <span v-show="uploadStatus == 0" class="iconfont icon-upload-img" style="font-size: 24px;"></span>
                   <Icon :type="uploadIcon" size="24" :color="uploadStatus===3?'#00AE9D':uploadStatus===2?'red': ''"
-                        v-show="uploadStatus !== 1"/>
+                        v-show="uploadStatus !== 1 && uploadStatus !== 0"/>
                   <b-spinner style="width: 1.1rem; height: 1.1rem;color: #00AE9D;" v-show="uploadStatus === 1"/>
                 </div>
               </Upload>
+              <div class="gradient-color" v-show="gradientColor">
+                <div class="colors">
+                  <ColorPicker value="#FA8BFF" size="small"/>
+                  <ColorPicker value="#2BD2FF" size="small"/>
+                  <ColorPicker value="#2BFF88" size="small" v-show="false"/>
+                </div>
+                <Button type="text" class="edit-color-btn">
+                  <span class="iconfont icon-add"
+                        style="font-size: 1.1rem;line-height: 1.4rem;margin-left: 5px;"></span>
+                </Button>
+                <Button type="text" class="edit-color-btn">
+                  <span class="iconfont icon-delete"
+                        style="font-size: 1.1rem;line-height: 1.4rem;margin-left: 5px;"></span>
+                </Button>
+              </div>
             </div>
             <div class="setting">
               <Button @click="changeThem(0)" size="small">恢复默认</Button>
@@ -286,7 +312,8 @@
         barrageList: [],
         uploadIcon: 'md-cloud-upload',
         // 0 未上传 1上传中 2上传错误 3上传成功
-        uploadStatus: 0
+        uploadStatus: 0,
+        gradientColor: false
       }
     },
     components: {

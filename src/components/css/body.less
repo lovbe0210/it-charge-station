@@ -10,86 +10,10 @@
   background-color: transparent;
 }
 
-/deep/ .ivu-color-picker {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  padding-left: 71px;
-
-  .ivu-input-wrapper {
-    .ivu-input {
-      border: 1px solid @border-color_normal;
-      background-color: transparent;
-    }
-
-    .ivu-color-picker-focused {
-      border-color: @border-color_hover;
-      box-shadow: none;
-    }
-  }
-
-  div:first-child:hover .ivu-input {
-    border-color: @border-color_hover !important;
-  }
+.ivu-btn {
+  box-shadow: none;
+  background: transparent;
 }
-
-/deep/ .ivu-color-picker-color {
-  margin-left: 8px;
-}
-
-/deep/ .ivu-select-dropdown {
-  left: 71px !important;
-}
-
-/deep/ .ivu-color-picker-picker-wrapper {
-  padding: 5px 5px 0 5px;
-}
-
-/deep/ .ivu-color-picker-confirm {
-  margin: 0 5px 0 5px;
-
-  .ivu-color-picker-confirm-color {
-    left: 0;
-    width: 150px;
-  }
-
-  .ivu-btn {
-    padding-left: 4px;
-    padding-right: 4px;
-  }
-}
-
-/deep/ .ivu-input-wrapper > input {
-  padding-left: 4px;
-  padding-right: 4px;
-}
-
-/deep/ .bacc-color {
-  .ivu-upload {
-    .ivu-btn {
-      border: 1px solid @border-color_normal;
-      background-color: transparent;
-      width: 58px;
-      height: 24px;
-      border-radius: 3px;
-      .ivu-icon {
-        line-height: 1.2;
-        font-size: 1.3rem;
-        font-weight: 550;
-      }
-    }
-    .ivu-btn:hover {
-      color: @light-font-color;
-      border-color: @border-color_hover;
-    }
-    .ivu-btn:focus {
-      box-shadow: none;
-    }
-  }
-}
-
-
-
 // -----------------------疑难杂症结束---------------------------
 
 
@@ -452,29 +376,204 @@
           .setting {
             display: flex;
             align-items: center;
-            padding: 10px 15px 10px 15px;
+            padding: 15px;
+
+            .context {
+              height: 24px;
+              line-height: 24px;
+            }
+          }
+
+          .theme-color {
+
+            .ivu-color-picker {
+              padding-left: 15px;
+
+              .ivu-input {
+                border: 1px solid @border-color_normal;
+                background-color: transparent;
+              }
+
+              .ivu-color-picker-focused {
+                border-color: @border-color_hover;
+                box-shadow: none;
+              }
+
+              div:first-child:hover .ivu-input {
+                border-color: @border-color_hover !important;
+              }
+
+              .ivu-color-picker-color {
+                margin-left: 8px;
+              }
+
+              .ivu-select-dropdown {
+                left: 90px !important;
+                width: 250px;
+
+                .ivu-color-picker-picker-wrapper {
+                  padding: 5px 5px 0 5px;
+                }
+
+                .ivu-color-picker-confirm {
+                  margin: 0 5px 0 5px;
+
+                  .ivu-btn-default:hover {
+                    color: @border-color_hover;
+                    border-color: @border-color_hover;
+                  }
+
+                  .ivu-btn-primary {
+                    background: @border-color_hover;
+                  }
+
+                  .ivu-btn-small {
+                    padding: 0 4px;
+                  }
+
+                  .ivu-color-picker-confirm-color {
+                    left: 0;
+                    width: 155px;
+
+                    .ivu-input-small {
+                      padding: 0 4px;
+                    }
+
+                    :focus {
+                      box-shadow: none;
+                    }
+                  }
+                }
+              }
+            }
           }
 
           .bacc-color {
+            height: 24px;
+
+            .switch-btn {
+              height: 22px;
+              margin-left: 15px;
+              border: none;
+              box-shadow: none;
+
+              .ivu-switch-inner {
+                left: 21px;
+                line-height: 22px;
+                font-size: 0.8rem;
+              }
+            }
+
+            .ivu-switch:after {
+              width: 19px;
+              height: 19px;
+              border-radius: 50%;
+              top: 1.5px;
+              transition: left .3s ease-in-out, width .3s ease-in-out;
+            }
+
+            .ivu-switch-large.ivu-switch-checked:after {
+              left: 36px;
+            }
+
+            .ivu-switch-checked {
+              background-color: #FA8BFF;
+              background-image: linear-gradient(90deg, #FA8BFF 12%, #2BD2FF 56%, #2BFF88 90%);
+
+              .ivu-switch-inner {
+                left: 4px;
+              }
+            }
+
             .ivu-upload {
               padding-left: 7px;
               display: flex;
               justify-content: center;
+
               .upload-icon {
-                border: 1px solid @border-color_normal;
-                border-radius: 3px;
                 width: 58px;
                 height: 24px;
                 display: flex;
                 justify-content: center;
               }
-              :hover {
-                border-color: @border-color_hover;
+            }
+
+            .gradient-color {
+              display: flex;
+              align-content: center;
+              width: 150px;
+              height: 24px;
+              margin-left: 20px;
+
+              .ivu-btn-text {
+                height: 24px;
+                width: 28px;
+                padding: 0;
               }
-              :focus {
-                border-color: @border-color_hover;
+
+              .colors {
+                width: 90px;
+              }
+
+              .ivu-color-picker {
+                .ivu-input-wrapper {
+                  width: 24px;
+                  margin-left: 5px;
+
+                  .ivu-input {
+                    border: none;
+                    box-shadow: none;
+                    background-color: transparent;
+                  }
+
+                  .ivu-color-picker-color {
+                    @circle-size: 18px;
+                    border-radius: 50%;
+                    width: @circle-size;
+                    height: @circle-size;
+                    top: 2px;
+
+                    div {
+                      border-radius: 50%;
+                      width: @circle-size;
+                      height: @circle-size;
+                    }
+                  }
+
+                  i {
+                    display: none;
+                  }
+                }
+
+                .ivu-select-dropdown {
+                  left: 90px !important;
+                  width: 250px;
+
+                  .ivu-color-picker-picker-wrapper {
+                    padding: 5px 5px 0 5px;
+                  }
+
+                  .ivu-color-picker-confirm {
+                    margin: 0 5px 0 5px;
+
+                    .ivu-input-wrapper {
+                      width: 100px;
+                    }
+
+                    .ivu-btn-default:hover {
+                      color: @border-color_hover;
+                      border-color: @border-color_hover;
+                    }
+
+                    .ivu-btn-primary {
+                      background: @border-color_hover;
+                    }
+                  }
+                }
+
               }
             }
+
           }
         }
 
