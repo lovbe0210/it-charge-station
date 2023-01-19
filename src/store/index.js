@@ -30,7 +30,8 @@ export default new Vuex.Store({
       // backgroundImg: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)'
       backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
     },
-    // 显示自定义主题开关
+    // 显示自定义主题开关background-color: #4158D0;
+    // background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
     showCustomer: false
   },
 

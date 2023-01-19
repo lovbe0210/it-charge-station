@@ -181,15 +181,17 @@
               </Upload>
               <div class="gradient-color" v-show="gradientColor">
                 <div class="colors">
-                  <ColorPicker value="#FA8BFF" size="small"/>
-                  <ColorPicker value="#2BD2FF" size="small"/>
-                  <ColorPicker value="#2BFF88" size="small" v-show="false"/>
+                  <ColorPicker v-model="editColors.firstColor" size="small" v-show="editColors.firstColor !== null"/>
+                  <ColorPicker v-model="editColors.secondColor" size="small" v-show="editColors.secondColor !== null"/>
+                  <ColorPicker v-model="editColors.thirdColor" size="small" v-show="editColors.thirdColor !== null"/>
                 </div>
-                <Button type="text" class="edit-color-btn">
+                <Button type="text" class="edit-color-btn" @click="changeGradientColor(true)"
+                        :disabled="editColors.firstColor !== null && editColors.secondColor !== null && editColors.thirdColor !== null">
                   <span class="iconfont icon-add"
                         style="font-size: 1.1rem;line-height: 1.4rem;margin-left: 5px;"></span>
                 </Button>
-                <Button type="text" class="edit-color-btn">
+                <Button type="text" class="edit-color-btn" @click="changeGradientColor(false)"
+                        :disabled="editColors.thirdColor == null && editColors.secondColor == null">
                   <span class="iconfont icon-delete"
                         style="font-size: 1.1rem;line-height: 1.4rem;margin-left: 5px;"></span>
                 </Button>
@@ -313,7 +315,12 @@
         uploadIcon: 'md-cloud-upload',
         // 0 未上传 1上传中 2上传错误 3上传成功
         uploadStatus: 0,
-        gradientColor: false
+        gradientColor: false,
+        editColors: {
+          firstColor: '#FFFFFF',
+          secondColor: null,
+          thirdColor: null
+        }
       }
     },
     components: {
@@ -376,6 +383,18 @@
         } else {
           // 解除阻止
           document.body.removeEventListener('wheel', this.tempFunction)
+        }
+      },
+      customerSet: {
+        immediate: true,
+        deep: true,
+        handler() {
+          let backgroundImg = this.$store.state.customerSet.backgroundImg;
+          this.gradientColor = backgroundImg.indexOf('linear-gradient') !== -1;
+          // 如果当前是渐变色，则需要解析出渐变色中的颜色
+          if (this.gradientColor) {
+            // backgroundImg.matchAll('/#(\S*)/')
+          }
         }
       }
     },
@@ -524,6 +543,25 @@
         this.$Notice.warning({
           title: '网络错误，请稍后重试！'
         });
+      },
+      changeGradientColor(value) {
+        // true 增加  false 删除
+        if (value) {
+          if (this.editColors.secondColor == null) {
+            this.editColors.secondColor = '#FFFFFF';
+          } else if (this.editColors.thirdColor == null) {
+            this.editColors.thirdColor = '#FFFFFF';
+          }
+        } else {
+          if (this.editColors.thirdColor !== null) {
+            this.editColors.thirdColor = null;
+          } else if (this.editColors.secondColor !== null) {
+            this.editColors.secondColor = null;
+          } else if (this.editColors.firstColor !== null) {
+            this.editColors.firstColor = null;
+          }
+        }
+
       }
     },
     mounted() {
