@@ -356,7 +356,7 @@
       .ivu-drawer-body {
         border-radius: 5px;
         width: 99.5%;
-        padding: 0 0 0 5px;
+        padding: 0;
 
         > div {
           width: 100%;
@@ -579,6 +579,23 @@
             }
 
           }
+
+          .quick-setting {
+            .ivu-btn {
+              border: 1px solid @border-color_normal;
+              margin-right: 10px;
+              width: 64px;
+              padding: 0;
+            }
+            .ivu-btn-default:hover {
+              color: @border-color_hover;
+              border-color: @border-color_hover;
+            }
+
+            .ivu-btn-primary {
+              background: @border-color_hover;
+            }
+          }
         }
 
         .music {
@@ -587,8 +604,6 @@
           background-repeat: no-repeat;
           background-size: cover;
           background-position: center center;
-          // 固定在屏幕上，不随滚动轴滚动
-          //background-attachment: fixed;
         }
 
         .other {

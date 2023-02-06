@@ -1,8 +1,8 @@
 <template>
   <div id="app" ref="app">
     <div>
-<!--      them:<input v-model="themeColor"/>-->
-<!--      <button @click="changeThem">CHANGETHEm</button>-->
+      <!--      them:<input v-model="themeColor"/>-->
+      <!--      <button @click="changeThem">CHANGETHEm</button>-->
     </div>
     <router-view></router-view>
   </div>
@@ -28,8 +28,7 @@
   export default {
     name: 'App',
     data() {
-      return {
-      }
+      return {}
     },
 
     computed: {

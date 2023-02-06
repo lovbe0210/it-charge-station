@@ -146,21 +146,18 @@
                 width="18" :lock-scroll="false" class-name="customer">
           <div class="them">
             <div class="title">
-              <!--              <span class="iconfont icon-theme"/>-->
               🎨 个人偏好
             </div>
             <div class="theme-color setting">
               <div class="context">
                 主题设置
               </div>
-
               <ColorPicker v-model="customerSet.themeColor" alpha size="small"/>
             </div>
             <div class="bacc-color setting">
               <div class="context">
                 背景设置
               </div>
-
               <i-switch v-model="gradientColor" class="switch-btn" size="large"
                         true-color="`linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)`">
                 <span slot="open">Color</span>
@@ -197,7 +194,7 @@
                 </Button>
               </div>
             </div>
-            <div class="setting">
+            <div class="quick-setting setting">
               <Button @click="changeThem(0)" size="small">恢复默认</Button>
               <Button @click="changeThem(1)" size="small">预设一</Button>
               <Button @click="changeThem(2)" size="small">预设二</Button>
@@ -207,8 +204,14 @@
           <div class="music">
           </div>
           <div class="other">
-            <Button class="title" @click="addToList">回声洞</Button>
-            <vue-baberrage :isShow="true" :barrageList="barrageList" :loop="false">
+            <Button class="title" @click="addToList()">回声洞</Button>
+            <vue-baberrage :isShow="true"
+                           :barrageList="barrageList"
+                           :box-height="170"
+                           :lanes-count="4"
+                           :message-height="25"
+                           :throttle-gap="5000"
+                           :loop="true">
 
             </vue-baberrage>
           </div>
@@ -315,6 +318,7 @@
         uploadIcon: 'md-cloud-upload',
         // 0 未上传 1上传中 2上传错误 3上传成功
         uploadStatus: 0,
+        // 是否显示渐变色
         gradientColor: false,
         editColors: {
           firstColor: '#FFFFFF',
@@ -393,8 +397,51 @@
           this.gradientColor = backgroundImg.indexOf('linear-gradient') !== -1;
           // 如果当前是渐变色，则需要解析出渐变色中的颜色
           if (this.gradientColor) {
-            // backgroundImg.matchAll('/#(\S*)/')
+            this.editColors = {
+              firstColor: '#FFFFFF',
+              secondColor: null,
+              thirdColor: null
+            };
+            let number = 0;
+            for (let i = 0; i < backgroundImg.length; i++) {
+              if (backgroundImg[i] === '#') {
+                let color = backgroundImg.substring(i, i + 7);
+                switch (number) {
+                  case 0:
+                    this.editColors.firstColor = color;
+                    break;
+                  case 1:
+                    this.editColors.secondColor = color;
+                    break;
+                  case 2:
+                    this.editColors.thirdColor = color;
+                    break;
+                  default:
+                    break;
+                }
+                i += 6;
+                number++;
+              }
+            }
+            // 如果两个颜色一模一样只显示一个即可
+            this.editColors.secondColor = this.editColors.firstColor === this.editColors.secondColor ? null : this.editColors.secondColor;
           }
+        }
+      },
+      editColors: {
+        immediate: false,
+        deep: true,
+        handler() {
+          let backgroundImg = 'linear-gradient(45deg, ';
+          if (this.editColors.secondColor === this.editColors.thirdColor && this.editColors.secondColor == null) {
+            backgroundImg += this.editColors.firstColor + ' 0%, ';
+            backgroundImg += this.editColors.firstColor + ' 100%)';
+          } else {
+            backgroundImg += this.editColors.firstColor + ' 0%, ';
+            backgroundImg += this.editColors.secondColor + (this.editColors.thirdColor == null ? ' 100%)' : ' 46%, ');
+            backgroundImg += this.editColors.thirdColor == null ? '' : this.editColors.thirdColor + ' 100%)';
+          }
+          this.$store.commit('customerSet', {backgroundImg: backgroundImg})
         }
       }
     },
@@ -544,6 +591,7 @@
           title: '网络错误，请稍后重试！'
         });
       },
+      // 控制增加删除按钮硬逻辑
       changeGradientColor(value) {
         // true 增加  false 删除
         if (value) {
