@@ -202,17 +202,14 @@
             </div>
           </div>
           <div class="music">
+            <music-index></music-index>
           </div>
           <div class="other">
-            <Button class="title" @click="addToList()">回声洞</Button>
-            <vue-baberrage :isShow="true"
+            <vue-baberrage :isShow="false"
                            :barrageList="barrageList"
-                           :box-height="170"
                            :lanes-count="4"
-                           :message-height="25"
-                           :throttle-gap="5000"
+                           :message-height="10"
                            :loop="true">
-
             </vue-baberrage>
           </div>
         </Drawer>
@@ -224,6 +221,7 @@
 <script>
   import CarouselSwipe from '@/components/common/CarouselSwipe'
   import BackTop from '@/components/common/BackTop'
+  import MusicIndex from "@/components/common/music/MusicIndex";
   import {MESSAGE_TYPE} from 'vue-baberrage'
 
   export default {
@@ -329,7 +327,8 @@
     },
     components: {
       CarouselSwipe,
-      BackTop
+      BackTop,
+      MusicIndex
     },
     computed: {
       // 从vuex中获取上一次的选中菜单项
@@ -514,6 +513,9 @@
         }
         this.$store.commit('customerSet', customerSet)
       },
+      /**
+       * 弹幕添加方法
+       */
       addToList() {
         let barrage = {
           id: ++this.currentId,
