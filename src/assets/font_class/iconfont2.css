@@ -2,7 +2,7 @@
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
   src:
-          url('//at.alicdn.com/t/c/font_3272463_pi36zvgp5c.woff2?t=1676010397357') format('woff2');
+          url('//at.alicdn.com/t/c/font_3272463_3ipm5u5es48.woff2?t=1676035372989') format('woff2');
 }
 
 .iconfont {
@@ -77,4 +77,27 @@
   content: "\e61f";
 }
 
+.icon-play:before {
+  content: "\e616";
+}
+
+.icon-paused:before {
+  content: "\e87c";
+}
+
+.icon-previous:before {
+  content: "\e63c";
+}
+
+.icon-next:before {
+  content: "\e63e";
+}
+
+.icon-like-no:before {
+  content: "\e930";
+}
+
+.icon-like-yes:before {
+  content: "\e6fc";
+}
 

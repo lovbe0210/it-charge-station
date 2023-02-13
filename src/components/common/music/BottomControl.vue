@@ -28,39 +28,37 @@
     <!-- 中间 -->
     <div class="center">
       <div class="buttons">
-        <span @click="playType = playType == 'order' ? 'random' : 'order'">
+        <span
+          @click="playType = playType === 'listLoop' ? 'singleLoop' : playType === 'singleLoop' ? 'listRandom' : 'listLoop'">
           <i class="iconfont icon-list-loop" v-show="playType == 'listLoop'"></i>
           <i class="iconfont icon-single-loop" v-show="playType == 'singleLoop'"></i>
           <i class="iconfont icon-list-random" v-show="playType == 'listRandom'"></i>
         </span>
         <span @click="musicList.length != 0 ? changeMusic('pre') : ''">
-          <i class="iconfont icon-shangyishou"></i>
+          <i class="iconfont icon-previous"></i>
         </span>
         <span @click="musicList.length != 0 ? changePlayState() : ''">
-          <i class="iconfont icon-icon_play" v-if="!this.$store.state.isPlay"></i>
-          <i class="iconfont icon-zantingtingzhi" v-else></i>
+          <i class="iconfont icon-play" v-if="!this.$store.state.isPlay"></i>
+          <i class="iconfont icon-paused" v-else></i>
         </span>
         <span @click="musicList.length != 0 ? changeMusic('next') : ''">
-          <i class="iconfont icon-xiayishou"></i>
+          <i class="iconfont icon-next"></i>
         </span>
         <span>
-          <i class="iconfont icon-xihuan" :class="isUserLikeCurrentMusic ? 'like' : ''"
+          <i class="iconfont" :class="isUserLikeCurrentMusic ? 'icon-like-yes' : 'icon-like-no'"
              @click="musicList.length != 0 ? likeIt() : ''"></i>
         </span>
       </div>
       <!-- 进度条 -->
-      <!--      <div class="progressBar">-->
-      <!--        <span class="currentTime">{{ currentTime | handleMusicTime }}</span>-->
-      <!--        &lt;!&ndash; :value 是单向的  要实现双向要v-model &ndash;&gt;-->
-      <!--        <el-slider-->
-      <!--          class="progressSlider"-->
-      <!--          v-model="timeProgress"-->
-      <!--          :show-tooltip="false"-->
-      <!--          @change="changeProgress"-->
-      <!--          :disabled="musicList.length == 0"-->
-      <!--        ></el-slider>-->
-      <!--        <span class="totalTime">{{ duration }}</span>-->
-      <!--      </div>-->
+      <div class="progressBar">
+        <span class="currentTime">{{ currentTime | handleMusicTime }}</span>
+        <!-- :value 是单向的  要实现双向要v-model -->
+        <Progress class="progressSlider" :percent="timeProgress" :stroke-width="5" stroke-color="#FF4E4E" hide-info/>
+        <!--        <el-slider class="progressSlider" v-model="timeProgress"-->
+        <!--                   :show-tooltip="false" @change="changeProgress"-->
+        <!--                   :disabled="musicList.length == 0"></el-slider>-->
+        <span class="totalTime">{{ duration }}</span>
+      </div>
     </div>
     <!-- 右边 -->
     <!--    <div class="right">-->
@@ -98,7 +96,7 @@
 </template>
 
 <script>
-  // import {handleMusicTime, returnSecond} from "plugins/utils";
+  import { handleMusicTime, returnSecond } from "@/utils/utils";
 
   let lastSecond = 0;
   // 总时长的秒数
@@ -110,7 +108,7 @@
 
   export default {
     name: "BottomControl",
-    data() {
+    data () {
       return {
         // musicDetail: {},
         musicDetail: {
@@ -118,7 +116,12 @@
           "id": 19292984,
           "pst": 0,
           "t": 0,
-          "ar": [{"id": 44266, "name": "Taylor Swift", "tns": [], "alias": []}],
+          "ar": [{
+            "id": 44266,
+            "name": "Taylor Swift",
+            "tns": [],
+            "alias": []
+          }],
           "alia": [],
           "pop": 100,
           "st": 0,
@@ -136,9 +139,27 @@
             "pic": 18517974836953200
           },
           "dt": "03:56",
-          "h": {"br": 320000, "fid": 0, "size": 9452191, "vd": -65540, "sr": 44100},
-          "m": {"br": 192000, "fid": 0, "size": 5671332, "vd": -63094, "sr": 44100},
-          "l": {"br": 128000, "fid": 0, "size": 3780902, "vd": -61573, "sr": 44100},
+          "h": {
+            "br": 320000,
+            "fid": 0,
+            "size": 9452191,
+            "vd": -65540,
+            "sr": 44100
+          },
+          "m": {
+            "br": 192000,
+            "fid": 0,
+            "size": 5671332,
+            "vd": -63094,
+            "sr": 44100
+          },
+          "l": {
+            "br": 128000,
+            "fid": 0,
+            "size": 3780902,
+            "vd": -61573,
+            "sr": 44100
+          },
           "sq": null,
           "hr": null,
           "a": null,
@@ -173,7 +194,7 @@
         currentMusicIndex: 0,
         drawer: false,
         // 音乐总时长
-        duration: "00:00",
+        duration: "03:56",
         // 当前播放时间位置
         currentTime: 0,
         // 进度条的位置
@@ -196,9 +217,9 @@
     methods: {
       // 请求
       // 请求歌曲的url
-      async getMusicDetail(id) {
+      async getMusicDetail (id) {
         this.$store.commit("updateMusicLoadState", true);
-        let result = await this.$request("/song/url", {id});
+        let result = await this.$request("/song/url", { id });
         // console.log(musicDetail);
         // console.log(result);
         // 获取不到url
@@ -213,8 +234,11 @@
       },
       // 喜欢该音乐
       // like参数:是否喜欢该音乐
-      async likeMusic(id, like) {
-        let res = await this.$request("/like", {id, like});
+      async likeMusic (id, like) {
+        let res = await this.$request("/like", {
+          id,
+          like
+        });
         if (res.data.code === 200) {
           console.log("喜欢操作成功");
         } else {
@@ -222,7 +246,7 @@
         }
       },
       // 获取喜欢音乐列表
-      async getLikeMusicList() {
+      async getLikeMusicList () {
         // 获取时间戳
         var timestamp = Date.parse(new Date());
         // 因为喜欢音乐列表实时性较高，为了避免接口缓存，在请求后面加上一个时间戳
@@ -236,23 +260,23 @@
       },
 
       // 点击播放键的回调
-      changePlayState() {
+      changePlayState () {
         !this.$store.state.isPlay ? this.playMusic() : this.pauseMusic();
       },
       // 播放音乐的函数
-      playMusic() {
+      playMusic () {
         this.$refs.audioPlayer.play();
       },
       // 暂停音乐的函数
-      pauseMusic() {
+      pauseMusic () {
         this.$refs.audioPlayer.pause();
       },
       // audio开始或暂停播放的回调  在vuex中改变状态
-      changeState(state) {
+      changeState (state) {
         this.$store.commit("changePlayState", state);
       },
       // 根据id找到 musicList中对应的musicDetail
-      getMusicDetailFromMusicList() {
+      getMusicDetailFromMusicList () {
         // console.log(this.musicList);
         // this.musicList.forEach((item, index) => {
         //   // console.log(index);
@@ -282,7 +306,7 @@
         }
       },
       // 切歌函数
-      changeMusic(type, id) {
+      changeMusic (type, id) {
         if (type === "click") {
           // 点击抽屉row进行切歌
           this.$store.commit("updateMusicId", id);
@@ -331,31 +355,31 @@
         }
       },
       // 双击抽屉列表中的row的回调
-      clickRow(row) {
+      clickRow (row) {
         // console.log(row.id);
         this.changeMusic("click", row.id);
       },
       // 当前播放时间位置
-      timeupdate() {
+      timeupdate () {
         // console.log(e);
         // console.log(this.$refs.audioPlayer.currentTime);
         // 节流
         let time = this.$refs.audioPlayer.currentTime;
         // 将当前播放时间保存到vuex  如果保存到vuex这步节流,会导致歌词不精准,误差最大有1s
-        this.$store.commit("updateCurrentTime", time);
-
+        // this.$store.commit("updateCurrentTime", time);
         time = Math.floor(time);
         if (time !== lastSecond) {
           // console.log(time);
           lastSecond = time;
           this.currentTime = time;
           // 计算进度条的位置
-          this.timeProgress = Math.floor((time / durationNum) * 100);
+          console.log('time: ', time, 'durationNum: ', this.durationTotalSecond)
+          this.timeProgress = Math.floor((time / this.durationTotalSecond) * 100);
           // console.log(this.timeProgress);
         }
       },
       // 拖动进度条的回调
-      changeProgress(e) {
+      changeProgress (e) {
         // console.log(e);
         // 修改当前播放时间
         this.currentTime = Math.floor((e / 100) * durationNum);
@@ -363,7 +387,7 @@
         this.$refs.audioPlayer.currentTime = this.currentTime;
       },
       // 拖动音量条的回调
-      changeVolume(e) {
+      changeVolume (e) {
         // 改变audio的音量
         // input事件 实时触发
         this.$refs.audioPlayer.volume = e / 100;
@@ -374,7 +398,7 @@
         }
       },
       // 点击小喇叭的回调 （切换静音状态）
-      changeMutedState() {
+      changeMutedState () {
         if (this.isMuted) {
           this.volume = volumeSave;
         } else {
@@ -385,7 +409,7 @@
         this.isMuted = !this.isMuted;
       },
       // 操作drawerList中DOM的函数
-      handleDrawerListDOM(currentIndex, lastIndex) {
+      handleDrawerListDOM (currentIndex, lastIndex) {
         // 目前没什么好思路 直接操作原生DOM
         this.$nextTick(() => {
           let tableRows = document
@@ -416,7 +440,7 @@
         });
       },
       // 点击打开抽屉的回调
-      openDrawer() {
+      openDrawer () {
         // 关闭也是这个回调，所以直接取反
         this.drawer = !this.drawer;
         this.hasDrawerOpend = true;
@@ -424,13 +448,13 @@
       },
 
       // 判断用户是否喜欢该音乐
-      getIsUserLikeCurrentMusic() {
+      getIsUserLikeCurrentMusic () {
         this.isUserLikeCurrentMusic = this.likeMuiscList.find(
           (item) => item === this.$store.state.musicId
         );
       },
       // 用户点击喜欢该音乐的回调
-      async likeIt() {
+      async likeIt () {
         if (!window.localStorage.getItem("userInfo")) {
           this.$message.error("请先登录!");
           return;
@@ -444,7 +468,7 @@
       },
 
       // 点击下载按钮的回调
-      downloadCurrentMusic() {
+      downloadCurrentMusic () {
         // console.log("download");
         console.log(this.musicDetail, this.musicUrl);
 
@@ -480,11 +504,11 @@
       },
 
       // 点击歌手名跳转至歌手页面的回调
-      goToSingerDetail() {
+      goToSingerDetail () {
         if (this.$route.path === `/singerDetail/${this.musicDetail.ar[0].id}`) {
           this.$router.push({
             name: "singerDetail",
-            params: {id: this.musicDetail.ar[0].id}
+            params: { id: this.musicDetail.ar[0].id }
           })
         }
         if (this.$store.state.isMusicDetailCardShow === true) {
@@ -492,10 +516,14 @@
         }
       }
     },
-
+    computed: {
+      durationTotalSecond () {
+        return returnSecond(this.duration);
+      }
+    },
     watch: {
       // 监听vuex中musicId的变化
-      "$store.state.musicId"(id) {
+      "$store.state.musicId" (id) {
         console.log("vuex中的id发生了变化");
         // 先暂停当前播放的音乐
         this.pauseMusic();
@@ -508,20 +536,20 @@
         // console.log(this.$refs.audioPlayer);
       },
       // 监听currentIndex的变化
-      "$store.state.currentIndex"(currentIndex, lastIndex) {
+      "$store.state.currentIndex" (currentIndex, lastIndex) {
         if (this.hasDrawerOpend) {
           this.handleDrawerListDOM(currentIndex, lastIndex);
         }
       },
       // 监听播放状态
-      "$store.state.isPlay"(isPlay) {
+      "$store.state.isPlay" (isPlay) {
         if (isPlay) {
           this.playMusic();
         } else {
           this.pauseMusic();
         }
       },
-      "$store.state.isLogin"(current) {
+      "$store.state.isLogin" (current) {
         if (current) {
           this.getLikeMusicList();
         } else {
@@ -531,7 +559,7 @@
       }
     },
     filters: {
-      // handleMusicTime
+      handleMusicTime
     }
   };
 </script>
