@@ -1,5 +1,5 @@
 <template>
-  <div class="bottomControl">
+  <div class="bottom-control">
     <audio
       :src="require('@/assets/Love Story.mp3')"
       ref="audioPlayer"
@@ -8,8 +8,7 @@
       @pause="changeState(false)"
       @ended="changeMusic('next')"
       @timeupdate="timeupdate"
-      loop
-    ></audio>
+      loop></audio>
     <!-- 左边 -->
     <div class="left">
       <div class="avatar" @click="$store.commit('changeMusicDetailCardState')">
@@ -38,8 +37,8 @@
           <i class="iconfont icon-previous"></i>
         </span>
         <span @click="musicList.length != 0 ? changePlayState() : ''">
-          <i class="iconfont icon-play" v-if="!this.$store.state.isPlay"></i>
-          <i class="iconfont icon-paused" v-else></i>
+          <i class="iconfont icon-play" v-show="this.$store.state.musicPlay.isPlay"></i>
+          <i class="iconfont icon-paused" v-show="!this.$store.state.musicPlay.isPlay"></i>
         </span>
         <span @click="musicList.length != 0 ? changeMusic('next') : ''">
           <i class="iconfont icon-next"></i>
@@ -96,7 +95,7 @@
 </template>
 
 <script>
-  import { handleMusicTime, returnSecond } from "@/utils/utils";
+  import {handleMusicTime, returnSecond} from "@/utils/utils";
 
   let lastSecond = 0;
   // 总时长的秒数
@@ -108,7 +107,7 @@
 
   export default {
     name: "BottomControl",
-    data () {
+    data() {
       return {
         // musicDetail: {},
         musicDetail: {
@@ -190,7 +189,7 @@
           "publishTime": 1230739200000
         },
         musicUrl: "",
-        musicList: [],
+        musicList: [this.musicDetail],
         currentMusicIndex: 0,
         drawer: false,
         // 音乐总时长
@@ -217,9 +216,9 @@
     methods: {
       // 请求
       // 请求歌曲的url
-      async getMusicDetail (id) {
+      async getMusicDetail(id) {
         this.$store.commit("updateMusicLoadState", true);
-        let result = await this.$request("/song/url", { id });
+        let result = await this.$request("/song/url", {id});
         // console.log(musicDetail);
         // console.log(result);
         // 获取不到url
@@ -234,7 +233,7 @@
       },
       // 喜欢该音乐
       // like参数:是否喜欢该音乐
-      async likeMusic (id, like) {
+      async likeMusic(id, like) {
         let res = await this.$request("/like", {
           id,
           like
@@ -246,7 +245,7 @@
         }
       },
       // 获取喜欢音乐列表
-      async getLikeMusicList () {
+      async getLikeMusicList() {
         // 获取时间戳
         var timestamp = Date.parse(new Date());
         // 因为喜欢音乐列表实时性较高，为了避免接口缓存，在请求后面加上一个时间戳
@@ -260,23 +259,23 @@
       },
 
       // 点击播放键的回调
-      changePlayState () {
-        !this.$store.state.isPlay ? this.playMusic() : this.pauseMusic();
+      changePlayState() {
+        this.$store.state.musicPlay.isPlay ? this.pauseMusic() : this.playMusic();
       },
       // 播放音乐的函数
-      playMusic () {
+      playMusic() {
         this.$refs.audioPlayer.play();
       },
       // 暂停音乐的函数
-      pauseMusic () {
+      pauseMusic() {
         this.$refs.audioPlayer.pause();
       },
       // audio开始或暂停播放的回调  在vuex中改变状态
-      changeState (state) {
+      changeState(state) {
         this.$store.commit("changePlayState", state);
       },
       // 根据id找到 musicList中对应的musicDetail
-      getMusicDetailFromMusicList () {
+      getMusicDetailFromMusicList() {
         // console.log(this.musicList);
         // this.musicList.forEach((item, index) => {
         //   // console.log(index);
@@ -292,7 +291,7 @@
         // });
 
         let index = this.musicList.findIndex(
-          (item) => item.id === this.$store.state.musicId
+          (item) => item.id === this.$store.state.musicPlay.musicId
         );
         console.log(index);
         if (index !== -1) {
@@ -306,7 +305,7 @@
         }
       },
       // 切歌函数
-      changeMusic (type, id) {
+      changeMusic(type, id) {
         if (type === "click") {
           // 点击抽屉row进行切歌
           this.$store.commit("updateMusicId", id);
@@ -355,31 +354,32 @@
         }
       },
       // 双击抽屉列表中的row的回调
-      clickRow (row) {
+      clickRow(row) {
         // console.log(row.id);
         this.changeMusic("click", row.id);
       },
       // 当前播放时间位置
-      timeupdate () {
+      timeupdate() {
         // console.log(e);
         // console.log(this.$refs.audioPlayer.currentTime);
         // 节流
         let time = this.$refs.audioPlayer.currentTime;
         // 将当前播放时间保存到vuex  如果保存到vuex这步节流,会导致歌词不精准,误差最大有1s
         // this.$store.commit("updateCurrentTime", time);
-        time = Math.floor(time);
+        // time = Math.floor(time);
         if (time !== lastSecond) {
           // console.log(time);
           lastSecond = time;
           this.currentTime = time;
           // 计算进度条的位置
-          console.log('time: ', time, 'durationNum: ', this.durationTotalSecond)
-          this.timeProgress = Math.floor((time / this.durationTotalSecond) * 100);
+          // console.log('time: ', time, 'durationNum: ', this.durationTotalSecond)
+          // this.timeProgress = Math.floor((time / this.durationTotalSecond) * 100);
+          this.timeProgress = (time / this.durationTotalSecond) * 100;
           // console.log(this.timeProgress);
         }
       },
       // 拖动进度条的回调
-      changeProgress (e) {
+      changeProgress(e) {
         // console.log(e);
         // 修改当前播放时间
         this.currentTime = Math.floor((e / 100) * durationNum);
@@ -387,7 +387,7 @@
         this.$refs.audioPlayer.currentTime = this.currentTime;
       },
       // 拖动音量条的回调
-      changeVolume (e) {
+      changeVolume(e) {
         // 改变audio的音量
         // input事件 实时触发
         this.$refs.audioPlayer.volume = e / 100;
@@ -398,7 +398,7 @@
         }
       },
       // 点击小喇叭的回调 （切换静音状态）
-      changeMutedState () {
+      changeMutedState() {
         if (this.isMuted) {
           this.volume = volumeSave;
         } else {
@@ -409,7 +409,7 @@
         this.isMuted = !this.isMuted;
       },
       // 操作drawerList中DOM的函数
-      handleDrawerListDOM (currentIndex, lastIndex) {
+      handleDrawerListDOM(currentIndex, lastIndex) {
         // 目前没什么好思路 直接操作原生DOM
         this.$nextTick(() => {
           let tableRows = document
@@ -440,7 +440,7 @@
         });
       },
       // 点击打开抽屉的回调
-      openDrawer () {
+      openDrawer() {
         // 关闭也是这个回调，所以直接取反
         this.drawer = !this.drawer;
         this.hasDrawerOpend = true;
@@ -448,15 +448,16 @@
       },
 
       // 判断用户是否喜欢该音乐
-      getIsUserLikeCurrentMusic () {
+      getIsUserLikeCurrentMusic() {
         this.isUserLikeCurrentMusic = this.likeMuiscList.find(
           (item) => item === this.$store.state.musicId
         );
       },
       // 用户点击喜欢该音乐的回调
-      async likeIt () {
-        if (!window.localStorage.getItem("userInfo")) {
-          this.$message.error("请先登录!");
+      async likeIt() {
+        let userInfo = this.$store.state.userInfo
+        if (userInfo == null || userInfo.token == null || userInfo.token.length !== 32) {
+          this.$Message.error("请先登录!");
           return;
         }
         this.isUserLikeCurrentMusic = !this.isUserLikeCurrentMusic;
@@ -468,7 +469,7 @@
       },
 
       // 点击下载按钮的回调
-      downloadCurrentMusic () {
+      downloadCurrentMusic() {
         // console.log("download");
         console.log(this.musicDetail, this.musicUrl);
 
@@ -504,11 +505,11 @@
       },
 
       // 点击歌手名跳转至歌手页面的回调
-      goToSingerDetail () {
+      goToSingerDetail() {
         if (this.$route.path === `/singerDetail/${this.musicDetail.ar[0].id}`) {
           this.$router.push({
             name: "singerDetail",
-            params: { id: this.musicDetail.ar[0].id }
+            params: {id: this.musicDetail.ar[0].id}
           })
         }
         if (this.$store.state.isMusicDetailCardShow === true) {
@@ -517,13 +518,13 @@
       }
     },
     computed: {
-      durationTotalSecond () {
+      durationTotalSecond() {
         return returnSecond(this.duration);
       }
     },
     watch: {
       // 监听vuex中musicId的变化
-      "$store.state.musicId" (id) {
+      "$store.state.musicId"(id) {
         console.log("vuex中的id发生了变化");
         // 先暂停当前播放的音乐
         this.pauseMusic();
@@ -536,20 +537,20 @@
         // console.log(this.$refs.audioPlayer);
       },
       // 监听currentIndex的变化
-      "$store.state.currentIndex" (currentIndex, lastIndex) {
+      "$store.state.currentIndex"(currentIndex, lastIndex) {
         if (this.hasDrawerOpend) {
           this.handleDrawerListDOM(currentIndex, lastIndex);
         }
       },
       // 监听播放状态
-      "$store.state.isPlay" (isPlay) {
+      "$store.state.isPlay"(isPlay) {
         if (isPlay) {
           this.playMusic();
         } else {
           this.pauseMusic();
         }
       },
-      "$store.state.isLogin" (current) {
+      "$store.state.isLogin"(current) {
         if (current) {
           this.getLikeMusicList();
         } else {

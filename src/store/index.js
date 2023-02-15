@@ -32,7 +32,20 @@ export default new Vuex.Store({
     },
     // 显示自定义主题开关background-color: #4158D0;
     // background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
-    showCustomer: false
+    showCustomer: false,
+    // 音乐播放相关
+    musicPlay: {
+      // 音乐id
+      musicId: null,
+      // 正在播放的音乐在列表中的索引
+      currentIndex: 0,
+      // 音乐列表
+      musicList: {},
+      // 音乐是否正在播放
+      isPlay: false,
+      // 音乐是否在加载中
+      isMusicLoad: false
+    }
   },
 
   // 直接操作state中的数据(commit)
@@ -100,6 +113,14 @@ export default new Vuex.Store({
      */
     showCustomer (state, value) {
       state.showCustomer = value;
+    },
+    /**
+     * 修改播放状态
+     * @param state
+     * @param isPlay
+     */
+    changePlayState(state, isPlay) {
+      state.musicPlay.isPlay = isPlay;
     }
   }
 })

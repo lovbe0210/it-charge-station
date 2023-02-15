@@ -1,96 +1,124 @@
-.bottomControl {
+.bottom-control {
   /* background-color: pink; */
   /*border-top: 1px solid #ddd;*/
   //width: 100%;
   border-radius: 5px;
-  height: 50px;
-  /*position: fixed;*/
+  //height: 20%;
+  position: fixed;
   bottom: 0;
-  //display: flex;
-  /*justify-content: space-between;*/
-  padding: 6px 10px;
+  display: flex;
+  //justify-content: space-between;
+  padding: 5px;
   z-index: 10000;
-  background-color: #fff;
+  background-color: #ffffff;
+
+  .left {
+    display: flex;
+    align-items: center;
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-right: 10px;
+      cursor: pointer;
+
+      img {
+        width: 100%;
+      }
+    }
+
+
+    .musicInfo {
+      color: rgb(37, 37, 37);
+      font-size: 13px;
+      width: 70px;
+
+      .musicName {
+        margin-bottom: 3px;
+        //width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .singer {
+        transform: scale(0.9);
+        margin-left: -3px;
+        //width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .center {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .buttons {
+      display: flex;
+      align-items: center;
+      height: 13px;
+
+      i {
+        font-size: 20px;
+        color: #313131;
+      }
+
+      span {
+        display: inline-block;
+        width: 40px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+
+      span:nth-child(3) i {
+        font-size: 25px;
+      }
+    }
+
+    .progressBar {
+      display: flex;
+      align-items: center;
+      height: 10px;
+      margin-top: 12px;
+      overflow: hidden;
+
+      .progressSlider {
+        width: 140px;
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+
+      .currentTime,
+      .totalTime {
+        font-size: 12px;
+        transform: scale(0.85);
+        color: #aaa;
+        //margin: 0px;
+        width: 31px;
+        text-align: center;
+      }
+    }
+  }
+
+
+  .right {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
 }
 
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  overflow: hidden;
-  margin-right: 10px;
-  cursor: pointer;
-}
 
-.avatar img {
-  width: 100%;
-}
 
-.left {
-  display: flex;
-  align-items: center;
-  width: 123px;
-}
-
-.musicInfo {
-  color: rgb(37, 37, 37);
-  font-size: 12px;
-  width: 70px;
-}
-
-.musicName {
-  margin-bottom: 4px;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.singer {
-  transform: scale(0.9);
-  margin-left: -3px;
-  width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.center {
-  margin-top: 5px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.buttons {
-  display: flex;
-  align-items: center;
-  height: 13px;
-}
-
-.buttons i {
-  font-size: 20px;
-  color: #313131;
-}
-
-.buttons span:nth-child(3) i {
-  font-size: 25px;
-}
-
-.center .icon-xunhuan {
-  font-size: 17px;
-}
-
-.center .icon-xihuan {
-  font-size: 15px;
-}
-
-.right {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
 
 .volumeControl {
   display: flex;
@@ -112,18 +140,6 @@
   margin-right: 10px;
 }
 
-.progressSlider {
-  width: 200px;
-  margin-left: 10px;
-}
-
-.buttons span {
-  display: inline-block;
-  width: 50px;
-  box-sizing: border-box;
-  text-align: center;
-}
-
 .icon-zantingtingzhi {
   font-size: 35px !important;
 }
@@ -135,30 +151,10 @@
   padding: 15px 0;
 }
 
-.progressBar {
-  display: flex;
-  align-items: center;
-}
 
-.currentTime,
-.totalTime {
-  font-size: 12px;
-  transform: scale(0.85);
-  color: #aaa;
-  //margin: 0px;
-  //width: 30px;
-  text-align: center;
-}
 
-.progressBar {
-  height: 10px;
-  margin-top: 12px;
-  overflow: hidden;
-}
 
-.like {
-  color: #ec4141 !important;
-}
+
 
 .downloadContainer {
   height: 100%;

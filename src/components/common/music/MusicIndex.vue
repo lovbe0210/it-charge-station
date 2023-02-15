@@ -1,6 +1,6 @@
 <template>
   <div>
-    <music-detail-card class="musicDetailCard"></music-detail-card>
+    <music-detail-card></music-detail-card>
     <bottom-control></bottom-control>
   </div>
 </template>

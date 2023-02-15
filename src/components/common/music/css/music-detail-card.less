@@ -1,0 +1,187 @@
+.glassCard {
+  // 火狐默认不支持backdrop-filter 可以手动激活，这里不折腾了，火狐关闭玻璃背景功能，反正这个功能特别吃性能，字体也看不清了，没必要
+  //backdrop-filter: blur(50px) brightness(95%) !important;
+  //background-color: unset !important;
+  //background-image: unset !important;
+  //* {
+  //  color: rgb(37, 37, 37);
+  //
+  //  .commentComponent /deep/ * {
+  //    color: rgb(37, 37, 37);
+  //    border-color: rgb(143, 143, 143);
+  //
+  //    .replied {
+  //      border-radius: 5px;
+  //      background-color: rgba(0, 0, 0, 0.1);
+  //    }
+  //  }
+  //}
+  //filter: alpha(Opacity=10);
+  //-moz-opacity: 0.5;
+  //opacity: 0.1;
+  //background-color: #595959;
+  //backdrop-filter: saturate(100%) blur(10px);
+}
+
+.music-detail-card {
+  height: calc(22vh);
+  border-radius: 5px;
+  z-index: 1000;
+  transition: bottom 0.5s ease;
+  //background-image: linear-gradient(to bottom, #d7d6d7, white);
+
+  display: flex;
+  justify-content: center;
+
+  .left {
+    width: 40%;
+    padding: 10px 30px 0 30px;
+
+    .discContainer {
+      //width: 220px;
+      //position: relative;
+      .needle {
+        position: relative;
+        left: 75%;
+        width: 44px;
+        height: 36px;
+        z-index: 10000;
+        transition: all 1s;
+        transform-origin: 5.3px 5.3px;
+
+        img {
+          width: auto;
+          height: auto;
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+
+      // 光碟探头
+      .needleRotate {
+        transform-origin: 5.3px 5.3px;
+        transform: rotate(22deg);
+      }
+
+      .disc {
+        width: 110px;
+        height: 110px;
+        position: relative;
+        top: -12px;
+
+        // firstChild
+        img:nth-child(1) {
+          width: 100%;
+        }
+
+        .musicAvatar {
+          position: absolute;
+          top: 15%;
+          left: 15%;
+          width: 70%;
+          z-index: -1;
+        }
+      }
+
+      /* 碟子设置旋转动画 */
+      .discAnimation {
+        /* infinite动画无限循环 */
+        animation: disc 25s linear infinite;
+        /* 动画延迟一秒 */
+        animation-delay: 0.8s;
+      }
+
+      /* 碟子暂停旋转的动画 */
+      .pause {
+        animation-play-state: paused;
+        -webkit-animation-play-state: paused;
+      }
+    }
+  }
+
+  .right {
+    width: 60%;
+
+    div {
+      margin: 3px 0;
+    }
+
+    .title {
+      width: 100%;
+      text-align: center;
+      font-size: 11px;
+      margin: 10px 0;
+      color: rgb(145, 145, 145);
+
+      .musicName {
+        font-size: 1rem;
+        color: rgb(22, 22, 22);
+      }
+    }
+  }
+
+}
+
+
+.hide {
+  // bottom: calc(-100vh + 55px);
+  bottom: calc(-80vh + 55px);
+  // transform不会引发重流 性能更好 但是这里如果使用transform 在resize时会出现musicDetailCard拖影的情况，是transition引发的，
+  // 可能可以通过animation代替transtion解决，不太确定，没有尝试过，但是使用transform还需另外禁止index页面滚动，
+  // 所以我这里还是选择使用固定定位 性能稍差，但是由于脱离的文档流，也不会差很远
+  // transform: translateY(calc(80vh - 55px));
+}
+
+
+@keyframes disc {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+
+
+
+
+
+
+.bottom {
+  margin: 40px auto;
+  // width: 55vw;
+  width: 44vw;
+}
+
+.page {
+  width: 100%;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.tip {
+  font-size: 20px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.changeBackground {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.bottom /deep/ .el-loading-spinner {
+  top: 40px;
+}
+
+.album,
+.singer {
+  cursor: pointer;
+}
