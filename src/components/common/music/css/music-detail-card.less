@@ -1,26 +1,27 @@
 .glassCard {
   // 火狐默认不支持backdrop-filter 可以手动激活，这里不折腾了，火狐关闭玻璃背景功能，反正这个功能特别吃性能，字体也看不清了，没必要
-  //backdrop-filter: blur(50px) brightness(95%) !important;
-  //background-color: unset !important;
-  //background-image: unset !important;
-  //* {
-  //  color: rgb(37, 37, 37);
-  //
-  //  .commentComponent /deep/ * {
-  //    color: rgb(37, 37, 37);
-  //    border-color: rgb(143, 143, 143);
-  //
-  //    .replied {
-  //      border-radius: 5px;
-  //      background-color: rgba(0, 0, 0, 0.1);
-  //    }
-  //  }
-  //}
-  //filter: alpha(Opacity=10);
-  //-moz-opacity: 0.5;
-  //opacity: 0.1;
-  //background-color: #595959;
-  //backdrop-filter: saturate(100%) blur(10px);
+  backdrop-filter: blur(50px) brightness(95%) !important;
+  background-color: unset !important;
+  background-image: unset !important;
+  * {
+    color: rgb(37, 37, 37);
+
+    .commentComponent /deep/ * {
+      color: rgb(37, 37, 37);
+      border-color: rgb(143, 143, 143);
+
+      .replied {
+        border-radius: 5px;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+  filter: alpha(Opacity=10);
+  -moz-opacity: 0.5;
+  opacity: 0.1;
+  background-color: #ad4747;
+  backdrop-filter: saturate(100%) blur(10px);
+  z-index: -9999;
 }
 
 .music-detail-card {

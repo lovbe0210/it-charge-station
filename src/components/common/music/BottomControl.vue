@@ -544,6 +544,7 @@
       },
       // 监听播放状态
       "$store.state.isPlay"(isPlay) {
+        debugger
         if (isPlay) {
           this.playMusic();
         } else {

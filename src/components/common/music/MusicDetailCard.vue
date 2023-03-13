@@ -1,6 +1,6 @@
 <template>
-  <div class="music-detail-card" :class="[isMusicDetailCardShow ? '' : 'hide', backgroundMode ? '' : 'glassCard',]">
-    <img :src="musicInfo.al.picUrl"/>
+  <div class="music-detail-card" :class="[isMusicDetailCardShow ? '' : 'hide', backgroundMode ? '' : '',]">
+    <div class="glassCard"></div>
     <div class="left">
       <div class="discContainer">
         <div class="needle" :class="$store.state.musicPlay.isPlay ? 'needleRotate' : ''" ref="needle">
