@@ -73,7 +73,7 @@
 
       span {
         display: inline-block;
-        width: 40px;
+        width: 34px;
         box-sizing: border-box;
         text-align: center;
       }
@@ -115,6 +115,24 @@
     position: relative;
   }
 
+}
+
+// tip提示在MusicIndex下与bottom-control平级
+.volume-controller {
+  padding: 0;
+  /deep/.tooltip-inner {
+    background-color: transparent !important;
+    padding: 0;
+  }
+  /deep/.arrow::before {
+    display: none;
+  }
+  .volume-input {
+    writing-mode: bt-lr;
+    -webkit-appearance: slider-vertical;
+    width: 6px;
+    height: 80px;
+  }
 }
 
 

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="volumeControlHook">
     <music-detail-card></music-detail-card>
     <bottom-control></bottom-control>
   </div>

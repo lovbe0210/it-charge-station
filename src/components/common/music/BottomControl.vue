@@ -47,6 +47,14 @@
           <i class="iconfont" :class="isUserLikeCurrentMusic ? 'icon-like-yes' : 'icon-like-no'"
              @click="musicList.length != 0 ? likeIt() : ''"></i>
         </span>
+        <span id="volumeController">
+              <i class="iconfont" :class="isMuted ? 'icon-volume-close' : 'icon-volume-open'"
+                 @click="changeVolumeState()"></i>
+        </span>
+        <b-tooltip target="volumeController" triggers="hover" custom-class="volume-controller" placement="top" container="volumeControlHook">
+          <input type="range" min=0 max=100 step=10 v-model="volume" @change="changeVolume"
+                 class="volume-input"/>
+        </b-tooltip>
       </div>
       <!-- 进度条 -->
       <div class="progressBar">
@@ -387,26 +395,27 @@
         this.$refs.audioPlayer.currentTime = this.currentTime;
       },
       // 拖动音量条的回调
-      changeVolume(e) {
+      changeVolume() {
         // 改变audio的音量
         // input事件 实时触发
-        this.$refs.audioPlayer.volume = e / 100;
-        if (this.isMuted && e > 0) {
+        this.$refs.audioPlayer.volume = this.volume / 100;
+        if (this.isMuted && this.volume > 0) {
           this.isMuted = false;
-        } else if (e === 0 && this.isMuted === false) {
+        } else if (this.volume === "0" && this.isMuted === false) {
           this.isMuted = true;
         }
       },
       // 点击小喇叭的回调 （切换静音状态）
-      changeMutedState() {
+      changeVolumeState() {
         if (this.isMuted) {
           this.volume = volumeSave;
         } else {
           volumeSave = this.volume;
           this.volume = 0;
         }
-        console.log(volumeSave, this.isMuted);
         this.isMuted = !this.isMuted;
+        console.log(volumeSave, this.isMuted, this.volume / 100);
+        this.$refs.audioPlayer.volume = this.volume / 100;
       },
       // 操作drawerList中DOM的函数
       handleDrawerListDOM(currentIndex, lastIndex) {
@@ -466,6 +475,13 @@
           this.isUserLikeCurrentMusic
         );
         await this.getLikeMusicList();
+      },
+
+      /**
+       * 音量调节
+       */
+      volumeAdjust() {
+
       },
 
       // 点击下载按钮的回调
