@@ -3,7 +3,6 @@
     <audio
       :src="require('@/assets/Love Story.mp3')"
       ref="audioPlayer"
-      autoplay
       @play="changeState(true)"
       @pause="changeState(false)"
       @ended="changeMusic('next')"
@@ -51,7 +50,8 @@
               <i class="iconfont" :class="isMuted ? 'icon-volume-close' : 'icon-volume-open'"
                  @click="changeVolumeState()"></i>
         </span>
-        <b-tooltip target="volumeController" triggers="hover" custom-class="volume-controller" placement="top" container="volumeControlHook">
+        <b-tooltip target="volumeController" triggers="hover" custom-class="volume-controller" placement="top"
+                   container="volumeControlHook">
           <input type="range" min=0 max=100 step=10 v-model="volume" @change="changeVolume"
                  class="volume-input"/>
         </b-tooltip>
@@ -369,14 +369,14 @@
       // 当前播放时间位置
       timeupdate() {
         // console.log(e);
-        // console.log(this.$refs.audioPlayer.currentTime);
+        // console.log(this.$refs.audioPlayer);
         // 节流
         let time = this.$refs.audioPlayer.currentTime;
         // 将当前播放时间保存到vuex  如果保存到vuex这步节流,会导致歌词不精准,误差最大有1s
         // this.$store.commit("updateCurrentTime", time);
         // time = Math.floor(time);
         if (time !== lastSecond) {
-          // console.log(time);
+          // console.log(time) ;
           lastSecond = time;
           this.currentTime = time;
           // 计算进度条的位置
@@ -477,13 +477,6 @@
         await this.getLikeMusicList();
       },
 
-      /**
-       * 音量调节
-       */
-      volumeAdjust() {
-
-      },
-
       // 点击下载按钮的回调
       downloadCurrentMusic() {
         // console.log("download");
@@ -537,6 +530,14 @@
       durationTotalSecond() {
         return returnSecond(this.duration);
       }
+    },
+    mounted() {
+      // this.$refs.audioPlayer.addEventListener("timeupdate", () => {
+      //   this.currentTime = this.$refs.audioPlayer.currentTime;
+      // });
+      // 初始化播放状态和音量
+      this.$store.commit("changePlayState", !this.$refs.audioPlayer.paused);
+      this.changeVolume();
     },
     watch: {
       // 监听vuex中musicId的变化
