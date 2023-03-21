@@ -1,7 +1,7 @@
 <template>
   <div class="bottom-control">
     <audio
-      :src="require('@/assets/Love Story.mp3')"
+      src="http://m801.music.126.net/20230320204232/65cbccf9ea67dc93c78f4b7ef83198f7/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/14096602465/4884/6d96/3e49/0f565432c77fabdc0ff003cbab478687.mp3"
       ref="audioPlayer"
       @play="changeState(true)"
       @pause="changeState(false)"
@@ -36,8 +36,8 @@
           <i class="iconfont icon-previous"></i>
         </span>
         <span @click="musicList.length != 0 ? changePlayState() : ''">
-          <i class="iconfont icon-play" v-show="this.$store.state.musicPlay.isPlay"></i>
-          <i class="iconfont icon-paused" v-show="!this.$store.state.musicPlay.isPlay"></i>
+          <i class="iconfont icon-play" v-show="this.$store.state.musicInfo.isPlay"></i>
+          <i class="iconfont icon-paused" v-show="!this.$store.state.musicInfo.isPlay"></i>
         </span>
         <span @click="musicList.length != 0 ? changeMusic('next') : ''">
           <i class="iconfont icon-next"></i>
@@ -59,11 +59,11 @@
       <!-- 进度条 -->
       <div class="progressBar">
         <span class="currentTime">{{ currentTime | handleMusicTime }}</span>
-        <!-- :value 是单向的  要实现双向要v-model -->
-        <Progress class="progressSlider" :percent="timeProgress" :stroke-width="5" stroke-color="#FF4E4E" hide-info/>
-        <!--        <el-slider class="progressSlider" v-model="timeProgress"-->
-        <!--                   :show-tooltip="false" @change="changeProgress"-->
-        <!--                   :disabled="musicList.length == 0"></el-slider>-->
+        <div class="progress-wrapp">
+          <div class="totalProgress" @click="changeProgress">
+            <div class="currentProgress" :style="'width:' + timeProgress + '%'"/>
+          </div>
+        </div>
         <span class="totalTime">{{ duration }}</span>
       </div>
     </div>
@@ -107,7 +107,7 @@
 
   let lastSecond = 0;
   // 总时长的秒数
-  let durationNum = 0;
+  // let durationNum = 0;
   // 保存当前音量
   let volumeSave = 0;
   // 当前音乐类型，用于下载
@@ -268,15 +268,17 @@
 
       // 点击播放键的回调
       changePlayState() {
-        this.$store.state.musicPlay.isPlay ? this.pauseMusic() : this.playMusic();
+        this.$store.state.musicInfo.isPlay ? this.pauseMusic() : this.playMusic();
       },
       // 播放音乐的函数
       playMusic() {
         this.$refs.audioPlayer.play();
+          this.$store.commit('updateMusicInfo', {musicId: "857896"})
       },
       // 暂停音乐的函数
       pauseMusic() {
         this.$refs.audioPlayer.pause();
+        this.$store.commit('updateMusicInfo', {musicId: "857891"})
       },
       // audio开始或暂停播放的回调  在vuex中改变状态
       changeState(state) {
@@ -299,7 +301,7 @@
         // });
 
         let index = this.musicList.findIndex(
-          (item) => item.id === this.$store.state.musicPlay.musicId
+          (item) => item.id === this.$store.state.musicInfo.musicId
         );
         console.log(index);
         if (index !== -1) {
@@ -373,7 +375,7 @@
         // 节流
         let time = this.$refs.audioPlayer.currentTime;
         // 将当前播放时间保存到vuex  如果保存到vuex这步节流,会导致歌词不精准,误差最大有1s
-        // this.$store.commit("updateCurrentTime", time);
+        this.$store.commit("updateMusicInfo", {currentTime: time});
         // time = Math.floor(time);
         if (time !== lastSecond) {
           // console.log(time) ;
@@ -386,13 +388,16 @@
           // console.log(this.timeProgress);
         }
       },
-      // 拖动进度条的回调
+      // 更改进度条的回调
       changeProgress(e) {
         // console.log(e);
-        // 修改当前播放时间
-        this.currentTime = Math.floor((e / 100) * durationNum);
+        //总进度条的实际长度
+        let totawidth = e.currentTarget.offsetWidth;
+        //鼠标的x坐标(相对于div内部的坐标)
+        let mouseX = e.offsetX;
         // 改变audio的实际当前播放时间
-        this.$refs.audioPlayer.currentTime = this.currentTime;
+        let currentTime = Math.floor(mouseX / totawidth * this.durationTotalSecond);
+        this.$refs.audioPlayer.currentTime = currentTime;
       },
       // 拖动音量条的回调
       changeVolume() {
@@ -547,7 +552,7 @@
         this.pauseMusic();
         this.musicList = this.$store.state.musicList;
         this.getMusicDetailFromMusicList();
-        this.getMusicDetail(id);
+        // this.getMusicDetail(id);
         // durationNum = returnSecond(this.duration);
         // 判断用户是否喜欢当前音乐
         this.getIsUserLikeCurrentMusic();

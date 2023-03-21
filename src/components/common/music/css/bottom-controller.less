@@ -73,7 +73,7 @@
 
       span {
         display: inline-block;
-        width: 34px;
+        width: 35px;
         box-sizing: border-box;
         text-align: center;
       }
@@ -99,11 +99,35 @@
       .currentTime,
       .totalTime {
         font-size: 12px;
-        transform: scale(0.85);
+        transform: scale(0.9);
         color: #aaa;
-        //margin: 0px;
         width: 31px;
         text-align: center;
+      }
+
+      .progress-wrapp {
+        margin: 0 6px;
+      }
+
+      .totalProgress{
+        //margin: 0 6px;
+        //padding: 0 4px;
+        cursor: pointer;
+        width: 130px;
+        height: 6px;
+        background-color: #c6c6c6;
+        border-radius: 10px;
+        -webkit-border-top-left-radius:10px ;
+        -webkit-border-bottom-left-radius: 10px;
+      }
+
+      .currentProgress{
+        width: 0;
+        height: 100%;
+        border-radius: 10px;
+        background-color: red;
+        -webkit-border-top-left-radius:10px ;
+        -webkit-border-bottom-left-radius: 10px;
       }
     }
   }

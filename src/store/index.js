@@ -34,11 +34,13 @@ export default new Vuex.Store({
     // background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
     showCustomer: false,
     // 音乐播放相关
-    musicPlay: {
-      // 音乐id
+    musicInfo: {
+      // 当前播放音乐id
       musicId: null,
       // 正在播放的音乐在列表中的索引
       currentIndex: 0,
+      // 实时播放时长
+      currentTime: 0,
       // 音乐列表
       musicList: {},
       // 音乐是否正在播放
@@ -55,7 +57,7 @@ export default new Vuex.Store({
      * @param state
      * @param value
      */
-    changeActiveRoute (state, value) {
+    changeActiveRoute(state, value) {
       state.activeName = value
     },
     /**
@@ -63,7 +65,7 @@ export default new Vuex.Store({
      * @param state
      * @param value
      */
-    changeShowContext (state, value) {
+    changeShowContext(state, value) {
       state.showContext = value
     },
     /**
@@ -71,7 +73,7 @@ export default new Vuex.Store({
      * @param state
      * @param value
      */
-    isPhone (state, value) {
+    isPhone(state, value) {
       state.isPhone = value
     },
     /**
@@ -87,7 +89,7 @@ export default new Vuex.Store({
      * @param state
      * @param value
      */
-    clearUserInfo (state, value) {
+    clearUserInfo(state, value) {
       state.userInfo = {}
     },
     /**
@@ -95,7 +97,7 @@ export default new Vuex.Store({
      * @param state
      * @param value
      */
-    login (state, value) {
+    login(state, value) {
       state.userInfo = value
     },
     /**
@@ -103,7 +105,7 @@ export default new Vuex.Store({
      * @param state
      * @param value
      */
-    customerSet (state, value) {
+    customerSet(state, value) {
       state.customerSet = Object.assign(state.customerSet, value);
     },
     /**
@@ -111,7 +113,7 @@ export default new Vuex.Store({
      * @param state
      * @param value
      */
-    showCustomer (state, value) {
+    showCustomer(state, value) {
       state.showCustomer = value;
     },
     /**
@@ -120,7 +122,15 @@ export default new Vuex.Store({
      * @param isPlay
      */
     changePlayState(state, isPlay) {
-      state.musicPlay.isPlay = isPlay;
+      state.musicInfo.isPlay = isPlay;
+    },
+    /**
+     * music信息修改
+     * @param state
+     * @param musicInfo
+     */
+    updateMusicInfo(state, musicInfo) {
+      state.musicInfo = Object.assign(state.musicInfo, musicInfo);
     }
   }
 })

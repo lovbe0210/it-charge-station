@@ -25,8 +25,7 @@
     },
     data() {
       return {
-        // 当前歌词索引
-        lyricsIndex: 0
+
       };
     },
     methods: {

@@ -279,10 +279,14 @@
       logout () {
         // 先隐藏dropdown，然后退出登录
         this.isHover()
-        this.$store.commit('clearUserInfo', '我是传递的值')
-        this.$Message.success({
-          content: '已成功退出当前用户，记得回来看看哦'
+        this.$store.dispatch('clearUserInfo').then(() => {
+          setTimeout(() => {
+            this.$Message.success({
+              content: '已成功退出当前用户，记得回来看看哦'
+            })
+          }, 1000)
         })
+
         /*this.$apis.logout().then(() => {
           // dispatch 异步操作this,调用action里的发放 | commit 同步操作this,调用mutations里的方法
           this.$store.commit('clearUserInfo')
