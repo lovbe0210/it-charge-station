@@ -1,54 +1,39 @@
-.glassCard {
-  // 火狐默认不支持backdrop-filter 可以手动激活，这里不折腾了，火狐关闭玻璃背景功能，反正这个功能特别吃性能，字体也看不清了，没必要
-  backdrop-filter: blur(50px) brightness(95%) !important;
-  background-color: unset !important;
-  background-image: unset !important;
-
-  * {
-    color: rgb(37, 37, 37);
-
-    .commentComponent /deep/ * {
-      color: rgb(37, 37, 37);
-      border-color: rgb(143, 143, 143);
-
-      .replied {
-        border-radius: 5px;
-        background-color: rgba(0, 0, 0, 0.1);
-      }
-    }
-  }
-
-  filter: alpha(Opacity=10);
-  -moz-opacity: 0.5;
-  opacity: 0.1;
-  background-color: #ad4747;
-  backdrop-filter: saturate(100%) blur(10px);
-  z-index: -9999;
-}
-
 .music-detail-card {
+  width: 100%;
   height: calc(22vh);
   border-radius: 5px;
-  z-index: 1000;
+  z-index: 1;
   transition: bottom 0.5s ease;
-  //background-image: linear-gradient(to bottom, #d7d6d7, white);
-
+  //background-image: linear-gradient(to bottom, #f1b7f1, #FEFEFE);
+  position: relative;
   display: flex;
   justify-content: center;
 
+  .glassCard {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    z-index: 1;
+    position: absolute;
+    opacity: 0.5;
+    //filter: blur(100px);
+    //flex: 1;
+    //overflow:hidden;
+    background-color: #FEFEFE;
+  }
+
   .left {
+    z-index: 2;
     width: 40%;
-    padding: 10px 30px 0 30px;
+    margin: 15px 0px 0 28px;
 
     .discContainer {
-      //width: 220px;
-      //position: relative;
       .needle {
         position: relative;
-        left: 75%;
+        left: 50%;
         width: 44px;
         height: 36px;
-        z-index: 10000;
+        z-index: 2;
         transition: all 1s;
         transform-origin: 5.3px 5.3px;
 
@@ -70,7 +55,7 @@
         width: 110px;
         height: 110px;
         position: relative;
-        top: -12px;
+        top: -14px;
 
         // firstChild
         img:nth-child(1) {
@@ -105,31 +90,49 @@
   }
 
   .right {
-    width: 60%;
+    max-width: 58%;
+    min-width: 58%;
+    z-index: 1;
+    justify-content: center;
 
-    div {
-      margin: 3px 0;
-    }
-
-    .title {
-      width: 100%;
+    .musicName {
+      font-size: 1rem;
+      color: rgb(22, 22, 22);
       text-align: center;
-      font-size: 11px;
-      margin: 10px 0;
-      color: rgb(145, 145, 145);
-
-      .musicName {
-        font-size: 1rem;
-        color: rgb(22, 22, 22);
+      margin: 15px 0 0 0;
+      .singer {
+        margin-left: 5px;
+        color: rgb(145, 145, 145);
       }
     }
 
     .lyrics {
-      width: 100%;
-      height: 120px;
+      height: 90px;
       font-size: 12px;
       text-align: center;
       overflow-y: scroll;
+      margin: 15px 0 10px 0;
+
+      .placeholder {
+        height: 40%;
+      }
+
+      .lyricsItem {
+        font-size: 12px;
+        margin: 4px 6px 0 2px;
+        transition: all 0.5s;
+        line-height: 20px;
+      }
+
+      .currentLyric {
+        font-weight: 600;
+        font-size: 14px;
+        color: #fc1717;
+      }
+    }
+
+    .lyrics::-webkit-scrollbar {
+      display: none;
     }
   }
 

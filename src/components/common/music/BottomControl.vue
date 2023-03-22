@@ -1,7 +1,7 @@
 <template>
   <div class="bottom-control">
     <audio
-      src="http://m801.music.126.net/20230320204232/65cbccf9ea67dc93c78f4b7ef83198f7/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/14096602465/4884/6d96/3e49/0f565432c77fabdc0ff003cbab478687.mp3"
+      :src="require('@/assets/Love Story.mp3')"
       ref="audioPlayer"
       @play="changeState(true)"
       @pause="changeState(false)"
@@ -50,7 +50,7 @@
               <i class="iconfont" :class="isMuted ? 'icon-volume-close' : 'icon-volume-open'"
                  @click="changeVolumeState()"></i>
         </span>
-        <b-tooltip target="volumeController" triggers="hover" custom-class="volume-controller" placement="top"
+        <b-tooltip target="volumeController" triggers="click" custom-class="volume-controller" placement="top"
                    container="volumeControlHook">
           <input type="range" min=0 max=100 step=10 v-model="volume" @change="changeVolume"
                  class="volume-input"/>

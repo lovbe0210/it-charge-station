@@ -1,5 +1,6 @@
 <template>
-  <div class="music-detail-card" :class="[isMusicDetailCardShow ? '' : 'hide', backgroundMode ? '' : '',]">
+  <div class="music-detail-card" :class="[isMusicDetailCardShow ? '' : 'hide', backgroundMode ? '' : '',]"
+       :style="`background-image:` +  background">
     <div class="glassCard"></div>
     <div class="left">
       <div class="discContainer">
@@ -11,8 +12,8 @@
              :class="[$store.state.musicInfo.isPlay ? '' : 'pause',$store.state.musicInfo.isMusicLoad ? '' : 'discAnimation']"
              ref="disc">
           <img :src="require('@/assets/img/MusicDetailCard/disc.png')" alt=""/>
-          <img :src="require('@/assets/img/test.jpg')" alt="" class="musicAvatar" v-if="!musicInfo.al"/>
-          <img :src="musicInfo.al.picUrl" alt="" class="musicAvatar" v-else/>
+          <img :src="require('@/assets/img/test.jpg')" alt="" class="musicAvatar" v-if="!musicInfo.al" ref="avatar"/>
+          <img :src="musicInfo.al.picUrl" alt="" class="musicAvatar" v-else ref="avatar"/>
         </div>
       </div>
     </div>
@@ -22,11 +23,9 @@
           {{ musicInfo.name }}
           <span class="singer" @click="goToDetailPage('singerDetail', musicInfo.ar[0].id)">
             {{ musicInfo.ar[0].name }}
-          </span>
+        </span>
         </div>
-
       </div>
-
       <div class="lyrics">
         <!-- 占位 -->
         <div class="placeholder"></div>
@@ -39,27 +38,10 @@
         <!-- 占位 -->
         <div class="placeholder"></div>
       </div>
+
     </div>
-    <!--      <div class="bottom" v-loading="isCommentLoading" element-loading-background="rgba(255, 255, 255, 0.1)">-->
-    <!--        <comment :comments="hotComments" :commentType="'music'" :commentId="$store.state.musicId + ''"-->
-    <!--          :musicTitle="musicInfo.name" @getComment="getMusicComment($store.state.musicId)"-->
-    <!--          class="commentComponent" v-if="currentCommentPage == 1">-->
-    <!--          <div slot="title">热门评论</div>-->
-    <!--        </comment>-->
-    <!--        <comment :comments="comment.comments" :commentType="'music'" :commentId="$store.state.musicId + ''"-->
-    <!--          :musicTitle="musicInfo.name" @getComment="getMusicComment($store.state.musicId)"-->
-    <!--          class="commentComponent">-->
-    <!--          <div slot="title">最新评论({{ comment.total }})</div>-->
-    <!--        </comment>-->
-    <!-- 评论分页 -->
-    <!--        <div class="page" v-show="comment.comments && comment.comments[0]">-->
-    <!--          <el-pagination background layout="prev, pager, next" :total="comment.total" small :page-size="20" -->
-    <!--           :current-page="currentCommentPage" @current-change="commentPageChange">-->
-    <!--          </el-pagination>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--      <go-top scrollObj=".musicDetailCardContainer"></go-top>-->
   </div>
+
 </template>
 
 <script>
@@ -68,96 +50,82 @@
     data() {
       return {
         musicInfo: {
-          "name": "幻听",
-          "id": 167655,
+          "name": "Love Story",
+          "id": 19292984,
           "pst": 0,
           "t": 0,
-          "ar": [{"id": 5771, "name": "许嵩", "tns": [], "alias": ["Vae"], "alia": ["Vae"]}],
+          "ar": [{
+            "id": 44266,
+            "name": "Taylor Swift",
+            "tns": [],
+            "alias": []
+          }],
           "alia": [],
           "pop": 100,
           "st": 0,
-          "rt": "600902000009334954",
-          "fee": 8,
-          "v": 51,
+          "rt": "600902000007282990",
+          "fee": 1,
+          "v": 129,
           "crbt": null,
           "cf": "",
           "al": {
-            "id": 16932,
-            "name": "梦游计",
-            "picUrl": "http://p3.music.126.net/ifjKrYPuGzRHlbVDNScQfA==/109951166118946328.jpg",
+            "id": 1770438,
+            "name": "Fearless",
+            "picUrl": "https://p2.music.126.net/KurKrZ-dMmviArT5lM2RCQ==/18517974836953202.jpg",
             "tns": [],
-            "pic_str": "109951166118946328",
-            "pic": 109951166118946340
+            "pic_str": "18517974836953202",
+            "pic": 18517974836953200
           },
-          "dt": "04:33",
-          "h": {"br": 320000, "fid": 0, "size": 10932811, "vd": -26180, "sr": 44100},
-          "m": {"br": 192000, "fid": 0, "size": 6559704, "vd": -23577, "sr": 44100},
-          "l": {"br": 128000, "fid": 0, "size": 4373151, "vd": -21810, "sr": 44100},
-          "sq": {"br": 783967, "fid": 0, "size": 26779043, "vd": -26284, "sr": 44100},
+          "dt": "03:56",
+          "h": {
+            "br": 320000,
+            "fid": 0,
+            "size": 9452191,
+            "vd": -65540,
+            "sr": 44100
+          },
+          "m": {
+            "br": 192000,
+            "fid": 0,
+            "size": 5671332,
+            "vd": -63094,
+            "sr": 44100
+          },
+          "l": {
+            "br": 128000,
+            "fid": 0,
+            "size": 3780902,
+            "vd": -61573,
+            "sr": 44100
+          },
+          "sq": null,
           "hr": null,
           "a": null,
           "cd": "1",
-          "no": 2,
+          "no": 3,
           "rtUrl": null,
           "ftype": 0,
           "rtUrls": [],
           "djId": 0,
           "copyright": 1,
           "s_id": 0,
-          "mark": 8192,
+          "mark": 270336,
           "originCoverType": 1,
           "originSongSimpleData": null,
           "tagPicList": null,
           "resourceState": true,
-          "version": 51,
+          "version": 129,
           "songJumpInfo": null,
           "entertainmentTags": null,
+          "awardTags": null,
           "single": 0,
           "noCopyrightRcmd": null,
           "rtype": 0,
           "rurl": null,
           "mst": 9,
-          "cp": 22036,
-          "mv": 304279,
-          "publishTime": 1341936000007,
-          "privilege": {
-            "id": 167655,
-            "fee": 8,
-            "payed": 0,
-            "st": 0,
-            "pl": 128000,
-            "dl": 0,
-            "sp": 7,
-            "cp": 1,
-            "subp": 1,
-            "cs": false,
-            "maxbr": 999000,
-            "fl": 128000,
-            "toast": false,
-            "flag": 260,
-            "preSell": false,
-            "playMaxbr": 999000,
-            "downloadMaxbr": 999000,
-            "maxBrLevel": "lossless",
-            "playMaxBrLevel": "lossless",
-            "downloadMaxBrLevel": "lossless",
-            "plLevel": "standard",
-            "dlLevel": "none",
-            "flLevel": "standard",
-            "rscl": null,
-            "freeTrialPrivilege": {"resConsumable": false, "userConsumable": false, "listenType": 5},
-            "chargeInfoList": [{
-              "rate": 128000,
-              "chargeUrl": null,
-              "chargeMessage": null,
-              "chargeType": 0
-            }, {"rate": 192000, "chargeUrl": null, "chargeMessage": null, "chargeType": 1}, {
-              "rate": 320000,
-              "chargeUrl": null,
-              "chargeMessage": null,
-              "chargeType": 1
-            }, {"rate": 999000, "chargeUrl": null, "chargeMessage": null, "chargeType": 1}]
-          }
+          "cp": 7003,
+          "mv": 503185,
+          "publishTime": 1230739200000
         },
         // 是否删除卡片渲染的内容
         cleanCard: true,
@@ -168,14 +136,15 @@
         // 当前歌词索引
         lyricsIndex: 0,
         // 背景显示模式  true为白色渐变背景  false为毛玻璃背景
-        backgroundMode: false
+        backgroundMode: false,
+        background: "linear-gradient(to bottom, #f1b7f1, #FEFEFE);"
       }
     },
     methods: {
       //请求并处理歌词数据
       async getLyric(id) {
         let res = await this.$request({
-          url: "/lyric?id=167655",
+          url: "/lyric?id=19292984",
           method: 'get'
         });
         // debugger
@@ -241,9 +210,48 @@
             return currentTime <= item[0];
           }
         });
-        // console.log(lyricsIndex);
         this.lyricsIndex = lyricsIndex;
+      },
+      // 获取图片主题色
+      getColor() {
+        debugger
+        let avatar = this.$refs.avatar;
+        let arr = [];
+        avatar.onload = () => {
+          const w = this.width;
+          const h = this.height;
+          let canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          let context = canvas.getContext('2d');
+          context.drawImage(this, 0, 0)
+          let pxArray = context.getImageData(0, 0, w, h);
+          pxArray = Array.from(pxArray);
+
+          const colorList = {};
+          let i = 0;
+          while (i < pxArray.length) {
+            const r = pxArray[i];
+            const g = pxArray[i + 1];
+            const b = pxArray[i + 2];
+            const a = pxArray[i + 3];
+            i = i + 4;
+            const key = [r, g, b, a].join(',')
+            key in colorList ? ++context[key] : (colorList[key] = 1)
+          }
+
+          for (let key in colorList) {
+            arr.push({
+              rgba: `rgba(${key})`,
+              num: colorList[key]
+            })
+          }
+          arr = arr.sort((a, b) => b.num - a.num)
+          console.log(arr)
+        }
+        return arr;
       }
+
     },
 
     watch: {
@@ -257,10 +265,14 @@
         // this.musicInfo = this.$store.state.musicInfo.musicList[this.$store.state.musicInfo.currentIndex];
         // this.comment = {};
         // 优化性能,仅在卡片展示时才发送请求
-        if (this.isMusicDetailCardShow) {
+        if (this.isMusicDetailCardShow && this.lyric.length === 1) {
           this.getLyric(musicId);
           // this.getMusicComment(musicId);
         }
+
+        // 重置背景色
+        let color = this.getColor();
+        console.log(color)
       },
 
       // 监听当前播放时间
