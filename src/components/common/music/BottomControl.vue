@@ -50,8 +50,8 @@
               <i class="iconfont" :class="isMuted ? 'icon-volume-close' : 'icon-volume-open'"
                  @click="changeVolumeState()"></i>
         </span>
-        <b-tooltip target="volumeController" triggers="click" custom-class="volume-controller" placement="top"
-                   container="volumeControlHook">
+        <b-tooltip target="volumeController" triggers="hover" custom-class="volume-controller" placement="top"
+                   container="volumeController">
           <input type="range" min=0 max=100 step=10 v-model="volume" @change="changeVolume"
                  class="volume-input"/>
         </b-tooltip>

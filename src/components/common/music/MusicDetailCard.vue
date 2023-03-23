@@ -12,8 +12,9 @@
              :class="[$store.state.musicInfo.isPlay ? '' : 'pause',$store.state.musicInfo.isMusicLoad ? '' : 'discAnimation']"
              ref="disc">
           <img :src="require('@/assets/img/MusicDetailCard/disc.png')" alt=""/>
-          <img :src="require('@/assets/img/test.jpg')" alt="" class="musicAvatar" v-if="!musicInfo.al" ref="avatar"/>
-          <img :src="musicInfo.al.picUrl" alt="" class="musicAvatar" v-else ref="avatar"/>
+          <img :src="require('@/assets/img/test.jpg')" alt="" class="musicAvatar" v-if="!musicInfo.al" ref="avatar"
+               crossorigin="anonymous"/>
+          <img :src="musicInfo.al.picUrl" alt="" class="musicAvatar" v-else ref="avatar" crossorigin="anonymous"/>
         </div>
       </div>
     </div>
@@ -137,7 +138,7 @@
         lyricsIndex: 0,
         // 背景显示模式  true为白色渐变背景  false为毛玻璃背景
         backgroundMode: false,
-        background: "linear-gradient(to bottom, #f1b7f1, #FEFEFE);"
+        background: "linear-gradient(to bottom, #e3e2e3, white)"
       }
     },
     methods: {
@@ -213,43 +214,40 @@
         this.lyricsIndex = lyricsIndex;
       },
       // 获取图片主题色
-      getColor() {
-        debugger
-        let avatar = this.$refs.avatar;
-        let arr = [];
-        avatar.onload = () => {
-          const w = this.width;
-          const h = this.height;
-          let canvas = document.createElement('canvas');
-          canvas.width = w;
-          canvas.height = h;
-          let context = canvas.getContext('2d');
-          context.drawImage(this, 0, 0)
-          let pxArray = context.getImageData(0, 0, w, h);
-          pxArray = Array.from(pxArray);
+      getColor(imgEl) {
+        let canvas = document.createElement('canvas');
+        let context = canvas.getContext && canvas.getContext('2d');
+        let height;
+        let width;
+        let length;
+        let data;
+        let i = -4;
+        let blockSize = 5;
+        let count = 0;
+        let rgb = {r: 0, g: 0, b: 0}
 
-          const colorList = {};
-          let i = 0;
-          while (i < pxArray.length) {
-            const r = pxArray[i];
-            const g = pxArray[i + 1];
-            const b = pxArray[i + 2];
-            const a = pxArray[i + 3];
-            i = i + 4;
-            const key = [r, g, b, a].join(',')
-            key in colorList ? ++context[key] : (colorList[key] = 1)
-          }
-
-          for (let key in colorList) {
-            arr.push({
-              rgba: `rgba(${key})`,
-              num: colorList[key]
-            })
-          }
-          arr = arr.sort((a, b) => b.num - a.num)
-          console.log(arr)
+        height = canvas.height = imgEl.height
+        width = canvas.width = imgEl.width
+        context.drawImage(imgEl, 0, 0);
+        data = context.getImageData(0, 0, width, height).data
+        length = data.length
+        while ((i += blockSize * 4) < length) {
+          ++count;
+          rgb.r += data[i];
+          rgb.g += data[i + 1];
+          rgb.b += data[i + 2];
         }
-        return arr;
+        rgb.r = ~~(rgb.r / count);
+        rgb.g = ~~(rgb.g / count);
+        rgb.b = ~~(rgb.b / count);
+        return this.rgbToHex(rgb).toUpperCase();
+      },
+      rgbToHex(rgb) {
+        let r = /^\d{1,3}$/;
+        if (!r.test(rgb.r) || !r.test(rgb.g) || !r.test(rgb.b)) return alert('输入错误的hex颜色值');
+        let hexs = [rgb.r.toString(16), rgb.g.toString(16), rgb.b.toString(16)];
+        for (let i = 0; i < 3; i++) if (hexs[i].length === 1) hexs[i] = "0" + hexs[i];
+        return "#" + hexs.join("");
       }
 
     },
@@ -271,8 +269,11 @@
         }
 
         // 重置背景色
-        let color = this.getColor();
-        console.log(color)
+        this.background = "linear-gradient(to bottom, #e3e2e3, white)";
+        setTimeout(() => {
+          let color = this.getColor(this.$refs.avatar);
+          this.background = this.background.replace("#e3e2e3", color);
+        }, 2000);
       },
 
       // 监听当前播放时间
