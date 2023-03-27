@@ -46,7 +46,9 @@ export default new Vuex.Store({
       // 音乐是否正在播放
       isPlay: false,
       // 音乐是否在加载中
-      isMusicLoad: false
+      isMusicLoad: false,
+      // 是否展示音乐播放页面
+      isMusicDetailCardShow: true
     }
   },
 

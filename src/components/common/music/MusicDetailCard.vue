@@ -1,8 +1,13 @@
 <template>
-  <div class="music-detail-card" :class="[isMusicDetailCardShow ? '' : 'hide', backgroundMode ? '' : '',]"
+  <div class="music-detail-card"
+       :class="[$store.state.musicInfo.isMusicDetailCardShow ? '' : 'hide']"
        :style="`background-image:` +  background">
     <div class="glassCard"></div>
     <div class="left">
+      <div class="toList" @click="toPlayList()">
+        <div :class="['iconfont',returnStatus == 0 ? 'icon-return' : 'icon-return-copy']"
+             :style="'color:' + (returnStatus == 0 ? '#ffffff' : '#515a6e')">返回</div>
+      </div>
       <div class="discContainer">
         <div class="needle" :class="$store.state.musicInfo.isPlay ? 'needleRotate' : ''" ref="needle">
           <img :src="require('@/assets/img/MusicDetailCard/needle.png')" alt=""/>
@@ -13,39 +18,41 @@
              ref="disc">
           <img :src="require('@/assets/img/MusicDetailCard/disc.png')" alt=""/>
           <img :src="require('@/assets/img/test.jpg')" alt="" class="musicAvatar" v-if="!musicInfo.al" ref="avatar"
-               crossorigin="anonymous"/>
+          />
           <img :src="musicInfo.al.picUrl" alt="" class="musicAvatar" v-else ref="avatar" crossorigin="anonymous"/>
         </div>
       </div>
     </div>
     <div class="right">
-      <div class="title">
-        <div class="musicName">
-          {{ musicInfo.name }}
-          <span class="singer" @click="goToDetailPage('singerDetail', musicInfo.ar[0].id)">
+        <div class="title">
+          <div class="musicName">
+            {{ musicInfo.name }}
+            <span class="singer" @click="goToDetailPage('singerDetail', musicInfo.ar[0].id)">
             {{ musicInfo.ar[0].name }}
         </span>
+          </div>
         </div>
-      </div>
-      <div class="lyrics">
-        <!-- 占位 -->
-        <div class="placeholder"></div>
-        <!-- 因为歌词快了一句,所以减1 -->
-        <!-- 歌词item -->
-        <div class="lyricsItem" v-for="(item, index) in lyric" :key="index"
-             :class="lyricsIndex - 1 == index ? 'currentLyric' : ''">
-          {{ item[1] }}
+        <div class="lyrics">
+          <!-- 占位 -->
+          <div class="placeholder"></div>
+          <!-- 因为歌词快了一句,所以减1 -->
+          <!-- 歌词item -->
+          <div class="lyricsItem" v-for="(item, index) in lyric" :key="index"
+               :class="lyricsIndex - 1 == index ? 'currentLyric' : ''">
+            {{ item[1] }}
+          </div>
+          <!-- 占位 -->
+          <div class="placeholder"></div>
         </div>
-        <!-- 占位 -->
-        <div class="placeholder"></div>
-      </div>
 
-    </div>
+      </div>
   </div>
 
 </template>
 
 <script>
+  import ColorThief from 'colorthief';
+
   let placeholderHeight = 0;
   export default {
     data() {
@@ -72,7 +79,7 @@
           "al": {
             "id": 1770438,
             "name": "Fearless",
-            "picUrl": "https://p2.music.126.net/KurKrZ-dMmviArT5lM2RCQ==/18517974836953202.jpg",
+            "picUrl": "http://localhost:8080/img/29.08867848.jpg",
             "tns": [],
             "pic_str": "18517974836953202",
             "pic": 18517974836953200
@@ -136,9 +143,9 @@
         lyric: [[0, "正在加载歌词..."]],
         // 当前歌词索引
         lyricsIndex: 0,
-        // 背景显示模式  true为白色渐变背景  false为毛玻璃背景
-        backgroundMode: false,
-        background: "linear-gradient(to bottom, #e3e2e3, white)"
+        background: "linear-gradient(to bottom, #e3e2e3, white)",
+        // 0播放界面1列表界面
+        returnStatus: 1
       }
     },
     methods: {
@@ -215,41 +222,13 @@
       },
       // 获取图片主题色
       getColor(imgEl) {
-        let canvas = document.createElement('canvas');
-        let context = canvas.getContext && canvas.getContext('2d');
-        let height;
-        let width;
-        let length;
-        let data;
-        let i = -4;
-        let blockSize = 5;
-        let count = 0;
-        let rgb = {r: 0, g: 0, b: 0}
-
-        height = canvas.height = imgEl.height
-        width = canvas.width = imgEl.width
-        context.drawImage(imgEl, 0, 0);
-        data = context.getImageData(0, 0, width, height).data
-        length = data.length
-        while ((i += blockSize * 4) < length) {
-          ++count;
-          rgb.r += data[i];
-          rgb.g += data[i + 1];
-          rgb.b += data[i + 2];
-        }
-        rgb.r = ~~(rgb.r / count);
-        rgb.g = ~~(rgb.g / count);
-        rgb.b = ~~(rgb.b / count);
-        return this.rgbToHex(rgb).toUpperCase();
+        let colorThief = new ColorThief();
+        let themColor = colorThief.getColor(imgEl);
+        return `rgb(${themColor.join(',')})`;
       },
-      rgbToHex(rgb) {
-        let r = /^\d{1,3}$/;
-        if (!r.test(rgb.r) || !r.test(rgb.g) || !r.test(rgb.b)) return alert('输入错误的hex颜色值');
-        let hexs = [rgb.r.toString(16), rgb.g.toString(16), rgb.b.toString(16)];
-        for (let i = 0; i < 3; i++) if (hexs[i].length === 1) hexs[i] = "0" + hexs[i];
-        return "#" + hexs.join("");
+      toPlayList() {
+        this.$store.commit("updateMusicInfo", {"isMusicDetailCardShow": false})
       }
-
     },
 
     watch: {
@@ -257,8 +236,6 @@
       "$store.state.musicInfo.musicId"(musicId) {
         // 清空歌词
         this.lyric = [[0, "正在加载歌词..."]];
-        // 重置评论页数
-        // this.currentCommentPage = 1;
         // 更新当前歌曲信息
         // this.musicInfo = this.$store.state.musicInfo.musicList[this.$store.state.musicInfo.currentIndex];
         // this.comment = {};
@@ -270,7 +247,9 @@
 
         // 重置背景色
         this.background = "linear-gradient(to bottom, #e3e2e3, white)";
+        this.returnStatus = 1;
         setTimeout(() => {
+          this.returnStatus = 0;
           let color = this.getColor(this.$refs.avatar);
           this.background = this.background.replace("#e3e2e3", color);
         }, 2000);

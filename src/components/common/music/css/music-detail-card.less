@@ -1,10 +1,14 @@
+.hide {
+  opacity: 0;
+  transform: translateY(calc(20vh));
+  transition-delay: 0s, 0.6s;
+}
 .music-detail-card {
   width: 100%;
   height: calc(22vh);
   border-radius: 5px;
   z-index: 1;
-  transition: bottom 0.5s ease;
-  //background-image: linear-gradient(to bottom, #f1b7f1, #FEFEFE);
+  transition: transform 0.6s ease, opacity 0.6s ease;
   position: relative;
   display: flex;
   justify-content: center;
@@ -16,9 +20,6 @@
     z-index: 1;
     position: absolute;
     opacity: 0.5;
-    //filter: blur(100px);
-    //flex: 1;
-    //overflow:hidden;
     background-color: #FEFEFE;
   }
 
@@ -27,10 +28,17 @@
     width: 40%;
     margin: 15px 0px 0 28px;
 
+    .iconfont {
+      font-size: 12.5px;
+      position: absolute;
+      top: 10px;
+      left: 5px;
+    }
+
     .discContainer {
       .needle {
         position: relative;
-        left: 50%;
+        left: 52%;
         width: 44px;
         height: 36px;
         z-index: 2;
@@ -100,9 +108,11 @@
       color: rgb(22, 22, 22);
       text-align: center;
       margin: 15px 0 0 0;
+
       .singer {
         margin-left: 5px;
-        color: rgb(145, 145, 145);
+        color: #515a6e;
+        font-size: 0.8rem;
       }
     }
 
@@ -131,24 +141,17 @@
       }
     }
 
+    .lyrics div:nth-child(2) {
+      margin-top: 10px !important;
+    }
+
     .lyrics::-webkit-scrollbar {
       display: none;
     }
   }
-
 }
 
-
-.hide {
-  // bottom: calc(-100vh + 55px);
-  bottom: calc(-80vh + 55px);
-  // transform不会引发重流 性能更好 但是这里如果使用transform 在resize时会出现musicDetailCard拖影的情况，是transition引发的，
-  // 可能可以通过animation代替transtion解决，不太确定，没有尝试过，但是使用transform还需另外禁止index页面滚动，
-  // 所以我这里还是选择使用固定定位 性能稍差，但是由于脱离的文档流，也不会差很远
-  // transform: translateY(calc(80vh - 55px));
-}
-
-
+/* disc动画 */
 @keyframes disc {
   from {
     transform: rotate(0deg);
@@ -156,43 +159,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-
-.bottom {
-  margin: 40px auto;
-  // width: 55vw;
-  width: 44vw;
-}
-
-.page {
-  width: 100%;
-  text-align: center;
-  padding-bottom: 20px;
-}
-
-.tip {
-  font-size: 20px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.changeBackground {
-  position: absolute;
-  bottom: 10px;
-  right: 20px;
-  cursor: pointer;
-}
-
-.bottom /deep/ .el-loading-spinner {
-  top: 40px;
-}
-
-.album,
-.singer {
-  cursor: pointer;
-  font-size: 0.8rem;
-  color: rgb(134, 130, 130);
 }

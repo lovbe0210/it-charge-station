@@ -10,7 +10,7 @@
       loop></audio>
     <!-- 左边 -->
     <div class="left">
-      <div class="avatar" @click="$store.commit('changeMusicDetailCardState')">
+      <div class="avatar" @click="$store.commit('updateMusicInfo',{'isMusicDetailCardShow':true})">
         <img :src="musicDetail.al.picUrl" alt="" v-if="musicDetail.al" :draggable="false"/>
         <img :src="require('@/assets/img/test.jpg')" alt="" v-else :draggable="false"/>
       </div>
