@@ -2,7 +2,7 @@
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
   src:
-          url('//at.alicdn.com/t/c/font_3272463_q3e84i6yc1e.woff2?t=1679643631425') format('woff2');
+          url('//at.alicdn.com/t/c/font_3272463_v3axr0osyro.woff2?t=1679913270108') format('woff2');
 }
 
 .iconfont {
@@ -115,4 +115,12 @@
 
 .icon-return-copy:before {
   content: "\eb70";
+}
+
+.icon-search:before {
+  content: "\e607";
+}
+
+.icon-music-list:before {
+  content: "\ea86";
 }

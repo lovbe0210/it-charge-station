@@ -10,16 +10,16 @@
       loop></audio>
     <!-- 左边 -->
     <div class="left">
-      <div class="avatar" @click="$store.commit('updateMusicInfo',{'isMusicDetailCardShow':true})">
-        <img :src="musicDetail.al.picUrl" alt="" v-if="musicDetail.al" :draggable="false"/>
+      <div class="avatar" @click="showDetailCard()">
+        <img :src="musicInfo.al.picUrl" alt="" v-if="musicInfo.al.picUrl" :draggable="false"/>
         <img :src="require('@/assets/img/test.jpg')" alt="" v-else :draggable="false"/>
       </div>
       <div class="musicInfo">
-        <div class="musicName" v-show="musicDetail && musicDetail.name">
-          {{ musicDetail.name }}
+        <div class="musicName" v-show="musicInfo.name">
+          {{ musicInfo.name }}
         </div>
-        <div class="singer" v-show="musicDetail && musicDetail.name" @click="goToSingerDetail">
-          {{ musicDetail.ar[0].name }}
+        <div class="singer" v-show="musicInfo.ar[0].name" @click="goToSingerDetail">
+          {{ musicInfo.ar[0].name }}
         </div>
       </div>
     </div>
@@ -64,154 +64,37 @@
             <div class="currentProgress" :style="'width:' + timeProgress + '%'"/>
           </div>
         </div>
-        <span class="totalTime">{{ duration }}</span>
+        <span class="totalTime">{{ musicInfo.dt }}</span>
       </div>
     </div>
-    <!-- 右边 -->
-    <!--    <div class="right">-->
-    <!--      <div class="volumeControl">-->
-    <!--        <i class="iconfont icon-yinliang" @click="changeMutedState"></i>-->
-    <!--        <el-slider-->
-    <!--          class="volumeSlider"-->
-    <!--          v-model="volume"-->
-    <!--          @input="changeVolume"-->
-    <!--          :show-tooltip="false"-->
-    <!--        ></el-slider>-->
-    <!--      </div>-->
-    <!--      <div class="playList" @click="openDrawer">-->
-    <!--        <i class="iconfont icon-bofangliebiao"></i>-->
-    <!--      </div>-->
-    <!--    </div>-->
-    <!-- 抽屉 -->
-    <!--    <el-drawer :visible.sync="drawer" :with-header="false" width="300">-->
-    <!--      <div class="drawerHeader">总{{ musicList.length }}首</div>-->
-    <!--      <el-table-->
-    <!--        :data="musicList"-->
-    <!--        stripe-->
-    <!--        style="width: 100%"-->
-    <!--        :show-header="false"-->
-    <!--        @row-dblclick="clickRow"-->
-    <!--        highlight-current-row-->
-    <!--        lazy-->
-    <!--      >-->
-    <!--        <el-table-column prop="name" width="150px"></el-table-column>-->
-    <!--        <el-table-column prop="ar[0].name" width="80px"></el-table-column>-->
-    <!--        <el-table-column prop="dt" width="70px"></el-table-column>-->
-    <!--      </el-table>-->
-    <!--    </el-drawer>-->
   </div>
 </template>
 
 <script>
-  import {handleMusicTime, returnSecond} from "@/utils/utils";
-
-  let lastSecond = 0;
-  // 总时长的秒数
-  // let durationNum = 0;
-  // 保存当前音量
-  let volumeSave = 0;
-  // 当前音乐类型，用于下载
-  let musicType = "";
+  import {handleMusicTime} from "@/utils/utils";
 
   export default {
     name: "BottomControl",
     data() {
       return {
-        // musicDetail: {},
-        musicDetail: {
-          "name": "Love Story",
-          "id": 19292984,
-          "pst": 0,
-          "t": 0,
-          "ar": [{
-            "id": 44266,
-            "name": "Taylor Swift",
-            "tns": [],
-            "alias": []
+        musicInfo: {
+          // 页面需要使用v-if判断，所以先赋给默认值
+          name: null,
+          al: {
+            picUrl: null
+          },
+          ar: [{
+            name: null
           }],
-          "alia": [],
-          "pop": 100,
-          "st": 0,
-          "rt": "600902000007282990",
-          "fee": 1,
-          "v": 129,
-          "crbt": null,
-          "cf": "",
-          "al": {
-            "id": 1770438,
-            "name": "Fearless",
-            "picUrl": "https://p2.music.126.net/KurKrZ-dMmviArT5lM2RCQ==/18517974836953202.jpg",
-            "tns": [],
-            "pic_str": "18517974836953202",
-            "pic": 18517974836953200
-          },
-          "dt": "03:56",
-          "h": {
-            "br": 320000,
-            "fid": 0,
-            "size": 9452191,
-            "vd": -65540,
-            "sr": 44100
-          },
-          "m": {
-            "br": 192000,
-            "fid": 0,
-            "size": 5671332,
-            "vd": -63094,
-            "sr": 44100
-          },
-          "l": {
-            "br": 128000,
-            "fid": 0,
-            "size": 3780902,
-            "vd": -61573,
-            "sr": 44100
-          },
-          "sq": null,
-          "hr": null,
-          "a": null,
-          "cd": "1",
-          "no": 3,
-          "rtUrl": null,
-          "ftype": 0,
-          "rtUrls": [],
-          "djId": 0,
-          "copyright": 1,
-          "s_id": 0,
-          "mark": 270336,
-          "originCoverType": 1,
-          "originSongSimpleData": null,
-          "tagPicList": null,
-          "resourceState": true,
-          "version": 129,
-          "songJumpInfo": null,
-          "entertainmentTags": null,
-          "awardTags": null,
-          "single": 0,
-          "noCopyrightRcmd": null,
-          "rtype": 0,
-          "rurl": null,
-          "mst": 9,
-          "cp": 7003,
-          "mv": 503185,
-          "publishTime": 1230739200000
+          dt: "--:--"
         },
         musicUrl: "",
-        musicList: [this.musicDetail],
-        currentMusicIndex: 0,
-        drawer: false,
-        // 音乐总时长
-        duration: "03:56",
-        // 当前播放时间位置
-        currentTime: 0,
         // 进度条的位置
         timeProgress: 0,
         // 音量
-        volume: 30,
+
         // 是否静音
         isMuted: false,
-        // 抽屉是否被打开过（如果没打开过，里面的数据是不会渲染的）
-        hasDrawerOpend: false,
         // 用户的喜欢音乐列表
         likeMuiscList: [],
         // 用户是否喜欢当前音乐
@@ -224,10 +107,10 @@
     methods: {
       // 请求
       // 请求歌曲的url
-      async getMusicDetail(id) {
+      async getmusicInfo(id) {
         this.$store.commit("updateMusicLoadState", true);
         let result = await this.$request("/song/url", {id});
-        // console.log(musicDetail);
+        // console.log(musicInfo);
         // console.log(result);
         // 获取不到url
         if (result.data.data[0].url == null) {
@@ -236,7 +119,6 @@
           return;
         }
         this.musicUrl = result.data.data[0].url;
-        musicType = result.data.data[0].type.toLowerCase();
         this.$store.commit("updateMusicLoadState", false);
       },
       // 喜欢该音乐
@@ -272,20 +154,23 @@
       },
       // 播放音乐的函数
       playMusic() {
-        this.$refs.audioPlayer.play();
-          this.$store.commit('updateMusicInfo', {musicId: "857896"})
+        this.$refs.audioPlayer.play().catch(e => {
+          console.log("重新渲染页面后用户未操作")
+          setTimeout(() => {
+            this.playMusic();
+          }, 1000)
+        })
       },
       // 暂停音乐的函数
       pauseMusic() {
         this.$refs.audioPlayer.pause();
-        this.$store.commit('updateMusicInfo', {musicId: "857891"})
       },
       // audio开始或暂停播放的回调  在vuex中改变状态
       changeState(state) {
         this.$store.commit("changePlayState", state);
       },
-      // 根据id找到 musicList中对应的musicDetail
-      getMusicDetailFromMusicList() {
+      // 根据id找到 musicList中对应的musicInfo
+      getmusicInfoFromMusicList() {
         // console.log(this.musicList);
         // this.musicList.forEach((item, index) => {
         //   // console.log(index);
@@ -294,7 +179,7 @@
         //     this.currentMusicIndex = index;
         //     // 将索引传至vuex
         //     this.$store.commit("updateCurrentIndex", index);
-        //     this.musicDetail = item;
+        //     this.musicInfo = item;
         //     // 直接从audio标签中的duration属性拿时长会有请求时差问题，所以直接在musicInfo中拿
         //     this.duration = this.musicList[index].dt;
         //   }
@@ -309,7 +194,7 @@
           this.currentMusicIndex = index;
           // 将索引传至vuex
           this.$store.commit("updateCurrentIndex", index);
-          this.musicDetail = this.musicList[index];
+          this.musicInfo = this.musicList[index];
           // 直接从audio标签中的duration属性拿时长会有请求时差问题，所以直接在musicInfo中拿
           this.duration = this.musicList[index].dt;
         }
@@ -363,30 +248,15 @@
           this.$store.commit("updateMusicId", this.musicList[nextIndex].id);
         }
       },
-      // 双击抽屉列表中的row的回调
-      clickRow(row) {
-        // console.log(row.id);
-        this.changeMusic("click", row.id);
-      },
       // 当前播放时间位置
       timeupdate() {
-        // console.log(e);
-        // console.log(this.$refs.audioPlayer);
         // 节流
         let time = this.$refs.audioPlayer.currentTime;
         // 将当前播放时间保存到vuex  如果保存到vuex这步节流,会导致歌词不精准,误差最大有1s
-        this.$store.commit("updateMusicInfo", {currentTime: time});
-        // time = Math.floor(time);
-        if (time !== lastSecond) {
-          // console.log(time) ;
-          lastSecond = time;
-          this.currentTime = time;
-          // 计算进度条的位置
-          // console.log('time: ', time, 'durationNum: ', this.durationTotalSecond)
-          // this.timeProgress = Math.floor((time / this.durationTotalSecond) * 100);
-          this.timeProgress = (time / this.durationTotalSecond) * 100;
-          // console.log(this.timeProgress);
-        }
+
+        this.currentTime = time;
+        // 计算进度条的位置
+        this.timeProgress = (time / this.duration) * 100;
       },
       // 更改进度条的回调
       changeProgress(e) {
@@ -396,13 +266,12 @@
         //鼠标的x坐标(相对于div内部的坐标)
         let mouseX = e.offsetX;
         // 改变audio的实际当前播放时间
-        let currentTime = Math.floor(mouseX / totawidth * this.durationTotalSecond);
+        let currentTime = Math.floor(mouseX / totawidth * this.duration);
         this.$refs.audioPlayer.currentTime = currentTime;
       },
       // 拖动音量条的回调
       changeVolume() {
         // 改变audio的音量
-        // input事件 实时触发
         this.$refs.audioPlayer.volume = this.volume / 100;
         if (this.isMuted && this.volume > 0) {
           this.isMuted = false;
@@ -412,53 +281,12 @@
       },
       // 点击小喇叭的回调 （切换静音状态）
       changeVolumeState() {
-        if (this.isMuted) {
-          this.volume = volumeSave;
+        if (!this.isMuted) {
+          this.$refs.audioPlayer.volume = 0;
         } else {
-          volumeSave = this.volume;
-          this.volume = 0;
+          this.$refs.audioPlayer.volume = this.volume / 100;
         }
         this.isMuted = !this.isMuted;
-        console.log(volumeSave, this.isMuted, this.volume / 100);
-        this.$refs.audioPlayer.volume = this.volume / 100;
-      },
-      // 操作drawerList中DOM的函数
-      handleDrawerListDOM(currentIndex, lastIndex) {
-        // 目前没什么好思路 直接操作原生DOM
-        this.$nextTick(() => {
-          let tableRows = document
-            .querySelector(".bottomControl")
-            .querySelectorAll(".el-table__row");
-          // // 直接修改dom样式的颜色无效  可能是因为第三方组件 style scoped的原因
-          // // 通过引入全局样式解决
-          if (tableRows[currentIndex]) {
-            tableRows[currentIndex].children[0]
-              .querySelector(".cell")
-              .classList.add("currentRow");
-            tableRows[currentIndex].children[1]
-              .querySelector(".cell")
-              .classList.add("currentRow");
-          }
-          if (
-            (lastIndex && lastIndex !== -1 && tableRows[lastIndex]) ||
-            lastIndex === 0
-          ) {
-            // 将上一首的类名删掉
-            tableRows[lastIndex].children[0]
-              .querySelector(".cell")
-              .classList.remove("currentRow");
-            tableRows[lastIndex].children[1]
-              .querySelector(".cell")
-              .classList.remove("currentRow");
-          }
-        });
-      },
-      // 点击打开抽屉的回调
-      openDrawer() {
-        // 关闭也是这个回调，所以直接取反
-        this.drawer = !this.drawer;
-        this.hasDrawerOpend = true;
-        this.handleDrawerListDOM(this.currentMusicIndex);
       },
 
       // 判断用户是否喜欢该音乐
@@ -482,97 +310,85 @@
         await this.getLikeMusicList();
       },
 
-      // 点击下载按钮的回调
-      downloadCurrentMusic() {
-        // console.log("download");
-        console.log(this.musicDetail, this.musicUrl);
-
-        // 匹配资源的域名
-        let url = this.musicUrl.match(/http.*?\.net/);
-        // 匹配域名名称，并匹配对应的代理
-        let serve = url[0].match(/http:\/(\S*).music/)[1];
-        if (
-          serve !== "/m7" &&
-          serve !== "/m701" &&
-          serve !== "/m8" &&
-          serve !== "/m801"
-        ) {
-          // 没有对应的代理
-          this.$message.error("匹配不到对应的代理,下载失败!");
-          return;
-        }
-        // 截取后面的参数
-        let params = this.musicUrl.slice(url[0].length);
-
-        let downloadMusicInfo = {
-          url: serve + params,
-          name:
-            this.musicDetail.name +
-            " - " +
-            this.musicDetail.ar[0].name +
-            "." +
-            musicType
-        };
-
-        console.log(downloadMusicInfo);
-        this.$store.commit("updateDownloadMusicInfo", downloadMusicInfo);
-      },
-
       // 点击歌手名跳转至歌手页面的回调
       goToSingerDetail() {
-        if (this.$route.path === `/singerDetail/${this.musicDetail.ar[0].id}`) {
+        if (this.$route.path === `/singerDetail/${this.musicInfo.ar[0].id}`) {
           this.$router.push({
             name: "singerDetail",
-            params: {id: this.musicDetail.ar[0].id}
+            params: {id: this.musicInfo.ar[0].id}
           })
         }
-        if (this.$store.state.isMusicDetailCardShow === true) {
-          this.$store.state.commit("changeMusicDetailCardState", false);
+        if (this.$store.state.ismusicInfoCardShow === true) {
+          this.$store.state.commit("changemusicInfoCardState", false);
+        }
+      },
+
+      // 是否展示播放页面
+      showDetailCard() {
+        if (this.musicInfo.name !== null) {
+          this.$store.commit('updateMusicInfo', {'isMusicDetailCardShow': true})
         }
       }
     },
     computed: {
-      durationTotalSecond() {
-        return returnSecond(this.duration);
+      duration() {
+        return this.$refs.audioPlayer.duration;
+      },
+      currentTime: {
+        get() {
+          return this.$store.state.musicInfo.currentTime;
+        },
+        set(time) {
+          this.$store.commit("updateMusicInfo", {currentTime: time});
+        }
+      },
+      musicList() {
+        return this.$store.state.musicInfo.musicList;
+      },
+      volume: {
+        get() {
+          return this.$store.state.musicInfo.currentVolume;
+        },
+        set(value) {
+          this.$store.commit("updateMusicInfo", {currentVolume: value});
+        }
+      },
+      currentMusicIndex() {
+        return this.$store.state.musicInfo.currentIndex;
+      },
+      isPlay() {
+        return this.$store.state.musicInfo.isPlay;
       }
     },
     mounted() {
-      // this.$refs.audioPlayer.addEventListener("timeupdate", () => {
-      //   this.currentTime = this.$refs.audioPlayer.currentTime;
-      // });
-      // 初始化播放状态和音量
-      this.$store.commit("changePlayState", !this.$refs.audioPlayer.paused);
+      // 初始化音量
       this.changeVolume();
+      // 初始化当前播放的歌曲信息
+      this.musicInfo = (this.musicList && this.musicList.length > 0) ? this.musicList[this.currentMusicIndex] : {};
+      // 初始化播放状态和时间和vuex中的保持一致
+      this.$refs.audioPlayer.currentTime = this.$store.state.musicInfo.currentTime;
+      // 主流浏览器已经禁用了自动播放，所以在初始化时播放会报错
+      let play = !this.$refs.audioPlayer.paused;
+      if (this.isPlay !== play) {
+        play ? this.pauseMusic() : this.playMusic();
+      }
     },
     watch: {
       // 监听vuex中musicId的变化
-      "$store.state.musicId"(id) {
+      "$store.state.musicInfo.musicId"() {
         console.log("vuex中的id发生了变化");
         // 先暂停当前播放的音乐
         this.pauseMusic();
-        this.musicList = this.$store.state.musicList;
-        this.getMusicDetailFromMusicList();
-        // this.getMusicDetail(id);
-        // durationNum = returnSecond(this.duration);
+        // 根据list中的索引直接获取歌曲信息（这就要求其他地方必须同时更新currentIndex）
+        this.musicInfo = this.musicList[this.currentMusicIndex]
         // 判断用户是否喜欢当前音乐
         this.getIsUserLikeCurrentMusic();
-        // console.log(this.$refs.audioPlayer);
+        // 播放时间重置，开始播放
+        this.$refs.audioPlayer.currentTime = 0;
+        this.playMusic();
       },
-      // 监听currentIndex的变化
-      "$store.state.currentIndex"(currentIndex, lastIndex) {
-        if (this.hasDrawerOpend) {
-          this.handleDrawerListDOM(currentIndex, lastIndex);
-        }
-      },
-      // 监听播放状态
-      "$store.state.isPlay"(isPlay) {
-        debugger
-        if (isPlay) {
-          this.playMusic();
-        } else {
-          this.pauseMusic();
-        }
-      },
+
+      // 监听是否登陆且绑定了网易云账号 TODO
       "$store.state.isLogin"(current) {
         if (current) {
           this.getLikeMusicList();

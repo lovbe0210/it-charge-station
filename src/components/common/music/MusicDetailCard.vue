@@ -6,7 +6,8 @@
     <div class="left">
       <div class="toList" @click="toPlayList()">
         <div :class="['iconfont',returnStatus == 0 ? 'icon-return' : 'icon-return-copy']"
-             :style="'color:' + (returnStatus == 0 ? '#ffffff' : '#515a6e')">返回</div>
+             :style="'color:' + (returnStatus == 0 ? '#ffffff' : '#515a6e')">返回
+        </div>
       </div>
       <div class="discContainer">
         <div class="needle" :class="$store.state.musicInfo.isPlay ? 'needleRotate' : ''" ref="needle">
@@ -24,28 +25,27 @@
       </div>
     </div>
     <div class="right">
-        <div class="title">
-          <div class="musicName">
-            {{ musicInfo.name }}
-            <span class="singer" @click="goToDetailPage('singerDetail', musicInfo.ar[0].id)">
-            {{ musicInfo.ar[0].name }}
-        </span>
-          </div>
+      <div class="title">
+        <div class="musicName">
+          {{ musicInfo.name }}
+          <span class="singer" @click="goToDetailPage('singerDetail', musicInfo.ar[0].id)">
+            {{ musicInfo.name ? musicInfo.ar[0].name : "未知歌手"}}
+          </span>
         </div>
-        <div class="lyrics">
-          <!-- 占位 -->
-          <div class="placeholder"></div>
-          <!-- 因为歌词快了一句,所以减1 -->
-          <!-- 歌词item -->
-          <div class="lyricsItem" v-for="(item, index) in lyric" :key="index"
-               :class="lyricsIndex - 1 == index ? 'currentLyric' : ''">
-            {{ item[1] }}
-          </div>
-          <!-- 占位 -->
-          <div class="placeholder"></div>
-        </div>
-
       </div>
+      <div class="lyrics">
+        <!-- 占位 -->
+        <div class="placeholder"></div>
+        <!-- 因为歌词快了一句,所以减1 -->
+        <!-- 歌词item -->
+        <div class="lyricsItem" v-for="(item, index) in lyric" :key="index"
+             :class="lyricsIndex - 1 == index ? 'currentLyric' : ''">
+          {{ item[1] }}
+        </div>
+        <!-- 占位 -->
+        <div class="placeholder"></div>
+      </div>
+    </div>
   </div>
 
 </template>
@@ -58,87 +58,10 @@
     data() {
       return {
         musicInfo: {
-          "name": "Love Story",
-          "id": 19292984,
-          "pst": 0,
-          "t": 0,
-          "ar": [{
-            "id": 44266,
-            "name": "Taylor Swift",
-            "tns": [],
-            "alias": []
-          }],
-          "alia": [],
-          "pop": 100,
-          "st": 0,
-          "rt": "600902000007282990",
-          "fee": 1,
-          "v": 129,
-          "crbt": null,
-          "cf": "",
-          "al": {
-            "id": 1770438,
-            "name": "Fearless",
-            "picUrl": "http://localhost:8080/img/29.08867848.jpg",
-            "tns": [],
-            "pic_str": "18517974836953202",
-            "pic": 18517974836953200
-          },
-          "dt": "03:56",
-          "h": {
-            "br": 320000,
-            "fid": 0,
-            "size": 9452191,
-            "vd": -65540,
-            "sr": 44100
-          },
-          "m": {
-            "br": 192000,
-            "fid": 0,
-            "size": 5671332,
-            "vd": -63094,
-            "sr": 44100
-          },
-          "l": {
-            "br": 128000,
-            "fid": 0,
-            "size": 3780902,
-            "vd": -61573,
-            "sr": 44100
-          },
-          "sq": null,
-          "hr": null,
-          "a": null,
-          "cd": "1",
-          "no": 3,
-          "rtUrl": null,
-          "ftype": 0,
-          "rtUrls": [],
-          "djId": 0,
-          "copyright": 1,
-          "s_id": 0,
-          "mark": 270336,
-          "originCoverType": 1,
-          "originSongSimpleData": null,
-          "tagPicList": null,
-          "resourceState": true,
-          "version": 129,
-          "songJumpInfo": null,
-          "entertainmentTags": null,
-          "awardTags": null,
-          "single": 0,
-          "noCopyrightRcmd": null,
-          "rtype": 0,
-          "rurl": null,
-          "mst": 9,
-          "cp": 7003,
-          "mv": 503185,
-          "publishTime": 1230739200000
+          id: null
         },
         // 是否删除卡片渲染的内容
         cleanCard: true,
-        // 是否显示歌曲详情卡片
-        isMusicDetailCardShow: true,
         //   歌词
         lyric: [[0, "正在加载歌词..."]],
         // 当前歌词索引
@@ -148,11 +71,17 @@
         returnStatus: 1
       }
     },
+    computed: {
+      // 是否显示歌曲详情卡片
+      isMusicDetailCardShow() {
+        return this.$store.state.musicInfo.isMusicDetailCardShow;
+      }
+    },
     methods: {
       //请求并处理歌词数据
       async getLyric(id) {
         let res = await this.$request({
-          url: "/lyric?id=19292984",
+          url: "/lyric?id=" + id,
           method: 'get'
         });
         // debugger
@@ -237,12 +166,32 @@
         // 清空歌词
         this.lyric = [[0, "正在加载歌词..."]];
         // 更新当前歌曲信息
-        // this.musicInfo = this.$store.state.musicInfo.musicList[this.$store.state.musicInfo.currentIndex];
-        // this.comment = {};
+        this.musicInfo = this.$store.state.musicInfo.musicList[this.$store.state.musicInfo.currentIndex];
         // 优化性能,仅在卡片展示时才发送请求
-        if (this.isMusicDetailCardShow && this.lyric.length === 1) {
+        if (this.isMusicDetailCardShow) {
           this.getLyric(musicId);
-          // this.getMusicComment(musicId);
+          // 重置背景色
+          this.background = "linear-gradient(to bottom, #e3e2e3, white)";
+          this.returnStatus = 1;
+          setTimeout(() => {
+            this.returnStatus = 0;
+            let color = this.getColor(this.$refs.avatar);
+            this.background = this.background.replace("#e3e2e3", color);
+          }, 2000);
+        }
+      },
+
+      // 监听是否打开了播放页面
+      "$store.state.musicInfo.isMusicDetailCardShow"(flag) {
+        if (!flag) {
+          return;
+        }
+        // 更新当前歌曲信息
+        if (this.musicInfo.id === null) {
+          this.musicInfo = this.$store.state.musicInfo.musicList[this.$store.state.musicInfo.currentIndex];
+        }
+        if (this.lyric.length === 1) {
+          this.getLyric(this.musicInfo.id);
         }
 
         // 重置背景色

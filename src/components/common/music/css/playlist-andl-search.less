@@ -1,0 +1,76 @@
+.playlist {
+  border-top: 1px solid #9e9d9d;
+  max-width: 100%;
+  min-width: 100%;
+  z-index: 1;
+  padding: 10px 15px 0 10px;
+  background-color: #ffffff;
+  border-radius: 5px;
+  height: calc(22vh);
+
+  .title-search {
+    .iconfont {
+      font-size: 13px;
+    }
+    .search {
+      float: right;
+
+      /deep/ .ivu-input-wrapper {
+        height: 21px;
+        width: 150px;
+
+        .ivu-input {
+          height: 21px;
+          border-radius: 15px;
+          border-color: @border-color_normal;
+        }
+        .ivu-input:focus, .ivu-input:hover {
+          border-color: @border-color_hover;
+        }
+
+
+        .ivu-input-icon {
+          height: 21px;
+          line-height: 21px;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+
+  .list {
+    height: 100px;
+    font-size: 12px;
+    margin: 10px 0 10px 5px;
+    width: 100%;
+
+
+    .playItem {
+      font-size: 12px;
+      line-height: 20px;
+      width: 100%;
+
+      .row {
+        margin: 0;
+      }
+      .currentPlay{
+        font-weight: bold;
+        color: @badge_color;
+      }
+      .musicName {
+        padding-left: 15px;
+      }
+
+    }
+
+    .list-group-item {
+      padding: 2px 0 5px 0;
+      border: none;
+      cursor: pointer;
+    }
+    .list-group-item:hover {
+      background-color: #eaeaea;
+    }
+
+  }
+}
