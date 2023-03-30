@@ -472,6 +472,10 @@
           this.needFixed = false
         }
       },
+      /**
+       * 阻止事件发生
+       * @param e
+       */
       tempFunction(e) {
         e.preventDefault()
       },

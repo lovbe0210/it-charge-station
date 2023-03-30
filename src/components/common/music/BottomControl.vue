@@ -1,13 +1,13 @@
 <template>
   <div class="bottom-control">
     <audio
-      :src="require('@/assets/Love Story.mp3')"
+      :src="musicUrl ? musicUrl : require('@/assets/Love Story.mp3')"
       ref="audioPlayer"
       @play="changeState(true)"
       @pause="changeState(false)"
       @ended="changeMusic('next')"
-      @timeupdate="timeupdate"
-      loop></audio>
+      @timeupdate="timeupdate">
+    </audio>
     <!-- 左边 -->
     <div class="left">
       <div class="avatar" @click="showDetailCard()">
@@ -71,7 +71,8 @@
 </template>
 
 <script>
-  import {handleMusicTime} from "@/utils/utils";
+  import {handleMusicTime, returnSecond} from "@/utils/utils"
+  import MusicApi from '@/utils/MusicApi'
 
   export default {
     name: "BottomControl",
@@ -80,6 +81,7 @@
         musicInfo: {
           // 页面需要使用v-if判断，所以先赋给默认值
           name: null,
+          id: null,
           al: {
             picUrl: null
           },
@@ -88,7 +90,7 @@
           }],
           dt: "--:--"
         },
-        musicUrl: "",
+        musicUrl: null,
         // 进度条的位置
         timeProgress: 0,
         // 音量
@@ -98,10 +100,7 @@
         // 用户的喜欢音乐列表
         likeMuiscList: [],
         // 用户是否喜欢当前音乐
-        isUserLikeCurrentMusic: false,
-        // 播放模式（顺序播放，随机播放）
-        // listLoop singleLoop listRandom
-        playType: "singleLoop"
+        isUserLikeCurrentMusic: false
       };
     },
     methods: {
@@ -154,8 +153,8 @@
       },
       // 播放音乐的函数
       playMusic() {
+        // 主流浏览器已经禁用了自动播放，所以在初始化时播放会报错
         this.$refs.audioPlayer.play().catch(e => {
-          console.log("重新渲染页面后用户未操作")
           setTimeout(() => {
             this.playMusic();
           }, 1000)
@@ -167,7 +166,7 @@
       },
       // audio开始或暂停播放的回调  在vuex中改变状态
       changeState(state) {
-        this.$store.commit("changePlayState", state);
+        this.$store.commit("updateMusicInfo", {isPlay: state});
       },
       // 根据id找到 musicList中对应的musicInfo
       getmusicInfoFromMusicList() {
@@ -200,67 +199,69 @@
         }
       },
       // 切歌函数
-      changeMusic(type, id) {
-        if (type === "click") {
-          // 点击抽屉row进行切歌
-          this.$store.commit("updateMusicId", id);
-        } else if (type === "pre") {
+      changeMusic(type) {
+        // 上一首
+        if (type === "pre") {
           let currentMusicIndex = this.currentMusicIndex;
           let preIndex;
-          if (this.playType === "order") {
-            preIndex =
-              currentMusicIndex - 1 < 0
-                ? this.musicList.length - 1
-                : currentMusicIndex - 1;
-          } else if (this.playType === "random") {
+          if (this.playType === "listLoop") {
+            preIndex = currentMusicIndex - 1 < 0 ? this.musicList.length - 1 : currentMusicIndex - 1;
+          } else if (this.playType === "listRandom") {
             if (this.musicList.length === 1) {
               preIndex = currentMusicIndex;
             } else {
-              // Math.floor(Math.random()*10); 可均衡获取0到9的随机整数。
               preIndex = currentMusicIndex;
               while (preIndex === currentMusicIndex) {
                 preIndex = Math.floor(Math.random() * this.musicList.length);
               }
             }
+          } else {
+            // 如果是单曲循环，则直接从头开始播放就行
+            this.pauseMusic();
+            this.$refs.audioPlayer.currentTime = 0;
+            this.playMusic();
           }
-          console.log(this.musicList[preIndex].id);
-          this.$store.commit("updateMusicId", this.musicList[preIndex].id);
+          this.$store.commit("updateMusicInfo", {currentIndex: preIndex, musicId: this.musicList[preIndex].id});
+
+          // 下一首
         } else if (type === "next") {
           let currentMusicIndex = this.currentMusicIndex;
           let nextIndex;
-          if (this.playType === "order") {
-            nextIndex =
-              currentMusicIndex + 1 === this.musicList.length
-                ? 0
-                : currentMusicIndex + 1;
-          } else if (this.playType === "random") {
+          if (this.playType === "listLoop") {
+            nextIndex = currentMusicIndex + 1 === this.musicList.length ? 0 : currentMusicIndex + 1;
+          } else if (this.playType === "listRandom") {
             if (this.musicList.length === 1) {
               nextIndex = currentMusicIndex;
             } else {
-              // Math.floor(Math.random()*10); 可均衡获取0到9的随机整数。
               nextIndex = currentMusicIndex;
               while (nextIndex === currentMusicIndex) {
                 nextIndex = Math.floor(Math.random() * this.musicList.length);
               }
             }
+          } else {
+            // 如果是单曲循环，则直接重新开始播放就行
+            this.pauseMusic();
+            this.$refs.audioPlayer.currentTime = 0;
+            this.playMusic();
           }
-          // console.log(this.musicList[nextIndex].id);
-          this.$store.commit("updateMusicId", this.musicList[nextIndex].id);
+          this.$store.commit("updateMusicInfo", {currentIndex: nextIndex, musicId: this.musicList[nextIndex].id});
         }
       },
       // 当前播放时间位置
       timeupdate() {
-        // 节流
-        let time = this.$refs.audioPlayer.currentTime;
-        // 将当前播放时间保存到vuex  如果保存到vuex这步节流,会导致歌词不精准,误差最大有1s
-
-        this.currentTime = time;
-        // 计算进度条的位置
-        this.timeProgress = (time / this.duration) * 100;
+        try {
+          // 节流sd
+          let time = this.$refs.audioPlayer.currentTime;
+          // 将当前播放时间保存到vuex  如果保存到vuex这步节流,会导致歌词不精准,误差最大有1s
+          this.currentTime = time;
+          // 计算进度条的位置
+          this.timeProgress = (time / this.duration) * 100;
+        } catch (e) {
+          // audio对象还没初始化完
+        }
       },
       // 更改进度条的回调
       changeProgress(e) {
-        // console.log(e);
         //总进度条的实际长度
         let totawidth = e.currentTarget.offsetWidth;
         //鼠标的x坐标(相对于div内部的坐标)
@@ -332,7 +333,7 @@
     },
     computed: {
       duration() {
-        return this.$refs.audioPlayer.duration;
+        return returnSecond(this.musicInfo.dt);
       },
       currentTime: {
         get() {
@@ -358,6 +359,14 @@
       },
       isPlay() {
         return this.$store.state.musicInfo.isPlay;
+      },
+      playType: {
+        get() {
+          return this.$store.state.musicInfo.playType;
+        },
+        set(value) {
+          this.$store.commit("updateMusicInfo", {playType: value});
+        }
       }
     },
     mounted() {
@@ -365,9 +374,15 @@
       this.changeVolume();
       // 初始化当前播放的歌曲信息
       this.musicInfo = (this.musicList && this.musicList.length > 0) ? this.musicList[this.currentMusicIndex] : {};
+      MusicApi.getMusicUrlById(this, this.musicInfo.id).then((data) => {
+        this.musicUrl = data;
+      });
+      // 判断用户是否喜欢当前音乐
+      this.getIsUserLikeCurrentMusic();
+      // 更新musicId
+      this.$store.commit("updateMusicInfo", {musicId: this.musicInfo.id})
       // 初始化播放状态和时间和vuex中的保持一致
       this.$refs.audioPlayer.currentTime = this.$store.state.musicInfo.currentTime;
-      // 主流浏览器已经禁用了自动播放，所以在初始化时播放会报错
       let play = !this.$refs.audioPlayer.paused;
       if (this.isPlay !== play) {
         play ? this.pauseMusic() : this.playMusic();
@@ -375,17 +390,22 @@
     },
     watch: {
       // 监听vuex中musicId的变化
-      "$store.state.musicInfo.musicId"() {
-        console.log("vuex中的id发生了变化");
-        // 先暂停当前播放的音乐
-        this.pauseMusic();
-        // 根据list中的索引直接获取歌曲信息（这就要求其他地方必须同时更新currentIndex）
-        this.musicInfo = this.musicList[this.currentMusicIndex]
-        // 判断用户是否喜欢当前音乐
-        this.getIsUserLikeCurrentMusic();
-        // 播放时间重置，开始播放
-        this.$refs.audioPlayer.currentTime = 0;
-        this.playMusic();
+      "$store.state.musicInfo.musicId"(newVal, oldVal) {
+        if (oldVal !== null) {
+          // 先暂停当前播放的音乐
+          this.pauseMusic();
+          // 根据list中的索引直接获取歌曲信息（这就要求其他地方必须同时更新currentIndex）
+          this.musicInfo = this.musicList[this.currentMusicIndex]
+          // 获取歌曲播放url
+          MusicApi.getMusicUrlById(this, newVal).then((data) => {
+            this.musicUrl = data;
+          });
+          // 判断用户是否喜欢当前音乐
+          this.getIsUserLikeCurrentMusic();
+          // 播放时间重置，开始播放(如果首次进来时则不需要播放)
+          this.$refs.audioPlayer.currentTime = 0;
+          this.playMusic();
+        }
       },
 
       // 监听是否登陆且绑定了网易云账号 TODO

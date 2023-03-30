@@ -8,7 +8,7 @@
         </span>
     </div>
     <!-- 歌单 -->
-    <b-list-group class="list">
+    <b-list-group class="list" @wheel="handleScrollWheel">
       <b-list-group-item class="playItem" v-for="(item,index) in playList" :key="item.id" @dblclick="playSelect(index)">
         <b-row :class="[$store.state.musicInfo.musicId === item.id ? 'currentPlay' : '']">
           <b-col cols="8" class="musicName">
@@ -31,7 +31,8 @@
       return {
         playListShow: true,
         placeholder: "周杰伦",
-        keywords: ""
+        keywords: "",
+        topMusicScroll: 0
       };
     },
     computed: {
@@ -46,6 +47,48 @@
       playSelect(index) {
         let selectMusic = this.playList[index];
         this.$store.commit("updateMusicInfo", {musicId: selectMusic.id, currentIndex: index});
+      },
+      handleScrollWheel(event) {
+        // debugger
+        // 如果list大于4时才进行滚动
+        if (this.playList == null || this.playList.length <= 4) {
+          return;
+        }
+        let playList = document.querySelector(".list");
+        let itemHeight = parseFloat(window.getComputedStyle(playList.firstChild).getPropertyValue("height"));
+        let totalHeight = itemHeight * (this.playList.length - 4);
+        if (event.wheelDelta || event.detail) {
+          if (event.wheelDelta > 0 || event.detail < 0) {
+            let scrollDistance = this.topMusicScroll - itemHeight;
+            if (scrollDistance >= 0) {
+              this.topMusicScroll -= itemHeight;
+            }
+            playList.scrollTo({
+              behavior: "smooth",
+              top: this.topMusicScroll
+            });
+          }
+          if (event.wheelDelta < 0 || event.detail > 0) {
+            let scrollDistance = this.topMusicScroll + itemHeight;
+            if (scrollDistance <= totalHeight) {
+              this.topMusicScroll += itemHeight;
+            }
+            playList.scrollTo({
+              behavior: "smooth",
+              top: this.topMusicScroll
+            });
+          }
+        }
+
+        /*let clientHeight = document.documentElement.clientHeight || document.body.clientHeight;
+        // 设备/屏幕高度
+        let scrollObj = document.getElementById(div); // 滚动区域
+        let scrollTop = scrollObj.scrollTop; // div 到头部的距离
+        let scrollHeight = scrollObj.scrollHeight; // 滚动条的总高度
+        //滚动条到底部的条件
+        if (scrollTop + clientHeight === scrollHeight) {
+          // div 到头部的距离 + 屏幕高度 = 可滚动的总高度
+        }*/
       }
     },
     watch: {
@@ -57,9 +100,15 @@
             this.playListShow = true;
           }, 200)
         }
+      },
+      playListShow(flag) {
+        if (flag) {
+
+        }
       }
     },
     created() {
+      this.topMusicScroll = 0;
     },
     mounted() {
     }

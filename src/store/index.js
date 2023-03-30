@@ -1135,6 +1135,9 @@ export default new Vuex.Store({
         }],
       // 音乐是否正在播放
       isPlay: false,
+      // 播放模式（顺序播放，单曲循环，随机播放）
+      //       listLoop singleLoop listRandom
+      playType: "listLoop",
       // 音乐是否在加载中
       isMusicLoad: false,
       // 是否展示音乐播放页面
@@ -1207,14 +1210,6 @@ export default new Vuex.Store({
      */
     showCustomer(state, value) {
       state.showCustomer = value;
-    },
-    /**
-     * 修改播放状态
-     * @param state
-     * @param isPlay
-     */
-    changePlayState(state, isPlay) {
-      state.musicInfo.isPlay = isPlay;
     },
     /**
      * music信息修改

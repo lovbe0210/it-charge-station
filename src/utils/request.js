@@ -3,7 +3,7 @@ import axios from 'axios';
 import vuex from '@/store/index';
 
 // 创建axios实例
-const instance = axios.create({
+const http = axios.create({
   baseURL: '/api',
   timeout: 30000,
   // 跨域请求是否提供凭证
@@ -11,7 +11,7 @@ const instance = axios.create({
 });
 
 // axios拦截器
-instance.interceptors.request.use(
+http.interceptors.request.use(
   (config) => {
     let token = vuex.state.userInfo.token;
     if (token) {
@@ -24,7 +24,7 @@ instance.interceptors.request.use(
   }
 );
 
-instance.interceptors.response.use(
+http.interceptors.response.use(
   // http接口成功回调
   response => {
     let result = response.data;
@@ -56,5 +56,4 @@ instance.interceptors.response.use(
   }
 );
 
-
-export default instance;
+export default http;

@@ -29,7 +29,7 @@
         <div class="musicName">
           {{ musicInfo.name }}
           <span class="singer" @click="goToDetailPage('singerDetail', musicInfo.ar[0].id)">
-            {{ musicInfo.name ? musicInfo.ar[0].name : "未知歌手"}}
+            {{ musicInfo.name ? musicInfo.ar[0].name : ""}}
           </span>
         </div>
       </div>
@@ -52,6 +52,7 @@
 
 <script>
   import ColorThief from 'colorthief';
+  import MusicApi from "@/utils/MusicApi";
 
   let placeholderHeight = 0;
   export default {
@@ -78,45 +79,8 @@
       }
     },
     methods: {
-      //请求并处理歌词数据
-      async getLyric(id) {
-        let res = await this.$request({
-          url: "/lyric?id=" + id,
-          method: 'get'
-        });
-        // debugger
-        // console.log(res);
-        // TODO 注意出参格式
-        let lyrics = res.lrc.lyric;
-        // 对获取到的歌词进行处理
-        let arr = lyrics.split("\n");
-        let array = [];
-        // let obj = {};
-        let time = "";
-        let value = "";
-        let result = [];
-
-        //去除空行
-        arr.forEach((item) => {
-          if (item !== "") {
-            array.push(item);
-          }
-        });
-        arr = array;
-        arr.forEach((item) => {
-          time = item.split("]")[0];
-          value = item.split("]")[1];
-          //去掉时间里的中括号得到xx:xx.xx
-          var t = time.slice(1).split(":");
-          //将结果压入最终数组
-          result.push([parseInt(t[0], 10) * 60 + parseFloat(t[1]), value]);
-        });
-
-        this.lyric = result;
-        // console.log(this.lyric);
-      },
       // 实现歌词滚动
-      lyricScroll(currentLyric) {
+       lyricScroll(currentLyric) {
         // 获取歌词item
         let lyricsArr = document.querySelectorAll(".lyricsItem");
         // 获取歌词框
@@ -126,10 +90,8 @@
           placeholderHeight = lyricsArr[0].offsetTop - lyrics.offsetTop;
         }
         //   歌词item在歌词框的高度 = 歌词框的offsetTop - 歌词item的offsetTop
-        //   console.log(currentLyric);
         if (lyricsArr[currentLyric - 1]) {
           let distance = lyricsArr[currentLyric - 1].offsetTop - lyrics.offsetTop;
-          //   lyricsArr[currentLyric].scrollIntoView();
           lyrics.scrollTo({
             behavior: "smooth",
             top: distance - placeholderHeight
@@ -165,11 +127,14 @@
       "$store.state.musicInfo.musicId"(musicId) {
         // 清空歌词
         this.lyric = [[0, "正在加载歌词..."]];
+        this.lyricsIndex = 0;
         // 更新当前歌曲信息
         this.musicInfo = this.$store.state.musicInfo.musicList[this.$store.state.musicInfo.currentIndex];
         // 优化性能,仅在卡片展示时才发送请求
         if (this.isMusicDetailCardShow) {
-          this.getLyric(musicId);
+          MusicApi.getLyricById(this, musicId).then((data) => {
+            this.lyric = data;
+          })
           // 重置背景色
           this.background = "linear-gradient(to bottom, #e3e2e3, white)";
           this.returnStatus = 1;
@@ -190,9 +155,23 @@
         if (this.musicInfo.id === null) {
           this.musicInfo = this.$store.state.musicInfo.musicList[this.$store.state.musicInfo.currentIndex];
         }
+        let currentTime = this.$store.state.musicInfo.currentTime;
         if (this.lyric.length === 1) {
-          this.getLyric(this.musicInfo.id);
+          MusicApi.getLyricById(this, this.musicInfo.id).then((data) => {
+            this.lyric = data;
+            // 歌词处理,直接跳转到当前播放歌词
+            this.getCurrentLyricsIndex(currentTime);
+            this.lyricScroll(this.lyricsIndex)
+          });
+        } else {
+          // 判断进度条是否拖动，如果拖动也需要滑动歌词
+          let lyricIndex = this.lyricsIndex;
+          this.getCurrentLyricsIndex(currentTime);
+          if (Math.abs(lyricIndex - this.lyricsIndex) > 1) {
+            this.lyricScroll(this.lyricsIndex)
+          }
         }
+
 
         // 重置背景色
         this.background = "linear-gradient(to bottom, #e3e2e3, white)";
@@ -206,14 +185,18 @@
 
       // 监听当前播放时间
       "$store.state.musicInfo.currentTime"(currentTime, lastTime) {
+        if (!this.isMusicDetailCardShow) {
+          return;
+        }
         // 如果两个时间间隔有1秒,则可得知进度条被拖动 需要重新校准歌词index
         // 当歌词数量大于1并且索引为零时,可能歌词位置差距较大,走这个if进行快速跳转
-        // debugger
         let var1 = lastTime && Math.abs(currentTime - lastTime) >= 1;
         let var2 = this.lyricsIndex === 0 && this.lyric.length > 1;
         if ((var1 || var2) && this.lyric.length > 1) {
-          // 处理播放时间跳转时歌词位置的校准
+          // 根据播放时间跳转时歌词位置的校准
+          // console.log("原歌词索引：", this.lyricsIndex)
           this.getCurrentLyricsIndex(currentTime);
+          // console.log("更新后索引：", this.lyricsIndex)
           // 滑动到当前歌词
           this.lyricScroll(this.lyricsIndex);
         }
@@ -224,22 +207,26 @@
             this.lyricScroll(this.lyricsIndex);
           }
         }
-      },
-      lyric(current) {
-        console.log("获取了歌词");
-        // 大于一秒，说明歌词在1秒后才请求成功 歌词可能不能马上跳转到当前时间 这里进行校准
-        if (this.$store.state.currentTime > 1) {
-          // 处理播放时间跳转时歌词位置的校准
-          if (this.lyric.length > 1) {
-            this.getCurrentLyricsIndex(this.$store.state.currentTime);
-            this.$nextTick(() => {
-              // 滑动到当前歌词
-              this.lyricScroll(this.lyricsIndex);
-            });
-          }
-        }
       }
-
+      // lyric(current) {
+      //   // 大于一秒，说明歌词在1秒后才请求成功 歌词可能不能马上跳转到当前时间 这里进行校准
+      //   if (this.$store.state.currentTime > 1) {
+      //     // 处理播放时间跳转时歌词位置的校准
+      //     if (this.lyric.length > 1) {
+      //       this.getCurrentLyricsIndex(this.$store.state.currentTime);
+      //       this.$nextTick(() => {
+      //         // 滑动到当前歌词
+      //         this.lyricScroll(this.lyricsIndex);
+      //       });
+      //     }
+      //   }
+      // }
+    },
+    mounted() {
+      // 每次刷新页面都需要重新渲染
+      if (this.isMusicDetailCardShow) {
+        this.$store.commit("updateMusicInfo", {isMusicDetailCardShow: false})
+      }
     }
   }
 </script>
