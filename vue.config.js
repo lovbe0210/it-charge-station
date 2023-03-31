@@ -56,15 +56,6 @@ module.exports = {
         pathRewrite: {
           '^/m801': ''
         }
-      },
-      'lovbe-blog': {
-        target: 'https://lovbe-blog.oss-cn-chengdu.aliyuncs.com',
-        changeOrigin: true,
-        ws: true,
-        pathRewrite: {
-          '^/lovbe-blog': ''
-        }
-
       }
     }
   }

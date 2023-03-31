@@ -14,6 +14,8 @@ export default new Vuex.Store({
     showContext: false,
     // 自适应页面宽度
     isPhone: false,
+    // 计算是否要固定右侧标签的高度
+    fixedHeight: null,
     // 首页的flag内容
     flagContent: {
       timestamp: new Date().getTime(),
@@ -27,7 +29,6 @@ export default new Vuex.Store({
       // 标题颜色
       titleColor: '#343434',
       // 背景图(可以设置渐变色和图片两种，渐变色也可以设置纯色，只要起始色和结束色相同即可)
-      // backgroundImg: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)'
       backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
     },
     // 显示自定义主题开关background-color: #4158D0;
@@ -1162,6 +1163,14 @@ export default new Vuex.Store({
      */
     changeShowContext(state, value) {
       state.showContext = value
+    },
+    /**
+     * 计算固定标签的高度
+     * @param state
+     * @param value
+     */
+    computeFixHeight(state, value) {
+      state.fixedHeight = value;
     },
     /**
      * 修改页面的显示效果，true表示为手机页面，false表示pc页面

@@ -1,7 +1,7 @@
 <template>
   <div class="music-detail-card"
        :class="[$store.state.musicInfo.isMusicDetailCardShow ? '' : 'hide']"
-       :style="`background-image:` +  background">
+       :style="`background-image:` +  showBackground">
     <div class="glassCard"></div>
     <div class="left">
       <div class="toList" @click="toPlayList()">
@@ -14,12 +14,11 @@
           <img :src="require('@/assets/img/MusicDetailCard/needle.png')" alt=""/>
         </div>
         <!-- 通过音乐的加载时差删除discAnimation类名再添加,达到重置动画的效果 -->
-        <div class="disc"
-             :class="[$store.state.musicInfo.isPlay ? '' : 'pause',$store.state.musicInfo.isMusicLoad ? '' : 'discAnimation']"
-             ref="disc">
+        <div class="disc" :class="[$store.state.musicInfo.isPlay ? '' : 'pause',
+                                   $store.state.musicInfo.isMusicLoad ? '' : 'discAnimation']" ref="disc">
           <img :src="require('@/assets/img/MusicDetailCard/disc.png')" alt=""/>
-          <img :src="require('@/assets/img/test.jpg')" alt="" class="musicAvatar" v-if="!musicInfo.al" ref="avatar"
-          />
+          <img :src="require('@/assets/img/test.jpg')" alt="" class="musicAvatar" v-if="!musicInfo.al.picUrl"
+               ref="avatar"/>
           <img :src="musicInfo.al.picUrl" alt="" class="musicAvatar" v-else ref="avatar" crossorigin="anonymous"/>
         </div>
       </div>
@@ -59,7 +58,10 @@
     data() {
       return {
         musicInfo: {
-          id: null
+          id: null,
+          al: {
+            picUrl: null
+          }
         },
         // 是否删除卡片渲染的内容
         cleanCard: true,
@@ -67,20 +69,25 @@
         lyric: [[0, "正在加载歌词..."]],
         // 当前歌词索引
         lyricsIndex: 0,
-        background: "linear-gradient(to bottom, #e3e2e3, white)",
+        background: "rgb(227,226,227)",
         // 0播放界面1列表界面
-        returnStatus: 1
+        returnStatus: 1,
+        // 当前歌曲id,用于判断是否已经计算过主题色
+        currentMusicId: null
       }
     },
     computed: {
       // 是否显示歌曲详情卡片
       isMusicDetailCardShow() {
         return this.$store.state.musicInfo.isMusicDetailCardShow;
+      },
+      showBackground() {
+        return "linear-gradient(to bottom," + this.background + ", white)";
       }
     },
     methods: {
       // 实现歌词滚动
-       lyricScroll(currentLyric) {
+      lyricScroll(currentLyric) {
         // 获取歌词item
         let lyricsArr = document.querySelectorAll(".lyricsItem");
         // 获取歌词框
@@ -136,12 +143,12 @@
             this.lyric = data;
           })
           // 重置背景色
-          this.background = "linear-gradient(to bottom, #e3e2e3, white)";
+          this.background = "rgb(227,226,227)";
           this.returnStatus = 1;
           setTimeout(() => {
             this.returnStatus = 0;
-            let color = this.getColor(this.$refs.avatar);
-            this.background = this.background.replace("#e3e2e3", color);
+            this.background = this.getColor(this.$refs.avatar);
+            this.currentMusicId = this.musicInfo.id;
           }, 2000);
         }
       },
@@ -172,15 +179,17 @@
           }
         }
 
-
         // 重置背景色
-        this.background = "linear-gradient(to bottom, #e3e2e3, white)";
-        this.returnStatus = 1;
-        setTimeout(() => {
-          this.returnStatus = 0;
-          let color = this.getColor(this.$refs.avatar);
-          this.background = this.background.replace("#e3e2e3", color);
-        }, 2000);
+        if (this.musicInfo.id !== this.currentMusicId) {
+          this.background = "rgb(227,226,227)";
+          this.returnStatus = 1;
+          setTimeout(() => {
+            this.returnStatus = 0;
+            let color = this.getColor(this.$refs.avatar);
+            this.background = color;
+            this.currentMusicId = this.musicInfo.id;
+          }, 2000);
+        }
       },
 
       // 监听当前播放时间

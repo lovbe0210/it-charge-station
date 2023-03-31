@@ -1,0 +1,249 @@
+@import "./common-var.less";
+
+.list-group-item {
+  background-color: transparent;
+}
+
+.ivu-menu-light {
+  background-color: transparent;
+}
+
+.ivu-btn {
+  box-shadow: none;
+  background: transparent;
+}
+
+
+.customer-set {
+  .title {
+    padding: 25px 0 5px 15px;
+    font-size: 1.0em;
+    color: @light-font-color;
+  }
+
+  .setting {
+    display: flex;
+    align-items: center;
+    padding: 13px 15px;
+
+    .context {
+      height: 24px;
+      line-height: 24px;
+    }
+  }
+
+  /deep/ .theme-color {
+
+    .ivu-color-picker {
+      padding-left: 15px;
+
+      .ivu-input {
+        border: 1px solid @border-color_normal;
+        background-color: transparent;
+      }
+
+      .ivu-color-picker-focused {
+        border-color: @border-color_hover;
+        box-shadow: none;
+      }
+
+      div:first-child:hover .ivu-input {
+        border-color: @border-color_hover !important;
+      }
+
+      .ivu-color-picker-color {
+        margin-left: 8px;
+      }
+
+      .ivu-select-dropdown {
+        left: 90px !important;
+        width: 250px;
+
+        .ivu-color-picker-picker-wrapper {
+          padding: 5px 5px 0 5px;
+        }
+
+        .ivu-color-picker-confirm {
+          margin: 0 5px 0 5px;
+
+          .ivu-btn-default:hover {
+            color: @border-color_hover;
+            border-color: @border-color_hover;
+          }
+
+          .ivu-btn-primary {
+            background: @border-color_hover;
+          }
+
+          .ivu-btn-small {
+            padding: 0 4px;
+          }
+
+          .ivu-color-picker-confirm-color {
+            left: 0;
+            width: 155px;
+
+            .ivu-input-small {
+              padding: 0 4px;
+            }
+
+            :focus {
+              box-shadow: none;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /deep/ .bacc-color {
+    //height: 24px;
+
+    .switch-btn {
+      height: 22px;
+      margin-left: 15px;
+      border: none;
+      box-shadow: none;
+
+      .ivu-switch-inner {
+        left: 21px;
+        line-height: 22px;
+        font-size: 0.8rem;
+      }
+    }
+
+    .ivu-switch:after {
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      top: 1.5px;
+      transition: left .3s ease-in-out, width .3s ease-in-out;
+    }
+
+    .ivu-switch-large.ivu-switch-checked:after {
+      left: 36px;
+    }
+
+    .ivu-switch-checked {
+      background-color: #FA8BFF;
+      background-image: linear-gradient(90deg, #FA8BFF 12%, #2BD2FF 56%, #2BFF88 90%);
+
+      .ivu-switch-inner {
+        left: 4px;
+      }
+    }
+
+    .ivu-upload {
+      padding-left: 7px;
+      display: flex;
+      justify-content: center;
+
+      .upload-icon {
+        width: 58px;
+        height: 24px;
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    .gradient-color {
+      display: flex;
+      align-content: center;
+      width: 150px;
+      height: 24px;
+      margin-left: 20px;
+
+      .ivu-btn-text {
+        height: 24px;
+        width: 28px;
+        padding: 0;
+      }
+
+      .ivu-btn-text[disabled] {
+        background-color: transparent;
+      }
+
+      .colors {
+        width: 90px;
+      }
+
+      .ivu-color-picker {
+        .ivu-input-wrapper {
+          width: 24px;
+          margin-left: 5px;
+
+          .ivu-input {
+            border: none;
+            box-shadow: none;
+            background-color: transparent;
+          }
+
+          .ivu-color-picker-color {
+            @circle-size: 18px;
+            border-radius: 50%;
+            width: @circle-size;
+            height: @circle-size;
+            top: 2px;
+
+            div {
+              border-radius: 50%;
+              width: @circle-size;
+              height: @circle-size;
+            }
+          }
+
+          i {
+            display: none;
+          }
+        }
+
+        .ivu-select-dropdown {
+          left: 90px !important;
+          width: 250px;
+          z-index: 99999;
+
+          .ivu-color-picker-picker-wrapper {
+            padding: 5px 5px 0 5px;
+          }
+
+          .ivu-color-picker-confirm {
+            margin: 0 5px 0 5px;
+
+            .ivu-input-wrapper {
+              width: 100px;
+            }
+
+            .ivu-btn-default:hover {
+              color: @border-color_hover;
+              border-color: @border-color_hover;
+            }
+
+            .ivu-btn-primary {
+              background: @border-color_hover;
+            }
+          }
+        }
+
+      }
+    }
+
+  }
+
+  .quick-setting {
+    margin-top: 5px;
+    .ivu-btn {
+      border: 1px solid @border-color_normal;
+      margin-right: 10px;
+      width: 64px;
+      padding: 0;
+    }
+    .ivu-btn-default:hover {
+      color: @border-color_hover;
+      border-color: @border-color_hover;
+    }
+
+    .ivu-btn-primary {
+      background: @border-color_hover;
+    }
+  }
+}
