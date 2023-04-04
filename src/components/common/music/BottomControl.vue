@@ -383,9 +383,12 @@
       this.$store.commit("updateMusicInfo", {musicId: this.musicInfo.id})
       // 初始化播放状态和时间和vuex中的保持一致
       this.$refs.audioPlayer.currentTime = this.$store.state.musicInfo.currentTime;
-      let play = !this.$refs.audioPlayer.paused;
-      if (this.isPlay !== play) {
-        play ? this.pauseMusic() : this.playMusic();
+      // 如果有一个页面正在播放，新开页面则不再播放
+      if (!this.$store.state.backgroundPlay) {
+        let play = !this.$refs.audioPlayer.paused;
+        if (this.isPlay !== play) {
+          play ? this.pauseMusic() : this.playMusic();
+        }
       }
     },
     watch: {

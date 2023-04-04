@@ -92,12 +92,15 @@
       commonUtil.flushCustomerSet(this.customerSet);
       window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
       window.addEventListener('unload', e => this.unloadHandler(e))
+      document.addEventListener('visibilitychange', e => this.handleVisibilityChange(e))
+      // 初始化自定义播放状态
     },
 
     destroyed() {
       // 页面关闭时销毁监听
       window.removeEventListener('beforeunload', e => this.beforeunloadHandler(e))
       window.removeEventListener('unload', e => this.unloadHandler(e))
+      document.removeEventListener('visibilitychange', e => this.handleVisibilityChange(e))
     },
     methods: {
       beforeunloadHandler() {
@@ -110,12 +113,49 @@
         //判断是窗口关闭还是刷新
         if (this._gap_time <= 5) {
           // 关闭窗口，将flag信息保存到localStorage中
+          this.$store.commit("updateBackgroundPlay", false);
           localStorage.setItem('store', JSON.stringify(this.$store.state))
         }
       },
 
       flushCustomerSet() {
         commonUtil.flushCustomerSet(this.customerSet);
+      },
+
+      handleVisibilityChange() {
+        if (document.hidden) {
+          // 如果当前有音乐播放，则修改后台播放状态
+          if (this.$store.state.musicInfo.isPlay) {
+            this.$store.commit("updateBackgroundPlay", true);
+          }
+          // 页面变为后台状态，保存vuex中的数据，除过播放状态和自定义设置主题卡片状态
+          // 注意此处为深拷贝，要不会改变store的状态
+          let state = JSON.parse(JSON.stringify(this.$store.state));
+          delete state.showCustomer;
+          delete state.musicInfo;
+          localStorage.setItem('store', JSON.stringify(state))
+        } else {
+          // 页面变为前台状态，从本地更新数据
+          if (localStorage.getItem('store')) {
+            // 删除空对象，避免覆盖默数据
+            let storeData = JSON.parse(localStorage.getItem('store'));
+            Object.keys(storeData).forEach(item => {
+              // 保留自定义设置状态和音乐播放状态
+              if (item === 'showCustomer' || item === 'musicInfo' ||
+                storeData[item] === '' || storeData[item] === undefined || storeData[item] === null) {
+                delete storeData[item];
+              }
+              return storeData;
+            })
+            this.$store.replaceState(
+              Object.assign(
+                {},
+                this.$store.state,
+                storeData
+              )
+            )
+          }
+        }
       }
     }
   }

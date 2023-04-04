@@ -8,6 +8,8 @@ export default new Vuex.Store({
     userInfo: {
       token: '06ba1e5d8dcd4bf7b27ed10c6a202766'
     },
+    // 是否有后台播放音乐的页面
+    backgroundPlay: false,
     // 首页显示激活的菜单项
     activeName: 'recommend',
     // 手机页面的菜单栏的状态，true为打开，false为关闭，默认关闭
@@ -23,13 +25,13 @@ export default new Vuex.Store({
     },
     customerSet: {
       // 主題色
-      themeColor: 'rgba(255,255,255,0.89)',
+      themeColor: 'rgba(255,255,255,1)',
       // 字体颜色
-      fontColor: '#747474',
+      fontColor: '#404040',
       // 标题颜色
-      titleColor: '#343434',
+      titleColor: '#0a0a0a',
       // 背景图(可以设置渐变色和图片两种，渐变色也可以设置纯色，只要起始色和结束色相同即可)
-      backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
+      backgroundImg: 'linear-gradient(45deg, #F4F5F7 0%, #F4F5F7 100%)'
     },
     // 显示自定义主题开关background-color: #4158D0;
     // background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
@@ -1148,6 +1150,14 @@ export default new Vuex.Store({
 
   // 直接操作state中的数据(commit)
   mutations: {
+    /**
+     * 修改music的前后台播放状态
+     * @param state
+     * @param value
+     */
+    updateBackgroundPlay(state, value) {
+      state.backgroundPlay = value;
+    },
     /**
      * 修改body页面激活的route
      * @param state
