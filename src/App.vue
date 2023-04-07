@@ -34,6 +34,9 @@
       }
     },
     created() {
+      window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
+      window.addEventListener('unload', e => this.unloadHandler(e))
+      document.addEventListener('visibilitychange', e => this.handleVisibilityChange(e))
       // 在页面加载时读取localStorage里的状态信息加载到vuex中
       if (localStorage.getItem('store')) {
         // 删除空对象，避免覆盖默数据
@@ -48,6 +51,9 @@
         // 自定义主题状态初始化
         storeData.showCustomer = false;
 
+        // 页面状态初始化
+        // storeData.pageState = "init";
+
         this.$store.replaceState(
           Object.assign(
             {},
@@ -56,6 +62,8 @@
           )
         )
       }
+
+      this.$store.commit("updatePageState", "init");
 
       // 判断是手机页面还是pc页面
       if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
@@ -90,10 +98,7 @@
     mounted() {
       // 加载背景
       commonUtil.flushCustomerSet(this.customerSet);
-      window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
-      window.addEventListener('unload', e => this.unloadHandler(e))
-      document.addEventListener('visibilitychange', e => this.handleVisibilityChange(e))
-      // 初始化自定义播放状态
+
     },
 
     destroyed() {
@@ -105,14 +110,26 @@
     methods: {
       beforeunloadHandler() {
         // 在页面刷新时将vuex里的信息保存到sessionStorage里
+        // 兼容edge、chrome、firefox
+        this.$store.commit("updatePageState", "flush");
         localStorage.setItem('store', JSON.stringify(this.$store.state))
         this._beforeUnload_time = new Date().getTime()
       },
       unloadHandler() {
+        this.$store.commit("updatePageState", "close");
+        // 火狐浏览器关闭时只会触发unload事件
+        if (commonUtil.getBrowerAgent() === "Firefox") {
+          this.$store.commit("updateBackgroundPlay", false);
+          localStorage.setItem('store', JSON.stringify(this.$store.state))
+          return;
+        }
+
+        // 兼容edge、chrome，关闭时beforeunload和unload时间差较小，刷新时时间差较大
         this._gap_time = new Date().getTime() - this._beforeUnload_time
         //判断是窗口关闭还是刷新
         if (this._gap_time <= 5) {
           // 关闭窗口，将flag信息保存到localStorage中
+          this.$store.commit("updatePageState", "close");
           this.$store.commit("updateBackgroundPlay", false);
           localStorage.setItem('store', JSON.stringify(this.$store.state))
         }
@@ -123,7 +140,12 @@
       },
 
       handleVisibilityChange() {
-        if (document.hidden) {
+        // TODO
+        let pageState = this.$store.state.pageState;
+        let number = pageState.lastIndexOf("_");
+        if (document.visibilityState === "hidden" && pageState.substring(number + 1) !== "flush") {
+          // 如果是刷新后的回调事件，则不在进行操作
+          this.$store.commit("updatePageState", "hidden");
           // 如果当前有音乐播放，则修改后台播放状态
           if (this.$store.state.musicInfo.isPlay) {
             this.$store.commit("updateBackgroundPlay", true);
@@ -134,7 +156,7 @@
           delete state.showCustomer;
           delete state.musicInfo;
           localStorage.setItem('store', JSON.stringify(state))
-        } else {
+        } else if (document.visibilityState === "visible") {
           // 页面变为前台状态，从本地更新数据
           if (localStorage.getItem('store')) {
             // 删除空对象，避免覆盖默数据
@@ -155,6 +177,7 @@
               )
             )
           }
+          this.$store.commit("updatePageState", "show");
         }
       }
     }

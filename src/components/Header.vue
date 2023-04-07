@@ -45,8 +45,8 @@
 
         <!-- 菜单栏 -->
         <b-navbar-nav class="menu" :fill="true" align="center">
-          <b-nav-item v-for="item of quickLink" class="mr-2" @click="$whereGo(item.viewName)" :key="item.uid">
-            <Dropdown trigger="hover" :transfer="true" @on-click="sortBy">
+          <b-nav-item v-for="item of quickLink" class="mr-2" :key="item.uid">
+            <Dropdown trigger="hover" :transfer="true">
               <a href="javascript:void(0)">
                 <span>{{item.menuName}}</span>
               </a>
@@ -195,7 +195,7 @@
                 menuName: 'Java'
               },
               {
-                uid: '2342dsdfsdf',
+                uid: '2342dssddfsdf',
                 menuName: 'C语言'
               },
               {

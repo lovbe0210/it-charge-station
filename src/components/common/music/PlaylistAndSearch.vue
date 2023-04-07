@@ -25,6 +25,8 @@
 </template>
 
 <script>
+  import MusicApi from '@/utils/MusicApi.js'
+
   export default {
     name: "PlayListAndSearch",
     data() {
@@ -32,16 +34,29 @@
         playListShow: true,
         placeholder: "周杰伦",
         keywords: "",
-        topMusicScroll: 0
+        topMusicScroll: 0,
+        // 此处展示列表为搜索列表还是播放列表 0 playList，1 searchList
+        ifSearchOrPlayList: 0,
+        searchResult: []
       };
     },
     computed: {
       playList() {
-        return this.$store.state.musicInfo.musicList;
+        if (this.ifSearchOrPlayList === 0) {
+          return this.$store.state.musicInfo.musicList;
+        } else {
+          return this.searchResult;
+        }
       }
     },
     methods: {
       searchMusic() {
+        MusicApi.cloudSearch(this, this.placeholder).then(data => {
+          this.ifSearchOrPlayList = 1;
+          if (data.length > 0) {
+            this.searchResult = data;
+          }
+        })
         console.log("搜索歌曲" + (this.keywords.length === 0 ? this.placeholder : this.keywords))
       },
       playSelect(index) {

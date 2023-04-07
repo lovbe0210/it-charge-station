@@ -5,6 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    // 页面状态，用来记录当前页面的一些变化，控制页面数据的持久化和传递
+    // 页面创建：init，页面最小化、非当前窗口、被其他应用覆盖等使用：hidden，页面最大化、切回当前table，其他应用最小化：show，
+    // 页面刷新：flush，页面关闭：close
+    pageState: "init",
     userInfo: {
       token: '06ba1e5d8dcd4bf7b27ed10c6a202766'
     },
@@ -1150,6 +1154,9 @@ export default new Vuex.Store({
 
   // 直接操作state中的数据(commit)
   mutations: {
+    updatePageState(state, value) {
+      state.pageState += ("_" + value);
+    },
     /**
      * 修改music的前后台播放状态
      * @param state

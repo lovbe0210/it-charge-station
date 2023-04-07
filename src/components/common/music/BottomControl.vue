@@ -52,7 +52,7 @@
         </span>
         <b-tooltip target="volumeController" triggers="hover" custom-class="volume-controller" placement="top"
                    container="volumeController">
-          <input type="range" min=0 max=100 step=10 v-model="volume" @change="changeVolume"
+          <input type="range" min=0 max=100 step=2 v-model="volume" @change="changeVolume"
                  class="volume-input"/>
         </b-tooltip>
       </div>

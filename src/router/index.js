@@ -54,6 +54,12 @@ const routes = [
     path: '/writeCenter',
     name: 'WriteCenter',
     component: () => import('@/views/WriteCenter')
+  },
+  {
+    // 阅读中心
+    path: '/readCenter',
+    name: 'ReadCenter',
+    component: () => import('@/views/ReadCenter')
   }
 ]
 
@@ -64,8 +70,6 @@ const router = new VueRouter({
 })
 
 router.afterEach((to, from) => {
-  console.dir(from)
-  console.dir(to)
   if (from.name === 'WriteCenter') {
     window.location.reload();
   }
