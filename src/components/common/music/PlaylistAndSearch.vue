@@ -35,7 +35,7 @@
         placeholder: "周杰伦",
         keywords: "",
         topMusicScroll: 0,
-        // 此处展示列表为搜索列表还是播放列表 0 playList，1 searchList
+        // 此处表示展示列表为搜索列表还是播放列表 0 playList，1 searchList
         ifSearchOrPlayList: 0,
         searchResult: []
       };
@@ -51,17 +51,25 @@
     },
     methods: {
       searchMusic() {
-        MusicApi.cloudSearch(this, this.placeholder).then(data => {
+        MusicApi.cloudSearch(this, this.keywords.length === 0 ? this.placeholder : this.keywords).then(data => {
           this.ifSearchOrPlayList = 1;
           if (data.length > 0) {
             this.searchResult = data;
           }
         })
-        console.log("搜索歌曲" + (this.keywords.length === 0 ? this.placeholder : this.keywords))
       },
       playSelect(index) {
         let selectMusic = this.playList[index];
-        this.$store.commit("updateMusicInfo", {musicId: selectMusic.id, currentIndex: index});
+        if (this.ifSearchOrPlayList === 0) {
+          // 播放列表
+          this.$store.commit("updateMusicInfo", {musicId: selectMusic.id, currentIndex: index});
+        } else {
+          // 搜索列表
+          let playList = this.$store.state.musicInfo.musicList;
+          playList.push(selectMusic)
+          this.$store.commit("updateMusicInfo", {musicList: playList, musicId: selectMusic.id, currentIndex: playList.length - 1});
+        }
+
       },
       handleScrollWheel(event) {
         // debugger

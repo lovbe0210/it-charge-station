@@ -49,6 +49,7 @@ export default {
     //   method: 'get'
     // })
     let data = null;
+    let response = null;
     switch (String(id)) {
       case "108914":
         data = "http://rsohtkfim.hn-bkt.clouddn.com/%E6%B1%9F%E5%8D%97%20%E6%9E%97%E4%BF%8A%E6%9D%B0.flac";
@@ -111,9 +112,14 @@ export default {
         data = "http://rsohtkfim.hn-bkt.clouddn.com/%E6%A2%81%E9%9D%99%E8%8C%B9%20-%20%E5%8B%87%E6%B0%94.flac";
         break;
       default:
+        // TODO 需要做容错处理以及收费歌曲、没版权歌曲
+        response = await _this.$request({
+          url: "/song/url?id=" + id,
+          method: 'get'
+        });
+        data = response.data[0].url + "?refreshID=" + new Date().getTime();
         break
     }
-    // debugger
     return data;
   },
 
