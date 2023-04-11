@@ -5,7 +5,7 @@
         <span class="icon-context">共{{playList.length}}首</span>
       </span>
       <span class="iconfont icon-return-copy" @click="ifSearchOrPlayList = 0" v-show="ifSearchOrPlayList === 1">
-        <span >返回</span>
+        <span>返回</span>
       </span>
       <span class="search">
         <Input search :placeholder="placeholder" @on-search="searchMusic()" v-model="keywords">
@@ -80,12 +80,22 @@
         } else {
           // 搜索列表
           let playList = this.$store.state.musicInfo.musicList;
-          playList.push(selectMusic)
-          this.$store.commit("updateMusicInfo", {
-            musicList: playList,
-            musicId: selectMusic.id,
-            currentIndex: playList.length - 1
-          });
+          let index = playList.findIndex(
+            (item) => item.id === selectMusic.id
+          );
+          if (index === -1) {
+            playList.push(selectMusic)
+            this.$store.commit("updateMusicInfo", {
+              musicList: playList,
+              musicId: selectMusic.id,
+              currentIndex: playList.length - 1
+            });
+          } else {
+            this.$store.commit("updateMusicInfo", {
+              musicId: selectMusic.id,
+              currentIndex: index
+            });
+          }
         }
 
       },
