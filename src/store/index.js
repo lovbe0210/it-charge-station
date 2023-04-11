@@ -9,6 +9,7 @@ export default new Vuex.Store({
     // 页面创建：init，页面最小化、非当前窗口、被其他应用覆盖等使用：hidden，页面最大化、切回当前table，其他应用最小化：show，
     // 页面刷新：flush，页面关闭：close
     pageState: "init",
+    // TODO 这里还是无法解决先切换到别的页面然后后台播放然后backplay = true，然后再刷新导致不能播放的问题
     userInfo: {
       token: '06ba1e5d8dcd4bf7b27ed10c6a202766'
     },
@@ -1155,7 +1156,7 @@ export default new Vuex.Store({
   // 直接操作state中的数据(commit)
   mutations: {
     updatePageState(state, value) {
-      state.pageState += ("_" + value);
+      state.pageState = value;
     },
     /**
      * 修改music的前后台播放状态

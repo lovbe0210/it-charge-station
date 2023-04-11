@@ -120,6 +120,7 @@
         // 火狐浏览器关闭时只会触发unload事件
         if (commonUtil.getBrowerAgent() === "Firefox") {
           this.$store.commit("updateBackgroundPlay", false);
+          this.$store.commit("updateMusicInfo", {isPlay: false});
           localStorage.setItem('store', JSON.stringify(this.$store.state))
           return;
         }
@@ -131,6 +132,7 @@
           // 关闭窗口，将flag信息保存到localStorage中
           this.$store.commit("updatePageState", "close");
           this.$store.commit("updateBackgroundPlay", false);
+          this.$store.commit("updateMusicInfo", {isPlay: false});
           localStorage.setItem('store', JSON.stringify(this.$store.state))
         }
       },
@@ -140,10 +142,8 @@
       },
 
       handleVisibilityChange() {
-        // TODO
         let pageState = this.$store.state.pageState;
-        let number = pageState.lastIndexOf("_");
-        if (document.visibilityState === "hidden" && pageState.substring(number + 1) !== "flush") {
+        if (document.visibilityState === "hidden" && pageState !== "flush") {
           // 如果是刷新后的回调事件，则不在进行操作
           this.$store.commit("updatePageState", "hidden");
           // 如果当前有音乐播放，则修改后台播放状态

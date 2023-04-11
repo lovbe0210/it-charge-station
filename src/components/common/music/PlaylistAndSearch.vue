@@ -1,7 +1,12 @@
 <template>
   <div class="playlist" v-show="playListShow">
     <div class="title-search">
-      <span class="iconfont icon-music-list">&ensp;共{{playList.length}}首</span>
+      <span class="iconfont icon-music-list" v-show="ifSearchOrPlayList === 0">
+        <span class="icon-context">共{{playList.length}}首</span>
+      </span>
+      <span class="iconfont icon-return-copy" @click="ifSearchOrPlayList = 0" v-show="ifSearchOrPlayList === 1">
+        <span >返回</span>
+      </span>
       <span class="search">
         <Input search :placeholder="placeholder" @on-search="searchMusic()" v-model="keywords">
         </Input>
@@ -53,9 +58,18 @@
       searchMusic() {
         MusicApi.cloudSearch(this, this.keywords.length === 0 ? this.placeholder : this.keywords).then(data => {
           this.ifSearchOrPlayList = 1;
-          if (data.length > 0) {
-            this.searchResult = data;
-          }
+          this.searchResult = [];
+          this.topMusicScroll = 0;
+          let playList = document.querySelector(".list");
+          playList.scrollTo({
+            behavior: "instant",
+            top: this.topMusicScroll
+          });
+          setTimeout(() => {
+            if (data.length > 0) {
+              this.searchResult = data;
+            }
+          }, 1)
         })
       },
       playSelect(index) {
@@ -67,7 +81,11 @@
           // 搜索列表
           let playList = this.$store.state.musicInfo.musicList;
           playList.push(selectMusic)
-          this.$store.commit("updateMusicInfo", {musicList: playList, musicId: selectMusic.id, currentIndex: playList.length - 1});
+          this.$store.commit("updateMusicInfo", {
+            musicList: playList,
+            musicId: selectMusic.id,
+            currentIndex: playList.length - 1
+          });
         }
 
       },

@@ -36,6 +36,7 @@
           <i class="iconfont icon-previous"></i>
         </span>
         <span @click="musicList.length != 0 ? changePlayState() : ''">
+<!--          <i class="iconfont icon-loading" v-show="!this.readyState"></i>-->
           <i class="iconfont icon-play" v-show="this.$store.state.musicInfo.isPlay"></i>
           <i class="iconfont icon-paused" v-show="!this.$store.state.musicInfo.isPlay"></i>
         </span>
@@ -58,13 +59,14 @@
       </div>
       <!-- 进度条 -->
       <div class="progressBar">
-        <span class="currentTime">{{ currentTime | handleMusicTime }}</span>
+        <span class="currentTime">{{ currentTime }}</span>
         <div class="progress-wrapp">
           <div class="totalProgress" @click="changeProgress">
             <div class="currentProgress" :style="'width:' + timeProgress + '%'"/>
           </div>
         </div>
-        <span class="totalTime">{{ musicInfo.dt }}</span>
+        <span
+          class="totalTime">{{ typeof musicInfo.dt === "number" ? handleMusicTime(musicInfo.dt) : musicInfo.dt}}</span>
       </div>
     </div>
   </div>
@@ -93,8 +95,8 @@
         musicUrl: null,
         // 进度条的位置
         timeProgress: 0,
-        // 音量
-
+        // 是否准备好可以播放
+        readyState: false,
         // 是否静音
         isMuted: false,
         // 用户的喜欢音乐列表
@@ -104,6 +106,8 @@
       };
     },
     methods: {
+      handleMusicTime,
+      returnSecond,
       // 请求
       // 请求歌曲的url
       async getmusicInfo(id) {
@@ -153,12 +157,20 @@
       },
       // 播放音乐的函数
       playMusic() {
-        // 主流浏览器已经禁用了自动播放，所以在初始化时播放会报错
-        this.$refs.audioPlayer.play().catch(e => {
+        let readyState = this.$refs.audioPlayer.readyState;
+        if (readyState === 4) {
+          // 主流浏览器已经禁用了自动播放，所以在初始化时播放会报错
+          this.$refs.audioPlayer.play().catch(e => {
+            setTimeout(() => {
+              this.playMusic();
+            }, 500)
+          })
+        } else {
+          console.log("常事。。。")
           setTimeout(() => {
             this.playMusic();
-          }, 1000)
-        })
+          }, 500)
+        }
       },
       // 暂停音乐的函数
       pauseMusic() {
@@ -333,11 +345,11 @@
     },
     computed: {
       duration() {
-        return returnSecond(this.musicInfo.dt);
+        return typeof this.musicInfo.dt === "number" ? this.musicInfo.dt / 1000 : returnSecond(this.musicInfo.dt);
       },
       currentTime: {
         get() {
-          return this.$store.state.musicInfo.currentTime;
+          return handleMusicTime(this.$store.state.musicInfo.currentTime);
         },
         set(time) {
           this.$store.commit("updateMusicInfo", {currentTime: time});
@@ -383,13 +395,13 @@
       this.$store.commit("updateMusicInfo", {musicId: this.musicInfo.id})
       // 初始化播放状态和时间和vuex中的保持一致
       this.$refs.audioPlayer.currentTime = this.$store.state.musicInfo.currentTime;
-      // 如果有一个页面正在播放，新开页面则不再播放
-      if (!this.$store.state.backgroundPlay) {
+      // 如果有一个页面正在播放，新开页面则不再播放（暂时只在刷新后如果之前播放继续播放，其余场景不再播放）
+      // if (!this.$store.state.backgroundPlay) {
         let play = !this.$refs.audioPlayer.paused;
         if (this.isPlay !== play) {
           play ? this.pauseMusic() : this.playMusic();
         }
-      }
+      // }
     },
     watch: {
       // 监听vuex中musicId的变化
@@ -420,9 +432,6 @@
           this.likeMuiscList = [];
         }
       }
-    },
-    filters: {
-      handleMusicTime
     }
   };
 </script>

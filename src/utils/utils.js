@@ -45,7 +45,7 @@ export function handleNum(num) {
 // 处理音乐时长的时间
 export function handleMusicTime(time) {
   // 如果超过了100000 基本都是毫秒为单位的了 先转成秒的
-  time = parseInt(time);
+  time = typeof time === "number" ? time : parseInt(time);
   if (time > 10000) {
     time = Math.floor(time / 1000);
   } else {
