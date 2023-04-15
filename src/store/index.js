@@ -1153,7 +1153,18 @@ export default new Vuex.Store({
     }
   },
 
-  // 直接操作state中的数据(commit)
+  actions: {
+    /**
+     * 退出登录
+     * @param state
+     * @param value
+     */
+    clearUserInfo(state, value) {
+      state.userInfo = {}
+    }
+  },
+
+  // 同步操作state中的数据(commit)
   mutations: {
     updatePageState(state, value) {
       state.pageState = value;
@@ -1205,14 +1216,6 @@ export default new Vuex.Store({
      */
     editFlagContent(state, value) {
       state.flagContent.content = value
-    },
-    /**
-     * 退出登录
-     * @param state
-     * @param value
-     */
-    clearUserInfo(state, value) {
-      state.userInfo = {}
     },
     /**
      * 登录，保存userinfo
