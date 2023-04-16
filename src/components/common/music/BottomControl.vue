@@ -246,7 +246,13 @@
         } else if (type === "next") {
           let currentMusicIndex = this.currentMusicIndex;
           let nextIndex;
-          if (this.playType === "listLoop") {
+          if (this.playType === "singleLoop" || this.musicList.length === 1) {
+            // 如果是单曲循环，则直接重新开始播放就行, 还有一种情况，列表中只有一首歌，此时也相当于单曲循环
+            this.pauseMusic();
+            this.$refs.audioPlayer.currentTime = 0;
+            this.playMusic();
+            return;
+          } else if (this.playType === "listLoop") {
             nextIndex = currentMusicIndex + 1 === this.musicList.length ? 0 : currentMusicIndex + 1;
           } else if (this.playType === "listRandom") {
             if (this.musicList.length === 1) {
@@ -257,11 +263,6 @@
                 nextIndex = Math.floor(Math.random() * this.musicList.length);
               }
             }
-          } else {
-            // 如果是单曲循环，则直接重新开始播放就行
-            this.pauseMusic();
-            this.$refs.audioPlayer.currentTime = 0;
-            this.playMusic();
           }
           this.$store.commit("updateMusicInfo", {currentIndex: nextIndex, musicId: this.musicList[nextIndex].id});
         }
@@ -411,10 +412,10 @@
       this.getIsUserLikeCurrentMusic();
       // 如果有一个页面正在播放，新开页面则不再播放（暂时只在刷新后如果之前播放继续播放，其余场景不再播放）
       // if (!this.$store.state.backgroundPlay) {
-        let play = !this.$refs.audioPlayer.paused;
-        if (this.isPlay !== play && !play) {
-          this.playMusic();
-        }
+      let play = !this.$refs.audioPlayer.paused;
+      if (this.isPlay !== play && !play) {
+        this.playMusic();
+      }
       // }
     },
     watch: {
@@ -440,19 +441,19 @@
           return;
         }
         // if (oldVal !== null) {
-          // 先暂停当前播放的音乐
-          this.pauseMusic();
-          // 根据list中的索引直接获取歌曲信息（这就要求其他地方必须同时更新currentIndex）
-          this.musicInfo = this.musicList[this.currentMusicIndex]
-          // 获取歌曲播放url
-          MusicApi.getMusicUrlById(this, newVal).then((data) => {
-            this.musicUrl = data;
-          });
-          // 判断用户是否喜欢当前音乐
-          this.getIsUserLikeCurrentMusic();
-          // 播放时间重置，开始播放(如果首次进来时则不需要播放)
-          this.$refs.audioPlayer.currentTime = 0;
-          this.playMusic();
+        // 先暂停当前播放的音乐
+        this.pauseMusic();
+        // 根据list中的索引直接获取歌曲信息（这就要求其他地方必须同时更新currentIndex）
+        this.musicInfo = this.musicList[this.currentMusicIndex]
+        // 获取歌曲播放url
+        MusicApi.getMusicUrlById(this, newVal).then((data) => {
+          this.musicUrl = data;
+        });
+        // 判断用户是否喜欢当前音乐
+        this.getIsUserLikeCurrentMusic();
+        // 播放时间重置，开始播放(如果首次进来时则不需要播放)
+        this.$refs.audioPlayer.currentTime = 0;
+        this.playMusic();
         // }
       },
 
