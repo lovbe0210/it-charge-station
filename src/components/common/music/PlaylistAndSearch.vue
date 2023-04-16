@@ -18,15 +18,19 @@
         <b-row :class="[$store.state.musicInfo.musicId === item.id ? 'currentPlay' : '']"
                @mouseenter="currentShowId=item.id"
                @mouseleave="currentShowId=null">
-          <b-col cols="7" class="musicName">
+          <b-col cols="6" class="musicName" :title="item.name">
             {{item.name}}
           </b-col>
-          <b-col cols="3" class="signerName">
+          <b-col cols="3" class="signerName" :title="item.ar[0].name">
             {{item.ar[0].name}}
           </b-col>
           <b-col cols="2" class="next-play" v-show="ifSearchOrPlayList && currentShowId===item.id"
                  @click="nextPlay(index)">
             <span class="iconfont icon-music-add"></span>
+          </b-col>
+          <b-col cols="2" class="music-del" v-show="!ifSearchOrPlayList && currentShowId===item.id"
+                 @click="removeFromPlayList(index)">
+            <span class="iconfont icon-music-del"></span>
           </b-col>
         </b-row>
 
@@ -59,6 +63,9 @@
         } else {
           return this.searchResult;
         }
+      },
+      isPlay() {
+        return this.$store.state.musicInfo.isPlay;
       },
       currentMusicId() {
         return this.$store.state.musicInfo.musicId;
@@ -117,14 +124,24 @@
           (item) => item.id === selectMusic.id
         );
         if (findIndex === -1) {
-          debugger
           let currentPlayIndex = this.$store.state.musicInfo.currentIndex;
-          playList.splice(currentPlayIndex, 0, selectMusic);
-          // TODO
-          // this.$store.commit("updateMusicInfo", {
-          //   musicList: playList
-          // });
+          playList.splice(currentPlayIndex + 1, 0, selectMusic);
         }
+      },
+      removeFromPlayList(index) {
+        let selectMusic = this.playList[index];
+        this.playList.splice(index, 1);
+        if (selectMusic.id === this.currentMusicId) {
+          // 直接停止音乐
+          this.$store.commit("updateMusicInfo", {musicId: null});
+        } else if (this.currentMusicId !== null) {
+          // 更新当前播放音乐的index
+          let findIndex = this.playList.findIndex(
+            (item) => item.id === selectMusic.id
+          );
+          this.$store.commit("updateMusicInfo", {currentIndex: findIndex});
+        }
+
       },
       handleScrollWheel(event) {
         // debugger

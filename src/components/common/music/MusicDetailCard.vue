@@ -66,7 +66,7 @@
         // 是否删除卡片渲染的内容
         cleanCard: true,
         //   歌词
-        lyric: [[0, "正在加载歌词..."]],
+        lyric: [[0, "无限音乐，无限可能"]],
         // 当前歌词索引
         lyricsIndex: 0,
         background: "rgb(227,226,227)",
@@ -132,8 +132,21 @@
     watch: {
       // 当vuex中的歌曲id发生变化时,需要重新获取评论和歌词
       "$store.state.musicInfo.musicId"(musicId) {
+        // debugger
+        if (musicId === null) {
+          this.lyric = [[0, "无限音乐，无限可能"]];
+          this.lyricsIndex = 0;
+          this.musicInfo = {
+            id: null,
+            al: {picUrl: null}
+          };
+          // 重置背景色
+          this.background = "rgb(227,226,227)";
+          this.returnStatus = 1;
+          return;
+        }
         // 清空歌词
-        this.lyric = [[0, "正在加载歌词..."]];
+        this.lyric = [[0, "无限音乐，无限可能"]];
         this.lyricsIndex = 0;
         // 更新当前歌曲信息
         this.musicInfo = this.$store.state.musicInfo.musicList[this.$store.state.musicInfo.currentIndex];
@@ -160,8 +173,9 @@
         }
         // 更新当前歌曲信息
         if (this.musicInfo.id === null) {
-          this.musicInfo = this.$store.state.musicInfo.musicList[this.$store.state.musicInfo.currentIndex];
+          return;
         }
+        // this.musicInfo = this.$store.state.musicInfo.musicList[this.$store.state.musicInfo.currentIndex];
         let currentTime = this.$store.state.musicInfo.currentTime;
         if (this.lyric.length === 1) {
           MusicApi.getLyricById(this, this.musicInfo.id).then((data) => {

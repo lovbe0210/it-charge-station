@@ -1,7 +1,7 @@
 <template>
   <div class="bottom-control">
     <audio
-      :src="musicUrl ? musicUrl : require('@/assets/Love Story.mp3')"
+      :src="musicUrl"
       ref="audioPlayer"
       @play="changeState(true)"
       @pause="changeState(false)"
@@ -82,15 +82,15 @@
       return {
         musicInfo: {
           // 页面需要使用v-if判断，所以先赋给默认值
-          name: null,
+          name: "小布音乐站",
           id: null,
           al: {
             picUrl: null
           },
           ar: [{
-            name: null
+            name: "布衣草人"
           }],
-          dt: "--:--"
+          dt: "00:00"
         },
         musicUrl: null,
         // 进度条的位置
@@ -157,6 +157,10 @@
       },
       // 播放音乐的函数
       playMusic() {
+        // 如果当前播放id为空，则无法播放
+        if (this.musicId === null) {
+          return;
+        }
         let readyState = this.$refs.audioPlayer.readyState;
         if (readyState === 4) {
           // 主流浏览器已经禁用了自动播放，所以在初始化时播放会报错
@@ -166,7 +170,7 @@
             }, 500)
           })
         } else {
-          console.log("常事。。。")
+          console.log("尝试播放。。。")
           setTimeout(() => {
             this.playMusic();
           }, 500)
@@ -212,6 +216,9 @@
       },
       // 切歌函数
       changeMusic(type) {
+        if (this.musicList.length === 0) {
+          return;
+        }
         // 上一首
         if (type === "pre") {
           let currentMusicIndex = this.currentMusicIndex;
@@ -369,6 +376,9 @@
       currentMusicIndex() {
         return this.$store.state.musicInfo.currentIndex;
       },
+      musicId() {
+        return this.$store.state.musicInfo.musicId;
+      },
       isPlay() {
         return this.$store.state.musicInfo.isPlay;
       },
@@ -384,29 +394,52 @@
     mounted() {
       // 初始化音量
       this.changeVolume();
+      if (this.musicList.length === 0 || this.musicId === null) {
+        return;
+      }
+
       // 初始化当前播放的歌曲信息
-      this.musicInfo = (this.musicList && this.musicList.length > 0) ? this.musicList[this.currentMusicIndex] : {};
+      this.musicInfo = this.musicList[this.currentMusicIndex];
+      // 更新musicId
+      this.$store.commit("updateMusicInfo", {musicId: this.musicInfo.id})
       MusicApi.getMusicUrlById(this, this.musicInfo.id).then((data) => {
         this.musicUrl = data;
+        // 初始化播放时间和vuex中的保持一致
+        this.$refs.audioPlayer.currentTime = this.$store.state.musicInfo.currentTime;
       });
       // 判断用户是否喜欢当前音乐
       this.getIsUserLikeCurrentMusic();
-      // 更新musicId
-      this.$store.commit("updateMusicInfo", {musicId: this.musicInfo.id})
-      // 初始化播放状态和时间和vuex中的保持一致
-      this.$refs.audioPlayer.currentTime = this.$store.state.musicInfo.currentTime;
       // 如果有一个页面正在播放，新开页面则不再播放（暂时只在刷新后如果之前播放继续播放，其余场景不再播放）
       // if (!this.$store.state.backgroundPlay) {
         let play = !this.$refs.audioPlayer.paused;
-        if (this.isPlay !== play) {
-          play ? this.pauseMusic() : this.playMusic();
+        if (this.isPlay !== play && !play) {
+          this.playMusic();
         }
       // }
     },
     watch: {
       // 监听vuex中musicId的变化
-      "$store.state.musicInfo.musicId"(newVal, oldVal) {
-        if (oldVal !== null) {
+      "$store.state.musicInfo.musicId"(newVal) {
+        if (newVal === null) {
+          // 停止播放
+          this.pauseMusic();
+          // 数据初始化
+          this.musicInfo = {
+            name: "小布音乐站",
+            id: null,
+            al: {
+              picUrl: null
+            },
+            ar: [{
+              name: "布衣草人"
+            }],
+            dt: "00:00"
+          }
+          this.timeProgress = 0;
+          this.$refs.audioPlayer.currentTime = 0;
+          return;
+        }
+        // if (oldVal !== null) {
           // 先暂停当前播放的音乐
           this.pauseMusic();
           // 根据list中的索引直接获取歌曲信息（这就要求其他地方必须同时更新currentIndex）
@@ -420,7 +453,7 @@
           // 播放时间重置，开始播放(如果首次进来时则不需要播放)
           this.$refs.audioPlayer.currentTime = 0;
           this.playMusic();
-        }
+        // }
       },
 
       // 监听是否登陆且绑定了网易云账号 TODO
