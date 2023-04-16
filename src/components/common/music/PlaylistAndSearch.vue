@@ -137,7 +137,7 @@
         } else if (this.currentMusicId !== null) {
           // 更新当前播放音乐的index
           let findIndex = this.playList.findIndex(
-            (item) => item.id === selectMusic.id
+            (item) => item.id === this.currentMusicId
           );
           this.$store.commit("updateMusicInfo", {currentIndex: findIndex});
         }
