@@ -64,6 +64,9 @@ export default {
       url: "/cloudsearch?keywords=" + keywords + "&limit=50",
       method: 'get'
     })
+    if (data.result === undefined || data.result === null || data.result.songs === undefined) {
+      return [];
+    }
     let searchResult = data.result.songs;
     return searchResult;
   }
