@@ -166,14 +166,15 @@
           // 主流浏览器已经禁用了自动播放，所以在初始化时播放会报错
           this.$refs.audioPlayer.play().catch(e => {
             setTimeout(() => {
+              console.log("等待用户与页面交互，0.5s后再次尝试播放。。。")
               this.playMusic();
             }, 500)
           })
         } else {
-          console.log("尝试播放。。。")
           setTimeout(() => {
+            console.log("等待播放状态就绪，1s后再次尝试播放。。。")
             this.playMusic();
-          }, 500)
+          }, 1000)
         }
       },
       // 暂停音乐的函数
