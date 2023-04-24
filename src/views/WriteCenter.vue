@@ -51,10 +51,10 @@
             <DropdownMenu slot="list">
               <Dropdown placement="left-start">
                 <div class="editor-set doc-set-style">
-                  <span class="iconfont icon-editor-style"/>
+                  <span class="editor-icon iconfont icon-editor-style"/>
                   <div>
                     <span>文档样式</span>
-                    <span class="iconfont icon-more"></span>
+                    <span class="iconfont icon-editor-more"></span>
                     <br>
                     <span style="color: #8c8c8c; font-size: 12px;">设置正文大小、段间距、超宽…</span>
                   </div>
@@ -74,23 +74,23 @@
               <Divider />
               <DropdownItem>
                 <div class="editor-set">
-                  <span class="iconfont icon-editor-setting"></span>
+                  <span class="editor-icon iconfont icon-editor-setting"></span>
                   <span>文档设置</span>
                 </div>
               </DropdownItem>
               <DropdownItem>
                 <div class="editor-set">
-                  <span class="iconfont icon-history"></span>
+                  <span class="editor-icon iconfont icon-history"></span>
                   <span>查看历史版本</span>
                 </div>
               </DropdownItem>
               <DropdownItem>
-                <span style="margin-left: 30px;">保存为版本</span>
+                <span class="editor-set for-version">保存为版本</span>
               </DropdownItem>
               <Divider/>
               <DropdownItem>
                 <div class="editor-set">
-                  <span class="iconfont icon-editor-del"></span>
+                  <span class="editor-icon iconfont icon-editor-del"></span>
                   <span>删除</span>
                 </div>
               </DropdownItem>
@@ -167,6 +167,5 @@
 </script>
 
 <style scoped lang="less">
-  @import '../components/css/common-var.less';
   @import '../components/css/write-center.less';
 </style>
