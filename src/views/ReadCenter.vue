@@ -189,5 +189,5 @@
 
 <style scoped lang="less">
   @import '../components/css/common-var.less';
-  @import '../components/css/editor.less';
+  @import '../components/css/write-center.less';
 </style>

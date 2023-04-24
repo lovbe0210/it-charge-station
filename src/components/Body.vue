@@ -404,6 +404,5 @@
 </script>
 
 <style scoped lang="less">
-  /*@import './css/common-var.less';*/
   @import "./css/body.less";
 </style>

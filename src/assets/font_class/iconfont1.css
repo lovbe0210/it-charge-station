@@ -3,7 +3,7 @@
   /* Color fonts */
   src:
       /*url('iconfont.woff2?t=1648120487315') format('woff2');*/
-      url('//at.alicdn.com/t/font_3029751_juyi6pa8rw.woff2?t=1648121651599') format('woff2');
+      url('//at.alicdn.com/t/c/font_3029751_blpnipr7t44.woff2?t=1682232245720') format('woff2');
 }
 
 .iconfont {
@@ -14,12 +14,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-menu-close:before {
-  content: "\e6a3";
+.icon-collapse:before {
+  content: "\e66a";
 }
 
-.icon-menu-open:before {
-  content: "\e6a4";
+.icon-menu-dots:before {
+  content: "\e695";
 }
 
 .icon-order-by:before {

@@ -8,14 +8,25 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>it充电站</title>
     <style type="text/css">
+        /* 全局css处理 */
+        .btn {
+            padding: 0 !important;
+        }
+        .btn:focus, .btn.focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        /* ViewUI的按钮外轮廓 */
+        .ivu-btn:focus {
+            box-shadow: transparent !important;
+        }
+
         /* header中的消息菜单框 */
         .msg .dropdown-menu {
-            position: absolute;
             top: 143%;
             left: -5px;
             z-index: 1000;
             display: none;
-            float: left;
             min-width: 5rem;
             max-width: 9.2rem;
             padding: 0.5rem 0;
@@ -28,84 +39,6 @@
             background-clip: padding-box;
             border: 1px solid rgba(0, 0, 0, 0.15);
             border-radius: 0.3rem;
-        }
-
-        /* ViewUI的按钮外轮廓 */
-        .ivu-btn:focus {
-            box-shadow: transparent !important;
-        }
-
-        .btn-link {
-            color: #fff;
-        }
-
-        /* viewUI的input输入框(这里使用后代选择器) */
-        .form-box input:focus {
-            border-color: #00AE9D;
-        }
-
-        .form-box input:hover {
-            border-color: #00AE9D;
-        }
-
-        .form-box .ivu-row button:hover {
-            border-color: #00AE9D;
-            color: #00AE9D;
-        }
-
-        /* ViewUI的tabs标签页字体 */
-        .ivu-tabs-nav .ivu-tabs-tab {
-            /*font-size: 14px;*/
-            /*font-weight: 600;*/
-        }
-
-        /* 写作中心开始菜单tip标签中的list-group-item的边框处理,间距以及内边距 */
-        .menu-content .tooltip-inner {
-            padding: 4px 0 4px 8px;
-            background-color: #ffffff !important;
-        }
-
-        .menu-content .tooltip-inner .list-group .list-group-item {
-            border: none;
-            text-align: left;
-            padding: 10px 15px 8px 15px;
-            background-color: #ffffff !important;
-        }
-
-        .menu-content .tooltip-inner .list-group .list-group-item .ivu-dropdown .ivu-select-dropdown .ivu-dropdown-menu {
-            margin-bottom: 0;
-        }
-
-        .setting-content .tooltip-inner {
-            padding: 4px 0 4px 0;
-            max-width: 240px;
-            width: 240px;
-        }
-
-        /*.setting-content .tooltip-inner .list-group .list-group-item {*/
-        /*    border: none;*/
-        /*    text-align: left;*/
-        /*    display: flex;*/
-        /*    align-items: start;*/
-        /*    padding: 10px 15px 8px 16px;*/
-        /*    width: 240px;*/
-        /*    color: #000000;*/
-        /*}*/
-
-        .setting-content .tooltip-inner .list-group .list-group-item .ivu-dropdown .ivu-select-dropdown .ivu-dropdown-menu {
-            margin-bottom: 0;
-        }
-
-        /* 写作中心工具栏样部分式 */
-        .editor-toolbar .editor-toolbar-content .editor-toolbar-group{
-            padding: 10px 8px;
-            border-bottom: 1px solid #EEEEEE;
-        }
-        .editor-toolbar .editor-toolbar-content .editor-toolbar-group .data-icon{
-            font-size: 18px;
-        }
-        .editor-toolbar .editor-toolbar-content .editor-toolbar-group .toolbar-dropdown-button-text{
-            font-size: 14px;
         }
     </style>
 </head>

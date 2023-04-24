@@ -29,16 +29,12 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 4.  新建 Pull Request
 
 
-#### 特技
-
-#### 为了全局主题对源码CSS做了微调（其实是我菜不知道怎么覆盖这些第三方的CSSヽ(ﾟ∀ﾟ*)ﾉ━ｩ♪）
-1. 改动bootstrap.css中的list-group-item组件的背景色，注释掉5568和5585行；
-2. 改动viewui.css中的ivu-menu-item组件背景色，由于viewui.css已经做了mini处理，因此全局查找.ivu-menu-light直接删掉即可；
-3. 改动bootstrap-vue.css中的tip指令组件背景色，修改字体颜色和背景色2315行、2318行、2323、2324，添加2323行的边框阴影；
-4. 改动bootstrap.css中的按钮聚焦是的轮廓，直接注释掉那个边框颜色2548行,修改2547行的outline为none，注释掉2528行的按钮padding设置；
-5. 改动bootstrap.css中的按钮组中的padding边框设计，注释掉3137行；
-6. 改动bootstrap.css中的dropMenu，这个发现可以直接在index.html中覆盖
-7. 改动bootstrap.css中的card背景色和边框，直接注释4776和4778行
+#### 规划和进度
+1. 一期完成前段页面，由于技术较菜，使用了多个框架，bootstrap-vue，iView、写作中心使用am-editor插件(内部使用ant-design-vue1.x)
+    <br>进度：70%
+2. 二期完成后端接口设计
+4. 三期完成前段页面改造，使用vue3.0，框架整合，使用ant-design-vue3.x
+3. 四期完成music接口改造，可以使用登录用户的网易云cookie加载个性化播放列表
 
 #### npm下载问题
 1. 对于image-webpack-loader引起的下载失败，hosts文件配置  151.101.72.133 raw.githubusercontent.com  
