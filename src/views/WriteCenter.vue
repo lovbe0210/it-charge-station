@@ -49,7 +49,7 @@
               <span class="iconfont icon-edit-more"/>
             </div>
             <DropdownMenu slot="list">
-              <Dropdown placement="left-start">
+              <Dropdown placement="left-start" class="doc-set-style-wrapp">
                 <div class="editor-set doc-set-style">
                   <span class="editor-icon iconfont icon-editor-style"/>
                   <div>

@@ -126,6 +126,13 @@
         padding: 8px 0;
         margin: 0;
 
+        .ivu-dropdown-item:hover {
+          background: @editor-item-hover;
+        }
+        .doc-set-style-wrapp:hover {
+          background: @editor-item-hover;
+        }
+
         .ivu-divider-horizontal {
           margin: 4px 0;
         }
@@ -146,16 +153,24 @@
           margin: 4px;
         }
 
-        .doc-set-style {
-          padding: 4px 24px 4px 16px;
-          span {
-            line-height: 24px;
+        .doc-set-style-wrapp {
+          .doc-set-style {
+            padding: 4px 24px 4px 16px;
+            span {
+              line-height: 24px;
+            }
+            .icon-editor-more {
+              font-size: 14px;
+              float: right;
+            }
           }
-          .icon-editor-more {
-            font-size: 14px;
-            float: right;
+          .ivu-select-dropdown {
+            .ivu-dropdown-item:hover {
+              background: unset;
+            }
           }
         }
+
 
         .for-version {
           margin-left: 28px;
