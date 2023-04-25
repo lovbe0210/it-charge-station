@@ -28,81 +28,103 @@
           </DropdownMenu>
         </Dropdown>
       </div>
-        <b-list-group class="title-info" flush>
-          <b-list-group-item class="title">
-            {{doc.title === null || doc.title.length === 0 ? '无标题文档' : doc.title}}
-          </b-list-group-item>
-          <b-list-group-item class="author-info">
-            <a href="">@福</a>
-            <span style="color: #d9d9d9;margin: 0 8px 0 8px;">/</span>
-            <a href="">从头开始</a>
-            <span style="color: #d9d9d9;margin: 0 8px 0 8px;">|</span>
-            <a href="" class="update-time">最后更新于今天 12:23<span class="iconfont icon-cloud"/></a>
-          </b-list-group-item>
-        </b-list-group>
-        <div class="editor-setting">
-          <b-button class="update-btn" variant="outline-*" size="sm" @click="updateDocConten" id="update-btn">
-            更新
-          </b-button>
-          <Dropdown placement="bottom-end" trigger="click">
-            <div class="setting-icon">
-              <span class="iconfont icon-edit-more"/>
-            </div>
-            <DropdownMenu slot="list">
-              <Dropdown placement="left-start" class="doc-set-style-wrapp">
-                <div class="editor-set doc-set-style">
-                  <span class="editor-icon iconfont icon-editor-style"/>
-                  <div>
-                    <span>文档样式</span>
-                    <span class="iconfont icon-editor-more"></span>
-                    <br>
-                    <span style="color: #8c8c8c; font-size: 12px;">设置正文大小、段间距、超宽…</span>
-                  </div>
+      <b-list-group class="title-info" flush>
+        <b-list-group-item class="title">
+          {{doc.title === null || doc.title.length === 0 ? '无标题文档' : doc.title}}
+        </b-list-group-item>
+        <b-list-group-item class="author-info">
+          <a href="">@福</a>
+          <span style="color: #d9d9d9;margin: 0 8px 0 8px;">/</span>
+          <a href="">从头开始</a>
+          <span style="color: #d9d9d9;margin: 0 8px 0 8px;">|</span>
+          <a href="" class="update-time">最后更新于今天 12:23<span class="iconfont icon-cloud"/></a>
+        </b-list-group-item>
+      </b-list-group>
+      <div class="editor-setting">
+        <b-button class="update-btn" variant="outline-*" size="sm" @click="updateDocConten" id="update-btn">
+          更新
+        </b-button>
+        <Dropdown placement="bottom-end" trigger="click">
+          <div class="setting-icon">
+            <span class="iconfont icon-edit-more"/>
+          </div>
+          <DropdownMenu slot="list">
+            <Dropdown placement="left-start" class="doc-set-style-wrapp">
+              <div class="editor-set doc-set-style">
+                <span class="editor-icon iconfont icon-editor-style"/>
+                <div>
+                  <span>文档样式</span>
+                  <span class="iconfont icon-editor-more"></span>
+                  <br>
+                  <span style="color: #8c8c8c; font-size: 12px;">设置正文大小、段间距、超宽…</span>
                 </div>
-                <DropdownItem slot="list">
-                    <div>
-                      <san>正文大小</san>
-                      <div>段间距</div>
-                      <div>保存为默认设置</div>
-                      <Divider/>
-                      <div>
-                        页面尺寸
-                      </div>
-                    </div>
-                </DropdownItem>
-              </Dropdown>
-              <Divider />
-              <DropdownItem>
-                <div class="editor-set">
-                  <span class="editor-icon iconfont icon-editor-setting"></span>
-                  <span>文档设置</span>
-                </div>
-              </DropdownItem>
-              <DropdownItem>
-                <div class="editor-set">
-                  <span class="editor-icon iconfont icon-history"></span>
-                  <span>查看历史版本</span>
-                </div>
-              </DropdownItem>
-              <DropdownItem>
-                <span class="editor-set for-version">保存为版本</span>
-              </DropdownItem>
-              <Divider/>
-              <DropdownItem>
-                <div class="editor-set">
-                  <span class="editor-icon iconfont icon-editor-del"></span>
-                  <span>删除</span>
-                </div>
-              </DropdownItem>
-              <Divider />
-              <div class="doc-info">
-                <div>字数统计：0</div>
-                <div>创建于：03-15</div>
-                <div>最后编辑于：昨天 11:20</div>
               </div>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
+              <DropdownItem slot="list">
+                <div class="font-size">
+                  <div>
+                    <san>正文大小</san>
+                  </div>
+                  <div class="Slider-module_slideContainer_5puOR">
+                    <div class="ant-slider ant-slider-with-marks classic">
+                      <div class="ant-slider-rail"></div>
+                      <div class="ant-slider-track" style="left: 0%; right: auto; width: 71.4286%;"></div>
+                      <div class="ant-slider-step"><span class="ant-slider-dot ant-slider-dot-active"
+                                                         style="left: 0%;"></span><span
+                        class="ant-slider-dot ant-slider-dot-active" style="left: 14.2857%;"></span><span
+                        class="ant-slider-dot ant-slider-dot-active" style="left: 28.5714%;"></span><span
+                        class="ant-slider-dot ant-slider-dot-active" style="left: 42.8571%;"></span><span
+                        class="ant-slider-dot ant-slider-dot-active" style="left: 57.1429%;"></span><span
+                        class="ant-slider-dot ant-slider-dot-active" style="left: 71.4286%;"></span><span
+                        class="ant-slider-dot" style="left: 85.7143%;"></span><span class="ant-slider-dot"
+                                                                                    style="left: 100%;"></span></div>
+                      <div tabindex="0" class="ant-slider-handle" role="slider" aria-valuemin="0" aria-valuemax="7"
+                           aria-valuenow="5" aria-disabled="false"
+                           style="left: 71.4286%; right: auto; transform: translateX(-50%);"></div>
+                      <div class="ant-slider-mark"></div>
+                    </div>
+                  </div>
+                  <div>19px</div>
+                </div>
+                <div>段间距</div>
+                <div>保存为默认设置</div>
+                <Divider/>
+                <div>
+                  页面尺寸
+                </div>
+              </DropdownItem>
+            </Dropdown>
+            <Divider/>
+            <DropdownItem>
+              <div class="editor-set">
+                <span class="editor-icon iconfont icon-editor-setting"></span>
+                <span>文档设置</span>
+              </div>
+            </DropdownItem>
+            <DropdownItem>
+              <div class="editor-set">
+                <span class="editor-icon iconfont icon-history"></span>
+                <span>查看历史版本</span>
+              </div>
+            </DropdownItem>
+            <DropdownItem>
+              <span class="editor-set for-version">保存为版本</span>
+            </DropdownItem>
+            <Divider/>
+            <DropdownItem>
+              <div class="editor-set">
+                <span class="editor-icon iconfont icon-editor-del"></span>
+                <span>删除</span>
+              </div>
+            </DropdownItem>
+            <Divider/>
+            <div class="doc-info">
+              <div>字数统计：0</div>
+              <div>创建于：03-15</div>
+              <div>最后编辑于：昨天 11:20</div>
+            </div>
+          </DropdownMenu>
+        </Dropdown>
+      </div>
     </b-row>
     <b-row>
       <editor @updateTitle="updateTitle" :title="doc.title"></editor>

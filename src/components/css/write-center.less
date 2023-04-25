@@ -1,10 +1,13 @@
 @import './common-var.less';
+
 .editor-center {
-  font-family: Chinese Quote,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-family: Chinese Quote, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
+
   .row {
     margin: 0;
     min-height: unset;
   }
+
   color: @editor-font-color;
   height: 100vh;
   position: relative;
@@ -19,7 +22,6 @@
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-
 
 
   .editor-header {
@@ -66,6 +68,7 @@
         font-size: 14px;
         margin-left: 5px;
       }
+
       .title {
         cursor: pointer;
         font-weight: 700;
@@ -75,15 +78,18 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+
       .author-info {
         display: block;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         font-size: 12px;
+
         a {
           color: #8A8F8D;
         }
+
         .update-time {
           color: #8A8F8D;
         }
@@ -100,6 +106,7 @@
       display: -webkit-box;
       display: -ms-flexbox;
       display: flex;
+
       .update-btn {
         width: 60px;
         height: 30px;
@@ -115,12 +122,13 @@
 
       .setting-icon {
         height: 40px;
+
         .iconfont {
           font-size: 20px;
         }
       }
 
-      /deep/.ivu-select-dropdown {
+      /deep/ .ivu-select-dropdown {
         width: 240px;
         border-radius: 8px;
         padding: 8px 0;
@@ -129,6 +137,7 @@
         .ivu-dropdown-item:hover {
           background: @editor-item-hover;
         }
+
         .doc-set-style-wrapp:hover {
           background: @editor-item-hover;
         }
@@ -140,6 +149,7 @@
         .iconfont {
           font-size: 16px;
         }
+
         .editor-icon {
           margin-right: 8px;
         }
@@ -156,14 +166,17 @@
         .doc-set-style-wrapp {
           .doc-set-style {
             padding: 4px 24px 4px 16px;
+
             span {
               line-height: 24px;
             }
+
             .icon-editor-more {
               font-size: 14px;
               float: right;
             }
           }
+
           .ivu-select-dropdown {
             .ivu-dropdown-item:hover {
               background: unset;
@@ -185,13 +198,100 @@
           color: #8A8F8D;
           font-size: 12px;
           line-height: 20px;
+
           div {
             margin-top: 4px;
           }
         }
 
-      }
+        /* 内嵌dropdown样式 */
 
+        .ivu-select-dropdown {
+          width: 340px;
+
+          .font-size {
+            height: 50px;
+            padding: 6px 24px;
+            display: flex;
+            align-items: center;
+            cursor: auto;
+            background: none !important;
+
+            .Slider-module_slideContainer_5puOR {
+              flex: 1;
+              margin-left: 24px;
+              margin-right: 20px;
+              height: 50px;
+              padding: 6px 24px;
+              display: flex;
+              align-items: center;
+              cursor: auto;
+              background: none !important;
+              color: var(--yq-text-primary);
+              padding: 0 12px 0 20px;
+              height: 36px;
+              line-height: 36px;
+              margin: 0;
+              -webkit-user-select: none;
+              -moz-user-select: none;
+              user-select: none;
+              height: 40px;
+              height: 40px;
+              margin-top: 4px;
+              margin-bottom: 4px;
+              padding: 0 16px;
+              overflow: hidden;
+              line-height: 40px;
+              text-overflow: ellipsis;
+              position: relative;
+              display: block;
+              margin: 0;
+              padding: 0 20px;
+              white-space: nowrap;
+              cursor: pointer;
+              transition: border-color .3s, background .3s, padding .3s cubic-bezier(.645, .045, .355, 1);
+
+              .ant-slider-with-marks {
+                margin-bottom: 8px;
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+                color: var(--yq-yuque-grey-900);
+                font-size: 14px;
+                font-variant: tabular-nums;
+                line-height: 1.5715;
+                list-style: none;
+                font-feature-settings: "tnum";
+                position: relative;
+                height: 12px;
+                margin: 10px 6px 10px;
+                padding: 4px 0;
+                cursor: pointer;
+                touch-action: none;
+                height: 50px;
+                padding: 6px 24px;
+                display: flex;
+                align-items: center;
+                cursor: auto;
+                background: none!important;
+                color: var(--yq-text-primary);
+                padding: 0 12px 0 20px;
+                height: 36px;
+                line-height: 36px;
+                margin: 0;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                user-select: none;
+                .ant-slider-rail {
+                  background: #8A8F8D;
+                  height: 2px;
+                }
+              }
+            }
+          }
+        }
+
+      }
 
 
     }
