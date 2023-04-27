@@ -62,38 +62,31 @@
                 </div>
               </DropdownItem>
               <DropdownMenu slot="list">
-                  <div class="font-size">
-                    <div class="Slider-module_slideTitle">
-                      <san>正文大小</san>
-                    </div>
-                    <div class="Slider-module_slideContainer">
-                      <div class="ant-slider ant-slider-with-marks classic">
-                        <div class="ant-slider-rail"></div>
-                        <div class="ant-slider-track" style="left: 0%; right: auto; width: 71.4286%;"></div>
-                        <div class="ant-slider-step">
-                          <span class="ant-slider-dot ant-slider-dot-active" style="left: 0%;"></span>
-                          <span class="ant-slider-dot ant-slider-dot-active" style="left: 14.2857%;"></span>
-                          <span class="ant-slider-dot ant-slider-dot-active" style="left: 28.5714%;"></span>
-                          <span class="ant-slider-dot ant-slider-dot-active" style="left: 42.8571%;"></span>
-                          <span class="ant-slider-dot ant-slider-dot-active" style="left: 57.1429%;"></span>
-                          <span class="ant-slider-dot ant-slider-dot-active" style="left: 71.4286%;"></span>
-                          <span class="ant-slider-dot" style="left: 85.7143%;"></span>
-                          <span class="ant-slider-dot" style="left: 100%;"></span>
+                <div class="font-size">
+                  <div class="Slider-module_slideTitle">
+                    <san>正文大小</san>
+                  </div>
+                  <div class="Slider-module_slideContainer">
+                    <div class="ant-slider ant-slider-with-marks classic">
+                      <div class="ant-slider-rail"></div>
+                      <div class="ant-slider-step">
+                        <div v-for="(item,index) in fontSizeRange" :key="index" @click="changeFontSise(item)" class="slider-dot-wrapp"
+                             :style="'left: '+ index * 100/(fontSizeRange.length-1) + '%;'">
+                          <span class="ant-slider-dot" :style="'left: '+ index * 100/(fontSizeRange.length-1) + '%;'"/>
                         </div>
-                        <div tabindex="0" class="ant-slider-handle" role="slider" aria-valuemin="0" aria-valuemax="7"
-                             aria-valuenow="5" aria-disabled="false" style="left: 71.4286%; right: auto; transform: translateX(-50%);">
-                        </div>
-                        <div class="ant-slider-mark"></div>
+                      </div>
+                      <div class="ant-slider-handle" :style="'left: ' + currentFontIndex * 100/(fontSizeRange.length-1) + '%;'">
                       </div>
                     </div>
-                    <div>19px</div>
                   </div>
-                  <div>段间距</div>
-                  <div>保存为默认设置</div>
-                  <Divider/>
-                  <div>
-                    页面尺寸
-                  </div>
+                  <div>{{docFontSize}}px</div>
+                </div>
+                <div>段间距</div>
+                <div>保存为默认设置</div>
+                <Divider/>
+                <div>
+                  页面尺寸
+                </div>
               </DropdownMenu>
             </Dropdown>
             <Divider/>
@@ -168,7 +161,17 @@
             title: 'JVM调优指南',
             type: '2'
           }
-        ]
+        ],
+        // 默认字体大小
+        fontSizeRange: [12, 13, 14, 15, 16, 17, 18, 19],
+        docFontSize: 15
+      }
+    },
+    computed: {
+      currentFontIndex() {
+        return this.fontSizeRange.findIndex(
+          (item) => item === this.docFontSize
+        );
       }
     },
     methods: {
@@ -183,6 +186,9 @@
        */
       updateTitle(titleValue) {
         this.doc.title = titleValue;
+      },
+      changeFontSise(value) {
+        this.docFontSize = value;
       }
     },
     components: {

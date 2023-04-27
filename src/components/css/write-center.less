@@ -223,55 +223,45 @@
             }
 
             .Slider-module_slideContainer {
+              display: block;
+              position: relative;
               flex: 1;
+              line-height: 44px;
+              margin: 0;
+              padding: 0 20px;
               background: none !important;
               color: @editor-font-color;
-              margin: 0;
               -webkit-user-select: none;
               -moz-user-select: none;
               user-select: none;
               overflow: hidden;
-              line-height: 44px;
               text-overflow: ellipsis;
-              position: relative;
-              display: block;
-              margin: 0;
-              padding: 0 20px;
               white-space: nowrap;
               cursor: pointer;
               transition: border-color .3s, background .3s, padding .3s cubic-bezier(.645, .045, .355, 1);
 
               .ant-slider-with-marks {
-                color: #00AE9D;
-                font-size: 14px;
-                font-variant: tabular-nums;
-                line-height: 1.5715;
-                list-style: none;
-                font-feature-settings: "tnum";
                 position: relative;
                 height: 12px;
+                line-height: 1.5715;
                 margin: 10px 6px 10px;
                 padding: 4px 0;
+                font-size: 14px;
+                color: #00AE9D;
+                font-variant: tabular-nums;
+                list-style: none;
+                font-feature-settings: "tnum";
                 cursor: pointer;
                 touch-action: none;
                 white-space: nowrap;
 
                 .ant-slider-rail {
-                  background: #00AE9D;
+                  position: absolute;
                   height: 2px;
-                  box-sizing: border-box;
-                  position: absolute;
-                  border-radius: 6px;
-                  transition: background-color .3s;
                   width: 100%;
-                }
-
-                .ant-slider-track {
-                  background: none;
-                  box-sizing: border-box;
-                  position: absolute;
-                  height: 4px;
+                  background: #D8DAD9;
                   border-radius: 6px;
+                  box-sizing: border-box;
                   transition: background-color .3s;
                 }
 
@@ -281,54 +271,57 @@
                   height: 4px;
                   background: transparent;
 
-                  .ant-slider-dot {
-                    position: absolute;
-                    top: -2px;
-                    width: 8px;
-                    height: 8px;
-                    background-color: #6f42c1;
-                    border: 2px solid #000000;
-                    border-radius: 50%;
-                    cursor: pointer;
+                  .slider-dot-wrapp {
+                    height: 4px;
                   }
 
-                  .ant-slider-dot,  .ant-slider-dot.ant-slider-dot-active {
-                    background: #00AE9D;
-                    border-color: #0000cc;
-                    height: 6px;
-                    width: 6px;
+                  .slider-dot-wrapp:nth-child(4) {
+                    .ant-slider-dot {
+                      background: #8A8F8D;
+                      border-color: #8A8F8D;
+                    }
                   }
 
                   .ant-slider-dot, .ant-slider-dot:first-child, .ant-slider-dot:last-child {
                     margin-left: -4px;
                   }
 
+                  .ant-slider-dot {
+                    line-height: 10px;
+                    position: absolute;
+                    height: 6px;
+                    width: 6px;
+                    top: -2px;
+                    background: #D8DAD9;
+                    border-color: #D8DAD9;
+                    border-radius: 50%;
+                    cursor: pointer;
+                  }
+
                 }
 
                 .ant-slider-handle, .ant-slider-handle:focus, .ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open) {
-                  border: 1px solid red;
-                  //box-shadow: 0 1px 4px -2px rgba(0 0 0,0.13), 0 2px 8px 0 rgba(0 0 0 , 0.08), 0 8px 16px 4px rgba(0 0 0, 0.04);
+                  border: 1px solid #E7E9E8;
+                  box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.13), 0 2px 8px 0 rgba(0, 0, 0, 0.08), 0 8px 16px 4px rgba(0, 0, 0, 0.04);
                   transition: none;
                   margin-top: -6px;
                 }
 
+                .ant-slider-handle:hover {
+                  outline: none;
+                  border-color: #117CEE!important;
+                }
+
                 .ant-slider-handle {
                   position: absolute;
+                  right: auto;
                   width: 14px;
                   height: 14px;
-                  background-color: #990055;
+                  background-color: #ffffff;
                   border-radius: 50%;
                   cursor: pointer;
+                  transform: translateX(-50%);
                 }
-
-                .ant-slider-mark {
-                  position: absolute;
-                  top: 14px;
-                  left: 0;
-                  width: 100%;
-                  font-size: 14px;
-                }
-
               }
             }
           }
