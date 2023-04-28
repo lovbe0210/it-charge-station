@@ -62,30 +62,71 @@
                 </div>
               </DropdownItem>
               <DropdownMenu slot="list">
-                <div class="font-size">
+                <div class="style-item font-size">
                   <div class="Slider-module_slideTitle">
                     <san>正文大小</san>
                   </div>
-                  <div class="Slider-module_slideContainer">
+                  <div class="Slider-module_slideContainer" @mouseenter="showSelect = true"
+                       @mouseleave="showSelect = false">
                     <div class="ant-slider ant-slider-with-marks classic">
                       <div class="ant-slider-rail"></div>
                       <div class="ant-slider-step">
-                        <div v-for="(item,index) in fontSizeRange" :key="index" @click="changeFontSise(item)" class="slider-dot-wrapp"
+                        <div v-for="(item,index) in fontSizeRange" :key="index" @click="changeFontSise(item)"
+                             class="slider-dot-wrapp"
                              :style="'left: '+ index * 100/(fontSizeRange.length-1) + '%;'">
-                          <span class="ant-slider-dot" :style="'left: '+ index * 100/(fontSizeRange.length-1) + '%;'"/>
+                          <span class="ant-slider-dot"/>
                         </div>
                       </div>
-                      <div class="ant-slider-handle" :style="'left: ' + currentFontIndex * 100/(fontSizeRange.length-1) + '%;'">
+                      <div :class="['ant-slider-handle', showSelect ? 'show-select-font' : '']"
+                           :style="'left: ' + currentFontIndex * 100/(fontSizeRange.length-1) + '%;'">
                       </div>
                     </div>
                   </div>
                   <div>{{docFontSize}}px</div>
                 </div>
-                <div>段间距</div>
-                <div>保存为默认设置</div>
+                <div class="style-item segment-space">
+                  <div class="Slider-module_slideTitle">段间距</div>
+                  <i-switch v-model="segmentSpaceStatus" class="switch-btn" size="small" true-color="#00B96B">
+                    <span slot="true"/>
+                    <span slot="false"/>
+                  </i-switch>
+                </div>
+                <div class="style-item set-default">
+                  <Checkbox v-model="SetDefault">&nbsp;保存为默认设置</Checkbox>
+                </div>
                 <Divider/>
-                <div>
-                  页面尺寸
+                <div class="style-item">页面尺寸</div>
+                <div class="style-item page-size">
+                  <div class="standard-wide" >
+                    <svg width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"
+                         class="larkui-icon larkui-icon-doc-fixed icon-svg Select-module_iconSvg_3tsh1 index-module_size_wVASz"
+                         data-name="DocFixed" style="width: 38px; min-width: 38px; height: 28px;">
+                      <g fill="currentColor" fill-rule="evenodd">
+                        <rect width="38" height="28" rx="3" opacity="0.3"></rect>
+                        <rect x="9" y="5" width="20" height="3" rx="1.5"></rect>
+                        <rect x="9" y="10" width="20" height="3" rx="1.5"></rect>
+                        <rect x="9" y="15" width="20" height="3" rx="1.5"></rect>
+                        <rect x="9" y="20" width="20" height="3" rx="1.5" opacity="0.3"></rect>
+                        <rect x="9" y="20" width="10" height="3" rx="1.5"></rect>
+                      </g>
+                    </svg>
+                    <div class="Select-module_optionTitle">标宽模式</div>
+                  </div>
+                  <div class="ultra-wide">
+                    <svg width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"
+                         class="larkui-icon larkui-icon-doc-adapt icon-svg Select-module_iconSvg_3tsh1 index-module_size_wVASz"
+                         data-name="DocAdapt" style="width: 38px; min-width: 38px; height: 28px;">
+                      <g fill="currentColor" fill-rule="evenodd">
+                        <rect width="38" height="28" rx="3" opacity="0.3"></rect>
+                        <rect x="4" y="5" width="30" height="3" rx="1.5"></rect>
+                        <rect x="4" y="10" width="30" height="3" rx="1.5"></rect>
+                        <rect x="4" y="15" width="26" height="3" rx="1.5"></rect>
+                        <rect x="4" y="20" width="26" height="3" rx="1.5" opacity="0.3"></rect>
+                        <rect x="4" y="20" width="13" height="3" rx="1.5"></rect>
+                      </g>
+                    </svg>
+                    <div class="Select-module_optionTitle">超宽模式</div>
+                  </div>
                 </div>
               </DropdownMenu>
             </Dropdown>
@@ -164,7 +205,12 @@
         ],
         // 默认字体大小
         fontSizeRange: [12, 13, 14, 15, 16, 17, 18, 19],
-        docFontSize: 15
+        docFontSize: 15,
+        showSelect: false,
+        // 统一文章段间距
+        segmentSpaceStatus: false,
+        // 是否设置当前格式为默认格式（主要就包含正文字体大小和标准段落间距）
+        SetDefault: true
       }
     },
     computed: {

@@ -209,12 +209,15 @@
         .ivu-select-dropdown {
           width: 340px;
 
-          .font-size {
+          .style-item {
             display: flex;
             align-items: center;
+            padding: 10px 24px;
+          }
+
+          .font-size {
             height: 50px;
             line-height: 36px;
-            padding: 6px 24px;
             cursor: auto;
             background: none !important;
 
@@ -228,7 +231,7 @@
               flex: 1;
               line-height: 44px;
               margin: 0;
-              padding: 0 20px;
+              padding: 0 23px 0 17px;
               background: none !important;
               color: @editor-font-color;
               -webkit-user-select: none;
@@ -254,11 +257,13 @@
                 cursor: pointer;
                 touch-action: none;
                 white-space: nowrap;
+                margin-left: 2px;
 
                 .ant-slider-rail {
                   position: absolute;
                   height: 2px;
                   width: 100%;
+                  margin-left: 3px;
                   background: #D8DAD9;
                   border-radius: 6px;
                   box-sizing: border-box;
@@ -270,9 +275,13 @@
                   width: 100%;
                   height: 4px;
                   background: transparent;
+                  display: flex;
+                  justify-content: center;
 
                   .slider-dot-wrapp {
-                    height: 4px;
+                    position: absolute;
+                    height: 20px;
+                    width: 10px;
                   }
 
                   .slider-dot-wrapp:nth-child(4) {
@@ -282,8 +291,8 @@
                     }
                   }
 
-                  .ant-slider-dot, .ant-slider-dot:first-child, .ant-slider-dot:last-child {
-                    margin-left: -4px;
+                  .ant-slider-dot:first-child, .ant-slider-dot:last-child {
+                    margin-left: 2px;
                   }
 
                   .ant-slider-dot {
@@ -304,10 +313,10 @@
                   border: 1px solid #E7E9E8;
                   box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.13), 0 2px 8px 0 rgba(0, 0, 0, 0.08), 0 8px 16px 4px rgba(0, 0, 0, 0.04);
                   transition: none;
-                  margin-top: -6px;
+                  margin: -6px 0 0 5px;
                 }
 
-                .ant-slider-handle:hover {
+                .show-select-font {
                   outline: none;
                   border-color: #117CEE!important;
                 }
@@ -324,6 +333,78 @@
                 }
               }
             }
+          }
+
+          .segment-space {
+            .Slider-module_slideTitle {
+              margin-right: 220px;
+            }
+
+            .ivu-switch:not(.ivu-switch-disabled):focus {
+              box-shadow: unset !important;
+            }
+          }
+
+          .set-default {
+            .ivu-checkbox-checked .ivu-checkbox-inner {
+              border-color: @editor-button-color;
+              background-color: @editor-button-color;
+            }
+
+            .ivu-checkbox-focus {
+              box-shadow: unset !important;
+            }
+          }
+
+          .page-size {
+            .standard-wide, .ultra-wide {
+              display: flex;
+              flex-direction: row;
+              cursor: pointer;
+              text-align: center;
+              height: 40px;
+              width: 140px;
+              line-height: 40px;
+              padding: 5px 9px 6px 9px;
+              border-radius: 6px;
+              border: 1px solid #E7E9E8;
+
+              svg {
+                color: #8A8F8D;
+              }
+              svg:not(:root) {
+                overflow: hidden;
+              }
+
+              .larkui-icon {
+                display: inline-block;
+                color: inherit;
+                font-style: normal;
+                line-height: 0;
+                text-align: center;
+                text-transform: none;
+                vertical-align: -.125em;
+                text-rendering: optimizeLegibility;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+              }
+
+              .Select-module_optionTitle {
+                display: flex;
+                justify-content: space-around;
+                font-size: 14px;
+                text-align: center;
+                height: 28px;
+                line-height: 28px;
+                margin-left: 21px;
+                color: #000000;
+              }
+            }
+
+            .ultra-wide {
+              margin-left: 12px;
+            }
+
           }
         }
 

@@ -15,7 +15,7 @@
         <img :src="require('@/assets/img/test.jpg')" alt="" v-else :draggable="false"/>
       </div>
       <div class="musicInfo">
-        <div class="musicName" v-show="musicInfo.name">
+        <div class="musicName" v-show="musicInfo.name" :title="musicInfo.name">
           {{ musicInfo.name }}
         </div>
         <div class="singer" v-show="musicInfo.ar[0].name" @click="goToSingerDetail">
@@ -36,7 +36,6 @@
           <i class="iconfont icon-previous"></i>
         </span>
         <span @click="musicList.length != 0 ? changePlayState() : ''">
-<!--          <i class="iconfont icon-loading" v-show="!this.readyState"></i>-->
           <i class="iconfont icon-play" v-show="this.$store.state.musicInfo.isPlay"></i>
           <i class="iconfont icon-paused" v-show="!this.$store.state.musicInfo.isPlay"></i>
         </span>

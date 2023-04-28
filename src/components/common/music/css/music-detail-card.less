@@ -107,14 +107,21 @@
     z-index: 1;
     justify-content: center;
 
-    .musicName {
+    .musicInfo {
       font-size: 1rem;
       color: rgb(22, 22, 22);
       text-align: center;
       margin: 15px 0 0 0;
 
+      .musicName {
+        margin-right: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
       .singer {
-        margin-left: 5px;
+        margin-left: -5px;
         color: #515a6e;
         font-size: 0.8rem;
       }

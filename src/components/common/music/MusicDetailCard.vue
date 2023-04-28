@@ -25,11 +25,13 @@
     </div>
     <div class="right">
       <div class="title">
-        <div class="musicName">
-          {{ musicInfo.name }}
-          <span class="singer" @click="goToDetailPage('singerDetail', musicInfo.ar[0].id)">
+        <div class="musicInfo">
+          <div class="musicName" :title="musicInfo.name">
+            {{ musicInfo.name }}
+          </div>
+          <div class="singer" @click="goToDetailPage('singerDetail', musicInfo.ar[0].id)">
             {{ musicInfo.name ? musicInfo.ar[0].name : ""}}
-          </span>
+          </div>
         </div>
       </div>
       <div class="lyrics">
