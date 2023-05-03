@@ -16,26 +16,48 @@
   position: relative;
   top: 0;
   left: 0;
-  z-index: 4;
-  padding: 0 40px;
+  z-index: 5;
+  padding: 0 57px;
   margin: 0 auto;
   border-top: none;
   border-bottom: none;
 
-  .editor-toolbar-content {
+  /deep/.editor-toolbar-content {
+    position: relative;
+    display: flex;
+    height: 50px;
+    color: #585A5A;
+    justify-content: center;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
-    justify-content: center;
-    position: relative;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    height: 50px;
-    color: #595959;
+
+    .editor-toolbar-group {
+      border-bottom: 1px solid #e8e8e8;
+      position: relative;
+      border-left: none;
+    }
+    .editor-toolbar-group:not(:first-child):after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 10px;
+      right: 0;
+      height: 30px;
+      width: 1px;
+      background-color: #e8e8e8;
+    }
+
+    .toolbar-dropdown {
+      display: flex;
+      align-items: center;
+    }
   }
 }
 
-// 编辑器内容区
+  // 编辑器内容区
 .editor-body {
   height: calc(100% - 50px);
   position: relative;
@@ -47,8 +69,6 @@
     display: flex;
     display: -webkit-box;
     display: -ms-flexbox;
-    /*overflow-x: hidden;*/
-    /*overflow-y: auto;*/
     overflow-anchor: none;
     -webkit-box-direction: normal;
 

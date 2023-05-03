@@ -30,7 +30,7 @@
       </div>
       <b-list-group class="title-info" flush>
         <b-list-group-item class="title">
-          {{doc.title === null || doc.title.length === 0 ? '无标题文档' : doc.title}}
+          {{docInfo.title === null || docInfo.title.length === 0 ? '无标题文档' : docInfo.title}}
         </b-list-group-item>
         <b-list-group-item class="author-info">
           <a href="">@福</a>
@@ -49,7 +49,7 @@
             <span class="iconfont icon-edit-more"/>
           </div>
           <DropdownMenu slot="list">
-            <Dropdown placement="left-start" class="doc-set-style-wrapp" trigger="click">
+            <Dropdown placement="left-start" class="doc-set-style-wrapp" trigger="hover">
               <DropdownItem>
                 <div class="editor-set doc-set-style">
                   <span class="editor-icon iconfont icon-editor-style"/>
@@ -71,35 +71,35 @@
                     <div class="ant-slider ant-slider-with-marks classic">
                       <div class="ant-slider-rail"></div>
                       <div class="ant-slider-step">
-                        <div v-for="(item,index) in fontSizeRange" :key="index" @click="changeFontSise(item)"
+                        <div v-for="(item,index) in docStyle.fontSizeRange" :key="index" @click="changeFontSise(item)"
                              class="slider-dot-wrapp"
-                             :style="'left: '+ index * 100/(fontSizeRange.length-1) + '%;'">
+                             :style="'left: '+ index * 100/(docStyle.fontSizeRange.length-1) + '%;'">
                           <span class="ant-slider-dot"/>
                         </div>
                       </div>
                       <div :class="['ant-slider-handle', showSelect ? 'show-select-font' : '']"
-                           :style="'left: ' + currentFontIndex * 100/(fontSizeRange.length-1) + '%;'">
+                           :style="'left: ' + currentFontIndex * 100/(docStyle.fontSizeRange.length-1) + '%;'">
                       </div>
                     </div>
                   </div>
-                  <div>{{docFontSize}}px</div>
+                  <div>{{docStyle.docFontSize}}px</div>
                 </div>
                 <div class="style-item segment-space">
                   <div class="Slider-module_slideTitle">段间距</div>
-                  <i-switch v-model="segmentSpaceStatus" class="switch-btn" size="small" true-color="#00B96B">
+                  <i-switch v-model="docStyle.segmentSpaceStatus" class="switch-btn" size="small" true-color="#00B96B">
                     <span slot="true"/>
                     <span slot="false"/>
                   </i-switch>
                 </div>
                 <div class="style-item set-default">
-                  <Checkbox v-model="SetDefault">&nbsp;保存为默认设置</Checkbox>
+                  <Checkbox v-model="docStyle.SetDefault">&nbsp;保存为默认设置</Checkbox>
                 </div>
                 <Divider/>
                 <div class="style-item">页面尺寸</div>
                 <div class="style-item page-size">
-                  <div class="standard-wide" >
+                  <div :class="['standard-wide', docStyle.pageSize === 1 ? 'Select-module_optionActive' : '']" @click="changePageSize(1)">
                     <svg width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"
-                         class="larkui-icon larkui-icon-doc-fixed icon-svg Select-module_iconSvg_3tsh1 index-module_size_wVASz"
+                         class="larkui-icon Select-module_iconSvg"
                          data-name="DocFixed" style="width: 38px; min-width: 38px; height: 28px;">
                       <g fill="currentColor" fill-rule="evenodd">
                         <rect width="38" height="28" rx="3" opacity="0.3"></rect>
@@ -112,9 +112,9 @@
                     </svg>
                     <div class="Select-module_optionTitle">标宽模式</div>
                   </div>
-                  <div class="ultra-wide">
+                  <div :class="['ultra-wide', docStyle.pageSize === 2 ? 'Select-module_optionActive' : '']" @click="changePageSize(2)">
                     <svg width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"
-                         class="larkui-icon larkui-icon-doc-adapt icon-svg Select-module_iconSvg_3tsh1 index-module_size_wVASz"
+                         class="larkui-icon Select-module_iconSvg"
                          data-name="DocAdapt" style="width: 38px; min-width: 38px; height: 28px;">
                       <g fill="currentColor" fill-rule="evenodd">
                         <rect width="38" height="28" rx="3" opacity="0.3"></rect>
@@ -164,7 +164,7 @@
       </div>
     </b-row>
     <b-row>
-      <editor @updateTitle="updateTitle" :title="doc.title"></editor>
+      <editor @updateTitle="updateTitle" :title="docInfo.title" :docStyle="docStyle"></editor>
     </b-row>
 
     <b-tooltip target="update-btn" placement="bottomright" delay="250" triggers="hover" variant="dark"
@@ -183,7 +183,7 @@
     name: 'Follow',
     data() {
       return {
-        doc: {
+        docInfo: {
           title: '我是标题'
         },
         quickStart: [
@@ -204,19 +204,23 @@
           }
         ],
         // 默认字体大小
-        fontSizeRange: [12, 13, 14, 15, 16, 17, 18, 19],
-        docFontSize: 15,
-        showSelect: false,
-        // 统一文章段间距
-        segmentSpaceStatus: false,
-        // 是否设置当前格式为默认格式（主要就包含正文字体大小和标准段落间距）
-        SetDefault: true
+        docStyle: {
+          fontSizeRange: [12, 13, 14, 15, 16, 17, 18, 19],
+          docFontSize: 15,
+          showSelect: false,
+          // 统一文章段间距
+          segmentSpaceStatus: false,
+          // 是否设置当前格式为默认格式（主要就包含正文字体大小和标准段落间距）
+          SetDefault: true,
+          // 页面大小1=标宽模式，2=超宽模式
+          pageSize: 1
+        }
       }
     },
     computed: {
       currentFontIndex() {
-        return this.fontSizeRange.findIndex(
-          (item) => item === this.docFontSize
+        return this.docStyle.fontSizeRange.findIndex(
+          (item) => item === this.docStyle.docFontSize
         );
       }
     },
@@ -231,10 +235,13 @@
        * 为子组件定义的事件方法
        */
       updateTitle(titleValue) {
-        this.doc.title = titleValue;
+        this.docInfo.title = titleValue;
       },
       changeFontSise(value) {
-        this.docFontSize = value;
+        this.docStyle.docFontSize = value;
+      },
+      changePageSize(value) {
+        this.docStyle.pageSize = value;
       }
     },
     components: {

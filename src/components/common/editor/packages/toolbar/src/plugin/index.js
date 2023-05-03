@@ -6,27 +6,26 @@ import {
   Plugin,
   PluginOptions,
 } from '@aomao/engine';
-import { CollapseItemProps, GroupItemProps } from '../types';
+import {CollapseItemProps, GroupItemProps} from '../types';
 import locales from '../locales';
-import ToolbarComponent, { ToolbarPopup } from './component';
-import type { ToolbarValue } from './component';
+import ToolbarComponent, {ToolbarPopup} from './component';
+import {ToolbarValue} from './component';
 
 const defaultConfig = (editor) => {
   return [
     {
-      title: editor.language.get('toolbar','commonlyUsed','title'),
-      items: ['image-uploader','codeblock','table','file-uploader','video-uploader','math','status']
+      title: editor.language.get('toolbar', 'commonlyUsed', 'title'),
+      items: ['image-uploader', 'codeblock', 'table', 'file-uploader', 'video-uploader', 'math', 'status']
     }
   ];
 };
 
-class ToolbarPlugin<
-T extends ToolbarOptions = ToolbarOptions,
-> extends Plugin<T> {
+class ToolbarPlugin<T extends ToolbarOptions = ToolbarOptions,> extends
+Plugin < T > {
   static get pluginName() {
     return 'toolbar';
   }
-  private popup?: ToolbarPopup;
+  private popup ? : ToolbarPopup;
 
   init() {
     if (isEngine(this.editor)) {
@@ -41,19 +40,16 @@ T extends ToolbarOptions = ToolbarOptions,
     }
   }
 
-  paserValue = (node: NodeInterface) => {
-    if (
-      node.isCard() &&
-      node.attributes('name') === ToolbarComponent.cardName
-    ) {
+  paserValue = function(node) => {
+    if (node.isCard() && node.attributes('name') === ToolbarComponent.cardName) {
       return false;
     }
     return true;
   };
 
-  onSlash = (event: KeyboardEvent) => {
+  onSlash = (event) => {
     if (!isEngine(this.editor)) return;
-    const { change } = this.editor;
+    const {change} = this.editor;
     let range = change.range.get();
     const block = this.editor.block.closest(range.startNode);
     const text = block.text().trim();
@@ -75,7 +71,7 @@ T extends ToolbarOptions = ToolbarOptions,
           ToolbarComponent.cardName,
           {},
           data,
-        ) as ToolbarComponent<ToolbarValue>;
+        ) as ToolbarComponent < ToolbarValue >;
         card.setData(data);
         this.editor.card.activate(card.root);
         range = change.range.get();
@@ -88,7 +84,7 @@ T extends ToolbarOptions = ToolbarOptions,
     }
   };
 
-  execute(...args: any): void {
+  execute(...args): void {
     throw new Error('Method not implemented.');
   }
 
@@ -98,6 +94,6 @@ T extends ToolbarOptions = ToolbarOptions,
     this.editor.off('parse:value', this.paserValue);
   }
 }
-export { ToolbarComponent };
-export type { ToolbarValue };
+export {ToolbarComponent};
+export {ToolbarValue};
 export default ToolbarPlugin;

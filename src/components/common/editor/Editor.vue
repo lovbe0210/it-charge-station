@@ -16,9 +16,9 @@
                 <div class="editor-engine-box">
                   <div class="editor-engine">
                     <div class="doc-editor" ref="container">
+                    </div>
                   </div>
                 </div>
-              </div>
               </div>
             </div>
           </div>
@@ -58,7 +58,7 @@
 
   export default {
     name: 'Editor',
-    data () {
+    data() {
       return {
         doc: {
           title: this.title
@@ -69,6 +69,7 @@
         items: [
           [
             {
+              icon: '<span class="iconfont icon-editor-toolbar-add" style="font-size: 18px;"></span>',
               type: 'collapse',
               groups: [
                 {
@@ -102,8 +103,7 @@
             }
           ],
           ['undo', 'redo', 'paintformat', 'removeformat'],
-          ['heading', 'fontfamily', 'fontsize'],
-          ['bold', 'italic', 'strikethrough', 'underline', 'moremark'],
+          ['heading', 'fontsize', 'bold', 'italic', 'strikethrough', 'underline', 'moremark'],
           ['fontcolor', 'backcolor'],
           ['alignment'],
           ['unorderedlist', 'orderedlist', 'tasklist', 'indent', 'line-height'],
@@ -113,7 +113,7 @@
     },
     props: ['title'],
     methods: {
-      changeHeight () {
+      changeHeight() {
         let _this = this
         this.$nextTick(() => {
           let textArea = _this.$refs.titleTextarea
@@ -127,11 +127,11 @@
           }
         })
       },
-      updateTitle () {
+      updateTitle() {
         // TODO 先更新数据库然后在进行页面渲染
         this.$emit('updateTitle', this.doc.title)
       },
-      toolbarUI () {
+      toolbarUI() {
         // 选色器
         let colorPicker
         setTimeout(() => {
@@ -168,7 +168,7 @@
       // MapModal
     },
     watch: {
-      'doc.title' (newValue, oldValue) {
+      'doc.title'(newValue, oldValue) {
         if (newValue === oldValue) {
           return
         }
@@ -205,9 +205,9 @@
       if (container) {
         //实例化引擎
         const engine = new Engine(container, {
-          // 启用的插件
+          // 启用插件
           plugins,
-          // 启用的卡片
+          // 启用卡片
           cards,
           // 所有的卡片配置
           config: pluginConfig,
