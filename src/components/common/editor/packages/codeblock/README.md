@@ -1,11 +1,11 @@
-# @aomao/plugin-codeblock-vue
+# am-editor-codeblock-vue2
 
 代码块插件
 
 ## 安装
 
 ```bash
-$ yarn add @aomao/plugin-codeblock-vue
+$ yarn add am-editor-codeblock-vue2
 ```
 
 添加到引擎

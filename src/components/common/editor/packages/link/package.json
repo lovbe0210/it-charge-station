@@ -1,6 +1,6 @@
 {
   "name": "am-editor-link-vue2",
-  "version": "1.0.21",
+  "version": "1.1.17",
   "keyword": "am-editor-link-vue2",
   "description": "> TODO: description",
   "author": "zhangbin<bjzhang.bin@163.com> yanmao <me@yanmao.cc>",
@@ -23,10 +23,15 @@
     "url": "https://github.com/zb201307/am-editor-vue2/issues"
   },
   "dependencies": {
-    "@aomao/engine": "^2.7.36",
-    "@babel/runtime": "^7.13.10",
+    "@babel/runtime": "^7.13.10"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^12.2.3"
+  },
+  "peerDependencies": {
+    "@aomao/engine": "^2.9",
     "ant-design-vue": "^1.7.8",
     "vue": "^2.6.14"
   },
-  "gitHead": "a6756846878acb2186b28b5f7e328f0b4f6db378"
+  "gitHead": "bc52c5d6caf2d168a714f12d1cbbdea28d376ac0"
 }

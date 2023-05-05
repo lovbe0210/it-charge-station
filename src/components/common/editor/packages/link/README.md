@@ -1,11 +1,11 @@
-# @aomao/plugin-link-vue
+# am-editor-link-vue2
 
 链接插件
 
 ## 安装
 
 ```bash
-$ yarn add @aomao/plugin-link-vue
+$ yarn add am-editor-link-vue2
 ```
 
 添加到引擎

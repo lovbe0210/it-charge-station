@@ -1,158 +1,197 @@
 <template>
-    <div
-    :class="['toolbar-dropdown', {'toolbar-dropdown-right': isRight}, className]"
+  <div
+    :class="[
+      'toolbar-dropdown',
+      { 'toolbar-dropdown-right': isRight },
+      className,
+    ]"
     ref="buttonRef"
     @click="triggerClick"
     @mousedown="triggerMouseDown"
+  >
+    <div
+      :class="[
+        'toolbar-dropdown-trigger',
+        {
+          'toolbar-dropdown-trigger-active': visible,
+          'toolbar-dropdown-trigger-arrow': hasArrow !== false,
+        },
+      ]"
     >
-        <div
-        :class="['toolbar-dropdown-trigger', {
-            'toolbar-dropdown-trigger-active': visible,
-            'toolbar-dropdown-trigger-arrow': hasArrow !== false,
-        }]"
-        >
-            <am-button
-            :name="name"
-            :placement="placement"
-            :title="title"
-            :active="visible"
-            :disabled="disabled"
-            ref="targetRef"
-            >
-                <template #default>
-                    <slot :item="content">
-                        <span v-if="buttonContent && buttonContent.icon" :class="['data-icon',`data-icon-${buttonContent.icon}`]" />
-                        <span v-if="buttonContent && !buttonContent.icon && buttonContent.content" class="toolbar-dropdown-button-text" v-html="buttonContent.content"></span>
-                    </slot>
-                    <span v-if="hasArrow !== false" class="data-icon data-icon-arrow" />
-                </template>
-            </am-button>
-        </div>
-        <am-dropdown-list 
-        v-if="visible"
-        :hasDot="hasDot"
-        :engine="engine"
-        :direction="direction"
+      <am-button
         :name="name"
-        :items="items"
-        :values="valuesVar"
-        :on-select="triggerSelect"
-        />
+        :placement="placement"
+        :title="title"
+        :active="visible"
+        :disabled="disabled"
+        ref="targetRef"
+      >
+        <template #default>
+          <slot :item="content">
+            <span
+              v-if="buttonContent && buttonContent.icon"
+              :class="['data-icon', `data-icon-${buttonContent.icon}`]"
+            />
+            <span
+              v-if="
+                buttonContent && !buttonContent.icon && buttonContent.content
+              "
+              class="toolbar-dropdown-button-text"
+              v-html="buttonContent.content"
+            ></span>
+          </slot>
+          <span v-if="hasArrow !== false" class="data-icon data-icon-arrow" />
+        </template>
+      </am-button>
     </div>
+    <am-dropdown-list
+      v-if="visible"
+      :hasDot="hasDot"
+      :engine="engine"
+      :direction="direction"
+      :name="name"
+      :items="items"
+      :values="valuesVar"
+      :on-select="triggerSelect"
+    />
+  </div>
 </template>
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { EngineInterface, isMobile, Placement } from "@aomao/engine";
-import { DropdownListItem  } from '../types'
-import AmDropdownList from './dropdown-list.vue'
-import AmButton from './button.vue'
+import { DropdownListItem } from "../types";
+import AmDropdownList from "./dropdown-list.vue";
+import AmButton from "./button.vue";
 
 @Component({
-    components: {
-        AmButton,
-        AmDropdownList
-    },
+  components: {
+    AmButton,
+    AmDropdownList,
+  },
 })
 export default class Dropdown extends Vue {
-    @Prop({ type: Object}) engine?: EngineInterface
-    @Prop({ type: String, required: true}) name!: string
-    @Prop({ type: [String, Array, Number]}) values?: string | number | string[]
-    @Prop({ type: Array, default: []}) items!: DropdownListItem[]
-    @Prop(String) icon?: string
-	@Prop({ type: [String, Function]}) content?: string | (() => string)
-    @Prop(String) title?: string
-    @Prop({ type: [Boolean, Object], default: undefined}) disabled?: boolean
-    @Prop({ type: [Boolean, Object], default: undefined}) single?: boolean
-    @Prop(String) className?: string
-    @Prop(String) direction?: 'vertical' | 'horizontal'
-    @Prop(Function) onSelect?: (event: MouseEvent, key: string) => void | boolean
-    @Prop({ type: [Boolean, Object], default: undefined}) hasArrow?: boolean
-    @Prop({ type: [Boolean, Object], default: undefined}) hasDot?: boolean
-    @Prop({ type: [String], default: undefined}) placement?: Placement
-    valuesVar: string | number | string[] = ""
-    buttonContent?: DropdownListItem | {icon?:string,content?:string} | null = null
-    isRight = false
-    visible = false
+  @Prop({ type: Object }) engine?: EngineInterface;
+  @Prop({ type: String, required: true }) name!: string;
+  @Prop({ type: [String, Array, Number] }) values?: string | number | string[];
+  @Prop({ type: Array, default: [] }) items!: DropdownListItem[];
+  @Prop(String) icon?: string;
+  @Prop({ type: [String, Function] }) content?: string | (() => string);
+  @Prop(String) title?: string;
+  @Prop({ type: [Boolean, Object], default: undefined }) disabled?: boolean;
+  @Prop({ type: [Boolean, Object], default: undefined }) single?: boolean;
+  @Prop(String) className?: string;
+  @Prop(String) direction?: "vertical" | "horizontal";
+  @Prop(Function) onSelect?: (event: MouseEvent, key: string) => void | boolean;
+  @Prop({ type: [Boolean, Object], default: undefined }) hasArrow?: boolean;
+  @Prop({ type: [Boolean, Object], default: undefined }) hasDot?: boolean;
+  @Prop({ type: [String], default: undefined }) placement?: Placement;
+  valuesVar: string | number | string[] = "";
+  buttonContent?:
+    | DropdownListItem
+    | { icon?: string; content?: string }
+    | null = null;
+  isRight = false;
+  visible = false;
 
-    mounted(){
-        if (this.$refs.buttonRef && isMobile) {
-			const rect = (this.$refs.buttonRef as Element).getBoundingClientRect();
-			this.isRight = rect.left > window.visualViewport.width / 2;
-		}
+  mounted() {
+    if (this.$refs.buttonRef && isMobile) {
+      const rect = (this.$refs.buttonRef as Element).getBoundingClientRect();
+      this.isRight = rect.left > window.visualViewport.width / 2;
     }
+  }
 
-    @Watch("$props.values", { immediate: true, deep: true })
-    update(values?: string | number | string[]){
-        if (this.single !== false)
-            values = Array.isArray(values) && values.length > 0 ? values[0] : values;
-        const item = this.items.find(
-            item =>
-                (typeof values === 'string' && item.key === values) ||
-                (Array.isArray(values) && values.indexOf(item.key) > -1),
-        );
-        const defaultItem =
-        this.items.length > 0
-        ?  this.items.find(item => item.isDefault === true) || this.items[0]
+  @Watch("$props.values", { immediate: true, deep: true })
+  update(values?: string | number | string[]) {
+    if (this.single !== false)
+      values = Array.isArray(values) && values.length > 0 ? values[0] : values;
+    const item = this.items.find(
+      (item) =>
+        (typeof values === "string" && item.key === values) ||
+        (Array.isArray(values) && values.indexOf(item.key) > -1)
+    );
+    const defaultItem =
+      this.items.length > 0
+        ? this.items.find((item) => item.isDefault === true) || this.items[0]
         : null;
-        
-        if(item){
-            if(this.$slots.default){
-                this.buttonContent =  item
-            }
-            else if(typeof this.content === "function") {
-                this.buttonContent = {icon: this.icon,content: this.content()}
-            }
-            else if(Array.isArray(values) && values.length > 1){
-                this.buttonContent = {icon: this.icon,content: this.content}
-            }else{
-                this.buttonContent = {icon:item.icon,content:typeof item.content === "function" ? item.content() : item.content}
-            }
-        }else if(this.icon || this.content){
-            if(!Array.isArray(values) || values.length < 1){
-                this.buttonContent = {icon:this.icon,content:typeof this.content === "function" ? this.content() : this.content}
-            }
-        }else if(defaultItem){
-            this.buttonContent = {icon:defaultItem.icon,content:typeof defaultItem.content === "function" ? defaultItem.content() : defaultItem.content}
-        }
-        this.valuesVar = values ||
-                    (this.icon || this.content ? '' : defaultItem?.key || '')
-    }
 
-    @Watch("visible", { immediate: true, deep: true })
-    watch(value: boolean){
-        if(value) document.addEventListener('click', this.hide);
-        else document.removeEventListener('click', this.hide);
+    if (item) {
+      if (this.$slots.default) {
+        this.buttonContent = item;
+      } else if (typeof this.content === "function") {
+        this.buttonContent = { icon: this.icon, content: this.content() };
+      } else if (Array.isArray(values) && values.length > 1) {
+        this.buttonContent = { icon: this.icon, content: this.content };
+      } else {
+        this.buttonContent = {
+          icon: item.icon,
+          content:
+            typeof item.content === "function" ? item.content() : item.content,
+        };
+      }
+    } else if (this.icon || this.content) {
+      if (!Array.isArray(values) || values.length < 1) {
+        this.buttonContent = {
+          icon: this.icon,
+          content:
+            typeof this.content === "function" ? this.content() : this.content,
+        };
+      }
+    } else if (defaultItem) {
+      this.buttonContent = {
+        icon: defaultItem.icon,
+        content:
+          typeof defaultItem.content === "function"
+            ? defaultItem.content()
+            : defaultItem.content,
+      };
     }
+    this.valuesVar =
+      values ||
+      (this.icon || this.content ? "" : defaultItem ? defaultItem.key : "");
+  }
 
-    triggerMouseDown(event: MouseEvent){
-        event.preventDefault();
-    }
+  @Watch("visible", { immediate: true, deep: true })
+  watch(value: boolean) {
+    if (value) document.addEventListener("click", this.hide);
+    else document.removeEventListener("click", this.hide);
+  }
 
-    triggerClick(event: MouseEvent){
-        event.preventDefault();
-        if (this.disabled) {
-            return;
-        }
-        if (this.visible) {
-            this.hide();
-        } else {
-            this.show();
-        }
-    }
+  triggerMouseDown(event: MouseEvent) {
+    event.preventDefault();
+  }
 
-    show(){
-        this.visible = true
+  triggerClick(event: MouseEvent) {
+    event.preventDefault();
+    if (this.disabled) {
+      return;
     }
+    if (this.visible) {
+      this.hide();
+    } else {
+      this.show();
+    }
+  }
 
-    hide(event?: MouseEvent){
-        if(event && this.$refs.targetRef && ((this.$refs.targetRef as Vue).$refs.element as Element).contains(event.target as Node)) return;
-        this.visible = false
-    }
+  show() {
+    this.visible = true;
+  }
 
-    triggerSelect(event: MouseEvent, key: string){
-        this.hide()
-        if (this.onSelect) this.onSelect(event, key);
-    }
+  hide(event?: MouseEvent) {
+    if (
+      event &&
+      this.$refs.targetRef &&
+      ((this.$refs.targetRef as Vue).$refs.element as Element).contains(
+        event.target as Node
+      )
+    )
+      return;
+    this.visible = false;
+  }
+
+  triggerSelect(event: MouseEvent, key: string) {
+    this.hide();
+    if (this.onSelect) this.onSelect(event, key);
+  }
 }
 </script>
 <style>
@@ -164,6 +203,10 @@ export default class Dropdown extends Vue {
     display: flex;
     align-items: stretch;
     height: 100%;
+}
+
+.toolbar-dropdown .toolbar-dropdown-trigger .toolbar-button {
+    margin: 0;
 }
 
 .toolbar-dropdown .toolbar-dropdown-trigger .toolbar-dropdown-button-text {
@@ -206,12 +249,16 @@ export default class Dropdown extends Vue {
     left: 0px;
 }
 
-.editor-toolbar-mobile .toolbar-dropdown .toolbar-dropdown-list,.editor-toolbar-popup .toolbar-dropdown .toolbar-dropdown-list{
+.editor-toolbar-mobile .toolbar-dropdown .toolbar-dropdown-list, .editor-toolbar-popup .toolbar-dropdown .toolbar-dropdown-list:not(.toolbar-dropdown-placement-bottom) {
     bottom: 32px;
     top: auto;
-    max-height: calc(30vh);
     overflow: auto;
 }
+
+.editor-toolbar-mobile .toolbar-dropdown .toolbar-dropdown-list {
+    max-height: calc(30vh);
+}
+
 
 .editor-toolbar-mobile .toolbar-dropdown.toolbar-dropdown-right .toolbar-dropdown-list,.editor-toolbar-popup .toolbar-dropdown.toolbar-dropdown-right .toolbar-dropdown-list{
     right: 0px;
