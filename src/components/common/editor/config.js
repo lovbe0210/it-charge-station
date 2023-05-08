@@ -34,7 +34,6 @@ import Mention, {MentionComponent} from "@aomao/plugin-mention"
 import {fontFamilyDefaultData, ToolbarPlugin, ToolbarComponent} from "am-editor-toolbar-vue2"
 // import Link from "./packages/link/src"
 import CodeBlock, {CodeBlockComponent} from "./packages/codeblock/src"
-import MapPlugin, {MapComponent} from "./packages/map/src"
 import Audio, {AudioComponent, AudioUploader} from "./packages/audio/src"
 import MentionHover from "./MentionHover.vue"
 import {creatComponent} from "./utils"
@@ -81,7 +80,6 @@ export const plugins = [
     // Link,
     CodeBlock,
     ToolbarPlugin,
-    MapPlugin,
     Audio,
     AudioUploader
 ]
@@ -98,7 +96,6 @@ export const cards = [
     MentionComponent,
     CodeBlockComponent,
     ToolbarComponent,
-    MapComponent,
     AudioComponent
 ]
 

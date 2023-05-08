@@ -19,6 +19,8 @@ module.exports = {
     "object-curly-spacing": [0, "never"],
     // String必须使用单引号
     'quotes': "off",
+    // 不用table而是用两个空格
+    'no-tables': "off",
     'quote-props': "off",
     'import/no-duplicates': 'off',
     'indent': "off",
