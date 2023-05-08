@@ -64,10 +64,10 @@
               <DropdownMenu slot="list">
                 <div class="style-item font-size">
                   <div class="Slider-module_slideTitle">
-                    <san>正文大小</san>
+                    <span>正文大小</span>
                   </div>
-                  <div class="Slider-module_slideContainer" @mouseenter="showSelect = true"
-                       @mouseleave="showSelect = false">
+                  <div class="Slider-module_slideContainer" @mouseenter="docStyle.showSelect = true"
+                       @mouseleave="docStyle.showSelect = false">
                     <div class="ant-slider ant-slider-with-marks classic">
                       <div class="ant-slider-rail"></div>
                       <div class="ant-slider-step">
@@ -77,7 +77,7 @@
                           <span class="ant-slider-dot"/>
                         </div>
                       </div>
-                      <div :class="['ant-slider-handle', showSelect ? 'show-select-font' : '']"
+                      <div :class="['ant-slider-handle', docStyle.showSelect ? 'show-select-font' : '']"
                            :style="'left: ' + currentFontIndex * 100/(docStyle.fontSizeRange.length-1) + '%;'">
                       </div>
                     </div>

@@ -53,6 +53,7 @@
 <script>
   import Engine from '@aomao/engine'
   import Toolbar from 'am-editor-toolbar-vue2'
+  import MapModal from "../Map/Modal";
   import { plugins, cards, pluginConfig } from "./config";
 
   export default {
@@ -162,7 +163,8 @@
       }
     },
     components: {
-      Toolbar
+      Toolbar,
+      MapModal
     },
     watch: {
       'doc.title'(newValue, oldValue) {
