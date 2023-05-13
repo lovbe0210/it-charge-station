@@ -9,7 +9,8 @@
               <div class="title-editor">
                 <textarea class="title" v-model="doc.title" placeholder="我是一个没有标题的文章"
                           :autofocus="doc.title === null || doc.title.length === 0" maxlength="130"
-                          tabindex="1" rows="1" ref="titleTextarea" @blur="updateTitle">
+                          tabindex="1" rows="1" ref="titleTextarea" @blur="updateTitle"
+                          @keydown.enter="completeTitle">
                 </textarea>
               </div>
               <div class="doc-editor-wrap">
@@ -94,7 +95,7 @@
         ]
       }
     },
-    props: ['title'],
+    props: ['title', 'docStyle'],
     methods: {
       changeHeight() {
         let _this = this
@@ -113,6 +114,11 @@
       updateTitle() {
         // TODO 先更新数据库然后在进行页面渲染
         this.$emit('updateTitle', this.doc.title)
+      },
+      completeTitle(event) {
+        // 阻止换行然后切换光标
+        event.preventDefault();
+        this.$refs.container.focus()
       },
       toolbarUI() {
         // 选色器
@@ -201,11 +207,18 @@
       }
 
       // 渲染结束后获取输入框焦点，如果没有标题就先定位到标题，如果已有标题就定位到正文
+      this.changeHeight();
       if (this.title === null && this.title.length === 0) {
         this.$refs.titleTextarea.focus()
       } else {
         this.$refs.container.focus()
       }
+
+      // 监听Ctrl+s组合按键
+      // window.addEventListener('keydown', this.saveDoc)
+    },
+    beforeDestroy() {
+      window.removeEventListener()
     }
   }
 </script>

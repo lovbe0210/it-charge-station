@@ -59,25 +59,10 @@ class CodeBlcok extends Card {
     })
 
     this.codeEditor = new CodeBlockEditor(this.editor, {
-      synatxMap: this.#modeSynatxMap,
-      onSave: (mode, value) => {
-        const oldValue = this.getValue()
-        if (mode === oldValue?.mode && value === oldValue.code) return
-        this.setValue({
-          mode,
-          code: value
-        })
-      },
-      onMouseDown: event => {
-        if (!this.activated)
-          setTimeout(() => {
-            this.editor.card.activate(this.root, CardActiveTrigger.MOUSE_DOWN)
-          }, 10)
-      },
       onUpFocus: event => {
         if (!isEngine(this.editor)) return
         event.preventDefault()
-        const { change, card } = this.editor
+        const {change, card} = this.editor
         const range = change.range.get().cloneRange()
         const prev = this.root.prev()
         const cardComponent = prev ? card.find(prev) : undefined
@@ -92,12 +77,31 @@ class CodeBlcok extends Card {
           return
         }
         this.activate(false)
-        this.toolbarModel?.hide()
+        if (this.toolbarModel) {
+          this.hide()
+        }
+
+      },
+      synatxMap: this.#modeSynatxMap,
+      onSave: (mode, value) => {
+        const oldValue = this.getValue()
+        if (mode === oldValue?.mode && value === oldValue.code) return
+        this.setValue({
+          mode,
+          code: value
+        })
+      },
+      onMouseDown: event => {
+        if (!this.activated) {
+          setTimeout(() => {
+            this.editor.card.activate(this.root, CardActiveTrigger.MOUSE_DOWN)
+          }, 10)
+        }
       },
       onDownFocus: event => {
         if (!isEngine(this.editor)) return
         event.preventDefault()
-        const { change, card } = this.editor
+        const {change, card} = this.editor
         const range = change.range.get().cloneRange()
         const next = this.root.next()
         const cardComponent = next ? card.find(next) : undefined
@@ -112,37 +116,45 @@ class CodeBlcok extends Card {
           return
         }
         this.activate(false)
-        this.toolbarModel?.hide()
+        if (this.toolbarModel) {
+          this.hide()
+        }
       },
       onLeftFocus: event => {
         if (!isEngine(this.editor)) return
         event.preventDefault()
-        const { change } = this.editor
+        const {change} = this.editor
         const range = change.range.get().cloneRange()
         this.focus(range, true)
         change.range.select(range)
         this.activate(false)
-        this.toolbarModel?.hide()
+        if (this.toolbarModel) {
+          this.hide()
+        }
       },
       onRightFocus: event => {
         if (!isEngine(this.editor)) return
         event.preventDefault()
-        const { change } = this.editor
+        const {change} = this.editor
         const range = change.range.get().cloneRange()
         this.focus(range, false)
         change.range.select(range)
         this.activate(false)
-        this.toolbarModel?.hide()
+        if (this.toolbarModel) {
+          this.hide()
+        }
       }
     })
   }
+
   #viewAutoWrap = undefined
+
   toolbar() {
     const getItems = () => {
       if (this.loading) return []
       if (!isEngine(this.editor) || this.editor.readonly) {
         return [
-          { key: "copy", type: "copy" },
+          {key: "copy", type: "copy"},
           {
             key: "autoWrap",
             type: "switch",
@@ -156,13 +168,15 @@ class CodeBlcok extends Card {
             onClick: () => {
               const autoWrap = !this.#viewAutoWrap
               this.#viewAutoWrap = autoWrap
-              this.codeEditor?.setAutoWrap(autoWrap)
+              if (this.codeEditor) {
+                this.setAutoWrap(autoWrap)
+              }
             }
           }
         ]
       }
       return [
-        { key: "dnd", type: "dnd" },
+        {key: "dnd", type: "dnd"},
         {
           key: "copy",
           type: "copy"
@@ -187,7 +201,9 @@ class CodeBlcok extends Card {
                 mode => {
                   setTimeout(() => {
                     this.focusEditor()
-                    this.codeEditor?.update(mode)
+                    if (this.codeEditor) {
+                      this.update(mode)
+                    }
                   }, 10)
                 }
               )
@@ -207,7 +223,9 @@ class CodeBlcok extends Card {
             this.setValue({
               autoWrap
             })
-            this.codeEditor?.setAutoWrap(autoWrap)
+            if (this.codeEditor) {
+              this.setAutoWrap(autoWrap)
+            }
           }
         }
       ]
@@ -220,7 +238,9 @@ class CodeBlcok extends Card {
   }
 
   focusEditor() {
-    this.codeEditor?.focus()
+    if (this.codeEditor) {
+      this.focus()
+    }
     this.editor.card.activate(this.root)
   }
 
@@ -229,7 +249,9 @@ class CodeBlcok extends Card {
     event.preventDefault()
     this.codeEditor.select(false)
     this.activate(true)
-    this.toolbarModel?.show()
+    if (this.toolbarModel) {
+      this.show()
+    }
   }
 
   onSelectRight(event) {
@@ -237,7 +259,9 @@ class CodeBlcok extends Card {
     event.preventDefault()
     this.codeEditor.select(true)
     this.activate(true)
-    this.toolbarModel?.show()
+    if (this.toolbarModel) {
+      this.show()
+    }
   }
 
   onSelectDown(event) {
@@ -245,7 +269,9 @@ class CodeBlcok extends Card {
     event.preventDefault()
     this.codeEditor.select(true)
     this.activate(true)
-    this.toolbarModel?.show()
+    if (this.toolbarModel) {
+      this.show()
+    }
   }
 
   onSelectUp(event) {
@@ -253,7 +279,9 @@ class CodeBlcok extends Card {
     event.preventDefault()
     this.codeEditor.select(false)
     this.activate(true)
-    this.toolbarModel?.show()
+    if (this.toolbarModel) {
+      this.show()
+    }
   }
 
   render() {
@@ -279,12 +307,14 @@ class CodeBlcok extends Card {
         lineWrapping: !!value?.autoWrap
       })
     } else {
-      this.codeEditor?.create(mode, code, {
-        lineWrapping: !!value?.autoWrap
-      })
+      if (this.codeEditor) {
+        this.create(mode, code, {
+          lineWrapping: !!value?.autoWrap
+        })
+      }
     }
   }
 }
 
 export default CodeBlcok
-export { CodeBlockEditor }
+export {CodeBlockEditor}

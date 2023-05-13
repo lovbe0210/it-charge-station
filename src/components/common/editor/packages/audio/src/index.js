@@ -24,10 +24,10 @@ export default class AudioPlugin extends Plugin {
     this.editor.on("paste:schema", schema => this.pasteSchema(schema))
   }
 
-  execute(status, url, name, audio_id, size, download) {
+  execute(status, url, name, audioId, size, download) {
     const value = {
       status,
-      audio_id,
+      audioId,
       url,
       name: name || url,
       size,
@@ -60,6 +60,7 @@ export default class AudioPlugin extends Plugin {
         if (callback) {
           const result = callback(this.constructor.pluginName, component)
           if (result === false) {
+            // eslint-disable-next-line prefer-promise-reject-errors
             return reject({
               name: this.constructor.pluginName,
               card: component

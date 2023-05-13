@@ -13,8 +13,8 @@ export default {
   name: "am-loading",
   props: {
     text: String,
-    loading: Boolean,
-  },
+    loading: Boolean
+  }
 };
 </script>
 <style>

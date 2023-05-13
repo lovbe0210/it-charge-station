@@ -21,14 +21,15 @@ export default class extends Plugin {
   init() {
     if (isEngine(this.editor)) {
       this.editor.on("drop:files", files => this.dropFiles(files))
-      this.editor.on("paste:event", ({ files }) => this.pasteFiles(files))
+      this.editor.on("paste:event", ({files}) => this.pasteFiles(files))
       this.editor.on("paste:each", node => this.pasteEach(node))
     }
-    let { accept } = this.options
+    let {accept} = this.options
     const names = []
     if (typeof accept === "string") accept = accept.split(",")
 
-    ;(accept || []).forEach(name => {
+    ;
+    (accept || []).forEach(name => {
       name = name.trim()
       const newName = name.split(".").pop()
       if (newName) names.push(newName)
@@ -49,7 +50,7 @@ export default class extends Plugin {
       }
       return
     }
-    const { request, card, language } = this.editor
+    const {request, card, language} = this.editor
     const {
       action,
       data,
@@ -60,7 +61,7 @@ export default class extends Plugin {
       headers,
       name
     } = this.options
-    const { parse } = this.options
+    const {parse} = this.options
     const limitSize = this.options.limitSize || 5 * 1024 * 1024
     if (!Array.isArray(files)) {
       files = await request.getFiles({
@@ -96,8 +97,9 @@ export default class extends Plugin {
           return true
         },
         onReady: fileInfo => {
-          if (!isEngine(this.editor) || this.cardComponents[fileInfo.uid])
+          if (!isEngine(this.editor) || this.cardComponents[fileInfo.uid]) {
             return
+          }
           const component = card.insert("audio", {
             status: "uploading",
             name: fileInfo.name,
@@ -105,7 +107,7 @@ export default class extends Plugin {
           })
           this.cardComponents[fileInfo.uid] = component
         },
-        onUploading: (file, { percent }) => {
+        onUploading: (file, {percent}) => {
           const component = this.cardComponents[file.uid || ""]
           if (!component) return
           component.setProgressPercent(percent)
@@ -124,7 +126,7 @@ export default class extends Plugin {
           let result = {
             result: true,
             data: {
-              audio_id: id,
+              audioId: id,
               url,
               cover,
               download,
@@ -135,24 +137,26 @@ export default class extends Plugin {
             const customizeResult = parse(response)
             if (customizeResult.result) {
               let data = result.data
-              if (typeof customizeResult.data === "string")
+              if (typeof customizeResult.data === "string") {
                 result.data = {
                   ...data,
                   url: customizeResult.data
                 }
-              else {
+              } else {
                 data.url = customizeResult.data.url
-                if (customizeResult.data.status !== undefined)
+                if (customizeResult.data.status !== undefined) {
                   data = {
                     ...data,
                     status: customizeResult.data.status
                   }
-                if (customizeResult.data.id !== undefined)
+                }
+                if (customizeResult.data.id !== undefined) {
                   data = {
                     ...data,
-                    audio_id: customizeResult.data.id
+                    audioId: customizeResult.data.id
                   }
-                result.data = { ...data }
+                  result.data = {...data}
+                }
               }
             } else {
               result = {
@@ -161,22 +165,21 @@ export default class extends Plugin {
               }
             }
           } else if (!url) {
-            result = { result: false, data: response.data }
+            result = {result: false, data: response.data}
           }
-          //失败
           if (!result.result) {
+            //失败
             card.update(component.id, {
               status: "error",
               message:
                 result.data || this.editor.language.get("audio", "uploadError")
             })
-          }
-          //成功
-          else {
+          } else {
+            //成功
             this.editor.card.update(
               component.id,
               typeof result.data === "string"
-                ? { url: result.data }
+                ? {url: result.data}
                 : {
                   ...result.data
                 }
@@ -198,22 +201,15 @@ export default class extends Plugin {
       files,
       name
     )
-    return
   }
 
-  query(
-    audio_id,
-    success,
-    failed = () => {
-      return
-    }
-  ) {
-    const { request } = this.editor
+  query(audioId, success, failed = () => {
+  }) {
+    const {request} = this.editor
+    const {query, parse} = this.options
+    if (!query || !audioId) return success()
 
-    const { query, parse } = this.options
-    if (!query || !audio_id) return success()
-
-    const { action, type, contentType, data } = query
+    const {action, type, contentType, data} = query
     request.ajax({
       url: action,
       contentType: contentType || "",
@@ -224,15 +220,15 @@ export default class extends Plugin {
             const newData = data()
             return {
               ...newData,
-              id: audio_id
+              id: audioId
             }
           }
           : {
             ...data,
-            id: audio_id
+            id: audioId
           },
       success: response => {
-        const { result, data } = response
+        const {result, data} = response
         if (!result) {
           failed(data)
         } else {
@@ -241,12 +237,13 @@ export default class extends Plugin {
             failed(
               result.data || this.editor.language.get("audio", "loadError")
             )
-          } else
+          } else {
             success({
               ...result.data,
               status:
                 result.data.status !== "transcoding" ? "done" : "transcoding"
             })
+          }
         }
       },
       error: error => {
@@ -290,10 +287,9 @@ export default class extends Plugin {
         value.percent = 0
         node.attributes(
           CARD_VALUE_KEY,
-          encodeCardValue({ ...value, status: "done" })
+          encodeCardValue({...value, status: "done"})
         )
       }
-      return
     }
   }
 }

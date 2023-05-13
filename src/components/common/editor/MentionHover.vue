@@ -7,8 +7,8 @@
 <script lang="ts">
 export default {
   props: {
-    name: String,
-  },
+    name: String
+  }
 };
 </script>
 <style scoped>
