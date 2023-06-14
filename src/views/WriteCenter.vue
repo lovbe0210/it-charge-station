@@ -55,7 +55,7 @@
                   <span class="editor-icon iconfont icon-editor-style"/>
                   <div>
                     <span>文档样式</span>
-                    <span class="iconfont icon-editor-more"></span>
+                    <span class="iconfont icon-more"></span>
                     <br>
                     <span style="color: #8c8c8c; font-size: 12px;">设置正文大小、段间距、超宽…</span>
                   </div>
@@ -163,7 +163,7 @@
         </Dropdown>
       </div>
     </b-row>
-    <b-row>
+    <b-row class="editor-root">
       <editor @updateTitle="updateTitle" :title="docInfo.title" :docStyle="docStyle"></editor>
     </b-row>
 
@@ -184,7 +184,7 @@
     data() {
       return {
         docInfo: {
-          title: '我是标题'
+          title: ''
         },
         quickStart: [
           {

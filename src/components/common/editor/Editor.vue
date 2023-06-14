@@ -1,42 +1,58 @@
 <template>
   <b-container fluid class="editor">
-    <div class="amEditorVue2">
-      <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
-      <div class="editor-body">
-        <div class="editor-wrap">
-          <div class="editor-wrap-content">
-            <div class="editor-wrap-box">
-              <div class="title-editor">
-                <textarea class="title" v-model="doc.title" placeholder="我是一个没有标题的文章"
-                          :autofocus="doc.title === null || doc.title.length === 0" maxlength="130"
-                          tabindex="1" rows="1" ref="titleTextarea" @blur="updateTitle"
-                          @keydown.enter="completeTitle">
-                </textarea>
-              </div>
-              <div class="doc-editor-wrap">
-                <div class="editor-engine-box">
-                  <div class="editor-engine">
-                    <div class="doc-editor" ref="container">
+    <div class="scrollbar-visible">
+      <div class="layout-mode-fixed">
+        <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
+        <div class="editor-body">
+          <div class="editor-wrap">
+            <div class="editor-wrap-content">
+              <div class="editor-outer-wrap-box">
+                <div class="editor-wrap-box">
+                  <div class="title-box">
+                    <div class="title-editor">
+                    <textarea class="title" v-model="doc.title" placeholder="请输入标题"
+                              :autofocus="doc.title === null || doc.title.length === 0" maxlength="130"
+                              tabindex="1" rows="1" ref="titleTextarea" @blur="updateTitle"
+                              @keydown.enter="completeTitle">
+            </textarea>
+                    </div>
+
+                  </div>
+                  <div class="content-box">
+                    <div class="engine-box">
+                      <div class="engine">
+                        <div class="doc-editor" ref="container"></div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="editor-toc-sidebar">
-          <div class="editor-toc-view">
-            <div class="editor-toc-pin">
-              <span class="editor-toc-pin-text">大纲</span>
-              <div class="editor-toc-pin-wrap">
-                <div class="ne-icon ne-iconfont" data-name="pin" style="font-size: 16px;">
-                  <span class="lake-icon lake-icon-pin" style="font-size: 16px;"></span>
+          <div class="editor-sidebar">
+            <div class="editor-view">
+              <div class="editor-toc-pin">
+                <span class="editor-toc-pin-text">大纲</span>
+                <div class="editor-toc-pin-wrap">
+                  <div class="ne-icon ne-iconfont" data-name="pin" style="font-size: 16px;">
+                    <span class="lake-icon lake-icon-pin" style="font-size: 16px;"></span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="editor-toc-placeholder">
-              <div class="editor-toc-placeholder-tip">标题将在此展示</div>
-              <div class="editor-toc-placeholder-ind"></div>
+              <div class="editor-toc-inner">
+                <div class="toc-content">
+                  <div class="toc-item toc-depth-1 toc-selected">
+                    <div class="toc-item-inner">
+                      <div class="toc-item-text" title="数据同步"><a href="#Mv0Mc">数据同步</a></div>
+                    </div>
+                  </div>
+                  <div class="toc-item toc-depth-1">
+                    <div class="toc-item-inner">
+                      <div class="toc-item-text" title="作弊防控"><a href="#CgXUa">作弊防控</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -48,7 +64,7 @@
 <script>
   import Engine from '@aomao/engine'
   import Toolbar from 'am-editor-toolbar-vue2'
-  import { plugins, cards, pluginConfig } from "./config";
+  import {plugins, cards, pluginConfig} from "./config";
 
   export default {
     name: 'Editor',
@@ -163,7 +179,7 @@
         this.changeHeight()
       }
     },
-    mounted () {
+    mounted() {
       const container = this.$refs.container;
       if (container) {
         //实例化引擎
@@ -215,7 +231,7 @@
       }
 
       // 监听Ctrl+s组合按键
-      // window.addEventListener('keydown', this.saveDoc)
+      window.addEventListener('keydown', this.saveDoc)
     },
     beforeDestroy() {
       window.removeEventListener()
