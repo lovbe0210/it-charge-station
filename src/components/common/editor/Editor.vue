@@ -10,13 +10,12 @@
                 <div class="editor-wrap-box">
                   <div class="title-box">
                     <div class="title-editor">
-                    <textarea class="title" v-model="doc.title" placeholder="请输入标题"
-                              :autofocus="doc.title === null || doc.title.length === 0" maxlength="130"
-                              tabindex="1" rows="1" ref="titleTextarea" @blur="updateTitle"
-                              @keydown.enter="completeTitle">
-            </textarea>
+                      <textarea class="title" v-model="doc.title" placeholder="请输入标题"
+                                :autofocus="doc.title === null || doc.title.length === 0" maxlength="130"
+                                tabindex="1" rows="1" ref="titleTextarea" @blur="updateTitle"
+                                @keydown.enter="completeTitle">
+                      </textarea>
                     </div>
-
                   </div>
                   <div class="content-box">
                     <div class="engine-box">
