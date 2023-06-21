@@ -35,7 +35,6 @@ import {fontFamilyDefaultData, ToolbarPlugin, ToolbarComponent} from "am-editor-
 import Link from "am-editor-link-vue2"
 // import CodeBlock, {CodeBlockComponent} from "am-editor-codeblock-vue2"
 import CodeBlock, {CodeBlockComponent} from "./packages/codeblock/src"
-import Audio, {AudioComponent, AudioUploader} from "./packages/audio/src"
 import MentionHover from "./MentionHover.vue"
 import {creatComponent} from "./utils"
 import AmLoading from "./Loading.vue"
@@ -80,9 +79,7 @@ export const plugins = [
     Mention,
     Link,
     CodeBlock,
-    ToolbarPlugin,
-    Audio,
-    AudioUploader
+    ToolbarPlugin
 ]
 
 export const cards = [
@@ -96,8 +93,7 @@ export const cards = [
     StatusComponent,
     MentionComponent,
     CodeBlockComponent,
-    ToolbarComponent,
-    AudioComponent
+    ToolbarComponent
 ]
 
 export const pluginConfig = {
@@ -133,12 +129,8 @@ export const pluginConfig = {
             return url + `?token=12323`
         }
     },
-    [AudioUploader.pluginName]: {
-        action: `${DOMAIN}/upload/video`,
-        limitSize: 1024 * 1024 * 50
-    },
     [Math.pluginName]: {
-        action: `https://g.yanmao.cc/latex`,
+        action: `http://localhost:8080/math`,
         parse: res => {
             if (res.success) return {result: true, data: res.svg}
             return {result: false}

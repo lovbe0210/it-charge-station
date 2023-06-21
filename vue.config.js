@@ -58,6 +58,22 @@ module.exports = {
         pathRewrite: {
           '^/m801': ''
         }
+      },
+      '/math': {
+        target: 'https://editor.aomao.com',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/math': '/api/latex'
+        }
+      },
+      '/latex': {
+        target: 'https://g.yanmao.cc',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/math': '/api/latex'
+        }
       }
     }
   }

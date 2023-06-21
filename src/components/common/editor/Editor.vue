@@ -191,9 +191,11 @@
       }
     },
     mounted() {
+      debugger
       const container = this.$refs.container;
       if (container) {
         //实例化引擎
+        debugger
         const engine = new Engine(container, {
           // 启用插件
           plugins,
@@ -201,6 +203,8 @@
           cards,
           // 所有的插件配置
           config: pluginConfig,
+          autoPrepend: true,
+          autoAppend: true,
           // 文档提示语
           placeholder: '直接输入正文，也可以选择一个模板：'
         });
@@ -214,7 +218,9 @@
         };
         //卡片最大化时设置编辑页面样式
         engine.on("card:maximize", () => {
-          $(".editor-toolbar").css("z-index", "9999").css("top", "55px");
+          $(".editor-toolbar").css("z-index", "9999").css("top", "0");
+          $(".card-maximize-header").css("height", "60px");
+          // $(".editor-toolbar").css("z-index", "9999");
         });
         engine.on("card:minimize", () => {
           $(".editor-toolbar").css("z-index", "").css("top", "");
