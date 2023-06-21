@@ -1,7 +1,6 @@
 import CodeMirror from "codemirror"
-import {debounce} from "lodash"
-import {$, escape, isEngine, isHotkey, isMobile} from "@aomao/engine"
-
+import { debounce } from "lodash"
+import { $, escape, isEngine, isHotkey, isMobile } from "@aomao/engine"
 const qa = [
   "c",
   "cpp",
@@ -59,7 +58,7 @@ class CodeBlockEditor {
   constructor(editor, options) {
     this.editor = editor
     this.options = options
-    this.styleMap = {...defaultStyles, ...options.styleMap}
+    this.styleMap = { ...defaultStyles, ...options.styleMap }
     this.container = options.container || $(this.renderTemplate())
   }
 
@@ -109,22 +108,22 @@ class CodeBlockEditor {
       }
     )
     this.codeMirror.on("focus", () => {
-      const {onFocus} = this.options
+      const { onFocus } = this.options
       if (onFocus) onFocus()
     })
 
     this.codeMirror.on("blur", () => {
-      const {onBlur} = this.options
+      const { onBlur } = this.options
       if (onBlur) onBlur()
     })
     if (isMobile) {
       this.codeMirror.on("touchstart", (_, event) => {
-        const {onMouseDown} = this.options
+        const { onMouseDown } = this.options
         if (onMouseDown) onMouseDown(event)
       })
     } else {
       this.codeMirror.on("mousedown", (_, event) => {
-        const {onMouseDown} = this.options
+        const { onMouseDown } = this.options
         if (event.button === 2) event.stopPropagation()
         if (onMouseDown) onMouseDown(event)
       })
@@ -156,8 +155,8 @@ class CodeBlockEditor {
         event.stopPropagation()
       }
       const lineCount = editor.lineCount()
-      const {line, ch} = editor.getCursor()
-      const {onUpFocus, onDownFocus, onLeftFocus, onRightFocus} = this.options
+      const { line, ch } = editor.getCursor()
+      const { onUpFocus, onDownFocus, onLeftFocus, onRightFocus } = this.options
 
       const content = editor.getLine(line)
       // 在最后一行
@@ -196,9 +195,7 @@ class CodeBlockEditor {
     this.container.on("mousedown", event => {
       if (!this.codeMirror?.hasFocus()) {
         setTimeout(() => {
-          if (this.codeMirror) {
-            this.focus()
-          }
+          this.codeMirror?.focus()
         }, 0)
       }
     })
@@ -206,20 +203,19 @@ class CodeBlockEditor {
   }
 
   setAutoWrap(value) {
-    if (this.codeMirror) {
-      this.setOption("lineWrapping", value)
-    }
+    this.codeMirror?.setOption("lineWrapping", value)
   }
 
   update(mode, code) {
     this.mode = mode
-    if (code !== undefined && this.codeMirror) {
-      this.setValue(code)
+    if (code !== undefined) {
+      this.codeMirror?.setValue(code)
     }
-    if (this.codeMirror) {
-      this.setOption("mode", this.getSyntax(mode))
-      this.setOption("readOnly", !isEngine(this.editor) || this.editor.readonly)
-    }
+    this.codeMirror?.setOption("mode", this.getSyntax(mode))
+    this.codeMirror?.setOption(
+      "readOnly",
+      !isEngine(this.editor) || this.editor.readonly
+    )
     this.save()
   }
 
@@ -244,7 +240,7 @@ class CodeBlockEditor {
       return
     }
     const value = this.codeMirror.getValue()
-    const {onSave} = this.options
+    const { onSave } = this.options
     if (onSave) onSave(this.mode, value)
   }
 
@@ -259,9 +255,9 @@ class CodeBlockEditor {
     if (!start) {
       const line = this.codeMirror.lineCount() - 1
       const content = this.codeMirror.getLine(line)
-      this.codeMirror.setSelection({line, ch: content.length})
+      this.codeMirror.setSelection({ line, ch: content.length })
     } else {
-      this.codeMirror.setSelection({line: 0, ch: 0})
+      this.codeMirror.setSelection({ line: 0, ch: 0 })
     }
   }
 

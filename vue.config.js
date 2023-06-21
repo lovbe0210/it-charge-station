@@ -7,7 +7,7 @@ module.exports = {
   // 根路径  @ is an alias to /src
   publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
   // 是否打包.map文件，在运行报错时可输出代码定位
-  productionSourceMap: false,
+  productionSourceMap: true,
   css: {
     loaderOptions: {
       // 向 CSS 相关的 loader 传递选项

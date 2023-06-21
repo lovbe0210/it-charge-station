@@ -101,7 +101,7 @@
     }
   }
 </script>
-<style>
+<style scoped lang="less">
   .toolbar-collapse-header {
     color: #8c8c8c;
     margin: 4px 16px 0;

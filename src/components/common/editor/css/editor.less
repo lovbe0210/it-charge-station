@@ -156,7 +156,7 @@
 
                   .engine {
                     padding: 20px 70px 90px 70px;
-                    min-height: 1024px;
+                    min-height: 820px;
                     line-height: 1.74;
                     font-size: 15px;
 
@@ -257,6 +257,7 @@
                   color: #585A5A;
                 }
               }
+
               .toc-item:last-child {
                 margin-bottom: 0;
               }
@@ -296,6 +297,19 @@
           }
         }
       }
+    }
+  }
+}
+
+// 第三方插件样式覆盖
+/deep/ .data-link-editor {
+  p {
+    .ant-input:focus {
+      border-color: #00AE9D;
+      box-shadow: none !important;
+    }
+    .ant-input:hover {
+      border-color: #00AE9D;
     }
   }
 }

@@ -7,14 +7,12 @@
     :default-value="defaultValue"
     :get-popup-container="getContainer"
     @select="onSelect"
-    :filter-option="filter"
-  >
+    :filter-option="filterOption">
     <a-select-option
       v-for="item in modeDatas"
       :name="item.name"
       :value="item.value"
-      :key="item.value"
-    >
+      :key="item.value">
       {{item.name}}
     </a-select-option>
 
@@ -30,12 +28,14 @@
       'a-select': Select,
       ASelectOption
     },
-    filter(input, option) {
-      input = input.toLowerCase();
-      const key = option.key || '';
-      let name = option.name || '';
-      name = name.toLowerCase();
-      return key.includes(input) || name.includes(input);
+    methods: {
+      filterOption(input, option) {
+        input = input.toLowerCase();
+        const key = option.key || '';
+        let name = option.name || '';
+        name = name.toLowerCase();
+        return key.includes(input) || name.includes(input);
+      }
     }
   }
 </script>

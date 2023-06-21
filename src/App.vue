@@ -13,14 +13,30 @@
   import 'bootstrap/dist/css/bootstrap.css'
   import 'bootstrap-vue/dist/bootstrap-vue.css'
   // 引入ViewUI样式和组件
-  import ViewUI from 'view-design'
+  // import ViewUI from 'view-design'
+  import {
+    Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload, Icon,
+    MenuItem, Checkbox, Divider
+  } from 'view-design'
   import 'view-design/dist/styles/iview.css'
-  import commonUtil from "@/utils/common";
+  import commonUtil from "@/utils/common"
   // 引入弹幕模块
   import {vueBaberrage} from 'vue-baberrage'
 
   // 安装bootstrap和图标库
-  Vue.use(BootstrapVue).use(ViewUI).use(infiniteScroll).use(vueBaberrage)
+  Vue.use(BootstrapVue).use(infiniteScroll).use(vueBaberrage);
+  Vue.component('Dropdown', Dropdown);
+  Vue.component('DropdownMenu', DropdownMenu);
+  Vue.component('DropdownItem', DropdownItem);
+  Vue.component('Badge', Badge);
+  Vue.component('Drawer', Drawer);
+  Vue.component('ColorPicker', ColorPicker);
+  Vue.component('i-switch', Switch);
+  Vue.component('Upload', Upload);
+  Vue.component('Icon', Icon);
+  Vue.component('MenuItem', MenuItem);
+  Vue.component('Checkbox', Checkbox);
+  Vue.component('Divider', Divider);
   export default {
     name: 'App',
     data() {

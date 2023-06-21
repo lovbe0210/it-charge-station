@@ -32,10 +32,10 @@ import Status, {StatusComponent} from "@aomao/plugin-status"
 import LineHeight from "@aomao/plugin-line-height"
 import Mention, {MentionComponent} from "@aomao/plugin-mention"
 import {fontFamilyDefaultData, ToolbarPlugin, ToolbarComponent} from "am-editor-toolbar-vue2"
-// import Link from "./packages/link/src"
-import CodeBlock, {CodeBlockComponent} from "am-editor-codeblock-vue2"
-// import CodeBlock, {CodeBlockComponent} from "./packages/codeblock/src"
-// import Audio, {AudioComponent, AudioUploader} from "./packages/audio/src"
+import Link from "am-editor-link-vue2"
+// import CodeBlock, {CodeBlockComponent} from "am-editor-codeblock-vue2"
+import CodeBlock, {CodeBlockComponent} from "./packages/codeblock/src"
+import Audio, {AudioComponent, AudioUploader} from "./packages/audio/src"
 import MentionHover from "./MentionHover.vue"
 import {creatComponent} from "./utils"
 import AmLoading from "./Loading.vue"
@@ -78,11 +78,11 @@ export const plugins = [
     Status,
     LineHeight,
     Mention,
-    // Link,
+    Link,
     CodeBlock,
-    ToolbarPlugin
-    // Audio,
-    // AudioUploader
+    ToolbarPlugin,
+    Audio,
+    AudioUploader
 ]
 
 export const cards = [
@@ -96,8 +96,8 @@ export const cards = [
     StatusComponent,
     MentionComponent,
     CodeBlockComponent,
-    ToolbarComponent
-    // AudioComponent
+    ToolbarComponent,
+    AudioComponent
 ]
 
 export const pluginConfig = {
@@ -133,10 +133,10 @@ export const pluginConfig = {
             return url + `?token=12323`
         }
     },
-    // [AudioUploader.pluginName]: {
-    //     action: `${DOMAIN}/upload/video`,
-    //     limitSize: 1024 * 1024 * 50
-    // },
+    [AudioUploader.pluginName]: {
+        action: `${DOMAIN}/upload/video`,
+        limitSize: 1024 * 1024 * 50
+    },
     [Math.pluginName]: {
         action: `https://g.yanmao.cc/latex`,
         parse: res => {
@@ -209,6 +209,7 @@ export const pluginConfig = {
             return ["1", "1.15", "1.5", "2", "2.5", "3"].indexOf(lineHeight) > -1
         }
     },
+
     toolbar: {
         popup: {
             items: [
