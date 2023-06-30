@@ -4,7 +4,7 @@
       <div class="layout-mode-fixed">
         <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
         <div class="editor-body">
-          <div class="editor-wrap">
+          <div class="editor-wrap" ref="scrollbarContext" @scroll="handleScrollForToc()">
             <div class="editor-wrap-content">
               <div class="editor-outer-wrap-box">
                 <div class="editor-wrap-box">
@@ -39,14 +39,15 @@
               </div>
               <div class="editor-toc-inner">
                 <div class="toc-content">
-                  <div class="toc-item toc-depth-1 toc-selected">
+                  <div class="toc-item" v-for="item in tocData"
+                       :class="['toc-depth-'+ item.depth, item.id === currentTocId ? 'toc-selected' : '']"
+                       :key="item.id"
+                       @click="jump(item.id)">
                     <div class="toc-item-inner">
-                      <div class="toc-item-text" title="数据同步"><a href="#Mv0Mc">数据同步</a></div>
-                    </div>
-                  </div>
-                  <div class="toc-item toc-depth-1">
-                    <div class="toc-item-inner">
-                      <div class="toc-item-text" title="作弊防控"><a href="#CgXUa">作弊防控</a></div>
+                      <div class="toc-item-text" :title="item.text">
+                        <span>{{item.text}}</span>
+                        <!--                        <a :href="'#'+ item.id">{{item.text}}</a>-->
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -63,7 +64,8 @@
   import Engine from '@aomao/engine'
   import {$} from '@aomao/engine'
   import Toolbar from 'am-editor-toolbar-vue2'
-  import {plugins, cards, pluginConfig} from "./config";
+  import {plugins, cards, pluginConfig} from "./config"
+  import {getTocData, getParentNode, belongToc} from "./utils/index"
 
   export default {
     name: 'Editor',
@@ -72,7 +74,10 @@
         doc: {
           title: this.title
         },
-        lines: 1,
+        tocData: [],
+        currentTocId: '',
+        // 滚动事件的防抖函数
+        debounceScroll: null,
         engine: null,
         // 工具栏内容：下拉面板、
         items: [
@@ -167,6 +172,19 @@
       },
 
       /**
+       * 防抖函数
+       */
+      debounce(func, delay) {
+        let timer;
+        return function(...args) {
+          clearTimeout(timer);
+          timer = setTimeout(() => {
+            func.apply(this, args);
+          }, delay);
+        };
+      },
+
+      /**
        * 保存
        */
       saveDoc(event) {
@@ -175,6 +193,35 @@
           event.preventDefault()
           // 执行save方法
           console.log("save...")
+        }
+      },
+      /**
+       * 点击跳转
+       * @param titleId
+       */
+      jump(titleId) {
+        this.currentTocId = titleId;
+        let scrollbarContext = this.$refs.scrollbarContext;
+        let title = $('#' + titleId).get().offsetTop;
+        scrollbarContext.scrollTo({
+          behavior: "smooth",
+          top: title + 90
+        });
+      },
+      /**
+       * 处理滚动条滚动事件
+       */
+      handleScrollForToc() {
+        if (this.tocData.length > 0) {
+          let scrollbarRect = this.$refs.scrollbarContext?.getBoundingClientRect();
+          if (scrollbarRect) {
+            this.tocData.forEach(tocItem => {
+              let id = tocItem.id;
+              let rect = $('#' + id).get().getBoundingClientRect();
+              console.log('container:top-', scrollbarRect.top, ', bottom-', scrollbarRect.bottom)
+              console.log('titleID:', id, ':top-', rect.top, ', bottom-', rect.bottom)
+            })
+          }
         }
       }
     },
@@ -191,11 +238,9 @@
       }
     },
     mounted() {
-      debugger
       const container = this.$refs.container;
       if (container) {
         //实例化引擎
-        debugger
         const engine = new Engine(container, {
           // 启用插件
           plugins,
@@ -203,8 +248,7 @@
           cards,
           // 所有的插件配置
           config: pluginConfig,
-          autoPrepend: true,
-          autoAppend: true,
+          autoPrepend: false,
           // 文档提示语
           placeholder: '直接输入正文，也可以选择一个模板：'
         });
@@ -232,8 +276,25 @@
 
         // 监听编辑器值改变事件
         engine.on("change", () => {
-          console.log("value", engine.getValue());
-          // console.log("html:", engine.getHtml());
+          let range = engine.change.range.get();
+          let collapsed = range?.collapsed;
+          let startNode = collapsed ? range.startNode : range.endNode;
+          let parentNode = getParentNode(startNode);
+          // 1. 更新标题(单行节点)
+          // debugger
+          let nodeName = parentNode.name;
+          if (belongToc(nodeName)) {
+            let tocData = getTocData(engine);
+            this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
+          } else {
+            // 2. 处理status影响其他文字
+            let children = parentNode?.children("span[data-card-key=\"status\"]");
+            if (children !== undefined && children.length !== 0) {
+              // 给当前节点去掉样式
+              startNode.removeAttributes('style')
+              startNode.allChildren().forEach(child => child?.removeAttributes('style'))
+            }
+          }
         });
 
         this.engine = engine;
@@ -249,6 +310,9 @@
 
       // 监听Ctrl+s组合按键
       window.addEventListener('keydown', this.saveDoc)
+
+      // 设置延迟时间，单位为毫秒
+      this.debounceScroll = this.debounce(this.handleScrollForToc, 300);
     },
     beforeDestroy() {
       window.removeEventListener('keydown', this.saveDoc)
