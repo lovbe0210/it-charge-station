@@ -4,7 +4,7 @@
       <div class="layout-mode-fixed">
         <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
         <div class="editor-body">
-          <div class="editor-wrap" ref="scrollbarContext" @scroll="handleScrollForToc()">
+          <div class="editor-wrap" ref="scrollbarContext" @wheel="handleScrollForToc">
             <div class="editor-wrap-content">
               <div class="editor-outer-wrap-box">
                 <div class="editor-wrap-box">
@@ -215,12 +215,15 @@
         if (this.tocData.length > 0) {
           let scrollbarRect = this.$refs.scrollbarContext?.getBoundingClientRect();
           if (scrollbarRect) {
-            this.tocData.forEach(tocItem => {
-              let id = tocItem.id;
-              let rect = $('#' + id).get().getBoundingClientRect();
-              console.log('container:top-', scrollbarRect.top, ', bottom-', scrollbarRect.bottom)
-              console.log('titleID:', id, ':top-', rect.top, ', bottom-', rect.bottom)
-            })
+            let containerTop = scrollbarRect.top;
+            let containerBottom = scrollbarRect.bottom;
+            for (let i = 0; i < this.tocData.length; i++) {
+              let rect = $('#' + this.tocData[i].id).get().getBoundingClientRect();
+              if (rect.top >= containerTop && rect.top <= containerBottom) {
+                this.currentTocId = this.tocData[i].id;
+                return;
+              }
+            }
           }
         }
       }
@@ -312,7 +315,7 @@
       window.addEventListener('keydown', this.saveDoc)
 
       // 设置延迟时间，单位为毫秒
-      this.debounceScroll = this.debounce(this.handleScrollForToc, 300);
+      this.debounceScroll = this.debounce(this.handleScrollForToc, 500);
     },
     beforeDestroy() {
       window.removeEventListener('keydown', this.saveDoc)
