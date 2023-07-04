@@ -8,7 +8,7 @@
             <div class="editor-wrap-content">
               <div class="editor-outer-wrap-box">
                 <div class="editor-wrap-box">
-                  <div class="title-box">
+                  <div :class="['title-box', docStyle.pageSize === 1 ? 'title-standard-wide' : 'title-ultra-wide']">
                     <div class="title-editor">
                       <textarea class="title" v-model="doc.title" placeholder="请输入标题"
                                 maxlength="130" tabindex="1" rows="1" ref="titleTextarea"
@@ -19,7 +19,8 @@
                   <div class="content-box">
                     <div class="engine-box">
                       <div class="engine">
-                        <div class="doc-editor" ref="container"></div>
+                        <div :class="['doc-editor','am-engine','am-engine-placeholder', docStyle.pageSize === 1 ? 'editor-standard-wide' : 'editor-ultra-wide']"
+                             ref="container"></div>
                       </div>
                     </div>
                   </div>
@@ -72,7 +73,7 @@
     data() {
       return {
         doc: {
-          title: this.title
+          title: this.docInfo.title
         },
         tocData: [],
         currentTocId: '',
@@ -115,7 +116,7 @@
         ]
       }
     },
-    props: ['title', 'docStyle'],
+    props: ['docInfo', 'docStyle'],
     methods: {
       changeHeight() {
         let _this = this
@@ -226,6 +227,14 @@
             }
           }
         }
+      },
+      /**
+       * 渲染标题大纲
+       * @param engine
+       */
+      renderTocData(engine) {
+        let tocData = getTocData(engine);
+        this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
       }
     },
     components: {
@@ -238,6 +247,9 @@
         }
         // 改变标题框的高度
         this.changeHeight()
+      },
+      'docStyle.docFontSize'(newValue) {
+        // TODO 改变非标题字体大小
       }
     },
     mounted() {
@@ -284,11 +296,9 @@
           let startNode = collapsed ? range.startNode : range.endNode;
           let parentNode = getParentNode(startNode);
           // 1. 更新标题(单行节点)
-          // debugger
-          let nodeName = parentNode.name;
+          let nodeName = parentNode?.name;
           if (belongToc(nodeName)) {
-            let tocData = getTocData(engine);
-            this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
+            this.renderTocData(engine);
           } else {
             // 2. 处理status影响其他文字
             let children = parentNode?.children("span[data-card-key=\"status\"]");
@@ -299,6 +309,15 @@
             }
           }
         });
+
+        if (this.docInfo.content?.length !== 0) {
+          engine.setJsonValue(JSON.parse(this.docInfo.content))
+          const pattern = /h[1-6]/;
+          let match = this.docInfo.content.match(pattern);
+          if (match) {
+            this.renderTocData(engine);
+          }
+        }
 
         this.engine = engine;
       }

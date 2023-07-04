@@ -87,7 +87,6 @@
 
               .title-box {
                 position: relative;
-                max-width: 890px;
                 padding: 0 70px;
                 margin: 0 auto;
 
@@ -146,6 +145,13 @@
                   }
                 }
               }
+              .title-standard-wide {
+                max-width: 890px;
+              }
+              .title-ultra-wide {
+                margin-right: 280px;
+              }
+
 
               .content-box {
                 position: relative;
@@ -174,10 +180,15 @@
                     letter-spacing: initial;
 
                     .doc-editor {
-                      max-width: 750px;
                       margin-left: auto;
                       margin-right: auto;
                       padding-bottom: 40px;
+                    }
+                    .editor-standard-wide {
+                      max-width: 750px;
+                    }
+                    .editor-ultra-wide {
+                      margin-right: 280px;
                     }
                   }
                 }
@@ -351,6 +362,20 @@
 
 /deep/.am-engine>p {
   margin: 8px 0;
+}
+
+/deep/.am-engine>ul {
+  margin: 8px 0;
+  li {
+    margin: 8px 0;
+  }
+}
+
+/deep/.am-engine>ol {
+  margin: 8px 0;
+  li {
+    margin: 8px 0;
+  }
 }
 
 /deep/.am-engine>h2 {

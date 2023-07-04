@@ -74,7 +74,7 @@ export function getParentNode(nodeInterface) {
 
 const tocLevel = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 export function belongToc(levelName) {
-  if (levelName === null || levelName.length === 0) {
+  if (levelName === undefined || levelName.length === 0) {
     return false;
   }
   for (let i = 0; i < tocLevel.length; i++) {

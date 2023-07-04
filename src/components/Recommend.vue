@@ -9,7 +9,7 @@
       <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
         <b-row v-for="item in data" :key="item.id" fluid="true" class="item">
           <b-col :cols="isPhone || item.preview == null ? 12 : 8" class="text">
-            <b-link to="/login">
+            <b-link @click="toReadCenter">
               <div class="title">
                 <span>{{item.title}}</span>
               </div>
@@ -30,7 +30,8 @@
                 <span class="iconfont icon-read"></span> 777
               </div>
               <div class="from">
-                来自🕊<b-link to="/follow"><span >语雀精选</span></b-link>
+                来自🕊
+                <b-link to="/follow"><span>语雀精选</span></b-link>
               </div>
             </b-row>
           </b-col>
@@ -50,7 +51,7 @@
   export default {
     name: 'Recommend',
     // 如果通过首页进来则一定显示推荐页面，否则显示用户自己上次选择的页面，这样如果用户不点击主页无论怎么刷新页面都将会显示上次浏览的页面
-    beforeRouteEnter (from, to, next) {
+    beforeRouteEnter(from, to, next) {
       next(vc => {
         // 通过 `vc` 访问组件实例
         if (vc.$route.params.index) {
@@ -59,7 +60,7 @@
         next()
       })
     },
-    data () {
+    data() {
       return {
         loading: false,
         showImg: true,
@@ -112,16 +113,16 @@
     },
     computed: {
       // 判断页面是手机页面还是pc页面，如果是手机页面则进行全屏显示
-      isPhone () {
+      isPhone() {
         return this.$store.state.isPhone
       },
       // 设置无限滚动条目数
-      busy () {
+      busy() {
         return this.count > 100
       }
     },
     methods: {
-      loadMore () {
+      loadMore() {
         for (let i = 0, j = 10; i < j; i++) {
           this.data.push(
             {
@@ -134,6 +135,12 @@
           );
           this.count++;
         }
+      },
+      toReadCenter() {
+        let routeUrl = this.$router.resolve({
+          path: '/readCenter'
+        })
+        window.open(routeUrl.href, '_blank')
       }
     }
   }
