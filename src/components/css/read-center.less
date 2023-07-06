@@ -1,5 +1,632 @@
 @import './common-var.less';
 
+.container {
+  display: flex;
+  height: 100vh; /* 设置容器高度为视口高度 */
+}
+
+.sidebar {
+  flex: 0 0 auto; /* 左侧目录部分固定宽度 */
+  overflow: auto; /* 添加滚动条，当内容超出目录部分高度时显示滚动条 */
+  position: relative; /* 设置相对定位 */
+}
+
+.resize-handle {
+  position: absolute; /* 设置绝对定位 */
+  right: 0; /* 将拖动手柄放置在目录部分的右侧 */
+  top: 0;
+  width: 10px;
+  cursor: ew-resize; /* 设置光标样式为水平调整 */
+  background-color: #ccc;
+  z-index: 1; /* 设置堆叠顺序，保证拖动手柄在最上层 */
+}
+
+.toggle-button {
+  position: absolute; /* 设置绝对定位 */
+  bottom: 0; /* 将隐藏按钮放置在目录部分的底部 */
+  left: 0;
+}
+
+.content {
+  flex: 1; /* 中间内容部分自动填充剩余空间 */
+  overflow: auto; /* 添加滚动条，当内容超出内容部分高度时显示滚动条 */
+}
+
+.outline {
+  flex: 0 0 auto; /* 右侧大纲部分固定宽度 */
+  position: sticky; /* 将大纲部分设置为粘性定位，不随滚动而移动 */
+  top: 0; /* 设置粘性定位的起始位置为顶部 */
+}
+
+
+
+
+
+.read-center {
+  position: relative;
+  background: #FFFFFF;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .main-wrapper {
+    flex: 1 0;
+    width: 100%;
+
+    //.layout-module {
+    //  width: 100%;
+    //  overflow-y: auto;
+    //  padding-top: 0;
+    //
+    //  .layout-module_children {
+    //    min-height: calc(~"100vh - 108px");
+    //  }
+    //}
+
+    .ReaderLayout-module_wrapper {
+      width: 100%;
+      min-height: calc(100vh - 60px);
+      background: #FFFFFF;
+      will-change: padding-left;
+      padding-left: 345px;
+    }
+
+    .ReaderLayout-module_onlyTocAside {
+      position: absolute;
+      z-index: 410;
+      top: 0;
+      left: 100%;
+      background-color: #FFFFFF;
+
+      .doc-head {
+        position: fixed;
+        z-index: 999;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 52px;
+        width: auto;
+        border: none;
+        border-bottom: 1px solid hsla(0, 0%, 0%, 0.04);
+        transform: translateY(0);
+        transition: transform .2s ease .2s,left .2s cubic-bezier(.1,0,0,1) 0s;
+        will-change: transform,left;
+        font-size: 14px;
+
+        .doc-head-inner {
+          width: 100%;
+          height: 100%;
+          margin: 0 auto;
+          display: flex;
+          justify-content: space-between;
+          max-width: none;
+
+          .header-crumb.title-visible.only-doc-title {
+            overflow: hidden;
+            height: 100%;
+          }
+
+          .header-crumb.title-visible {
+            transition: margin .1s cubic-bezier(.1,0,0,1) 0s;
+          }
+
+          .header-crumb {
+            display: flex;
+            height: 100%;
+            padding: 14px 16px;
+            align-items: center;
+            float: left;
+            line-height: 32px;
+          }
+
+          .index-module_editable {
+            cursor: pointer;
+          }
+
+          .index-module_nameTitle {
+            font-size: 14px;
+            color: #585A5A;
+            max-width: 400px;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .ViewerHeader-module_offlineIcon {
+            margin-left: 5px;
+          }
+          .index-module_offlineButton {
+            cursor: not-allowed;
+          }
+          .index-module_availableStyle {
+            cursor: pointer;
+          }
+          .ant-btn.ant-btn-text {
+            background-image: none;
+            font-weight: 400;
+            -webkit-appearance: button;
+          }
+          .ViewerHeader-module_offlineButton {
+            margin-left: 8px;
+          }
+
+          .header-action {
+            display: flex;
+            align-items: center;
+            float: right;
+            padding-right: 16px;
+            height: 100%;
+            color: #262626;
+          }
+
+        }
+      }
+
+      .ViewerHeader-module_wrapper {
+        background-color: #FFFFFF;
+      }
+
+      .BookReader-module_wrapper {
+        position: relative;
+        padding-top: 52px;
+        transition: padding .3s linear;
+        background-color: var(--yq-bg-primary);
+        min-height: 100vh;
+
+        .DocReader-module_header {
+          max-width: 100%;
+          //margin-right: 305px;
+          padding: 0 50px;
+          margin: 0 calc(~"50vw - 425px") 0 auto;
+
+          .DocReader-module_title {
+            margin: 24px 0 32px;
+
+            h1 {
+              font-family: Chinese Quote,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji;
+              font-size: 36px;
+              line-height: 1.389;
+              font-weight: 700;
+              color: #262626;
+              display: inline;
+              margin-right: 20px;
+              font-variant-ligatures: none;
+              margin-bottom: 0;
+              margin-top: 0;
+            }
+
+            h1:last-child{
+              margin-right: 0;
+            }
+
+            .index-module_articleTitle {
+              word-break: break-word;
+            }
+          }
+        }
+      }
+    }
+
+    .ReaderLayout-module_asideWrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      flex: 0 0 auto;
+      height: 100vh;
+
+      .ReaderLayout-module_aside {
+        height: 100vh;
+        overflow: hidden;
+        background: #FFFFFF;
+        will-change: width;
+        transition: width 200ms cubic-bezier(0.1, 0, 0, 1) 0s;
+        width: 345px;
+
+        .ReaderLayout-module_asideHead {
+          display: flex;
+          align-items: center;
+          flex-flow: column;
+          margin: 0 10px;
+          border-bottom: 1px solid #E7E9E8;
+          padding: 0 0 12px;
+
+          .ReaderLayout-module_bookInfo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            position: relative;
+
+            .ReaderLayout-module_crumb {
+              display: flex;
+              align-items: center;
+              width: 100%;
+              height: 45px;
+              padding: 16px 0 6px 6px;
+
+              .ReaderLayout-module_yuqueLogo {
+                color: #8A8F8D;
+                text-decoration: none;
+                background-color: transparent;
+                outline: none;
+                cursor: pointer;
+                transition: color .3s;
+                -webkit-text-decoration-skip: objects;
+                touch-action: manipulation;
+                cursor: pointer;
+                color: var(--yq-text-caption);
+                display: inline-flex;
+              }
+            }
+
+            .ReaderLayout-module_bookName {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              font-size: 16px;
+              color: #262626;
+              font-weight: 700;
+              line-height: 22px;
+              border-radius: 6px;
+              padding: 0 10px 0 0;
+              height: 36px;
+
+              .ReaderLayout-module_icon {
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #585A5A;
+                font-size: 22px;
+                border: none;
+                outline: none;
+                margin: 0 10px 0 4px;
+              }
+
+              .ReaderLayout-module_bookName {
+                overflow: hidden;
+                display: flex;
+                flex: 1;
+                align-items: center;
+
+                .ReaderLayout-module_text {
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+
+                .ReaderLayout-module_privateIcon {
+                  margin-left: 18px;
+                  position: relative;
+                  right: 12px;
+                  color: #8A8F8D;
+                }
+              }
+
+              .ReaderLayout-module_bookOverviewMoreActions {
+                color: #8A8F8D;
+                text-align: center;
+                min-width: 24px;
+                height: 24px;
+                font-size: 14px;
+                cursor: pointer;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 0;
+              }
+
+              .index-module_more {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                cursor: pointer;
+                color: #000000;
+                border-radius: 8px;
+
+                line-height: 16px;
+                padding: 4px;
+              }
+            }
+          }
+        }
+
+        .ReaderLayout-module_asideNav {
+          height: calc(~"100% - 78px");
+          will-change: width;
+          transition: width 200ms cubic-bezier(0.1, 0, 0, 1) 0s;
+          width: 345px;
+          max-width: 480px;
+          min-width: 259px;
+
+          .ReaderLayout-module_searchNav {
+            display: flex;
+            align-items: center;
+            margin: 16px 8px 0 8px;
+
+            .ReaderLayout-module_searchBar {
+              display: flex;
+              align-items: center;
+              padding: 5px 8px;
+              cursor: pointer;
+              background: #F4F5F5;
+              font-size: 14px;
+              color: #BEC0BF;
+              flex: 1;
+              border-radius: 8px;
+              position: relative;
+
+            }
+
+            .ReaderLayout-module_asideActions {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 8px;
+              margin: 0 0 0 12px;
+              cursor: pointer;
+              transition: background .35s ease-in-out;
+              background-color: #FFFFFF;
+              border: 1px solid #E7E9E8;
+            }
+          }
+
+          .ReaderLayout-module_nav {
+            display: flex;
+            align-items: center;
+            padding: 5px 8px;
+            margin: 10px 8px 0 8px;
+            cursor: pointer;
+            border-radius: 6px;
+            position: relative;
+          }
+
+          .BookCatalog-module_asiderTab {
+            flex-direction: column;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            color: #262626;
+            font-size: 14px;
+            font-variant: tabular-nums;
+            line-height: 1.5715;
+            list-style: none;
+            font-feature-settings: "tnum";
+            display: flex;
+            overflow: hidden;
+            box-sizing: border-box;
+
+            .BookCatalog-module_tabBar {
+              display: flex;
+              justify-content: space-between;
+              padding: 0 16px 0 8px;
+              line-height: 32px;
+              margin: 6px 0 0 0;
+              border-bottom: 1px solid transparent;
+
+              .BookCatalog-module_tabTitle {
+                display: flex;
+                align-items: center;
+                border-right: 6px;
+                padding: 0 8px;
+                cursor: pointer;
+              }
+
+              .BookCatalog-module_asideActionsCont {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+
+                .CatalogTreeCollapseTrigger-module_actionItem {
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  margin-left: 8px;
+                  width: 20px;
+                  min-width: 20px;
+                  height: 20px;
+                  color: #8A8F8D;
+                  cursor: pointer;
+                  transition: background .35s ease-in-out;
+                  border-radius: 2px;
+                }
+              }
+            }
+
+            .ant-tabs-content-holder {
+              flex: auto;
+              min-width: 0;
+              min-height: 0;
+
+              .ant-tabs-content {
+                display: flex;
+                width: 100%;
+
+                .ant-tabs-tabpane {
+                  flex: none;
+                  width: 100%;
+                  outline: none;
+
+                  .BookCatalog-module_sideCatalog {
+                    height: calc(~"100vh - 224px");
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .ReaderLayout-module_dragbar {
+        position: absolute;
+        z-index: 202;
+        top: 0;
+        bottom: 0;
+        right: -6px;
+        width: 6px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+        cursor: ew-resize;
+      }
+
+      .ReaderLayout-module_dragbar::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        background-color: hsla(0, 0%, 0%, 0.04);
+      }
+
+      .ReaderLayout-module_dragbar::after {
+        transition: backgroundcolor .2s ease-in-out;
+        right: 6px;
+        width: 1px;
+      }
+    }
+
+    // 右边的大纲
+    .reader-sidebar {
+      position: fixed;
+      z-index: 998;
+      right: 0;
+      top: 52px;
+      max-width: 305px;
+      height: calc(~"100vh - 52px");
+      max-height: calc(~"100vh - 52px");
+      overflow-y: auto;
+      overflow: hidden;
+      background-color: #FFFFFF;
+
+      .editor-view {
+        position: relative;
+        z-index: 1;
+        max-height: calc(90%);
+        display: flex;
+        flex-shrink: 0;
+        flex-direction: column;
+        margin-top: 35px;
+        overflow: hidden;
+        width: 305px;
+        font-family: 'Chinese Quote', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+        .editor-toc-pin {
+          margin-bottom: 12px;
+          padding-top: 8px;
+          padding-left: 28px;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          height: 30px;
+          -ms-flex-negative: 0;
+          flex-shrink: 0;
+
+          .editor-toc-pin-text {
+            margin-right: 8px;
+            font-weight: bold;
+          }
+        }
+
+        .editor-toc-inner {
+          width: 100%;
+          cursor: default;
+          overflow-x: hidden;
+          overflow-y: auto;
+
+          .toc-content {
+            position: relative;
+            z-index: 2;
+
+            .toc-item {
+              padding-right: 20px;
+              height: 22px;
+              font-size: 14px;
+              line-height: 22px;
+              margin-bottom: 6px;
+              white-space: nowrap;
+              border-left: 2px solid transparent;
+              cursor: default;
+              display: block;
+
+              a {
+                color: #585A5A;
+              }
+            }
+
+            .toc-item:last-child {
+              margin-bottom: 0;
+            }
+
+            .toc-depth-1 {
+              padding-left: 8px;
+            }
+            .toc-depth-2 {
+              padding-left: 25px;
+            }
+            .toc-depth-3 {
+              padding-left: 42px;
+            }
+            .toc-depth-4 {
+              padding-left: 59px;
+            }
+            .toc-depth-5 {
+              padding-left: 76px;
+            }.toc-depth-6 {
+               padding-left: 110px;
+             }
+
+
+
+            .toc-selected {
+              border-left-color: #00B96B;
+              color: #262626;
+              font-weight: bold;
+            }
+
+            .toc-item-inner {
+              display: flex;
+              align-items: center;
+
+              .toc-item-text {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: block;
+              }
+            }
+          }
+
+          .toc-content::after {
+            content: ' ';
+            background: #D8DAD9;
+            width: 2px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
 .editor-center {
   font-family: Chinese Quote, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
 
@@ -438,17 +1065,20 @@
   margin: 8px 0;
 }
 
-/deep/.am-engine-view>ul {
+/deep/.am-engine>ul {
   margin: 8px 0;
   li {
     margin: 8px 0;
   }
+  li:not(.data-list-item) {
+    margin: 8px 0  8px 15px;
+  }
 }
 
-/deep/.am-engine-view>ol {
+/deep/.am-engine>ol {
   margin: 8px 0;
   li {
-    margin: 8px 0;
+    margin: 8px 0 8px 25px;
   }
 }
 
