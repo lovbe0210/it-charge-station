@@ -1,48 +1,58 @@
 @import './common-var.less';
 
-.container {
+.read-center {
   display: flex;
   height: 100vh; /* 设置容器高度为视口高度 */
 }
 
 .sidebar {
-  flex: 0 0 auto; /* 左侧目录部分固定宽度 */
-  overflow: auto; /* 添加滚动条，当内容超出目录部分高度时显示滚动条 */
-  position: relative; /* 设置相对定位 */
+  background-color: #f2f2f2;
+  overflow: hidden;
+  position: relative;
+  min-width: 100px;
+  max-width: 400px;
 }
 
-.resize-handle {
-  position: absolute; /* 设置绝对定位 */
-  right: 0; /* 将拖动手柄放置在目录部分的右侧 */
-  top: 0;
+.drag-handle {
+  cursor: col-resize;
   width: 10px;
-  cursor: ew-resize; /* 设置光标样式为水平调整 */
   background-color: #ccc;
-  z-index: 1; /* 设置堆叠顺序，保证拖动手柄在最上层 */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  transition: background-color 0.3s;
 }
 
-.toggle-button {
-  position: absolute; /* 设置绝对定位 */
-  bottom: 0; /* 将隐藏按钮放置在目录部分的底部 */
-  left: 0;
+.drag-handle:hover {
+  background-color: #999;
+}
+
+.directory {
+  padding-left: 20px;
 }
 
 .content {
   flex: 1; /* 中间内容部分自动填充剩余空间 */
-  overflow: auto; /* 添加滚动条，当内容超出内容部分高度时显示滚动条 */
+  overflow: hidden; /* 添加滚动条，当内容超出内容部分高度时显示滚动条 */
+  padding: 20px;
 }
 
 .outline {
-  flex: 0 0 auto; /* 右侧大纲部分固定宽度 */
-  position: sticky; /* 将大纲部分设置为粘性定位，不随滚动而移动 */
-  top: 0; /* 设置粘性定位的起始位置为顶部 */
+  background-color: #f0f0f0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 
 
 
 
-.read-center {
+.read-centers {
   position: relative;
   background: #FFFFFF;
   margin: 0 auto;
