@@ -16,7 +16,7 @@
   // import ViewUI from 'view-design'
   import {
     Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload, Icon,
-    Menu, MenuItem, Button, Checkbox, Input, Divider
+    Menu, MenuItem, Button, Checkbox, Input, Divider, Tree
   } from 'view-design'
   import 'view-design/dist/styles/iview.css'
   import commonUtil from "@/utils/common"
@@ -40,6 +40,7 @@
   Vue.component('Button', Button);
   Vue.component('Checkbox', Checkbox);
   Vue.component('Divider', Divider);
+  Vue.component('Tree', Tree);
   export default {
     name: 'App',
     data() {

@@ -3,238 +3,20 @@
 .read-center {
   display: flex;
   height: 100vh; /* 设置容器高度为视口高度 */
-}
 
-.sidebar {
-  background-color: #f2f2f2;
-  overflow: hidden;
-  position: relative;
-  min-width: 100px;
-  max-width: 400px;
-}
+  .layout-module_wrapper {
+    display: flex;
 
-.drag-handle {
-  cursor: col-resize;
-  width: 10px;
-  background-color: #ccc;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  transition: background-color 0.3s;
-}
+    .layout-module_directoryWrapper {
+      background-color: #ffffff;
+      overflow-x: hidden;
+      //overflow-y: auto;
+      position: relative;
+      border-right: 1px solid #8A8F8D;
 
-.drag-handle:hover {
-  background-color: #999;
-}
+      .layout-module_directory {
 
-.directory {
-  padding-left: 20px;
-}
-
-.content {
-  flex: 1; /* 中间内容部分自动填充剩余空间 */
-  overflow: hidden; /* 添加滚动条，当内容超出内容部分高度时显示滚动条 */
-  padding: 20px;
-}
-
-.outline {
-  background-color: #f0f0f0;
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 300px;
-  height: 100%;
-  overflow-y: auto;
-}
-
-
-
-
-
-.read-centers {
-  position: relative;
-  background: #FFFFFF;
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-
-  .main-wrapper {
-    flex: 1 0;
-    width: 100%;
-
-    //.layout-module {
-    //  width: 100%;
-    //  overflow-y: auto;
-    //  padding-top: 0;
-    //
-    //  .layout-module_children {
-    //    min-height: calc(~"100vh - 108px");
-    //  }
-    //}
-
-    .ReaderLayout-module_wrapper {
-      width: 100%;
-      min-height: calc(100vh - 60px);
-      background: #FFFFFF;
-      will-change: padding-left;
-      padding-left: 345px;
-    }
-
-    .ReaderLayout-module_onlyTocAside {
-      position: absolute;
-      z-index: 410;
-      top: 0;
-      left: 100%;
-      background-color: #FFFFFF;
-
-      .doc-head {
-        position: fixed;
-        z-index: 999;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 52px;
-        width: auto;
-        border: none;
-        border-bottom: 1px solid hsla(0, 0%, 0%, 0.04);
-        transform: translateY(0);
-        transition: transform .2s ease .2s,left .2s cubic-bezier(.1,0,0,1) 0s;
-        will-change: transform,left;
-        font-size: 14px;
-
-        .doc-head-inner {
-          width: 100%;
-          height: 100%;
-          margin: 0 auto;
-          display: flex;
-          justify-content: space-between;
-          max-width: none;
-
-          .header-crumb.title-visible.only-doc-title {
-            overflow: hidden;
-            height: 100%;
-          }
-
-          .header-crumb.title-visible {
-            transition: margin .1s cubic-bezier(.1,0,0,1) 0s;
-          }
-
-          .header-crumb {
-            display: flex;
-            height: 100%;
-            padding: 14px 16px;
-            align-items: center;
-            float: left;
-            line-height: 32px;
-          }
-
-          .index-module_editable {
-            cursor: pointer;
-          }
-
-          .index-module_nameTitle {
-            font-size: 14px;
-            color: #585A5A;
-            max-width: 400px;
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-
-          .ViewerHeader-module_offlineIcon {
-            margin-left: 5px;
-          }
-          .index-module_offlineButton {
-            cursor: not-allowed;
-          }
-          .index-module_availableStyle {
-            cursor: pointer;
-          }
-          .ant-btn.ant-btn-text {
-            background-image: none;
-            font-weight: 400;
-            -webkit-appearance: button;
-          }
-          .ViewerHeader-module_offlineButton {
-            margin-left: 8px;
-          }
-
-          .header-action {
-            display: flex;
-            align-items: center;
-            float: right;
-            padding-right: 16px;
-            height: 100%;
-            color: #262626;
-          }
-
-        }
-      }
-
-      .ViewerHeader-module_wrapper {
-        background-color: #FFFFFF;
-      }
-
-      .BookReader-module_wrapper {
-        position: relative;
-        padding-top: 52px;
-        transition: padding .3s linear;
-        background-color: var(--yq-bg-primary);
-        min-height: 100vh;
-
-        .DocReader-module_header {
-          max-width: 100%;
-          //margin-right: 305px;
-          padding: 0 50px;
-          margin: 0 calc(~"50vw - 425px") 0 auto;
-
-          .DocReader-module_title {
-            margin: 24px 0 32px;
-
-            h1 {
-              font-family: Chinese Quote,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji;
-              font-size: 36px;
-              line-height: 1.389;
-              font-weight: 700;
-              color: #262626;
-              display: inline;
-              margin-right: 20px;
-              font-variant-ligatures: none;
-              margin-bottom: 0;
-              margin-top: 0;
-            }
-
-            h1:last-child{
-              margin-right: 0;
-            }
-
-            .index-module_articleTitle {
-              word-break: break-word;
-            }
-          }
-        }
-      }
-    }
-
-    .ReaderLayout-module_asideWrapper {
-      position: fixed;
-      top: 0;
-      left: 0;
-      flex: 0 0 auto;
-      height: 100vh;
-
-      .ReaderLayout-module_aside {
-        height: 100vh;
-        overflow: hidden;
-        background: #FFFFFF;
-        will-change: width;
-        transition: width 200ms cubic-bezier(0.1, 0, 0, 1) 0s;
-        width: 345px;
-
-        .ReaderLayout-module_asideHead {
+        .directory-header {
           display: flex;
           align-items: center;
           flex-flow: column;
@@ -242,126 +24,53 @@
           border-bottom: 1px solid #E7E9E8;
           padding: 0 0 12px;
 
-          .ReaderLayout-module_bookInfo {
+          .book-info {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
             position: relative;
 
-            .ReaderLayout-module_crumb {
+            .crumb {
               display: flex;
               align-items: center;
               width: 100%;
               height: 45px;
               padding: 16px 0 6px 6px;
 
-              .ReaderLayout-module_yuqueLogo {
+              .website-logo {
+                cursor: pointer;
                 color: #8A8F8D;
-                text-decoration: none;
-                background-color: transparent;
-                outline: none;
-                cursor: pointer;
-                transition: color .3s;
-                -webkit-text-decoration-skip: objects;
-                touch-action: manipulation;
-                cursor: pointer;
-                color: var(--yq-text-caption);
                 display: inline-flex;
               }
-            }
 
-            .ReaderLayout-module_bookName {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              font-size: 16px;
-              color: #262626;
-              font-weight: 700;
-              line-height: 22px;
-              border-radius: 6px;
-              padding: 0 10px 0 0;
-              height: 36px;
-
-              .ReaderLayout-module_icon {
-                width: 20px;
-                height: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #585A5A;
-                font-size: 22px;
-                border: none;
-                outline: none;
-                margin: 0 10px 0 4px;
-              }
-
-              .ReaderLayout-module_bookName {
-                overflow: hidden;
-                display: flex;
-                flex: 1;
-                align-items: center;
-
-                .ReaderLayout-module_text {
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                }
-
-                .ReaderLayout-module_privateIcon {
-                  margin-left: 18px;
-                  position: relative;
-                  right: 12px;
-                  color: #8A8F8D;
-                }
-              }
-
-              .ReaderLayout-module_bookOverviewMoreActions {
+              .crumb-text {
+                font-size: 12px;
+                cursor: pointer;
                 color: #8A8F8D;
-                text-align: center;
-                min-width: 24px;
-                height: 24px;
-                font-size: 14px;
-                cursor: pointer;
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                right: 0;
+                flex: 1;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
               }
 
-              .index-module_more {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 32px;
-                height: 32px;
-                cursor: pointer;
-                color: #000000;
-                border-radius: 8px;
-
-                line-height: 16px;
-                padding: 4px;
+              .icon-more {
+                font-size: 8px;
+                margin: 2px;
               }
             }
           }
         }
 
-        .ReaderLayout-module_asideNav {
+        .directory-nav {
           height: calc(~"100% - 78px");
-          will-change: width;
-          transition: width 200ms cubic-bezier(0.1, 0, 0, 1) 0s;
-          width: 345px;
-          max-width: 480px;
-          min-width: 259px;
 
-          .ReaderLayout-module_searchNav {
+          .search-nav {
             display: flex;
             align-items: center;
             margin: 16px 8px 0 8px;
 
-            .ReaderLayout-module_searchBar {
+            .search-bar {
               display: flex;
               align-items: center;
               padding: 5px 8px;
@@ -373,24 +82,16 @@
               border-radius: 8px;
               position: relative;
 
-            }
-
-            .ReaderLayout-module_asideActions {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 32px;
-              height: 32px;
-              border-radius: 8px;
-              margin: 0 0 0 12px;
-              cursor: pointer;
-              transition: background .35s ease-in-out;
-              background-color: #FFFFFF;
-              border: 1px solid #E7E9E8;
+              .search-hot-key {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 8px;
+              }
             }
           }
 
-          .ReaderLayout-module_nav {
+          .home-nav {
             display: flex;
             align-items: center;
             padding: 5px 8px;
@@ -400,12 +101,12 @@
             position: relative;
           }
 
-          .BookCatalog-module_asiderTab {
-            flex-direction: column;
+          .nav-tabs {
             box-sizing: border-box;
+            flex-direction: column;
             margin: 0;
             padding: 0;
-            color: #262626;
+            color: var(--yq-yuque-grey-900);
             font-size: 14px;
             font-variant: tabular-nums;
             line-height: 1.5715;
@@ -413,9 +114,9 @@
             font-feature-settings: "tnum";
             display: flex;
             overflow: hidden;
-            box-sizing: border-box;
 
-            .BookCatalog-module_tabBar {
+
+            .tabs-bar {
               display: flex;
               justify-content: space-between;
               padding: 0 16px 0 8px;
@@ -423,7 +124,7 @@
               margin: 6px 0 0 0;
               border-bottom: 1px solid transparent;
 
-              .BookCatalog-module_tabTitle {
+              .tab-title {
                 display: flex;
                 align-items: center;
                 border-right: 6px;
@@ -431,12 +132,12 @@
                 cursor: pointer;
               }
 
-              .BookCatalog-module_asideActionsCont {
+              .actions-cont {
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
 
-                .CatalogTreeCollapseTrigger-module_actionItem {
+                .action-item {
                   display: flex;
                   align-items: center;
                   justify-content: center;
@@ -452,618 +153,52 @@
               }
             }
 
-            .ant-tabs-content-holder {
+            .tabs-content-holder {
               flex: auto;
               min-width: 0;
               min-height: 0;
 
-              .ant-tabs-content {
+              .tabs-content {
                 display: flex;
                 width: 100%;
-
-                .ant-tabs-tabpane {
-                  flex: none;
-                  width: 100%;
-                  outline: none;
-
-                  .BookCatalog-module_sideCatalog {
-                    height: calc(~"100vh - 224px");
-                  }
-                }
               }
             }
           }
         }
       }
 
-      .ReaderLayout-module_dragbar {
-        position: absolute;
-        z-index: 202;
-        top: 0;
-        bottom: 0;
-        right: -6px;
-        width: 6px;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
+      .layout-module_dragbar {
         cursor: ew-resize;
-      }
-
-      .ReaderLayout-module_dragbar::before {
-        content: "";
+        width: 6px;
+        //background-color: #ccc;
         position: absolute;
         top: 0;
+        right: 0;
         bottom: 0;
-        background-color: hsla(0, 0%, 0%, 0.04);
-      }
-
-      .ReaderLayout-module_dragbar::after {
-        transition: backgroundcolor .2s ease-in-out;
-        right: 6px;
-        width: 1px;
+        transition: background-color 0.3s;
       }
     }
 
-    // 右边的大纲
-    .reader-sidebar {
+    .content {
+      flex: 1; /* 中间内容部分自动填充剩余空间 */
+      overflow-x: hidden; /* 添加滚动条，当内容超出内容部分高度时显示滚动条 */
+      padding: 20px;
+    }
+
+    .layout-module_asideWrapper {
       position: fixed;
       z-index: 998;
-      right: 0;
+      right: 15px;
       top: 52px;
       max-width: 305px;
       height: calc(~"100vh - 52px");
       max-height: calc(~"100vh - 52px");
       overflow-y: auto;
-      overflow: hidden;
-      background-color: #FFFFFF;
-
-      .editor-view {
-        position: relative;
-        z-index: 1;
-        max-height: calc(90%);
-        display: flex;
-        flex-shrink: 0;
-        flex-direction: column;
-        margin-top: 35px;
-        overflow: hidden;
-        width: 305px;
-        font-family: 'Chinese Quote', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-
-        .editor-toc-pin {
-          margin-bottom: 12px;
-          padding-top: 8px;
-          padding-left: 28px;
-          display: -webkit-box;
-          display: -ms-flexbox;
-          display: flex;
-          -webkit-box-align: center;
-          -ms-flex-align: center;
-          align-items: center;
-          height: 30px;
-          -ms-flex-negative: 0;
-          flex-shrink: 0;
-
-          .editor-toc-pin-text {
-            margin-right: 8px;
-            font-weight: bold;
-          }
-        }
-
-        .editor-toc-inner {
-          width: 100%;
-          cursor: default;
-          overflow-x: hidden;
-          overflow-y: auto;
-
-          .toc-content {
-            position: relative;
-            z-index: 2;
-
-            .toc-item {
-              padding-right: 20px;
-              height: 22px;
-              font-size: 14px;
-              line-height: 22px;
-              margin-bottom: 6px;
-              white-space: nowrap;
-              border-left: 2px solid transparent;
-              cursor: default;
-              display: block;
-
-              a {
-                color: #585A5A;
-              }
-            }
-
-            .toc-item:last-child {
-              margin-bottom: 0;
-            }
-
-            .toc-depth-1 {
-              padding-left: 8px;
-            }
-            .toc-depth-2 {
-              padding-left: 25px;
-            }
-            .toc-depth-3 {
-              padding-left: 42px;
-            }
-            .toc-depth-4 {
-              padding-left: 59px;
-            }
-            .toc-depth-5 {
-              padding-left: 76px;
-            }.toc-depth-6 {
-               padding-left: 110px;
-             }
-
-
-
-            .toc-selected {
-              border-left-color: #00B96B;
-              color: #262626;
-              font-weight: bold;
-            }
-
-            .toc-item-inner {
-              display: flex;
-              align-items: center;
-
-              .toc-item-text {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                display: block;
-              }
-            }
-          }
-
-          .toc-content::after {
-            content: ' ';
-            background: #D8DAD9;
-            width: 2px;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -1;
-          }
-        }
-      }
+      overflow-x: hidden;
+      background-color: #f0f0f0;
     }
   }
 }
-
-
-
-
-
-.editor-center {
-  font-family: Chinese Quote, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif;
-
-  .row {
-    margin: 0;
-    min-height: unset;
-  }
-
-  color: @editor-font-color;
-  height: 100vh;
-  position: relative;
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background: #ffffff;
-  min-height: 100vh;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-
-
-  .editor-header {
-    border-bottom: 1px solid #eeeeee;
-    position: relative;
-    height: 60px;
-    background: #fff;
-
-    .mock-hover {
-      background-color: #eeeeee;
-    }
-
-    .left-dropdown-wrapp {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      width: 60px;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: center;
-      border-right: 1px solid #eeeeee;
-
-      .menu-icon {
-        display: flex;
-        align-items: center;
-        height: 45px;
-      }
-    }
-
-    .title-info {
-      padding: 8px 0;
-      margin-left: 16px;
-      width: 40%;
-
-      .list-group-item {
-        border: none;
-        padding: 0 0 0 0;
-      }
-
-      .iconfont {
-        font-size: 14px;
-        margin-left: 5px;
-      }
-
-      .title {
-        cursor: pointer;
-        font-weight: 700;
-        font-size: 16px;
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .author-info {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-size: 12px;
-
-        a {
-          color: #8A8F8D;
-        }
-
-        .update-time {
-          color: #8A8F8D;
-        }
-      }
-
-    }
-
-    .editor-setting {
-      position: absolute;
-      top: 14px;
-      right: 20px;
-      z-index: 301;
-      width: auto;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-
-      .update-btn {
-        width: 60px;
-        height: 30px;
-        margin-right: 30px;
-        color: @light-font-color;
-        border: 1px solid @border-color_normal;
-      }
-
-      .update-btn:hover {
-        color: @border-color_hover;
-        border: 1px solid @border-color_hover;
-      }
-
-      .setting-icon {
-        height: 40px;
-
-        .iconfont {
-          font-size: 20px;
-        }
-      }
-
-      /deep/ .ivu-select-dropdown {
-        width: 240px;
-        border-radius: 8px;
-        padding: 8px 0;
-        margin: 0;
-
-        .ivu-dropdown-item:hover {
-          background: @editor-item-hover;
-        }
-
-        .doc-set-style-wrapp {
-          margin-left: -2px;
-        }
-
-        .ivu-divider-horizontal {
-          margin: 4px 0;
-        }
-
-        .iconfont {
-          font-size: 16px;
-        }
-
-        .editor-icon {
-          margin-right: 8px;
-        }
-
-        .editor-set {
-          display: flex;
-          align-content: center;
-          font-size: 14px;
-          color: @editor-font-color;
-          line-height: 20px;
-          margin: 4px;
-        }
-
-        .doc-set-style-wrapp {
-          .doc-set-style {
-            padding-left: 2px;
-
-            span {
-              line-height: 24px;
-            }
-
-            .icon-more {
-              font-size: 14px;
-              float: right;
-              color: #262626;
-            }
-          }
-
-          .ivu-select-dropdown {
-            .ivu-dropdown-item:hover {
-              background: unset;
-            }
-          }
-        }
-
-
-        .for-version {
-          margin-left: 28px;
-        }
-
-        .doc-info {
-          /* 禁止 DIV 中的文本被鼠标选中 */
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          margin: 20px 0 0 20px;
-          color: #8A8F8D;
-          font-size: 12px;
-          line-height: 20px;
-
-          div {
-            margin-top: 4px;
-          }
-        }
-
-        /* 内嵌dropdown样式 */
-
-        .ivu-select-dropdown {
-          width: 340px;
-
-          .style-item {
-            display: flex;
-            align-items: center;
-            padding: 10px 24px;
-          }
-
-          .font-size {
-            height: 50px;
-            line-height: 36px;
-            cursor: auto;
-            background: none !important;
-
-            .Slider-module_slideTitle {
-              font-size: 14px;
-            }
-
-            .Slider-module_slideContainer {
-              display: block;
-              position: relative;
-              flex: 1;
-              line-height: 44px;
-              margin: 0;
-              padding: 0 23px 0 17px;
-              background: none !important;
-              color: @editor-font-color;
-              -webkit-user-select: none;
-              -moz-user-select: none;
-              user-select: none;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              cursor: pointer;
-              transition: border-color .3s, background .3s, padding .3s cubic-bezier(.645, .045, .355, 1);
-
-              .ant-slider-with-marks {
-                position: relative;
-                height: 12px;
-                line-height: 1.5715;
-                margin: 10px 6px 10px;
-                padding: 4px 0;
-                font-size: 14px;
-                color: #00AE9D;
-                font-variant: tabular-nums;
-                list-style: none;
-                font-feature-settings: "tnum";
-                cursor: pointer;
-                touch-action: none;
-                white-space: nowrap;
-                margin-left: 2px;
-
-                .ant-slider-rail {
-                  position: absolute;
-                  height: 2px;
-                  width: 100%;
-                  margin-left: 3px;
-                  background: #D8DAD9;
-                  border-radius: 6px;
-                  box-sizing: border-box;
-                  transition: background-color .3s;
-                }
-
-                .ant-slider-step {
-                  position: absolute;
-                  width: 100%;
-                  height: 4px;
-                  background: transparent;
-                  display: flex;
-                  justify-content: center;
-
-                  .slider-dot-wrapp {
-                    position: absolute;
-                    height: 20px;
-                    width: 10px;
-                  }
-
-                  .slider-dot-wrapp:nth-child(4) {
-                    .ant-slider-dot {
-                      background: #8A8F8D;
-                      border-color: #8A8F8D;
-                    }
-                  }
-
-                  .ant-slider-dot:first-child, .ant-slider-dot:last-child {
-                    margin-left: 2px;
-                  }
-
-                  .ant-slider-dot {
-                    line-height: 10px;
-                    position: absolute;
-                    height: 6px;
-                    width: 6px;
-                    top: -2px;
-                    background: #D8DAD9;
-                    border-color: #D8DAD9;
-                    border-radius: 50%;
-                    cursor: pointer;
-                  }
-
-                }
-
-                .ant-slider-handle, .ant-slider-handle:focus, .ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open) {
-                  border: 1px solid #E7E9E8;
-                  box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.13), 0 2px 8px 0 rgba(0, 0, 0, 0.08), 0 8px 16px 4px rgba(0, 0, 0, 0.04);
-                  transition: none;
-                  margin: -6px 0 0 5px;
-                }
-
-                .show-select-font {
-                  outline: none;
-                  border-color: #117CEE!important;
-                }
-
-                .ant-slider-handle {
-                  position: absolute;
-                  right: auto;
-                  width: 14px;
-                  height: 14px;
-                  background-color: #ffffff;
-                  border-radius: 50%;
-                  cursor: pointer;
-                  transform: translateX(-50%);
-                }
-              }
-            }
-          }
-
-          .segment-space {
-            .Slider-module_slideTitle {
-              margin-right: 220px;
-            }
-
-            .ivu-switch:not(.ivu-switch-disabled):focus {
-              box-shadow: unset !important;
-            }
-          }
-
-          .set-default {
-            .ivu-checkbox-checked .ivu-checkbox-inner {
-              border-color: @editor-button-color;
-              background-color: @editor-button-color;
-            }
-
-            .ivu-checkbox-focus {
-              box-shadow: unset !important;
-            }
-          }
-
-          .page-size {
-            .standard-wide, .ultra-wide {
-              display: flex;
-              flex-direction: row;
-              cursor: pointer;
-              text-align: center;
-              height: 40px;
-              width: 140px;
-              line-height: 40px;
-              padding: 5px 9px 6px 9px;
-              border-radius: 6px;
-              border: 1px solid #E7E9E8;
-
-              svg {
-                color: #8A8F8D;
-              }
-              svg:not(:root) {
-                overflow: hidden;
-              }
-
-              .larkui-icon {
-                display: inline-block;
-                color: inherit;
-                font-style: normal;
-                line-height: 0;
-                text-align: center;
-                text-transform: none;
-                vertical-align: -.125em;
-                text-rendering: optimizeLegibility;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-                color: #8A8F8D;
-              }
-
-              .Select-module_optionTitle {
-                display: flex;
-                justify-content: space-around;
-                font-size: 14px;
-                text-align: center;
-                height: 28px;
-                line-height: 28px;
-                margin-left: 21px;
-              }
-            }
-
-            .ultra-wide {
-              margin-left: 12px;
-            }
-
-            .Select-module_optionActive {
-              border: 1px solid #C0DDFC;
-              .Select-module_iconSvg {
-                color: #5FA8F6;
-              }
-            }
-
-            .standard-wide:hover, .ultra-wide:hover {
-              background: #F4F5F5;
-            }
-          }
-        }
-
-      }
-
-
-    }
-  }
-}
-
 
 // 第三方插件样式覆盖
 
