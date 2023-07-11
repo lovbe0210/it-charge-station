@@ -2,11 +2,12 @@
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
   src:
-          url('//at.alicdn.com/t/c/font_3272463_hya5h2eyhe.woff2?t=1688975570009') format('woff2');
+          url('//at.alicdn.com/t/c/font_3272463_ax4pz0pvspi.woff2?t=1689061158311') format('woff2');
 }
 
 .iconfont {
   font-family: "iconfont" !important;
+  font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -170,4 +171,16 @@
 
 .icon-nav-menu:before {
   content: "\e60c";
+}
+
+.icon-content-public:before {
+  content: "\e63f";
+}
+
+.icon-present-show:before {
+  content: "\e648";
+}
+
+.icon-layout:before {
+  content: "\e759";
 }

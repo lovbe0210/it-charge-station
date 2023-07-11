@@ -90,11 +90,55 @@
           </div>
         </div>
       </div>
-      <div class="content">
+      <div class="layout-module_contentWrapper" id="contentWrapper">
+        <div id="header" class="layout-module_headerWrapper"
+             :style="{ width: 'calc(100% - ' + (fullScreen ? 15 : sidebarWidth + 15) + 'px)'}">
+          <div class="doc-head-inner">
+            <div class="header-crumb">
+              <span class="header_title" title="Seata—分布式事务解决方案">Seata—分布式事务解决方案</span>
+              <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+                <template slot="title">
+                  {{openAllTree ? '互联网所有人可以访问' : '仅关注可见'}}
+                </template>
+                <div class="header-status-icon">
+                  <span class="iconfont icon-content-public"/>
+                </div>
+              </a-tooltip>
+            </div>
+            <div class="header-action">
+              <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+                <template slot="title">
+                  {{ifLike ? '取消收藏' : '收藏'}}
+                </template>
+                <div class="header-module_likeButton action-icon" @click="ifLike = !ifLike">
+                  <span :class="['iconfont', ifLike ? 'icon-like3' : 'icon-like']"></span>
+                </div>
+              </a-tooltip>
+
+              <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+                <template slot="title">
+                  演示
+                </template>
+                <div class="header-module_presentButton action-icon" @click="presentShow()">
+                  <span class="iconfont icon-present-show"></span>
+                </div>
+              </a-tooltip>
+              <div class="collabUsersContainer action-icon">
+                <span class="iconfont icon-layout"></span>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- 内容显示部分 -->
-        <div ref="view"></div>
+        <div class="layout-module_bookReaderWrapper BookReader-module_docTypographyClassic">
+          <div class="BookReader-module_docContainer">
+            <div>
+              <div ref="view"></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="layout-module_asideWrapper">
+      <div class="layout-module_asideWrapper" style="display:none;">
         <!-- 右侧大纲展示 -->
         <div class="editor-view">
           <div class="editor-toc-pin">
@@ -130,6 +174,8 @@
   import {View} from '@aomao/engine'
   import {plugins, cards, pluginConfig} from "@/components/common/editor/config"
   import {getTocData} from "../components/common/editor/utils";
+  const event = document.createEvent('KeyboardEvent');
+  event.initKeyboardEvent('keydown', true, true, window, false, false, false, false, 122, 0);
 
   export default {
     name: 'ReadCenter',
@@ -139,6 +185,7 @@
         startX: 0,
         startWidth: 0,
         sidebarWidth: 345, // 初始宽度
+        fullScreen: false, // 全屏演示模式
 
         docInfo: {
           title: 'lovbe0210',
@@ -158,6 +205,7 @@
           // 页面大小1=标宽模式，2=超宽模式
           pageSize: 1
         },
+        ifLike: false,
         dirData: [
           {
             id: 1,
@@ -429,8 +477,44 @@
             this.recursiveExpansion(children.children, ifOpen)
           })
         }
-      }
+      },
 
+      // 进入演示模式相关方法
+      presentShow() {
+        let element = document.getElementById("contentWrapper");
+        // 浏览器兼容
+        if (this.fullScreen) {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          }
+        } else {
+          if (element.requestFullscreen) {
+            element.requestFullscreen();
+          } else if (element.webkitRequestFullScreen) {
+            element.webkitRequestFullScreen();
+          } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+          } else if (element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+          }
+        }
+        // this.fullScreen = !this.fullScreen;
+      },
+      checkFullscreen() {
+        const isFullscreen = (
+          document.fullscreenElement ||
+          document.webkitFullscreenElement ||
+          document.mozFullScreenElement ||
+          document.msFullscreenElement
+        );
+        this.fullScreen = Boolean(isFullscreen);
+      }
     },
     mounted() {
       const container = this.$refs.view;
@@ -457,6 +541,10 @@
 
         this.view = view;
       }
+      window.addEventListener('resize', this.checkFullscreen);
+    },
+    beforeDestroy() {
+      window.removeEventListener('resize', this.checkFullscreen);
     }
   }
 </script>

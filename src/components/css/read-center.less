@@ -22,7 +22,7 @@
           flex-flow: column;
           margin: 0 10px;
           border-bottom: 1px solid #E7E9E8;
-          padding: 0 0 12px;
+          padding: 0 0 6px;
 
           .book-info {
             display: flex;
@@ -376,11 +376,99 @@
       border-right: 1px solid #E7E9E8;
     }
 
-    .content {
-      flex: 1; /* 中间内容部分自动填充剩余空间 */
-      overflow-x: hidden; /* 添加滚动条，当内容超出内容部分高度时显示滚动条 */
-      padding: 20px;
-    }
+    /*.layout-module_contentWrapper {
+      flex: 1; !* 中间内容部分自动填充剩余空间 *!
+      overflow-x: hidden; !* 添加滚动条，当内容超出内容部分高度时显示滚动条 *!
+      width: 100%;
+      min-height: calc(100vh - 60px);
+      background: #FFFFFF;
+      will-change: padding-left;
+
+      .layout-module_headerWrapper {
+        background: #FFFFFF;
+        position: fixed;
+        z-index: 999;
+        top: 0;
+        //left: 0;
+        //right: 0;
+        height: 52px;
+        border: none;
+        border-bottom: 1px solid hsla(0, 0%, 0%, 0.04);
+        transform: translateY(0);
+        transition: transform .2s ease .2s,left .2s cubic-bezier(.1,0,0,1) 0s;
+        will-change: transform,left;
+        font-size: 14px;
+
+        .doc-head-inner {
+          width: 100%;
+          height: 100%;
+          margin: 0 auto;
+          display: flex;
+          justify-content: space-between;
+
+          .header-crumb {
+            float: left;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            line-height: 32px;
+            transition: margin .1s cubic-bezier(.1,0,0,1) 0s;
+            overflow: hidden;
+            height: 100%;
+
+            .header_title {
+              font-size: 14px;
+              color: #585A5A;
+              max-width: 400px;
+              display: block;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+
+            .header-status-icon {
+              margin-left: 8px;
+
+              .iconfont {
+                font-size: 14px;
+                font-weight: bold;
+              }
+            }
+          }
+
+          .header-action {
+            display: flex;
+            align-items: center;
+            justify-items: center;
+            float: right;
+            padding-right: 6px;
+            height: 100%;
+            color: #262626;
+
+            .action-icon {
+              width: 40px;
+              height: 32px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              .iconfont {
+                font-size: 20px;
+              }
+
+            }
+          }
+        }
+      }
+
+      .layout-module_bookReaderWrapper {
+        position: relative;
+        padding-top: 52px;
+        transition: padding .3s linear;
+        background-color: #FFFFFF;
+        //min-height: 100vh;
+      }
+    }*/
 
     .layout-module_asideWrapper {
       position: fixed;
@@ -394,9 +482,6 @@
       overflow-x: hidden;
       background-color: #f0f0f0;
     }
-  }
-  .content {
-    background-color: #FFFFFF;
   }
 }
 
@@ -449,6 +534,10 @@
 
 /deep/.read-nav-tooltip {
   padding-bottom: 0 !important;
+}
+
+/deep/.read-header-tooltip {
+  padding-top: 0 !important;
 }
 
 /deep/.ant-tooltip-inner {
