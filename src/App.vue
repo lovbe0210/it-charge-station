@@ -16,9 +16,10 @@
   // import ViewUI from 'view-design'
   import {
     Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload, Icon,
-    Menu, MenuItem, Button, Checkbox, Input, Divider, Tree
+    Menu, MenuItem, Button, Checkbox, Input, Divider, Tree, List
   } from 'view-design'
   import 'view-design/dist/styles/iview.css'
+  import { Tooltip } from 'ant-design-vue'
   import commonUtil from "@/utils/common"
   // 引入弹幕模块
   import {vueBaberrage} from 'vue-baberrage'
@@ -41,6 +42,11 @@
   Vue.component('Checkbox', Checkbox);
   Vue.component('Divider', Divider);
   Vue.component('Tree', Tree);
+  Vue.component('List', List);
+  Vue.component('ListItem', List.Item);
+  Vue.component('ListItemMeta', List.Item.Meta);
+  Vue.component('a-tooltip', Tooltip);
+
   export default {
     name: 'App',
     data() {

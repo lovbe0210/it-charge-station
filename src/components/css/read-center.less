@@ -12,7 +12,7 @@
       overflow-x: hidden;
       //overflow-y: auto;
       position: relative;
-      border-right: 1px solid #8A8F8D;
+      border-right: 1px solid #F5F5F5;
 
       .layout-module_directory {
 
@@ -99,6 +99,15 @@
             cursor: pointer;
             border-radius: 6px;
             position: relative;
+
+            .icon-nav-home {
+              font-weight: bold;
+              margin-right: 12px;
+            }
+          }
+
+          .home-nav:hover {
+            background-color: #EFF0F0;
           }
 
           .nav-tabs {
@@ -106,7 +115,7 @@
             flex-direction: column;
             margin: 0;
             padding: 0;
-            color: var(--yq-yuque-grey-900);
+            color: #262626;
             font-size: 14px;
             font-variant: tabular-nums;
             line-height: 1.5715;
@@ -130,6 +139,18 @@
                 border-right: 6px;
                 padding: 0 8px;
                 cursor: pointer;
+
+                .iconfont {
+                  margin-right: 12px;
+                }
+                .icon-nav-list {
+                  font-weight: bold;
+                }
+              }
+
+              .tab-title:hover, actions-cont:hover {
+                background-color: #EFF0F0;
+                border-radius: 4px;
               }
 
               .actions-cont {
@@ -161,6 +182,178 @@
               .tabs-content {
                 display: flex;
                 width: 100%;
+
+                .tabs-tabpane {
+                  flex: none;
+                  width: 100%;
+                  outline: none;
+                  position: relative;
+                  height: calc(~"100vh - 189px");
+                  will-change: transform;
+                  direction: ltr;
+                  padding-top: 8px;
+                  overflow-y: scroll;
+                  overflow-x: hidden;
+
+                  .tabpane-tree {
+                    padding: 0 10px 8px 10px;
+
+                    .tree-content {
+                      padding: 0 8px;
+                      flex: 1;
+                      font-size: 14px;
+                      color: #262626;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                      display: flex;
+                      left: 0px;
+                      width: calc(~"100% - 3px");
+                      cursor: pointer;
+                      align-items: center;
+
+                      .single-tree-node {
+                        height: 36px;
+                        line-height: 36px;
+                        width: 100%;
+                        padding-left: 18px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      }
+
+                      .composite-tree-node {
+                        width: 100%;
+
+                        /deep/ li {
+                          margin-top: 0;
+                          margin-bottom: 0;
+                        }
+
+                        /deep/ .ivu-tree-arrow {
+                          margin-left: -5px;
+                          width: 20px;
+                          height: 20px;
+                          line-height: 36px;
+                        }
+
+
+                        /deep/ .ivu-icon:hover {
+                          cursor: pointer;
+                          background: #D8DAD9;
+                          border-radius: 4px;
+                        }
+
+                        /deep/ .ivu-tree-title {
+                          padding-left: 4px;
+                          flex: 1;
+                          font-size: 14px;
+                          color: #262626;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                          white-space: nowrap;
+                          width: calc(~"100% - 6px");
+                          height: 36px;
+                          line-height: 36px;
+                          padding-right: 13.5px;
+                        }
+
+                        /deep/.ivu-tree-title:hover {
+                          cursor: pointer;
+                          background: #EFF0F0;
+                          border-radius: 4px;
+                        }
+                      }
+                    }
+
+                    .single-node-tree:hover {
+                      cursor: pointer;
+                      background: #EFF0F0;
+                      border-radius: 4px;
+                    }
+
+                  }
+
+                  .tabpane-list {
+                    padding: 0 10px 8px 10px;
+
+                    /deep/ .ivu-list-item {
+                      padding: 8px;
+                    }
+                    .ivu-list-item:hover {
+                      cursor: pointer;
+                      background: #EFF0F0;
+                      border-radius: 4px;
+                    }
+
+                    /deep/.ivu-list-item-meta {
+                      width: 100%;
+                    }
+
+                    /deep/ .ivu-list-item-meta-content {
+                      width: 100%;
+                    }
+
+                    /deep/.ivu-list-item-meta-title {
+                      flex: 1;
+                      font-size: 14px;
+                      height: 22px;
+                      color: #262626;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                      line-height: 22px;
+                      display: flex;
+
+                      .title-content {
+                        width: calc(~"100% - 22px");
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      }
+
+                      .icon-nav-menu {
+                        display: flex;
+                        width: 22px;
+                        justify-content: center;
+                      }
+                      .icon-nav-menu:hover {
+                        cursor: pointer;
+                        background-color: #D8DAD9;
+                        border-radius: 4px;
+                      }
+                    }
+
+                    /deep/.ivu-list-item-meta-description {
+                      color: #8A8F8D;
+                      font-size: 14px;
+                      word-break: break-all;
+                      display: -webkit-box;
+                      max-height: 44px;
+                      -webkit-line-clamp: 2;
+                      -webkit-box-orient: vertical;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      line-height: 22px;
+                    }
+                  }
+                }
+
+                .tabs-tabpane:hover::-webkit-scrollbar-thumb {
+                  background-color: #FFFFFF; /* 自定义滚动条滑块颜色 */
+                }
+
+                .tabs-tabpane::-webkit-scrollbar {
+                  width: 5px;
+                }
+
+                .tabs-tabpane:hover::-webkit-scrollbar {
+                  width: 5px;
+                }
+
+                .tabs-tabpane:hover::-webkit-scrollbar-thumb {
+                  background-color: #E7E9E8; /* 自定义滚动条滑块颜色 */
+                }
               }
             }
           }
@@ -170,13 +363,17 @@
       .layout-module_dragbar {
         cursor: ew-resize;
         width: 6px;
-        //background-color: #ccc;
+        z-index: 999;
         position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
         transition: background-color 0.3s;
       }
+    }
+
+    .layout-module_directoryWrapper:hover {
+      border-right: 1px solid #E7E9E8;
     }
 
     .content {
@@ -197,6 +394,9 @@
       overflow-x: hidden;
       background-color: #f0f0f0;
     }
+  }
+  .content {
+    background-color: #FFFFFF;
   }
 }
 
@@ -247,6 +447,16 @@
   margin: 8px 0;
 }
 
+/deep/.read-nav-tooltip {
+  padding-bottom: 0 !important;
+}
 
+/deep/.ant-tooltip-inner {
+  font-size: 12px;
+}
+
+/deep/ .ant-tooltip-arrow {
+  display: none;
+}
 
 
