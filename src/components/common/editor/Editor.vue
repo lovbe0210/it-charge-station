@@ -209,6 +209,7 @@
           top: title + 90
         });
       },
+
       /**
        * 处理滚动条滚动事件
        */
@@ -334,7 +335,7 @@
       window.addEventListener('keydown', this.saveDoc)
 
       // 设置延迟时间，单位为毫秒
-      this.debounceScroll = this.debounce(this.handleScrollForToc, 500);
+      this.debounceScroll = this.debounce(this.handleScrollForToc, 200);
     },
     beforeDestroy() {
       window.removeEventListener('keydown', this.saveDoc)

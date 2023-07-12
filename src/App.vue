@@ -229,8 +229,8 @@
     padding-left: 0;
   }
 
-  [class*="container"] {
-    max-width: 1200px;
+  .container {
+    max-width: 1200px !important;
   }
 
   .col {
