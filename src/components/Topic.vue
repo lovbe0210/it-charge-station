@@ -14,11 +14,14 @@
       </Dropdown>
     </b-row>
     <b-row class="topic-row">
-      <Card v-for="item in topicList" :key="item.uid" class="topic-card">
-        <b-img :src="item.coverUrl" height="200px" width="230" :rounded="true"/>
-        <p class="title">{{item.title}}</p>
-        <p class="desc">{{item.describe}}</p>
-      </Card>
+      <a-card hoverable style="width: 225px" v-for="item in topicList" :key="item.uid" size="small" class="topic-card">
+        <img slot="cover" alt="example" :src="item.coverUrl"/>
+        <a-card-meta :title="item.title" :description="item.describe">
+          <b-avatar :src="item.avatar" variant="light" :to="'/some-link' + item.id" slot="avatar">
+            <span v-if="!item.avatar" class="iconfont icon-all-flush" style="font-size:2.5rem;"></span>
+          </b-avatar>
+        </a-card-meta>
+      </a-card>
     </b-row>
   </b-container>
 </template>
@@ -48,26 +51,31 @@
             uid: "001",
             title: "http://阿斯达四大",
             coverUrl: require('@/assets/img/1.jpg'),
-            describe: "水电费师傅是"
+            describe: "水电费师傅是",
+            avatar: 'https://tvax1.sinaimg.cn/large/718153f4gy1gy47gm06y9j20m80rsq8t.jpg'
           }, {
             uid: "002",
             title: "我是第2个",
-            coverUrl: "http://阿斯达四大",
-            describe: "水电费师傅是"
+            coverUrl: require('@/assets/img/2.jpg'),
+            describe: "水电费师傅是",
+            avatar: 'https://tvax3.sinaimg.cn/large/718153f4gy1gy1ob6nxj1j20lo0ot41b.jpg'
           }, {
             uid: "003",
             title: "我是第3个",
-            coverUrl: "http://阿斯达四大",
-            describe: "水电费师傅是"
+            coverUrl: require('@/assets/img/3.jpg'),
+            describe: "水电费师傅是",
+            avatar: 'https://tvax1.sinaimg.cn/large/718153f4gy1gxzk3fro87j20nc0ncq3z.jpg'
           }, {
             uid: "004",
             title: "我是第4个",
-            coverUrl: "http://阿斯达四大",
+            coverUrl: require('@/assets/img/4.jpg'),
+            avatar: 'https://tvax2.sinaimg.cn/large/718153f4gy1gy47gj6p22j20xc0p0n1v.jpg',
             describe: "水电费师傅是"
           }, {
             uid: "005",
             title: "我是第5个",
-            coverUrl: "http://阿斯达四大",
+            coverUrl: require('@/assets/img/5.jpg'),
+            avatar: 'https://tva3.sinaimg.cn/large/718153f4gy1gy47gg8nutj20m80m8te2.jpg',
             describe: "水电费师傅是"
           }
         ]

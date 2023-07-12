@@ -47,7 +47,7 @@ const routes = [
     // 登陆
     path: '/login',
     name: 'Login',
-    component: () => import('@/components/Login')
+    component: () => import('@/views/Login')
   },
   {
     // 写作中心

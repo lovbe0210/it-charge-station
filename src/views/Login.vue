@@ -252,6 +252,6 @@
 </script>
 
 <style scoped lang="less">
-  @import './css/common-var.less';
-  @import './css/login-register.less';
+  @import '../components/css/common-var.less';
+  @import '../components/css/login-register.less';
 </style>
