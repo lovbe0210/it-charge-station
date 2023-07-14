@@ -84,7 +84,7 @@
                     <span class="nick-name">
                       {{item.nickName}}
                     </span>
-                  <span :class="`iconfont icon-level`+item.level"/>
+                  <span :class="'iconfont icon-level' + item.level"/>
                 </b-row>
                 <span class="tag">
                     {{item.tag.toString().replace(/,/g,' @ ')}}

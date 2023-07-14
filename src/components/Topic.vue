@@ -14,12 +14,25 @@
       </Dropdown>
     </b-row>
     <b-row class="topic-row">
-      <a-card hoverable style="width: 225px" v-for="item in topicList" :key="item.uid" size="small" class="topic-card">
+      <a-card hoverable v-for="item in topicList" :key="item.uid" size="small" class="topic-card">
         <img slot="cover" alt="example" :src="item.coverUrl"/>
-        <a-card-meta :title="item.title" :description="item.describe">
-          <b-avatar :src="item.avatar" variant="light" :to="'/some-link' + item.id" slot="avatar">
-            <span v-if="!item.avatar" class="iconfont icon-all-flush" style="font-size:2.5rem;"></span>
-          </b-avatar>
+        <a-card-meta>
+          <template slot="description">
+            <b-avatar :src="item.avatar" variant="light" :to="'/' + item.personalDomain" class="topic-avatar">
+              <span v-if="!item.avatar" class="iconfont icon-all-flush" style="font-size:2.5rem;"></span>
+            </b-avatar>
+            <div class="card-content-item">
+              <p class="topic-title" :title="item.title">
+                {{item.title}}
+              </p>
+              <p class="topic-description" :title="item.describe">
+                {{item.describe}}
+              </p>
+              <p class="topic-viewCount">
+                <span>{{item.viewCount}}</span>次看过
+              </p>
+            </div>
+          </template>
         </a-card-meta>
       </a-card>
     </b-row>
@@ -49,33 +62,43 @@
         topicList: [
           {
             uid: "001",
-            title: "http://阿斯达四大",
+            personalDomain: "lovbe0210",
+            title: "Java开发技术手册",
             coverUrl: require('@/assets/img/1.jpg'),
-            describe: "水电费师傅是",
+            describe: "个人学习、工作常用知识或工作遇到问题的小记",
+            viewCount: 1002,
             avatar: 'https://tvax1.sinaimg.cn/large/718153f4gy1gy47gm06y9j20m80rsq8t.jpg'
           }, {
             uid: "002",
-            title: "我是第2个",
+            personalDomain: "lzy8684",
+            title: "开发精品文章",
             coverUrl: require('@/assets/img/2.jpg'),
-            describe: "水电费师傅是",
+            describe: "该知识库用于收藏平常遇到过的一些关于技术的文章（涵盖前端与后端）",
+            viewCount: 4202,
             avatar: 'https://tvax3.sinaimg.cn/large/718153f4gy1gy1ob6nxj1j20lo0ot41b.jpg'
           }, {
             uid: "003",
-            title: "我是第3个",
+            personalDomain: "wuyiwa",
+            title: "Linux 系统环境部署大飒飒大啊实打实多",
             coverUrl: require('@/assets/img/3.jpg'),
-            describe: "水电费师傅是",
+            describe: "讲解 Linux 系统部署 Java 项目需要的环境",
+            viewCount: 502,
             avatar: 'https://tvax1.sinaimg.cn/large/718153f4gy1gxzk3fro87j20nc0ncq3z.jpg'
           }, {
             uid: "004",
+            personalDomain: "whalexplorer",
             title: "我是第4个",
             coverUrl: require('@/assets/img/4.jpg'),
             avatar: 'https://tvax2.sinaimg.cn/large/718153f4gy1gy47gj6p22j20xc0p0n1v.jpg',
+            viewCount: 308,
             describe: "水电费师傅是"
           }, {
             uid: "005",
+            personalDomain: "jiaowovitamin",
             title: "我是第5个",
             coverUrl: require('@/assets/img/5.jpg'),
             avatar: 'https://tva3.sinaimg.cn/large/718153f4gy1gy47gg8nutj20m80m8te2.jpg',
+            viewCount: 100,
             describe: "水电费师傅是"
           }
         ]

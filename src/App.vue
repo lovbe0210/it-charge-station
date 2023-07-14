@@ -19,7 +19,7 @@
     Menu, MenuItem, Button, Checkbox, Input, Divider, Tree, List
   } from 'view-design'
   import 'view-design/dist/styles/iview.css'
-  import { Tooltip, Card } from 'ant-design-vue'
+  import { Tooltip, Card, Timeline } from 'ant-design-vue'
   import commonUtil from "@/utils/common"
   // 引入弹幕模块
   import {vueBaberrage} from 'vue-baberrage'
@@ -48,6 +48,8 @@
   Vue.component('a-tooltip', Tooltip);
   Vue.component('a-card', Card);
   Vue.component('a-card-meta', Card.Meta);
+  Vue.component('a-timeline', Timeline);
+  Vue.component('a-timeline-item', Timeline.Item);
 
   export default {
     name: 'App',
@@ -217,6 +219,7 @@
   @import './components/css/common-var.less';
   @import './assets/font_class/iconfont1.css';
   @import './assets/font_class/iconfont2.css';
+  @import './assets/font_class/iconfont3.css';
   // 全局css
   // 为了支持在CSS中能调整大小，将box-sizing 中的 content-box 属性替换为 border-box，这样可以确保填充padding不会影响到元素的最终宽度计算，
   // 但会导致某些第三方软件（如 Google Maps 、 Google Custom Search Engine）出现问题。

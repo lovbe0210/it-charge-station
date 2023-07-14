@@ -1,0 +1,485 @@
+.personal-center {
+  position: relative;
+  background: #FFFFFF;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .layout-module_head {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 24px;
+    width: 100%;
+    background-color: #FFFFFF;
+    height: 60px;
+    position: relative;
+    z-index: 2;
+
+    .layout-header-left {
+      display: flex;
+      margin-left: 24px;
+      flex-basis: 232px;
+      margin-right: 48px;
+
+      a {
+        display: flex;
+        align-self: center;
+        cursor: pointer;
+        align-items: center;
+
+        .icon-logo {
+          font-size: 25px;
+        }
+      }
+    }
+  }
+
+  .layout-main_wrapper {
+    flex: 1 0;
+    width: 100%;
+    background-color: #FFFFFF;
+    min-height: 680px;
+
+    .layout-module_MainContent {
+      width: 100%;
+      overflow-y: auto;
+      padding-top: 0;
+
+      .layout-module_MainContentChildren {
+        min-height: calc(~"100vh - 108px");
+
+        .main-container {
+          max-width: 1056px;
+          padding: 22px 16px 32px 16px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .user-homepage {
+          width: 992px;
+          position: relative;
+          padding: 44px 0 48px 0;
+
+          .userInfo-module_userWrapper {
+            display: flex;
+            margin-left: -10px;
+
+            .userInfo-module_avatarWrapper {
+              position: relative;
+
+              .ant-image {
+                display: block;
+
+                .userInfo-module_avatar {
+                  height: 164px;
+                  width: 164px;
+                  min-width: 164px;
+                  border-radius: 82px;
+                  border-color: rgba(0, 0, 0, 0.06);
+                  border-width: 1px;
+                  border-style: solid;
+                  overflow: hidden;
+                  position: relative;
+                  background-color: #FFFFFF;
+                }
+              }
+            }
+
+            .userInfo-module_info {
+              margin-left: 52px;
+              position: relative;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+
+              .userInfo-module_name {
+                display: flex;
+                align-items: center;
+
+                .userInfo-module_nickname {
+                  font-size: 24px;
+                  color: #262626;
+                  line-height: 32px;
+                  font-weight: 600;
+                  margin-top: 12px;
+                }
+
+                .userInfo-module_level {
+                  text-align: center;
+                  cursor: pointer;
+                  position: relative !important;
+                  top: 0 !important;
+                  right: 0;
+                  width: 25px;
+                  height: 25px;
+                  margin-left: 5px;
+                  padding-bottom: 50px;
+
+                  .iconfont {
+                    font-size: 25px;
+                  }
+                }
+
+                .userInfo-module_action {
+                  display: flex;
+                  height: 100%;
+                  align-items: center;
+                  margin-left: 8px;
+
+                  .userInfo-module_followBtn {
+                    position: relative;
+                    display: inline-block;
+                    white-space: nowrap;
+                    text-align: center;
+                    border: 1px solid #E7E9E8;
+                    cursor: pointer;
+                    transition: all .3s cubic-bezier(.645, .045, .355, 1);
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    user-select: none;
+                    touch-action: manipulation;
+                    height: 32px;
+                    padding: 4px 15px;
+                    font-size: 14px;
+                    outline: 0;
+                    line-height: 1.15;
+                    box-shadow: none;
+                    text-shadow: none;
+                    font-weight: 500;
+                    color: #262626;
+                    background: #FFFFFF;
+                    margin-left: 40px;
+                    border-radius: 6px;
+                    min-width: 76px;
+                  }
+
+                  .default_followBtn {
+                    color: #FFFFFF;
+                    background: #00B96B;
+                    border-color: #00B96B;
+                  }
+
+                  .userInfo-module_followBtn:hover {
+                    outline: 0;
+                    text-decoration: none;
+                    box-shadow: none;
+                    color: #009456;
+                    background: #FFFFFF;
+                    border-color: #009456;
+                  }
+
+                  .default_followBtn:hover {
+                    color: #FFFFFF;
+                    background: #009456;
+                    border-color: #009456;
+
+                  }
+                }
+
+              }
+
+              .userInfo-module_description {
+                font-size: 14px;
+                color: #585A5A;
+                line-height: 22px;
+                font-weight: 400;
+                margin-top: 12px;
+              }
+
+              .userInfo-module_detail {
+                font-size: 14px;
+                color: #8A8F8D;
+                display: flex;
+                margin-top: 16px;
+
+                span {
+                  margin-right: 13px;
+                }
+
+                .index-module_meta {
+                  display: flex;
+                  line-height: 22px;
+                }
+              }
+
+              .userInfo-module_followInfo {
+                margin-top: 22px;
+                display: flex;
+                align-items: center;
+
+                .userInfo-module_followItem {
+                  margin-right: 28px;
+                  display: flex;
+                  align-items: center;
+
+                  .userInfo-module_count {
+                    font-size: 18px;
+                    color: #585A5A;
+                    line-height: 26px;
+                    font-weight: 700;
+                    margin-right: 8px;
+                  }
+
+                  .userInfo-module_label {
+                    font-size: 14px;
+                    color: #8A8F8D;
+                    text-align: center;
+                    line-height: 26px;
+                    font-weight: 400;
+                  }
+                }
+
+                .userInfo-module_followingFollowers {
+                  display: none;
+                }
+              }
+            }
+          }
+
+          .readme-module_userBoardParent {
+            padding-top: 24px;
+            //margin-top: -24px;
+          }
+
+          .personalBooks-module_pbContainer {
+            margin-top: 72px;
+            width: 1018px;
+            margin-bottom: -16px;
+
+            .bookStack-module_stack {
+              position: relative;
+              margin-bottom: 12px;
+
+              .bookStack-module_header {
+                display: flex;
+                align-items: center;
+                height: 32px;
+                position: relative;
+                margin-bottom: 8px;
+                margin-top: 8px;
+                width: 992px;
+
+                .homepage-header {
+                  color: #262626;
+                  font-size: 16px;
+                  line-height: 24px;
+                  font-weight: 500;
+                }
+              }
+            }
+
+            .personalBooks-module_pbContent {
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: flex-start;
+
+              .larkui-sortable {
+                display: flex;
+                width: 100%;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+
+                .personalBooks-module_pbContentItem {
+                  width: 320px;
+                  margin-right: 16px;
+                  margin-bottom: 16px;
+                  box-shadow: 6px 6px 8px rgba(58,61,74,.02);
+                  border: 1px solid hsla(0, 0%, 0%, 0.04);
+                  border-radius: 8px;
+                  position: relative;
+                  box-sizing: border-box;
+                  overflow: hidden;
+
+                  .personalBooks-module_pbContentItemTop {
+                    width: 320px;
+                    height: 146px;
+                    position: relative;
+                    overflow: hidden;
+
+                    img {
+                      width: 100%;
+                      position: absolute;
+                      bottom: 0;
+                    }
+                  }
+
+                  .personalBooks-module_pbContentItemBot {
+                    width: 320px;
+                    height: 146px;
+                    background-color: #FFFFFF;
+                    padding-left: 28px;
+                    padding-right: 28px;
+                    padding-top: 32px;
+
+                    .personalBooks-module_pbContentItemBotTitle {
+                      font-size: 18px;
+                      color: #262626;
+                      letter-spacing: 0;
+                      text-align: left;
+                      line-height: 26px;
+                      font-weight: 500;
+                      z-index: 4;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                    }
+
+                    .personalBooks-module_pbContentItemBotDesc {
+                      font-size: 14px;
+                      color: #8A8F8D;
+                      letter-spacing: 0;
+                      text-align: left;
+                      font-weight: 400;
+                      width: 264px;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                      overflow: hidden;
+                      height: 22px;
+                    }
+
+                    .personalBooks-module_pbContentItemBotViewCount {
+                      color: #8A8F8D;
+                      font-size: 12px;
+                      margin-top: 26px;
+
+                      span {
+                        font-size: 12px;
+                        margin-top: 26px;
+                        color: #585A5A;
+                        font-weight: 500;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          .hotmap-module_hotmap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 88px;
+            max-width: 992px;
+
+            .hotmap-module_title {
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+              align-items: center;
+              width: 100%;
+              margin-bottom: 24px;
+
+              .hotmap-module_label {
+                flex: 1;
+                font-size: 16px;
+                color: #262626;
+                line-height: 24px;
+                font-weight: 500;
+              }
+
+              .hotmap-module_exhibition {
+                display: flex;
+                justify-content: space-between;
+
+                .hotmap-module_exhibitionDesc {
+                  font-size: 14px;
+                  color: #585A5A;
+                }
+                .hotmap-module_exhibitionBlock {
+                  display: flex;
+                  align-items: center;
+                  margin: 0 12px;
+                  margin-right: 6px;
+
+                  span {
+                    width: 14px;
+                    height: 14px;
+                    border-radius: 2px;
+                    margin-right: 6px;
+                    display: block;
+                  }
+
+                  span:first-child {
+                    background-color: #F4F5F5;
+                  }
+                  span:nth-child(2) {
+                    background-color: #DAF6EA;
+                  }
+                  span:nth-child(3) {
+                    background-color: #C7F0DF;
+                  }
+                  span:nth-child(4) {
+                    background-color: #82EDC0;
+                  }
+                  span:nth-child(5) {
+                    background-color: #0BD07D;
+                  }
+                  span:nth-child(6) {
+                    background-color: #00663B;
+                  }
+                }
+              }
+            }
+
+            .hotmap {
+              svg:not(:root) {
+                overflow: hidden;
+              }
+
+              .hotmapRender-module_dayBox {
+                shape-rendering: geometricPrecision;
+                fill: #F4F5F5;
+                outline-offset: -1px;
+                pointer-events: all;
+              }
+
+              .hotmapRender-module_monthLabel {
+                fill: #8A8F8D;
+                font-size: 12px;
+                dominant-baseline: text-before-edge;
+              }
+
+              .hotmapRender-module_dayBox[data-level="-1"] {
+                fill: #FFFFFF;
+                outline: 1px solid #f5f5f5;
+              }
+              .hotmapRender-module_dayBox[data-level="0"] {
+                fill: #F4F5F5;
+              }
+              .hotmapRender-module_dayBox[data-level="1"] {
+                fill: #DAF6EA;
+              }
+              .hotmapRender-module_dayBox[data-level="2"] {
+                fill: #C7F0DF;
+              }
+              .hotmapRender-module_dayBox[data-level="3"] {
+                fill: #82EDC0;
+              }
+              .hotmapRender-module_dayBox[data-level="4"] {
+                fill: #0BD07D;
+              }
+              .hotmapRender-module_dayBox[data-level="5"] {
+                fill: #00663B;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/deep/.personal-center-tooltip {
+  padding-top: 0 !important;
+}
+
+/deep/.ant-tooltip-inner {
+  font-size: 12px;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+/deep/ .ant-tooltip-arrow {
+  display: none;
+}

@@ -8,7 +8,7 @@
           </div>
           <DropdownMenu slot="list">
             <DropdownItem>
-              <div>
+              <div @click="routerPush">
                 <span class="iconfont icon-home"/>
                 首页
               </div>
@@ -33,7 +33,7 @@
           {{docInfo.title === null || docInfo.title.length === 0 ? '无标题文档' : docInfo.title}}
         </b-list-group-item>
         <b-list-group-item class="author-info">
-          <a href="">@福</a>
+          <a href="/">@福</a>
           <span style="color: #d9d9d9;margin: 0 8px 0 8px;">/</span>
           <a href="">从头开始</a>
           <span style="color: #d9d9d9;margin: 0 8px 0 8px;">|</span>
@@ -247,6 +247,9 @@
       },
       changePageSize(value) {
         this.docStyle.pageSize = value;
+      },
+      routerPush() {
+        this.$router.push({path: '/'})
       }
     },
     components: {

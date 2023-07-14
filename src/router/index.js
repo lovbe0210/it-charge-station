@@ -19,6 +19,7 @@ const routes = [
     component: Index,
     redirect: {
       name: 'Recommend',
+      // 从首页进入时传入一个标志为true，然后改变当前激活的菜单显示，只有当从首页进入时改为recommend，其他任何时候都以用户点击为主
       params: {index: 'true'}
     },
     children: [
@@ -26,7 +27,7 @@ const routes = [
         // 关注
         path: 'follow',
         name: 'Follow',
-        // 此方式为路由懒加载 component: () => import('../views/About.vue')
+        // 此方式为路由懒加载
         component: () => import('@/components/Follow')
       },
       {
@@ -60,19 +61,26 @@ const routes = [
     path: '/readCenter',
     name: 'ReadCenter',
     component: () => import('@/views/ReadCenter')
+  },
+  {
+    // 个人中心
+    path: '/:personalDomain',
+    props: true,
+    name: 'PersonalCenter',
+    component: () => import('@/views/PersonalCenter')
   }
 ]
 
 const router = new VueRouter({
-  mode: 'hash',
+  mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
 
-router.afterEach((to, from) => {
-  if (from.name === 'WriteCenter') {
-    window.location.reload();
-  }
-})
+// router.afterEach((to, from) => {
+//   if (from.name === 'WriteCenter') {
+//     window.location.reload();
+//   }
+// })
 
 export default router
