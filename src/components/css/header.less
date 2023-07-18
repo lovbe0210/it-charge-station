@@ -30,6 +30,10 @@
     .index-module_input {
       border: 1px solid @border-color_hover;
       margin-right: 40px;
+
+      .iconfont {
+        color: #262626;
+      }
     }
   }
 
@@ -112,6 +116,13 @@
   .user-info {
     margin-right: 5px;
 
+    .avatar-wrapper {
+      width: 47px;
+      height: 47px;
+      display: flex;
+      align-items: center;
+    }
+
     .dropdown-header {
       padding: 0 5px 5px 10px;
 
@@ -137,8 +148,8 @@
     .msg {
       margin-left: -10px;
       .nav-link {
-        margin: 4.5px 8px 4.5px 8px;
-        padding: 15px 0 15px 0;
+        //margin: 4.5px 8px 4.5px 8px;
+        //padding: 15px 0 15px 0;
         text-decoration:none;
         :hover {
           text-decoration:none;
@@ -149,19 +160,30 @@
         :focus {
           text-decoration:none;
         }
-        span {
-          font-size: 15px;
-          color: var(--font-color);
+
+      }
+
+      .message-menu-wrapper {
+        display: flex;
+        align-items: center;
+        width: 47px;
+        height: 47px;
+
+        .message-menu-body {
+          .c-badge {
+            background: @badge_color;
+            border: 3px solid @badge_color;
+            border-radius: 100%;
+            position: absolute;
+            right: 10px;
+          }
+          span {
+            font-size: 15px;
+            color: var(--font-color);
+          }
         }
       }
 
-      .c-badge {
-        background: @badge_color;
-        border: 3px solid @badge_color;
-        border-radius: 100%;
-        position: absolute;
-        right: -4px;
-      }
 
       .msg-badge {
         margin-left: 5px;
@@ -180,6 +202,12 @@
       border: 1px solid #9e9d9d;
       color: var(--font-color);
       margin: 0 10px 0 25px;
+    }
+
+    .btn {
+      line-height: 29px;
+      padding: 0 8px 0 8px !important;
+      border-radius: 3px;
     }
 
     :hover {
@@ -208,4 +236,8 @@
       color: #FFFFFF;
     }
   }
+}
+
+.navbar-nav {
+ align-items: center;
 }

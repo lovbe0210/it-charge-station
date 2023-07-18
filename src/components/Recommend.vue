@@ -57,7 +57,7 @@
         if (vc.$route.params.index) {
           vc.$store.commit('changeActiveRoute', 'recommend')
         }
-        next()
+        next();
       })
     },
     data() {

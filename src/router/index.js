@@ -58,12 +58,52 @@ const routes = [
   },
   {
     // 阅读中心
-    path: '/readCenter',
+    path: '/readCenter/doc/:articleId',
     name: 'ReadCenter',
+    props: true,
     component: () => import('@/views/ReadCenter')
   },
   {
     // 个人中心
+    path: '/settings',
+    name: 'Setting',
+    redirect: { name: 'Profile' },
+    component: () => import('@/views/Setting'),
+    children: [
+      {
+        // 基本信息
+        path: 'profile',
+        name: 'Profile',
+        component: () => import('@/components/settings/Profile')
+      },
+      {
+        // 个人首页
+        path: 'domain',
+        name: 'Domain',
+        component: () => import('@/components/settings/Domain')
+      },
+      {
+        // 账户管理
+        path: 'account',
+        name: 'Account',
+        component: () => import('@/components/settings/Account')
+      },
+      {
+        // 数据统计
+        path: 'stats',
+        name: 'Stats',
+        component: () => import('@/components/settings/Stats')
+      },
+      {
+        // 等级激励
+        path: 'grade',
+        name: 'Grade',
+        component: () => import('@/components/settings/Grade')
+      }
+    ]
+  },
+  {
+    // 个人首页
     path: '/:personalDomain',
     props: true,
     name: 'PersonalCenter',

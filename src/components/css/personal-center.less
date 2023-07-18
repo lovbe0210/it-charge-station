@@ -387,6 +387,7 @@
                   font-size: 14px;
                   color: #585A5A;
                 }
+
                 .hotmap-module_exhibitionBlock {
                   display: flex;
                   align-items: center;
@@ -462,6 +463,149 @@
               }
               .hotmapRender-module_dayBox[data-level="5"] {
                 fill: #00663B;
+              }
+            }
+          }
+
+          .leastUpdate-module_cardList {
+            .leastUpdate-module_cardItem {
+              position: relative;
+
+              .timeline-module_container {
+                font-size: 14px;
+                color: #585A5A;
+                line-height: 22px;
+                padding-right: 30px;
+
+                span:first-child {
+                  margin-right: 8px;
+                }
+
+                .line-module_point {
+                  width: 6px;
+                  height: 6px;
+                  border-radius: 50%;
+                  background: #BEC0BF;
+                  margin-left: 4px;
+                  margin-bottom: 2px;
+                  display: inline-block;
+                }
+
+                .line-module_times {
+                  display: inline-block;
+                  color: #8A8F8D;
+                  padding-left: 6px;
+                  font-size: 14px;
+                  line-height: 22px;
+                }
+              }
+
+              .cardContent-module_wrapper {
+                position: relative;
+                padding: 4px 0 24px 18px;
+                border-left: 1px dashed rgba(190,192,191,.3);
+                margin: 8px 0 8px 6px;
+
+                .cardContent-module_body {
+                  overflow: hidden;
+                  position: relative;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: stretch;
+                  margin-top: 12px;
+
+                  .doc-updated-info {
+                    min-width: 0;
+                    display: flex;
+                    flex-direction: column;
+                    flex: 1;
+
+                    .doc-updated-content {
+                      flex: 1;
+                      align-content: center;
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: center;
+
+                      /*   a {
+                           color: #117CEE;
+                           text-decoration: none;
+                           background-color: transparent;
+                           outline: none;
+                           cursor: pointer;
+                           transition: color .3s;
+                           -webkit-text-decoration-skip: objects;
+                           touch-action: manipulation;
+                         }*/
+
+                      .doc-updated-title {
+                        font-size: 16px;
+                        font-weight: 500;
+                        color: #262626;
+                        display: block;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      }
+
+                      .doc-updated-desc {
+                        margin-top: 6px;
+                        font-size: 14px;
+                        color: #585A5A;
+                        display: -webkit-box;
+                        max-height: 44px;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        line-height: 22px;
+                      }
+                    }
+
+                    .doc-updated-countInfo {
+                      display: flex;
+                      align-items: center;
+                      font-size: 14px;
+                      color: #8A8F8D;
+                      line-height: 20px;
+                      margin-top: 12px;
+
+                      .simplify-like {
+                        position: relative;
+                        top: -3px;
+                        cursor: pointer;
+                        margin-right: 16px;
+                        display: flex;
+                        align-items: center;
+
+                        .like-module_text {
+                          position: relative;
+                          top: 3px;
+                          margin-left: 4px;
+                        }
+                      }
+
+                      .doc-updated-original {
+                        margin-left: 8px;
+                      }
+                    }
+                  }
+
+                  .doc-updated-cover {
+                    flex: 0 0 162px;
+                    width: 162px;
+                    height: 107px;
+                    margin-left: 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    overflow: hidden;
+                    border-radius: 4px;
+                    background-size: cover;
+                    background-position: 50%;
+                    border: 1px solid #E7E9E8;
+                  }
+                }
               }
             }
           }

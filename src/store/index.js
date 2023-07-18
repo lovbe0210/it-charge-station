@@ -230,6 +230,11 @@ export default new Vuex.Store({
   },
 
   actions: {
+
+  },
+
+  // 同步操作state中的数据(commit)
+  mutations: {
     /**
      * 退出登录
      * @param state
@@ -237,11 +242,7 @@ export default new Vuex.Store({
      */
     clearUserInfo(state, value) {
       state.userInfo = {}
-    }
-  },
-
-  // 同步操作state中的数据(commit)
-  mutations: {
+    },
     updatePageState(state, value) {
       state.pageState = value;
     },
