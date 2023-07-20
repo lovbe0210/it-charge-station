@@ -3,57 +3,41 @@
     <h1 class="setting-title">个人信息</h1>
     <div class="settings-form form">
       <form class="setting-legacy-form">
-        <div class="ant-row ant-legacy-form-item larkui-form-item larkui-legacy-form-item ant-legacy-form-item-large"
-             style="row-gap: 0px;">
-          <div class="ant-col ant-legacy-form-item-label">
-            <label class="ant-legacy-form-item-no-colon" title="">
+        <div class="setting-legacy-form-item legacy-form-item-avatar">
+          <div class="setting-form-item-label">
+            <label title="">
               <span>头像</span>
             </label>
           </div>
-          <div class="ant-col ant-legacy-form-item-control-wrapper">
-            <div class="ant-legacy-form-item-control">
-              <span class="ant-legacy-form-item-children">
-                <div class="logo-uploader clearfix Profile-module_profileAvatar_rj9MZ">
-                  <div class="logo-uploader-area" style="width: 80px; height: 80px;">
-                    <div class="avatar" style="width: 82px; height: 82px; border-radius: 50%;">
-                      <img loading="lazy" data-testid="img-avatar"
-                           :src="userInfo.avatar"
-                           class="img" alt=""
-                           style="width: 80px; min-width: 80px; height: 80px; border-radius: 50%;">
-                      <div class="avatarUploadMask avatar-upload-mask"
-                           style="width: 80px; height: 80px; border-radius: 50%;">
-                      </div>
-                      <span>
-                        <div class="ant-upload ant-upload-drag">
-                          <span tabindex="0" class="ant-upload ant-upload-btn" role="button">
-                            <input type="file" accept="image/*" style="display: none;">
-                            <div class="ant-upload-drag-container"></div>
-                          </span>
-                        </div>
-                      </span>
-                    </div>
+          <div class="setting-legacy-form-item-control-wrapper">
+            <div class="avatar-uploader-control">
+              <img loading="lazy" data-testid="img-avatar"
+                   :src="userInfo.avatar"
+                   class="avatar-uploader-show" alt=""
+                   style="">
+              <div>
+                <Upload action="//jsonplaceholder.typicode.com/posts/">
+                  <div class="avatar-uploader-btn">
+                    <span class="iconfont icon-avatar-upload"></span>
+                    <span>更新头像</span>
                   </div>
-                  <div class="logo-uploader-btn">
-                    <Upload action="//jsonplaceholder.typicode.com/posts/">
-                        <span>更新头像</span>
-                    </Upload>
-                  </div>
-                </div>
-              </span>
+                </Upload>
+                <p class="avatar-uploader-tip">可以拖动图片到按钮区域完成上传</p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="ant-row ant-legacy-form-item larkui-form-item larkui-legacy-form-item" style="row-gap: 0px;">
-          <div class="ant-col ant-col-24 ant-legacy-form-item-label">
+        <div class="setting-legacy-form-item legacy-form-item-nickname">
+          <div class="setting-form-item-label">
             <label for="name" class="ant-legacy-form-item-required ant-legacy-form-item-no-colon" title="">
               <span>昵称</span>
               <span class="form-item-required">&nbsp;*</span>
             </label>
           </div>
-          <div class="ant-col ant-legacy-form-item-control-wrapper ant-col-xs-24 ant-col-sm-12">
-            <div class="ant-legacy-form-item-control has-success">
-              <span class="ant-legacy-form-item-children">
-                <input autocomplete="off" class="ant-input ant-input-lg larkui-input Profile-module_nameInput_MXi1H"
+          <div class="setting-legacy-form-item-control-wrapper">
+            <div class="nickname-editor-control">
+              <span class="nickname-editor-control-content">
+                <input autocomplete="off" class="profile-module_nameInput"
                        type="text" placeholder="必填" id="name" data-__meta="[object Object]"
                        data-__field="[object Object]"
                        value="布衣草人">
@@ -61,14 +45,13 @@
             </div>
           </div>
         </div>
-        <div class="ant-row ant-legacy-form-item larkui-form-item larkui-legacy-form-item ant-legacy-form-item-large"
-             style="row-gap: 0px;">
-          <div class="ant-col ant-col-24 ant-legacy-form-item-label">
+        <div class="setting-legacy-form-item legacy-form-item-biography">
+          <div class="setting-form-item-label">
             <label for="description" class="ant-legacy-form-item-no-colon" title="">
               <span>简介</span>
             </label>
           </div>
-          <div class="ant-col ant-legacy-form-item-control-wrapper ant-col-xs-24 ant-col-sm-24">
+          <div class="setting-legacy-form-item-control-wrapper">
             <div class="ant-legacy-form-item-control"><span class="ant-legacy-form-item-children">
               <div class="ant-input-textarea ant-input-textarea-show-count Profile-module_profileTextarea_BSOxN"
                    data-count="26 / 56">
@@ -81,7 +64,7 @@
             </div>
           </div>
         </div>
-        <div class="ant-row" style="margin-left: -12px; margin-right: -12px; row-gap: 0px;">
+        <div class="legacy-form-item-avatar" style="margin-left: -12px; margin-right: -12px;">
           <div class="ant-col ant-col-12" style="padding-left: 12px; padding-right: 12px;">
             <div class="ant-row ant-legacy-form-item larkui-form-item larkui-legacy-form-item" style="row-gap: 0px;">
               <div class="ant-col ant-legacy-form-item-label"><label for="location"
