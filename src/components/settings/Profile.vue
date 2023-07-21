@@ -38,9 +38,7 @@
             <div class="nickname-editor-control">
               <span class="nickname-editor-control-content">
                 <input autocomplete="off" class="profile-module_nameInput"
-                       type="text" placeholder="必填" id="name" data-__meta="[object Object]"
-                       data-__field="[object Object]"
-                       value="布衣草人">
+                       type="text" placeholder="必填" id="name" value="布衣草人">
             </span>
             </div>
           </div>
