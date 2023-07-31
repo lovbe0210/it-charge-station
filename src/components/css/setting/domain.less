@@ -1,0 +1,402 @@
+@import '../common-var.less';
+.layout-module_domain {
+  max-width: 1080px;
+
+  .layout-module_MainContent {
+    width: 100%;
+    overflow-y: auto;
+    padding-top: 0;
+
+    .layout-module_MainContentChildren {
+      min-height: calc(~"100vh - 108px");
+
+      .main-container {
+        max-width: 1056px;
+        padding: 22px 16px 32px 0;
+      }
+
+      .user-homepage {
+
+        .userInfo-module_userWrapper {
+          display: flex;
+          margin-top: 70px;
+
+
+          .userInfo-module_avatarWrapper {
+            position: relative;
+
+            .ant-image {
+              display: block;
+
+              .userInfo-module_avatar {
+                height: 164px;
+                width: 164px;
+                min-width: 164px;
+                border-radius: 82px;
+                border-color: rgba(0, 0, 0, 0.06);
+                border-width: 1px;
+                border-style: solid;
+                overflow: hidden;
+                position: relative;
+                background-color: #FFFFFF;
+              }
+            }
+          }
+
+          .userInfo-module_info {
+            margin-left: 52px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .userInfo-module_name {
+              display: flex;
+              align-items: center;
+
+              .userInfo-module_nickname {
+                font-size: 24px;
+                color: #262626;
+                line-height: 32px;
+                font-weight: 600;
+                margin-top: 12px;
+              }
+
+              .userInfo-module_level {
+                text-align: center;
+                cursor: pointer;
+                position: relative !important;
+                top: 0 !important;
+                right: 0;
+                width: 25px;
+                height: 25px;
+                margin-left: 5px;
+                padding-bottom: 50px;
+
+                .iconfont {
+                  font-size: 25px;
+                }
+              }
+
+            }
+
+            .userInfo-module_description {
+              font-size: 14px;
+              color: #585A5A;
+              line-height: 22px;
+              font-weight: 400;
+              margin-top: 12px;
+            }
+
+            .userInfo-module_detail {
+              font-size: 14px;
+              color: #8A8F8D;
+              display: flex;
+              margin-top: 16px;
+
+              span {
+                margin-right: 13px;
+              }
+
+              .index-module_meta {
+                display: flex;
+                line-height: 22px;
+              }
+            }
+
+            .userInfo-module_followInfo {
+              margin-top: 22px;
+              display: flex;
+              align-items: center;
+
+              .userInfo-module_followItem {
+                margin-right: 28px;
+                display: flex;
+                align-items: center;
+
+                .userInfo-module_count {
+                  font-size: 18px;
+                  color: #585A5A;
+                  line-height: 26px;
+                  font-weight: 700;
+                  margin-right: 8px;
+                }
+
+                .userInfo-module_label {
+                  font-size: 14px;
+                  color: #8A8F8D;
+                  text-align: center;
+                  line-height: 26px;
+                  font-weight: 400;
+                }
+              }
+
+              .userInfo-module_followingFollowers {
+                display: none;
+              }
+            }
+          }
+        }
+
+        .readme-module_userBoardParent {
+          padding-top: 24px;
+        }
+
+
+        .hotmap-module_hotmap {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: 20px;
+          max-width: 992px;
+
+          .hotmap-module_title {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 24px;
+
+            .hotmap-module_label {
+              flex: 1;
+              font-size: 16px;
+              color: #262626;
+              line-height: 24px;
+              font-weight: 500;
+            }
+
+            .hotmap-module_exhibition {
+              display: flex;
+              justify-content: space-between;
+
+              .hotmap-module_exhibitionDesc {
+                font-size: 14px;
+                color: #585A5A;
+              }
+
+              .hotmap-module_exhibitionBlock {
+                display: flex;
+                align-items: center;
+                margin: 0 12px;
+                margin-right: 6px;
+
+                span {
+                  width: 14px;
+                  height: 14px;
+                  border-radius: 2px;
+                  margin-right: 6px;
+                  display: block;
+                }
+
+                span:first-child {
+                  background-color: #F4F5F5;
+                }
+                span:nth-child(2) {
+                  background-color: #DAF6EA;
+                }
+                span:nth-child(3) {
+                  background-color: #C7F0DF;
+                }
+                span:nth-child(4) {
+                  background-color: #82EDC0;
+                }
+                span:nth-child(5) {
+                  background-color: #0BD07D;
+                }
+                span:nth-child(6) {
+                  background-color: #00663B;
+                }
+              }
+            }
+          }
+
+          .hotmap {
+            svg:not(:root) {
+              overflow: hidden;
+            }
+
+            .hotmapRender-module_dayBox {
+              shape-rendering: geometricPrecision;
+              fill: #F4F5F5;
+              outline-offset: -1px;
+              pointer-events: all;
+            }
+
+            .hotmapRender-module_monthLabel {
+              fill: #8A8F8D;
+              font-size: 12px;
+              dominant-baseline: text-before-edge;
+            }
+
+            .hotmapRender-module_dayBox[data-level="-1"] {
+              fill: #FFFFFF;
+              outline: 1px solid #f5f5f5;
+            }
+            .hotmapRender-module_dayBox[data-level="0"] {
+              fill: #F4F5F5;
+            }
+            .hotmapRender-module_dayBox[data-level="1"] {
+              fill: #DAF6EA;
+            }
+            .hotmapRender-module_dayBox[data-level="2"] {
+              fill: #C7F0DF;
+            }
+            .hotmapRender-module_dayBox[data-level="3"] {
+              fill: #82EDC0;
+            }
+            .hotmapRender-module_dayBox[data-level="4"] {
+              fill: #0BD07D;
+            }
+            .hotmapRender-module_dayBox[data-level="5"] {
+              fill: #00663B;
+            }
+          }
+        }
+
+        .leastUpdate-module_cardList {
+          .leastUpdate-module_cardItem {
+            position: relative;
+
+            .timeline-module_container {
+              font-size: 14px;
+              color: #585A5A;
+              line-height: 22px;
+              padding-right: 30px;
+
+              span:first-child {
+                margin-right: 8px;
+              }
+
+              .line-module_point {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: #BEC0BF;
+                margin-left: 4px;
+                margin-bottom: 2px;
+                display: inline-block;
+              }
+
+              .line-module_times {
+                display: inline-block;
+                color: #8A8F8D;
+                padding-left: 6px;
+                font-size: 14px;
+                line-height: 22px;
+              }
+            }
+
+            .cardContent-module_wrapper {
+              position: relative;
+              padding: 4px 0 24px 18px;
+              border-left: 1px dashed rgba(190,192,191,.3);
+              margin: 8px 0 8px 6px;
+
+              .cardContent-module_body {
+                overflow: hidden;
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                align-items: stretch;
+                margin-top: 12px;
+
+                .doc-updated-info {
+                  min-width: 0;
+                  display: flex;
+                  flex-direction: column;
+                  flex: 1;
+
+                  .doc-updated-content {
+                    flex: 1;
+                    align-content: center;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+
+                    /*   a {
+                         color: #117CEE;
+                         text-decoration: none;
+                         background-color: transparent;
+                         outline: none;
+                         cursor: pointer;
+                         transition: color .3s;
+                         -webkit-text-decoration-skip: objects;
+                         touch-action: manipulation;
+                       }*/
+
+                    .doc-updated-title {
+                      font-size: 16px;
+                      font-weight: 500;
+                      color: #262626;
+                      display: block;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                    }
+
+                    .doc-updated-desc {
+                      margin-top: 6px;
+                      font-size: 14px;
+                      color: #585A5A;
+                      display: -webkit-box;
+                      max-height: 44px;
+                      -webkit-line-clamp: 2;
+                      -webkit-box-orient: vertical;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      line-height: 22px;
+                    }
+                  }
+
+                  .doc-updated-countInfo {
+                    display: flex;
+                    align-items: center;
+                    font-size: 14px;
+                    color: #8A8F8D;
+                    line-height: 20px;
+                    margin-top: 12px;
+
+                    .simplify-like {
+                      position: relative;
+                      top: -3px;
+                      cursor: pointer;
+                      margin-right: 16px;
+                      display: flex;
+                      align-items: center;
+
+                      .like-module_text {
+                        position: relative;
+                        top: 3px;
+                        margin-left: 4px;
+                      }
+                    }
+
+                    .doc-updated-original {
+                      margin-left: 8px;
+                    }
+                  }
+                }
+
+                .doc-updated-cover {
+                  flex: 0 0 162px;
+                  width: 162px;
+                  height: 107px;
+                  margin-left: 20px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  overflow: hidden;
+                  border-radius: 4px;
+                  background-size: cover;
+                  background-position: 50%;
+                  border: 1px solid #E7E9E8;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
