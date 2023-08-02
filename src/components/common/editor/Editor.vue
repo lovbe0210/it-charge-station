@@ -47,7 +47,6 @@
                     <div class="toc-item-inner">
                       <div class="toc-item-text" :title="item.text">
                         <span>{{item.text}}</span>
-                        <!--                        <a :href="'#'+ item.id">{{item.text}}</a>-->
                       </div>
                     </div>
                   </div>

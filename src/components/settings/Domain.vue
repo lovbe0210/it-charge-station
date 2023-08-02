@@ -65,8 +65,29 @@
             </div>
           </div>
           <div class="readme-module_userBoardParent">
-            <div class="readme-module_userBoard">
-              <editor ref="editorContainer"></editor>
+            <div v-show="readmeEmpty" class="readme-module_empty" @click="readmeEmpty = false">
+              <p class="readme-module_emptyTitle">
+                <span class="iconfont icon-music-add"></span>
+                添加自定义介绍
+              </p>
+              <p class="readme-module_emptyDesc">
+                可以参考
+                <a href="https://www.yuque.com/yuque/mgcsc6/obl3qs" target="_blank">案例</a>
+              </p>
+              <p class="Readme-module_emptyDesc">没有自定义介绍时，访客视角没有这个模块</p>
+            </div>
+            <div v-show="!readmeEmpty" class="readme-module_editor">
+              <div class="editorBase-module_editor">
+                <div>
+                  <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
+                </div>
+                <div class="readme-editor" ref="container"></div>
+              </div>
+              <div class="readme-module_action">
+                <button type="button" class="readme-module_submitBtn" :disabled="editorValue == null">
+                  <span>确定</span>
+                </button>
+                <a class="readme-module_cancel">取消</a></div>
             </div>
           </div>
           <div class="hotmap-module_hotmap">
@@ -110,7 +131,11 @@
 </template>
 
 <script>
-  import Editor from '@/components/common/editor/Editor'
+  import Engine from '@aomao/engine'
+  import {$} from '@aomao/engine'
+  import Toolbar from 'am-editor-toolbar-vue2'
+  import {plugins, cards, pluginConfig} from "@/components/common/editor/config"
+  import {belongToc, getParentNode} from "../common/editor/utils";
 
   export default {
     name: 'Domain',
@@ -121,6 +146,37 @@
           level: 6,
           follow: true
         },
+        engine: null,
+        // 工具栏内容：下拉面板、
+        items: [
+          [
+            {
+              icon: '<span class="iconfont icon-editor-toolbar-add" style="font-size: 18px;"></span>',
+              type: 'collapse',
+              groups: [
+                {
+                  items: [
+                    'image-uploader',
+                    'codeblock',
+                    'table',
+                    'file-uploader',
+                    'video-uploader',
+                    'math',
+                    'status'
+                    /*{
+                      name: "audio-uploader",
+                      icon: '<span style="width:23px;height:23px;display: inline-block;border:1px solid #E8E8E8;"><svg style="top: 2px;position: relative;" t="1636128560405" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="28042" width="16" height="16"><path d="M877.854 269.225l-56.805-56.806-121.726-123.079c-24.345-21.64-41.928-27.050-68.978-27.050h-451.737c-31.108 0-55.453 24.345-55.453 55.453v789.865c0 29.755 24.345 54.1 55.453 54.1h666.787c31.108 0 55.453-24.345 55.453-54.1v-584.284c0-24.345-8.115-35.165-22.993-54.1v0zM830.516 289.513h-156.891v-156.891l156.891 156.891zM856.213 907.609c0 5.409-4.057 10.821-10.821 10.821h-666.787c-6.762 0-12.172-5.409-12.172-10.821v-789.865c0-6.762 5.409-12.172 12.172-12.172 0 0 451.737 0 451.737 0v205.582c0 12.173 9.468 21.64 21.64 21.64h204.229v574.816zM723.668 413.943c-117.668-1.353-246.157 22.993-363.825 59.511-9.468 4.058-10.821 5.409-10.821 14.877v210.991c-12.172-5.409-27.050-6.762-41.927-5.409-45.985 1.353-82.503 29.755-82.503 60.862 0 31.108 36.517 55.453 82.503 52.748 45.985-2.706 82.503-29.755 82.503-60.863v-193.409c109.553-25.698 209.638-43.28 312.429-51.395v150.128c-12.173-5.409-25.698-6.762-40.576-6.762-45.985 2.706-82.503 29.755-82.503 62.215 0 31.108 36.517 55.453 82.503 52.748 44.632-2.706 82.503-29.755 82.503-60.863v-267.797c0-13.525-6.762-16.23-20.287-17.583z" p-id="28043"></path></svg><span>',
+                      title: "音频",
+                      search: "音频,audio"
+                    }*/
+                  ]
+                }
+              ]
+            }
+          ],
+          ['heading', 'bold', 'orderedlist', 'unorderedlist', 'link']
+        ],
+        editorValue: null,
         hotMap: {
           monthLabel: [
             {
@@ -2087,20 +2143,115 @@
               }
             ]
           ]
-        }
+        },
+        readmeEmpty: true
       }
     },
     components: {
-      Editor
-    },
+        Toolbar
+      },
     methods: {
       getTooltipContainer() {
         return this.tooltipContainer;
+      },
+      toolbarUI() {
+        // 选色器
+        // let colorPicker
+        // setTimeout(() => {
+        //   new Promise(function (resolve, reject) {
+        //     let interval = setInterval(() => {
+        //       colorPicker = document.getElementById('toolbar').children[0].childNodes[4]
+        //       if (colorPicker !== null && colorPicker !== undefined) {
+        //         clearInterval(interval)
+        //         resolve()
+        //       }
+        //     }, 10)
+        //   }).then(() => {
+        //     colorPicker.childNodes.forEach(s => {
+        //       s.childNodes.forEach(ss => {
+        //         ss.childNodes.forEach(sss => {
+        //           if (sss.hasChildNodes()) {
+        //             sss.childNodes.forEach(ssss => {
+        //               if (ssss.hasChildNodes()) {
+        //                 ssss.children[0].setAttribute('width', '20px');
+        //                 ssss.children[0].setAttribute('height', '20px');
+        //               }
+        //             })
+        //           }
+        //         })
+        //       })
+        //     })
+        //   })
+        // }, 100)
       }
     },
     mounted() {
       if (this.tooltipContainer == null) {
         this.tooltipContainer = this.$refs.tooltipContainer;
+      }
+      const container = this.$refs.container;
+      if (container) {
+        //实例化引擎
+        const engine = new Engine(container, {
+          // 启用插件
+          plugins,
+          // 启用卡片
+          cards,
+          // 所有的插件配置
+          config: pluginConfig,
+          autoPrepend: false,
+          // 文档提示语
+          placeholder: '输入 / 唤起更多'
+        });
+        // 设置显示成功消息UI，默认使用 console.log
+        engine.messageSuccess = (msg) => {
+          console.log(msg);
+        };
+        // 设置显示错误消息UI，默认使用 console.error
+        engine.messageError = (error) => {
+          console.log(error);
+        };
+        //卡片最大化时设置编辑页面样式
+        engine.on("card:maximize", () => {
+          $(".editor-toolbar").css("z-index", "9999").css("top", "0");
+          $(".card-maximize-header").css("height", "60px");
+          // $(".editor-toolbar").css("z-index", "9999");
+        });
+        engine.on("card:minimize", () => {
+          $(".editor-toolbar").css("z-index", "").css("top", "");
+        });
+
+        // 监听编辑器值改变事件
+        engine.on("change", () => {
+          let range = engine.change.range.get();
+          let collapsed = range?.collapsed;
+          let startNode = collapsed ? range.startNode : range.endNode;
+          let parentNode = getParentNode(startNode);
+          // 1. 更新标题(单行节点)
+          let nodeName = parentNode?.name;
+          if (belongToc(nodeName)) {
+            this.renderTocData(engine);
+          } else {
+            // 2. 处理status影响其他文字
+            let children = parentNode?.children("span[data-card-key=\"status\"]");
+            if (children !== undefined && children.length !== 0) {
+              // 给当前节点去掉样式
+              startNode.removeAttributes('style')
+              startNode.allChildren().forEach(child => child?.removeAttributes('style'))
+            }
+          }
+        });
+
+        if (this.editorValue && this.editorValue.length > 0) {
+          engine.setJsonValue(JSON.parse(this.editorValue))
+          const pattern = /h[1-6]/;
+          let match = this.editorValue.match(pattern);
+          if (match) {
+            this.renderTocData(engine);
+          }
+        }
+
+        this.engine = engine;
       }
     }
   }

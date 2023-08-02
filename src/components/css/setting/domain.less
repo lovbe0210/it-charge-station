@@ -1,4 +1,5 @@
 @import '../common-var.less';
+
 .layout-module_domain {
   max-width: 1080px;
 
@@ -140,6 +141,99 @@
 
         .readme-module_userBoardParent {
           padding-top: 24px;
+          margin-top: -24px;
+
+          .readme-module_empty {
+            cursor: pointer;
+            border: 1px dashed #BEC0BF;
+            height: 135px;
+            margin-top: 73px;
+            background: #FFFFFF;
+            border-radius: 8px;
+            width: 992px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            .readme-module_emptyTitle {
+              font-size: 16px;
+              color: #262626;
+              letter-spacing: 0;
+              line-height: 24px;
+              font-weight: 500;
+              text-align: center;
+              margin-bottom: 12px;
+
+              .icon-music-add {
+                font-size: 12px;
+              }
+            }
+
+            .readme-module_emptyDesc {
+              font-size: 14px;
+              color: #BEC0BF;
+              letter-spacing: 0;
+              text-align: center;
+              font-weight: 400;
+            }
+          }
+
+          .readme-module_empty:hover {
+            border: 1px dashed #00B96B;
+          }
+
+          .readme-module_editor {
+            width: 100%;
+            min-height: 223px;
+            margin-top: 64px;
+            position: relative;
+
+            .editorBase-module_editor {
+              position: relative;
+              height: 100%;
+              border: 1px solid #E7E9E8;
+              border-radius: 4px;
+            }
+
+            .readme-module_action {
+              margin-top: 7px;
+
+              .readme-module_submitBtn {
+                position: relative;
+                display: inline-block;
+                white-space: nowrap;
+                text-align: center;
+                border: 1px solid transparent;
+                cursor: pointer;
+                transition: all .3s cubic-bezier(.645,.045,.355,1);
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                user-select: none;
+                touch-action: manipulation;
+                height: 32px;
+                padding: 4px 15px;
+                font-size: 14px;
+                margin-right: 12px;
+                line-height: 1.15;
+                box-shadow: none;
+                text-shadow: none;
+                border-radius: 6px;
+                font-weight: 500;
+                outline: 0;
+              }
+
+              .readme-module_submitBtn[disabled], .readme-module_submitBtn[disabled]:active,
+              .readme-module_submitBtn[disabled]:focus, .readme-module_submitBtn[disabled]:hover{
+                opacity: .3;
+                color: #FFFFFF;
+                background: #00B96B;
+                border-color: #00B96B;
+                text-shadow: none;
+                box-shadow: none;
+              }
+            }
+          }
         }
 
 
@@ -192,18 +286,23 @@
                 span:first-child {
                   background-color: #F4F5F5;
                 }
+
                 span:nth-child(2) {
                   background-color: #DAF6EA;
                 }
+
                 span:nth-child(3) {
                   background-color: #C7F0DF;
                 }
+
                 span:nth-child(4) {
                   background-color: #82EDC0;
                 }
+
                 span:nth-child(5) {
                   background-color: #0BD07D;
                 }
+
                 span:nth-child(6) {
                   background-color: #00663B;
                 }
@@ -233,21 +332,27 @@
               fill: #FFFFFF;
               outline: 1px solid #f5f5f5;
             }
+
             .hotmapRender-module_dayBox[data-level="0"] {
               fill: #F4F5F5;
             }
+
             .hotmapRender-module_dayBox[data-level="1"] {
               fill: #DAF6EA;
             }
+
             .hotmapRender-module_dayBox[data-level="2"] {
               fill: #C7F0DF;
             }
+
             .hotmapRender-module_dayBox[data-level="3"] {
               fill: #82EDC0;
             }
+
             .hotmapRender-module_dayBox[data-level="4"] {
               fill: #0BD07D;
             }
+
             .hotmapRender-module_dayBox[data-level="5"] {
               fill: #00663B;
             }
@@ -290,7 +395,7 @@
             .cardContent-module_wrapper {
               position: relative;
               padding: 4px 0 24px 18px;
-              border-left: 1px dashed rgba(190,192,191,.3);
+              border-left: 1px dashed rgba(190, 192, 191, .3);
               margin: 8px 0 8px 6px;
 
               .cardContent-module_body {
