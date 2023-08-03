@@ -183,9 +183,7 @@ class CodeBlcok extends Card {
               renderSelect(
                 node.get(),
                 this.constructor.getModes(),
-                this.#modeNameMap[this.codeEditor.mode] ||
-                this.codeEditor.mode ||
-                "plain",
+                this.#modeNameMap[this.codeEditor.mode] || this.codeEditor.mode || "plain",
                 mode => {
                   setTimeout(() => {
                     this.focusEditor()

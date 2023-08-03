@@ -1,7 +1,7 @@
 import container from "markdown-it-container"
 import { encodeCardValue } from "@aomao/engine"
 
-export default function mk_lightblock(md) {
+export default function mkLightblock(md) {
   const defaultValue = {
     borderColor: "#fed4a4",
     backgroundColor: "#fff5eb",

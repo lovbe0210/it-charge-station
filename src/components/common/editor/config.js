@@ -39,6 +39,8 @@ import MentionHover from "./MentionHover.vue"
 import {creatComponent} from "./utils"
 import AmLoading from "./Loading.vue"
 
+import Lightblock, {LightblockComponent} from "./packages/lightblock/src";
+
 const DOMAIN = "http://localhost:8080"
 
 export const plugins = [
@@ -79,7 +81,8 @@ export const plugins = [
   Mention,
   Link,
   CodeBlock,
-  ToolbarPlugin
+  ToolbarPlugin,
+  Lightblock
 ]
 
 export const cards = [
@@ -93,7 +96,8 @@ export const cards = [
   StatusComponent,
   MentionComponent,
   CodeBlockComponent,
-  ToolbarComponent
+  ToolbarComponent,
+  LightblockComponent
 ]
 
 export const pluginConfig = {

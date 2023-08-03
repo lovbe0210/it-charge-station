@@ -16,6 +16,7 @@ export default class extends Plugin {
   static get pluginName() {
     return "lightblock"
   }
+
   init() {
     const editor = this.editor
 
