@@ -162,13 +162,18 @@
                     'file-uploader',
                     'video-uploader',
                     'math',
-                    'status'
+                    'status',
+                    {
+                      name: 'lightblock',
+                      icon: '<span class="iconfont icon-editor-toolbar-add" style="font-size: 18px;"></span>',
+                      title: '高亮块'
+                    }
                   ]
                 }
               ]
             }
           ],
-          ['heading', 'bold', 'orderedlist', 'unorderedlist', 'link', 'lightblock']
+          ['heading', 'bold', 'orderedlist', 'unorderedlist', 'link']
         ],
         editorValue: null,
         hotMap: {

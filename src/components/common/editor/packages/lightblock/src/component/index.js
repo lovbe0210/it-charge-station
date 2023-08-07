@@ -1,6 +1,5 @@
 import { $, Card, CardType, isEngine, Parser } from "@aomao/engine"
-import { themeIcon } from "./theme"
-import themeSelector from "./theme/ThemeSelector"
+import themeSelector from "./theme/index"
 import "./style.css"
 
 class Lightblock extends Card {
@@ -42,22 +41,21 @@ class Lightblock extends Card {
       {
         type: "node",
         title: language.theme,
-        node: $(themeIcon),
+        node: $("<span></span>"),
         didMount: node => {
-          setTimeout(() => {
-            themeSelector(
-              value,
-              language,
-              (data) => {
-                this.setValue({
-                  ...value,
-                  backgroundColor: data.background,
-                  borderColor: data.border
-                })
-                this.updateColor();
-              }
-            )
-          }, 100)
+          themeSelector(
+            node.get(),
+            language,
+            value,
+            (data) => {
+              this.setValue({
+                ...value,
+                backgroundColor: data.background,
+                borderColor: data.border
+              })
+              this.updateColor();
+            }
+          )
         }
       },
       { type: "separator" },

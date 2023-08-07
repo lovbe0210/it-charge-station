@@ -2,7 +2,7 @@
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
   src:
-          url('//at.alicdn.com/t/c/font_4166796_9rk520t63r9.woff2?t=1689859182349') format('woff2');
+          url('//at.alicdn.com/t/c/font_4166796_ayu02w4xnc.woff2?t=1691397152809') format('woff2');
 }
 
 .iconfont {
@@ -39,4 +39,8 @@
 
 .icon-avatar-upload:before {
   content: "\e65c";
+}
+
+.icon-theme-btn:before {
+  content: "\e605";
 }

@@ -1,3 +1,6 @@
+.data-toolbar {
+    z-index: 201;
+}
 .lightblock-container {
     display: flex;
     padding: 12px 16px;
