@@ -44,3 +44,11 @@
 .icon-theme-btn:before {
   content: "\e605";
 }
+
+.icon-hight-light:before {
+  content: "\e638";
+}
+
+.icon-hight-light1:before {
+  content: "\e82f";
+}

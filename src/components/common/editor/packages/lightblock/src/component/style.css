@@ -26,17 +26,18 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    display: block;
 }
 .lightblock-icon-theme:hover path{
     fill: #40a9ff;
 }
 .lightblock-theme-contain {
-    display: none;
     position: absolute;
     bottom: 0px;
-    left: 50%;
-    transform: translate(-50%, 100%);
+    /*left: 50%;*/
+    transform: translate(-17%, 100%);
     padding-top: 8px;
+    background: #ffffff;
 }
 .lightblock-theme-content {
     flex-direction: column;
@@ -47,7 +48,7 @@
     border-radius: 4px;
 }
 .lightblock-icon-theme:hover .lightblock-theme-contain {
-    display: block;
+    /*display: block;*/
 }
 .lightblock-theme-random {
     position: absolute;

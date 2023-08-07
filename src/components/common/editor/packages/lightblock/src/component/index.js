@@ -112,7 +112,7 @@ class Lightblock extends Card {
       : "<br />"
     this.#container = $(
       `<div class="lightblock-container" style="border-color: ${borderColor};background-color:${backgroundColor};">
-                <div class="lightblock-icon">
+                <!--<div class="lightblock-icon">
                   <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="13148" width="24" height="24">
                     <path d="M833.5 330.5C833.5 153 689.6 7.6 512 7.6S190.5 153 190.5 330.5c0 70.3 37.3 161 97.2 227.9 59.4 66.3 103.5 177.9
                         103.5 266.9v34.9h241.6v-34.6c0-89 44.1-200.4 103.2-266.9 60.1-67.6 97.5-166.4 97.5-228.2z" fill="#FFC807" p-id="13149">
@@ -136,7 +136,7 @@ class Lightblock extends Card {
                         fill="#CFD8DC" p-id="13155">
                     </path>
                   </svg>
-                </div>
+                </div>-->
                 <div class="lightblock-editor-container">${childValue}</div>
             </div>`
     )

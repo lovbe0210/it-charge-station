@@ -19,7 +19,7 @@
     Menu, MenuItem, Button, Checkbox, Input, Divider, Tree, List, Modal
   } from 'view-design'
   import 'view-design/dist/styles/iview.css'
-  import { Tooltip, Card } from 'ant-design-vue'
+  import { Tooltip, Card, Popover } from 'ant-design-vue'
   import commonUtil from "@/utils/common"
   // 引入弹幕模块
   import {vueBaberrage} from 'vue-baberrage'
@@ -49,6 +49,7 @@
   Vue.component('a-tooltip', Tooltip);
   Vue.component('a-card', Card);
   Vue.component('a-card-meta', Card.Meta);
+  Vue.component('a-popover', Popover);
 
   export default {
     name: 'App',

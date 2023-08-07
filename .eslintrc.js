@@ -32,6 +32,7 @@ module.exports = {
     'spaced-comment': "off",
     'padded-blocks': "off",
     'prefer-const': "off",
-    'no-constant-condition': "off"
+    'no-constant-condition': "off",
+    'eol-last': "off"
   }
 }

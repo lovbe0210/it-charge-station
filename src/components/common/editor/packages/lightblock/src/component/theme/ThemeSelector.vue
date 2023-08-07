@@ -1,54 +1,34 @@
 <template>
-  <Dropdown style="margin-left: 20px">
-    <span class="lightblock-icon-theme" @click="toggleTheme">
-    <span class="iconfont icon-theme-btn"></span>
-    <!--<div class="lightblock-theme-contain" v-show="showTheme">
-      <div class="lightblock-theme-random" @click="randomColor">
-        <span class="data-icon icon-reload">&#xe77f;</span>
-        {{ language['random'] }}
+    <span class="lightblock-icon-theme" @mouseenter="toggleTheme(true)" @mouseleave="toggleTheme(true)">
+      <span class="iconfont icon-theme-btn"></span>
+      <div class="lightblock-theme-contain" v-show="showTheme">
+        <div class="lightblock-theme-random" @click="randomColor">
+          <span class="data-icon icon-reload">&#xe77f;</span>
+          {{ language['random'] }}
+        </div>
+        <div class="lightblock-theme-title">{{ language['borderColor'] }}</div>
+        <div class="lightblock-theme-box">
+          <!-- 边框颜色选择框 -->
+          <span v-for="(color, index) in border" :key="color" class="lightblock-theme-box-item"
+                :class="{ active: bdColor === color }"
+                @click="changeColor('border', color, index)">
+            <span :style="{ background: color }"></span>
+          </span>
+        </div>
+        <div style="height: 8px;"></div>
+        <div class="lightblock-theme-title">{{ language['backgroundColor'] }}</div>
+        <div class="lightblock-theme-box">
+          <!-- 背景颜色选择框 -->
+          <span v-for="color in background"
+                :key="color"
+                class="lightblock-theme-box-item"
+                :class="{ active: bgColor === color }"
+                @click="changeColor('background', color)">
+            <span :style="{ background: color }"></span>
+          </span>
+        </div>
       </div>
-      <div class="lightblock-theme-title">{{ language['borderColor'] }}</div>
-      <div class="lightblock-theme-box">
-        &lt;!&ndash; 边框颜色选择框 &ndash;&gt;
-        <span
-          v-for="(color, index) in border"
-          :key="color"
-          class="lightblock-theme-box-item"
-          :class="{ active: bdColor === color }"
-          @click="changeColor('border', color, index)"
-        >
-          <span :style="{ background: color }"></span>
-        </span>
-      </div>
-      <div style="height: 8px;"></div>
-      <div class="lightblock-theme-title">{{ language['backgroundColor'] }}</div>
-      <div class="lightblock-theme-box">
-        &lt;!&ndash; 背景颜色选择框 &ndash;&gt;
-        <span v-for="color in background"
-              :key="color"
-              class="lightblock-theme-box-item"
-              :class="{ active: bgColor === color }"
-              @click="changeColor('background', color)">
-          <span :style="{ background: color }"></span>
-        </span>
-      </div>
-    </div>-->
   </span>
-    <DropdownMenu slot="list">
-      <DropdownItem>驴打滚</DropdownItem>
-      <DropdownItem>炸酱面</DropdownItem>
-      <DropdownItem>豆汁儿</DropdownItem>
-      <DropdownItem>冰糖葫芦</DropdownItem>
-      <DropdownItem>北京烤鸭</DropdownItem>
-    </DropdownMenu>
-  </Dropdown>
-
-
-
-
-
-
-
 </template>
 
 <script>
@@ -85,9 +65,10 @@
       };
     },
     methods: {
-      toggleTheme() {
-        debugger
-        this.showTheme = !this.showTheme;
+      toggleTheme(flag) {
+        setTimeout(() => {
+          this.showTheme = flag;
+        }, 200)
       },
       randomColor() {
         const index = Math.floor(Math.random() * this.border.length);
