@@ -78,13 +78,25 @@
             </div>
             <div v-show="!readmeEmpty" class="readme-module_editor">
               <div class="editorBase-module_editor">
-                <div>
-                  <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
+                <div class="layout-mode-adapt">
+                  <div class="toolbar-ui">
+                    <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
+                  </div>
+                  <div class="editor-body">
+                    <div class="editor-wrapper">
+                      <div class="editor-wrap-content">
+                        <div class="editor-outer-wrap-box">
+                          <div class="editor-wrap-box">
+                            <div class="readme-editor" ref="container"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="readme-editor" ref="container"></div>
               </div>
               <div class="readme-module_action">
-                <button type="button" class="readme-module_submitBtn" :disabled="editorValue == null">
+                <button type="button" class="readme-module_submitBtn" :disabled="editorValueIsEmpty">
                   <span>确定</span>
                 </button>
                 <a class="readme-module_cancel">取消</a></div>
@@ -134,8 +146,8 @@
   import Engine from '@aomao/engine'
   import {$} from '@aomao/engine'
   import Toolbar from 'am-editor-toolbar-vue2'
-  import {plugins, cards, pluginConfig} from "@/components/common/editor/config"
-  import {belongToc, getParentNode} from "../common/editor/utils";
+  import {plugins, cards, pluginConfig, HightLightIcon} from "@/components/common/editor/config"
+  import {getParentNode} from "../common/editor/utils";
 
   export default {
     name: 'Domain',
@@ -165,7 +177,7 @@
                     'status',
                     {
                       name: 'lightblock',
-                      icon: '<span class="iconfont icon-editor-toolbar-add" style="font-size: 18px;"></span>',
+                      icon: HightLightIcon,
                       title: '高亮块'
                     }
                   ]
@@ -175,7 +187,7 @@
           ],
           ['heading', 'bold', 'orderedlist', 'unorderedlist', 'link']
         ],
-        editorValue: null,
+        editorValueIsEmpty: true,
         hotMap: {
           monthLabel: [
             {
@@ -2147,8 +2159,8 @@
       }
     },
     components: {
-        Toolbar
-      },
+      Toolbar
+    },
     methods: {
       getTooltipContainer() {
         return this.tooltipContainer;
@@ -2226,28 +2238,19 @@
           let collapsed = range?.collapsed;
           let startNode = collapsed ? range.startNode : range.endNode;
           let parentNode = getParentNode(startNode);
-          // 1. 更新标题(单行节点)
-          let nodeName = parentNode?.name;
-          if (belongToc(nodeName)) {
-            this.renderTocData(engine);
-          } else {
-            // 2. 处理status影响其他文字
-            let children = parentNode?.children("span[data-card-key=\"status\"]");
-            if (children !== undefined && children.length !== 0) {
-              // 给当前节点去掉样式
-              startNode.removeAttributes('style')
-              startNode.allChildren().forEach(child => child?.removeAttributes('style'))
-            }
+          // 处理status影响其他文字
+          let children = parentNode?.children("span[data-card-key=\"status\"]");
+          if (children !== undefined && children.length !== 0) {
+            // 给当前节点去掉样式
+            startNode.removeAttributes('style')
+            startNode.allChildren().forEach(child => child?.removeAttributes('style'))
           }
+
+          this.editorValueIsEmpty = engine.isEmpty();
         });
 
         if (this.editorValue && this.editorValue.length > 0) {
           engine.setJsonValue(JSON.parse(this.editorValue))
-          const pattern = /h[1-6]/;
-          let match = this.editorValue.match(pattern);
-          if (match) {
-            this.renderTocData(engine);
-          }
         }
 
         this.engine = engine;

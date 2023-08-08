@@ -184,7 +184,7 @@
           }
 
           .readme-module_editor {
-            width: 100%;
+            width: 992px;
             min-height: 223px;
             margin-top: 64px;
             position: relative;
@@ -194,6 +194,68 @@
               height: 100%;
               border: 1px solid #E7E9E8;
               border-radius: 4px;
+
+              .layout-mode-adapt {
+                position: relative;
+                display: flex;
+                height: auto;
+                border-radius: 4px;
+                margin-top: 5px;
+                flex-direction: column;
+                background-color: #FFFFFF;
+
+                .toolbar-ui {
+                  position: static;
+                  z-index: auto;
+
+                  .editor-toolbar {
+                    border: none;
+                    padding-left: 8px;
+                  }
+                  /deep/ .editor-toolbar-content {
+                    justify-content: unset;
+                  }
+                }
+
+                .editor-body {
+                  height: auto;
+                  position: relative;
+
+                  .editor-wrapper {
+                    position: relative;
+                    overflow-anchor: none;
+                    display: flex;
+                    height: auto;
+                    overflow: visible;
+                    padding-top: 0;
+
+                    .editor-wrap-content {
+                      flex: 1;
+                      width: 100%;
+                      min-width: auto;
+                      margin: 0;
+
+                      .editor-outer-wrap-box {
+                        width: auto;
+                        min-width: auto;
+                        padding-bottom: 0;
+
+                        .editor-wrap-box {
+                          border: none;
+                          box-shadow: none;
+                          background: none;
+                          margin-bottom: 0;
+
+                          .readme-editor {
+                            padding: 16px 24px 8px 24px;
+                            min-height: 188px;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
 
             .readme-module_action {
@@ -206,7 +268,7 @@
                 text-align: center;
                 border: 1px solid transparent;
                 cursor: pointer;
-                transition: all .3s cubic-bezier(.645,.045,.355,1);
+                transition: all .3s cubic-bezier(.645, .045, .355, 1);
                 -webkit-user-select: none;
                 -moz-user-select: none;
                 user-select: none;
@@ -221,16 +283,29 @@
                 border-radius: 6px;
                 font-weight: 500;
                 outline: 0;
+                color: #FFFFFF;
+                background: #00B96B;
+                border-color: #00B96B;
+              }
+
+              .readme-module_submitBtn:hover, .readme-module_submitBtn:focus, .readme-module_submitBtn:active {
+                background: #009456;
+                border-color: #009456;
               }
 
               .readme-module_submitBtn[disabled], .readme-module_submitBtn[disabled]:active,
-              .readme-module_submitBtn[disabled]:focus, .readme-module_submitBtn[disabled]:hover{
+              .readme-module_submitBtn[disabled]:focus, .readme-module_submitBtn[disabled]:hover {
                 opacity: .3;
                 color: #FFFFFF;
                 background: #00B96B;
                 border-color: #00B96B;
                 text-shadow: none;
                 box-shadow: none;
+              }
+
+              .readme-module_cancel {
+                color: #585A5A;
+                font-size: 14px;
               }
             }
           }
@@ -241,7 +316,7 @@
           display: flex;
           flex-direction: column;
           align-items: center;
-          margin-top: 20px;
+          margin-top: 30px;
           max-width: 992px;
 
           .hotmap-module_title {
@@ -504,4 +579,76 @@
       }
     }
   }
+}
+
+// 第三方插件样式覆盖
+/deep/ .data-link-editor {
+  p {
+    .ant-input:focus {
+      border-color: #00AE9D;
+      box-shadow: none !important;
+    }
+    .ant-input:hover {
+      border-color: #00AE9D;
+    }
+  }
+}
+
+/deep/ .data-toolbar-group .table-color-dropdown-trigger {
+  button {
+    height: 28px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+/deep/ .data-toolbar-group .data-toolbar-item {
+  .data-toolbar-btn {
+    justify-content: center;
+  }
+}
+
+/deep/.am-engine>:not(p) {
+  margin: 15px 0;
+}
+
+/deep/.am-engine>p {
+  margin: 8px 0;
+}
+
+/deep/.am-engine>ul {
+  margin: 8px 0;
+  li {
+    margin: 8px 0;
+  }
+  li:not(.data-list-item) {
+    margin: 8px 0  8px 15px;
+  }
+}
+
+/deep/.am-engine>ol {
+  margin: 8px 0;
+  li {
+    margin: 8px 0 8px 25px;
+  }
+}
+
+/deep/.am-engine>h2 {
+  margin: 13px 0;
+}
+
+/deep/.am-engine>h3 {
+  margin: 11px 0;
+}
+
+/deep/.am-engine>h4 {
+  margin: 9px 0;
+}
+
+/deep/.am-engine>h5 {
+  margin: 8px 0;
+}
+
+/deep/.am-engine>h6 {
+  margin: 8px 0;
 }
