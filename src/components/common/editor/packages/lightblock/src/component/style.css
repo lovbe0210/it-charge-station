@@ -26,7 +26,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    display: block;
+    /*display: block;*/
 }
 .lightblock-icon-theme:hover path{
     fill: #40a9ff;
@@ -34,22 +34,13 @@
 .lightblock-theme-contain {
     position: absolute;
     bottom: 0px;
-    /*left: 50%;*/
-    transform: translate(-17%, 100%);
-    padding-top: 8px;
+    transform: translate(34%, 104%);
     background: #ffffff;
-}
-.lightblock-theme-content {
-    flex-direction: column;
-    position: relative;
-    background: #fff;
     box-shadow: 0 2px 10px rgb(0 0 0 / 12%);
-    padding: 12px 16px;
     border-radius: 4px;
+    padding: 8px;
 }
-.lightblock-icon-theme:hover .lightblock-theme-contain {
-    /*display: block;*/
-}
+
 .lightblock-theme-random {
     position: absolute;
     top: 12px;

@@ -64,7 +64,7 @@
   import Engine from '@aomao/engine'
   import {$} from '@aomao/engine'
   import Toolbar from 'am-editor-toolbar-vue2'
-  import {plugins, cards, pluginConfig} from "./config"
+  import {plugins, cards, pluginConfig, HightLightIcon} from "./config"
   import {getTocData, getParentNode, belongToc} from "./utils/index"
 
   export default {
@@ -97,7 +97,7 @@
                     'status',
                     {
                       name: 'lightblock',
-                      icon: '<span class="iconfont icon-hight-light" style="font-size: 18px;"></span>',
+                      icon: HightLightIcon,
                       title: '高亮块'
                     }
                     /*{

@@ -18,32 +18,28 @@ export default class extends Plugin {
   }
 
   init() {
-    const editor = this.editor
+    this.editor.language.add(locales)
 
-    editor.language.add(locales)
-    editor.on("parse:html", this.parseHtml)
-    editor.on("paste:schema", this.pasteSchema)
-    editor.on("paste:each", this.pasteHtml)
-    if (isEngine(editor)) {
-      editor.on("markdown-it", this.markdownIt)
+    this.editor.on("parse:html", this.parseHtml)
+    this.editor.on("paste:schema", this.pasteSchema)
+    this.editor.on("paste:each", this.pasteHtml)
+    if (isEngine(this.editor)) {
+      this.editor.on("markdown-it", this.markdownIt)
     }
   }
 
   execute() {
     const editor = this.editor
 
-    if (!isEngine(editor) || editor.readonly) return
-    const { card } = editor
+    if (!isEngine(editor) || this.editor.readonly) return
+    const { card } = this.editor
 
-    card.insert(
-      LightblockComponent.cardName,
-      {
+    card.insert(LightblockComponent.cardName, {
         borderColor: "#fed4a4",
         backgroundColor: "#fff5eb",
         text: "light-block"
       },
-      true
-    )
+      true)
   }
 
   markdownIt = markdown => {
@@ -52,7 +48,7 @@ export default class extends Plugin {
     }
   }
 
-  pasteSchema = schema => {
+  pasteSchema(schema) {
     schema.add({
       type: "block",
       name: "div",
