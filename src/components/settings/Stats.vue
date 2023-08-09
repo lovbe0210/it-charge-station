@@ -51,7 +51,7 @@
           </div>
           <div class="data-center-detail">
             <div class="detail-myData data-item">
-              <div class="myData-title-Info">
+              <div class="data-title-Info">
                 <h2>个人知识创作</h2>
               </div>
               <div class="myData-common-body">
@@ -65,56 +65,54 @@
                 </div>
                 <div>
                   <p>1</p>
-                  <p>专题</p>
+                  <p>专栏</p>
                 </div>
               </div>
               <div class="myData-book">
                 <img src="https://mdn.alipayobjects.com/huamei_0prmtq/afts/img/A*3GL9T4hyZBMAAAAAAAAAAAAADvuFAQ/original"
                 alt="">
                 <div>
-                  <p>其中字数最多的专题是</p>
+                  <p>其中字数最多的专栏是</p>
                   <p>从头开始</p>
                   <p>共有 26 篇文档，21803 字</p>
                 </div>
               </div>
             </div>
             <div class="detail-public data-item">
-              <div class="public-data">
-                <div class="public-data-title-info">
-                  <h2>对外知识分享</h2>
-                  <a-tooltip overlayClassName="public-data-tooltip" :getPopupContainer="getTooltipContainer">
-                    <template slot="title">
-                      含公开专题的文档及公开分享的其他文档
-                    </template>
-                    <span class="iconfont icon-doubt"></span>
-                  </a-tooltip>
+              <div class="data-title-Info">
+                <h2>对外知识分享</h2>
+                <a-tooltip overlayClassName="public-data-tooltip" :getPopupContainer="getTooltipContainer">
+                  <template slot="title">
+                    含公开专栏的文档及公开分享的其他文档
+                  </template>
+                  <span class="iconfont icon-doubt"></span>
+                </a-tooltip>
+              </div>
+              <div class="public-data-common-body">
+                <div>
+                  <p>--</p>
+                  <p>公开文档</p>
                 </div>
-                <div class="public-data-common-body">
-                  <div>
-                    <p>--</p>
-                    <p>公开文档</p>
-                  </div>
-                  <div>
-                    <p>--</p>
-                    <p>阅读量</p>
-                  </div>
-                  <div>
-                    <p>--</p>
-                    <p>点赞量</p>
-                  </div>
-                  <div>
-                    <p>--</p>
-                    <p>评论量</p>
-                  </div>
-                  <div>
-                    <p>--</p>
-                    <p>收录语雀精选</p>
-                  </div>
+                <div>
+                  <p>--</p>
+                  <p>阅读量</p>
+                </div>
+                <div>
+                  <p>--</p>
+                  <p>点赞量</p>
+                </div>
+                <div>
+                  <p>--</p>
+                  <p>评论量</p>
+                </div>
+                <div>
+                  <p>--</p>
+                  <p>收录语雀精选</p>
                 </div>
               </div>
             </div>
           </div>
-          <div>hotMap</div>
+          <hot-map></hot-map>
         </div>
       </div>
     </div>
@@ -122,6 +120,7 @@
 </template>
 
 <script>
+  import HotMap from "@/components/common/HotMap";
   export default {
     name: 'Stats',
     data() {
@@ -129,6 +128,9 @@
         statsOption: '1',
         tooltipContainer: null
       }
+    },
+    components: {
+      HotMap
     },
     methods: {
       changeStatsOption(option) {

@@ -10,7 +10,7 @@
           推荐
         </MenuItem>
         <MenuItem name="hot" to="/topic" :on-select="onSelect">
-          专题
+          专栏
         </MenuItem>
       </Menu>
       <router-view class="show"></router-view>
@@ -36,7 +36,7 @@
         </div>
         <div class="recommend-topics">
           <div class="text">
-            推荐专题
+            推荐专栏
             <b-link class="more">
               更多<span class="iconfont icon-more"></span>
             </b-link>

@@ -34,7 +34,7 @@
             </div>
             <div class="home-nav">
               <span class="iconfont icon-nav-home"></span>
-              <span>专题首页</span>
+              <span>专栏首页</span>
             </div>
             <div class="nav-tabs">
               <div class="tabs-bar">

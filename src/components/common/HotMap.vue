@@ -2150,6 +2150,10 @@
     padding-top: 0 !important;
   }
 
+  /deep/ .ant-tooltip-placement-top {
+    padding-bottom: 5px !important;
+  }
+
   /deep/.ant-tooltip-inner {
     font-size: 12px;
     background-color: rgba(0, 0, 0, 0.85);

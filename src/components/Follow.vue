@@ -139,7 +139,7 @@
             id: '003',
             avatar: 'https://tvax1.sinaimg.cn/large/718153f4gy1gxzk3fro87j20nc0ncq3z.jpg',
             nickName: 'lovbe0210',
-            trendTitle: '发表了专题文章 K8S自动部署（上）—— 认识Docker',
+            trendTitle: '发表了专栏文章 K8S自动部署（上）—— 认识Docker',
             previewContent: 'K8S自动部署（上）—— 认识DockerK8S自动部署（上）—— 认识DockerK8S自动部署（上）—— 认识DockerK8S自动部署（上）—— 认识DockerK8S自动部署（上）—— 认识Docker',
             publicTime: '01-17',
             likeCount: 15,

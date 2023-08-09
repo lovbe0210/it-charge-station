@@ -23,7 +23,7 @@
             </DropdownItem>
             <DropdownItem>
               <span class="iconfont icon-collapse"/>
-              专题
+              专栏
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
