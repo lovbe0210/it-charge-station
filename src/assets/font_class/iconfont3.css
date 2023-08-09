@@ -2,7 +2,7 @@
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
   src:
-          url('//at.alicdn.com/t/c/font_4166796_qm996u8uj6.woff2?t=1691503456534') format('woff2');
+          url('//at.alicdn.com/t/c/font_4166796_0g5mm7eb0xgn.woff2?t=1691561899720') format('woff2');
 }
 
 .iconfont {
@@ -51,4 +51,44 @@
 
 .icon-account-completed:before {
   content: "\e601";
+}
+
+.icon-account-unComplete:before {
+  content: "\e6a9";
+}
+
+.icon-zhifubao:before {
+  content: "\e60a";
+}
+
+.icon-user-center1:before {
+  content: "\e6e9";
+}
+
+.icon-user-center:before {
+  content: "\e639";
+}
+
+.icon-user-domain:before {
+  content: "\e62e";
+}
+
+.icon-account-set:before {
+  content: "\e673";
+}
+
+.icon-grade-incentive:before {
+  content: "\e6ac";
+}
+
+.icon-data-stats:before {
+  content: "\e614";
+}
+
+.icon-drop-down:before {
+  content: "\e690";
+}
+
+.icon-doubt:before {
+  content: "\e60b";
 }

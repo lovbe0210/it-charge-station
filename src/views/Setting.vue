@@ -24,14 +24,17 @@
         </p>
         <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'profile' ? 'active': '']"
                      @click="routeNavigate('profile')">
+          <span class="iconfont icon-user-center"></span>
           基本信息
         </div>
         <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'domain' ? 'active': '']"
                      @click="routeNavigate('domain')">
+          <span class="iconfont icon-user-domain"></span>
           个人主页
         </div>
         <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'account' ? 'active': '']"
                      @click="routeNavigate('account')">
+          <span class="iconfont icon-account-set"></span>
           账户管理
         </div>
         <p class="index-module_inherit nav-module_subMenuTitle"
@@ -40,10 +43,12 @@
         </p>
         <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'stats' ? 'active': '']"
                      @click="routeNavigate('stats')">
+          <span class="iconfont icon-data-stats"></span>
           数据统计
         </div>
         <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'grade' ? 'active': '']"
                      @click="routeNavigate('grade')">
+          <span class="iconfont icon-grade-incentive"></span>
           等级激励
         </div>
       </div>

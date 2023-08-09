@@ -43,7 +43,9 @@
         }
 
         .settings-form {
+          width: 65%;
           margin-top: 16px;
+          color: #262626;
 
           .form-item {
             position: relative;
@@ -54,21 +56,20 @@
             margin-top: 16px;
             display: flex;
             align-items: center;
-          }
 
-          .mobile-setting-form {
-            margin-top: 0;
-
-            .icon-account-completed {
-              font-size: 30px;
+            .icon-account-completed, .icon-account-unComplete {
+              font-size: 29px;
             }
 
             .form-content {
-              padding-left: 36px;
+              padding-left: 10px;
 
+              p{
+                margin: unset;
+              }
               .tip {
                 color: #8A8F8D;
-                margin-top: 6px;
+                margin-top: 8px;
               }
             }
 
@@ -111,8 +112,57 @@
             }
           }
 
+          .mobile-setting-form {
+            margin-top: 0;
+          }
+
           .thirdAccount-setting-form {
             margin-top: 56px;
+
+            .setting-subtitle {
+              line-height: 24px;
+              font-weight: 500;
+              color: #262626;
+              font-size: 16px;
+              text-align: inherit;
+              margin: 0px 0px 6px;
+            }
+
+            .subtitle-tip {
+              line-height: 22px;
+              color: #8A8F8D;
+            }
+
+            .third-binding-list {
+              margin-top: 16px;
+              margin-left: -16px;
+              display: flex;
+              flex-direction: row;
+              color: #000000;
+
+              .third-binding-item {
+                background-color: #FAFAFA;
+                border-radius: 8px;
+                height: 46px;
+                line-height: 46px;
+                padding: 0 16px;
+                flex: auto;
+                margin-left: 16px;
+                display: flex;
+                justify-content: space-between;
+                white-space: nowrap;
+
+                .bind-text {
+                  display: flex;
+                  justify-content: center;
+
+                  .iconfont {
+                    font-size: 20px;
+                    margin-right: 5px;
+                  }
+                }
+              }
+            }
           }
         }
       }
