@@ -17,7 +17,82 @@
       }
 
       .grade-incentive {
+        .layout-module_level {
+          .setting-title {
+            font-size: 20px;
+            line-height: 24px;
+            font-weight: 500;
+            color: #262626;
+            position: sticky;
+            background-color: #ffffff;
+            z-index: 100;
+            padding: 48px 0 28px;
+            top: 0;
+            left: 0;
+            margin: 0px;
+            text-align: inherit;
+          }
 
+          .nick-name {
+            display: inline-block;
+            font-size: 18px;
+            font-weight: 700;
+            color: #222;
+            margin-right: 8px;
+            cursor: default;
+          }
+
+          .level-module_experienceBar {
+            position: relative;
+
+            .experience-bar-body {
+              display: inline-block;
+              width: 684px;
+              margin-top: 10px;
+
+              .progressBar {
+                display: flex;
+                align-items: center;
+                height: 10px;
+                margin-top: 12px;
+                overflow: hidden;
+
+                .currentTime,
+                .totalTime {
+                  font-size: 12px;
+                  transform: scale(0.9);
+                  color: #aaa;
+                  width: 32px;
+                  text-align: center;
+                }
+
+                .progress-wrapp {
+                  margin: 0 2px;
+                }
+
+                .totalProgress {
+                  //margin: 0 6px;
+                  cursor: pointer;
+                  width: 134px;
+                  height: 6px;
+                  background-color: #c6c6c6;
+                  border-radius: 10px;
+                  -webkit-border-top-left-radius: 10px;
+                  -webkit-border-bottom-left-radius: 10px;
+                }
+
+                .currentProgress {
+                  width: 0;
+                  height: 100%;
+                  border-radius: 10px;
+                  background-color: red;
+                  -webkit-border-top-left-radius: 10px;
+                  -webkit-border-bottom-left-radius: 10px;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

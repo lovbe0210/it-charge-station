@@ -4,55 +4,26 @@
       <div class="layout-module_MainContentChildren">
         <div class="main-container grade-incentive">
           <div class="layout-module_level">
-            <div class="index-info">
-              <div class="home-head">
-                <img src="https://i1.hdslb.com/bfs/face/e378bb312a3673c714e2d55372dd8a2c7f913cc0.jpg">
-                <a href="//space.bilibili.com/271221082/" target="_blank" class="gotoSpace">个人空间</a>
-              </div>
-              <div class="home-right">
-                <div class="home-top-msg">
-                  <span class="home-top-msg-name">lambda_布衣草人</span>
-                  <span class="home-userstatus">正式会员</span>
-                </div>
-                <div class="home-top-level">
-                  <span class="home-top-level-all">
-                    <div class="home-top-progress-wrap">
-                      <span class="home-top-level-head home-top-level-head-active">LV5</span>
-                      <span class="home-top-level-up">
-                        进度条
-                        <span class="home-top-level-upgo" style="width: 55.37%;"></span>
-                      </span>
-                      <div class="home-top-level-mask-warp">
-                        <span class="home-level-mask-icon"></span>
-                        <span class="home-level-mask-top"></span>
-                        <p>作为<i class="home-level-tips">LV5</i>，你可以：</p>
-                        <p>1、购买邀请码（1个/月）</p>
-                        <p>2、发射个性弹幕（彩色、高级、顶部、底部）</p>
-                        <p>3、参与视频互动（评论、添加tag）</p>
-                        <p>4、投稿成为偶像</p>
-                        <a
-                          href="https://www.bilibili.com/blackboard/help.html#%E4%BC%9A%E5%91%98%E7%AD%89%E7%BA%A7%E7%9B%B8%E5%85%B3?id=7251c4ab69d44a8ebbbd276dea46d790"
-                          target="_blank">
-                          会员等级相关说明
-                        </a>
+            <h1 class="setting-title">经验等级</h1>
+            <div class="level-module_nickName">
+              <span class="nick-name">布衣草人</span>
+            </div>
+            <div class="level-module_experienceBar">
+              <span class="experience-bar-body">
+                  <div class="progressBar">
+                    <span class="home-top-level-head home-top-level-head-active">LV5</span>
+                    <div class="progress-wrapp">
+                      <div class="totalProgress">
+                        <div class="currentProgress" style="width: 10%"/>
                       </div>
                     </div>
-                    <span class="home-top-level-number">
+                    <span class="totalTime">
                       <i class="now-num">15947</i>
                       <i class="num-icon">/</i>
                       <i class="max-num">28800</i>
                     </span>
-                  </span>
-                </div>
-                <div class="home-top-bp">
-                  <a href="https://pay.bilibili.com/paywallet-fe/bb_balance.html"
-                     target="_blank" title="B币" class="curren-b">
-                  </a>
-                  <span class="curren-b-num">0</span>
-                  <a href="/account/coin" class="coin-link"></a>
-                  <span class="curren-b-num">1367.6</span>
-                </div>
-              </div>
+                  </div>
+              </span>
             </div>
           </div>
           <div class="layout-module_dailyReward">
@@ -85,7 +56,7 @@
             </div>
           </div>
           <div class="layout-module_dailyReward main-right-content-min">
-            <h1 class="index-module_inherit_TQ-oW setting-title" style="margin: 0px;">能量</h1>
+            <h1 class="index-module_inherit_TQ-oW setting-title" style="margin: 0px;">电池激励</h1>
             <div><h2 class="index-module_inherit_TQ-oW setting-subtitle" style="margin: 0px 0px 16px;">能量值</h2>
               <div class="Banner-module_wrapper_2cLIH" gutter="24" data-testid="banner-wrapper">
                 <img src="https://gw.alipayobjects.com/mdn/prod_resource/afts/img/A*fvnmR7gwpGIAAAAAAAAAAAAAARQnAQ"
@@ -164,7 +135,8 @@
                               <span class="List-module_content_BwX8A">
                                 <span>
                                   《
-                                  <a href="/go/doc/135716630" target="_blank" class="doc-link" data-desktoptarget="_blank">
+                                  <a href="/go/doc/135716630" target="_blank" class="doc-link"
+                                     data-desktoptarget="_blank">
                                     <span class="doc-title" title="我的标题呢">我的标题呢</span>
                                   </a>
                                   》

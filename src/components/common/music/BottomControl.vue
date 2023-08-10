@@ -64,8 +64,9 @@
             <div class="currentProgress" :style="'width:' + timeProgress + '%'"/>
           </div>
         </div>
-        <span
-          class="totalTime">{{ typeof musicInfo.dt === "number" ? handleMusicTime(musicInfo.dt) : musicInfo.dt}}</span>
+        <span class="totalTime">
+          {{ typeof musicInfo.dt === "number" ? handleMusicTime(musicInfo.dt) : musicInfo.dt}}
+        </span>
       </div>
     </div>
   </div>
