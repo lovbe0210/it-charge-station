@@ -14,24 +14,29 @@
       .main-container {
         width: 100%;
         padding: 22px 16px 32px 0;
+
+        .setting-title {
+          font-size: 20px;
+          line-height: 24px;
+          font-weight: 500;
+          color: #262626;
+          position: sticky;
+          background-color: #ffffff;
+          z-index: 100;
+          padding: 48px 0 28px;
+          top: 0;
+          left: 0;
+          margin: 0px;
+          text-align: inherit;
+        }
       }
 
       .grade-incentive {
+
         .layout-module_level {
-          .setting-title {
-            font-size: 20px;
-            line-height: 24px;
-            font-weight: 500;
-            color: #262626;
-            position: sticky;
-            background-color: #ffffff;
-            z-index: 100;
-            padding: 48px 0 28px;
-            top: 0;
-            left: 0;
-            margin: 0px;
-            text-align: inherit;
-          }
+          width: 992px;
+          text-align: left;
+          margin-top: 42px;
 
           .nick-name {
             display: inline-block;
@@ -51,47 +56,192 @@
               margin-top: 10px;
 
               .progressBar {
-                display: flex;
-                align-items: center;
-                height: 10px;
-                margin-top: 12px;
-                overflow: hidden;
+                display: inline-block;
+                position: relative;
 
-                .currentTime,
-                .totalTime {
+                .experience-bar-level {
+                  width: 48px;
+                  height: 24px;
+                  font-weight: 700;
+                  color: #fff;
+                  padding-left: 10px;
                   font-size: 12px;
-                  transform: scale(0.9);
-                  color: #aaa;
-                  width: 32px;
+                  line-height: 24px;
+                  cursor: default;
+                  display: inline-block;
+                  background: url(//s1.hdslb.com/bfs/static/jinkela/account/assets/icons_m_2.png) no-repeat;
+                  background-position: -264px -852px;
+                }
+
+                .experience-bar-progress {
+                  width: 280px;
+                  height: 24px;
+                  line-height: 24px;
+                  background-color: #e5e9ef;
+                  border-top-right-radius: 4px;
+                  border-bottom-right-radius: 4px;
+                  display: inline-block;
+                  position: relative;
+                  text-indent: -9999px;
                   text-align: center;
                 }
 
-                .progress-wrapp {
-                  margin: 0 2px;
-                }
-
-                .totalProgress {
-                  //margin: 0 6px;
-                  cursor: pointer;
-                  width: 134px;
-                  height: 6px;
-                  background-color: #c6c6c6;
-                  border-radius: 10px;
-                  -webkit-border-top-left-radius: 10px;
-                  -webkit-border-bottom-left-radius: 10px;
-                }
-
-                .currentProgress {
+                .experience-bar-upgo {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  background-color: #ff905a;
                   width: 0;
-                  height: 100%;
-                  border-radius: 10px;
-                  background-color: red;
-                  -webkit-border-top-left-radius: 10px;
-                  -webkit-border-bottom-left-radius: 10px;
+                  height: 24px;
+                  transition: all .3s ease-in-out;
+                  transition-delay: .3s;
+                  border-radius: 0 4px 4px 0;
+                }
+              }
+
+              .experience-bar-level-number {
+                height: 24px;
+                color: #99a2aa;
+                margin-left: 8px;
+                font-size: 12px;
+                line-height: 24px;
+                cursor: default;
+
+                i {
+                  font-style: normal;
+                }
+
+                .now-num {
+                  color: #222;
+                }
+
+                .num-icon {
+                  margin: 0 2px;
                 }
               }
             }
           }
+        }
+
+        .layout-module_dailyReward {
+          width: 992px;
+          text-align: left;
+          margin-top: 42px;
+
+          .dailyReward-module_exp {
+
+            .daily-exp-item {
+              display: inline-block;
+              width: 186px;
+              box-sizing: border-box;
+              padding: 22px 0 0;
+              position: relative;
+
+              .position-ok {
+                background-position: -252px -508px;
+              }
+
+              .position-rest {
+                background-position: -252px -636px;
+              }
+
+              .daily-exp-icon {
+                width: 72px;
+                height: 72px;
+                border-radius: 72px;
+                background: url(//s1.hdslb.com/bfs/static/jinkela/account/assets/icons_m_2.png) no-repeat;
+                text-align: center;
+                line-height: 72px;
+                color: #fff;
+                margin: 0 auto;
+              }
+
+              .daily-exp-info {
+                font-size: 14px;
+                color: #222;
+                margin-top: 16px;
+                width: 100%;
+                text-align: center;
+              }
+
+              .daily-exp-getexp {
+                width: 80px;
+                height: 20px;
+                border-radius: 4px;
+                background-color: #8a95a8;
+                color: #fff;
+                text-align: center;
+                line-height: 19px;
+                margin: 15px auto 0;
+              }
+
+              .daily-exp-none {
+                font-size: 12px;
+                color: #99a2aa;
+                margin-top: 16px;
+                width: 100%;
+                text-align: center;
+              }
+
+              .h-line {
+                display: inline-block;
+                position: absolute;
+                top: 54px;
+                right: 0;
+                width: 1px;
+                height: 74px;
+                border-left: 1px solid #e5e9ef;
+              }
+            }
+          }
+        }
+
+        .layout-module_chargeIncentive {
+          width: 992px;
+          text-align: left;
+          margin-top: 42px;
+
+          .charge-incentive-left-img {
+            height: 120px;
+            vertical-align: middle;
+            border-style: none;
+          }
+
+          .charge-incentive-content {
+            flex: 1;
+            margin-left: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 120px;
+            color: #262626;
+          }
+
+          .charge-incentive-count {
+            line-height: 1.4;
+            font-size: 24px;
+            display: inline-block;
+            margin: 0 8px;
+            color: #262626;
+            font-weight: 600;
+          }
+
+          .charge-incentive-tip {
+            margin-top: 12px;
+            color: #8A8F8D;
+          }
+        }
+
+        .layout-module_acquireRule {
+          width: 992px;
+          text-align: left;
+          margin-top: 42px;
+        }
+
+        .ayout-module_pointsHistory {
+          width: 992px;
+          text-align: left;
+          margin-top: 42px;
         }
       }
     }

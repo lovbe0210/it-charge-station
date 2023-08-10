@@ -2,7 +2,7 @@
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
   src:
-          url('//at.alicdn.com/t/c/font_4166796_0g5mm7eb0xgn.woff2?t=1691561899720') format('woff2');
+          url('//at.alicdn.com/t/c/font_4166796_w8pcde7vild.woff2?t=1691671888513') format('woff2');
 }
 
 .iconfont {
@@ -91,4 +91,8 @@
 
 .icon-doubt:before {
   content: "\e60b";
+}
+
+.icon-battery:before {
+  content: "\e67c";
 }
