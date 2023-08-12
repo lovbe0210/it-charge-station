@@ -3,8 +3,8 @@
     <div id="main-right-content" class="layout-module_MainContent">
       <div class="layout-module_MainContentChildren">
         <div class="main-container grade-incentive">
+          <h1 class="setting-title">账户管理</h1>
           <div class="layout-module_level">
-            <h1 class="setting-title">经验等级</h1>
             <div class="level-module_nickName">
               <span class="nick-name">布衣草人</span>
             </div>
@@ -25,33 +25,36 @@
               </span>
             </div>
           </div>
+          <h1 class="setting-title">每日奖励</h1>
           <div class="layout-module_dailyReward">
-            <h1 class="setting-title">每日奖励</h1>
             <div class="dailyReward-module_exp">
                 <div class="daily-exp-item">
-                  <div class="daily-exp-icon position-ok"></div>
-                  <p class="daily-exp-info">每日登录</p>
-                  <p class="daily-exp-getexp">5经验值到手</p>
-                  <div class="h-line"></div>
-                </div>
-                <div class="daily-exp-item">
-                  <div class="daily-exp-icon position-ok"></div>
-                  <p class="daily-exp-info">每日浏览文章</p>
-                  <p class="daily-exp-getexp">5经验值到手</p>
-                  <div class="h-line"></div>
-                </div>
-                <div class="daily-exp-item">
-                  <div class="daily-exp-icon position-rest">
-                    <i class="daily-exp-i">10</i>
-                    <i class="daily-exp-i-2">EXP</i>
+                  <div class="daily-exp-box">
+                    <span class="iconfont icon-exp-complete"></span>
+                    <p class="daily-exp-info">每日登录</p>
+                    <p class="daily-exp-getexp">5经验值到手</p>
+                    <div class="h-line"></div>
                   </div>
-                  <p class="daily-exp-info">每日写作</p>
-                  <p class="daily-exp-none">已获得0/10</p>
+                </div>
+                <div class="daily-exp-item">
+                  <div class="daily-exp-box">
+                    <span class="iconfont icon-exp-complete"></span>
+                    <p class="daily-exp-info">每日浏览文章</p>
+                    <p class="daily-exp-getexp">5经验值到手</p>
+                    <div class="h-line"></div>
+                  </div>
+                </div>
+                <div class="daily-exp-item">
+                  <div class="daily-exp-box">
+                    <span class="iconfont icon-dengdai-copy"></span>
+                    <p class="daily-exp-info">每日写作</p>
+                    <p class="daily-exp-none">已获得0/10</p>
+                  </div>
                 </div>
               </div>
           </div>
+          <h1 class="setting-title">充电激励</h1>
           <div class="layout-module_chargeIncentive">
-            <h1 class="setting-title">充电激励</h1>
             <div class="chargeIncentive-module_wrapper" >
               <img :src="require('@/assets/img/charge.jpg')" class="charge-incentive-left-img">
               <div class="charge-incentive-content">
@@ -67,8 +70,8 @@
               </div>
             </div>
           </div>
+          <h1 class="setting-title">获取规则</h1>
           <div class="layout-module_acquireRule">
-            <h1 class="setting-subtitle">获取规则</h1>
             <ul class="Rules-module_wrapper_tdpLv" data-testid="grains-rules">
               <li class="Rules-module_itemWrapper_6+BH6">
                 <div class="Rules-module_item_Y+nBS">
@@ -112,8 +115,8 @@
               </li>
             </ul>
           </div>
+          <h1 class="setting-title">电池积分记录</h1>
           <div class="ayout-module_pointsHistory">
-            <h1 class="setting-subtitle">电池积分记录</h1>
             <div class="ant-list-header">
               <div class="ant-row" style="margin-left: -15px; margin-right: -15px; width: 100%; row-gap: 0px;">
                 <div class="ant-col ant-col-14" style="padding-left: 15px; padding-right: 15px;">操作</div>
