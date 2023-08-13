@@ -16,10 +16,10 @@
   // import ViewUI from 'view-design'
   import {
     Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload, Icon,
-    Menu, MenuItem, Button, Checkbox, Input, Divider, Tree, List, Modal
+    Menu, MenuItem, Button, Checkbox, Input, Divider, Tree, List, Modal, Tabs, TabPane
   } from 'view-design'
   import 'view-design/dist/styles/iview.css'
-  import { Tooltip, Card, Popover } from 'ant-design-vue'
+  import { Tooltip, Card, Popover, Pagination } from 'ant-design-vue'
   import commonUtil from "@/utils/common"
   // 引入弹幕模块
   import {vueBaberrage} from 'vue-baberrage'
@@ -46,10 +46,13 @@
   Vue.component('Modal', Modal);
   Vue.component('ListItem', List.Item);
   Vue.component('ListItemMeta', List.Item.Meta);
+  Vue.component('Tabs', Tabs);
+  Vue.component('TabPane', TabPane);
   Vue.component('a-tooltip', Tooltip);
   Vue.component('a-card', Card);
   Vue.component('a-card-meta', Card.Meta);
   Vue.component('a-popover', Popover);
+  Vue.component('a-pagination', Pagination);
 
   export default {
     name: 'App',

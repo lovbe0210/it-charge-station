@@ -48,7 +48,7 @@
         <b-navbar-nav v-if="loginStatus" class="ml-auto user-info" :fill="true" align="center">
           <!--用户快捷导航-->
           <b-nav-item class="avatar mr-2">
-            <Dropdown placement="bottom-start" @on-click="routeNavigate">
+            <Dropdown placement="bottom" @on-click="routeNavigate">
               <a href="javascript:void(0)">
                 <div class="avatar-wrapper">
                   <b-avatar size="40px" src="https://tva3.sinaimg.cn/large/718153f4gy1gy47gg8nutj20m80m8te2.jpg">
@@ -58,45 +58,64 @@
               </a>
               <DropdownMenu slot="list">
                 <DropdownItem name="nickName">
-                  <div class="nickName">
+                  <div class="nickName quick-start-item">
                     <span class="nick-name">限制长度10个字服了</span>
-                    <span :class="`iconfont icon-level`+5"/>
+                  </div>
+                </DropdownItem>
+                <DropdownItem name="levelBar">
+                  <div class="levelBar quick-start-item">
+                    <div class="level-bar-progress">
+                      <span :class="`iconfont icon-level`+5"/>
+                      <div class="progress-wrapp">
+                        <div class="totalProgress">
+                          <div class="currentProgress" style="width: 40%"/>
+                        </div>
+                      </div>
+                      <span :class="`iconfont icon-level`+6"/>
+                    </div>
+                    <div class="level-bar-text">
+                      当前成长15977，距离升级Lv.6 还需要12823
+                    </div>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="counter">
-                  <div class="counter">
-                    <div>
-                      创作
-                      <b-link to="/editerator" style="color:rgba(16,16,16,0.95);font-weight:600;">23</b-link>
-                      篇
+                  <div class="counter quick-start-item">
+                    <div class="single-count-item">
+                      <div class="count-num">55</div>
+                      <div class="count-text">文章</div>
                     </div>
-                    <div>
-                      收藏
-                      <b-link to="/editerator" style="color:rgba(16,16,16,0.95);font-weight:600;">32</b-link>
-                      个
+                    <div class="single-count-item">
+                      <div class="count-num">32</div>
+                      <div class="count-text">收藏</div>
                     </div>
-                    <div>
-                      收到的赞
-                      <b-link to="/editerator" style="color:rgba(16,16,16,0.95);font-weight:600;">113</b-link>
-                      个
+                    <div class="single-count-item">
+                      <div class="count-num">110</div>
+                      <div class="count-text">点赞</div>
                     </div>
                   </div>
                 </DropdownItem>
+                <DropdownItem name="topicDoc">
+                  <div class="user-home quick-start-item">
+                    <span class="iconfont icon-topic-doc"></span>
+                    <span style="font-size: 15px;">专栏文章</span>
+                    <span class="iconfont icon-more"></span>
+                  </div>
+                </DropdownItem>
                 <DropdownItem name="userHome">
-                  <div class="user-home">
-                    <span class="iconfont icon-personal-woman" style="font-size:17px;margin-left:5px;"></span>
+                  <div class="user-home quick-start-item">
+                    <span class="iconfont icon-user-domain"></span>
                     <span style="font-size: 15px;">个人主页</span>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="creativeSpace">
-                  <div class="creative-space">
-                    <span class="iconfont icon-creation-center" style="font-size:17px;margin-left:5px;"></span>
+                  <div class="creative-space quick-start-item">
+                    <span class="iconfont icon-creation-center"></span>
                     <span style="font-size: 15px;">创作中心</span>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="logout">
-                  <div class="logout">
-                    <span class="iconfont icon-exit" style="font-size:18px;margin-left:5px;"></span>
+                  <div class="logout quick-start-item">
+                    <span class="iconfont icon-exit"></span>
                     <span style="font-size: 15px;">退出登录</span>
                   </div>
                 </DropdownItem>

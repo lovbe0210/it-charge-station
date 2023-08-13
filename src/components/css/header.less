@@ -116,32 +116,119 @@
   .user-info {
     margin-right: 5px;
 
-    .avatar-wrapper {
-      width: 47px;
-      height: 47px;
-      display: flex;
-      align-items: center;
-    }
+    //.avatar-wrapper {
+    //  width: 47px;
+    //  height: 47px;
+    //  display: flex;
+    //  align-items: center;
+    //}
 
-    .dropdown-header {
-      padding: 0 5px 5px 10px;
 
-      .nickName {
-        font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial;
-        width: auto;
-        font-size: 15px;
-        font-weight: 400;
-        color: var(--title-color);
+    .avatar {
+      /deep/ .ivu-select-dropdown {
+        border-radius: 8px;
 
-        .iconfont {
-          margin-left: 5px;
-          font-size: 22px;
+        .ivu-dropdown-menu {
+          text-align: left;
+          min-width: 240px;
+
+          .ivu-dropdown-item {
+            padding: 2px 16px;
+            margin-bottom: 5px;
+          }
+
+          .ivu-dropdown-item:hover {
+            background: unset;
+          }
+
+          .quick-start-item {
+            padding-left: 10px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+          }
+
+          .quick-start-item:hover {
+            background: #f3f3f3;
+            border-radius: 4px;
+          }
+
+          .nickName {
+            width: auto;
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--title-color);
+            justify-content: center;
+          }
+
+          .nickName:hover, .levelBar:hover, .counter:hover {
+            background: unset;
+          }
+
+          .levelBar {
+            justify-content: center;
+            flex-direction: column;
+            margin-bottom: 10px;
+
+            .level-bar-progress {
+              display: flex;
+              align-content: center;
+
+              .iconfont {
+                font-size: 25px;
+              }
+
+              .progress-wrapp {
+                margin: auto 2px;
+
+                .totalProgress{
+                  cursor: pointer;
+                  width: 185px;
+                  height: 2px;
+                  background-color: #c6c6c6;
+                  border-radius: 2px;
+                }
+
+                .currentProgress{
+                  width: 0;
+                  height: 2px;
+                  border-radius: 2px;
+                  background-color: #f3cb85;
+                }
+              }
+            }
+
+            .level-bar-text {
+              color: #8A8F8D;
+              font-size: 12px;
+            }
+          }
+
+          .counter {
+            justify-content: space-between;
+            padding: 0 20px;
+
+            .single-count-item {
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              justify-content: space-between;
+              transition: color .2s;
+
+              .count-num {
+                font-weight: 600;
+                color: #262626;
+              }
+
+              .count-text {
+                color: #8A8F8D;
+                font-weight: 400;
+                font-size: 12px;
+                transition: color .2s;
+              }
+            }
+          }
         }
-      }
-
-      .counter {
-        margin: 5px 0 10px 10px;
-        font-size: 13px;
       }
     }
 

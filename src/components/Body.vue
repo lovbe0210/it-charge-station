@@ -26,7 +26,8 @@
           <div class="text">
             精选笔记
             <b-link class="more">
-              更多<span class="iconfont icon-more"></span>
+              <span class="content">更多</span>
+              <span class="iconfont icon-more"></span>
             </b-link>
             <hr>
           </div>
