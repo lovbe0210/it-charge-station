@@ -82,41 +82,43 @@
                   <div class="counter quick-start-item">
                     <div class="single-count-item">
                       <div class="count-num">55</div>
-                      <div class="count-text">文章</div>
+                      <div class="count-text">粉丝</div>
                     </div>
                     <div class="single-count-item">
                       <div class="count-num">32</div>
-                      <div class="count-text">收藏</div>
+                      <div class="count-text">关注</div>
                     </div>
                     <div class="single-count-item">
                       <div class="count-num">110</div>
-                      <div class="count-text">点赞</div>
+                      <div class="count-text">获赞</div>
                     </div>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="topicDoc">
-                  <div class="user-home quick-start-item">
+                  <div class="routing-menu quick-start-item">
                     <span class="iconfont icon-topic-doc"></span>
-                    <span style="font-size: 15px;">专栏文章</span>
+                    <span class="routing-content">专栏文章</span>
                     <span class="iconfont icon-more"></span>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="userHome">
-                  <div class="user-home quick-start-item">
+                  <div class="routing-menu quick-start-item">
                     <span class="iconfont icon-user-domain"></span>
-                    <span style="font-size: 15px;">个人主页</span>
+                    <span class="routing-content">个人主页</span>
+                    <span class="iconfont icon-more"></span>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="creativeSpace">
-                  <div class="creative-space quick-start-item">
-                    <span class="iconfont icon-creation-center"></span>
-                    <span style="font-size: 15px;">创作中心</span>
+                  <div class="routing-menu quick-start-item">
+                    <span class="iconfont icon-data-stats"></span>
+                    <span class="routing-content">创作中心</span>
+                    <span class="iconfont icon-more"></span>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="logout">
-                  <div class="logout quick-start-item">
-                    <span class="iconfont icon-exit"></span>
-                    <span style="font-size: 15px;">退出登录</span>
+                  <div class="routing-menu quick-start-item">
+                    <span class="iconfont icon-login-out"></span>
+                    <span class="routing-content">退出登录</span>
                   </div>
                 </DropdownItem>
               </DropdownMenu>
@@ -136,25 +138,31 @@
               <DropdownMenu slot="list">
                 <DropdownItem>
                   <div class="msg-comment">
-                    <span style="font-size: 15px;">回复我的</span>
+                    <span style="font-size: 15px;">评论回复</span>
+                    <Badge :count="10" overflow-count="99" class="msg-badge"></Badge>
+                  </div>
+                </DropdownItem>
+                <DropdownItem>
+                  <div class="msg-comment">
+                    <span style="font-size: 15px;">新增粉丝</span>
                     <Badge :count="10" overflow-count="99" class="msg-badge"></Badge>
                   </div>
                 </DropdownItem>
                 <DropdownItem>
                   <div class="msg-like">
-                    <span style="font-size: 15px;">收到的赞</span>
+                    <span style="font-size: 15px;">赞和收藏</span>
                     <Badge :count="100" overflow-count="99" class="msg-badge"></Badge>
                   </div>
                 </DropdownItem>
                 <DropdownItem>
                   <div class="msg-system">
-                    <span style="font-size: 15px;">系统通知</span>
+                    <span style="font-size: 15px;">私  信</span>
                     <Badge :count="35" overflow-count="99" class="msg-badge"></Badge>
                   </div>
                 </DropdownItem>
                 <DropdownItem>
                   <div class="msg-session">
-                    <span style="font-size: 15px;">我的消息</span>
+                    <span style="font-size: 15px;">系统通知</span>
                     <Badge :count="8" overflow-count="99" class="msg-badge"></Badge>
                   </div>
                 </DropdownItem>
@@ -312,6 +320,9 @@
             break;
           case 'nickName':
             this.$router.push({name: 'Profile'})
+            break;
+          case 'levelBar':
+            this.$router.push({name: 'Grade'})
             break;
           case 'counter':
             this.$router.push({name: 'Stats'})

@@ -116,21 +116,13 @@
   .user-info {
     margin-right: 5px;
 
-    //.avatar-wrapper {
-    //  width: 47px;
-    //  height: 47px;
-    //  display: flex;
-    //  align-items: center;
-    //}
-
-
     .avatar {
       /deep/ .ivu-select-dropdown {
         border-radius: 8px;
 
         .ivu-dropdown-menu {
           text-align: left;
-          min-width: 240px;
+          min-width: 250px;
 
           .ivu-dropdown-item {
             padding: 2px 16px;
@@ -142,7 +134,6 @@
           }
 
           .quick-start-item {
-            padding-left: 10px;
             height: 38px;
             display: flex;
             align-items: center;
@@ -154,6 +145,7 @@
           }
 
           .nickName {
+            margin-top: 5px;
             width: auto;
             font-size: 14px;
             font-weight: 400;
@@ -206,7 +198,8 @@
 
           .counter {
             justify-content: space-between;
-            padding: 0 20px;
+            padding: 0 10px;
+            margin-bottom: 5px;
 
             .single-count-item {
               display: flex;
@@ -228,6 +221,23 @@
               }
             }
           }
+
+          .routing-menu {
+            color: #262626;
+
+            .routing-content {
+              margin-left: 6px;
+            }
+
+            .icon-topic-doc,.icon-user-domain,.icon-data-stats,.icon-login-out {
+              margin-left: 10px;
+            }
+
+            .icon-more {
+              font-size: 12px;
+              margin-left: 125px;
+            }
+          }
         }
       }
     }
@@ -235,8 +245,6 @@
     .msg {
       margin-left: -10px;
       .nav-link {
-        //margin: 4.5px 8px 4.5px 8px;
-        //padding: 15px 0 15px 0;
         text-decoration:none;
         :hover {
           text-decoration:none;

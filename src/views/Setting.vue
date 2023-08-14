@@ -51,6 +51,15 @@
           <span class="iconfont icon-grade-incentive"></span>
           等级激励
         </div>
+        <p class="index-module_inherit nav-module_subMenuTitle"
+           style="margin: 32px 0px 8px 16px;">
+          其他设置
+        </p>
+        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'stats' ? 'active': '']"
+             @click="routeNavigate('msgSetting')">
+          <span class="iconfont icon-preferences"></span>
+          消息设置
+        </div>
       </div>
     </div>
     <div class="main-wrapper">
