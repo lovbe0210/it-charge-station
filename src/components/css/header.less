@@ -243,7 +243,6 @@
     }
 
     .msg {
-      margin-left: -10px;
       .nav-link {
         text-decoration:none;
         :hover {
@@ -262,7 +261,7 @@
         display: flex;
         align-items: center;
         width: 47px;
-        height: 47px;
+        height: 40px;
 
         .message-menu-body {
           .c-badge {
@@ -279,11 +278,46 @@
         }
       }
 
-
       .msg-badge {
         margin-left: 5px;
         width: 35px;
         height: 8px;
+      }
+
+      /deep/ .ivu-select-dropdown {
+        border-radius: 8px;
+
+        .ivu-dropdown-menu {
+          text-align: left;
+          min-width: 160px;
+          padding: 5px 0;
+
+          .ivu-dropdown-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 10px 0 10px 24px;
+            text-align: left;
+            font-size: 14px;
+            transition: background-color .3s;
+          }
+
+
+          .quick-start-item {
+            font-size: 14px;
+            font-family: normal;
+            color: #61666D;
+            display: flex;
+            align-items: center;
+
+            .msg-item-badge {
+              position: absolute;
+              right: 24px;
+              //padding-left: 10px;
+            }
+          }
+
+        }
       }
     }
   }

@@ -80,15 +80,15 @@
                 </DropdownItem>
                 <DropdownItem name="counter">
                   <div class="counter quick-start-item">
-                    <div class="single-count-item">
+                    <div class="single-count-item" @click="routeNavigate('fans')">
                       <div class="count-num">55</div>
                       <div class="count-text">粉丝</div>
                     </div>
-                    <div class="single-count-item">
+                    <div class="single-count-item" @click="routeNavigate('concern')">
                       <div class="count-num">32</div>
                       <div class="count-text">关注</div>
                     </div>
-                    <div class="single-count-item">
+                    <div class="single-count-item" @click="routeNavigate('liked')">
                       <div class="count-num">110</div>
                       <div class="count-text">获赞</div>
                     </div>
@@ -126,7 +126,7 @@
           </b-nav-item>
 
           <b-nav-item class="msg mr-2">
-            <Dropdown placement="bottom-start">
+            <Dropdown placement="bottom">
               <a href="javascript:void(0)">
                 <div class="message-menu-wrapper">
                   <div class="message-menu-body">
@@ -137,33 +137,33 @@
               </a>
               <DropdownMenu slot="list">
                 <DropdownItem>
-                  <div class="msg-comment">
-                    <span style="font-size: 15px;">评论回复</span>
-                    <Badge :count="10" overflow-count="99" class="msg-badge"></Badge>
+                  <div class="comment-reply quick-start-item">
+                    <span>评论回复</span>
+                    <Badge :count="30" overflow-count="99" class="msg-item-badge"></Badge>
                   </div>
                 </DropdownItem>
                 <DropdownItem>
-                  <div class="msg-comment">
-                    <span style="font-size: 15px;">新增粉丝</span>
-                    <Badge :count="10" overflow-count="99" class="msg-badge"></Badge>
+                  <div class="new-fans quick-start-item">
+                    <span>新增粉丝</span>
+                    <Badge :count="10" overflow-count="99" class="msg-item-badge"></Badge>
                   </div>
                 </DropdownItem>
                 <DropdownItem>
-                  <div class="msg-like">
-                    <span style="font-size: 15px;">赞和收藏</span>
-                    <Badge :count="100" overflow-count="99" class="msg-badge"></Badge>
+                  <div class="like-favorite quick-start-item">
+                    <span>赞和收藏</span>
+                    <Badge :count="100" overflow-count="99" class="msg-item-badge"></Badge>
                   </div>
                 </DropdownItem>
                 <DropdownItem>
-                  <div class="msg-system">
-                    <span style="font-size: 15px;">私  信</span>
-                    <Badge :count="35" overflow-count="99" class="msg-badge"></Badge>
+                  <div class="msg-system quick-start-item">
+                    <span>系统消息</span>
+                    <Badge :count="35" overflow-count="99" class="msg-item-badge"></Badge>
                   </div>
                 </DropdownItem>
                 <DropdownItem>
-                  <div class="msg-session">
-                    <span style="font-size: 15px;">系统通知</span>
-                    <Badge :count="8" overflow-count="99" class="msg-badge"></Badge>
+                  <div class="msg-session quick-start-item">
+                    <span>我的消息</span>
+                    <Badge :count="8" overflow-count="99" class="msg-item-badge"></Badge>
                   </div>
                 </DropdownItem>
               </DropdownMenu>
@@ -324,8 +324,14 @@
           case 'levelBar':
             this.$router.push({name: 'Grade'})
             break;
-          case 'counter':
-            this.$router.push({name: 'Stats'})
+          case 'fans':
+            this.$router.push({name: 'Grade'})
+            break;
+          case 'concern':
+            this.$router.push({name: 'Grade'})
+            break;
+          case 'liked':
+            this.$router.push({name: 'Grade'})
             break;
           case 'userHome':
             this.$router.push({name: 'Domain'})
@@ -340,31 +346,6 @@
       if (this.$store.state.isPhone) {
         this.maxWidth = document.documentElement.clientWidth
       }
-
-      // 判断是点击触发的切换事件还是自定义触发的,注意未登录状态下是没有这两个refs的，因此需要加以判断
-      /*if (this.$refs.personalDp) {
-        this.$refs.personalDp.$on('toggle', bvEvent => {
-          if (bvEvent.keyCode !== '-1') {
-            bvEvent.preventDefault()
-            this.$router.push('/accCenter')
-          }
-        })
-        this.$refs.msgDp.$on('toggle', bvEvent => {
-          if (bvEvent.keyCode !== '-1') {
-            bvEvent.preventDefault()
-            this.$router.push('/msgMenu')
-          }
-        })
-      }*/
-
-    },
-    beforeDestroy() {
-      // 关闭监听的事件
-      // if (this.$refs.personalDp) {
-      //   this.$refs.personalDp.$off('toggle')
-      //   this.$refs.msgDp.$off('toggle')
-      // }
-
     }
   }
 </script>
