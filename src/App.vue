@@ -107,16 +107,6 @@
         this.$store.commit('isPhone', false)
       }
 
-      // 配置全局消息发送
-      // this.$Message.config({
-      //   top: 50,
-      //   duration: 2
-      // })
-
-      // TODO 后期作为点赞收藏图标变化效果
-      //.iconfont:hover {
-      //  font-size: 100px;
-      //}
     },
     watch: {
       // 开启深度监视，然后实时刷新自定义主题

@@ -20,36 +20,60 @@
       </div>
       <div class="nav-module_menuContainer">
         <p class="index-module_inherit nav-module_subMenuTitle" style="margin: 32px 0px 8px 16px;">
-          帐户
+          个人中心
         </p>
         <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'profile' ? 'active': '']"
-                     @click="routeNavigate('profile')">
+             @click="routeNavigate('storeHouse')">
           <span class="iconfont icon-user-center"></span>
-          基本信息
+          文档仓库
+        </div>
+        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'profile' ? 'active': '']"
+                     @click="routeNavigate('collection')">
+          <span class="iconfont icon-like"></span>
+          我的收藏
         </div>
         <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'domain' ? 'active': '']"
-                     @click="routeNavigate('domain')">
+                     @click="routeNavigate('fans')">
           <span class="iconfont icon-user-domain"></span>
-          个人主页
+          我的关注
         </div>
         <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'account' ? 'active': '']"
                      @click="routeNavigate('account')">
           <span class="iconfont icon-account-set"></span>
-          账户管理
+          我的粉丝
         </div>
         <p class="index-module_inherit nav-module_subMenuTitle"
            style="margin: 32px 0px 8px 16px;">
-          其他设置
+          消息中心
         </p>
         <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'stats' ? 'active': '']"
-             @click="routeNavigate('preferences')">
-          <span class="iconfont icon-preferences"></span>
-          偏好设置
+                     @click="routeNavigate('interactiveMsg')">
+          <span class="iconfont icon-data-stats"></span>
+          互动消息
         </div>
         <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'stats' ? 'active': '']"
-             @click="routeNavigate('musicPlay')">
-          <span class="iconfont icon-music-setting"></span>
-          音乐播放
+             @click="routeNavigate('privateChatMsg')">
+          <span class="iconfont icon-data-stats"></span>
+          我的消息
+        </div>
+        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'stats' ? 'active': '']"
+             @click="routeNavigate('stats')">
+          <span class="iconfont icon-data-stats"></span>
+          系统消息
+        </div>
+        <p class="index-module_inherit nav-module_subMenuTitle"
+           style="margin: 32px 0px 8px 16px;">
+          创作中心
+        </p>
+        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'stats' ? 'active': '']"
+             @click="routeNavigate('stats')">
+          <span class="iconfont icon-data-stats"></span>
+          数据统计
+        </div>
+        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'grade' ? 'active': '']"
+             @click="routeNavigate('grade')">
+          <span class="iconfont icon-grade-incentive"></span>
+          等级激励
         </div>
       </div>
     </div>
@@ -65,7 +89,7 @@
 
 <script>
   export default {
-    name: 'Setting',
+    name: 'Dashboard',
     beforeRouteEnter(from, to, next) {
       next(vc => {
         // 通过 `vc` 访问组件实例

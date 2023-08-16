@@ -153,5 +153,5 @@
 </script>
 
 <style scoped lang="less">
-  @import '../css/setting/stats.less';
+  @import 'src/components/css/setting/stats.less';
 </style>

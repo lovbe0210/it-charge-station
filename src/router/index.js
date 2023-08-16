@@ -64,7 +64,7 @@ const routes = [
     component: () => import('@/views/ReadCenter')
   },
   {
-    // 个人中心
+    // 设置
     path: '/settings',
     name: 'Setting',
     redirect: { name: 'Profile' },
@@ -89,16 +89,62 @@ const routes = [
         component: () => import('@/components/settings/Account')
       },
       {
-        // 数据统计
-        path: 'stats',
-        name: 'Stats',
-        component: () => import('@/components/settings/Stats')
+        // 偏好设置
+        path: 'preferences',
+        name: 'Preferences',
+        component: () => import('@/components/settings/Preferences')
       },
       {
-        // 等级激励
-        path: 'grade',
-        name: 'Grade',
-        component: () => import('@/components/settings/Grade')
+        // 音乐播放
+        path: 'musicPlay',
+        name: 'MusicPlay',
+        component: () => import('@/components/settings/MusicPlay')
+      }
+    ]
+  },
+  {
+    // 个人主页
+    path: '/dashboard',
+    name: 'Dashboard',
+    redirect: { name: 'StoreHouse' },
+    component: () => import('@/views/Dashboard'),
+    children: [
+      {
+        // 仓库
+        path: 'storeHouse',
+        name: 'StoreHouse',
+        component: () => import('@/components/dashboard/StoreHouse')
+      },
+      {
+        // 我的收藏
+        path: 'collection',
+        name: 'Collection',
+        component: () => import('@/components/dashboard/Collection')
+      },
+      {
+        // 关注/粉丝
+        path: 'relational:relational',
+        name: 'Relational',
+        props: true,
+        component: () => import('@/components/dashboard/Relational')
+      },
+      {
+        // 互动消息
+        path: 'interactiveMsg',
+        name: 'InteractiveMsg',
+        component: () => import('@/components/dashboard/InteractiveMsg')
+      },
+      {
+        // 我的消息
+        path: 'privateChatMsg',
+        name: 'PrivateChatMsg',
+        component: () => import('@/components/dashboard/PrivateChatMsg')
+      },
+      {
+        // 系统消息
+        path: 'systemMsg',
+        name: 'SystemMsg',
+        component: () => import('@/components/dashboard/SystemMsg')
       }
     ]
   },

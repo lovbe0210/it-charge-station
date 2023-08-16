@@ -332,5 +332,5 @@
 </script>
 
 <style scoped lang="less">
-  @import '../css/setting/grade.less';
+  @import 'src/components/css/setting/grade.less';
 </style>
