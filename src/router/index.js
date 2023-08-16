@@ -123,7 +123,7 @@ const routes = [
       },
       {
         // 关注/粉丝
-        path: 'relational:relational',
+        path: 'relational/:relational',
         name: 'Relational',
         props: true,
         component: () => import('@/components/dashboard/Relational')

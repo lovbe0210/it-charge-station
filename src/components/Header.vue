@@ -325,13 +325,13 @@
             this.$router.push({name: 'Grade'})
             break;
           case 'fans':
-            this.$router.push({name: 'Grade'})
+            this.$router.push({path: '/dashboard/relational/fans'})
             break;
           case 'concern':
-            this.$router.push({name: 'Grade'})
+            this.$router.push({path: '/dashboard/relational/concern'})
             break;
           case 'liked':
-            this.$router.push({name: 'Grade'})
+            this.$router.push({name: 'Collection'})
             break;
           case 'userHome':
             this.$router.push({name: 'Domain'})
