@@ -1,6 +1,7 @@
 <template>
   <b-container class="index">
       <Header/>
+<!--      <router-view class="show"></router-view>-->
       <Body :activeName="activeName" @onSelect="onSelect" v-if="!showContext"/>
   </b-container>
 </template>

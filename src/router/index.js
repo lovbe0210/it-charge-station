@@ -104,49 +104,49 @@ const routes = [
   },
   {
     // 个人主页
-    path: '/dashboard',
-    name: 'Dashboard',
-    redirect: { name: 'StoreHouse' },
-    component: () => import('@/views/Dashboard'),
-    children: [
-      {
-        // 仓库
-        path: 'storeHouse',
-        name: 'StoreHouse',
-        component: () => import('@/components/dashboard/StoreHouse')
-      },
-      {
-        // 我的收藏
-        path: 'collection',
-        name: 'Collection',
-        component: () => import('@/components/dashboard/Collection')
-      },
-      {
-        // 关注/粉丝
-        path: 'relational/:relational',
-        name: 'Relational',
-        props: true,
-        component: () => import('@/components/dashboard/Relational')
-      },
-      {
-        // 互动消息
-        path: 'interactiveMsg',
-        name: 'InteractiveMsg',
-        component: () => import('@/components/dashboard/InteractiveMsg')
-      },
-      {
-        // 我的消息
-        path: 'privateChatMsg',
-        name: 'PrivateChatMsg',
-        component: () => import('@/components/dashboard/PrivateChatMsg')
-      },
-      {
-        // 系统消息
-        path: 'systemMsg',
-        name: 'SystemMsg',
-        component: () => import('@/components/dashboard/SystemMsg')
-      }
-    ]
+    path: '/dashboard1',
+    name: 'Dashboard1',
+    // redirect: { name: 'StoreHouse' },
+    component: () => import('@/views/Dashboard1')
+    // children: [
+    //   {
+    //     // 仓库
+    //     path: 'storeHouse',
+    //     name: 'StoreHouse',
+    //     component: () => import('@/components/dashboard/StoreHouse')
+    //   },
+    //   {
+    //     // 我的收藏
+    //     path: 'collection',
+    //     name: 'Collection',
+    //     component: () => import('@/components/dashboard/Collection')
+    //   },
+    //   {
+    //     // 关注/粉丝
+    //     path: 'relational/:relational',
+    //     name: 'Relational',
+    //     props: true,
+    //     component: () => import('@/components/dashboard/Relational')
+    //   },
+    //   {
+    //     // 互动消息
+    //     path: 'interactiveMsg',
+    //     name: 'InteractiveMsg',
+    //     component: () => import('@/components/dashboard/InteractiveMsg')
+    //   },
+    //   {
+    //     // 我的消息
+    //     path: 'privateChatMsg',
+    //     name: 'PrivateChatMsg',
+    //     component: () => import('@/components/dashboard/PrivateChatMsg')
+    //   },
+    //   {
+    //     // 系统消息
+    //     path: 'systemMsg',
+    //     name: 'SystemMsg',
+    //     component: () => import('@/components/dashboard/SystemMsg')
+    //   }
+    // ]
   },
   {
     // 个人首页
