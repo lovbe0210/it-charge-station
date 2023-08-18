@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../views/Index.vue'
 import Recommend from '@/components/Recommend'
+import Body from '@/components/Body'
 
 // 解决router.push报重复路由错误，实际并没有重复
 const originalPush = VueRouter.prototype.push
@@ -18,29 +19,46 @@ const routes = [
     name: 'Index',
     component: Index,
     redirect: {
-      name: 'Recommend',
-      // 从首页进入时传入一个标志为true，然后改变当前激活的菜单显示，只有当从首页进入时改为recommend，其他任何时候都以用户点击为主
-      params: {index: 'true'}
+      name: 'Body'
     },
     children: [
       {
-        // 关注
-        path: 'follow',
-        name: 'Follow',
-        // 此方式为路由懒加载
-        component: () => import('@/components/Follow')
+        // body
+        path: '/',
+        name: 'Body',
+        redirect: {
+          name: 'Recommend',
+          // 从首页进入时传入一个标志为true，然后改变当前激活的菜单显示，只有当从首页进入时改为recommend，其他任何时候都以用户点击为主
+          params: {index: 'true'}
+        },
+        component: Body,
+        children: [
+          {
+            // 关注
+            path: 'follow',
+            name: 'Follow',
+            // 此方式为路由懒加载
+            component: () => import('@/components/Follow')
+          },
+          {
+            // 推荐
+            path: 'recommend',
+            name: 'Recommend',
+            component: Recommend
+          },
+          {
+            // 主题
+            path: 'topic',
+            name: 'Topic',
+            component: () => import('@/components/Topic')
+          }
+        ]
       },
       {
-        // 推荐
-        path: 'recommend',
-        name: 'Recommend',
-        component: Recommend
-      },
-      {
-        // 主题
-        path: 'topic',
-        name: 'Topic',
-        component: () => import('@/components/Topic')
+        // dashboard
+        path: '/dashboard1',
+        name: 'DashBoard1',
+        component: () => import('@/views/Dashboard1')
       }
     ]
   },
@@ -67,7 +85,7 @@ const routes = [
     // 设置
     path: '/settings',
     name: 'Setting',
-    redirect: { name: 'Profile' },
+    redirect: {name: 'Profile'},
     component: () => import('@/views/Setting'),
     children: [
       {
@@ -104,49 +122,49 @@ const routes = [
   },
   {
     // 个人主页
-    path: '/dashboard1',
-    name: 'Dashboard1',
+    path: '/dashboard',
+    name: 'Dashboard',
     // redirect: { name: 'StoreHouse' },
-    component: () => import('@/views/Dashboard1')
-    // children: [
-    //   {
-    //     // 仓库
-    //     path: 'storeHouse',
-    //     name: 'StoreHouse',
-    //     component: () => import('@/components/dashboard/StoreHouse')
-    //   },
-    //   {
-    //     // 我的收藏
-    //     path: 'collection',
-    //     name: 'Collection',
-    //     component: () => import('@/components/dashboard/Collection')
-    //   },
-    //   {
-    //     // 关注/粉丝
-    //     path: 'relational/:relational',
-    //     name: 'Relational',
-    //     props: true,
-    //     component: () => import('@/components/dashboard/Relational')
-    //   },
-    //   {
-    //     // 互动消息
-    //     path: 'interactiveMsg',
-    //     name: 'InteractiveMsg',
-    //     component: () => import('@/components/dashboard/InteractiveMsg')
-    //   },
-    //   {
-    //     // 我的消息
-    //     path: 'privateChatMsg',
-    //     name: 'PrivateChatMsg',
-    //     component: () => import('@/components/dashboard/PrivateChatMsg')
-    //   },
-    //   {
-    //     // 系统消息
-    //     path: 'systemMsg',
-    //     name: 'SystemMsg',
-    //     component: () => import('@/components/dashboard/SystemMsg')
-    //   }
-    // ]
+    component: () => import('@/views/Dashboard'),
+    children: [
+      {
+        // 仓库
+        path: 'storeHouse',
+        name: 'StoreHouse',
+        component: () => import('@/components/dashboard/StoreHouse')
+      },
+      {
+        // 我的收藏
+        path: 'collection',
+        name: 'Collection',
+        component: () => import('@/components/dashboard/Collection')
+      },
+      {
+        // 关注/粉丝
+        path: 'relational/:relational',
+        name: 'Relational',
+        props: true,
+        component: () => import('@/components/dashboard/Relational')
+      },
+      {
+        // 互动消息
+        path: 'interactiveMsg',
+        name: 'InteractiveMsg',
+        component: () => import('@/components/dashboard/InteractiveMsg')
+      },
+      {
+        // 我的消息
+        path: 'privateChatMsg',
+        name: 'PrivateChatMsg',
+        component: () => import('@/components/dashboard/PrivateChatMsg')
+      },
+      {
+        // 系统消息
+        path: 'systemMsg',
+        name: 'SystemMsg',
+        component: () => import('@/components/dashboard/SystemMsg')
+      }
+    ]
   },
   {
     // 个人首页

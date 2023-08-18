@@ -1,66 +1,80 @@
 <template>
-  <b-container class="index">
-    <Header/>
-    <div class="box">
-      <div class="layout-module_dashboardMenu">
-        <div class="wrap">
-          <div class="nav">
-            <div class="btn">
-              <div class="btn-item">
-              </div>
-              <div class="btn-item">
-              </div>
-              <div class="btn-item">
-              </div>
-            </div>
-            <div class="icon">
-              <div class="icon-img">
-                <img :src="require('@/assets/avatar/01.jpg')" alt="" style="width: 60px">
-              </div>
-              <div class="icon-con">
-                <p>Lovbe0210</p>
-                <h2>rongyanjusou</h2>
-              </div>
-            </div>
-            <div class="line"></div>
-            <div class="title">
-              <p>Menu 6</p>
-            </div>
-            <div class="menu">
-              <div class="item">
-                <div class="light"></div>
-                <div class="licon">
-                  <span class="iconfont icon-setting"></span>
-                </div>
-                <div class="con">menu1</div>
-                <div class="ricon"></div>
-              </div>
-            </div>
-            <div class="line"></div>
-            <div class="title">
-              <p>Server 6</p>
-            </div>
-            <div class="server">
-              <div class="item">
-                <div class="light"></div>
-                <div class="licon">
-                  <span class="iconfont icon-setting"></span>
-                </div>
-                <div class="con">menu1</div>
-                <div class="ricon"></div>
-              </div>
-            </div>
+  <div class="box">
+    <div class="layout-module_dashboardMenu">
+      <div class="layout-module_menu enable-background">
+        <div class="menu-wrap">
+          <div class="menu-item">
+            最近编辑
+          </div>
+          <div class="menu-item">
+            最近编辑
+          </div>
+          <div class="menu-item">
+            最近编辑
+          </div>
+          <div class="menu-item">
+            最近编辑
+          </div>
+          <div class="menu-item">
+            最近编辑
           </div>
         </div>
       </div>
-      <div class="layout-module_dashboardContent enable-background"></div>
+<!--      <div class="wrap">-->
+<!--        <div class="nav">-->
+<!--          <div class="btn">-->
+<!--            <div class="btn-item">-->
+<!--            </div>-->
+<!--            <div class="btn-item">-->
+<!--            </div>-->
+<!--            <div class="btn-item">-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="icon">-->
+<!--            <div class="icon-img">-->
+<!--              <img :src="require('@/assets/avatar/01.jpg')" alt="" style="width: 60px">-->
+<!--            </div>-->
+<!--            <div class="icon-con">-->
+<!--              <p>Lovbe0210</p>-->
+<!--              <h2>rongyanjusou</h2>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="line"></div>-->
+<!--          <div class="title">-->
+<!--            <p>Menu 6</p>-->
+<!--          </div>-->
+<!--          <div class="menu">-->
+<!--            <div class="item">-->
+<!--              <div class="light"></div>-->
+<!--              <div class="licon">-->
+<!--                <span class="iconfont icon-setting"></span>-->
+<!--              </div>-->
+<!--              <div class="con">menu1</div>-->
+<!--              <div class="ricon"></div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="line"></div>-->
+<!--          <div class="title">-->
+<!--            <p>Server 6</p>-->
+<!--          </div>-->
+<!--          <div class="server">-->
+<!--            <div class="item">-->
+<!--              <div class="light"></div>-->
+<!--              <div class="licon">-->
+<!--                <span class="iconfont icon-setting"></span>-->
+<!--              </div>-->
+<!--              <div class="con">menu1</div>-->
+<!--              <div class="ricon"></div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
-  </b-container>
+    <div class="layout-module_dashboardContent enable-background"></div>
+  </div>
 </template>
 
 <script>
-  import Header from '@/components/Header'
-
   export default {
     name: 'Dashboard',
     beforeRouteEnter(from, to, next) {
@@ -80,9 +94,6 @@
           follow: true
         }
       }
-    },
-    components: {
-      Header
     },
     methods: {
 
@@ -123,6 +134,7 @@
       border-radius: 20px;
       overflow: hidden;
       transition: width 0.5s;
+      background: rgba(0,0,0,0.7);
     }
 
     .nav:hover {
@@ -315,5 +327,10 @@
     .nav:hover .server {
       width: 230px;
     }
+  }
+
+  .layout-module_menu {
+    height: calc(~"(100vh - 77px) / 3 * 2");
+    width: 220px;
   }
 </style>

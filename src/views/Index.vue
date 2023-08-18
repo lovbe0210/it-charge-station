@@ -1,14 +1,14 @@
 <template>
   <b-container class="index">
       <Header/>
-<!--      <router-view class="show"></router-view>-->
-      <Body :activeName="activeName" @onSelect="onSelect" v-if="!showContext"/>
+      <router-view class="show"></router-view>
+<!--      <Body :activeName="activeName" @onSelect="onSelect" v-if="!showContext"/>-->
   </b-container>
 </template>
 
 <script>
   import Header from '@/components/Header'
-  import Body from '@/components/Body'
+  // import Body from '@/components/Body'
 
   export default {
     name: 'Index',
@@ -27,8 +27,8 @@
       this.$store.commit('changeShowContext', false)
     },
     components: {
-      Header,
-      Body
+      Header
+      // Body
     },
     methods: {
       onSelect (value) {

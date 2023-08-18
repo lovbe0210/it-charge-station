@@ -262,11 +262,11 @@
           },
           {
             uid: '4564gdgd',
-            menuName: 'bug的一生'
+            menuName: '问答'
           },
           {
             uid: 'sdgf6567',
-            menuName: '五味陈杂'
+            menuName: '心情'
           }
         ],
         flag: false,
