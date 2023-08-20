@@ -51,7 +51,8 @@
             <Dropdown placement="bottom" @on-click="routeNavigate">
               <a href="javascript:void(0)">
                 <div class="avatar-wrapper">
-                  <b-avatar size="40px" src="https://tva3.sinaimg.cn/large/718153f4gy1gy47gg8nutj20m80m8te2.jpg">
+                  <b-avatar size="40px" src="https://tva3.sinaimg.cn/large/718153f4gy1gy47gg8nutj20m80m8te2.jpg"
+                            to="/dashboard">
                     <span v-if="0" class="iconfont icon-avatar-man" style="font-size:1.8rem;"></span>
                   </b-avatar>
                 </div>
@@ -80,21 +81,21 @@
                 </DropdownItem>
                 <DropdownItem name="counter">
                   <div class="counter quick-start-item">
-                    <div class="single-count-item" @click="routeNavigate('fans')">
+                    <div class="single-count-item" @click="routeNavigate('noteHome')">
                       <div class="count-num">55</div>
-                      <div class="count-text">粉丝</div>
+                      <div class="count-text">笔记</div>
                     </div>
                     <div class="single-count-item" @click="routeNavigate('concern')">
                       <div class="count-num">32</div>
                       <div class="count-text">关注</div>
                     </div>
-                    <div class="single-count-item" @click="routeNavigate('liked')">
+                    <div class="single-count-item" @click="routeNavigate('fans')">
                       <div class="count-num">110</div>
-                      <div class="count-text">获赞</div>
+                      <div class="count-text">粉丝</div>
                     </div>
                   </div>
                 </DropdownItem>
-                <DropdownItem name="topicDoc">
+                <DropdownItem name="seriesColumn">
                   <div class="routing-menu quick-start-item">
                     <span class="iconfont icon-topic-doc"></span>
                     <span class="routing-content">专栏文章</span>
@@ -108,7 +109,7 @@
                     <span class="iconfont icon-more"></span>
                   </div>
                 </DropdownItem>
-                <DropdownItem name="creativeSpace">
+                <DropdownItem name="creativeSpace" class="create-center">
                   <div class="routing-menu quick-start-item">
                     <span class="iconfont icon-data-stats"></span>
                     <span class="routing-content">创作中心</span>
@@ -324,14 +325,17 @@
           case 'levelBar':
             this.$router.push({name: 'Grade'})
             break;
+          case 'noteHome':
+            this.$router.push({name: 'NoteHome'})
+            break;
           case 'fans':
             this.$router.push({path: '/dashboard/relational/fans'})
             break;
           case 'concern':
             this.$router.push({path: '/dashboard/relational/concern'})
             break;
-          case 'liked':
-            this.$router.push({name: 'Collection'})
+          case 'seriesColumn':
+            this.$router.push({name: 'SeriesColumn'})
             break;
           case 'userHome':
             this.$router.push({name: 'Domain'})

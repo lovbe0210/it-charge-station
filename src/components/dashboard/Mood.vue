@@ -3,7 +3,7 @@
     <div id="main-right-content" class="layout-module_MainContent">
       <div class="layout-module_MainContentChildren">
         <div class="main-container my-collection">
-          仓库
+          心情
         </div>
       </div>
     </div>
@@ -12,7 +12,7 @@
 
 <script>
   export default {
-    name: 'Collection',
+    name: 'Mood',
     data() {
       return {
       }

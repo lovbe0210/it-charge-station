@@ -2,7 +2,7 @@
   font-family: "iconfont"; /* Project id 3029751 */
   /* Color fonts */
   src:
-          url('//at.alicdn.com/t/c/font_4166796_m0bnqk1ybj.woff2?t=1692158459846') format('woff2');
+          url('//at.alicdn.com/t/c/font_4166796_xerrc0dkwnk.woff2?t=1692537607460') format('woff2');
 }
 
 .iconfont {
@@ -119,4 +119,28 @@
 
 .icon-music-setting:before {
   content: "\e6ae";
+}
+
+.icon-doc-repository:before {
+  content: "\e6e0";
+}
+
+.icon-recent-edit:before {
+  content: "\e9f7";
+}
+
+.icon-question-answer:before {
+  content: "\e6d6";
+}
+
+.icon-mood-calendar:before {
+  content: "\e65a";
+}
+
+.icon-fans:before {
+  content: "\e637";
+}
+
+.icon-recent-view:before {
+  content: "\e609";
 }

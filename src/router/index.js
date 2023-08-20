@@ -56,9 +56,107 @@ const routes = [
       },
       {
         // dashboard
-        path: '/dashboard1',
-        name: 'DashBoard1',
-        component: () => import('@/views/Dashboard1')
+        path: '/dashboard',
+        name: 'DashBoard',
+        component: () => import('@/views/Dashboard'),
+        children: [
+          {
+            // 最近浏览
+            path: '',
+            name: 'RecentView',
+            // 此方式为路由懒加载
+            component: () => import('@/components/dashboard/RecentView')
+          },
+          {
+            // 笔记
+            path: 'noteHome',
+            name: 'NoteHome',
+            component: () => import('@/components/dashboard/NoteHome')
+          },
+          {
+            // 专栏
+            path: 'seriesColumn',
+            name: 'SeriesColumn',
+            component: () => import('@/components/dashboard/SeriesColumn')
+          },
+          {
+            // 问答
+            path: 'interLocution',
+            name: 'InterLocution',
+            component: () => import('@/components/dashboard/InterLocution')
+          },
+          {
+            // 心情
+            path: 'mood',
+            name: 'Mood',
+            component: () => import('@/components/dashboard/Mood')
+          },
+          {
+            // 收藏
+            path: 'collection',
+            name: 'Collection',
+            component: () => import('@/components/dashboard/Collection')
+          },
+          {
+            // 关注/粉丝
+            path: 'relational/:relational',
+            name: 'Relational',
+            props: true,
+            component: () => import('@/components/dashboard/Relational')
+          },
+          {
+            // 关注/粉丝
+            path: 'relational/:relational',
+            name: 'Relational',
+            props: true,
+            component: () => import('@/components/dashboard/Relational')
+          },
+          {
+            // 数据中心
+            path: 'stats',
+            name: 'Stats',
+            component: () => import('@/components/dashboard/Stats')
+          },
+          {
+            // 等级激励
+            path: 'grade',
+            name: 'Grade',
+            component: () => import('@/components/dashboard/Grade')
+          }
+        ]
+      },
+      {
+        // 设置
+        path: '/settings',
+        name: 'Setting',
+        redirect: {name: 'Profile'},
+        component: () => import('@/views/Setting'),
+        children: [
+          {
+            // 基本信息
+            path: 'profile',
+            name: 'Profile',
+            component: () => import('@/components/settings/Profile')
+          },
+          {
+            // 个人主页
+            path: 'domain',
+            name: 'Domain',
+            component: () => import('@/components/settings/Domain')
+          },
+          {
+            // 账户管理
+            path: 'account',
+            name: 'Account',
+            component: () => import('@/components/settings/Account')
+          },
+          {
+            // 音乐播放
+            path: 'musicPlay',
+            name: 'MusicPlay',
+            component: () => import('@/components/settings/MusicPlay')
+          }
+        ]
       }
     ]
   },
@@ -80,91 +178,6 @@ const routes = [
     name: 'ReadCenter',
     props: true,
     component: () => import('@/views/ReadCenter')
-  },
-  {
-    // 设置
-    path: '/settings',
-    name: 'Setting',
-    redirect: {name: 'Profile'},
-    component: () => import('@/views/Setting'),
-    children: [
-      {
-        // 基本信息
-        path: 'profile',
-        name: 'Profile',
-        component: () => import('@/components/settings/Profile')
-      },
-      {
-        // 个人首页
-        path: 'domain',
-        name: 'Domain',
-        component: () => import('@/components/settings/Domain')
-      },
-      {
-        // 账户管理
-        path: 'account',
-        name: 'Account',
-        component: () => import('@/components/settings/Account')
-      },
-      {
-        // 偏好设置
-        path: 'preferences',
-        name: 'Preferences',
-        component: () => import('@/components/settings/Preferences')
-      },
-      {
-        // 音乐播放
-        path: 'musicPlay',
-        name: 'MusicPlay',
-        component: () => import('@/components/settings/MusicPlay')
-      }
-    ]
-  },
-  {
-    // 个人主页
-    path: '/dashboard',
-    name: 'Dashboard',
-    // redirect: { name: 'StoreHouse' },
-    component: () => import('@/views/Dashboard'),
-    children: [
-      {
-        // 仓库
-        path: 'storeHouse',
-        name: 'StoreHouse',
-        component: () => import('@/components/dashboard/StoreHouse')
-      },
-      {
-        // 我的收藏
-        path: 'collection',
-        name: 'Collection',
-        component: () => import('@/components/dashboard/Collection')
-      },
-      {
-        // 关注/粉丝
-        path: 'relational/:relational',
-        name: 'Relational',
-        props: true,
-        component: () => import('@/components/dashboard/Relational')
-      },
-      {
-        // 互动消息
-        path: 'interactiveMsg',
-        name: 'InteractiveMsg',
-        component: () => import('@/components/dashboard/InteractiveMsg')
-      },
-      {
-        // 我的消息
-        path: 'privateChatMsg',
-        name: 'PrivateChatMsg',
-        component: () => import('@/components/dashboard/PrivateChatMsg')
-      },
-      {
-        // 系统消息
-        path: 'systemMsg',
-        name: 'SystemMsg',
-        component: () => import('@/components/dashboard/SystemMsg')
-      }
-    ]
   },
   {
     // 个人首页

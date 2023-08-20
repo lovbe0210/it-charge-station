@@ -1,59 +1,47 @@
 <template>
   <div class="layout-module_setting">
-    <div class="nav-module_container">
-      <a class="nav-module_back" href="/">
-        <span class="iconfont icon-return-copy"></span>
-        <span class="iconfont icon-logo"></span>
-        <span class="nav-module_backTitle">返回</span>
-      </a>
-      <div class="nav-module_userInfo">
-        <div class="nav-module_userInfoAvatar">
-          <div class="avatar">
-            <img loading="lazy" data-testid="img-avatar" :src="require('@/assets/avatar/01.jpg')" class="img"
-                 alt="布衣草人">
-          </div>
-          <div class="userInfo">
-            <div class="userInfo-name">布衣草人</div>
-            <div class="userInfo-domain">u21006206</div>
-          </div>
+    <div class="layout-module_settingOverview">
+      <div class="layout-module_overview enable-background">
+        <div class="userInfo-avatar">
+          <b-avatar :src="userInfo.avatar" variant="light" class="topic-avatar" to="/settings" size="6rem"/>
         </div>
-      </div>
-      <div class="nav-module_menuContainer">
-        <p class="index-module_inherit nav-module_subMenuTitle" style="margin: 32px 0px 8px 16px;">
-          帐户
-        </p>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'profile' ? 'active': '']"
-                     @click="routeNavigate('profile')">
-          <span class="iconfont icon-user-center"></span>
-          基本信息
+        <div class="userInfo-nickName" @click="routeNavigate('')">
+          <span>{{userInfo.nickname}}</span>
         </div>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'domain' ? 'active': '']"
-                     @click="routeNavigate('domain')">
+        <div class="user-location-industry" @click="routeNavigate('')">
+          <span class="index-module_meta">
+            <span class="iconfont icon-location"></span>
+            <span>四川省成都市成华区水电费水电费胜多负少胜多负少的胜多负少的胜多负少的胜多负少的水电费水电费胜多负少的水电费水电费</span>
+          </span>
+          <span class="index-module_meta">
+            <span class="iconfont icon-industry"></span>
+            <span>新时代『农民工』as大师阿斯达</span>
+          </span>
+        </div>
+        <div class="userInfo-domain">
           <span class="iconfont icon-user-domain"></span>
-          个人主页
+          <a :href="'/' + userInfo.domain">{{'http://www.itcast.com/' + userInfo.domain}}</a>
         </div>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'account' ? 'active': '']"
-                     @click="routeNavigate('account')">
-          <span class="iconfont icon-account-set"></span>
-          账户管理
+        <div class="userInfo-line">
+          <hr>
         </div>
-        <p class="index-module_inherit nav-module_subMenuTitle"
-           style="margin: 32px 0px 8px 16px;">
-          其他设置
-        </p>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'stats' ? 'active': '']"
-             @click="routeNavigate('preferences')">
-          <span class="iconfont icon-preferences"></span>
-          偏好设置
-        </div>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'stats' ? 'active': '']"
-             @click="routeNavigate('musicPlay')">
-          <span class="iconfont icon-music-setting"></span>
-          音乐播放
+        <div class="userInfo-action">
+          <div @click="routeNavigate('account')">
+            <span class="iconfont icon-account-set"></span>
+            账号设置
+          </div>
+          <div @click="routeNavigate('domain')">
+            <span class="iconfont icon-preferences"></span>
+            主页设置
+          </div>
+          <div @click="routeNavigate('musicPlay')">
+            <span class="iconfont icon-music-setting"></span>
+            音乐播放
+          </div>
         </div>
       </div>
     </div>
-    <div class="main-wrapper">
+    <div class="layout-module_settingDetail">
       <div class="layout-module_rightMainContent">
         <div class="layout-module_rightContent">
           <router-view></router-view>
@@ -79,7 +67,8 @@
         tooltipContainer: null,
         userInfo: {
           nickname: '布衣草人',
-          level: 6,
+          avatar: require('@/assets/img/1.jpg'),
+          domain: 'lovbe0210sw1f56',
           follow: true
         }
       }

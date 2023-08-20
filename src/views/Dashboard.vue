@@ -1,88 +1,102 @@
 <template>
-  <div class="layout-module_setting">
-    <div class="nav-module_container">
-      <a class="nav-module_back" href="/">
-        <span class="iconfont icon-return-copy"></span>
-        <span class="iconfont icon-logo"></span>
-        <span class="nav-module_backTitle">返回</span>
-      </a>
-      <div class="nav-module_userInfo">
-        <div class="nav-module_userInfoAvatar">
-          <div class="avatar">
-            <img loading="lazy" data-testid="img-avatar" :src="require('@/assets/avatar/01.jpg')" class="img"
-                 alt="布衣草人">
+  <div class="layout-module_dashboard">
+    <div class="layout-module_dashboardMenu">
+      <div class="layout-module_menu enable-background">
+        <div class="menu-wrap">
+          <div :class="['menu-item', activeMenuForEq === 'RecentView' ? 'active-menu' : '']"
+               @click="routeNavigate(null)">
+            <div class="light"></div>
+            <div class="item">
+              <span class="iconfont icon-recent-view"></span>
+              最近浏览
+            </div>
           </div>
-          <div class="userInfo">
-            <div class="userInfo-name">布衣草人</div>
-            <div class="userInfo-domain">u21006206</div>
+          <div class="menu-item item-line">
+            <div class="line"></div>
           </div>
-        </div>
-      </div>
-      <div class="nav-module_menuContainer">
-        <p class="index-module_inherit nav-module_subMenuTitle" style="margin: 32px 0px 8px 16px;">
-          个人中心
-        </p>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'profile' ? 'active': '']"
-             @click="routeNavigate('storeHouse')">
-          <span class="iconfont icon-user-center"></span>
-          文档仓库
-        </div>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'profile' ? 'active': '']"
-                     @click="routeNavigate('collection')">
-          <span class="iconfont icon-like"></span>
-          我的收藏
-        </div>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'domain' ? 'active': '']"
-                     @click="routeNavigate('fans')">
-          <span class="iconfont icon-user-domain"></span>
-          我的关注
-        </div>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'account' ? 'active': '']"
-                     @click="routeNavigate('account')">
-          <span class="iconfont icon-account-set"></span>
-          我的粉丝
-        </div>
-        <p class="index-module_inherit nav-module_subMenuTitle"
-           style="margin: 32px 0px 8px 16px;">
-          消息中心
-        </p>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'stats' ? 'active': '']"
-                     @click="routeNavigate('interactiveMsg')">
-          <span class="iconfont icon-data-stats"></span>
-          互动消息
-        </div>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'stats' ? 'active': '']"
-             @click="routeNavigate('privateChatMsg')">
-          <span class="iconfont icon-data-stats"></span>
-          我的消息
-        </div>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'stats' ? 'active': '']"
-             @click="routeNavigate('stats')">
-          <span class="iconfont icon-data-stats"></span>
-          系统消息
-        </div>
-        <p class="index-module_inherit nav-module_subMenuTitle"
-           style="margin: 32px 0px 8px 16px;">
-          创作中心
-        </p>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'stats' ? 'active': '']"
-             @click="routeNavigate('stats')">
-          <span class="iconfont icon-data-stats"></span>
-          数据统计
-        </div>
-        <div :class="['index-module_body-menu', 'nav-module_menuTab', activeMenu === 'grade' ? 'active': '']"
-             @click="routeNavigate('grade')">
-          <span class="iconfont icon-grade-incentive"></span>
-          等级激励
+          <div :class="['menu-item', activeMenuForEq === 'NoteHome' ? 'active-menu' : '']"
+               @click="routeNavigate('noteHome')">
+            <div class="light"></div>
+            <div class="item">
+              <span class="iconfont icon-doc-repository"></span>
+              笔记
+            </div>
+          </div>
+          <div :class="['menu-item', activeMenuForEq === 'SeriesColumn' ? 'active-menu' : '']"
+               @click="routeNavigate('seriesColumn')">
+            <div class="light"></div>
+            <div class="item">
+              <span class="iconfont icon-topic-doc"></span>
+              专栏
+            </div>
+          </div>
+          <div :class="['menu-item', activeMenuForEq === 'InterLocution' ? 'active-menu' : '']"
+               @click="routeNavigate('interLocution')">
+            <div class="light"></div>
+            <div class="item">
+              <span class="iconfont icon-question-answer"></span>
+              问答
+            </div>
+          </div>
+          <div :class="['menu-item', activeMenuForEq === 'Mood' ? 'active-menu' : '']"
+               @click="routeNavigate('mood')">
+            <div class="light"></div>
+            <div class="item">
+              <span class="iconfont icon-mood-calendar"></span>
+              心情
+            </div>
+          </div>
+          <div class="menu-item item-line">
+            <div class="line"></div>
+          </div>
+          <div :class="['menu-item', activeMenuForEq === 'Collection' ? 'active-menu' : '']"
+               @click="routeNavigate('collection')">
+            <div class="light"></div>
+            <div class="item">
+              <span class="iconfont icon-like"></span>
+              收藏
+            </div>
+          </div>
+          <div :class="['menu-item', activeMenu === 'concern' ? 'active-menu' : '']"
+               @click="routeNavigate('concern')">
+            <div class="light"></div>
+            <div class="item">
+              <span class="iconfont icon-like-no"></span>
+              关注
+            </div>
+          </div>
+          <div :class="['menu-item', activeMenu === 'fans' ? 'active-menu' : '']"
+               @click="routeNavigate('fans')">
+            <div class="light"></div>
+            <div class="item">
+              <span class="iconfont icon-fans"></span>
+              粉丝
+            </div>
+          </div>
+          <div class="menu-item item-line">
+            <div class="line"></div>
+          </div>
+          <div :class="['menu-item', activeMenuForEq === 'Stats' ? 'active-menu' : '']"
+               @click="routeNavigate('stats')">
+            <div class="light"></div>
+            <div class="item">
+              <span class="iconfont icon-data-stats"></span>
+              数据中心
+            </div>
+          </div>
+          <div :class="['menu-item', activeMenuForEq === 'Grade' ? 'active-menu' : '']"
+               @click="routeNavigate('grade')">
+            <div class="light"></div>
+            <div class="item">
+              <span class="iconfont icon-grade-incentive"></span>
+              等级激励
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="main-wrapper">
-      <div class="layout-module_rightMainContent">
-        <div class="layout-module_rightContent">
-          <router-view></router-view>
-        </div>
-      </div>
+    <div class="layout-module_dashboardContent enable-background">
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -93,38 +107,47 @@
     beforeRouteEnter(from, to, next) {
       next(vc => {
         // 通过 `vc` 访问组件实例
-        vc.activeMenu = vc.$route.name;
+        console.log(vc.$route)
+        let activeMenu = vc.$route.name;
+        if (activeMenu === 'Relational') {
+          vc.activeMenu = vc.$route.params.relational;
+        } else {
+          vc.activeMenu = activeMenu;
+        }
         next();
       });
     },
     data() {
       return {
-        activeMenu: 'profile',
-        tooltipContainer: null,
-        userInfo: {
-          nickname: '布衣草人',
-          level: 6,
-          follow: true
+        activeMenu: 'RecentView'
+      }
+    },
+    computed: {
+      activeMenuForEq() {
+        if (this.activeMenu == null) {
+          return null;
         }
+        return this.activeMenu.charAt(0).toUpperCase() + this.activeMenu.slice(1);
       }
     },
     methods: {
-      getTooltipContainer() {
-        return this.tooltipContainer;
-      },
+      /**
+       * @param itemName 路由跳转标志
+       */
       routeNavigate(itemName) {
         this.activeMenu = itemName;
-        this.$router.push({path: '/settings/' + itemName})
-      }
-    },
-    mounted() {
-      if (this.tooltipContainer == null) {
-        this.tooltipContainer = this.$refs.tooltipContainer;
+        if (itemName === 'concern') {
+          this.$router.push({path: '/dashboard/relational/concern'})
+        } else if (itemName === 'fans') {
+          this.$router.push({path: '/dashboard/relational/fans'})
+        } else {
+          this.$router.push({path: '/dashboard' + (itemName == null ? '' : '/' + itemName)})
+        }
       }
     }
   }
 </script>
 
 <style scoped lang="less">
-  @import '../components/css/setting.less';
+  @import '../components/css/dashboard/dashboard.less';
 </style>

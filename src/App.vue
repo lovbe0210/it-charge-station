@@ -227,6 +227,10 @@
     padding-left: 0;
   }
 
+  a.badge-secondary:focus, a.badge-info:focus, a.badge-light:focus {
+    box-shadow: none;
+  }
+
   .container {
     max-width: 1200px !important;
   }

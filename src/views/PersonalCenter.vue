@@ -48,7 +48,7 @@
                   <span class="index-module_meta">
                     <span class="iconfont icon-industry"></span>
                     <span>新时代『农民工』</span>
-                </span>
+                  </span>
                 </div>
                 <div class="userInfo-module_followInfo">
                   <a href="/explore/follows?type=User&userId=27044221" class="userInfo-module_followItem"
