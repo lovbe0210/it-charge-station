@@ -265,8 +265,10 @@
       .message-menu-wrapper {
         display: flex;
         align-items: center;
-        width: 47px;
+        justify-content: center;
+        width: 40px;
         height: 40px;
+        margin-right: 7px;
 
         .message-menu-body {
           .c-badge {
@@ -274,11 +276,40 @@
             border: 3px solid @badge_color;
             border-radius: 100%;
             position: absolute;
-            right: 10px;
+            right: 15px;
+            top: 9px;
+            transition: transform 0.3s ease-in-out;
           }
           span {
             font-size: 15px;
             color: var(--font-color);
+          }
+
+          .iconfont {
+            display: inline-block;
+            font-size: 20px;
+            transition: transform 0.3s ease-in-out; /* 添加过渡效果 */
+          }
+        }
+
+        .message-menu-body:hover {
+          .iconfont{
+            animation: bounce 0.6s ease; /* 使用 bounce 动画，但不设置 infinite */
+            z-index: 268;
+          }
+
+          .c-badge {
+            animation: bounce 0.6s ease; /* 使用 bounce 动画，但不设置 infinite */
+            z-index: 269;
+          }
+        }
+
+        @keyframes bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          25% {
+            transform: translateY(-8px); /* 只在动画的开始阶段跳动一次 */
           }
         }
       }

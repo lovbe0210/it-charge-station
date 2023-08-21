@@ -132,7 +132,8 @@
                 <div class="message-menu-wrapper">
                   <div class="message-menu-body" @click="routeNavigate('commentReply')">
                     <div class="c-badge" v-if="1"/>
-                    <span>消息</span>
+<!--                    <span>消息</span>-->
+                    <span class="iconfont icon-hy-message"></span>
                   </div>
                 </div>
               </a>

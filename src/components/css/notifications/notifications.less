@@ -13,26 +13,43 @@
       width: 90%;
 
       .menu-wrap {
-        padding: 25px;
+        padding: 25px 20px;
 
         .menu-item {
           height: 38px;
+          width: 100%;
           display: flex;
           justify-content: center;
           margin-bottom: 5px;
           cursor: pointer;
 
           .item {
-            width: 80px;
+            width: 100%;
             display: flex;
-            justify-content: left;
+            justify-content: space-between;
             align-items: center;
+            padding: 0 7px;
 
             .point {
               color: #262626;
-              font-size: 30px;
+              font-size: 25px;
               font-weight: 600;
+              margin-right: 5px;
             }
+          }
+        }
+
+        .fixed-anchor-point {
+          color: #262626;
+          font-size: 14px;
+          font-weight: 700;
+
+          .item {
+            justify-content: center;
+          }
+
+          .iconfont {
+            margin-right: 8px;
           }
         }
 

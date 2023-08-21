@@ -3,52 +3,45 @@
     <div class="layout-module_notificationsMenu">
       <div class="layout-module_menu enable-background">
         <div class="menu-wrap">
-          <div :class="['menu-item', activeMenuForEq === 'RecentView' ? 'active-menu' : '']"
-               @click="routeNavigate(null)">
-            <div class="light"></div>
+          <div class="menu-item fixed-anchor-point">
             <div class="item">
-              <span class="iconfont icon-notification"></span>
+              <span class="iconfont icon-paper-plane"></span>
               消息中心
             </div>
           </div>
           <div :class="['menu-item', activeMenuForEq === 'NoteHome' ? 'active-menu' : '']"
                @click="routeNavigate('noteHome')">
-            <div class="light"></div>
             <div class="item">
-              <span class="point">·</span>
-              回复我的
+              <span>回复我的</span>
+              <span class="count">5</span>
             </div>
           </div>
           <div :class="['menu-item', activeMenuForEq === 'SeriesColumn' ? 'active-menu' : '']"
                @click="routeNavigate('seriesColumn')">
-            <div class="light"></div>
             <div class="item">
-              <span class="point">·</span>
-              收到的赞
+              <span>收到的赞</span>
+              <span class="count">1</span>
             </div>
           </div>
           <div :class="['menu-item', activeMenuForEq === 'InterLocution' ? 'active-menu' : '']"
                @click="routeNavigate('interLocution')">
-            <div class="light"></div>
             <div class="item">
-              <span class="point">·</span>
-              新增粉丝
+              <span>新增粉丝</span>
+              <span class="count">10</span>
             </div>
           </div>
           <div :class="['menu-item', activeMenuForEq === 'Mood' ? 'active-menu' : '']"
                @click="routeNavigate('mood')">
-            <div class="light"></div>
             <div class="item">
-              <span class="point">·</span>
-              系统消息
+              <span>系统消息</span>
+              <span class="count">23</span>
             </div>
           </div>
           <div :class="['menu-item', activeMenuForEq === 'Collection' ? 'active-menu' : '']"
                @click="routeNavigate('collection')">
-            <div class="light"></div>
             <div class="item">
-              <span class="point">·</span>
-              我的消息
+              <span>我的消息</span>
+              <span class="count">99+</span>
             </div>
           </div>
           <div class="menu-item item-line">
