@@ -69,7 +69,7 @@
                @click="routeNavigate('fans')">
             <div class="light"></div>
             <div class="item">
-              <span class="iconfont icon-fans"></span>
+              <span class="iconfont icon-fans" style="font-size: 17px;"></span>
               粉丝
             </div>
           </div>
@@ -88,7 +88,7 @@
                @click="routeNavigate('grade')">
             <div class="light"></div>
             <div class="item">
-              <span class="iconfont icon-grade-incentive"></span>
+              <span class="iconfont icon-grade-incentive" style="font-size: 17px;"></span>
               等级激励
             </div>
           </div>
@@ -106,8 +106,6 @@
     name: 'Dashboard',
     beforeRouteEnter(from, to, next) {
       next(vc => {
-        // 通过 `vc` 访问组件实例
-        console.log(vc.$route)
         let activeMenu = vc.$route.name;
         if (activeMenu === 'Relational') {
           vc.activeMenu = vc.$route.params.relational;
@@ -120,6 +118,17 @@
     data() {
       return {
         activeMenu: 'RecentView'
+      }
+    },
+    watch: {
+      $route(to) {
+        console.log('组件复用')
+        let activeMenu = to.name;
+        if (activeMenu === 'Relational') {
+          this.activeMenu = to.params.relational;
+        } else {
+          this.activeMenu = activeMenu;
+        }
       }
     },
     computed: {

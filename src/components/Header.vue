@@ -127,41 +127,41 @@
           </b-nav-item>
 
           <b-nav-item class="msg mr-2">
-            <Dropdown placement="bottom">
+            <Dropdown placement="bottom" @on-click="routeNavigate">
               <a href="javascript:void(0)">
                 <div class="message-menu-wrapper">
-                  <div class="message-menu-body">
-                    <div class="c-badge" v-if="1"></div>
+                  <div class="message-menu-body" @click="routeNavigate('commentReply')">
+                    <div class="c-badge" v-if="1"/>
                     <span>消息</span>
                   </div>
                 </div>
               </a>
               <DropdownMenu slot="list">
-                <DropdownItem>
+                <DropdownItem name="commentReply">
                   <div class="comment-reply quick-start-item">
-                    <span>评论回复</span>
+                    <span>回复我的</span>
                     <Badge :count="30" overflow-count="99" class="msg-item-badge"></Badge>
                   </div>
                 </DropdownItem>
-                <DropdownItem>
+                <DropdownItem name="likesReceived">
                   <div class="new-fans quick-start-item">
-                    <span>新增粉丝</span>
+                    <span>收到的赞</span>
                     <Badge :count="10" overflow-count="99" class="msg-item-badge"></Badge>
                   </div>
                 </DropdownItem>
-                <DropdownItem>
+                <DropdownItem name="newFans">
                   <div class="like-favorite quick-start-item">
-                    <span>赞和收藏</span>
+                    <span>新增粉丝</span>
                     <Badge :count="100" overflow-count="99" class="msg-item-badge"></Badge>
                   </div>
                 </DropdownItem>
-                <DropdownItem>
+                <DropdownItem name="systemMessage">
                   <div class="msg-system quick-start-item">
                     <span>系统消息</span>
                     <Badge :count="35" overflow-count="99" class="msg-item-badge"></Badge>
                   </div>
                 </DropdownItem>
-                <DropdownItem>
+                <DropdownItem name="chatMessage">
                   <div class="msg-session quick-start-item">
                     <span>我的消息</span>
                     <Badge :count="8" overflow-count="99" class="msg-item-badge"></Badge>
@@ -342,6 +342,21 @@
             break;
           case 'creativeSpace':
             this.$router.push({name: 'Stats'})
+            break;
+          case 'commentReply':
+            this.$router.push({name: 'CommentReply'})
+            break;
+          case 'likesReceived':
+            this.$router.push({name: 'LikesReceived'})
+            break;
+          case 'newFans':
+            this.$router.push({name: 'NewFans'})
+            break;
+          case 'systemMessage':
+            this.$router.push({name: 'SystemMessage'})
+            break;
+          case 'chatMessage':
+            this.$router.push({name: 'ChatMessage'})
             break;
         }
       }

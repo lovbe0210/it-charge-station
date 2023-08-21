@@ -26,17 +26,17 @@
           <hr>
         </div>
         <div class="userInfo-action">
-          <div @click="routeNavigate('account')">
+          <div @click="routeNavigate('account')" class="action-btn">
             <span class="iconfont icon-account-set"></span>
-            账号设置
+            <span class="content">账号设置</span>
           </div>
-          <div @click="routeNavigate('domain')">
+          <div @click="routeNavigate('domain')" class="action-btn">
             <span class="iconfont icon-preferences"></span>
-            主页设置
+            <span class="content">主页设置</span>
           </div>
-          <div @click="routeNavigate('musicPlay')">
+          <div @click="routeNavigate('musicPlay')" class="action-btn">
             <span class="iconfont icon-music-setting"></span>
-            音乐播放
+            <span class="content">音乐播放</span>
           </div>
         </div>
       </div>
@@ -54,16 +54,8 @@
 <script>
   export default {
     name: 'Setting',
-    beforeRouteEnter(from, to, next) {
-      next(vc => {
-        // 通过 `vc` 访问组件实例
-        vc.activeMenu = vc.$route.name;
-        next();
-      });
-    },
     data() {
       return {
-        activeMenu: 'profile',
         tooltipContainer: null,
         userInfo: {
           nickname: '布衣草人',
@@ -74,22 +66,16 @@
       }
     },
     methods: {
-      getTooltipContainer() {
-        return this.tooltipContainer;
-      },
       routeNavigate(itemName) {
         this.activeMenu = itemName;
         this.$router.push({path: '/settings/' + itemName})
       }
     },
     mounted() {
-      if (this.tooltipContainer == null) {
-        this.tooltipContainer = this.$refs.tooltipContainer;
-      }
     }
   }
 </script>
 
 <style scoped lang="less">
-  @import '../components/css/setting.less';
+  @import '../components/css/setting/setting.less';
 </style>

@@ -157,6 +157,45 @@ const routes = [
             component: () => import('@/components/settings/MusicPlay')
           }
         ]
+      },
+      {
+        // 消息通知
+        path: '/notifications',
+        name: 'Notifications',
+        redirect: {name: 'CommentReply'},
+        component: () => import('@/views/Notifications'),
+        children: [
+          {
+            // 评论与回复
+            path: 'commentReply',
+            name: 'CommentReply',
+            component: () => import('@/components/notifications/CommentReply')
+          },
+          {
+            // 新增粉丝
+            path: 'domain',
+            name: 'Domain',
+            component: () => import('@/components/settings/Domain')
+          },
+          {
+            // 收到的赞
+            path: 'account',
+            name: 'Account',
+            component: () => import('@/components/settings/Account')
+          },
+          {
+            // 我的消息
+            path: 'musicPlay',
+            name: 'MusicPlay',
+            component: () => import('@/components/settings/MusicPlay')
+          },
+          {
+            // 系统消息
+            path: 'musicPlay',
+            name: 'MusicPlay',
+            component: () => import('@/components/settings/MusicPlay')
+          }
+        ]
       }
     ]
   },
