@@ -14,7 +14,7 @@
         <div class="featured-notes">
           <div class="text">
             精选笔记
-            <b-link class="more">
+            <b-link class="more" to="/hot/articles">
               <span class="content">更多</span>
               <span class="iconfont icon-more"></span>
             </b-link>
@@ -27,7 +27,7 @@
         <div class="recommend-topics">
           <div class="text">
             推荐专栏
-            <b-link class="more">
+            <b-link class="more" to="/hot/seriesColumns">
               更多<span class="iconfont icon-more"></span>
             </b-link>
             <hr>
@@ -61,7 +61,7 @@
         <div class="creator-ranking">
           <div class="text">
             创作者排行榜
-            <b-link class="more">
+            <b-link class="more" to="/hot/authors">
               完整榜单<span class="iconfont icon-more"></span>
             </b-link>
             <hr>
@@ -257,10 +257,6 @@
       // MusicIndex
     },
     computed: {
-      // 从vuex中获取上一次的选中菜单项
-      activeName() {
-        return this.$store.state.activeName
-      },
       // 判断页面是手机页面还是pc页面，如果是手机页面则进行全屏显示
       adaptiveCols() {
         return this.$store.state.isPhone ? 12 : 8
@@ -271,6 +267,14 @@
         },
         set(fixedHeight) {
           this.$store.commit("computeFixHeight", fixedHeight);
+        }
+      },
+      showCustomer: {
+        get() {
+          return this.$store.state.showCustomer;
+        },
+        set(value) {
+          this.$store.commit('showCustomer', value);
         }
       },
       contentLength() {
@@ -304,13 +308,6 @@
       }
     },
     methods: {
-      /**
-       * 当前选择的显示项
-       * @param activeName
-       */
-      onSelect(activeName) {
-        this.$store.commit('changeActiveRoute', activeName)
-      },
       isEditable(flag) {
         if (!flag) {
           // 失去焦点，更新内容

@@ -41,27 +41,32 @@
 
 <style scoped lang="less">
   @import './css/common-var.less';
+
+  .ivu-menu-light {
+    background-color: transparent;
+  }
   // 左侧div
   .host-container {
     .top {
       border-radius: 3px;
       margin-bottom: 30px;
+      margin-left: 20px;
     }
 
     ul > a {
-      color: var(--font-color);
-      font-size: 14px;
+      color: var(--font-color) !important;;
+      font-size: 14px !important;;
     }
 
     ul > a:hover {
-      color: @light-font-color;
-      border-bottom: 0px solid #e5e5e5
+      color: var(--title-color) !important;
+      border-bottom: 0px solid #e5e5e5 !important;
     }
 
     ul > a.ivu-menu-item-active {
-      color: var(--title-color);
-      font-weight: 900;
-      border-bottom: 2px solid var(--title-color);
+      color: var(--title-color) !important;;
+      font-weight: 900 !important;
+      border-bottom: 2px solid var(--title-color) !important;;
     }
 
   }

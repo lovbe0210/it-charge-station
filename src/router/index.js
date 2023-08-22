@@ -93,10 +93,30 @@ const routes = [
         // 排行榜
         path: '/hot',
         name: 'Ranking',
-        redirect: {},
+        redirect: {
+          name: 'Body'
+        },
         component: () => import('@/views/Ranking'),
         children: [
-
+          {
+            // 精选笔记榜
+            path: '',
+            name: 'RecentView',
+            // 此方式为路由懒加载
+            component: () => import('@/components/dashboard/RecentView')
+          },
+          {
+            // 推荐专栏榜
+            path: 'noteHome',
+            name: 'NoteHome',
+            component: () => import('@/components/dashboard/NoteHome')
+          },
+          {
+            // 优质作者榜
+            path: 'seriesColumn',
+            name: 'SeriesColumn',
+            component: () => import('@/components/dashboard/SeriesColumn')
+          }
         ]
       },
       {
