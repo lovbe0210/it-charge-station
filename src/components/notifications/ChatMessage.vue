@@ -1,16 +1,17 @@
 <template>
   <div class="layout-module_account">
     <div id="main-right-content" class="layout-module_MainContent">
-      评论回复
+      私聊
     </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'CommentReply',
+    name: 'ChatMessage',
     data() {
       return {
+
       }
     },
     methods: {

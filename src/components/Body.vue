@@ -2,18 +2,7 @@
   <b-row class="body-row">
     <b-col :cols="adaptiveCols" class="enable-background top-show">
       <!--主体页面选择-->
-      <Menu mode="horizontal" :active-name="activeName" @on-select="onSelect" class="top">
-        <MenuItem name="follow" to="/follow" :on-select="onSelect">
-          关注
-        </MenuItem>
-        <MenuItem name="recommend" to="/recommend" :on-select="onSelect">
-          推荐
-        </MenuItem>
-        <MenuItem name="hot" to="/topic" :on-select="onSelect">
-          专栏
-        </MenuItem>
-      </Menu>
-      <router-view class="show"></router-view>
+      <router-view></router-view>
     </b-col>
 
     <b-col class="only-style" style="width: 13px" md="auto">
@@ -143,7 +132,7 @@
         <!-- 返回顶部 -->
         <back-top></back-top>
         <!-- 自定义主题 -->
-        <Drawer placement="right" v-model="showCustomer" :closable="false"
+        <!-- <Drawer placement="right" v-model="showCustomer" :closable="false"
                 width="18" :lock-scroll="false" class-name="customer">
           <div class="theme">
             <customer-set></customer-set>
@@ -159,17 +148,17 @@
                            :loop="true">
             </vue-baberrage>
           </div>
-        </Drawer>
+        </Drawer>  -->
       </div>
     </b-col>
   </b-row>
 </template>
 
 <script>
-  import CarouselSwipe from '@/components/common/CarouselSwipe'
-  import BackTop from '@/components/common/BackTop'
-  import MusicIndex from "@/components/common/music/MusicIndex";
-  import CustomerSet from "@/components/common/CustomerSet";
+  import CarouselSwipe from '@/components/common/CarouselSwipe';
+  import BackTop from '@/components/common/BackTop';
+  // import MusicIndex from "@/components/common/music/MusicIndex";
+  // import CustomerSet from "@/components/common/CustomerSet";
   import {MESSAGE_TYPE} from 'vue-baberrage'
 
   export default {
@@ -258,15 +247,14 @@
         focused: false,
         hovered: false,
         needFixed: false,
-        currentId: 0,
-        barrageList: []
+        currentId: 0
       }
     },
     components: {
       CarouselSwipe,
-      BackTop,
-      CustomerSet,
-      MusicIndex
+      BackTop
+      // CustomerSet,
+      // MusicIndex
     },
     computed: {
       // 从vuex中获取上一次的选中菜单项
@@ -300,15 +288,8 @@
         } else {
           return '每日一句心灵鸡汤'
         }
-      },
-      showCustomer: {
-        get() {
-          return this.$store.state.showCustomer;
-        },
-        set(value) {
-          this.$store.commit('showCustomer', value);
-        }
       }
+
 
     },
     watch: {

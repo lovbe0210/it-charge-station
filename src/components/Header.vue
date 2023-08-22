@@ -30,17 +30,24 @@
 
         <!-- 菜单栏 -->
         <b-navbar-nav class="menu" :fill="true" align="center">
-          <b-nav-item v-for="item of quickLink" class="mr-2" :key="item.uid">
-            <Dropdown trigger="hover" :transfer="true">
-              <a href="javascript:void(0)">
+          <b-nav-item v-for="item in quickLink" class="mr-2" :key="item.uid">
+            <div v-if="item.canExpanded === 1">
+              <Dropdown trigger="hover" :transfer="true" @on-click="routeNavigate">
+                <a href="javascript:void(0)">
+                  <span>{{item.menuName}}</span>
+                </a>
+                <DropdownMenu slot="list">
+                  <DropdownItem v-for="item in item.children" :key="item.uid" :name="item.uid">
+                    {{item.menuName}}
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+            <div v-else>
+              <div @click="routeNavigate(item.code)">
                 <span>{{item.menuName}}</span>
-              </a>
-              <DropdownMenu slot="list">
-                <DropdownItem v-for="item in item.children" :key="item.uid">
-                  {{item.menuName}}
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+              </div>
+            </div>
           </b-nav-item>
         </b-navbar-nav>
 
@@ -79,7 +86,7 @@
                     </div>
                   </div>
                 </DropdownItem>
-                <DropdownItem name="counter">
+                <DropdownItem>
                   <div class="counter quick-start-item">
                     <div class="single-count-item" @click="routeNavigate('noteHome')">
                       <div class="count-num">55</div>
@@ -207,17 +214,21 @@
           {
             uid: 'sdfsf55',
             menuName: '计算机与网络',
+            canExpanded: 1,
             children: [
               {
                 uid: 'asds01',
+                code: 'compute',
                 menuName: '计算机基础'
               },
               {
                 uid: 'asds02',
+                code: 'system',
                 menuName: '操作系统'
               },
               {
                 uid: 'asds03',
+                code: 'cybersecurity',
                 menuName: '网络安全'
               }
             ]
@@ -225,17 +236,21 @@
           {
             uid: 'asdas34213',
             menuName: '编程语言',
+            canExpanded: 1,
             children: [
               {
                 uid: '2342sdfsdfs',
+                code: 'java',
                 menuName: 'Java'
               },
               {
                 uid: '2342dssddfsdf',
+                code: 'c',
                 menuName: 'C语言'
               },
               {
                 uid: '2342dsdfsdf',
+                code: 'c++',
                 menuName: 'C++'
               }
             ]
@@ -243,31 +258,53 @@
           {
             uid: 'sdfs453',
             menuName: '数据库',
+            canExpanded: 1,
             children: [
               {
                 uid: 'e65dfgdf',
+                code: 'mysql',
                 menuName: 'Mysql'
               },
               {
                 uid: 'dfgd4634',
+                code: 'oracle',
                 menuName: 'Oracle'
               }
             ]
           },
           {
+            uid: 'dfg345g',
+            menuName: '中间件',
+            canExpanded: 1,
+            children: [
+              {
+                uid: 'e65dfgdf',
+                code: 'redis',
+                menuName: 'Redis'
+              },
+              {
+                uid: 'dfgd4634',
+                code: 'kafka',
+                menuName: 'Kafka'
+              }
+            ]
+          },
+          {
             uid: 'sgfg566',
+            code: 'algorithm',
+            canExpanded: 0,
             menuName: '算法'
           },
           {
-            uid: 'dfg345g',
-            menuName: '中间件'
-          },
-          {
             uid: '4564gdgd',
+            code: 'qa',
+            canExpanded: 0,
             menuName: '问答'
           },
           {
             uid: 'sdgf6567',
+            code: 'mood',
+            canExpanded: 0,
             menuName: '心情'
           }
         ],
@@ -316,6 +353,9 @@
        * @param itemName 路由跳转标志
        */
       routeNavigate(itemName) {
+        if (itemName === undefined) {
+          return;
+        }
         switch (itemName) {
           case 'logout':
             this.logout();
@@ -359,6 +399,15 @@
           case 'chatMessage':
             this.$router.push({name: 'ChatMessage'})
             break;
+          case 'qa':
+            this.$router.push({name: 'QAContainer'})
+            break;
+          case 'mood':
+            this.$router.push({name: 'MoodContainer'})
+            break;
+          default:
+            this.$router.push({path: '/cate/' + itemName})
+            break
         }
       }
     },

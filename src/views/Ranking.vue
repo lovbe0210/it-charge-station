@@ -6,7 +6,7 @@
           <div class="menu-item fixed-anchor-point">
             <div class="item">
               <span class="iconfont icon-paper-plane"></span>
-              消息中心
+              排行榜
             </div>
           </div>
           <div class="menu-item" @click="routeNavigate('commentReply')">
@@ -39,20 +39,10 @@
               <span class="count">99+</span>
             </div>
           </div>
-          <div class="menu-item item-line">
-            <div class="line"></div>
-          </div>
-          <div class="menu-item msg-setting" @click="routeNavigate('messageSetting')">
-            <div :class="['item', activeMenuForEq === 'MessageSetting' ? 'active-menu' : '']">
-              <span class="iconfont icon-preferences"></span>
-              消息设置
-            </div>
-          </div>
         </div>
       </div>
     </div>
     <div class="layout-module_notificationsContent enable-background">
-      <div>{{menuName}}</div>
       <router-view></router-view>
     </div>
   </div>
@@ -60,7 +50,7 @@
 
 <script>
   export default {
-    name: 'Notifications',
+    name: 'Ranking',
     beforeRouteEnter(from, to, next) {
       next(vc => {
         vc.activeMenu = vc.$route.name;
@@ -69,8 +59,7 @@
     },
     data() {
       return {
-        activeMenu: 'RecentView',
-        menuName: '回复我的'
+        activeMenu: '精选笔记榜'
       }
     },
     computed: {

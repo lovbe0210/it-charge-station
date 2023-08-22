@@ -13,7 +13,7 @@
       width: 90%;
 
       .menu-wrap {
-        padding: 25px 20px;
+        padding: 25px 12px;
 
         .menu-item {
           height: 38px;
@@ -25,10 +25,11 @@
 
           .item {
             width: 100%;
+            height: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 7px;
+            padding: 0 12px;
 
             .point {
               color: #262626;
@@ -37,12 +38,18 @@
               margin-right: 5px;
             }
           }
+
+          .item:hover, .active-menu {
+            background: #eff0f0;
+            border-radius: 6px;
+          }
         }
 
         .fixed-anchor-point {
           color: #262626;
           font-size: 14px;
           font-weight: 700;
+          margin-bottom: 10px;
 
           .item {
             justify-content: center;
@@ -53,14 +60,21 @@
           }
         }
 
+        .msg-setting .item{
+          .iconfont {
+            margin-right: 8px;
+          }
+          justify-content: left;
+        }
+
         .item-line {
-          margin: 20px 0 0 30%;
           justify-content: left;
           height: 20px;
+          margin-top: 25px;
 
           .line {
             height: 1px;
-            width: 20%;
+            width: 100%;
             background: #b1b6b4;
           }
         }

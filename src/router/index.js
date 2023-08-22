@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Index from '../views/Index.vue'
 import Recommend from '@/components/Recommend'
 import Body from '@/components/Body'
+import HostContainer from '@/components/HostContainer'
 
 // 解决router.push报重复路由错误，实际并没有重复
 const originalPush = VueRouter.prototype.push
@@ -27,31 +28,75 @@ const routes = [
         path: '/',
         name: 'Body',
         redirect: {
-          name: 'Recommend',
-          // 从首页进入时传入一个标志为true，然后改变当前激活的菜单显示，只有当从首页进入时改为recommend，其他任何时候都以用户点击为主
-          params: {index: 'true'}
+          name: 'HostContainer'
         },
         component: Body,
         children: [
           {
-            // 关注
-            path: 'follow',
-            name: 'Follow',
+            // 首页承载容器
+            path: '/',
+            name: 'HostContainer',
             // 此方式为路由懒加载
-            component: () => import('@/components/Follow')
+            component: HostContainer,
+            redirect: {
+              name: 'Recommend',
+              // 从首页进入时传入一个标志为true，然后改变当前激活的菜单显示，只有当从首页进入时改为recommend，其他任何时候都以用户点击为主
+              params: {index: 'true'}
+            },
+            children: [
+              {
+                // 关注
+                path: 'follow',
+                name: 'Follow',
+                // 此方式为路由懒加载
+                component: () => import('@/components/Follow')
+              },
+              {
+                // 推荐
+                path: 'recommend',
+                name: 'Recommend',
+                component: Recommend
+              },
+              {
+                // 主题
+                path: 'topic',
+                name: 'Topic',
+                component: () => import('@/components/Topic')
+              }
+            ]
           },
           {
-            // 推荐
-            path: 'recommend',
-            name: 'Recommend',
-            component: Recommend
+            // 问答页面
+            path: '/qa',
+            name: 'QAContainer',
+            // 此方式为路由懒加载
+            component: () => import('@/components/QAContainer')
           },
           {
-            // 主题
-            path: 'topic',
-            name: 'Topic',
-            component: () => import('@/components/Topic')
+            // 心情页面
+            path: '/mood',
+            name: 'MoodContainer',
+            // 此方式为路由懒加载
+            component: () => import('@/components/MoodContainer')
+          },
+          {
+            // 分类承载容器
+            path: '/cate/:category',
+            props: true,
+            name: 'CategoryContainer',
+            // 此方式为路由懒加载
+            component: () => import('@/components/CategoryContainer')
           }
+        ]
+      },
+      {
+        // 排行榜
+        path: '/hot',
+        name: 'Ranking',
+        redirect: {},
+        component: () => import('@/views/Ranking'),
+        children: [
+
         ]
       },
       {
@@ -173,27 +218,33 @@ const routes = [
           },
           {
             // 新增粉丝
-            path: 'domain',
-            name: 'Domain',
-            component: () => import('@/components/settings/Domain')
+            path: 'newFans',
+            name: 'NewFans',
+            component: () => import('@/components/notifications/NewFans')
           },
           {
             // 收到的赞
-            path: 'account',
-            name: 'Account',
-            component: () => import('@/components/settings/Account')
+            path: 'likesReceived',
+            name: 'LikesReceived',
+            component: () => import('@/components/notifications/LikesReceived')
           },
           {
             // 我的消息
-            path: 'musicPlay',
-            name: 'MusicPlay',
-            component: () => import('@/components/settings/MusicPlay')
+            path: 'chatMessage',
+            name: 'ChatMessage',
+            component: () => import('@/components/notifications/ChatMessage')
           },
           {
             // 系统消息
-            path: 'musicPlay',
-            name: 'MusicPlay',
-            component: () => import('@/components/settings/MusicPlay')
+            path: 'systemMessage',
+            name: 'SystemMessage',
+            component: () => import('@/components/notifications/SystemMessage')
+          },
+          {
+            // 消息设置
+            path: 'messageSetting',
+            name: 'MessageSetting',
+            component: () => import('@/components/notifications/MessageSetting')
           }
         ]
       }
