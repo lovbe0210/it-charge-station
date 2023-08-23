@@ -7,11 +7,25 @@
           <div class="directory-header">
             <div class="book-info">
               <div class="crumb">
-                <a href="/dashboard" class="website-logo">
+                <a href="/" class="website-logo">
                   <span class="iconfont icon-logo"></span>
                 </a>
                 <span class="iconfont icon-more"></span>
-                <a href="/dashboard/authorHome" class="crumb-text">布衣草人</a>
+                <div class="action">
+                  <a href="/lovbe0210" class="crumb-text">布衣草人</a>
+                  <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+                    <template slot="title">
+                      关注
+                    </template>
+                    <span class="iconfont to-follow"></span>
+                  </a-tooltip>
+                  <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+                    <template slot="title">
+                      发消息
+                    </template>
+                    <span class="iconfont start-chat"></span>
+                  </a-tooltip>
+                </div>
               </div>
             </div>
           </div>

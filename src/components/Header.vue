@@ -34,7 +34,11 @@
             <div v-if="item.canExpanded === 1">
               <Dropdown trigger="hover" :transfer="true" @on-click="routeNavigate">
                 <a href="javascript:void(0)">
-                  <span>{{item.menuName}}</span>
+                  <div class="menu-wrapper">
+                    <div class="menu-body" @click="routeNavigate('commentReply')">
+                      <span>{{item.menuName}}</span>
+                    </div>
+                  </div>
                 </a>
                 <DropdownMenu slot="list">
                   <DropdownItem v-for="item in item.children" :key="item.uid" :name="item.uid">
@@ -344,7 +348,7 @@
       },
       toWriteCenter() {
         let routeUrl = this.$router.resolve({
-          path: '/writeCenter'
+          path: '/editor'
         })
         window.open(routeUrl.href, '_blank')
       },

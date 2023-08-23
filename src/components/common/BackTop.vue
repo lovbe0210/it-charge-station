@@ -1,9 +1,9 @@
 <template>
   <div class="top-setting">
-    <div class="back-top" v-show="showTopBtn && backTopShow" @click="backTop">
+    <div class="back-top" v-show="backTopShow" @click="backTop">
       <span class="iconfont icon-top"/>
     </div>
-    <div class="setting" v-show="backTopShow" v-b-tooltip.hover.leftbottom.v-secondary :title="title"
+    <div class="setting" v-show="immediate || backTopShow" v-b-tooltip.hover.leftbottom.v-secondary :title="title"
          @click="$store.commit('showCustomer', true)">
       <span class="iconfont icon-setting"/>
     </div>
@@ -46,10 +46,10 @@
         type: Number,
         default: 550 // 单位默认px
       },
-      // 是否展示返回顶部按钮
-      showTopBtn: {
+      // 即刻显示
+      immediate: {
         type: Boolean,
-        default: true //
+        default: false
       }
     },
     computed: {

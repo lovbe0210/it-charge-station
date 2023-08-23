@@ -1,54 +1,44 @@
 <template>
-  <div class="layout-module_notifications">
-    <div class="layout-module_notificationsMenu">
+  <div class="layout-module_ranking">
+    <div class="layout-module_rankingMenu">
       <div class="layout-module_menu enable-background">
         <div class="menu-wrap">
-          <div class="menu-item fixed-anchor-point">
+          <div class="fixed-anchor-point">
             <div class="item">
-              <span class="iconfont icon-paper-plane"></span>
-              排行榜
+              <span class="iconfont icon-rankings"></span>
+              排行热榜
             </div>
           </div>
-          <div class="menu-item" @click="routeNavigate('commentReply')">
-            <div :class="['item', activeMenuForEq === 'CommentReply' ? 'active-menu' : '']">
-              <span>回复我的</span>
-              <span class="count">5</span>
+          <div class="menu-item" @click="routeNavigate('articles')">
+            <div :class="['item', activeMenuForEq === 'FeaturedNotes' ? 'active-menu' : '']">
+              <span class="iconfont circle-hot"></span>
+              <span>精选笔记榜</span>
             </div>
           </div>
-          <div class="menu-item" @click="routeNavigate('likesReceived')">
-            <div :class="['item', activeMenuForEq === 'LikesReceived' ? 'active-menu' : '']">
-              <span>收到的赞</span>
-              <span class="count">1</span>
+          <div class="menu-item" @click="routeNavigate('column')">
+            <div :class="['item', activeMenuForEq === 'SeriesColumn' ? 'active-menu' : '']">
+              <span class="iconfont circle-hot"></span>
+              <span>推荐专栏榜</span>
             </div>
           </div>
-          <div class="menu-item" @click="routeNavigate('newFans')">
-            <div :class="['item', activeMenuForEq === 'NewFans' ? 'active-menu' : '']">
-              <span>新增粉丝</span>
-              <span class="count">10</span>
-            </div>
-          </div>
-          <div class="menu-item" @click="routeNavigate('systemMessage')">
-            <div :class="['item', activeMenuForEq === 'SystemMessage' ? 'active-menu' : '']">
-              <span>系统消息</span>
-              <span class="count">23</span>
-            </div>
-          </div>
-          <div class="menu-item" @click="routeNavigate('chatMessage')">
-            <div :class="['item', activeMenuForEq === 'ChatMessage' ? 'active-menu' : '']">
-              <span>我的消息</span>
-              <span class="count">99+</span>
+          <div class="menu-item" @click="routeNavigate('authors')">
+            <div :class="['item', activeMenuForEq === 'QualityAuthors' ? 'active-menu' : '']">
+              <span class="iconfont circle-hot"></span>
+              <span>优秀作者榜</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="layout-module_notificationsContent enable-background">
+    <div class="layout-module_rankingContent enable-background">
       <router-view></router-view>
     </div>
+    <back-top immediate="true"></back-top>
   </div>
 </template>
 
 <script>
+  import BackTop from "@/components/common/BackTop";
   export default {
     name: 'Ranking',
     beforeRouteEnter(from, to, next) {
@@ -62,6 +52,9 @@
         activeMenu: '精选笔记榜'
       }
     },
+    components: {
+      BackTop
+    },
     computed: {
       activeMenuForEq() {
         if (this.activeMenu == null) {
@@ -73,7 +66,7 @@
     methods: {
       routeNavigate(itemName) {
         this.activeMenu = itemName;
-        this.$router.push({path: '/notifications/' + itemName})
+        this.$router.push({path: '/hot/' + itemName})
       }
     },
     watch: {
@@ -87,5 +80,5 @@
 </script>
 
 <style scoped lang="less">
-  @import '../components/css/notifications/notifications.less';
+  @import '../components/css/ranking/ranking.less';
 </style>

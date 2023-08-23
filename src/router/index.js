@@ -94,28 +94,28 @@ const routes = [
         path: '/hot',
         name: 'Ranking',
         redirect: {
-          name: 'Body'
+          name: 'FeaturedNotes'
         },
         component: () => import('@/views/Ranking'),
         children: [
           {
             // 精选笔记榜
-            path: '',
-            name: 'RecentView',
+            path: 'articles',
+            name: 'FeaturedNotes',
             // 此方式为路由懒加载
-            component: () => import('@/components/dashboard/RecentView')
+            component: () => import('@/components/ranking/FeaturedNotes')
           },
           {
             // 推荐专栏榜
-            path: 'noteHome',
-            name: 'NoteHome',
-            component: () => import('@/components/dashboard/NoteHome')
+            path: 'column',
+            name: 'SeriesColumn',
+            component: () => import('@/components/ranking/SeriesColumn')
           },
           {
             // 优质作者榜
-            path: 'seriesColumn',
-            name: 'SeriesColumn',
-            component: () => import('@/components/dashboard/SeriesColumn')
+            path: 'authors',
+            name: 'QualityAuthors',
+            component: () => import('@/components/ranking/QualityAuthors')
           }
         ]
       },
@@ -278,13 +278,13 @@ const routes = [
   },
   {
     // 写作中心
-    path: '/writeCenter',
+    path: '/editor',
     name: 'WriteCenter',
     component: () => import('@/views/WriteCenter')
   },
   {
     // 阅读中心
-    path: '/readCenter/doc/:articleId',
+    path: '/article/:articleId',
     name: 'ReadCenter',
     props: true,
     component: () => import('@/views/ReadCenter')

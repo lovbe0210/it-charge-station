@@ -27,7 +27,7 @@
         <div class="recommend-topics">
           <div class="text">
             推荐专栏
-            <b-link class="more" to="/hot/seriesColumns">
+            <b-link class="more" to="/hot/column">
               更多<span class="iconfont icon-more"></span>
             </b-link>
             <hr>

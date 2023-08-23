@@ -9,7 +9,7 @@
       <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
         <b-row v-for="item in data" :key="item.id" fluid="true" class="item">
           <b-col :cols="isPhone || item.preview == null ? 12 : 8" class="text">
-            <b-link @click="toReadCenter">
+            <b-link :to="'/article/' + item.id">
               <div class="title">
                 <span>{{item.title}}</span>
               </div>
@@ -138,7 +138,7 @@
       },
       toReadCenter() {
         let routeUrl = this.$router.resolve({
-          path: '/readCenter'
+          path: '/readCenter/doc'
         })
         window.open(routeUrl.href, '_blank')
       }

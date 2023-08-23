@@ -1,0 +1,36 @@
+@font-face {
+  font-family: "iconfont";
+  src: url('//at.alicdn.com/t/c/font_4221367_jgxf07fxtfg.woff2?t=1692783257627') format('woff2');
+}
+
+.iconfont {
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.circle-hot:before {
+  content: "\e626";
+}
+
+.fans:before {
+  content: "\e6d8";
+}
+
+.to-follow:before {
+  content: "\e6aa";
+}
+
+.mutual-follows:before {
+  content: "\e60f";
+}
+
+.followed:before {
+  content: "\e7bc";
+}
+
+.start-chat:before {
+  content: "\e627";
+}
+
