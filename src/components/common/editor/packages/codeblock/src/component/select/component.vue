@@ -19,14 +19,14 @@
   </a-select>
 </template>
 <script>
-  import {Select} from 'ant-design-vue'
-  const ASelectOption = Select.Option
+  // import {Select} from 'ant-design-vue'
+  // const ASelectOption = Select.Option
   export default {
     name: "CodeblockSelect",
     props: ['modeDatas', 'defaultValue', 'getContainer', 'onSelect'],
     components: {
-      'a-select': Select,
-      ASelectOption
+      // 'a-select': Select,
+      // ASelectOption
     },
     methods: {
       filterOption(input, option) {

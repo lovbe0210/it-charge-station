@@ -32,6 +32,7 @@
                 v-model="showAvatarCropper"
                 title="编辑头像"
                 :mask-closable="false"
+                :lock-scroll="false"
                 @on-ok="confirmAvatarCrop">
                 <div class="avatar-cropper">
                   <vueCropper

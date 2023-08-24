@@ -19,7 +19,7 @@
     Menu, MenuItem, Button, Checkbox, Input, Divider, Tree, List, Modal, Tabs, TabPane
   } from 'view-design'
   import 'view-design/dist/styles/iview.css'
-  import { Tooltip, Card, Popover, Pagination, Tag } from 'ant-design-vue'
+  import { Tooltip, Card, Popover, Pagination, Tag, Select } from 'ant-design-vue'
   import commonUtil from "@/utils/common"
   // 引入弹幕模块
   import {vueBaberrage} from 'vue-baberrage'
@@ -54,6 +54,8 @@
   Vue.component('a-popover', Popover);
   Vue.component('a-pagination', Pagination);
   Vue.component('a-tag', Tag);
+  Vue.component('a-select', Select);
+  Vue.component('a-select-option', Select.Option);
 
   export default {
     name: 'App',
