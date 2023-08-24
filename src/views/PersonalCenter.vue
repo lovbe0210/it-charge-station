@@ -39,7 +39,14 @@
                     </button>
                   </div>
                 </div>
-                <div class="userInfo-module_description">我生来就是高山而非溪流，我欲于群峰之巅俯视平庸的沟壑</div>
+                <div class="userInfo-module_tag">
+                  <a-tag :color="tag.color" v-for="(tag,index) in userInfo.tags" :key="index">
+                    {{tag.content}}
+                  </a-tag>
+                </div>
+                <div class="userInfo-module_description">
+                  我生来就是高山而非溪流，我欲于群峰之巅俯视平庸的沟壑
+                </div>
                 <div class="userInfo-module_detail">
                   <span class="index-module_meta">
                     <span class="iconfont icon-location"></span>
@@ -208,6 +215,7 @@
 
 <script>
   import HotMap from "@/components/common/HotMap";
+
   export default {
     name: 'PersonCenter',
     data() {
@@ -215,7 +223,13 @@
         userInfo: {
           nickname: '布衣草人',
           level: 6,
-          follow: true
+          follow: true,
+          tags: [
+            {content: '自我驱动', color: 'blue'},
+            {content: '坚持不懈', color: 'red'},
+            {content: '目标大厂', color: 'orange'},
+            {content: '年薪百万', color: 'green'}
+          ]
         },
         leastUpdateList: [
           {
@@ -255,8 +269,7 @@
     components: {
       HotMap
     },
-    methods: {
-    },
+    methods: {},
     mounted() {
     }
   }

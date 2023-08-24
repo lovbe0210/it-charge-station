@@ -1,109 +1,107 @@
 <template>
   <div class="layout-module_domain">
-    <div id="main-right-content" class="layout-module_MainContent">
-      <div class="layout-module_MainContentChildren">
-        <div class="main-container user-homepage">
-          <div class="userInfo-module_userWrapper">
-            <div class="userInfo-module_avatarWrapper">
-              <div class="ant-image">
-                <img alt="小黑bu惑" class="userInfo-module_avatar"
-                     src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">
-              </div>
-            </div>
-            <div class="userInfo-module_info">
-              <div class="userInfo-module_name">
-                <div>
-                    <span class="userInfo-module_nickname" title="布衣草人">
-                      布衣草人
-                    </span>
-                </div>
-                <div class="userInfo-module_level">
-                  <span :class="'iconfont icon-level' + 6"></span>
-                </div>
-              </div>
-              <div class="userInfo-module_description">我生来就是高山而非溪流，我欲于群峰之巅俯视平庸的沟壑</div>
-              <div class="userInfo-module_detail">
+    <div class="userInfo-module_userWrapper">
+      <div class="userInfo-module_avatarWrapper">
+        <div class="ant-image">
+          <img alt="小黑bu惑" class="userInfo-module_avatar"
+               src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">
+        </div>
+      </div>
+      <div class="userInfo-module_info">
+        <div class="userInfo-module_name">
+          <div>
+            <span class="userInfo-module_nickname" title="布衣草人">
+              布衣草人
+            </span>
+          </div>
+          <div class="userInfo-module_level">
+            <span :class="'iconfont icon-level' + 6"></span>
+          </div>
+        </div>
+        <div class="userInfo-module_tag">
+          <a-tag :color="tag.color" v-for="(tag,index) in userInfo.tags" :key="index">
+            {{tag.content}}
+          </a-tag>
+        </div>
+        <div class="userInfo-module_description">我生来就是高山而非溪流，我欲于群峰之巅俯视平庸的沟壑</div>
+        <div class="userInfo-module_detail">
                   <span class="index-module_meta">
                     <span class="iconfont icon-location"></span>
                     <span>天下为公</span>
                   </span>
-                <span class="index-module_meta">
+          <span class="index-module_meta">
                     <span class="iconfont icon-industry"></span>
                     <span>新时代『农民工』</span>
                 </span>
-              </div>
-              <div class="userInfo-module_followInfo">
-                <a href="/explore/follows?type=User&userId=27044221" class="userInfo-module_followItem"
-                   target="_blank">
-                  <p class="userInfo-module_count">18</p>
-                  <p class="userInfo-module_label">
-                    <span>关注</span>
-                  </p>
-                </a>
-                <a href="/explore/follows?type=Fans&userId=27044221" class="userInfo-module_followItem"
-                   target="_blank">
-                  <p class="userInfo-module_count">211</p>
-                  <p class="userInfo-module_label">
-                    <span>粉丝</span>
-                  </p>
-                </a>
-                <div></div>
-                <div class="userInfo-module_followingFollowers">
-                  <div class="FollowingFollowers-module_followItemLine"></div>
-                  <p class="FollowingFollowers-module_info_lD4gv">
-                    <a class="FollowingFollowers-module_users_jY6FN" href="/kanding" target="_blank">
-                      <img loading="lazy" data-testid="img-avatar" src="" class="img" alt=""
-                           style="width: 18px; min-width: 18px; height: 18px; border-radius: 9px;">
-                      <span>njnj</span>
-                    </a>
-                    <span class="FollowingFollowers-module_text">
+        </div>
+        <div class="userInfo-module_followInfo">
+          <a href="/explore/follows?type=User&userId=27044221" class="userInfo-module_followItem"
+             target="_blank">
+            <p class="userInfo-module_count">18</p>
+            <p class="userInfo-module_label">
+              <span>关注</span>
+            </p>
+          </a>
+          <a href="/explore/follows?type=Fans&userId=27044221" class="userInfo-module_followItem"
+             target="_blank">
+            <p class="userInfo-module_count">211</p>
+            <p class="userInfo-module_label">
+              <span>粉丝</span>
+            </p>
+          </a>
+          <div></div>
+          <div class="userInfo-module_followingFollowers">
+            <div class="FollowingFollowers-module_followItemLine"></div>
+            <p class="FollowingFollowers-module_info_lD4gv">
+              <a class="FollowingFollowers-module_users_jY6FN" href="/kanding" target="_blank">
+                <img loading="lazy" data-testid="img-avatar" src="" class="img" alt=""
+                     style="width: 18px; min-width: 18px; height: 18px; border-radius: 9px;">
+                <span>njnj</span>
+              </a>
+              <span class="FollowingFollowers-module_text">
                         等<b class="larkui-popover-trigger">1</b>人也关注了他
                       </span>
-                  </p>
-                </div>
-              </div>
-            </div>
+            </p>
           </div>
-          <div class="readme-module_userBoardParent">
-            <div v-show="readmeEmpty" class="readme-module_empty" @click="readmeEmpty = false">
-              <p class="readme-module_emptyTitle">
-                <span class="iconfont icon-music-add"></span>
-                添加自定义介绍
-              </p>
-              <p class="readme-module_emptyDesc">
-                可以参考
-                <a href="https://www.yuque.com/yuque/mgcsc6/obl3qs" target="_blank">案例</a>
-              </p>
-              <p class="Readme-module_emptyDesc">没有自定义介绍时，访客视角没有这个模块</p>
+        </div>
+      </div>
+    </div>
+    <div class="readme-module_userBoardParent">
+      <div v-show="readmeEmpty" class="readme-module_empty" @click="readmeEmpty = false">
+        <p class="readme-module_emptyTitle">
+          <span class="iconfont icon-music-add"></span>
+          添加自定义介绍
+        </p>
+        <p class="readme-module_emptyDesc">
+          可以参考
+          <a href="https://www.yuque.com/yuque/mgcsc6/obl3qs" target="_blank">案例</a>
+        </p>
+        <p class="Readme-module_emptyDesc">没有自定义介绍时，访客视角没有这个模块</p>
+      </div>
+      <div v-show="!readmeEmpty" class="readme-module_editor">
+        <div class="editorBase-module_editor">
+          <div class="layout-mode-adapt">
+            <div class="toolbar-ui">
+              <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
             </div>
-            <div v-show="!readmeEmpty" class="readme-module_editor">
-              <div class="editorBase-module_editor">
-                <div class="layout-mode-adapt">
-                  <div class="toolbar-ui">
-                    <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
-                  </div>
-                  <div class="editor-body">
-                    <div class="editor-wrapper">
-                      <div class="editor-wrap-content">
-                        <div class="editor-outer-wrap-box">
-                          <div class="editor-wrap-box">
-                            <div class="readme-editor" ref="container"></div>
-                          </div>
-                        </div>
-                      </div>
+            <div class="editor-body">
+              <div class="editor-wrapper">
+                <div class="editor-wrap-content">
+                  <div class="editor-outer-wrap-box">
+                    <div class="editor-wrap-box">
+                      <div class="readme-editor" ref="container"></div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="readme-module_action">
-                <button type="button" class="readme-module_submitBtn" :disabled="editorValueIsEmpty">
-                  <span>确定</span>
-                </button>
-                <a class="readme-module_cancel">取消</a></div>
             </div>
           </div>
-          <hot-map></hot-map>
         </div>
+        <div class="readme-module_action">
+          <button type="button" class="readme-module_submitBtn" :disabled="editorValueIsEmpty">
+            <span>确定</span>
+          </button>
+          <a class="readme-module_cancel">取消</a></div>
       </div>
     </div>
   </div>
@@ -115,7 +113,7 @@
   import Toolbar from 'am-editor-toolbar-vue2'
   import {plugins, cards, pluginConfig, HightLightIcon} from "@/components/common/editor/config"
   import {getParentNode} from "../common/editor/utils";
-  import HotMap from "@/components/common/HotMap";
+
   export default {
     name: 'Domain',
     data() {
@@ -123,7 +121,13 @@
         userInfo: {
           nickname: '布衣草人',
           level: 6,
-          follow: true
+          follow: true,
+          tags: [
+            {content: '自我驱动', color: 'blue'},
+            {content: '坚持不懈', color: 'red'},
+            {content: '目标大厂', color: 'orange'},
+            {content: '年薪百万', color: 'green'}
+          ]
         },
         engine: null,
         // 工具栏内容：下拉面板、
@@ -159,42 +163,14 @@
       }
     },
     components: {
-      Toolbar,
-      HotMap
+      Toolbar
     },
     methods: {
       toolbarUI() {
-        // 选色器
-        // let colorPicker
-        // setTimeout(() => {
-        //   new Promise(function (resolve, reject) {
-        //     let interval = setInterval(() => {
-        //       colorPicker = document.getElementById('toolbar').children[0].childNodes[4]
-        //       if (colorPicker !== null && colorPicker !== undefined) {
-        //         clearInterval(interval)
-        //         resolve()
-        //       }
-        //     }, 10)
-        //   }).then(() => {
-        //     colorPicker.childNodes.forEach(s => {
-        //       s.childNodes.forEach(ss => {
-        //         ss.childNodes.forEach(sss => {
-        //           if (sss.hasChildNodes()) {
-        //             sss.childNodes.forEach(ssss => {
-        //               if (ssss.hasChildNodes()) {
-        //                 ssss.children[0].setAttribute('width', '20px');
-        //                 ssss.children[0].setAttribute('height', '20px');
-        //               }
-        //             })
-        //           }
-        //         })
-        //       })
-        //     })
-        //   })
-        // }, 100)
       }
     },
     mounted() {
+
       const container = this.$refs.container;
       if (container) {
         //实例化引擎

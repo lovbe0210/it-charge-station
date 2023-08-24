@@ -35,7 +35,7 @@
               <Dropdown trigger="hover" :transfer="true" @on-click="routeNavigate">
                 <a href="javascript:void(0)">
                   <div class="menu-wrapper">
-                    <div class="menu-body" @click="routeNavigate('commentReply')">
+                    <div class="menu-body">
                       <span>{{item.menuName}}</span>
                     </div>
                   </div>

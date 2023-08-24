@@ -128,27 +128,7 @@
             <span class="iconfont icon-qqqun"/>
           </div>
         </div>
-
-        <!-- 返回顶部 -->
         <back-top></back-top>
-        <!-- 自定义主题 -->
-        <!-- <Drawer placement="right" v-model="showCustomer" :closable="false"
-                width="18" :lock-scroll="false" class-name="customer">
-          <div class="theme">
-            <customer-set></customer-set>
-          </div>
-          <div class="music">
-            <music-index></music-index>
-          </div>
-          <div class="other">
-            <vue-baberrage :isShow="false"
-                           :barrageList="barrageList"
-                           :lanes-count="4"
-                           :message-height="10"
-                           :loop="true">
-            </vue-baberrage>
-          </div>
-        </Drawer>  -->
       </div>
     </b-col>
   </b-row>
@@ -157,8 +137,6 @@
 <script>
   import CarouselSwipe from '@/components/common/CarouselSwipe';
   import BackTop from '@/components/common/BackTop';
-  // import MusicIndex from "@/components/common/music/MusicIndex";
-  // import CustomerSet from "@/components/common/CustomerSet";
   import {MESSAGE_TYPE} from 'vue-baberrage'
 
   export default {

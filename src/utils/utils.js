@@ -70,3 +70,10 @@ export function returnSecond(time) {
 export function getTimeStamp() {
   return Date.now();
 }
+
+// 获取预置的随机颜色
+export function getRandomColor() {
+  let colorsArray = ['pink', 'red', 'orange', 'green', 'blue', 'purple'];
+  let index = Math.floor(Math.random() * (colorsArray.length));
+  return colorsArray[index];
+}

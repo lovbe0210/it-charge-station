@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="hotmap">
-      <svg width="998.14" height="158.84000000000003" class="hotmap-module_hotmapSvg hotmap-svg">
+      <svg width="100%" height="158.84000000000003" class="hotmap-module_hotmapSvg hotmap-svg">
         <g :transform="'translate(' + (4+index*19.14) + ')'" v-for="(dayItem,index) in hotMap.dayBox"
            :key="index">
           <a-tooltip overlayClassName="personal-center-tooltip" v-for="(item,index) in dayItem" :key="index"
@@ -2029,7 +2029,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: 30px;
-    max-width: 992px;
+    width: 100%;
 
     .hotmap-module_title {
       display: flex;
@@ -2098,6 +2098,7 @@
     }
 
     .hotmap {
+      width: 100%;
       svg:not(:root) {
         overflow: hidden;
       }

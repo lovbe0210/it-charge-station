@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_jgxf07fxtfg.woff2?t=1692783257627') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_qk41t6hyt.woff2?t=1692847457421') format('woff2');
 }
 
 .iconfont {
@@ -32,5 +32,9 @@
 
 .start-chat:before {
   content: "\e627";
+}
+
+.random:before {
+  content: "\e6bd";
 }
 

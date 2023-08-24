@@ -1,167 +1,148 @@
 @import '../common-var.less';
 
 .layout-module_account {
-  max-width: 1080px;
+  max-width: 80%;
+  margin: 0 auto;
 
-  .layout-module_MainContent {
+  .setting-title {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 500;
+    color: #262626;
+    position: sticky;
+    padding: 48px 0 28px;
+    top: 0;
+    left: 0;
+    margin: 0px;
+    text-align: inherit;
+  }
+
+  .setting-subtitle {
+    line-height: 24px;
+    font-weight: 500;
+    color: #262626;
+    margin: 0px;
+    text-align: inherit;
+    font-size: 16px;
+  }
+
+  .settings-form {
     width: 100%;
-    overflow-y: auto;
-    padding-top: 0;
+    margin-top: 16px;
+    color: #262626;
 
-    .layout-module_MainContentChildren {
-      min-height: calc(~"100vh - 108px");
+    .form-item {
+      position: relative;
+      background-color: #FAFAFA;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 0;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
 
-      .main-container {
-        max-width: 1056px;
-        padding: 22px 16px 32px 0;
+      .icon-account-completed, .icon-account-unComplete {
+        font-size: 29px;
       }
 
-      .account-setting {
+      .form-content {
+        padding-left: 10px;
 
-        .setting-title {
-          font-size: 20px;
-          line-height: 24px;
-          font-weight: 500;
-          color: #262626;
-          position: sticky;
-          background-color: #ffffff;
-          z-index: 100;
-          padding: 48px 0 28px;
-          top: 0;
-          left: 0;
-          margin: 0px;
-          text-align: inherit;
+        p{
+          margin: unset;
         }
-
-        .setting-subtitle {
-          line-height: 24px;
-          font-weight: 500;
-          color: #262626;
-          margin: 0px;
-          text-align: inherit;
-          font-size: 16px;
+        .tip {
+          color: #8A8F8D;
+          margin-top: 8px;
         }
+      }
 
-        .settings-form {
-          width: 65%;
-          margin-top: 16px;
-          color: #262626;
+      .control-button {
+        display: inline-block;
+        white-space: nowrap;
+        text-align: center;
+        border: 1px solid #E7E9E8;
+        transition: all .3s cubic-bezier(.645,.045,.355,1);
+        -moz-user-select: none;
+        user-select: none;
+        touch-action: manipulation;
+        outline: 0;
+        height: 24px;
+        padding: 0 7px;
+        line-height: 1.15;
+        box-shadow: none;
+        text-shadow: none;
+        border-radius: 6px;
+        font-weight: 500;
+        color: #262626;
+        background: #ffffff;
+        font-size: 12px;
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        margin-top: -12px;
+        cursor: pointer;
+      }
 
-          .form-item {
-            position: relative;
-            background-color: #FAFAFA;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 0;
-            margin-top: 16px;
+      .control-button, .control-button:focus, .control-button:hover {
+        box-shadow: none;
+        background-image: none;
+      }
+
+      .control-button:focus, .control-button:hover {
+        color: #009456;
+        background: #ffffff;
+        border-color: #009456;
+      }
+    }
+
+    .mobile-setting-form {
+      margin-top: 0;
+    }
+
+    .thirdAccount-setting-form {
+      margin-top: 56px;
+
+      .setting-subtitle {
+        line-height: 24px;
+        font-weight: 500;
+        color: #262626;
+        font-size: 16px;
+        text-align: inherit;
+        margin: 0px 0px 6px;
+      }
+
+      .subtitle-tip {
+        line-height: 22px;
+        color: #8A8F8D;
+      }
+
+      .third-binding-list {
+        margin-top: 16px;
+        margin-left: -16px;
+        display: flex;
+        flex-direction: row;
+        color: #000000;
+
+        .third-binding-item {
+          background-color: #FAFAFA;
+          border-radius: 8px;
+          height: 46px;
+          line-height: 46px;
+          padding: 0 16px;
+          flex: auto;
+          margin-left: 16px;
+          display: flex;
+          justify-content: space-between;
+          white-space: nowrap;
+
+          .bind-text {
             display: flex;
-            align-items: center;
+            justify-content: center;
 
-            .icon-account-completed, .icon-account-unComplete {
-              font-size: 29px;
-            }
-
-            .form-content {
-              padding-left: 10px;
-
-              p{
-                margin: unset;
-              }
-              .tip {
-                color: #8A8F8D;
-                margin-top: 8px;
-              }
-            }
-
-            .control-button {
-              display: inline-block;
-              white-space: nowrap;
-              text-align: center;
-              border: 1px solid #E7E9E8;
-              transition: all .3s cubic-bezier(.645,.045,.355,1);
-              -moz-user-select: none;
-              user-select: none;
-              touch-action: manipulation;
-              outline: 0;
-              height: 24px;
-              padding: 0 7px;
-              line-height: 1.15;
-              box-shadow: none;
-              text-shadow: none;
-              border-radius: 6px;
-              font-weight: 500;
-              color: #262626;
-              background: #ffffff;
-              font-size: 12px;
-              position: absolute;
-              right: 16px;
-              top: 50%;
-              margin-top: -12px;
-              cursor: pointer;
-            }
-
-            .control-button, .control-button:focus, .control-button:hover {
-              box-shadow: none;
-              background-image: none;
-            }
-
-            .control-button:focus, .control-button:hover {
-              color: #009456;
-              background: #ffffff;
-              border-color: #009456;
-            }
-          }
-
-          .mobile-setting-form {
-            margin-top: 0;
-          }
-
-          .thirdAccount-setting-form {
-            margin-top: 56px;
-
-            .setting-subtitle {
-              line-height: 24px;
-              font-weight: 500;
-              color: #262626;
-              font-size: 16px;
-              text-align: inherit;
-              margin: 0px 0px 6px;
-            }
-
-            .subtitle-tip {
-              line-height: 22px;
-              color: #8A8F8D;
-            }
-
-            .third-binding-list {
-              margin-top: 16px;
-              margin-left: -16px;
-              display: flex;
-              flex-direction: row;
-              color: #000000;
-
-              .third-binding-item {
-                background-color: #FAFAFA;
-                border-radius: 8px;
-                height: 46px;
-                line-height: 46px;
-                padding: 0 16px;
-                flex: auto;
-                margin-left: 16px;
-                display: flex;
-                justify-content: space-between;
-                white-space: nowrap;
-
-                .bind-text {
-                  display: flex;
-                  justify-content: center;
-
-                  .iconfont {
-                    font-size: 20px;
-                    margin-right: 5px;
-                  }
-                }
-              }
+            .iconfont {
+              font-size: 20px;
+              margin-right: 5px;
             }
           }
         }

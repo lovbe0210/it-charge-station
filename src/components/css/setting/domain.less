@@ -1,461 +1,302 @@
 @import '../common-var.less';
 
 .layout-module_domain {
-  max-width: 1080px;
+  max-width: 100%;
+  margin: 0 10px;
 
-  .layout-module_MainContent {
-    width: 100%;
-    overflow-y: auto;
-    padding-top: 0;
+  .userInfo-module_userWrapper {
+    display: flex;
+    margin-top: 48px;
 
-    .layout-module_MainContentChildren {
-      min-height: calc(~"100vh - 108px");
+    .userInfo-module_avatarWrapper {
+      position: relative;
 
-      .main-container {
-        max-width: 1056px;
-        padding: 22px 16px 32px 0;
+      .ant-image {
+        display: block;
+
+        .userInfo-module_avatar {
+          height: 164px;
+          width: 164px;
+          min-width: 164px;
+          border-radius: 82px;
+          border-color: rgba(0, 0, 0, 0.06);
+          border-width: 1px;
+          border-style: solid;
+          overflow: hidden;
+          position: relative;
+          background-color: #FFFFFF;
+        }
+      }
+    }
+
+    .userInfo-module_info {
+      margin-left: 52px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .userInfo-module_name {
+        display: flex;
+        align-items: center;
+
+        .userInfo-module_nickname {
+          font-size: 24px;
+          color: #262626;
+          line-height: 32px;
+          font-weight: 600;
+          margin-top: 12px;
+        }
+
+        .userInfo-module_level {
+          text-align: center;
+          cursor: pointer;
+          position: relative !important;
+          top: 0 !important;
+          right: 0;
+          width: 25px;
+          height: 25px;
+          margin-left: 5px;
+          padding-bottom: 50px;
+
+          .iconfont {
+            font-size: 25px;
+          }
+        }
+
       }
 
-      .user-homepage {
+      .userInfo-module_tag {
+        margin: 10px 0 5px 0;
+      }
 
-        .userInfo-module_userWrapper {
+      .userInfo-module_description {
+        font-size: 14px;
+        color: #585A5A;
+        line-height: 22px;
+        font-weight: 400;
+        margin-top: 12px;
+      }
+
+      .userInfo-module_detail {
+        font-size: 14px;
+        color: #8A8F8D;
+        display: flex;
+        margin-top: 16px;
+
+        span {
+          margin-right: 13px;
+        }
+
+        .index-module_meta {
           display: flex;
-          margin-top: 70px;
+          line-height: 22px;
+        }
+      }
 
+      .userInfo-module_followInfo {
+        margin-top: 22px;
+        display: flex;
+        align-items: center;
 
-          .userInfo-module_avatarWrapper {
-            position: relative;
+        .userInfo-module_followItem {
+          margin-right: 28px;
+          display: flex;
+          align-items: center;
 
-            .ant-image {
-              display: block;
-
-              .userInfo-module_avatar {
-                height: 164px;
-                width: 164px;
-                min-width: 164px;
-                border-radius: 82px;
-                border-color: rgba(0, 0, 0, 0.06);
-                border-width: 1px;
-                border-style: solid;
-                overflow: hidden;
-                position: relative;
-                background-color: #FFFFFF;
-              }
-            }
+          .userInfo-module_count {
+            font-size: 18px;
+            color: #585A5A;
+            line-height: 26px;
+            font-weight: 700;
+            margin-right: 8px;
           }
 
-          .userInfo-module_info {
-            margin-left: 52px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            .userInfo-module_name {
-              display: flex;
-              align-items: center;
-
-              .userInfo-module_nickname {
-                font-size: 24px;
-                color: #262626;
-                line-height: 32px;
-                font-weight: 600;
-                margin-top: 12px;
-              }
-
-              .userInfo-module_level {
-                text-align: center;
-                cursor: pointer;
-                position: relative !important;
-                top: 0 !important;
-                right: 0;
-                width: 25px;
-                height: 25px;
-                margin-left: 5px;
-                padding-bottom: 50px;
-
-                .iconfont {
-                  font-size: 25px;
-                }
-              }
-
-            }
-
-            .userInfo-module_description {
-              font-size: 14px;
-              color: #585A5A;
-              line-height: 22px;
-              font-weight: 400;
-              margin-top: 12px;
-            }
-
-            .userInfo-module_detail {
-              font-size: 14px;
-              color: #8A8F8D;
-              display: flex;
-              margin-top: 16px;
-
-              span {
-                margin-right: 13px;
-              }
-
-              .index-module_meta {
-                display: flex;
-                line-height: 22px;
-              }
-            }
-
-            .userInfo-module_followInfo {
-              margin-top: 22px;
-              display: flex;
-              align-items: center;
-
-              .userInfo-module_followItem {
-                margin-right: 28px;
-                display: flex;
-                align-items: center;
-
-                .userInfo-module_count {
-                  font-size: 18px;
-                  color: #585A5A;
-                  line-height: 26px;
-                  font-weight: 700;
-                  margin-right: 8px;
-                }
-
-                .userInfo-module_label {
-                  font-size: 14px;
-                  color: #8A8F8D;
-                  text-align: center;
-                  line-height: 26px;
-                  font-weight: 400;
-                }
-              }
-
-              .userInfo-module_followingFollowers {
-                display: none;
-              }
-            }
+          .userInfo-module_label {
+            font-size: 14px;
+            color: #8A8F8D;
+            text-align: center;
+            line-height: 26px;
+            font-weight: 400;
           }
         }
 
-        .readme-module_userBoardParent {
-          padding-top: 24px;
-          margin-top: -24px;
-
-          .readme-module_empty {
-            cursor: pointer;
-            border: 1px dashed #BEC0BF;
-            height: 135px;
-            margin-top: 73px;
-            background: #FFFFFF;
-            border-radius: 8px;
-            width: 992px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-
-            .readme-module_emptyTitle {
-              font-size: 16px;
-              color: #262626;
-              letter-spacing: 0;
-              line-height: 24px;
-              font-weight: 500;
-              text-align: center;
-              margin-bottom: 12px;
-
-              .icon-music-add {
-                font-size: 12px;
-              }
-            }
-
-            .readme-module_emptyDesc {
-              font-size: 14px;
-              color: #BEC0BF;
-              letter-spacing: 0;
-              text-align: center;
-              font-weight: 400;
-            }
-          }
-
-          .readme-module_empty:hover {
-            border: 1px dashed #00B96B;
-          }
-
-          .readme-module_editor {
-            width: 992px;
-            min-height: 223px;
-            margin-top: 64px;
-            position: relative;
-
-            .editorBase-module_editor {
-              position: relative;
-              height: 100%;
-              border: 1px solid #E7E9E8;
-              border-radius: 4px;
-
-              .layout-mode-adapt {
-                position: relative;
-                display: flex;
-                height: auto;
-                border-radius: 4px;
-                margin-top: 5px;
-                flex-direction: column;
-                background-color: #FFFFFF;
-
-                .toolbar-ui {
-                  position: static;
-                  z-index: auto;
-
-                  .editor-toolbar {
-                    border: none;
-                    padding-left: 8px;
-                  }
-                  /deep/ .editor-toolbar-content {
-                    justify-content: unset;
-                  }
-                }
-
-                .editor-body {
-                  height: auto;
-                  position: relative;
-
-                  .editor-wrapper {
-                    position: relative;
-                    overflow-anchor: none;
-                    display: flex;
-                    height: auto;
-                    overflow: visible;
-                    padding-top: 0;
-
-                    .editor-wrap-content {
-                      flex: 1;
-                      width: 100%;
-                      min-width: auto;
-                      margin: 0;
-
-                      .editor-outer-wrap-box {
-                        width: auto;
-                        min-width: auto;
-                        padding-bottom: 0;
-
-                        .editor-wrap-box {
-                          border: none;
-                          box-shadow: none;
-                          background: none;
-                          margin-bottom: 0;
-
-                          .readme-editor {
-                            padding: 16px 24px 8px 24px;
-                            min-height: 188px;
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-
-            .readme-module_action {
-              margin-top: 7px;
-
-              .readme-module_submitBtn {
-                position: relative;
-                display: inline-block;
-                white-space: nowrap;
-                text-align: center;
-                border: 1px solid transparent;
-                cursor: pointer;
-                transition: all .3s cubic-bezier(.645, .045, .355, 1);
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                user-select: none;
-                touch-action: manipulation;
-                height: 32px;
-                padding: 4px 15px;
-                font-size: 14px;
-                margin-right: 12px;
-                line-height: 1.15;
-                box-shadow: none;
-                text-shadow: none;
-                border-radius: 6px;
-                font-weight: 500;
-                outline: 0;
-                color: #FFFFFF;
-                background: #00B96B;
-                border-color: #00B96B;
-              }
-
-              .readme-module_submitBtn:hover, .readme-module_submitBtn:focus, .readme-module_submitBtn:active {
-                background: #009456;
-                border-color: #009456;
-              }
-
-              .readme-module_submitBtn[disabled], .readme-module_submitBtn[disabled]:active,
-              .readme-module_submitBtn[disabled]:focus, .readme-module_submitBtn[disabled]:hover {
-                opacity: .3;
-                color: #FFFFFF;
-                background: #00B96B;
-                border-color: #00B96B;
-                text-shadow: none;
-                box-shadow: none;
-              }
-
-              .readme-module_cancel {
-                color: #585A5A;
-                font-size: 14px;
-              }
-            }
-          }
-        }
-
-        .leastUpdate-module_cardList {
-          .leastUpdate-module_cardItem {
-            position: relative;
-
-            .timeline-module_container {
-              font-size: 14px;
-              color: #585A5A;
-              line-height: 22px;
-              padding-right: 30px;
-
-              span:first-child {
-                margin-right: 8px;
-              }
-
-              .line-module_point {
-                width: 6px;
-                height: 6px;
-                border-radius: 50%;
-                background: #BEC0BF;
-                margin-left: 4px;
-                margin-bottom: 2px;
-                display: inline-block;
-              }
-
-              .line-module_times {
-                display: inline-block;
-                color: #8A8F8D;
-                padding-left: 6px;
-                font-size: 14px;
-                line-height: 22px;
-              }
-            }
-
-            .cardContent-module_wrapper {
-              position: relative;
-              padding: 4px 0 24px 18px;
-              border-left: 1px dashed rgba(190, 192, 191, .3);
-              margin: 8px 0 8px 6px;
-
-              .cardContent-module_body {
-                overflow: hidden;
-                position: relative;
-                display: flex;
-                justify-content: space-between;
-                align-items: stretch;
-                margin-top: 12px;
-
-                .doc-updated-info {
-                  min-width: 0;
-                  display: flex;
-                  flex-direction: column;
-                  flex: 1;
-
-                  .doc-updated-content {
-                    flex: 1;
-                    align-content: center;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-
-                    /*   a {
-                         color: #117CEE;
-                         text-decoration: none;
-                         background-color: transparent;
-                         outline: none;
-                         cursor: pointer;
-                         transition: color .3s;
-                         -webkit-text-decoration-skip: objects;
-                         touch-action: manipulation;
-                       }*/
-
-                    .doc-updated-title {
-                      font-size: 16px;
-                      font-weight: 500;
-                      color: #262626;
-                      display: block;
-                      overflow: hidden;
-                      text-overflow: ellipsis;
-                      white-space: nowrap;
-                    }
-
-                    .doc-updated-desc {
-                      margin-top: 6px;
-                      font-size: 14px;
-                      color: #585A5A;
-                      display: -webkit-box;
-                      max-height: 44px;
-                      -webkit-line-clamp: 2;
-                      -webkit-box-orient: vertical;
-                      overflow: hidden;
-                      text-overflow: ellipsis;
-                      line-height: 22px;
-                    }
-                  }
-
-                  .doc-updated-countInfo {
-                    display: flex;
-                    align-items: center;
-                    font-size: 14px;
-                    color: #8A8F8D;
-                    line-height: 20px;
-                    margin-top: 12px;
-
-                    .simplify-like {
-                      position: relative;
-                      top: -3px;
-                      cursor: pointer;
-                      margin-right: 16px;
-                      display: flex;
-                      align-items: center;
-
-                      .like-module_text {
-                        position: relative;
-                        top: 3px;
-                        margin-left: 4px;
-                      }
-                    }
-
-                    .doc-updated-original {
-                      margin-left: 8px;
-                    }
-                  }
-                }
-
-                .doc-updated-cover {
-                  flex: 0 0 162px;
-                  width: 162px;
-                  height: 107px;
-                  margin-left: 20px;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  overflow: hidden;
-                  border-radius: 4px;
-                  background-size: cover;
-                  background-position: 50%;
-                  border: 1px solid #E7E9E8;
-                }
-              }
-            }
-          }
+        .userInfo-module_followingFollowers {
+          display: none;
         }
       }
     }
   }
+
+  .readme-module_userBoardParent {
+    margin-top: 64px;
+    margin-bottom: 40px;
+
+    .readme-module_empty {
+      cursor: pointer;
+      border: 1px dashed #BEC0BF;
+      height: 135px;
+      border-radius: 8px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .readme-module_emptyTitle {
+        font-size: 16px;
+        color: #262626;
+        letter-spacing: 0;
+        line-height: 24px;
+        font-weight: 500;
+        text-align: center;
+        margin-bottom: 12px;
+
+        .icon-music-add {
+          font-size: 12px;
+        }
+      }
+
+      .readme-module_emptyDesc {
+        font-size: 14px;
+        color: #BEC0BF;
+        letter-spacing: 0;
+        text-align: center;
+        font-weight: 400;
+      }
+    }
+
+    .readme-module_empty:hover {
+      border: 1px dashed #00B96B;
+    }
+
+    .readme-module_editor {
+      width: 100%;
+      min-height: 223px;
+      position: relative;
+
+      .editorBase-module_editor {
+        position: relative;
+        height: 100%;
+        border: 1px solid #E7E9E8;
+        border-radius: 4px;
+
+        .layout-mode-adapt {
+          position: relative;
+          display: flex;
+          height: auto;
+          border-radius: 4px;
+          margin-top: 5px;
+          flex-direction: column;
+
+          .toolbar-ui {
+            position: static;
+            z-index: auto;
+
+            .editor-toolbar {
+              border: none;
+              padding-left: 8px;
+            }
+            /deep/ .editor-toolbar-content {
+              justify-content: unset;
+            }
+          }
+
+          .editor-body {
+            height: auto;
+            position: relative;
+
+            .editor-wrapper {
+              position: relative;
+              overflow-anchor: none;
+              display: flex;
+              height: auto;
+              overflow: visible;
+              padding-top: 0;
+
+              .editor-wrap-content {
+                flex: 1;
+                width: 100%;
+                min-width: auto;
+                margin: 0;
+
+                .editor-outer-wrap-box {
+                  width: auto;
+                  min-width: auto;
+                  padding-bottom: 0;
+
+                  .editor-wrap-box {
+                    border: none;
+                    box-shadow: none;
+                    background: none;
+                    margin-bottom: 0;
+
+                    .readme-editor {
+                      padding: 16px 24px 8px 24px;
+                      min-height: 188px;
+                      background: none;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .readme-module_action {
+        margin-top: 7px;
+
+        .readme-module_submitBtn {
+          position: relative;
+          display: inline-block;
+          white-space: nowrap;
+          text-align: center;
+          border: 1px solid transparent;
+          cursor: pointer;
+          transition: all .3s cubic-bezier(.645, .045, .355, 1);
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          user-select: none;
+          touch-action: manipulation;
+          height: 32px;
+          padding: 4px 15px;
+          font-size: 14px;
+          margin-right: 12px;
+          line-height: 1.15;
+          box-shadow: none;
+          text-shadow: none;
+          border-radius: 6px;
+          font-weight: 500;
+          outline: 0;
+          color: #FFFFFF;
+          background: #00B96B;
+          border-color: #00B96B;
+        }
+
+        .readme-module_submitBtn:hover, .readme-module_submitBtn:focus, .readme-module_submitBtn:active {
+          background: #009456;
+          border-color: #009456;
+        }
+
+        .readme-module_submitBtn[disabled], .readme-module_submitBtn[disabled]:active,
+        .readme-module_submitBtn[disabled]:focus, .readme-module_submitBtn[disabled]:hover {
+          opacity: .3;
+          color: #FFFFFF;
+          background: #00B96B;
+          border-color: #00B96B;
+          text-shadow: none;
+          box-shadow: none;
+        }
+
+        .readme-module_cancel {
+          color: #585A5A;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
 }
 
 // 第三方插件样式覆盖

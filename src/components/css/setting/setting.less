@@ -3,11 +3,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(~"100vh - 77px");
+  min-height: calc(~"100vh - 76px");
+
 
   .layout-module_settingOverview {
     width: 30%;
-    height: 100%;
+    height: calc(~"100vh - 76px");
+    position: relative;
 
     .layout-module_overview {
       height: calc(~"(100vh - 77px) / 2");
@@ -16,6 +18,8 @@
       align-items: center;
       flex-direction: column;
       padding: 0 25px;
+      position: fixed;
+      top: 77px;
 
       .userInfo-avatar {
         width: 100px;
@@ -104,23 +108,21 @@
         }
       }
     }
+
+    .fixedTop {
+      top: 5px;
+    }
   }
 
   .layout-module_settingDetail {
     width: 70%;
-    height: 100%;
+    min-height: calc(~"100vh - 76px");
 
-    .layout-module_rightMainContent {
-      height: 100vh;
+    .layout-module_mainContent {
       width: 100%;
-      overflow-y: scroll;
+      height: 100%;
       padding: 0 24px 32px;
-      background-color: #FFFFFF;
 
-      .layout-module_rightContent {
-        //max-width: 1080px;
-        margin: 0 auto;
-      }
     }
   }
 }

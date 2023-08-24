@@ -1,7 +1,7 @@
 <template>
   <div class="layout-module_setting">
     <div class="layout-module_settingOverview">
-      <div class="layout-module_overview enable-background">
+      <div class="layout-module_overview enable-background" :style="'top:' + fixedHeight + 'px;'">
         <div class="userInfo-avatar">
           <b-avatar :src="userInfo.avatar" variant="light" class="topic-avatar" to="/settings" size="6rem"/>
         </div>
@@ -20,7 +20,9 @@
         </div>
         <div class="userInfo-domain">
           <span class="iconfont icon-user-domain"></span>
-          <a :href="'/' + userInfo.domain">{{'http://www.itcast.com/' + userInfo.domain}}</a>
+          <a :href="'/' + userInfo.domain" title="个人主页">
+            {{'http://www.itcast.com/' + userInfo.domain}}
+          </a>
         </div>
         <div class="userInfo-line">
           <hr>
@@ -41,11 +43,9 @@
         </div>
       </div>
     </div>
-    <div class="layout-module_settingDetail">
-      <div class="layout-module_rightMainContent">
-        <div class="layout-module_rightContent">
-          <router-view></router-view>
-        </div>
+    <div class="layout-module_settingDetail enable-background">
+      <div class="layout-module_mainContent">
+        <router-view></router-view>
       </div>
     </div>
   </div>
@@ -57,6 +57,8 @@
     data() {
       return {
         tooltipContainer: null,
+        needFixed: false,
+        fixedHeight: 77,
         userInfo: {
           nickname: '布衣草人',
           avatar: require('@/assets/img/1.jpg'),
@@ -69,9 +71,22 @@
       routeNavigate(itemName) {
         this.activeMenu = itemName;
         this.$router.push({path: '/settings/' + itemName})
+      },
+      // 滚动条滚动处理事件：
+      handleScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        let computeTop = 77 - scrollTop;
+        this.fixedHeight = computeTop < 2 ? 2 : computeTop > 77 ? 77 : computeTop;
       }
     },
     mounted() {
+      this.needFixed = false;
+      // 给window添加一个滚动监听事件
+      window.addEventListener('scroll', this.handleScroll)
+    },
+    destroyed() {
+      // 释放监听
+      window.removeEventListener('scroll', this.handleScroll)
     }
   }
 </script>

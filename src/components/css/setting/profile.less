@@ -1,11 +1,7 @@
 @import '../common-var.less';
-.layout-module_account {
-  max-width: 668px;
-
-  .main-container {
-    max-width: 1056px;
-    padding: 22px 16px 32px 0;
-  }
+.layout-module_profile {
+  max-width: 80%;
+  margin: 0 auto;
 
   .setting-title {
     font-size: 20px;
@@ -14,13 +10,11 @@
     color: #262626;
     position: -webkit-sticky;
     position: sticky;
-    background-color: #FFFFFF;
-    z-index: 100;
     padding: 48px 0 28px;
     top: 0;
     left: 0;
     text-align: inherit;
-    margin: 0px;
+    margin: 0;
   }
 
   .settings-form {
@@ -104,6 +98,7 @@
 
               /deep/ .ivu-upload-drag, .ivu-upload-drag:hover{
                 border: none;
+                background: none;
               }
 
               .avatar-uploader-btn {
@@ -130,29 +125,36 @@
               font-size: 12px;
             }
           }
+          .control-input {
+            box-sizing: border-box;
+            margin: 0;
+            font-variant: tabular-nums;
+            list-style: none;
+            font-feature-settings: "tnum";
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            min-width: 0;
+            color: #262626;
+            font-size: 14px;
+            line-height: 1.5715;
+            background: none;
+            border: 1px solid #E7E9E8;
+            border-radius: 6px;
+            transition: all .3s;
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            padding: 6.5px 11px;
+          }
 
           .nickname-editor-control {
             position: relative;
 
             .nickName-module_input {
-              touch-action: manipulation;
               line-height: 30px;
               width: 322px;
-              box-sizing: border-box;
-              margin: 0;
-              color: #262626;
-              font-variant: tabular-nums;
-              list-style: none;
-              font-feature-settings: "tnum";
-              position: relative;
-              display: inline-block;
-              min-width: 0;
               padding: 4px 11px;
-              background-color: #ffffff;
-              background-image: none;
               border-radius: 5px;
-              border: 1px solid #E7E9E8;
-              transition: all .3s;
               outline: none !important;
             }
           }
@@ -161,23 +163,8 @@
             position: relative;
 
             .biography-module_textarea {
-              touch-action: manipulation;
-              box-sizing: border-box;
               margin: 0 0 4px 0;
-              font-variant: tabular-nums;
-              list-style: none;
-              font-feature-settings: "tnum";
-              position: relative;
-              display: inline-block;
-              width: 100%;
-              min-width: 0;
               padding: 4px 11px;
-              color: #262626;
-              line-height: 1.5715;
-              background-color: #ffffff;
-              background-image: none;
-              border: 1px solid #E7E9E8;
-              border-radius: 6px;
               max-width: 100%;
               min-height: 32px;
               vertical-align: bottom;
@@ -189,57 +176,11 @@
           .location-editor-control {
             position: relative;
             line-height: 40px;
-
-            .location-module_input {
-              box-sizing: border-box;
-              margin: 0;
-              font-variant: tabular-nums;
-              list-style: none;
-              font-feature-settings: "tnum";
-              position: relative;
-              display: inline-block;
-              width: 100%;
-              min-width: 0;
-              color: #262626;
-              font-size: 14px;
-              line-height: 1.5715;
-              background-color: #ffffff;
-              background-image: none;
-              border: 1px solid #E7E9E8;
-              border-radius: 6px;
-              transition: all .3s;
-              touch-action: manipulation;
-              -webkit-appearance: none;
-              padding: 6.5px 11px;
-            }
           }
 
           .profession-editor-control {
             position: relative;
             line-height: 40px;
-
-            .profession-module_input {
-              box-sizing: border-box;
-              margin: 0;
-              font-variant: tabular-nums;
-              list-style: none;
-              font-feature-settings: "tnum";
-              position: relative;
-              display: inline-block;
-              width: 100%;
-              min-width: 0;
-              color: #262626;
-              font-size: 14px;
-              line-height: 1.5715;
-              background-color: #ffffff;
-              background-image: none;
-              border: 1px solid #E7E9E8;
-              border-radius: 6px;
-              transition: all .3s;
-              touch-action: manipulation;
-              -webkit-appearance: none;
-              padding: 6.5px 11px;
-            }
           }
 
           .update-editor-control {
@@ -272,9 +213,29 @@
             }
 
             .update-editor-control-btn:hover {
-              color: #ffffff;
               background: #009456;
               border-color: #009456;
+            }
+          }
+
+          .tag-add-control {
+            position: relative;
+            line-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            padding: 5px 6px 25px;
+
+            .ant-tag {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              .ivu-input:focus {
+                border-color: #0BD07D;
+                outline: 0;
+                box-shadow: none;
+              }
             }
           }
 
@@ -406,7 +367,6 @@
         font-weight: 500;
         box-sizing: border-box;
         color: #262626;
-        background: #ffffff;
 
         .text {
           display: inline-block;
@@ -417,9 +377,52 @@
       .custom-btn:focus, .custom-btn:hover {
         box-shadow: none;
         outline: 0;
-        background: #ffffff;
         border-color: #009456;
       }
     }
+  }
+}
+
+/deep/ .tag-color-tooltip {
+  padding-top: 0 !important;
+}
+
+/deep/ .ant-tooltip-placement-top {
+  padding-bottom: 0 !important;
+}
+
+/deep/.ant-tooltip-inner {
+  font-size: 12px;
+  background-color: rgba(0, 0, 0, 0.75);
+  min-width: unset;
+  min-height: unset;
+  padding: 0;
+
+  .tag-color-btn {
+    width: 32px;
+    height: 26px;
+    border-radius: 3px;
+
+    .hazy {
+      width: 32px;
+      height: 26px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255,255,255,0.5);
+    }
+  }
+}
+
+/deep/ .ant-tooltip-arrow {
+  display: none;
+}
+
+/deep/ .tag-input {
+
+  .ivu-input {
+    border-color: #0BD07D;
+    outline: none;
+    box-shadow: none;
   }
 }
