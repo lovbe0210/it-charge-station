@@ -74,6 +74,7 @@
     <div class="modal">
       <Modal v-model="showModal" width="400" :lock-scroll="false"
              :footer-hide="true" :mask-closable="false"
+             :on-visible-change="modalStatusChange"
              class-name="account-set-modal">
         <div class="header">
           <span>身份验证</span>
@@ -92,12 +93,16 @@
                   :options="options"
                   @select="onSelect">
         </a-select>
+        <div v-if="showModal" class="validation">
+          <slider-validation :verifyStatus="verifyStatus" @validate="validate"></slider-validation>
+        </div>
       </Modal>
     </div>
   </div>
 </template>
 
 <script>
+  import SliderValidation from "@/components/common/SliderValidation";
   export default {
     name: 'Account',
     data() {
@@ -114,18 +119,20 @@
         options: [
           {
             key: 0,
-            title: '使用手机 153******57 验证',
-            class: 'option-item'
+            title: '使用手机 153******57 验证'
           },
           {
             key: 1,
-            title: '使用邮箱 lov******@163.com 验证',
-            class: 'option-item'
+            title: '使用邮箱 lov******@163.com 验证'
           }
         ],
         selectOption: 0,
+        verifyStatus: false,
         menuContainer: null
       }
+    },
+    components: {
+      SliderValidation
     },
     methods: {
       getContainer() {
@@ -133,11 +140,20 @@
       },
       onSelect(value) {
         console.log(value)
+      },
+      modalStatusChange() {
+        if (!this.showModal) {
+          // 恢复滑块的状态
+        }
+      },
+      validate() {
+        // 只在成功时回调
+        this.verifyStatus = true;
       }
     },
     mounted() {
       if (this.menuContainer == null) {
-        this.menuContainer = this.$ref.menuContainer;
+        this.menuContainer = this.$refs.menuContainer;
       }
     }
   }
