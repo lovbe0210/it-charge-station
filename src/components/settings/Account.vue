@@ -134,7 +134,7 @@
             </p>
             <Input autocomplete="off"
                    :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
-                   placeholder="输入新手机" @on-change="checkCodeChange" v-model="newValue" type="text" maxlength="15"/>
+                   placeholder="输入新手机" @on-change="checkNewValueChange" v-model="newValue" type="text" maxlength="15"/>
           </div>
           <div v-if="changeItemType == 2">
             <div class="header">
@@ -355,6 +355,11 @@
       showChangeModal(type) {
         this.changeItemType = type;
         this.showModal = true;
+      },
+      checkNewValueChange() {
+        if (this.changeItemType == 1) {
+
+        }
       }
     },
     mounted() {
