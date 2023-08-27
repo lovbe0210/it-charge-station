@@ -48,9 +48,10 @@
       .form-content {
         padding-left: 10px;
 
-        p{
+        p {
           margin: unset;
         }
+
         .tip {
           color: #8A8F8D;
           margin-top: 8px;
@@ -62,7 +63,7 @@
         white-space: nowrap;
         text-align: center;
         border: 1px solid #E7E9E8;
-        transition: all .3s cubic-bezier(.645,.045,.355,1);
+        transition: all .3s cubic-bezier(.645, .045, .355, 1);
         -moz-user-select: none;
         user-select: none;
         touch-action: manipulation;
@@ -153,7 +154,7 @@
 
 .account-set-modal {
   .header {
-    color: rgba(0,0,0,0.85);
+    color: rgba(0, 0, 0, 0.85);
     font-weight: 500;
     font-size: 15px;
     line-height: 22px;
@@ -174,32 +175,117 @@
     margin: 15px 8px 10px 8px;
   }
 
+  .check-code {
+    margin: 40px 8px 10px 8px;
+    display: flex;
+    justify-content: space-between;
+
+    .check-code-input {
+      width: 60%;
+    }
+
+    .error-code-input {
+
+      /deep/.ivu-input {
+        border-color: red !important;
+      }
+    }
+
+    .check-code-btn {
+      height: 37px;
+      width: 35%;
+    }
+
+    .check-code-btn:not([disabled]):hover {
+      color: #00B96B;
+      border-color: #00B96B;
+      box-shadow: none;
+    }
+
+    .check-code-btn:focus {
+      box-shadow: none;
+    }
+  }
+
+  .check-code-tip {
+    margin: 5px 8px 10px 8px;
+    font-size: 14px;
+    height: 40px;
+
+    .error-tip {
+      color: red;
+    }
+  }
+
+  .action {
+    display: flex;
+    justify-content: right;
+
+    .cancel-btn {
+      margin-right: 10px;
+    }
+
+    .cancel-btn:hover {
+      color: #00B96B;
+      border-color: #00B96B;
+      box-shadow: none;
+    }
+
+    .next-btn {
+      border: 1px solid #00B96B;
+      font-size: 14px;
+      font-weight: 500;
+      color: #ffffff;
+      background: #00B96B;
+      text-shadow: none;
+      box-shadow: none;
+      outline: none;
+    }
+
+    .next-btn:hover {
+      background: #009456;
+      border-color: #009456;
+    }
+  }
+
+  .step-2 {
+    //height: 356px;
+
+    .change-item-input {
+      padding: 0 8px 10px 8px;
+    }
+  }
 }
 
-/deep/.ant-select-focused .ant-select-selection, /deep/.ant-select-selection:focus,
-/deep/.ant-select-selection:active, /deep/.ant-select-selection:hover {
+/deep/ .ant-select-focused .ant-select-selection, /deep/ .ant-select-selection:focus,
+/deep/ .ant-select-selection:active, /deep/ .ant-select-selection:hover {
   border-color: #00B96B;
   border-right-width: 1px !important;
   outline: 0;
   box-shadow: none;
 }
 
-/deep/.ant-select-selection-selected-value {
+/deep/ .ant-select-selection-selected-value {
   font-size: 14px;
   color: #262626;
 }
 
-/deep/.ant-select-dropdown-menu-item-selected {
+/deep/ .ant-select-dropdown-menu-item-selected {
   color: #262626;
   background: #eff0f0;
 }
 
-/deep/.ant-select-dropdown {
+/deep/ .ant-select-dropdown {
   .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled) {
     background-color: #F5F5F5;
   }
 }
 
-/deep/.option-item {
-  color: #262626;
+/deep/ .ivu-input {
+  height: 37px;
+}
+
+/deep/ .ivu-input:hover, /deep/ .ivu-input:focus {
+  border-color: #00B96B;
+  box-shadow: none;
 }

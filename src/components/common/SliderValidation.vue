@@ -3,13 +3,11 @@
     <div class="spout" ref="spout">
       <div :class="['slidingBlock', releaseMouse ? 'transition': '', place < distance ? 'unfinished' : 'complete']"
            ref="slidingBlock" :style="{ left: `${place}%` }" @mousedown="mousedown($event)">
-        <span :class="['iconfont', verifyStatus ? 'icon-exp-complete' : 'double-right']"></span>
+        <span :class="['iconfont', verifyResult ? 'icon-exp-complete' : 'double-right']"></span>
       </div>
-      <div class="tip-text">
-        <span v-show="!verifyStatus">请按住滑块，拖动到最右边</span>
-      </div>
-      <span class="hight-light">11111111111111111111</span>
-      <div class="succeedBox" :class="[verifyStatus ? 'succeedText' : '', releaseMouse ? 'transition': '']"
+      <span v-show="!verifyResult" class="tip-text">请按住滑块，拖动到最右边</span>
+      <span class="hight-light"></span>
+      <div class="succeedBox" :class="[verifyResult ? 'succeedText' : '', releaseMouse ? 'transition': '']"
            :style="{ width: `${place}%` }"></div>
     </div>
   </div>
@@ -29,8 +27,8 @@
         spoutW: 0,
         slidingBlockW: 0,
         distance: 1, // 要移动的距离
-        // 验证状态
-        verifyStatus: false,
+        // 滑块验证结果
+        verifyResult: false,
         // 松开鼠标
         releaseMouse: false
       }
@@ -68,7 +66,7 @@
         document.onmouseup = e => {
           this.releaseMouse = true;
           if (this.place === this.distance) {
-            this.verifyStatus = true;
+            this.verifyResult = true;
             this.$emit('validate');
           } else {
             this.sliding.isDown = false;
@@ -109,48 +107,35 @@
     top: 0;
     right: 0;
     bottom: 0;
-    color: transparent;
+    /*color: rgba(0, 0, 0, 0.1);*/
     font-size: 14px;
     text-align: center;
     position: absolute;
-    z-index: 8;
+    z-index: 9;
+    /*-webkit-text-fill-color: transparent;*/
   }
 
   .hight-light {
     background: -webkit-gradient(linear,left top,right top,color-stop(0,#E7E9E8),color-stop(.4,#E7E9E8),color-stop(.5,#fff),color-stop(.6,#E7E9E8),color-stop(1,#E7E9E8));
-    /*-webkit-background-clip: text;*/
     -webkit-text-fill-color: transparent;
-    -webkit-animation: highlight-animation 10s infinite;
+    -webkit-animation: highlight-animation 8s infinite;
     -webkit-text-size-adjust: none;
-    top: 10px;
     right: 0;
-    width: 40px;
-    height: 20px;
+    width: 40%;
+    height: 38px;
     border-radius: 5px;
     position: absolute;
     display: inline-block;
     color: transparent;
-    z-index: 9;
-    /*top: 13px;
-    right: 0;
-    bottom: 12px;
-    width: 5px;
-    height: 14px;
-    border-radius: 5px;
-    position: absolute;
-    z-index: 7;
-    !* 发光 *!
-    !*background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.7) 46%, rgba(255, 255, 255, 0.4) 100%);*!
-    background: -webkit-gradient(linear,left top,right top,color-stop(0,rgba(255, 255, 255, 0.4)),color-stop(.4,rgba(255, 255, 255, 0.6)),color-stop(.5,rgba(255, 255, 255, 0.8)),color-stop(.6,rgba(255, 255, 255, 0.6)),color-stop(1,rgba(255, 255, 255, 0.4)));
-    animation: highlight-animation 10s linear infinite;*/
+    z-index: 8;
   }
 
   @keyframes highlight-animation {
     0% {
-      left: 21%;
+      left: 6%;
     }
     100% {
-      left: 68%;
+      left: 53%;
     }
   }
 

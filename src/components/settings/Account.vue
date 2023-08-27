@@ -9,7 +9,7 @@
           <p>手机号码</p>
           <p class="tip">153******57</p>
         </div>
-        <button type="button" class="control-button" @click="showModal = true">
+        <button type="button" class="control-button" @click="showChangeModal(1)">
           <span>更改</span>
         </button>
       </div>
@@ -19,7 +19,7 @@
           <p>邮箱</p>
           <p class="tip">未绑定，绑定后当你手机号不可用时，可通过邮箱验证更换手机号</p>
         </div>
-        <button type="button" class="control-button">
+        <button type="button" class="control-button" @click="showChangeModal(2)">
           <span>绑定</span>
         </button>
       </div>
@@ -29,7 +29,7 @@
           <p>账户密码</p>
           <p class="tip">已设置，可通过账户密码登录</p>
         </div>
-        <button type="button" class="control-button">
+        <button type="button" class="control-button" @click="showChangeModal(3)">
           <span>更改</span>
         </button>
       </div>
@@ -39,7 +39,7 @@
           <p>个人路径</p>
           <p class="tip">https://www.yuque.com/lovbe0210</p>
         </div>
-        <button type="button" class="control-button">
+        <button type="button" class="control-button" @click="showChangeModal(4.1)">
           <span>更改</span>
         </button>
       </div>
@@ -72,29 +72,158 @@
       </div>
     </div>
     <div class="modal">
-      <Modal v-model="showModal" width="400" :lock-scroll="false"
+      <Modal id="verify" v-model="showModal" width="400" :lock-scroll="false"
              :footer-hide="true" :mask-closable="false"
-             :on-visible-change="modalStatusChange"
+             :on-visible-change="modalStatusChange()"
              class-name="account-set-modal">
-        <div class="header">
-          <span>身份验证</span>
+        <div class="step-1" v-if="step == 1">
+          <div class="header">
+            <span>身份验证</span>
+          </div>
+          <p class="warn">
+            <span>为了你的账户安全，请先验证身份。</span>
+          </p>
+          <a-select class="select-option"
+                    size="large"
+                    :dropdownMatchSelectWidth="true"
+                    :defaultActiveFirstOption="false"
+                    :bordered="false"
+                    style="min-width: 350px"
+                    :getPopupContainer="getContainer"
+                    :default-value="options[0].key"
+                    :options="options"
+                    @select="onSelect">
+          </a-select>
+          <div v-if="showModal" class="validation">
+            <slider-validation :verifyResult="verifyResult" @validate="validate"></slider-validation>
+          </div>
+          <div class="check-code">
+            <Input autocomplete="off"
+                   :class="['check-code-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
+                   :placeholder="'6 位' + (selectOption == 0 ? '手机' : selectOption == 1 ? '邮箱' : '') + '验证码'"
+                   @on-change="checkCodeChange" v-model="checkCode"
+                   type="text" maxlength="6"/>
+            <Button class="check-code-btn" @click="sendCheckCode" :disabled="sendCodeSuccess">
+              {{btnValue}}
+            </Button>
+          </div>
+          <div class="check-code-tip">
+            <p v-show="checkCodeResult !== null && !checkCodeResult" class="error-tip">
+              {{tipString}}
+            </p>
+            <p v-show="sendCodeSuccess" class="success-tip">
+              {{sendCodeString}}
+            </p>
+          </div>
+          <div class="action">
+            <Button class="cancel-btn" @click="showModal = false">
+              取消
+            </Button>
+            <Button class="next-btn" @click="verifyNext">
+              下一步
+            </Button>
+          </div>
         </div>
-        <p class="warn">
-          <span>为了你的账户安全，请先验证身份。</span>
-        </p>
-        <a-select class="select-option"
-                  size="large"
-                  :dropdownMatchSelectWidth="true"
-                  :defaultActiveFirstOption="false"
-                  :bordered="false"
-                  style="min-width: 350px"
-                  :getPopupContainer="getContainer"
-                  :default-value="options[0].key"
-                  :options="options"
-                  @select="onSelect">
-        </a-select>
-        <div v-if="showModal" class="validation">
-          <slider-validation :verifyStatus="verifyStatus" @validate="validate"></slider-validation>
+        <div class="step-2" v-if="step == 2">
+          <div v-if="changeItemType == 1">
+            <div class="header">
+              <span>更改手机号码</span>
+            </div>
+            <p class="warn">
+              <span>请选择新手机号进行绑定。</span>
+            </p>
+            <Input autocomplete="off"
+                   :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
+                   placeholder="输入新手机" @on-change="checkCodeChange" v-model="newValue" type="text" maxlength="15"/>
+          </div>
+          <div v-if="changeItemType == 2">
+            <div class="header">
+              <span>更改邮箱</span>
+            </div>
+            <p class="warn">
+              <span>请选择新邮箱号进行绑定。</span>
+            </p>
+            <Input autocomplete="off"
+                   :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
+                   placeholder="输入新邮箱" @on-change="checkCodeChange" v-model="newValue" type="text" maxlength="50"/>
+          </div>
+          <div class="check-code" v-if="changeItemType <= 2">
+            <Input autocomplete="off"
+                   :class="['check-code-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
+                   :placeholder="'6 位' + (changeItemType == 1 ? '手机' : changeItemType == 2 ? '邮箱' : '') + '验证码'"
+                   @on-change="checkCodeChange" v-model="checkCode"
+                   type="text" maxlength="6"/>
+            <Button class="check-code-btn" @click="sendCheckCode" :disabled="sendCodeSuccess">
+              {{btnValue}}
+            </Button>
+          </div>
+          <div v-if="changeItemType == 3">
+            <div class="header">
+              <span>更改密码</span>
+            </div>
+            <p class="warn">
+              <span>请选择新密码进行设置。</span>
+            </p>
+            <Input autocomplete="off"
+                   :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
+                   placeholder="输入新密码" @on-change="checkCodeChange" v-model="newValue" type="password" maxlength="512"/>
+            <div class="check-code-tip">
+              <p v-show="checkCodeResult !== null && !checkCodeResult" class="error-tip">
+                {{tipString}}
+              </p>
+            </div>
+            <Input autocomplete="off"
+                   :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
+                   placeholder="请重新输入新密码" @on-change="checkCodeChange" v-model="confirmValue" type="password" maxlength="512"/>
+            <div class="check-code-tip">
+              <p v-show="checkCodeResult !== null && !checkCodeResult" class="error-tip">
+                {{tipString}}
+              </p>
+            </div>
+          </div>
+          <div class="check-code-tip" v-if="changeItemType <= 2">
+            <p v-show="checkCodeResult !== null && !checkCodeResult" class="error-tip">
+              {{tipString}}
+            </p>
+            <p v-show="sendCodeSuccess" class="success-tip">
+              {{sendCodeString}}
+            </p>
+          </div>
+          <div class="action" v-if="changeItemType <= 3">
+            <Button class="cancel-btn" @click="showModal = false">
+              取消
+            </Button>
+            <Button class="next-btn" @click="verifyNext">
+              {{changeItemType == 3 ? '更新密码' : '确认'}}
+            </Button>
+          </div>
+          <div v-if="changeItemType == 4.1 || changeItemType == 4.2">
+            <div v-if="changeItemType == 4.1">
+              <div class="header">
+                <span>更改个人路径</span>
+              </div>
+              <div class="warn">
+                <span>更改个人路径后会发生以下事情，请知晓。</span>
+              </div>
+              <ul>
+                <li>更改个人路径以后，原个人路径将不归属于你。</li>
+                <li>原个人路径链接将无法访问，且不会进行跳转到新的个人路径。</li>
+              </ul>
+              <Button class="confirm-btn" @click="changeItemType = 4.2">
+                确认更改
+              </Button>
+            </div>
+            <div v-if="changeItemType == 4.2">
+              <div class="header">
+                <span>输入一个新的路径</span>
+              </div>
+              <Input autocomplete="off"
+                     :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
+                     @on-change="checkCodeChange" v-model="newValue" type="text" maxlength="30">
+                <span slot="prepend">http://www.icharge.com/</span>
+              </Input>
+            </div>
+          </div>
         </div>
       </Modal>
     </div>
@@ -103,11 +232,13 @@
 
 <script>
   import SliderValidation from "@/components/common/SliderValidation";
+
   export default {
     name: 'Account',
     data() {
       return {
         showModal: false,
+        step: 1,
         userInfo: {
           avatar: require('@/assets/avatar/01.jpg'),
           avatarFile: null,
@@ -127,10 +258,23 @@
           }
         ],
         selectOption: 0,
-        verifyStatus: false,
+        changeItemType: 0,
+        // 滑块验证结果
+        verifyResult: false,
+        // 验证码结果
+        checkCodeResult: null,
+        checkCode: '',
+        tipString: '验证码错误',
+        btnValue: '获取验证码',
+        sendCodeString: '已发送短信验证码到绑定手机',
+        sendCodeSuccess: false,
+        sendCodeInterval: null,
+        newValue: '',
+        confirmValue: '',
         menuContainer: null
       }
     },
+    computed: {},
     components: {
       SliderValidation
     },
@@ -139,16 +283,78 @@
         return this.menuContainer;
       },
       onSelect(value) {
-        console.log(value)
+        this.selectOption = value;
       },
       modalStatusChange() {
         if (!this.showModal) {
-          // 恢复滑块的状态
+          // 恢复modal内的各种属性
+          this.checkCodeResult = null;
+          this.checkCode = '';
+          this.tipString = '验证码错误';
+          this.newValue = '';
+          this.confirmValue = '';
         }
       },
       validate() {
         // 只在成功时回调
-        this.verifyStatus = true;
+        this.verifyResult = true;
+      },
+      checkCodeChange() {
+        if (!this.checkCode || this.checkCode.length === 0) {
+          this.checkCodeResult = false;
+          this.tipString = '验证码不能为空';
+        } else {
+          this.checkCodeResult = null;
+          this.tipString = '';
+        }
+      },
+      sendCheckCode() {
+        if (!this.verifyResult) {
+          this.$Message.error('请先完成滑块验证')
+          return;
+        }
+        this.sendCodeSuccess = true;
+        this.sendCodeString = '已发送短信验证码到绑定' + (this.selectOption === 0 ? '手机' : this.selectOption === 1 ? '邮箱' : '');
+        let time = 60;
+        this.btnValue = '重新获取（' + time + '）';
+        this.sendCodeInterval = setInterval(() => {
+          if (time > 0) {
+            time = time - 1;
+            this.btnValue = '重新获取（' + time + '）';
+          } else {
+            this.btnValue = '获取验证码';
+            this.sendCodeSuccess = false;
+            clearInterval(this.sendCodeInterval)
+          }
+        }, 1000)
+      },
+      verifyNext() {
+        if (!this.verifyResult) {
+          this.$Message.error('请先完成滑块验证')
+          return;
+        }
+        if (this.checkCodeResult != null && !this.checkCodeResult) {
+          return;
+        } else {
+          // 验证码一般校验
+          if (!this.checkCode || this.checkCode.length === 0) {
+            this.checkCodeResult = false;
+            this.tipString = '验证码不能为空';
+            return;
+          } else if (this.checkCode.length < 6) {
+            this.checkCodeResult = false;
+            this.tipString = '验证码错误';
+            return;
+          }
+        }
+        // 请求接口验证
+        setTimeout(() => {
+          this.step = 2;
+        }, 1500);
+      },
+      showChangeModal(type) {
+        this.changeItemType = type;
+        this.showModal = true;
       }
     },
     mounted() {
