@@ -207,7 +207,7 @@
     }
   }
 
-  .check-code-tip {
+  .check-code-tip, .new-value-tip {
     margin: 5px 8px 10px 8px;
     font-size: 14px;
     height: 40px;
@@ -288,4 +288,16 @@
 /deep/ .ivu-input:hover, /deep/ .ivu-input:focus {
   border-color: #00B96B;
   box-shadow: none;
+}
+
+/deep/ .ivu-input-group-prepend {
+  width: 60px;
+  padding: unset;
+  border: none;
+}
+
+/deep/ .ivu-input-group-prepend {
+  .ivu-input {
+    border-radius: 4px 0 0 4px;
+  }
 }

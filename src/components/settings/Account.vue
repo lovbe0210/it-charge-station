@@ -134,8 +134,8 @@
             </p>
             <Input autocomplete="off"
                    :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
-                   placeholder="输入新手机" @on-change="checkNewValueChange" v-model="newValue" type="text" maxlength="15">
-              <div>sss</div>
+                   placeholder="输入新手机" @on-change="checkNewValueChange()" v-model="newValue" type="text" maxlength="15">
+              <Input v-if="changeItemType == 1" v-model="countryCode" slot="prepend" maxlength="5"/>
             </Input>
           </div>
           <div v-if="changeItemType == 2">
@@ -147,7 +147,12 @@
             </p>
             <Input autocomplete="off"
                    :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
-                   placeholder="输入新邮箱" @on-change="checkCodeChange" v-model="newValue" type="text" maxlength="50"/>
+                   placeholder="输入新邮箱" @on-change="checkNewValueChange()" v-model="newValue" type="text" maxlength="50"/>
+          </div>
+          <div class="new-value-tip" v-if="changeItemType <= 2">
+            <p v-show="checkNewValueResult !== null && !checkNewValueResult" class="error-tip">
+              {{tipString}}
+            </p>
           </div>
           <div class="check-code" v-if="changeItemType <= 2">
             <Input autocomplete="off"
@@ -168,15 +173,18 @@
             </p>
             <Input autocomplete="off"
                    :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
-                   placeholder="输入新密码" @on-change="checkCodeChange" v-model="newValue" type="password" maxlength="512"/>
+                   placeholder="输入新密码" @on-change="checkNewValueChange()" v-model="newValue" type="password"
+                   maxlength="512"/>
             <div class="check-code-tip">
-              <p v-show="checkCodeResult !== null && !checkCodeResult" class="error-tip">
+              <p v-show="checkNewValueResult !== null && !checkNewValueResult" class="error-tip">
                 {{tipString}}
               </p>
             </div>
             <Input autocomplete="off"
                    :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
-                   placeholder="请重新输入新密码" @on-change="checkCodeChange" v-model="confirmValue" type="password" maxlength="512"/>
+                   placeholder="请重新输入新密码" @on-change="checkNewValueChange(confirmValue)" v-model="confirmValue"
+                   type="password"
+                   maxlength="512"/>
             <div class="check-code-tip">
               <p v-show="checkCodeResult !== null && !checkCodeResult" class="error-tip">
                 {{tipString}}
@@ -195,7 +203,7 @@
             <Button class="cancel-btn" @click="showModal = false">
               取消
             </Button>
-            <Button class="next-btn" @click="verifyNext">
+            <Button class="next-btn" @click="confirmChange">
               {{changeItemType == 3 ? '更新密码' : '确认'}}
             </Button>
           </div>
@@ -234,6 +242,7 @@
 
 <script>
   import SliderValidation from "@/components/common/SliderValidation";
+  import {verifyTelLawful} from "@/utils/utils";
 
   export default {
     name: 'Account',
@@ -265,12 +274,14 @@
         verifyResult: false,
         // 验证码结果
         checkCodeResult: null,
+        checkNewValueResult: null,
         checkCode: '',
         tipString: '验证码错误',
         btnValue: '获取验证码',
         sendCodeString: '已发送短信验证码到绑定手机',
         sendCodeSuccess: false,
         sendCodeInterval: null,
+        countryCode: '+86',
         newValue: '',
         confirmValue: '',
         menuContainer: null
@@ -319,9 +330,16 @@
         if (this.step === 1 && !this.verifyResult) {
           this.$Message.error('请先完成滑块验证')
           return;
-        } else if (this.step === 2 && this.changeItemType <= 2) {
-          // 校验值是否正确
-
+        } else if (this.step === 2) {
+          // 校验手机和邮箱是否正确
+          if (this.changeItemType === 1) {
+            let verifyResult = verifyTelLawful(this.countryCode, this.newValue);
+            if (!verifyResult) {
+              this.checkNewValueResult = false;
+              this.tipString = '请输入正确的手机号码';
+              return;
+            }
+          }
         }
         this.sendCodeSuccess = true;
         this.sendCodeString = '已发送短信验证码到绑定' + (this.selectOption === 0 ? '手机' : this.selectOption === 1 ? '邮箱' : '');
@@ -364,9 +382,6 @@
           this.checkCodeResult = null;
           this.tipString = '';
           this.confirmValue = '';
-          if (this.changeItemType === 1) {
-            this.newValue = '+86 ';
-          }
           // 关闭定时器，移除验证码发送信息
           this.btnValue = '获取验证码';
           this.sendCodeSuccess = false;
@@ -378,11 +393,23 @@
         this.changeItemType = type;
         this.showModal = true;
       },
-      checkNewValueChange() {
-        if (this.changeItemType === 1) {
-          // 手机号
-
+      checkNewValueChange(confirmValue) {
+        if (confirmValue) {
+          if (confirmValue !== this.newValue) {
+            this.checkCodeResult = false;
+            this.tipString = '两次输入的密码不一致';
+          }
+        } else if (!this.newValue || this.newValue.length === 0) {
+          this.checkCodeResult = false;
+          this.tipString = this.changeItemType === 1 ? '手机号不能为空'
+                         : this.changeItemType === 2 ? '邮箱号不能为空'
+                         : this.changeItemType === 3 ? '密码不能为空' : '';
+        } else {
+          this.checkCodeResult = null;
+          this.tipString = '';
         }
+      },
+      confirmChange() {
       }
     },
     mounted() {
