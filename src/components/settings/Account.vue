@@ -134,7 +134,9 @@
             </p>
             <Input autocomplete="off"
                    :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
-                   placeholder="输入新手机" @on-change="checkNewValueChange" v-model="newValue" type="text" maxlength="15"/>
+                   placeholder="输入新手机" @on-change="checkNewValueChange" v-model="newValue" type="text" maxlength="15">
+              <div>sss</div>
+            </Input>
           </div>
           <div v-if="changeItemType == 2">
             <div class="header">
@@ -293,6 +295,10 @@
           this.tipString = '验证码错误';
           this.newValue = '';
           this.confirmValue = '';
+          // 关闭定时器，移除验证码发送信息
+          this.btnValue = '获取验证码';
+          this.sendCodeSuccess = false;
+          clearInterval(this.sendCodeInterval)
         }
       },
       validate() {
@@ -309,9 +315,13 @@
         }
       },
       sendCheckCode() {
-        if (!this.verifyResult) {
+        // 第一步必须先完成滑块验证
+        if (this.step === 1 && !this.verifyResult) {
           this.$Message.error('请先完成滑块验证')
           return;
+        } else if (this.step === 2 && this.changeItemType <= 2) {
+          // 校验值是否正确
+
         }
         this.sendCodeSuccess = true;
         this.sendCodeString = '已发送短信验证码到绑定' + (this.selectOption === 0 ? '手机' : this.selectOption === 1 ? '邮箱' : '');
@@ -349,6 +359,18 @@
         }
         // 请求接口验证
         setTimeout(() => {
+          // 初始化输入框填充值
+          this.checkCode = '';
+          this.checkCodeResult = null;
+          this.tipString = '';
+          this.confirmValue = '';
+          if (this.changeItemType === 1) {
+            this.newValue = '+86 ';
+          }
+          // 关闭定时器，移除验证码发送信息
+          this.btnValue = '获取验证码';
+          this.sendCodeSuccess = false;
+          clearInterval(this.sendCodeInterval)
           this.step = 2;
         }, 1500);
       },
@@ -357,7 +379,8 @@
         this.showModal = true;
       },
       checkNewValueChange() {
-        if (this.changeItemType == 1) {
+        if (this.changeItemType === 1) {
+          // 手机号
 
         }
       }
