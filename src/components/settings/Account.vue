@@ -72,7 +72,7 @@
       </div>
     </div>
     <div class="modal">
-      <Modal id="verify" v-model="showModal" width="400" :lock-scroll="false"
+      <Modal id="verify" v-model="showModal" :width="modalWidth" :lock-scroll="false"
              :footer-hide="true" :mask-closable="false"
              :on-visible-change="modalStatusChange()"
              class-name="account-set-modal">
@@ -133,7 +133,7 @@
               <span>请选择新手机号进行绑定。</span>
             </p>
             <Input autocomplete="off"
-                   :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
+                   :class="['change-item-input', checkNewValueResult !== null && !checkNewValueResult ? 'error-code-input' : '']"
                    placeholder="输入新手机" @on-change="checkNewValueChange()" v-model="newValue" type="text" maxlength="15">
               <Input v-if="changeItemType == 1" v-model="countryCode" slot="prepend" maxlength="5"/>
             </Input>
@@ -145,13 +145,14 @@
             <p class="warn">
               <span>请选择新邮箱号进行绑定。</span>
             </p>
-            <Input autocomplete="off"
-                   :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
-                   placeholder="输入新邮箱" @on-change="checkNewValueChange()" v-model="newValue" type="text" maxlength="50"/>
+            <Input autocomplete="off" id="emailChange"
+                   :class="['change-item-input', checkNewValueResult !== null && !checkNewValueResult ? 'error-code-input' : '']"
+                   placeholder="输入新邮箱" @on-change="checkNewValueChange()" v-model="newValue" type="text"
+                   maxlength="50"/>
           </div>
           <div class="new-value-tip" v-if="changeItemType <= 2">
             <p v-show="checkNewValueResult !== null && !checkNewValueResult" class="error-tip">
-              {{tipString}}
+              {{newValueTipString}}
             </p>
           </div>
           <div class="check-code" v-if="changeItemType <= 2">
@@ -172,21 +173,21 @@
               <span>请选择新密码进行设置。</span>
             </p>
             <Input autocomplete="off"
-                   :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
+                   :class="['change-item-input', checkNewValueResult !== null && !checkNewValueResult ? 'error-code-input' : '']"
                    placeholder="输入新密码" @on-change="checkNewValueChange()" v-model="newValue" type="password"
                    maxlength="512"/>
-            <div class="check-code-tip">
+            <div class="new-value-tip">
               <p v-show="checkNewValueResult !== null && !checkNewValueResult" class="error-tip">
-                {{tipString}}
+                {{newValueTipString}}
               </p>
             </div>
             <Input autocomplete="off"
-                   :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
+                   :class="['change-item-input', checkConfirmValueResult !== null && !checkConfirmValueResult ? 'error-code-input' : '']"
                    placeholder="请重新输入新密码" @on-change="checkNewValueChange(confirmValue)" v-model="confirmValue"
                    type="password"
                    maxlength="512"/>
-            <div class="check-code-tip">
-              <p v-show="checkCodeResult !== null && !checkCodeResult" class="error-tip">
+            <div class="confirm-value-tip">
+              <p v-show="checkConfirmValueResult !== null && !checkConfirmValueResult" class="error-tip">
                 {{tipString}}
               </p>
             </div>
@@ -212,26 +213,38 @@
               <div class="header">
                 <span>更改个人路径</span>
               </div>
-              <div class="warn">
-                <span>更改个人路径后会发生以下事情，请知晓。</span>
+              <div class="warning-prompt">
+                <span class="tip">更改个人路径后会发生以下事情，请知晓。</span>
+                <ul class="matters">
+                  <li>更改个人路径以后，原个人路径将不归属于你。</li>
+                  <li>原个人路径链接将无法访问，且不会进行跳转到新的个人路径。</li>
+                </ul>
               </div>
-              <ul>
-                <li>更改个人路径以后，原个人路径将不归属于你。</li>
-                <li>原个人路径链接将无法访问，且不会进行跳转到新的个人路径。</li>
-              </ul>
-              <Button class="confirm-btn" @click="changeItemType = 4.2">
-                确认更改
-              </Button>
+              <div class="action">
+                <Button class="confirm-btn" @click="changeItemType = 4.2">
+                  确认更改
+                </Button>
+              </div>
             </div>
             <div v-if="changeItemType == 4.2">
               <div class="header">
                 <span>输入一个新的路径</span>
               </div>
               <Input autocomplete="off"
-                     :class="['change-item-input', checkCodeResult !== null && !checkCodeResult ? 'error-code-input' : '']"
-                     @on-change="checkCodeChange" v-model="newValue" type="text" maxlength="30">
+                     :class="['domain-suffix', 'change-item-input', checkNewValueResult !== null && !checkNewValueResult ? 'error-code-input' : '']"
+                     @on-change="checkNewValueChange()" v-model="newValue" type="text" maxlength="30">
                 <span slot="prepend">http://www.icharge.com/</span>
               </Input>
+              <div class="new-value-tip">
+                <p v-show="checkNewValueResult !== null && !checkNewValueResult" class="error-tip">
+                  {{newValueTipString}}
+                </p>
+              </div>
+              <div class="action">
+                <Button class="next-btn" @click="confirmChange">
+                  更新路径
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -242,13 +255,14 @@
 
 <script>
   import SliderValidation from "@/components/common/SliderValidation";
-  import {verifyTelLawful} from "@/utils/utils";
+  import {verifyTelLawful, emailRegex, domainRegex} from "@/utils/utils";
 
   export default {
     name: 'Account',
     data() {
       return {
         showModal: false,
+        modalWidth: 400,
         step: 1,
         userInfo: {
           avatar: require('@/assets/avatar/01.jpg'),
@@ -275,8 +289,10 @@
         // 验证码结果
         checkCodeResult: null,
         checkNewValueResult: null,
+        checkConfirmValueResult: null,
         checkCode: '',
         tipString: '验证码错误',
+        newValueTipString: '',
         btnValue: '获取验证码',
         sendCodeString: '已发送短信验证码到绑定手机',
         sendCodeSuccess: false,
@@ -302,9 +318,11 @@
         if (!this.showModal) {
           // 恢复modal内的各种属性
           this.checkCodeResult = null;
+          this.checkConfirmValueResult = null;
           this.checkCode = '';
           this.tipString = '验证码错误';
           this.newValue = '';
+          this.newValueTipString = '';
           this.confirmValue = '';
           // 关闭定时器，移除验证码发送信息
           this.btnValue = '获取验证码';
@@ -336,13 +354,21 @@
             let verifyResult = verifyTelLawful(this.countryCode, this.newValue);
             if (!verifyResult) {
               this.checkNewValueResult = false;
-              this.tipString = '请输入正确的手机号码';
+              this.newValueTipString = '请输入正确的手机号码';
+              return;
+            }
+          } else if (this.changeItemType === 2) {
+            let verifyResult = emailRegex.test(this.newValue);
+            if (!verifyResult) {
+              this.checkNewValueResult = false;
+              this.newValueTipString = '请输入正确的邮箱地址';
               return;
             }
           }
         }
         this.sendCodeSuccess = true;
-        this.sendCodeString = '已发送短信验证码到绑定' + (this.selectOption === 0 ? '手机' : this.selectOption === 1 ? '邮箱' : '');
+        let tmp = this.step === 1 ? (this.selectOption === 0 ? '手机' : this.selectOption === 1 ? '邮箱' : '') : this.step === 2 ? (this.changeItemType === 1 ? '手机' : this.changeItemType === 2 ? '邮箱' : '') : '';
+        this.sendCodeString = '已发送短信验证码到绑定' + tmp;
         let time = 60;
         this.btnValue = '重新获取（' + time + '）';
         this.sendCodeInterval = setInterval(() => {
@@ -391,25 +417,62 @@
       },
       showChangeModal(type) {
         this.changeItemType = type;
+        if (type === 4.1) {
+          this.modalWidth = 520;
+          this.step = 2;
+        } else {
+          this.modalWidth = 400;
+          this.step = this.verifyResult ? 2 : 1;
+        }
         this.showModal = true;
       },
       checkNewValueChange(confirmValue) {
         if (confirmValue) {
           if (confirmValue !== this.newValue) {
-            this.checkCodeResult = false;
+            this.checkConfirmValueResult = false;
             this.tipString = '两次输入的密码不一致';
+          } else {
+            this.checkConfirmValueResult = true;
+            this.tipString = '';
           }
         } else if (!this.newValue || this.newValue.length === 0) {
-          this.checkCodeResult = false;
-          this.tipString = this.changeItemType === 1 ? '手机号不能为空'
-                         : this.changeItemType === 2 ? '邮箱号不能为空'
-                         : this.changeItemType === 3 ? '密码不能为空' : '';
+          this.checkNewValueResult = false;
+          this.newValueTipString = this.changeItemType === 1 ? '手机号不能为空'
+            : this.changeItemType === 2 ? '邮箱号不能为空'
+              : this.changeItemType === 3 ? '新密码不能为空'
+                : this.changeItemType === 4.2 ? '主页路径不能为空' : '';
         } else {
-          this.checkCodeResult = null;
-          this.tipString = '';
+          this.checkNewValueResult = null;
+          this.newValueTipString = '';
         }
       },
       confirmChange() {
+        debugger
+        // 数据校验
+        if (this.changeItemType === 3) {
+          this.checkNewValueChange(this.confirmValue)
+        } else {
+          this.checkNewValueChange()
+        }
+
+        // 常规校验判断校验结果
+        if (this.checkNewValueResult != null && !this.checkNewValueResult) {
+          return;
+        }
+
+        // 合法性校验
+        if (this.changeItemType === 4.2) {
+          let regexResult = domainRegex.test(this.newValue);
+          if (!regexResult) {
+            this.checkNewValueResult = false;
+            this.newValueTipString = '仅支持小写字母、数字、横线、下划线和点，至少 4 个字符';
+            return;
+          }
+        }
+        setTimeout(() => {
+          this.showModal = false;
+          this.$Message.success('更新成功')
+        }, 500);
       }
     },
     mounted() {

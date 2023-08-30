@@ -2,7 +2,8 @@
   <div class="dragVerify">
     <div class="spout" ref="spout">
       <div :class="['slidingBlock', releaseMouse ? 'transition': '', place < distance ? 'unfinished' : 'complete']"
-           ref="slidingBlock" :style="{ left: `${place}%` }" @mousedown="mousedown($event)">
+           @mousedown="handleMouseDown"
+           ref="slidingBlock" :style="{ left: `${place}%` }">
         <span :class="['iconfont', verifyResult ? 'icon-exp-complete' : 'double-right']"></span>
       </div>
       <span v-show="!verifyResult" class="tip-text">请按住滑块，拖动到最右边</span>
@@ -20,7 +21,7 @@
       return {
         place: 0,
         sliding: {
-          isDown: true,
+          isDown: false,
           X: 0 // 初始X值
         },
         moveX: 0, // 移动X值
@@ -34,46 +35,48 @@
       }
     },
     methods: {
-      // 鼠标事件
-      mousedown(e) {
+      handleMouseDown(event) {
         if (this.place < this.distance) {
-          this.sliding.isDown = true
+          this.sliding.isDown = true;
           // 计算百分比
-          this.spoutW = this.$refs.spout.offsetWidth
-          this.slidingBlockW = this.$refs.slidingBlock.offsetWidth
-          this.distance = 100 - (this.slidingBlockW / this.spoutW) * 100
+          this.spoutW = this.$refs.spout.offsetWidth;
+          this.slidingBlockW = this.$refs.slidingBlock.offsetWidth;
+          this.distance = 100 - (this.slidingBlockW / this.spoutW) * 100;
         }
-        this.sliding.X = e.x
-        // 添加鼠标的移动事件
-        document.addEventListener('mousemove', e => {
-          if (this.sliding.isDown) {
-            this.releaseMouse = false;
-            this.moveX = e.x
-            if (this.place >= this.distance) {
-              this.place = this.distance
-            } else if (this.place >= 0 && this.place < this.distance) {
-              this.place = ((this.moveX - this.sliding.X) / this.spoutW) * 100
-            }
-            if (this.place <= 0) {
-              this.place = 0
-              document.removeEventListener('mousemove', null, false)
-              return
-            }
+        this.sliding.X = event.x;
+      },
+      handleMouseMove(event) {
+        if (this.sliding.isDown) {
+          this.releaseMouse = false;
+          this.moveX = event.x;
+          if (this.place >= this.distance) {
+            this.place = this.distance;
+          } else if (this.place >= 0 && this.place < this.distance) {
+            this.place = ((this.moveX - this.sliding.X) / this.spoutW) * 100
           }
-          e.preventDefault()
-        })
-        // 松开鼠标
-        document.onmouseup = e => {
-          this.releaseMouse = true;
-          if (this.place === this.distance) {
-            this.verifyResult = true;
-            this.$emit('validate');
-          } else {
-            this.sliding.isDown = false;
+          if (this.place <= 0) {
             this.place = 0
           }
         }
+      },
+      handleMouseUp() {
+        this.releaseMouse = true;
+        if (this.place === this.distance) {
+          this.verifyResult = true;
+          this.$emit('validate');
+        } else {
+          this.sliding.isDown = false;
+          this.place = 0
+        }
       }
+    },
+    mounted() {
+      document.addEventListener("mousemove", this.handleMouseMove);
+      document.addEventListener("mouseup", this.handleMouseUp);
+    },
+    beforeDestroy() {
+      document.removeEventListener("mousemove", this.handleMouseMove);
+      document.removeEventListener("mouseup", this.handleMouseUp);
     }
   }
 </script>
@@ -107,12 +110,10 @@
     top: 0;
     right: 0;
     bottom: 0;
-    /*color: rgba(0, 0, 0, 0.1);*/
     font-size: 14px;
     text-align: center;
     position: absolute;
     z-index: 9;
-    /*-webkit-text-fill-color: transparent;*/
   }
 
   .hight-light {

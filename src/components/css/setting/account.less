@@ -153,6 +153,7 @@
 }
 
 .account-set-modal {
+
   .header {
     color: rgba(0, 0, 0, 0.85);
     font-weight: 500;
@@ -184,13 +185,6 @@
       width: 60%;
     }
 
-    .error-code-input {
-
-      /deep/.ivu-input {
-        border-color: red !important;
-      }
-    }
-
     .check-code-btn {
       height: 37px;
       width: 35%;
@@ -207,8 +201,15 @@
     }
   }
 
-  .check-code-tip, .new-value-tip {
-    margin: 5px 8px 10px 8px;
+  .error-code-input >  {
+
+    /deep/.ivu-input {
+      border-color: red !important;
+    }
+  }
+
+  .check-code-tip {
+    margin: 5px 8px 5px 8px;
     font-size: 14px;
     height: 40px;
 
@@ -220,6 +221,7 @@
   .action {
     display: flex;
     justify-content: right;
+    margin: 0 8px 10px 8px;
 
     .cancel-btn {
       margin-right: 10px;
@@ -253,6 +255,89 @@
 
     .change-item-input {
       padding: 0 8px 10px 8px;
+    }
+
+    .check-code {
+      margin: 15px 8px 10px 8px;
+    }
+
+    .new-value-tip, .confirm-value-tip {
+      margin: 5px 8px 10px 8px;
+      font-size: 14px;
+      height: 20px;
+
+      .error-tip {
+        color: red;
+      }
+    }
+
+    .confirm-value-tip {
+      margin: 5px 8px 20px 8px;;
+    }
+
+    .warning-prompt {
+      padding: 24px;
+      font-size: 14px;
+      line-height: 1.5715;
+      word-wrap: break-word;
+      color: #262626;
+
+      .tip {
+        margin: 0;
+        font-size: 14px;
+        font-variant: tabular-nums;
+        line-height: 1.5715;
+        list-style: none;
+        font-feature-settings: "tnum";
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 8px 15px;
+        word-wrap: break-word;
+        border-radius: 6px;
+        background-color: #F9EFCD;
+        border: 1px solid #F5D480;
+      }
+
+      .matters {
+        margin-top: 24px;
+        list-style: disc inside;
+      }
+    }
+
+    .confirm-btn {
+      margin-right: 24px;
+    }
+
+    .confirm-btn:hover {
+      color: #FFFFFF;
+      border-color: #DF2A3F;
+      background: #E4495B;
+      box-shadow: none;
+    }
+
+    .confirm-btn {
+      border: 1px solid #E7E9E8;
+      font-size: 14px;
+      font-weight: 500;
+      color: #DF2A3F;
+      text-shadow: none;
+      box-shadow: none;
+      outline: none;
+    }
+
+    .domain-suffix {
+      margin-top: 34px;
+      height: 40px;
+
+      /deep/.ivu-input-group-prepend {
+        border: 1px solid #E7E9E8;
+        width: auto;
+      }
+
+      /deep/ .ivu-input {
+        height: 40px;
+      }
     }
   }
 }
@@ -294,6 +379,16 @@
   width: 60px;
   padding: unset;
   border: none;
+}
+
+/deep/ #emailChange {
+  .ivu-input-group-prepend {
+    display: none;
+  }
+
+  .ivu-input {
+    border-radius: 4px !important;
+  }
 }
 
 /deep/ .ivu-input-group-prepend {

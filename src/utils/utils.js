@@ -295,6 +295,15 @@ const prefixSorted = [
   {prefix: '1876', en: 'Jamaica', cn: '牙买加'}
 ];
 
+// 国内手机号码
+const chinaPhoneReg = /^1[3456789]\d{9}$/;
+// 国际手机号码
+const otherPhoneReg = /^1[3456789]\d{9}$/;
+// 邮箱验证
+export const emailRegex = /^([a-z0-9A-Z]+[-|.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?.)+[a-zA-Z]{2,}$/;
+// 个人主页路径验证
+export const domainRegex = /^[a-z0-9-_.]{4,}$/;
+
 export function verifyTelLawful(prefix, telephone) {
   if (prefix == null || prefix.length === 0 || telephone == null || telephone.length === 0) {
     return false;
@@ -307,11 +316,15 @@ export function verifyTelLawful(prefix, telephone) {
     return false;
   }
   if (replace !== 86) {
-    return telephone.length <= 17;
+    return otherPhoneReg.test(telephone);
   } else {
     // 只校验国内手机号码格式
-    return telephone.length === 11;
+    // 手机号码正则表达式
+    if (telephone.length !== 11 || !chinaPhoneReg.test(telephone)) {
+      return false;
+    } else {
+      return true;
+    }
   }
-
 
 }
