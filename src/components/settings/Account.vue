@@ -340,7 +340,7 @@
           this.tipString = '验证码不能为空';
         } else {
           this.checkCodeResult = null;
-          this.tipString = '';
+          this.tipString = '密码格式错误';
         }
       },
       sendCheckCode() {
@@ -401,7 +401,7 @@
             return;
           }
         }
-        // 请求接口验证
+        // TODO 请求接口验证
         setTimeout(() => {
           // 初始化输入框填充值
           this.checkCode = '';
@@ -427,7 +427,7 @@
         this.showModal = true;
       },
       checkNewValueChange(confirmValue) {
-        if (confirmValue) {
+        if (confirmValue !== undefined) {
           if (confirmValue !== this.newValue) {
             this.checkConfirmValueResult = false;
             this.tipString = '两次输入的密码不一致';
@@ -447,16 +447,15 @@
         }
       },
       confirmChange() {
-        debugger
         // 数据校验
+        this.checkNewValueChange()
         if (this.changeItemType === 3) {
           this.checkNewValueChange(this.confirmValue)
-        } else {
-          this.checkNewValueChange()
         }
 
         // 常规校验判断校验结果
-        if (this.checkNewValueResult != null && !this.checkNewValueResult) {
+        if ((this.checkNewValueResult != null && !this.checkNewValueResult) ||
+          (this.checkConfirmValueResult != null && !this.checkConfirmValueResult)) {
           return;
         }
 
@@ -468,8 +467,28 @@
             this.newValueTipString = '仅支持小写字母、数字、横线、下划线和点，至少 4 个字符';
             return;
           }
+        } else if (this.changeItemType <= 2) {
+          if (!this.checkCode || this.checkCode.length === 0) {
+            this.checkCodeResult = false;
+            this.tipString = '验证码不能为空';
+            return;
+          } else if (this.checkCode.length < 6) {
+            this.checkCodeResult = false;
+            this.tipString = '验证码错误';
+            return;
+          } else {
+            // TODO 验证码校验
+
+          }
+        } else {
+          if (this.confirmValue.length < 6) {
+            this.checkConfirmValueResult = false;
+            this.tipString = '密码长度至少 6 位';
+            return;
+          }
         }
         setTimeout(() => {
+          // TODO 更新数据库
           this.showModal = false;
           this.$Message.success('更新成功')
         }, 500);
