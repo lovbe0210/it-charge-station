@@ -30,6 +30,7 @@
 <script>
   import CustomerSet from "@/components/common/CustomerSet";
   import MusicIndex from "@/components/common/music/MusicIndex";
+
   export default {
     name: 'backTop',
     data() {
@@ -73,6 +74,15 @@
         } else {
           this.backTopShow = false
         }
+      },
+      showCustomer() {
+        if (this.showCustomer) {
+          // 禁止滚轮滚动
+          document.body.addEventListener('wheel', this.tempFunction, {passive: false});
+        } else {
+          // 解除阻止
+          document.body.removeEventListener('wheel', this.tempFunction)
+        }
       }
     },
     methods: {
@@ -97,6 +107,13 @@
             varThis.goTopShow = false;
           }
         });
+      },
+      /**
+       * 阻止事件发生
+       * @param e
+       */
+      tempFunction(e) {
+        e.preventDefault()
       }
     },
     mounted() {
@@ -149,9 +166,9 @@
   // 底部自定义主题栏
   /deep/ .customer {
     color: @light-font-color;
-    -webkit-user-select: none;  /* 禁止 DIV 中的文本被鼠标选中 */
-    -moz-user-select: none;     /* 禁止 DIV 中的文本被鼠标选中 */
-    -ms-user-select: none;      /* 禁止 DIV 中的文本被鼠标选中 */
+    -webkit-user-select: none; /* 禁止 DIV 中的文本被鼠标选中 */
+    -moz-user-select: none; /* 禁止 DIV 中的文本被鼠标选中 */
+    -ms-user-select: none; /* 禁止 DIV 中的文本被鼠标选中 */
     user-select: none;
 
     .ivu-drawer {
@@ -174,7 +191,7 @@
             background-color: var(--theme-color);
           }
 
-          .theme{
+          .theme {
             height: 100/2%;
           }
 

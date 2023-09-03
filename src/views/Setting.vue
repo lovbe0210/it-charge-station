@@ -56,7 +56,6 @@
     name: 'Setting',
     data() {
       return {
-        tooltipContainer: null,
         needFixed: false,
         fixedHeight: 77,
         userInfo: {

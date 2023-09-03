@@ -1,7 +1,7 @@
 <template>
   <div class="layout-module_dashboard">
     <div class="layout-module_dashboardMenu">
-      <div class="layout-module_menu enable-background">
+      <div class="layout-module_menu enable-background" :style="'top:' + fixedHeight + 'px;'">
         <div class="menu-wrap">
           <div :class="['menu-item', activeMenuForEq === 'RecentView' ? 'active-menu' : '']"
                @click="routeNavigate(null)">
@@ -98,10 +98,12 @@
     <div class="layout-module_dashboardContent enable-background">
       <router-view></router-view>
     </div>
+    <back-top :immediate="true" :customHeight="300"></back-top>
   </div>
 </template>
 
 <script>
+  import BackTop from '@/components/common/BackTop';
   export default {
     name: 'Dashboard',
     beforeRouteEnter(from, to, next) {
@@ -117,8 +119,13 @@
     },
     data() {
       return {
-        activeMenu: 'RecentView'
+        activeMenu: 'RecentView',
+        needFixed: false,
+        fixedHeight: 77
       }
+    },
+    components: {
+      BackTop
     },
     watch: {
       $route(to) {
@@ -152,7 +159,22 @@
         } else {
           this.$router.push({path: '/dashboard' + (itemName == null ? '' : '/' + itemName)})
         }
+      },
+      // 滚动条滚动处理事件：
+      handleScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        let computeTop = 77 - scrollTop;
+        this.fixedHeight = computeTop < 2 ? 2 : computeTop > 77 ? 77 : computeTop;
       }
+    },
+    mounted() {
+      this.needFixed = false;
+      // 给window添加一个滚动监听事件
+      window.addEventListener('scroll', this.handleScroll)
+    },
+    destroyed() {
+      // 释放监听
+      window.removeEventListener('scroll', this.handleScroll)
     }
   }
 </script>

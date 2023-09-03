@@ -2,15 +2,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(~"100vh - 76px");
 
   .layout-module_dashboardMenu {
     width: 20%;
     height: 100%;
+    height: calc(~"100vh - 76px");
 
     .layout-module_menu {
       height: calc(~"(100vh - 77px) / 3 * 2");
       width: 225px;
+      position: fixed;
+      top: 77px;
 
       .menu-wrap {
         padding: 25px;
@@ -71,6 +73,7 @@
   .layout-module_dashboardContent {
     width: 80%;
     height: 100%;
+    min-height: calc(~"100vh - 76px");
   }
 
 }

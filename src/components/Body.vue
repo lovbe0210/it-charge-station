@@ -128,9 +128,10 @@
             <span class="iconfont icon-qqqun"/>
           </div>
         </div>
-        <back-top></back-top>
       </div>
     </b-col>
+
+    <back-top></back-top>
   </b-row>
 </template>
 
@@ -247,14 +248,6 @@
           this.$store.commit("computeFixHeight", fixedHeight);
         }
       },
-      showCustomer: {
-        get() {
-          return this.$store.state.showCustomer;
-        },
-        set(value) {
-          this.$store.commit('showCustomer', value);
-        }
-      },
       contentLength() {
         return this.flagContent == null ? 0 : this.flagContent.length
       },
@@ -273,17 +266,6 @@
       }
 
 
-    },
-    watch: {
-      showCustomer() {
-        if (this.showCustomer) {
-          // 禁止滚轮滚动
-          document.body.addEventListener('wheel', this.tempFunction, {passive: false});
-        } else {
-          // 解除阻止
-          document.body.removeEventListener('wheel', this.tempFunction)
-        }
-      }
     },
     methods: {
       isEditable(flag) {
@@ -305,13 +287,6 @@
         } else {
           this.needFixed = false
         }
-      },
-      /**
-       * 阻止事件发生
-       * @param e
-       */
-      tempFunction(e) {
-        e.preventDefault()
       },
       /**
        * 弹幕添加方法

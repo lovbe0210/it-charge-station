@@ -278,8 +278,9 @@ const routes = [
   },
   {
     // 写作中心
-    path: '/editor',
+    path: '/editor/:docId',
     name: 'WriteCenter',
+    props: true,
     component: () => import('@/views/WriteCenter')
   },
   {
