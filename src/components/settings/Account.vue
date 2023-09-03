@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-module_account" ref="menuContainer">
+  <div class="layout-module_account">
     <h1 class="setting-title">账户管理</h1>
     <h2 class="setting-subtitle">账户绑定</h2>
     <div class="settings-form">
@@ -299,8 +299,7 @@
         sendCodeInterval: null,
         countryCode: '+86',
         newValue: '',
-        confirmValue: '',
-        menuContainer: null
+        confirmValue: ''
       }
     },
     computed: {},
@@ -308,9 +307,6 @@
       SliderValidation
     },
     methods: {
-      getContainer() {
-        return this.menuContainer;
-      },
       onSelect(value) {
         this.selectOption = value;
       },
@@ -495,9 +491,6 @@
       }
     },
     mounted() {
-      if (this.menuContainer == null) {
-        this.menuContainer = this.$refs.menuContainer;
-      }
     }
   }
 </script>
