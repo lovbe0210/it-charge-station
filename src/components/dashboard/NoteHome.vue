@@ -1,9 +1,11 @@
 <template>
-  <div class="layout-module_stats" ref="tooltipContainer">
-    <div id="main-right-content" class="layout-module_MainContent">
-      <div class="layout-module_MainContentChildren">
-        <div class="main-container my-collection">
-          笔记
+  <div class="layout-module_NoteHome">
+    <div class="note-home-header">
+      <h2 class="title">创作笔记</h2>
+      <div class="operation">
+        <Input class="search" search placeholder="搜索标题关键词"/>
+        <div class="action">
+          <span class="iconfont verify-complete"></span>
         </div>
       </div>
     </div>
@@ -25,4 +27,5 @@
 </script>
 
 <style scoped lang="less">
+  @import '../css/dashboard/noteHome.less';
 </style>

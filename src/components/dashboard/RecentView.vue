@@ -32,8 +32,14 @@
                 {{viewItem.authorName}}
               </b-link>
               <span class="tag">|</span>
-              <span class="item-count">
-                {{viewItem.viewCount}}阅读 · {{viewItem.authorName.likeCount}}赞 · {{viewItem.commentCount}}评论
+              <span class="item-count" v-if="viewItem.type === 1">
+                {{viewItem.viewCount}}阅读 · {{viewItem.likeCount}}赞 · {{viewItem.commentCount}}评论
+              </span>
+              <span class="item-count" v-if="viewItem.type === 2">
+                {{viewItem.viewCount}}阅读 · {{viewItem.likeCount}}赞 · {{viewItem.collectCount}}收藏
+              </span>
+              <span class="item-count" v-if="viewItem.type === 3">
+                {{viewItem.viewCount}}阅读 · {{viewItem.commentCount}}评论
               </span>
             </div>
             <div>
@@ -65,7 +71,8 @@
                 authorId: 'asd234d2wsdasdsad',
                 viewCount: 123,
                 likeCount: 32,
-                commentCount: 14
+                commentCount: 14,
+                collectCount: 344
               },
               {
                 id: 'dfdf4454562',
@@ -76,7 +83,8 @@
                 authorId: 'asd234d2wsdasds2ad',
                 viewCount: 123,
                 likeCount: 32,
-                commentCount: 14
+                commentCount: 14,
+                collectCount: 164
               },
               {
                 id: 'fgfg565657',
@@ -87,7 +95,8 @@
                 authorId: 'asd234d2wsdasdsad',
                 viewCount: 123,
                 likeCount: 32,
-                commentCount: 14
+                commentCount: 14,
+                collectCount: 314
               }
             ]
           },
@@ -103,7 +112,8 @@
                 authorId: 'asd2134d2wsdasdsad',
                 viewCount: 123,
                 likeCount: 32,
-                commentCount: 14
+                commentCount: 14,
+                collectCount: 304
               },
               {
                 id: 'dfdf4454562',
@@ -114,7 +124,8 @@
                 authorId: 'asd8234d2wsdasdsad',
                 viewCount: 123,
                 likeCount: 32,
-                commentCount: 14
+                commentCount: 14,
+                collectCount: 34
               },
               {
                 id: 'fgfg565657',
@@ -125,7 +136,8 @@
                 authorId: 'asd234d2wsdasds0ad',
                 viewCount: 123,
                 likeCount: 32,
-                commentCount: 14
+                commentCount: 14,
+                collectCount: 54
               }
             ]
           },
@@ -141,7 +153,8 @@
                 authorId: 'asd234d2wsdasddsad',
                 viewCount: 123,
                 likeCount: 32,
-                commentCount: 14
+                commentCount: 14,
+                collectCount: 24
               },
               {
                 id: 'dfdf4454562',
@@ -152,7 +165,8 @@
                 authorId: 'asd234d2wsdasdsad',
                 viewCount: 123,
                 likeCount: 32,
-                commentCount: 14
+                commentCount: 14,
+                collectCount: 84
               },
               {
                 id: 'fgfg565657',
@@ -163,7 +177,8 @@
                 authorId: 'asd2234d2wsdasdsad',
                 viewCount: 123,
                 likeCount: 32,
-                commentCount: 14
+                commentCount: 14,
+                collectCount: 34
               }
             ]
           }
