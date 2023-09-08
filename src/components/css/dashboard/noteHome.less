@@ -26,13 +26,13 @@
 
       .search {
         width: 240px;
-        height: 36px;
+        height: 32px;
         position: relative;
         box-sizing: border-box;
 
         /deep/ * {
-          height: 36px;
-          line-height: 36px;
+          height: 32px;
+          line-height: 32px;
           background-color: unset;
         }
 
@@ -45,131 +45,57 @@
 
       .action {
         display: flex;
-        //background-color: transparent;
         align-items: center;
         color: #262626;
-        //font-size: 16px;
         margin-left: 24px;
-        //cursor: pointer;
+
+        .order {
+          color: #262626;
+        }
+
+        /deep/.ivu-select-dropdown {
+          margin-top: 10px;
+        }
+
+        .ivu-dropdown-menu {
+          margin-bottom: 0;
+
+          .ivu-dropdown-item {
+            display: flex;
+
+            color: #262626;
+            font-size: 14px !important;
+
+            .iconfont {
+              font-size: 14px;
+            }
+          }
+        }
       }
     }
   }
 
-  .list-wrapp {
-    margin: 30px 24px 0;
+  .note-home-list {
+    margin: 5px 24px;
 
-    .time-line {
-      margin: 10px 0 5px;
+    .note-list-item {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
 
-      .icon-history {
-        font-size: 14px;
-      }
-    }
-
-    .view-list-item {
-      border-top: 1px solid #d2d4d3;
-      padding: 15px 0 15px;
-
-      .item-header {
-        color: #262626;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        height: 24px;
-
-        .item-type {
-          min-width: 40px;
-          border-radius: 4px;
-          font-size: 12px;
-          text-align: center;
-          line-height: 24px;
-        }
-
-        .doc {
-          background-color: #eaf2ff;
-          color: #1e80ff;
-        }
-
-        .colum {
-          background-color: #fcebcd;
-          color: #ff6600;
-        }
-
-        .question {
-          background-color: #000000;
-          color: #FFDF00;
-        }
-
-        .item-title {
-          margin: unset;
-          padding-left: 8px;
-          line-height: 24px;
-          font-size: 16px;
-          font-weight: 600;
-          display: -webkit-box;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 1;
-        }
+      .index-module_leftToolBar {
+        position: absolute;
+        left: -30px;
       }
 
-      .item-content {
-        margin-top: 6px;
-        height: 22px;
-        line-height: 22px;
-        font-size: 13px;
-        color: #262626;
-        font-style: normal;
-        font-weight: 400;
-        display: -webkit-box;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
+      .index-module_noteItem {
+        width: 100%;
+        border: 1px solid #E7E9E8;
       }
 
-      .item-info-action {
-        display: flex;
-        justify-content: space-between;
-
-        div {
-          height: 20px;
-        }
-        display: flex;
-        margin-top: 12px;
-
-
-        .item-author {
-          height: 20px;
-          font-style: normal;
-          font-weight: 400;
-          font-size: 15px;
-          line-height: 20px;
-          color: #262626;
-          margin-right: 8px;
-        }
-
-        .tag {
-          color: #819a9f;
-          margin-right: 8px;
-        }
-
-        .item-count {
-          height: 20px;
-          line-height: 20px;
-          color: #819a9f;
-          font-size: 12px;
-        }
-      }
-    }
-
-    .view-list-item:hover {
-      .item-edit::after {
-        padding-right: 20px;
-        content: '编辑';
-        transition: 3s;
-        color: #262626;
+      .index-module_rightToolBar {
+        position: absolute;
+        right: -45px;
       }
     }
   }

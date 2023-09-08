@@ -16,10 +16,10 @@
   // import ViewUI from 'view-design'
   import {
     Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload, Icon,
-    Menu, MenuItem, Button, Checkbox, Input, Divider, Tree, List, Modal, Tabs, TabPane
+    Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane
   } from 'view-design'
   import 'view-design/dist/styles/iview.css'
-  import { Tooltip, Card, Popover, Pagination, Tag, Select } from 'ant-design-vue'
+  import { Tooltip, Card, Popover, Pagination, Tag, Select, Checkbox } from 'ant-design-vue'
   import commonUtil from "@/utils/common"
   // 引入弹幕模块
   import {vueBaberrage} from 'vue-baberrage'
@@ -39,7 +39,6 @@
   Vue.component('MenuItem', MenuItem);
   Vue.component('Input', Input);
   Vue.component('Button', Button);
-  Vue.component('Checkbox', Checkbox);
   Vue.component('Divider', Divider);
   Vue.component('Tree', Tree);
   Vue.component('List', List);
@@ -56,6 +55,7 @@
   Vue.component('a-tag', Tag);
   Vue.component('a-select', Select);
   Vue.component('a-select-option', Select.Option);
+  Vue.component('a-checkbox', Checkbox);
 
   export default {
     name: 'App',
@@ -260,5 +260,16 @@
     background-size: cover;
     // 固定在屏幕上，不随滚动轴滚动
     background-attachment: fixed;
+  }
+
+  // 全局css
+
+  .ant-checkbox-checked .ant-checkbox-inner {
+    border-color: @editor-button-color;
+    background-color: @editor-button-color;
+  }
+
+  .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner {
+    border-color: @editor-button-color;
   }
 </style>

@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_hv0whh6hccm.woff2?t=1693731690663') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_9kk0e0x4tsp.woff2?t=1694159176862') format('woff2');
 }
 
 .iconfont {
@@ -42,7 +42,11 @@
   content: "\e629";
 }
 
-.verify-complete:before {
+.order:before {
   content: "\e630";
+}
+
+.true:before {
+  content: "\e631";
 }
 

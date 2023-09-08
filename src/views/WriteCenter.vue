@@ -92,7 +92,7 @@
                   </i-switch>
                 </div>
                 <div class="style-item set-default">
-                  <Checkbox v-model="docStyle.SetDefault">&nbsp;保存为默认设置</Checkbox>
+                  <a-checkbox v-model="docStyle.SetDefault">&nbsp;保存为默认设置</a-checkbox>
                 </div>
                 <Divider/>
                 <div class="style-item">页面尺寸</div>
