@@ -54,11 +54,16 @@
         </div>
         <div class="index-module_noteItem">
           <div class="index-module_meta">
-            <span class="note-status-module_text" v-if="orderType === 'updateTime'">更新于 09-03 16:51</span>
-            <span class="note-status-module_text" v-if="orderType === 'createTime'">创建于 09-03 16:51</span>
+            <div class="article-tag">
+
+            </div>
+            <div class="order-time">
+              <span class="note-status-module_text" v-if="orderType === 'updateTime'">更新于 09-03 16:51</span>
+              <span class="note-status-module_text" v-if="orderType === 'createTime'">创建于 09-03 16:51</span>
+            </div>
           </div>
           <div class="index-module_content">
-            <div class="viewer-header">
+            <div class="viewer-header" @click="routeNavigate('read', noteItem.id)">
               <span class="viewer-content">{{noteItem.title}}</span>
             </div>
             <div class="viewer-body">
@@ -68,7 +73,7 @@
         </div>
         <div class="index-module_rightToolBar">
           <div class="note-list-toolbar">
-            <div class="edit-btn">
+            <div class="edit-btn" @click="routeNavigate('edit', noteItem.id)">
               <span class="iconfont bianji"></span>
             </div>
             <div class="menu-btn-wrapp">
@@ -108,21 +113,72 @@
             title: '是个标题啊',
             desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
             createTime: '2023-12-23 22:09:11',
-            updateTime: '2023-12-23 22:09:11'
+            updateTime: '2023-12-23 22:09:11',
+            sort: 1
           },
           {
             id: '233424dfgdgd',
             title: '是个标题啊是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试给刷卡机较大饭卡手机班米啊试',
             desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大啊沙发啦班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大咔咔好卡手打发撒公司控股见大好',
             createTime: '2023-12-23 22:09:11',
-            updateTime: '2023-12-23 22:09:11'
+            updateTime: '2023-12-23 22:09:11',
+            sort: 0
           },
           {
             id: '76558fghfghfccbc',
             title: '是个标题啊',
             desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
             createTime: '2023-12-23 22:09:11',
-            updateTime: '2023-12-23 22:09:11'
+            updateTime: '2023-12-23 22:09:11',
+            sort: 0
+          },
+          {
+            id: 'ddfgdfgd23424242',
+            title: '是个标题啊',
+            desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
+            createTime: '2023-12-23 22:09:11',
+            updateTime: '2023-12-23 22:09:11',
+            sort: 1
+          },
+          {
+            id: '5657656585fghfghf',
+            title: '是个标题啊是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试给刷卡机较大饭卡手机班米啊试',
+            desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大啊沙发啦班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大咔咔好卡手打发撒公司控股见大好',
+            createTime: '2023-12-23 22:09:11',
+            updateTime: '2023-12-23 22:09:11',
+            sort: 0
+          },
+          {
+            id: 'sdadsa2323',
+            title: '是个标题啊',
+            desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
+            createTime: '2023-12-23 22:09:11',
+            updateTime: '2023-12-23 22:09:11',
+            sort: 0
+          },
+          {
+            id: '333323243234234234',
+            title: '是个标题啊',
+            desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
+            createTime: '2023-12-23 22:09:11',
+            updateTime: '2023-12-23 22:09:11',
+            sort: 1
+          },
+          {
+            id: '66767dfgdfgdfgd',
+            title: '是个标题啊是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试给刷卡机较大饭卡手机班米啊试',
+            desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大啊沙发啦班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大咔咔好卡手打发撒公司控股见大好',
+            createTime: '2023-12-23 22:09:11',
+            updateTime: '2023-12-23 22:09:11',
+            sort: 0
+          },
+          {
+            id: '1112121212',
+            title: '是个标题啊',
+            desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
+            createTime: '2023-12-23 22:09:11',
+            updateTime: '2023-12-23 22:09:11',
+            sort: 0
           }
         ],
         checkedList: [],
@@ -159,6 +215,21 @@
       cancelCheck() {
         this.showCheckToolBar = false;
         this.checkedList = [];
+      },
+      /**
+       * @param itemName 路由跳转标志
+       */
+      routeNavigate(routePath, routeParam) {
+        switch (routePath) {
+          case 'edit':
+            this.$router.push({path: '/editor/' + routeParam});
+            break;
+          case 'read':
+            this.$router.push({path: '/article/' + routeParam});
+            break;
+          case 'history':
+            this.$Message.warning("敬请期待，感谢支持！")
+        }
       }
     },
     mounted() {
