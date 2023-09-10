@@ -1,7 +1,7 @@
 .layout-module_NoteHome {
   width: 100%;
   height: 100%;
-  padding: 0 40px 10px;
+  padding: 0 50px 10px;
 
   .note-home-header {
     margin: 30px 24px 0;
@@ -36,7 +36,7 @@
           background-color: unset;
         }
 
-        /deep/ .ivu-input:hover, /deep/.ivu-input:focus {
+        /deep/ .ivu-input:hover, /deep/ .ivu-input:focus {
           border-color: #00B96B;
           outline: 0;
           box-shadow: none;
@@ -53,7 +53,7 @@
           color: #262626;
         }
 
-        /deep/.ivu-select-dropdown {
+        /deep/ .ivu-select-dropdown {
           margin-top: 10px;
         }
 
@@ -76,26 +76,153 @@
   }
 
   .note-home-list {
-    margin: 5px 24px;
+    margin: 20px 0;
 
     .note-list-item {
+      padding: 0 24px;
       display: flex;
       justify-content: space-between;
       position: relative;
 
       .index-module_leftToolBar {
         position: absolute;
-        left: -30px;
+        left: -10px;
+
+        .check-show {
+          opacity: 0;
+          transition: 0.5s;
+        }
       }
 
       .index-module_noteItem {
         width: 100%;
-        border: 1px solid #E7E9E8;
+        padding: 15px 12px 20px;
+        position: relative;
+        box-shadow: 0 0 1px -1px rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06), 0 2px 4px 1px rgba(0, 0, 0, .04);
+        border-radius: 8px;
+        margin-bottom: 12px;
+        transition: box-shadow .2s ease-in-out;
+
+        .index-module_meta {
+          font-size: 12px;
+          color: #8A8F8D;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          user-select: none;
+          display: flex;
+          align-items: center;
+          min-height: 24px;
+          justify-content: space-between;
+          position: relative;
+          line-height: 24px;
+          padding-left: 12px;
+
+          .note-status-module_text {
+            font-size: 12px;
+            color: #8A8F8D;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+          }
+        }
+
+        .index-module_content {
+          padding-left: 12px;
+          color: #262626;
+
+          .viewer-header {
+            margin: 10px 0 5px;
+            line-height: 28px;
+            letter-spacing: 0.008em;
+            font-size: 20px;
+            font-weight: bold;
+
+            span {
+              display: inline-block;
+              width: 100%;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+
+          .viewer-body {
+            font-size: 15px;
+            line-height: 20px;
+            height: 40px;
+
+            span {
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 2;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+
+        }
       }
 
       .index-module_rightToolBar {
         position: absolute;
-        right: -45px;
+        right: -15px;
+
+        .note-list-toolbar {
+          opacity: 0;
+          transition: 0.5s;
+          margin-top: 3px;
+
+          .edit-btn, .menu-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            box-shadow: 0 0 1px -1px rgba(0, 0, 0, .3), 0 1px 2px 0 rgba(0, 0, 0, .18), 0 2px 4px 1px rgba(0, 0, 0, .12);
+
+            .iconfont {
+              font-size: 18px;
+            }
+          }
+
+          .menu-btn-wrapp {
+            .menu-btn {
+              margin-top: 8px;
+            }
+
+            /deep/.ivu-select-dropdown {
+              margin: 5px 0;
+              border-radius: 8px;
+            }
+
+            /deep/.ivu-dropdown-item {
+              padding: 7px 25px;
+              color: #262626;
+            }
+          }
+        }
+      }
+    }
+
+    .note-list-item:hover {
+      .check-show, .note-list-toolbar {
+        opacity: 1;
+      }
+
+      .index-module_noteItem {
+        box-shadow: 0 1px 4px -2px rgba(0, 0, 0, .13), 0 2px 8px 0 rgba(0, 0, 0, .08), 0 8px 16px 4px rgba(0, 0, 0, .04);
+      }
+    }
+
+    .note-list-operate {
+      margin: 15px 0;
+      align-items: center;
+      transition: 0.5s;
+
+      .index-module_noteItem {
+        width: auto;
+        border: unset;
       }
     }
   }

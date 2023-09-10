@@ -272,4 +272,8 @@
   .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner {
     border-color: @editor-button-color;
   }
+
+  .ant-checkbox-indeterminate .ant-checkbox-inner::after {
+    background-color: @editor-button-color;
+  }
 </style>

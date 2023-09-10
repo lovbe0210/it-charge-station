@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_9kk0e0x4tsp.woff2?t=1694159176862') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_l72t86odkma.woff2?t=1694324944483') format('woff2');
 }
 
 .iconfont {
@@ -48,5 +48,13 @@
 
 .true:before {
   content: "\e631";
+}
+
+.bianji:before {
+  content: "\e632";
+}
+
+.bianji1:before {
+  content: "\e633";
 }
 
