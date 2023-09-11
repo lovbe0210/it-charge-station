@@ -120,7 +120,7 @@
                          @on-blur="handleInputConfirm"
                          @on-enter="handleInputConfirm"/>
                   <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
-                    <span class="iconfont icon-music-add" style="font-size: 12px"></span>
+                    <span class="iconfont add" style="font-size: 12px"></span>
                     添加标签
                   </a-tag>
                 </span>

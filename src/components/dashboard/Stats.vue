@@ -22,7 +22,7 @@
                   <span>
                     {{statsOption == 1 ? '近 1 年' : statsOption == 2 ? '近 30 天' : ''}}
                   </span>
-                  <span class="iconfont icon-drop-down"></span>
+                  <span class="iconfont icon-drop-down" style="font-size: 14px"></span>
                   <DropdownMenu slot="list">
                     <DropdownItem name="1">近 1 年</DropdownItem>
                     <DropdownItem name="2">近 30 天</DropdownItem>

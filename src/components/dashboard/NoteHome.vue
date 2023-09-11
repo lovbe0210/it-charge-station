@@ -55,7 +55,9 @@
         <div class="index-module_noteItem">
           <div class="index-module_meta">
             <div class="article-tag">
-
+              <a-tag :color="tag.color" v-for="(tag,index) in noteItem.tags" :key="index">
+                {{tag.content}}
+              </a-tag>
             </div>
             <div class="order-time">
               <span class="note-status-module_text" v-if="orderType === 'updateTime'">更新于 09-03 16:51</span>
@@ -114,7 +116,13 @@
             desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
             createTime: '2023-12-23 22:09:11',
             updateTime: '2023-12-23 22:09:11',
-            sort: 1
+            sort: 1,
+            tags: [
+              {content: '大前段', color: 'blue'},
+              {content: 'Vue', color: 'red'},
+              {content: 'React', color: 'orange'},
+              {content: '前端框架', color: 'green'}
+            ]
           },
           {
             id: '233424dfgdgd',
@@ -130,7 +138,13 @@
             desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
             createTime: '2023-12-23 22:09:11',
             updateTime: '2023-12-23 22:09:11',
-            sort: 0
+            sort: 0,
+            tags: [
+              {content: '后端', color: 'blue'},
+              {content: 'JAVA', color: 'red'},
+              {content: 'Springboot', color: 'orange'},
+              {content: '分布式', color: 'green'}
+            ]
           },
           {
             id: 'ddfgdfgd23424242',
@@ -138,7 +152,13 @@
             desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
             createTime: '2023-12-23 22:09:11',
             updateTime: '2023-12-23 22:09:11',
-            sort: 1
+            sort: 1,
+            tags: [
+              {content: '运维', color: 'blue'},
+              {content: 'linux', color: 'red'},
+              {content: 'docker', color: 'orange'},
+              {content: 'k8s', color: 'green'}
+            ]
           },
           {
             id: '5657656585fghfghf',

@@ -69,7 +69,7 @@
     <div class="readme-module_userBoardParent">
       <div v-show="readmeEmpty" class="readme-module_empty" @click="readmeEmpty = false">
         <p class="readme-module_emptyTitle">
-          <span class="iconfont icon-music-add"></span>
+          <span class="iconfont add"></span>
           添加自定义介绍
         </p>
         <p class="readme-module_emptyDesc">

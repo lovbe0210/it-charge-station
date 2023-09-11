@@ -116,6 +116,7 @@
           position: relative;
           line-height: 24px;
           padding-left: 12px;
+          padding-right: 12px;
 
           .note-status-module_text {
             font-size: 12px;
@@ -221,9 +222,22 @@
       align-items: center;
       transition: 0.5s;
 
-      .index-module_noteItem {
-        width: auto;
-        border: unset;
+      .ivu-btn-text:hover {
+        color: #00B96B;
+        background-color: unset;
+      }
+
+      .ivu-btn-text {
+        color: #262626;
+      }
+
+      .ivu-btn-text:focus {
+        box-shadow: none;
+      }
+
+      .note-item-check {
+        display: flex;
+        align-items: center;
       }
     }
   }

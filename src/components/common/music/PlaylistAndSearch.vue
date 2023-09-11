@@ -26,7 +26,7 @@
           </b-col>
           <b-col cols="2" class="next-play" v-show="ifSearchOrPlayList && currentShowId===item.id"
                  @click="nextPlay(index)">
-            <span class="iconfont icon-music-add"></span>
+            <span class="iconfont add"></span>
           </b-col>
           <b-col cols="2" class="music-del" v-show="!ifSearchOrPlayList && currentShowId===item.id"
                  @click="removeFromPlayList(index)">
