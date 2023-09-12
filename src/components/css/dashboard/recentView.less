@@ -13,26 +13,31 @@
 
     .title {
       height: 32px;
+      width: calc(~"10% + 10px");
       line-height: 32px;
       text-align: center;
       color: #262626;
       font-size: 20px;
       font-weight: 600;
+      padding-right: 10px;
+    }
+
+    .separator-line {
+      width: calc(~"90% - 340px");
     }
 
     .operation {
+      width: 330px;
       display: flex;
       flex-direction: row;
+      padding-left: 10px;
 
       .search {
-        width: 240px;
-        //height: 32px;
         position: relative;
         box-sizing: border-box;
 
         /deep/ * {
           height: 32px;
-          //line-height: 32px;
           background-color: unset;
         }
 
@@ -44,12 +49,13 @@
       }
 
       .action {
+        width: 100px;
         display: flex;
         background-color: transparent;
         align-items: center;
         color: #8A8F8D;
         font-size: 14px;
-        margin-left: 24px;
+        margin-left: 15px;
         cursor: pointer;
       }
     }

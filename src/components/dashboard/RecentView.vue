@@ -2,6 +2,7 @@
   <div class="layout-module_recentView">
     <div class="recent-view-header">
       <h2 class="title">浏览记录</h2>
+      <hr class="separator-line">
       <div class="operation">
         <Input class="search" search placeholder="搜索标题关键词"/>
         <div class="action">

@@ -2,12 +2,15 @@
   <div class="layout-module_NoteHome">
     <div class="note-home-header">
       <h2 class="title">创作笔记</h2>
+      <hr class="separator-line">
       <div class="operation">
         <Input class="search" search placeholder="搜索标题关键词"/>
         <div class="action">
           <Dropdown placement="bottom-end" @on-click="updateNoteOrderType">
             <a href="javascript:void(0)">
-              <span class="iconfont order"></span>
+              <div class="icon-box">
+                <span class="iconfont order"></span>
+              </div>
             </a>
             <DropdownMenu slot="list">
               <DropdownItem name="updateTime">

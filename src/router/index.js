@@ -284,15 +284,30 @@ const routes = [
     component: () => import('@/views/WriteCenter')
   },
   {
-    // 阅读中心
+    // 阅读中心/普通文章
     path: '/article/:articleId',
     name: 'ReadCenter',
     props: true,
     component: () => import('@/views/ReadCenter')
   },
   {
+    // 阅读中心/专栏文章
+    path: '/:domain/:columnId',
+    name: 'ReadCenter',
+    props: true,
+    component: () => import('@/views/ReadCenter'),
+    children: [
+      {
+        // 专栏首页
+        path: '',
+        name: 'SeriesColumnHome',
+        component: () => import('@/components/SeriesColumnHome')
+      }
+    ]
+  },
+  {
     // 个人首页
-    path: '/:personalDomain',
+    path: '/:domain',
     props: true,
     name: 'PersonalCenter',
     component: () => import('@/views/PersonalCenter')
