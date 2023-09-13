@@ -93,11 +93,11 @@
                     <div class="tabpane-tree">
                       <div v-for="item in dirData" :key="item.id"
                            :class="['tree-content',item.type===1?'single-node-tree':item.type===2?'composite-nodes-tree':'']">
-                        <div v-if="item.type === 1" class="single-tree-node">
+                        <div v-if="item.type === 1" class="single-tree-node" @click="routeNavigate(item.id)">
                           {{item.data}}
                         </div>
                         <div v-if="item.type === 2" class="composite-tree-node">
-                          <Tree :data="item.data" expand-node></Tree>
+                          <Tree :data="item.data" @on-select-change="selectTreeNode"></Tree>
                         </div>
                       </div>
                     </div>
@@ -200,6 +200,7 @@
                 expand: false,
                 children: [
                   {
+                    id: 'asdasd',
                     title: '单独文章'
                   },
                   {
@@ -207,9 +208,11 @@
                     expand: false,
                     children: [
                       {
+                        id: 'asdassd2323d',
                         title: 'leaf 1-1-1'
                       },
                       {
+                        id: 'asdas11111d',
                         title: 'leaf 1-1-2'
                       }
                     ]
@@ -304,7 +307,7 @@
           }
         ],
         // 菜单列表展示方式  list or tree
-        navShowType: this.isColumnView ? 'tree' : 'list',
+        navShowType: null,
         openAllTree: false,
         view: null
       }
@@ -412,7 +415,7 @@
           this.$router.push({path: '/' + this.domain + '/' + this.columnId});
         } else {
           // 文章页面需要判断是专栏页面还是普通页面
-          if (this.domain === undefined && this.columnId === undefined) {
+          if (this.domain !== undefined && this.columnId !== undefined) {
             // 专栏页面
             this.$router.push({path: '/' + this.domain + '/' + this.columnId + '/' + routeParam});
           } else {
@@ -420,6 +423,12 @@
             this.$router.push({path: '/article/' + routeParam});
           }
         }
+      },
+      selectTreeNode(selectNode, currentNode) {
+        console.log(selectNode)
+        console.log(currentNode)
+        currentNode.selected = false;
+        currentNode.expand = !currentNode.expand
       }
 
     },
@@ -428,6 +437,7 @@
       // window.addEventListener('resize', this.checkFullscreen);
       // const scrollContainer = this.$refs.scrollbarContext;
       // scrollContainer?.addEventListener('wheel', this.handleScrollForToc);
+      this.navShowType = this.isColumnView ? 'tree' : 'list';
     }
   }
 </script>
