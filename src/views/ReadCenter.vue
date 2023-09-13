@@ -13,13 +13,15 @@
                 <span class="iconfont icon-more"></span>
                 <div class="action">
                   <a href="/lovbe0210" class="crumb-text">布衣草人</a>
-                  <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+                  <a-tooltip overlayClassName="read-header-tooltip"
+                             :getPopupContainer="()=>this.$refs.tooltipContainer">
                     <template slot="title">
                       关注
                     </template>
                     <span class="iconfont to-follow"></span>
                   </a-tooltip>
-                  <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+                  <a-tooltip overlayClassName="read-header-tooltip"
+                             :getPopupContainer="()=>this.$refs.tooltipContainer">
                     <template slot="title">
                       发消息
                     </template>
@@ -46,17 +48,19 @@
                 <span class="search-hot-key">Ctrl + J</span>
               </div>
             </div>
-            <div class="home-nav">
+            <div class="home-nav" v-if="domain !== undefined && columnId !== undefined"
+                 @click="routeNavigate('columnIndex')">
               <span class="iconfont icon-nav-home"></span>
               <span>专栏首页</span>
             </div>
             <div class="nav-tabs">
               <div class="tabs-bar">
-                <span class="tab-title popover-trigger" @click="navShowType = navShowType === 'tree' ? 'list' : 'tree'">
+                <span class="tab-title popover-trigger"
+                      @click="navShowType = isColumnView ? (navShowType === 'tree' ? 'list' : 'tree') : navShowType">
                   <span :class="['iconfont', navShowType === 'tree' ? 'icon-nav-tree' : 'list']"></span>
                   <span>目录</span>
                 </span>
-                <div class="actions-cont" v-show="navShowType === 'tree'">
+                <div class="actions-cont" v-show="isColumnView && navShowType === 'tree'">
                   <a-tooltip overlayClassName="read-nav-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
                     <template slot="title">
                       {{openAllTree ? '全部展开' : '全部折叠'}}
@@ -75,7 +79,7 @@
                         <ListItem v-for="item in getListDirData()" :key="item.id">
                           <ListItemMeta description="hahsd沙拉领导啦啦啦速度快垃圾啊猎杀对决垃圾离开见识到了吉拉到家了案件受得了爱讲道理就asdads asd asd按">
                             <template slot="title">
-                              <div class="title-content">
+                              <div class="title-content" @click="routeNavigate(item.id)">
                                 {{item.data}}
                               </div>
                               <span class="iconfont icon-nav-menu"></span>
@@ -85,7 +89,7 @@
                       </List>
                     </div>
                   </div>
-                  <div class="tabs-tabpane tree" v-show="navShowType === 'tree'">
+                  <div class="tabs-tabpane tree" v-show="isColumnView && navShowType === 'tree'">
                     <div class="tabpane-tree">
                       <div v-for="item in dirData" :key="item.id"
                            :class="['tree-content',item.type===1?'single-node-tree':item.type===2?'composite-nodes-tree':'']">
@@ -104,7 +108,9 @@
           </div>
         </div>
       </div>
-      <router-view></router-view>
+      <div :style="{ width: adaptiveContentWidth}">
+        <router-view :sidebarWidth="sidebarWidth"></router-view>
+      </div>
     </div>
   </div>
 
@@ -113,6 +119,15 @@
 <script>
   export default {
     name: 'ReadCenter',
+    beforeRouteEnter(from, to, next) {
+      next(vc => {
+        // 通过 `vc` 访问组件实例
+        if (vc.$route.params.index) {
+          vc.$store.commit('changeActiveRoute', 'recommend')
+        }
+        next();
+      })
+    },
     data() {
       return {
         isDragging: false,
@@ -120,7 +135,6 @@
         startWidth: 0,
         sidebarWidth: 345, // 初始宽度
         fullScreen: false, // 全屏演示模式
-        ifLike: false,
         dirData: [
           {
             id: 1,
@@ -289,28 +303,24 @@
             ]
           }
         ],
-        // list or tree
-        navShowType: 'tree',
+        // 菜单列表展示方式  list or tree
+        navShowType: this.isColumnView ? 'tree' : 'list',
         openAllTree: false,
         view: null
       }
     },
+    props: ['domain', 'columnId', 'articleId'],
     computed: {
-      currentFontIndex() {
-        return this.docStyle.fontSizeRange.findIndex(
-          (item) => item === this.docStyle.docFontSize
-        );
-      },
       // 自适应内容界面的宽度
       adaptiveContentWidth() {
-        return this.fullScreen ? 'calc(100vw - 15px)' : 'calc(100vw - ' + (this.sidebarWidth + 15) + 'px)'
+        return 'calc(100vw - ' + (this.sidebarWidth) + 'px)'
       },
-      // 自适应内容界面的margin-left
-      standardWideMarginLeft() {
-        return this.docStyle.pageSize === 2 ? 0 : 11;
+      isColumnView() {
+        return this.domain !== undefined && this.columnId !== undefined;
       }
     },
     methods: {
+      // 组装目录树
       getListDirData() {
         if (this.dirData.length === 0) {
           return [];
@@ -341,9 +351,6 @@
       onSelect(selectedKeys, info) {
         console.log('selected', selectedKeys, info);
       },
-
-
-
 
       /**
        * 左侧目录拖动相关方法
@@ -393,8 +400,27 @@
             this.recursiveExpansion(children.children, ifOpen)
           })
         }
-      }
+      },
 
+      /**
+       * 路由导航
+       * @param itemName
+       */
+      routeNavigate(routeParam) {
+        if (routeParam === 'columnIndex') {
+          // 专栏首页
+          this.$router.push({path: '/' + this.domain + '/' + this.columnId});
+        } else {
+          // 文章页面需要判断是专栏页面还是普通页面
+          if (this.domain === undefined && this.columnId === undefined) {
+            // 专栏页面
+            this.$router.push({path: '/' + this.domain + '/' + this.columnId + '/' + routeParam});
+          } else {
+            // 普通页面
+            this.$router.push({path: '/article/' + routeParam});
+          }
+        }
+      }
 
     },
     mounted() {
@@ -402,11 +428,6 @@
       // window.addEventListener('resize', this.checkFullscreen);
       // const scrollContainer = this.$refs.scrollbarContext;
       // scrollContainer?.addEventListener('wheel', this.handleScrollForToc);
-    },
-    beforeDestroy() {
-      // window.removeEventListener('resize', this.checkFullscreen);
-      // const scrollContainer = this.$refs.scrollbarContext;
-      // scrollContainer?.removeEventListener('wheel', this.handleScrollForToc);
     }
   }
 </script>

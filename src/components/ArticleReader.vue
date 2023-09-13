@@ -1,45 +1,43 @@
 <template>
-  <div class="read-route-view">
+  <div class="reader-route-view" ref="tooltipContainer">
     <div class="layout-module_contentWrapper" id="contentWrapper" ref="scrollbarContext"
          @wheel="debounceScroll">
-      <div id="header" class="layout-module_headerWrapper" :style="{ width: adaptiveContentWidth}">
-        <div class="doc-head-inner">
-          <div class="header-crumb">
-            <span class="header_title" title="Seata—分布式事务解决方案">Seata—分布式事务解决方案</span>
-            <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
-              <template slot="title">
-                {{openAllTree ? '互联网所有人可以访问' : '仅关注可见'}}
-              </template>
-              <div class="header-status-icon" @click="docStyle.pageSize = docStyle.pageSize === 1 ? 2 : 1">
-                <span class="iconfont icon-content-public"/>
-              </div>
-            </a-tooltip>
-          </div>
-          <div class="header-action">
-            <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
-              <template slot="title">
-                {{ifLike ? '取消收藏' : '收藏'}}
-              </template>
-              <div class="header-module_likeButton action-icon" @click="ifLike = !ifLike">
-                <span :class="['iconfont', ifLike ? 'icon-like3' : 'icon-like']"></span>
-              </div>
-            </a-tooltip>
-
-            <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
-              <template slot="title">
-                演示
-              </template>
-              <div class="header-module_presentButton action-icon" @click="presentShow()">
-                <span class="iconfont icon-present-show"></span>
-              </div>
-            </a-tooltip>
-            <div class="collabUsersContainer action-icon">
-              <span class="iconfont icon-layout"></span>
+      <div id="header" class="layout-module_headerWrapper" :style="{ width: headerWidth}">
+        <div class="header-crumb">
+          <span class="header_title" title="Seata—分布式事务解决方案">Seata—分布式事务解决方案</span>
+          <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+            <template slot="title">
+              {{isPublic ? '互联网所有人可以访问' : '仅关注可见'}}
+            </template>
+            <div class="header-status-icon" @click="docStyle.pageSize = docStyle.pageSize === 1 ? 2 : 1">
+              <span class="iconfont icon-content-public"/>
             </div>
+          </a-tooltip>
+        </div>
+        <div class="header-action">
+          <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+            <template slot="title">
+              {{ifLike ? '取消收藏' : '收藏'}}
+            </template>
+            <div class="header-module_likeButton action-icon" @click="ifLike = !ifLike">
+              <span :class="['iconfont', ifLike ? 'icon-like3' : 'icon-like']"></span>
+            </div>
+          </a-tooltip>
+
+          <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+            <template slot="title">
+              演示
+            </template>
+            <div class="header-module_presentButton action-icon" @click="presentShow()">
+              <span class="iconfont icon-present-show"></span>
+            </div>
+          </a-tooltip>
+          <div class="collabUsersContainer action-icon">
+            <span class="iconfont icon-layout"></span>
           </div>
         </div>
       </div>
-      <div class="layout-module_bookContentWrapper" :style="{ width: adaptiveContentWidth}">
+      <div class="layout-module_bookContentWrapper">
         <div class="bookReader-module_docContainer">
           <div :class="['doc_header', docStyle.pageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
             <div class="doc_header_wrapper">
@@ -97,6 +95,7 @@
     data() {
       return {
         fullScreen: false, // 全屏演示模式
+        scrollBarWidth: 0,
         // 滚动事件的防抖函数
         debounceScroll: this.debounce(this.handleScrollForToc, 200),
         docInfo: {
@@ -117,179 +116,16 @@
           // 页面大小1=标宽模式，2=超宽模式
           pageSize: 1
         },
+        isPublic: true,
         ifLike: false,
-        dirData: [
-          {
-            id: 1,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 2,
-            type: 1,
-            data: '单文章节点2'
-          },
-          {
-            id: 3,
-            type: 1,
-            data: '单文章节点3'
-          },
-          {
-            id: 4,
-            type: 1,
-            data: '单文章节点4'
-          },
-          {
-            id: 6,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 7,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 8,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 9,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 10,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 11,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 12,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 5,
-            type: 2,
-            data: [
-              {
-                title: '达啊实打实多爱文章文章文章文章文章文章文章文章文章文章',
-                expand: false,
-                children: [
-                  {
-                    title: '单独文章'
-                  },
-                  {
-                    title: '目录文章',
-                    expand: false,
-                    children: [
-                      {
-                        title: 'leaf 1-1-1'
-                      },
-                      {
-                        title: 'leaf 1-1-2'
-                      }
-                    ]
-                  },
-                  {
-                    title: 'parent 1-2',
-                    expand: true,
-                    children: [
-                      {
-                        title: 'leaf 1-2-1'
-                      },
-                      {
-                        title: 'leaf 1-2-1'
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                title: '多层目录',
-                expand: false,
-                children: [
-                  {
-                    title: '单独文章'
-                  },
-                  {
-                    title: '目录文章',
-                    expand: false,
-                    children: [
-                      {
-                        title: 'leaf 1-1-1'
-                      },
-                      {
-                        title: 'leaf 1-1-2'
-                      }
-                    ]
-                  },
-                  {
-                    title: 'parent 1-2',
-                    expand: true,
-                    children: [
-                      {
-                        title: 'leaf 1-2-1'
-                      },
-                      {
-                        title: 'leaf 1-2-1'
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            id: 13,
-            type: 2,
-            data: [
-              {
-                title: 'parent 11文章文章文章文章文章文章文章文章文章文章',
-                expand: true,
-                children: [
-                  {
-                    title: '单独文章'
-                  },
-                  {
-                    title: '目录文章',
-                    expand: true,
-                    children: [
-                      {
-                        title: 'leaf 1-1-1录文录文录文录文录文录文录文录文录文录文录文录文录文录文录文'
-                      },
-                      {
-                        title: 'leaf 1-1-2'
-                      }
-                    ]
-                  },
-                  {
-                    title: 'parent 1-2',
-                    expand: true,
-                    children: [
-                      {
-                        title: 'leaf 1-2-1'
-                      },
-                      {
-                        title: 'leaf 1-2-1'
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        // list or tree
-        navShowType: 'tree',
-        openAllTree: false,
         view: null
+      }
+    },
+    props: ['sidebarWidth'],
+    computed: {
+      headerWidth() {
+        return 'calc(100vw - ' + ((this.fullScreen ? 0 : this.sidebarWidth) +
+            (this.scrollBarWidth !== undefined && this.scrollBarWidth !== 0 ? (this.scrollBarWidth - 2) : 0)) + 'px)'
       }
     },
     methods: {
@@ -375,7 +211,7 @@
        */
       debounce(func, delay) {
         let timer;
-        return function(...args) {
+        return function (...args) {
           clearTimeout(timer);
           timer = setTimeout(() => {
             func.apply(this, args);
@@ -412,6 +248,7 @@
       window.addEventListener('resize', this.checkFullscreen);
       const scrollContainer = this.$refs.scrollbarContext;
       scrollContainer?.addEventListener('wheel', this.handleScrollForToc);
+      this.scrollBarWidth = scrollContainer.offsetWidth - scrollContainer.clientWidth;
     },
     beforeDestroy() {
       window.removeEventListener('resize', this.checkFullscreen);
@@ -422,5 +259,5 @@
 </script>
 
 <style scoped lang="less">
-  @import './css/article-read.less';
+  @import './css/article-reader.less';
 </style>

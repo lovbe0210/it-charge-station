@@ -288,7 +288,15 @@ const routes = [
     path: '/article/:articleId',
     name: 'ReadCenter',
     props: true,
-    component: () => import('@/views/ReadCenter')
+    component: () => import('@/views/ReadCenter'),
+    children: [
+      {
+        // 内容阅读
+        path: '',
+        name: 'ArticleReader',
+        component: () => import('@/components/ArticleReader')
+      }
+    ]
   },
   {
     // 阅读中心/专栏文章
@@ -302,6 +310,13 @@ const routes = [
         path: '',
         name: 'SeriesColumnHome',
         component: () => import('@/components/SeriesColumnHome')
+      },
+      {
+        // 内容阅读
+        path: ':articleId',
+        name: 'ArticleReader',
+        props: true,
+        component: () => import('@/components/ArticleReader')
       }
     ]
   },

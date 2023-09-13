@@ -1,87 +1,6 @@
 <template>
   <div class="read-route-view">
-    <div class="layout-module_contentWrapper" id="contentWrapper" ref="scrollbarContext"
-         @wheel="debounceScroll">
-      <div id="header" class="layout-module_headerWrapper" :style="{ width: adaptiveContentWidth}">
-        <div class="doc-head-inner">
-          <div class="header-crumb">
-            <span class="header_title" title="Seata—分布式事务解决方案">Seata—分布式事务解决方案</span>
-            <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
-              <template slot="title">
-                {{openAllTree ? '互联网所有人可以访问' : '仅关注可见'}}
-              </template>
-              <div class="header-status-icon" @click="docStyle.pageSize = docStyle.pageSize === 1 ? 2 : 1">
-                <span class="iconfont icon-content-public"/>
-              </div>
-            </a-tooltip>
-          </div>
-          <div class="header-action">
-            <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
-              <template slot="title">
-                {{ifLike ? '取消收藏' : '收藏'}}
-              </template>
-              <div class="header-module_likeButton action-icon" @click="ifLike = !ifLike">
-                <span :class="['iconfont', ifLike ? 'icon-like3' : 'icon-like']"></span>
-              </div>
-            </a-tooltip>
-
-            <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
-              <template slot="title">
-                演示
-              </template>
-              <div class="header-module_presentButton action-icon" @click="presentShow()">
-                <span class="iconfont icon-present-show"></span>
-              </div>
-            </a-tooltip>
-            <div class="collabUsersContainer action-icon">
-              <span class="iconfont icon-layout"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="layout-module_bookContentWrapper" :style="{ width: adaptiveContentWidth}">
-        <div class="bookReader-module_docContainer">
-          <div :class="['doc_header', docStyle.pageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
-            <div class="doc_header_wrapper">
-              <h1 id="article-title" class="doc-article-title">
-                Seata—分布式事务解决方案
-              </h1>
-            </div>
-          </div>
-          <!-- 内容显示部分 -->
-          <div ref="view"
-               :class="['doc-reader','am-engine-view', docStyle.pageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="layout-module_asideWrapper">
-      <!-- 右侧大纲展示 -->
-      <div class="reader-view">
-        <div class="reader-toc-pin">
-          <span class="reader-toc-pin-text">大纲</span>
-          <div class="reader-toc-pin-wrap">
-            <div class="ne-icon ne-iconfont" data-name="pin" style="font-size: 16px;">
-              <span class="lake-icon lake-icon-pin" style="font-size: 16px;"></span>
-            </div>
-          </div>
-        </div>
-        <div class="reader-toc-inner">
-          <div class="toc-content">
-            <div class="toc-item" v-for="item in tocData"
-                 :class="['toc-depth-'+ item.depth, item.id === currentTocId ? 'toc-selected' : '']"
-                 :key="item.id"
-                 @click="jump(item.id)">
-              <div class="toc-item-inner">
-                <div class="toc-item-text" :title="item.text">
-                  <span>{{item.text}}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    专栏首页
   </div>
 </template>
 
@@ -422,5 +341,4 @@
 </script>
 
 <style scoped lang="less">
-  @import './css/article-read.less';
 </style>
