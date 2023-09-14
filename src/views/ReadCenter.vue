@@ -196,6 +196,7 @@
             type: 2,
             data: [
               {
+                id: '2322342342',
                 title: '达啊实打实多爱文章文章文章文章文章文章文章文章文章文章',
                 expand: false,
                 children: [
@@ -204,27 +205,24 @@
                     title: '单独文章'
                   },
                   {
-                    title: '目录文章',
-                    expand: false,
+                    id: '2322342342',
+                    title: '测试空目录该怎么展示',
+                    expand: true,
                     children: [
-                      {
-                        id: 'asdassd2323d',
-                        title: 'leaf 1-1-1'
-                      },
-                      {
-                        id: 'asdas11111d',
-                        title: 'leaf 1-1-2'
-                      }
+
                     ]
                   },
                   {
+                    id: '2322342342',
                     title: 'parent 1-2',
                     expand: true,
                     children: [
                       {
+                        id: '2322342342',
                         title: 'leaf 1-2-1'
                       },
                       {
+                        id: '2322342342',
                         title: 'leaf 1-2-1'
                       }
                     ]
@@ -232,32 +230,40 @@
                 ]
               },
               {
+                id: '2322342342',
                 title: '多层目录',
                 expand: false,
                 children: [
                   {
+                    id: 'sfsdfsdfsdf',
                     title: '单独文章'
                   },
                   {
+                    id: '2322342342',
                     title: '目录文章',
                     expand: false,
                     children: [
                       {
+                        id: '2322342342',
                         title: 'leaf 1-1-1'
                       },
                       {
+                        id: '2322342342',
                         title: 'leaf 1-1-2'
                       }
                     ]
                   },
                   {
+                    id: '2322342342',
                     title: 'parent 1-2',
                     expand: true,
                     children: [
                       {
+                        id: '2322342342',
                         title: 'leaf 1-2-1'
                       },
                       {
+                        id: '2322342342',
                         title: 'leaf 1-2-1'
                       }
                     ]
@@ -271,32 +277,40 @@
             type: 2,
             data: [
               {
+                id: 'asd23131',
                 title: 'parent 11文章文章文章文章文章文章文章文章文章文章',
                 expand: true,
                 children: [
                   {
+                    id: 'asd23131',
                     title: '单独文章'
                   },
                   {
+                    id: 'asd23131',
                     title: '目录文章',
                     expand: true,
                     children: [
                       {
+                        id: 'asd23131',
                         title: 'leaf 1-1-1录文录文录文录文录文录文录文录文录文录文录文录文录文录文录文'
                       },
                       {
+                        id: 'asd23131',
                         title: 'leaf 1-1-2'
                       }
                     ]
                   },
                   {
+                    id: 'asd23131',
                     title: 'parent 1-2',
                     expand: true,
                     children: [
                       {
+                        id: 'asd23131',
                         title: 'leaf 1-2-1'
                       },
                       {
+                        id: 'asd23131',
                         title: 'leaf 1-2-1'
                       }
                     ]
@@ -425,10 +439,13 @@
         }
       },
       selectTreeNode(selectNode, currentNode) {
-        console.log(selectNode)
-        console.log(currentNode)
         currentNode.selected = false;
         currentNode.expand = !currentNode.expand
+        // 只在叶子节点处进行路由跳转
+        if (currentNode.children === undefined) {
+          console.log(currentNode.id)
+          this.routeNavigate(currentNode.id)
+        }
       }
 
     },
