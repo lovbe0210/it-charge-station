@@ -149,7 +149,7 @@
             <Divider/>
             <DropdownItem>
               <div class="editor-set">
-                <span class="editor-icon iconfont icon-editor-del"></span>
+                <span class="editor-icon iconfont delete"></span>
                 <span>删除</span>
               </div>
             </DropdownItem>

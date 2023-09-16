@@ -54,27 +54,29 @@
                     </span>
                   </span>
                 </a>
-                <span class="meta-menu">
-                  <Dropdown trigger="hover" :transfer="true" placement="bottom-end" @on-click="routeNavigate">
-                  <a href="javascript:void(0)">
-                    <span class="iconfont icon-nav-menu"></span>
-                  </a>
-                  <DropdownMenu slot="list">
-                    <DropdownItem name="scope">
-                      权限
-                    </DropdownItem>
-                    <DropdownItem name="rename">
-                      重命名
-                    </DropdownItem>
-                    <DropdownItem name="setting">
-                      更多设置
-                    </DropdownItem>
-                    <DropdownItem name="delete">
-                      删除
-                    </DropdownItem>
-                  </DropdownMenu>
+                <div class="meta-menu">
+                  <Dropdown trigger="hover" placement="bottom-end" @on-click="routeNavigate">
+                    <a href="javascript:void(0)">
+                      <span class="icon-box">
+                        <span class="iconfont icon-nav-menu"></span>
+                      </span>
+                    </a>
+                    <DropdownMenu slot="list">
+                      <DropdownItem name="scope">
+                        <span class="iconfont permissions"></span>权限
+                      </DropdownItem>
+                      <DropdownItem name="rename">
+                        <span class="iconfont rename"></span>重命名
+                      </DropdownItem>
+                      <DropdownItem name="setting">
+                        <span class="iconfont icon-editor-setting"></span>更多设置
+                      </DropdownItem>
+                      <DropdownItem name="delete">
+                        <span class="iconfont delete"></span>删除
+                      </DropdownItem>
+                    </DropdownMenu>
                 </Dropdown>
-                </span>
+                </div>
               </div>
               <div class="meta-description">
                 <span class="columns-description" :title="columnItem.desc">{{columnItem.desc}}</span>

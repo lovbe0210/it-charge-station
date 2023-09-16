@@ -44,8 +44,8 @@
         </Button>
         <Button type="text" class="edit-color-btn" @click="changeGradientColor(false)"
                 :disabled="editColors.thirdColor == null && editColors.secondColor == null">
-                  <span class="iconfont icon-delete"
-                        style="font-size: 1.1rem;line-height: 1.4rem;margin-left: 5px;"></span>
+                  <span class="iconfont delete"
+                        style="font-size: 1.2rem;line-height: 1.4rem;margin-left: 5px;color: #A3A3A3;"></span>
         </Button>
       </div>
     </div>

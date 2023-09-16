@@ -63,7 +63,7 @@
                 <div class="actions-cont" v-show="isColumnView && navShowType === 'tree'">
                   <a-tooltip overlayClassName="read-nav-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
                     <template slot="title">
-                      {{openAllTree ? '全部展开' : '全部折叠'}}
+                      {{openAllTree ? '全部折叠' : '全部展开'}}
                     </template>
                     <span class="action-item" @click="expandTreeNode()">
                     <span :class="['iconfont', openAllTree ? 'icon-nav-open' : 'icon-nav-close']"></span>

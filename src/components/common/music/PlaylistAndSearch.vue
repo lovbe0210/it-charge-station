@@ -13,7 +13,7 @@
         </span>
     </div>
     <!-- 歌单 -->
-    <b-list-group class="list" @wheel="handleScrollWheel">
+    <b-list-group class="music-list" @wheel="handleScrollWheel">
       <b-list-group-item class="playItem" v-for="(item,index) in playList" :key="item.id" @dblclick="playSelect(index)">
         <b-row :class="[$store.state.musicInfo.musicId === item.id ? 'currentPlay' : '']"
                @mouseenter="currentShowId=item.id"
@@ -30,7 +30,7 @@
           </b-col>
           <b-col cols="2" class="music-del" v-show="!ifSearchOrPlayList && currentShowId===item.id"
                  @click="removeFromPlayList(index)">
-            <span class="iconfont icon-music-del"></span>
+            <span class="iconfont delete"></span>
           </b-col>
         </b-row>
 
@@ -77,7 +77,8 @@
           this.ifSearchOrPlayList = 1;
           this.searchResult = [];
           this.topMusicScroll = 0;
-          let playList = document.querySelector(".list");
+          let playList = document.querySelector(".music-list");
+          // debugger
           playList.scrollTo({
             behavior: "instant",
             top: this.topMusicScroll
@@ -149,7 +150,7 @@
         if (this.playList == null || this.playList.length <= 4) {
           return;
         }
-        let playList = document.querySelector(".list");
+        let playList = document.querySelector(".music-list");
         let itemHeight = parseFloat(window.getComputedStyle(playList.firstChild).getPropertyValue("height"));
         let totalHeight = itemHeight * (this.playList.length - 4);
         if (event.wheelDelta || event.detail) {

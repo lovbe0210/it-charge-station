@@ -158,6 +158,14 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+
+            .icon-box {
+              min-width: 32px;
+              min-height: 32px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
           }
         }
 
@@ -239,4 +247,40 @@
 
 /deep/ .ant-tooltip-arrow {
   display: none;
+}
+
+/deep/.ivu-select-dropdown {
+  padding: 5px 0;
+  border-radius: 8px;
+
+  .ivu-dropdown-menu {
+    min-width: 135px;
+
+    .ivu-dropdown-item {
+      color: #262626;
+      padding: 8px 16px 8px 20px;
+
+      .iconfont {
+        margin-right: 5px;
+      }
+
+      .permissions {
+        font-weight: 500;
+      }
+
+      .delete {
+        color: red;
+      }
+    }
+
+    .ivu-dropdown-item:hover {
+      background-color: #eff0f0;
+    }
+
+    .ivu-dropdown-item:last-child {
+      border-top: 1px solid #E7E9E8;
+      border-radius: 4px;
+      margin: 5px 0 0 0;
+    }
+  }
 }

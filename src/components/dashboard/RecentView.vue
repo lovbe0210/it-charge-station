@@ -6,7 +6,7 @@
       <div class="operation">
         <Input class="search" search placeholder="搜索标题关键词"/>
         <div class="action">
-          <span class="iconfont icon-editor-del"></span>
+          <span class="iconfont delete"></span>
           <span>清空记录</span>
         </div>
       </div>

@@ -61,10 +61,6 @@
   content: "\e698";
 }
 
-.icon-delete:before {
-  content: "\e61a";
-}
-
 .icon-single-loop:before {
   content: "\e66d";
 }
@@ -127,14 +123,6 @@
 
 .icon-loading:before {
   content: "\e8fd";
-}
-
-.icon-music-del:before {
-  content: "\e61c";
-}
-
-.icon-editor-del:before {
-  content: "\e8b7";
 }
 
 .icon-editor-setting:before {
