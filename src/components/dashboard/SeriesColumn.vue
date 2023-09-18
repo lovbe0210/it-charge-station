@@ -48,9 +48,12 @@
               <div class="meta-title">
                 <a :href="columnItem.columnHome" class="column-link" target="_self">
                   <span class="column-title">
-                    <span class="column-name">
+                    <span v-if="!editColumnName" class="column-name">
                       <span class="column-name-text" :title="columnItem.columnName">{{columnItem.columnName}}</span>
                       <span :class="['iconfont', columnItem.isPublic === 1 ? 'public' : 'icon-lock']"></span>
+                    </span>
+                    <span v-else class="column-name">
+                      <Input/>
                     </span>
                   </span>
                 </a>
@@ -75,7 +78,7 @@
                         <span class="iconfont delete"></span>删除
                       </DropdownItem>
                     </DropdownMenu>
-                </Dropdown>
+                  </Dropdown>
                 </div>
               </div>
               <div class="meta-description">
@@ -103,6 +106,31 @@
         </div>
       </div>
     </div>
+    <div class="modal-box">
+      <Modal
+        v-model="showModal"
+        :title="changePermission ? '权限编辑' : deleteColumn ? '删除专栏' : ''"
+        :mask-closable="false"
+        :lock-scroll="false"
+        :footer-hide="true">
+        <div v-if="changePermission">
+          <div class="modal-title">
+            <span>公开性</span>
+          </div>
+          <RadioGroup v-model="isPublic" vertical>
+            <Radio label="0">
+              <span>仅作者可访问</span>
+            </Radio>
+            <Radio label="1">
+              <span>互联网所有人可访问</span>
+            </Radio>
+          </RadioGroup>
+        </div>
+        <div v-if="deleteColumn">
+          删除专栏
+        </div>
+      </Modal>
+    </div>
   </div>
 </template>
 
@@ -113,6 +141,11 @@
       return {
         // 专栏展示方式 1图文模式，2列表模式
         columnShowType: 2,
+        // 控制专栏名称编辑或显示
+        editColumnName: false,
+        // 控制权限和删除页面模态框的显示
+        changePermission: false,
+        deleteColumn: false,
         seriesColumnList: [
           {
             id: '1231asdasdad',
@@ -220,15 +253,41 @@
             updateTime: '2023-12-23 22:09:11',
             sort: 0
           }
-        ]
+        ],
+        isPublic: 0
+      }
+    },
+    computed: {
+      showModal: {
+        get() {
+          return this.changePermission || this.deleteColumn;
+        },
+        set(value) {
+          this.changePermission = value;
+          this.deleteColumn = value;
+        }
       }
     },
     methods: {
       getTooltipContainer() {
         return this.$refs.TooltipContainer
       },
-      routeNavigate() {
-
+      routeNavigate(itemName) {
+        switch (itemName) {
+          case "scope":
+            // 权限编辑，使用模态框显示
+            this.changePermission = true;
+            break;
+          case "rename":
+            this.editColumnName = true;
+            break;
+          case "setting":
+            this.$router.push({})
+            break;
+          case "delete":
+            this.deleteColumn = true;
+            break;
+        }
       }
     },
     mounted() {

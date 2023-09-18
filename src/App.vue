@@ -16,7 +16,7 @@
   // import ViewUI from 'view-design'
   import {
     Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload, Icon,
-    Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane
+    Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane, RadioGroup, Radio
   } from 'view-design'
   import 'view-design/dist/styles/iview.css'
   import { Tooltip, Card, Popover, Pagination, Tag, Select, Checkbox, Table } from 'ant-design-vue'
@@ -47,6 +47,8 @@
   Vue.component('ListItemMeta', List.Item.Meta);
   Vue.component('Tabs', Tabs);
   Vue.component('TabPane', TabPane);
+  Vue.component('RadioGroup', RadioGroup);
+  Vue.component('Radio', Radio);
   Vue.component('a-tooltip', Tooltip);
   Vue.component('a-card', Card);
   Vue.component('a-card-meta', Card.Meta);
