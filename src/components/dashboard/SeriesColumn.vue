@@ -117,14 +117,33 @@
           <div class="modal-title">
             <span>公开性</span>
           </div>
-          <RadioGroup v-model="isPublic" vertical>
-            <Radio label="0">
-              <span>仅作者可访问</span>
-            </Radio>
-            <Radio label="1">
-              <span>互联网所有人可访问</span>
-            </Radio>
-          </RadioGroup>
+          <a-radio-group v-model="isPublic" :defaultValue="isPublic" @change="changeScope">
+            <a-radio style="display: block; height: 30px; lineHeight: 30px" :value="0">
+              仅作者可访问
+            </a-radio>
+            <a-popconfirm
+              ok-text="确认"
+              cancel-text="取消"
+              @confirm="confirmChangeScope(true)"
+              @cancel="confirmChangeScope(false)"
+              placement="rightBottom"
+              :disabled="isPublic === 1"
+            >
+              <span class="iconfont delete" slot="icon"></span>
+              <div slot="title">
+                  <span>
+                    确认公开给互联网所有人
+                  </span>
+                <span>
+                    开启后，互联网所有获得链接的人皆可访问知识库下的全部内容。你需对其合法合规性负责，遵守相关法律法规及语雀 服务协议 约定，违规内容可能无法被查看。
+                  </span>
+              </div>
+              <a-radio style="display: block; height: 30px; lineHeight: 30px" :value="1">
+                互联网所有人可访问
+              </a-radio>
+            </a-popconfirm>
+
+          </a-radio-group>
         </div>
         <div v-if="deleteColumn">
           删除专栏
@@ -287,6 +306,11 @@
           case "delete":
             this.deleteColumn = true;
             break;
+        }
+      },
+      confirmChangeScope(value) {
+        if (value) {
+          this.isPublic = 1;
         }
       }
     },

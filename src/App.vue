@@ -16,10 +16,10 @@
   // import ViewUI from 'view-design'
   import {
     Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload, Icon,
-    Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane, RadioGroup, Radio
+    Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane
   } from 'view-design'
   import 'view-design/dist/styles/iview.css'
-  import { Tooltip, Card, Popover, Pagination, Tag, Select, Checkbox, Table } from 'ant-design-vue'
+  import { Tooltip, Card, Popover, Pagination, Tag, Select, Checkbox, Table, Radio, Popconfirm } from 'ant-design-vue'
   import commonUtil from "@/utils/common"
   // 引入弹幕模块
   import {vueBaberrage} from 'vue-baberrage'
@@ -47,8 +47,8 @@
   Vue.component('ListItemMeta', List.Item.Meta);
   Vue.component('Tabs', Tabs);
   Vue.component('TabPane', TabPane);
-  Vue.component('RadioGroup', RadioGroup);
-  Vue.component('Radio', Radio);
+  Vue.component('a-radio-group', Radio.Group);
+  Vue.component('a-radio', Radio);
   Vue.component('a-tooltip', Tooltip);
   Vue.component('a-card', Card);
   Vue.component('a-card-meta', Card.Meta);
@@ -59,6 +59,7 @@
   Vue.component('a-select-option', Select.Option);
   Vue.component('a-checkbox', Checkbox);
   Vue.component('a-table', Table);
+  Vue.component('a-popconfirm', Popconfirm);
 
   export default {
     name: 'App',
