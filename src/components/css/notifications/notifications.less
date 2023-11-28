@@ -1,3 +1,4 @@
+@import '../common-var.less';
 .layout-module_notifications {
   display: flex;
   justify-content: center;
@@ -31,11 +32,11 @@
             align-items: center;
             padding: 0 12px;
 
-            .point {
-              color: #262626;
-              font-size: 25px;
+            .count {
+              color: @badge_color;
+              //font-size: 25px;
               font-weight: 600;
-              margin-right: 5px;
+              //margin-right: 5px;
             }
           }
 
@@ -50,6 +51,11 @@
           font-size: 14px;
           font-weight: 700;
           margin-bottom: 10px;
+          height: 38px;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          cursor: pointer;
 
           .item {
             justify-content: center;

@@ -65,172 +65,234 @@
     flex-wrap: wrap;
 
     .column-list-item {
-      box-sizing: border-box;
-      padding: 0;
-      color: #262626;
-      font-size: 14px;
-      font-variant: tabular-nums;
-      line-height: 1.5715;
-      list-style: none;
-      font-feature-settings: "tnum";
-      position: relative;
-      border-radius: 6px;
-      border: 0;
-      width: calc(~"50% - 20px");
+      width: calc(46%);
       transition: none;
       margin-bottom: 16px;
+      cursor: grab;
+      color: #262626;
+
+      .column-cover {
+        margin-right: 0;
+        margin-left: 0;
+        transform: translateY(0);
+        border: 1px solid #E7E9E8;
+        border-bottom: 0;
+        border-radius: 8px 8px 0 0;
+
+        .cover-box {
+          display: flex;
+          border-bottom: 1px solid #E7E9E8;
+          border-radius: 4px 4px 0 0;
+          width: 100%;
+          cursor: pointer;
+
+          img {
+            vertical-align: middle;
+            border-style: none;
+            border-radius: 6px 6px 0 0;
+            flex-grow: 1;
+            width: 359px;
+            height: 179px;
+          }
+        }
+
+        .cover-edit {
+          visibility: hidden;
+          width: 25px;
+          height: 25px;
+          background: #585A5A;
+          position: absolute;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 6px;
+          top: 15px;
+          right: 12px;
+
+          .bianji {
+            color: #ffffff;
+          }
+        }
+      }
+
+      .column-cover:hover {
+        .cover-edit {
+          visibility: visible;
+        }
+      }
+
 
       .column-card-body {
         position: relative;
         padding: 16px;
         border-radius: 8px;
         border: 1px solid #E7E9E8;
+        box-sizing: border-box;
+        margin: 0;
+        color: #262626;
+        font-size: 14px;
+        font-variant: tabular-nums;
+        line-height: 1.5715;
+        list-style: none;
+        font-feature-settings: "tnum","tnum";
+        position: relative;
+        background: #ffffff;
 
         .column-meta {
-          display: flex;
+          margin-top: 0;
+          height: 64px;
+          overflow: hidden;
 
-          .meta-icon {
-            .iconfont {
-              position: relative;
-              top: -6px;
-              font-size: 25px;
+          .card-meta-title {
+            padding-right: 32px;
+            margin-bottom: 8px;
+            overflow: hidden;
+            font-weight: 500;
+            font-size: 16px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            .book-link {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              line-height: 1.35;
+              touch-action: manipulation;
+              cursor: pointer;
+
+              .lark-book-title {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                line-height: 1.35;
+
+                .book-name {
+                  line-height: 1.5;
+                  color: #262626;
+                  display: flex;
+                  align-items: center;
+                  width: 100%;
+
+                  .book-name-text {
+                    display: block;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                  }
+
+                  .book-name-scope {
+                    position: relative;
+                    margin-left: 2px;
+
+                    .iconfont {
+                      font-size: 14px;
+                      color: #8A8F8D;
+                    }
+                  }
+                }
+              }
             }
-            margin-right: 5px;
           }
 
-          .meta-content {
-            display: block;
+          .card-meta-description {
+            font-size: 12px;
+            display: -webkit-box;
+            max-height: 21px;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
-
-            .column-name {
-              padding-right: 35px;
-              color: #262626;
-              line-height: 1.5;
-              display: flex;
-              align-items: center;
-              width: 100%;
-
-              .column-name-text {
-                font-size: 16px;
-                display: block;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-              }
-              .icon-content-public, .icon-lock {
-                font-size: 14px;
-              }
-            }
-
-            .meta-description {
-              font-size: 12px;
-              display: -webkit-box;
-              min-height: 21px;
-              -webkit-line-clamp: 1;
-              -webkit-box-orient: vertical;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              line-height: 21px;
-              margin-top: 10px;
-
-              .columns-description {
-                color: #8A8F8D;
-                display: block;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-              }
-            }
+            line-height: 21px;
+            color: rgba(0,0,0,0.45);
           }
+        }
 
-          .meta-menu {
-            visibility: hidden;
-            position: absolute;
-            right: 12px;
+        .column-hover-show {
+          line-height: 16px;
+          padding: 4px;
+          width: 30px;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          color: #000;
+          visibility: hidden;
+          position: absolute;
+          right: 12px;
+          border-radius: 8px;
+          border: 1px solid #E7E9E8;
+
+          /deep/.ivu-select-dropdown {
+            margin: 10px 0;
             border-radius: 8px;
-            border: 1px solid #E7E9E8;
-            top: 12px;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-
-            .icon-box {
-              min-width: 32px;
-              min-height: 32px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            }
           }
+
+          /deep/.ivu-dropdown-item {
+            padding: 7px 25px;
+            color: #262626;
+          }
+
+          /deep/.ivu-dropdown-item:last-child {
+            color: #DF2A3F;
+          }
+
+          .iconfont {
+            font-size: 14px;
+          }
+
         }
 
         .column-article {
           padding-left: 16px;
-          padding-top: 15px;
-          margin: 15px 8px 0;
-          min-height: 100px;
+          margin-right: 4px;
+          margin-left: 4px;
           border-top: 1px solid #E7E9E8;
+          padding-top: 20px;
+          margin-top: 8px;
+          min-height: 116px;
 
-          li::marker {
-            color: #8A8F8D;
-          }
+          li {
+            position: relative;
 
-          .columnsummary-module_item {
-            color: #8A8F8D;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            font-size: 14px;
-            line-height: 18px;
-
-            .columnsummary-module_itemText {
-              flex: auto;
-              display: block;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-            }
-
-            .columnsummary-module_itemTime {
-              display: block;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              min-width: 80px;
-              margin-left: 8px;
-              font-size: 12px;
+            .column-summary-item {
+              display: flex;
+              align-items: center;
+              margin-bottom: 12px;
+              font-size: 14px;
               line-height: 21px;
-              text-align: right;
-            }
-          }
+              color: #8A8F8D;
+              cursor: pointer;
 
-          .columnsummary-module_item:hover {
-            .columnsummary-module_itemText {
-              color: #262626;
-            }
-          }
+              .column-summary-itemText {
+                flex: auto;
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
 
-          .empty-li {
-            min-height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-            color: #8A8F8D;
+              .column-summary-itemTime {
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                min-width: 80px;
+                margin-left: 8px;
+                font-size: 12px;
+                line-height: 21px;
+                text-align: right;
+                color: #8A8F8D;
+              }
+            }
           }
         }
       }
-    }
 
-    .column-list-item:hover {
-      .meta-menu {
-        visibility: visible!important;
+      .column-card-body:hover {
+        .column-hover-show {
+          visibility: visible;
+        }
       }
     }
   }

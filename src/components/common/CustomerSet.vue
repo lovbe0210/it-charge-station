@@ -3,13 +3,13 @@
     <div class="title">
       🎨 个人偏好
     </div>
-    <div class="theme-color setting">
+    <div class="theme-color settings">
       <div class="context">
         主题设置
       </div>
       <ColorPicker v-model="customerSet.themeColor" alpha size="small"/>
     </div>
-    <div class="bacc-color setting">
+    <div class="bacc-color settings">
       <div class="context">
         背景设置
       </div>
@@ -44,12 +44,11 @@
         </Button>
         <Button type="text" class="edit-color-btn" @click="changeGradientColor(false)"
                 :disabled="editColors.thirdColor == null && editColors.secondColor == null">
-                  <span class="iconfont delete"
-                        style="font-size: 1.2rem;line-height: 1.4rem;margin-left: 5px;color: #A3A3A3;"></span>
+                  <span class="iconfont delete" style="font-size: 1.1rem;line-height: 1.4rem;margin-left: 5px;"></span>
         </Button>
       </div>
     </div>
-    <div class="quick-setting setting">
+    <div class="quick-setting settings">
       <Button @click="changeThem(0)" size="small">恢复默认</Button>
       <Button @click="changeThem(1)" size="small">预设一</Button>
       <Button @click="changeThem(2)" size="small">预设二</Button>

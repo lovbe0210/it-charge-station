@@ -3,7 +3,7 @@
     <div class="layout-module_notificationsMenu">
       <div class="layout-module_menu enable-background">
         <div class="menu-wrap">
-          <div class="menu-item fixed-anchor-point">
+          <div class="fixed-anchor-point">
             <div class="item">
               <span class="iconfont icon-paper-plane"></span>
               消息中心

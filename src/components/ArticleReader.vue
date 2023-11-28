@@ -10,7 +10,7 @@
               {{isPublic ? '互联网所有人可以访问' : '仅关注可见'}}
             </template>
             <div class="header-status-icon" @click="docStyle.pageSize = docStyle.pageSize === 1 ? 2 : 1">
-              <span class="iconfont icon-content-public"/>
+              <span class="iconfont public"/>
             </div>
           </a-tooltip>
         </div>

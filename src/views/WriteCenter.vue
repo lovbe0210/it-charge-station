@@ -133,7 +133,7 @@
             <Divider/>
             <DropdownItem>
               <div class="editor-set">
-                <span class="editor-icon iconfont icon-editor-setting"></span>
+                <span class="editor-icon iconfont setting"></span>
                 <span>文档设置</span>
               </div>
             </DropdownItem>

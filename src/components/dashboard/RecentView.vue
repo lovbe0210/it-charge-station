@@ -43,10 +43,6 @@
                 {{viewItem.viewCount}}阅读 · {{viewItem.commentCount}}评论
               </span>
             </div>
-            <div>
-              <b-link :class="viewItem.authorId === 'asd234d2wsdasdsad' ? 'item-edit' : ''" :to="'/editor/' + viewItem.id">
-              </b-link>
-            </div>
           </div>
         </div>
       </div>

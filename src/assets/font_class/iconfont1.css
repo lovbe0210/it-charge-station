@@ -3,7 +3,7 @@
   /* Color fonts */
   src:
       /*url('iconfont.woff2?t=1648120487315') format('woff2');*/
-      url('//at.alicdn.com/t/c/font_3029751_4ot5u9oxtn6.woff2?t=1691980403262') format('woff2');
+      url('//at.alicdn.com/t/c/font_3029751_wyib7qwk2s.woff2?t=1701181290042') format('woff2');
 }
 
 .iconfont {
@@ -138,7 +138,7 @@
   content: "\e60d";
 }
 
-.icon-setting:before {
+.icon-colorful-setting:before {
   content: "\e6c3";
 }
 

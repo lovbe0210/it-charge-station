@@ -3,8 +3,6 @@
     <div id="main-right-content" class="layout-module_MainContent">
       <div class="layout-module_MainContentChildren">
         <div class="main-container data-stats">
-
-
           <div class="wrap">
             <div class="nav">
               <div class="btn">
@@ -32,7 +30,7 @@
                 <div class="item">
                   <div class="light"></div>
                   <div class="licon">
-                    <span class="iconfont icon-setting"></span>
+                    <span class="iconfont setting"></span>
                   </div>
                   <div class="con">menu1</div>
                   <div class="ricon"></div>
@@ -40,7 +38,7 @@
                 <div class="item">
                   <div class="light"></div>
                   <div class="licon">
-                    <span class="iconfont icon-setting"></span>
+                    <span class="iconfont setting"></span>
                   </div>
                   <div class="con">menu2</div>
                   <div class="ricon"></div>
@@ -48,7 +46,7 @@
                 <div class="item">
                   <div class="light"></div>
                   <div class="licon">
-                    <span class="iconfont icon-setting"></span>
+                    <span class="iconfont setting"></span>
                   </div>
                   <div class="con">menu3</div>
                   <div class="ricon"></div>
@@ -56,7 +54,7 @@
                 <div class="item">
                   <div class="light"></div>
                   <div class="licon">
-                    <span class="iconfont icon-setting"></span>
+                    <span class="iconfont setting"></span>
                   </div>
                   <div class="con">menu4</div>
                   <div class="ricon"></div>
@@ -64,7 +62,7 @@
                 <div class="item">
                   <div class="light"></div>
                   <div class="licon">
-                    <span class="iconfont icon-setting"></span>
+                    <span class="iconfont setting"></span>
                   </div>
                   <div class="con">menu5</div>
                   <div class="ricon"></div>
@@ -72,7 +70,7 @@
                 <div class="item">
                   <div class="light"></div>
                   <div class="licon">
-                    <span class="iconfont icon-setting"></span>
+                    <span class="iconfont setting"></span>
                   </div>
                   <div class="con">menu6</div>
                   <div class="ricon"></div>
@@ -86,7 +84,7 @@
                 <div class="item">
                   <div class="light"></div>
                   <div class="licon">
-                    <span class="iconfont icon-setting"></span>
+                    <span class="iconfont setting"></span>
                   </div>
                   <div class="con">menu1</div>
                   <div class="ricon"></div>
@@ -94,7 +92,7 @@
                 <div class="item">
                   <div class="light"></div>
                   <div class="licon">
-                    <span class="iconfont icon-setting"></span>
+                    <span class="iconfont setting"></span>
                   </div>
                   <div class="con">menu2</div>
                   <div class="ricon"></div>
@@ -102,7 +100,7 @@
                 <div class="item">
                   <div class="light"></div>
                   <div class="licon">
-                    <span class="iconfont icon-setting"></span>
+                    <span class="iconfont setting"></span>
                   </div>
                   <div class="con">menu3</div>
                   <div class="ricon"></div>
@@ -110,7 +108,7 @@
                 <div class="item">
                   <div class="light"></div>
                   <div class="licon">
-                    <span class="iconfont icon-setting"></span>
+                    <span class="iconfont setting"></span>
                   </div>
                   <div class="con">menu4</div>
                   <div class="ricon"></div>
@@ -118,7 +116,7 @@
                 <div class="item">
                   <div class="light"></div>
                   <div class="licon">
-                    <span class="iconfont icon-setting"></span>
+                    <span class="iconfont setting"></span>
                   </div>
                   <div class="con">menu5</div>
                   <div class="ricon"></div>
@@ -126,7 +124,7 @@
                 <div class="item">
                   <div class="light"></div>
                   <div class="licon">
-                    <span class="iconfont icon-setting"></span>
+                    <span class="iconfont setting"></span>
                   </div>
                   <div class="con">menu6</div>
                   <div class="ricon"></div>

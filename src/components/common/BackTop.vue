@@ -3,9 +3,9 @@
     <div class="back-top" v-show="backTopShow" @click="backTop">
       <span class="iconfont icon-top"/>
     </div>
-    <div class="setting" v-show="immediate || backTopShow" v-b-tooltip.hover.leftbottom.v-secondary :title="title"
+    <div class="settings" v-show="immediate || backTopShow" v-b-tooltip.hover.leftbottom.v-secondary :title="title"
          @click="$store.commit('showCustomer', true)">
-      <span class="iconfont icon-setting"/>
+      <span class="iconfont icon-colorful-setting"/>
     </div>
     <!-- surprise -->
     <Drawer placement="right" v-model="showCustomer" :closable="false"
@@ -152,7 +152,7 @@
       background: @background-color-base;
     }
 
-    .setting {
+    .settings {
       width: 48px;
       height: 48px;
 
