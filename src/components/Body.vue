@@ -152,13 +152,13 @@
           },
           {
             id: '002',
-            title: 'This is title 2',
-            description: 'This is description, this is description, this is description.this is description.this is description.this is description.'
+            title: 'Java后端随笔',
+            description: '王有志，一个分享硬核Java技术的互金摸鱼侠 加入Java人的提桶跑路群：共同富裕的Java人 平时我在网上冲浪的时候，收集了不少八股文和面试文，内容虽然多，但质量上良莠不齐，主打一个不假思索的互相抄，使得很多错误内容一代代得“传承”了下来。所以，我对收集的内容做了归纳和整理，通过查阅资料重新做了解答，并给出了每道八股文评分'
           },
           {
             id: '003',
-            title: 'This is title 3',
-            description: 'This is description, this is description, this is description.'
+            title: 'Java 内存模型（JMM）',
+            description: '内存模型定义了共享内存系统中多线程程序读写操作行为的规范，来屏蔽各种硬件和操作系统的内存访问差异，来实现 Java 程序在各个平台下都能达到一致的内存访问效果。'
           }
         ],
         images: [

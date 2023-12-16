@@ -69,34 +69,34 @@
             id: '001',
             title: '臻默：整理100+语雀小技巧之后，我们开始了知识管理的大航海大巷哈',
             description: '缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了',
-            // preview: require('@/assets/img/1.jpg'),
+            preview: require('@/assets/img/1.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
           {
             id: '002',
-            title: 'This is title 2',
-            description: 'This is description, this is description, this is description.',
+            title: '工作中的23个设计模式',
+            description: '从基础的角度看，设计模式是研究类本身或者类与类之间的协作模式，是进行抽象归纳的一个很好的速成思路。后面阅读设计模式后，为了加深理解，对相关图片进行了描绘和微调。从技术的角度已经有很多好的总结，本文会换一种角度思考，既然设计模式研究的是类与类的关系，作为工作的个体，一些工作中的策略是不是也可以进行类比，可以更好地去思考这些模式？答案是肯定的。',
             preview: require('@/assets/img/2.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
           {
             id: '003',
-            title: 'This is title 3',
-            description: 'This is description, this is description, this is description.',
+            title: '如何正确的提问？',
+            description: '上一篇我们提到了为什么问题比答案重要，这一篇我们来说说如何正确的提问。',
             preview: require('@/assets/img/3.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
           {
             id: '004',
-            title: '臻默：整理100+语雀小技巧之后，我们开始了知识管理的大航海',
-            description: '缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了',
+            title: '写作｜《认知觉醒》',
+            description: '如果让我用一句话来总结自己快速成长的“秘诀”，那就是：盯着改变去学习。这的确是我这些年快速蜕变的心法，也是我回答很多读者的答案。因为他们常问：你书中提到的那些书，其实很多我都读过，但为什么我读过之后就仅仅是读过，而你不仅能在这么短的时间里发生蜕变，还能写出这样两本书呢',
             preview: require('@/assets/img/4.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
           {
             id: '005',
-            title: 'This is title 5',
-            description: 'This is description, this is description, this is description.',
+            title: '单例模式',
+            description: '人在干，天在看”，看来是苍天有眼啊，看着国办同志多年来辛辛苦苦、扎扎实实做出奉献，应该给予奖赏……',
             preview: require('@/assets/img/5.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
