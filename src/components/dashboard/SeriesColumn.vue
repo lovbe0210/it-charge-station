@@ -83,8 +83,10 @@
                 </DropdownMenu>
               </Dropdown>
           </span>
-          <div class="empty-li" v-if="columnItem.articleList == null || columnItem.articleList.length === 0">
-            <span>专栏暂无内容</span>
+          <div v-if="columnShowType === 2 && (columnItem.articleList == null || columnItem.articleList.length === 0)">
+            <ul class="column-article empty-li">
+              <span>专栏暂无内容</span>
+            </ul>
           </div>
           <div v-else>
             <ul class="column-article" v-if="columnShowType == 2">
