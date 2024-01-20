@@ -50,7 +50,7 @@
       // 即刻显示
       immediate: {
         type: Boolean,
-        default: false
+        default: true
       }
     },
     computed: {

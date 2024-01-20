@@ -2,11 +2,13 @@
   <b-container class="index">
       <Header/>
       <router-view class="show"></router-view>
+      <back-top></back-top>
   </b-container>
 </template>
 
 <script>
   import Header from '@/components/Header'
+  import BackTop from '@/components/common/BackTop';
 
   export default {
     name: 'Index',
@@ -25,7 +27,8 @@
       this.$store.commit('changeShowContext', false)
     },
     components: {
-      Header
+      Header,
+      BackTop
     },
     methods: {
       onSelect (value) {

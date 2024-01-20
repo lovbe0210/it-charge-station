@@ -131,13 +131,13 @@
       </div>
     </b-col>
 
-    <back-top></back-top>
+<!--    <back-top></back-top>-->
   </b-row>
 </template>
 
 <script>
   import CarouselSwipe from '@/components/common/CarouselSwipe';
-  import BackTop from '@/components/common/BackTop';
+  // import BackTop from '@/components/common/BackTop';
   import {MESSAGE_TYPE} from 'vue-baberrage'
 
   export default {
@@ -230,8 +230,8 @@
       }
     },
     components: {
-      CarouselSwipe,
-      BackTop
+      CarouselSwipe
+      // BackTop
       // CustomerSet,
       // MusicIndex
     },

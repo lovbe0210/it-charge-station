@@ -1,12 +1,12 @@
 <template>
   <div class="host-container">
-    问答页面
+    随笔
   </div>
 </template>
 
 <script>
     export default {
-        name: "QAContainer",
+        name: "RamblyContainer",
         data() {
             return {}
         },

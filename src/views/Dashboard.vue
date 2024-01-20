@@ -30,20 +30,12 @@
               专栏
             </div>
           </div>
-          <div :class="['menu-item', activeMenuForEq === 'InterLocution' ? 'active-menu' : '']"
-               @click="routeNavigate('interLocution')">
-            <div class="light"></div>
-            <div class="item">
-              <span class="iconfont icon-question-answer"></span>
-              问答
-            </div>
-          </div>
-          <div :class="['menu-item', activeMenuForEq === 'Mood' ? 'active-menu' : '']"
-               @click="routeNavigate('mood')">
+          <div :class="['menu-item', activeMenuForEq === 'RamblyJot' ? 'active-menu' : '']"
+               @click="routeNavigate('ramblyJot')">
             <div class="light"></div>
             <div class="item">
               <span class="iconfont icon-mood-calendar"></span>
-              心情
+              随笔
             </div>
           </div>
           <div class="menu-item item-line">
@@ -98,12 +90,12 @@
     <div class="layout-module_dashboardContent enable-background">
       <router-view></router-view>
     </div>
-    <back-top :immediate="true" :customHeight="300"></back-top>
+<!--    <back-top :immediate="true" :customHeight="300"></back-top>-->
   </div>
 </template>
 
 <script>
-  import BackTop from '@/components/common/BackTop';
+  // import BackTop from '@/components/common/BackTop';
   export default {
     name: 'Dashboard',
     beforeRouteEnter(from, to, next) {
@@ -125,7 +117,7 @@
       }
     },
     components: {
-      BackTop
+      // BackTop
     },
     watch: {
       $route(to) {

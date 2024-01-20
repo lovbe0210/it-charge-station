@@ -301,15 +301,9 @@
           },
           {
             uid: '4564gdgd',
-            code: 'qa',
+            code: 'ramblyJot',
             canExpanded: 0,
-            menuName: '问答'
-          },
-          {
-            uid: 'sdgf6567',
-            code: 'mood',
-            canExpanded: 0,
-            menuName: '心情'
+            menuName: '随笔'
           }
         ],
         flag: false,
@@ -348,7 +342,7 @@
       },
       toWriteCenter() {
         let routeUrl = this.$router.resolve({
-          path: '/editor'
+          path: '/editor/54334ssdsds521'
         })
         window.open(routeUrl.href, '_blank')
       },
@@ -403,11 +397,8 @@
           case 'chatMessage':
             this.$router.push({name: 'ChatMessage'})
             break;
-          case 'qa':
-            this.$router.push({name: 'QAContainer'})
-            break;
-          case 'mood':
-            this.$router.push({name: 'MoodContainer'})
+          case 'ramblyJot':
+            this.$router.push({name: 'RamblyJot'})
             break;
           default:
             this.$router.push({path: '/cate/' + itemName})

@@ -67,17 +67,10 @@ const routes = [
           },
           {
             // 问答页面
-            path: '/qa',
-            name: 'QAContainer',
+            path: '/rambly',
+            name: 'ramblyContainer',
             // 此方式为路由懒加载
-            component: () => import('@/components/QAContainer')
-          },
-          {
-            // 心情页面
-            path: '/mood',
-            name: 'MoodContainer',
-            // 此方式为路由懒加载
-            component: () => import('@/components/MoodContainer')
+            component: () => import('@/components/RamblyContainer')
           },
           {
             // 分类承载容器
@@ -145,16 +138,10 @@ const routes = [
             component: () => import('@/components/dashboard/SeriesColumn')
           },
           {
-            // 问答
-            path: 'interLocution',
-            name: 'InterLocution',
-            component: () => import('@/components/dashboard/InterLocution')
-          },
-          {
-            // 心情
-            path: 'mood',
-            name: 'Mood',
-            component: () => import('@/components/dashboard/Mood')
+            // 随笔
+            path: 'ramblyJot',
+            name: 'RamblyJot',
+            component: () => import('@/components/dashboard/RamblyJot')
           },
           {
             // 收藏

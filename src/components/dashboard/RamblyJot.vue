@@ -3,7 +3,7 @@
     <div id="main-right-content" class="layout-module_MainContent">
       <div class="layout-module_MainContentChildren">
         <div class="main-container my-collection">
-          问答
+          随笔
         </div>
       </div>
     </div>
