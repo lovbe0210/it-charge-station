@@ -87,6 +87,18 @@ export const plugins = [
   Lightblock
 ]
 
+export const ramblyPlugins = [
+  Image,
+  ImageUploader,
+  File,
+  FileUploader,
+  Link,
+  Tasklist,
+  CodeBlock,
+  ToolbarPlugin
+]
+
+
 export const cards = [
   HrComponent,
   CheckboxComponent,

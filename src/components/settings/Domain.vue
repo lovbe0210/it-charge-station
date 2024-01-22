@@ -59,8 +59,8 @@
                 <span>njnj</span>
               </a>
               <span class="FollowingFollowers-module_text">
-                        等<b class="larkui-popover-trigger">1</b>人也关注了他
-                      </span>
+                等<b class="larkui-popover-trigger">1</b>人也关注了他
+              </span>
             </p>
           </div>
         </div>
