@@ -1,17 +1,20 @@
 <template>
-  <div class="layout-module_RamblyJot" ref="tooltipContainer">
+  <div class="layout-module_RamblyJot">
     <div class="rambly-module_editor">
-      <div class="editorBase-module_editor">
-        <div class="layout-mode-adapt">
-          <div class="toolbar-ui">
-            <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
-          </div>
+      <div class="scrollbar-visible">
+        <div class="layout-mode-fixed">
           <div class="editor-body">
-            <div class="editor-wrapper">
+            <div class="editor-wrap" ref="scrollbarContext" >
               <div class="editor-wrap-content">
                 <div class="editor-outer-wrap-box">
                   <div class="editor-wrap-box">
-                    <div class="readme-editor" ref="container"></div>
+                    <div class="content-box">
+                      <div class="engine-box">
+                        <div class="engine">
+                          <div ref="container"></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -19,18 +22,18 @@
           </div>
         </div>
       </div>
-      <div class="index-module_buttons_5N4Jx index-module_singleMode_gDWL6">
-      <span class="larkui-popover-trigger">
-        <span class="index-module_addButton_6Y54s" data-aspm-click="c323992.d353727">
-          <button disabled="" data-testid="note-publish" type="button" class="ant-btn ant-btn-default">
-            <span>小记一下</span>
-          </button>
-        </span>
-      </span>
+      <div class="rambly-module_action">
+        <div class="toolbar-ui">
+          <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
+          <div class="rambly-module_button">
+            <button disabled="" type="button" class="ant-btn ant-btn-default">
+              <span>小记一下</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-
-    <div class="index-menos">
+    <div class="rambly-module_list">
       <div class="rambly-jot-wrap">
         <div class="menos-item">
           <a href="/post/2229" class="">
@@ -281,16 +284,22 @@
             {
               type: "button",
               name: "image-uploader",
-              icon: `<span class="iconfont pic-upload"/>`,
-              title: '图片'
+              icon: `<span class="toolbar-icon iconfont pic-upload"/><span class="toolbar-title">图片</span>`
             },
-            'tasklist',
-            'link',
+            {
+              name: "tasklist",
+              icon: `<span class="toolbar-icon iconfont task-list"/><span class="toolbar-title">任务</span>`,
+              title: ''
+            },
+            {
+              name: "link",
+              icon: `<span class="toolbar-icon iconfont pic-upload"/><span class="toolbar-title">链接</span>`,
+              title: ''
+            },
             {
               type: "button",
               name: "file-uploader",
-              icon: `<span class="iconfont attachment"/>`,
-              title: '附件'
+              icon: `<span class="toolbar-icon iconfont attachment"/><span class="toolbar-title">附件</span>`
             }
           ]
         ],
@@ -306,6 +315,8 @@
       Toolbar
     },
     mounted() {
+      pluginConfig.link = {hotkey: { key: ""}};
+      pluginConfig.tasklist = {hotkey: { key: ""}};
       const container = this.$refs.container;
       if (container) {
         //实例化引擎
@@ -317,6 +328,7 @@
           // 所有的插件配置
           config: pluginConfig,
           autoPrepend: false,
+          markdown: false,
           // 文档提示语
           placeholder: '记你想记'
         });
@@ -366,4 +378,5 @@
 </script>
 
 <style scoped lang="less">
+  @import "../css/dashboard/ramblyJot.less";
 </style>

@@ -1,0 +1,260 @@
+.layout-module_RamblyJot {
+  width: 100%;
+  height: 100%;
+  padding: 0 40px 10px;
+
+  // 写作中心页面整体布局设置
+  .rambly-module_editor {
+    margin: 30px 0 0;
+    position: relative;
+    height: calc(~"20vh");
+    max-width: 100%;
+    border-radius: 4px;
+    border: 1px solid #E7E9E8;
+    box-shadow: 0 1px 6px 0 rgba(0,0,0,.02);
+
+    .scrollbar-visible {
+      height: 100%;
+
+      .layout-mode-fixed {
+        height: 100%;
+        position: relative;
+      }
+
+      // 编辑器工具栏区（内部group-item需要在首页index进行设置）
+      .editor-toolbar {
+        position: relative;
+        top: 0;
+        left: 0;
+        z-index: 5;
+        padding: 0 57px;
+        margin: 0 auto;
+        border-top: none;
+        border-bottom: none;
+
+        /deep/ .editor-toolbar-content {
+          position: relative;
+          display: flex;
+          height: 50px;
+          color: #585A5A;
+          justify-content: center;
+          -webkit-box-pack: center;
+          -ms-flex-pack: center;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+
+          .editor-toolbar-group {
+            border-bottom: 1px solid #e8e8e8;
+            position: relative;
+            border-left: none;
+            padding: 4px 6px;
+          }
+
+          .editor-toolbar-group:not(:first-child):after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 10px;
+            right: 0;
+            height: 30px;
+            width: 1px;
+            background-color: #e8e8e8;
+          }
+
+          .toolbar-dropdown {
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+
+      // 编辑器内容区
+      .editor-body {
+        height: calc(~"100%");
+        position: relative;
+
+        // 左边文档内容
+        .editor-wrap {
+          display: flex;
+          height: 100%;
+          overflow-x: hidden;
+          overflow-y: auto;
+          overflow-x: hidden;
+          position: relative;
+          overflow-anchor: none;
+
+          .editor-wrap-content {
+            flex: 1;
+            min-width: 500px;
+
+            .editor-outer-wrap-box {
+              min-width: 500px;
+              padding-bottom: 1px;
+
+              .editor-wrap-box {
+                .content-box {
+                  position: relative;
+
+                  .engine-box {
+                    position: relative;
+                    overflow-anchor: none;
+
+                    .engine {
+                      padding: 20px 20px 0 20px;
+                      //min-height: 200px;
+                      position: relative;
+                      z-index: 1;
+                      outline: none;
+                      white-space: pre-wrap;
+                      white-space: break-spaces;
+                      word-break: break-word;
+                      word-wrap: break-word;
+                      font-variant-ligatures: none;
+                      --link-color: #117CEE;
+
+                      font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Segoe UI';
+                      letter-spacing: initial;
+
+                      .am-engine {
+                        background-color: unset;
+                        font-size: 14px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        .editor-wrap:hover::-webkit-scrollbar-thumb {
+          background-color: #FFFFFF; /* 自定义滚动条滑块颜色 */
+        }
+
+        .editor-wrap::-webkit-scrollbar {
+          width: 5px;
+        }
+
+        .editor-wrap:hover::-webkit-scrollbar {
+          width: 5px;
+        }
+
+        .editor-wrap:hover::-webkit-scrollbar-thumb {
+          background-color: #E7E9E8; /* 自定义滚动条滑块颜色 */
+        }
+      }
+    }
+
+    .rambly-module_action {
+      .toolbar-ui {
+        display: flex;
+
+        /deep/.editor-toolbar {
+          border-bottom: none;
+
+          .editor-toolbar-content {
+            justify-content: left !important;
+            padding: 10px 5px;
+            width: unset;
+
+            .toolbar-button {
+              margin-right: 20px;
+
+              .toolbar-title {
+                font-size: 14px;
+                margin-left: 5px;
+              }
+            }
+
+            .toolbar-button:hover {
+              background-color: unset;
+              border: 1px solid unset;
+              color: #00B96B;
+            }
+          }
+        }
+
+        .rambly-module_button {
+          padding: 10px 5px;
+        }
+      }
+    }
+  }
+
+  .rambly-module_list {
+    margin: 55px 0 0;
+  }
+}
+
+// 第三方插件样式覆盖
+/*/deep/ .data-link-editor {
+  p {
+    .ant-input:focus {
+      border-color: #00AE9D;
+      box-shadow: none !important;
+    }
+    .ant-input:hover {
+      border-color: #00AE9D;
+    }
+  }
+}
+
+/deep/ .data-toolbar-group .table-color-dropdown-trigger {
+  button {
+    height: 28px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+/deep/ .data-toolbar-group .data-toolbar-item {
+  .data-toolbar-btn {
+    justify-content: center;
+  }
+}
+
+/deep/.am-engine>:not(p) {
+  margin: 15px 0;
+}*/
+
+///deep/.am-engine>p {
+//  margin: 8px 0;
+//}
+
+/*/deep/.am-engine>ul {
+  margin: 8px 0;
+  li {
+    margin: 8px 0;
+  }
+  li:not(.data-list-item) {
+    margin: 8px 0  8px 15px;
+  }
+}
+
+/deep/.am-engine>ol {
+  margin: 8px 0;
+  li {
+    margin: 8px 0 8px 25px;
+  }
+}
+
+/deep/.am-engine>h2 {
+  margin: 13px 0;
+}
+
+/deep/.am-engine>h3 {
+  margin: 11px 0;
+}
+
+/deep/.am-engine>h4 {
+  margin: 9px 0;
+}
+
+/deep/.am-engine>h5 {
+  margin: 8px 0;
+}
+
+/deep/.am-engine>h6 {
+  margin: 8px 0;
+}*/
