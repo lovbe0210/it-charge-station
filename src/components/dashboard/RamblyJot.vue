@@ -293,7 +293,7 @@
             },
             {
               name: "link",
-              icon: `<span class="toolbar-icon iconfont pic-upload"/><span class="toolbar-title">链接</span>`,
+              icon: `<span class="toolbar-icon iconfont link"/><span class="toolbar-title">链接</span>`,
               title: ''
             },
             {

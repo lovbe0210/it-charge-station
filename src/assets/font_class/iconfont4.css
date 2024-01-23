@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_tv51q31pxkf.woff2?t=1705935573393') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_fk3hcnvxeae.woff2?t=1706013981019') format('woff2');
 }
 
 .iconfont {
@@ -101,5 +101,9 @@
 
 .task-list:before {
   content: "\e644";
+}
+
+.link:before {
+  content: "\e645";
 }
 
