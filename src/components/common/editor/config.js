@@ -90,6 +90,7 @@ export const plugins = [
 export const ramblyPlugins = [
   Image,
   ImageUploader,
+  Heading,
   File,
   FileUploader,
   Link,

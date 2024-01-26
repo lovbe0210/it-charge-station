@@ -1,6 +1,6 @@
 <template>
   <div class="layout-module_RamblyJot">
-    <div class="rambly-module_editor">
+    <div :class="['rambly-module_editor', extendCurtains ? 'extend-curtains' : '']">
       <div class="scrollbar-visible">
         <div class="layout-mode-fixed">
           <div class="editor-body">
@@ -22,9 +22,15 @@
           </div>
         </div>
       </div>
+      <div class="curtain-operation">
+        <button class="curtain-wrap">
+          <span :class="['iconfont', !extendCurtains ? 'unfold' : 'shrink']" @click="extendCurtains = !extendCurtains"></span>
+        </button>
+      </div>
       <div class="rambly-module_action">
         <div class="toolbar-ui">
           <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
+          <span class="iconfont add-title"></span>
           <div class="rambly-module_button">
             <button disabled="" type="button" class="ant-btn ant-btn-default">
               <span>小记一下</span>
@@ -36,7 +42,7 @@
     <div class="rambly-module_list">
       <div class="rambly-jot-wrap">
         <div class="menos-item">
-          <a href="/post/2229" class="">
+          <a class="">
             <div class="post-time"><span>Post 2天前 <span> · Views 207</span><span>· Comments 11</span></span></div>
             <div class="post-content"><p>
               经过数天的排查，一直在探究博客新框架为何正常模式浏览会变慢。无痕模式一点问题都没有，最终经过小关[@951008.com](https://951008.com)的判断禁用了扩展之后，原来是去广告插件Adblock
@@ -59,7 +65,7 @@
           </a>
         </div>
         <div class="menos-item">
-          <a href="/post/2228" class="">
+          <a  class="">
             <div class="post-time"><span>Post 2天前 <span> · Views 121</span><span>· Comments 4</span></span></div>
 
             <div class="post-content"><p>这一年下晚班的时候，已经记不清楚多少次在地铁座椅上睡着了。</p></div>
@@ -80,7 +86,7 @@
             </div>
           </a></div>
         <div class="menos-item">
-          <a href="/post/2227" class="">
+          <a  class="">
             <div class="post-time"><span>Post 4天前 <span> · Views 215</span><span>· Comments 1</span></span></div>
 
             <div class="post-content"><p>这世间所有的一切都有取舍，正因为有了取舍，所有的一切都在有条不紊的进行着。</p></div>
@@ -287,6 +293,10 @@
               icon: `<span class="toolbar-icon iconfont pic-upload"/><span class="toolbar-title">图片</span>`
             },
             {
+              name: "heading",
+              title: ''
+            },
+            {
               name: "tasklist",
               icon: `<span class="toolbar-icon iconfont task-list"/><span class="toolbar-title">任务</span>`,
               title: ''
@@ -304,7 +314,8 @@
           ]
         ],
         editorValueIsEmpty: true,
-        readmeEmpty: true
+        readmeEmpty: true,
+        extendCurtains: false
       }
     },
     methods: {
@@ -317,6 +328,7 @@
     mounted() {
       pluginConfig.link = {hotkey: { key: ""}};
       pluginConfig.tasklist = {hotkey: { key: ""}};
+      pluginConfig.heading = {hotkey: { key: ""}};
       const container = this.$refs.container;
       if (container) {
         //实例化引擎

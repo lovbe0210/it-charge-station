@@ -6,12 +6,13 @@
   // 写作中心页面整体布局设置
   .rambly-module_editor {
     margin: 30px 24px 0;
+    padding-bottom: 15px;
     position: relative;
     height: calc(~"20vh");
     max-width: 100%;
     border-radius: 4px;
     border: 1px solid #E7E9E8;
-    box-shadow: 0 1px 6px 0 rgba(0,0,0,.02);
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .02);
 
     .scrollbar-visible {
       height: 100%;
@@ -22,52 +23,7 @@
       }
 
       // 编辑器工具栏区（内部group-item需要在首页index进行设置）
-      .editor-toolbar {
-        position: relative;
-        top: 0;
-        left: 0;
-        z-index: 5;
-        padding: 0 57px;
-        margin: 0 auto;
-        border-top: none;
-        border-bottom: none;
 
-        /deep/ .editor-toolbar-content {
-          position: relative;
-          display: flex;
-          height: 50px;
-          color: #585A5A;
-          justify-content: center;
-          -webkit-box-pack: center;
-          -ms-flex-pack: center;
-          display: -webkit-box;
-          display: -ms-flexbox;
-          display: flex;
-
-          .editor-toolbar-group {
-            border-bottom: 1px solid #e8e8e8;
-            position: relative;
-            border-left: none;
-            padding: 4px 6px;
-          }
-
-          .editor-toolbar-group:not(:first-child):after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: 10px;
-            right: 0;
-            height: 30px;
-            width: 1px;
-            background-color: #e8e8e8;
-          }
-
-          .toolbar-dropdown {
-            display: flex;
-            align-items: center;
-          }
-        }
-      }
 
       // 编辑器内容区
       .editor-body {
@@ -101,7 +57,7 @@
                     overflow-anchor: none;
 
                     .engine {
-                      padding: 20px 20px 0 20px;
+                      padding: 20px 40px 0;
                       //min-height: 200px;
                       position: relative;
                       z-index: 1;
@@ -146,12 +102,30 @@
       }
     }
 
+    .curtain-operation {
+      .curtain-wrap {
+        border: none;
+        background: none;
+        height: 30px;
+        width: 30px;
+        position: relative;
+        float: right;
+        bottom: 15px;
+        //right: 5px;
+        .iconfont {
+          font-weight: bold;
+          font-size: 17px;
+        }
+      }
+    }
+
     .rambly-module_action {
-      margin-top: 10px;
+      margin-top: 30px;
+
       .toolbar-ui {
         display: flex;
 
-        /deep/.editor-toolbar {
+        /deep/ .editor-toolbar {
           border: none;
 
           .editor-toolbar-content {
@@ -173,6 +147,23 @@
               border: 1px solid unset;
               color: #00B96B;
             }
+
+            .toolbar-dropdown-heading {
+              margin-right: 10px;
+              .toolbar-button {
+                margin-right: 5px;
+                padding-left: 0;
+
+                .toolbar-dropdown-button-text {
+                  font-weight: normal;
+                  font-size: 14px;
+                }
+
+                .data-icon-arrow {
+                  right: 15px;
+                }
+              }
+            }
           }
         }
 
@@ -181,6 +172,10 @@
         }
       }
     }
+  }
+
+  .extend-curtains {
+    height: calc(~"81vh");
   }
 
   .rambly-module_list {
