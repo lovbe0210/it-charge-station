@@ -3,9 +3,32 @@
   height: 100%;
   padding: 0 40px 10px;
 
-  // 写作中心页面整体布局设置
+  .rambly-jot-header {
+    margin: 30px 30px 0;
+    display: flex;
+    height: 32px;
+    justify-content: space-between;
+    align-items: center;
+    font-style: normal;
+
+    .title {
+      height: 32px;
+      width: calc(~"10% + 10px");
+      line-height: 32px;
+      text-align: center;
+      color: #262626;
+      font-size: 20px;
+      font-weight: 600;
+      padding-right: 10px;
+    }
+
+    .separator-line {
+      width: calc(~"90%");
+    }
+  }
+
   .rambly-module_editor {
-    margin: 30px 24px 0;
+    margin: 25px 30px 0;
     padding-bottom: 15px;
     position: relative;
     height: calc(~"20vh");
@@ -22,15 +45,11 @@
         position: relative;
       }
 
-      // 编辑器工具栏区（内部group-item需要在首页index进行设置）
-
-
       // 编辑器内容区
       .editor-body {
         height: calc(~"100%");
         position: relative;
 
-        // 左边文档内容
         .editor-wrap {
           display: flex;
           height: 100%;
@@ -49,6 +68,62 @@
               padding-bottom: 1px;
 
               .editor-wrap-box {
+                .title-box {
+                  position: relative;
+                  padding: 15px 35px 0;
+                  margin: 0 auto;
+                  font-family: Chinese Quote, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji;
+                  position: relative;
+
+                  .title {
+                    color: #262626;
+                    font-weight: 600;
+                    font-size: 20px;
+                    max-height: 350px;
+                    min-height: 24px;
+                    // 此处表示font-size*1.389得到行高
+                    line-height: 1.389;
+                    max-width: 100%;
+                    width: 100%;
+                    resize: none;
+                    border: none;
+                    outline: none;
+                    -webkit-box-shadow: none;
+                    box-shadow: none;
+                    padding: 0;
+                    margin: 0;
+                    vertical-align: bottom;
+                    transition: all .3s, height 0s;
+                    font-variant: tabular-nums;
+                    list-style: none;
+                    font-feature-settings: "tnum";
+                    position: relative;
+                    display: inline-block;
+                    background-color: #fff;
+                    background-image: none;
+                    border-radius: 4px;
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+
+                    // 设置placeholder字体颜色
+                    textarea::-webkit-input-placeholder { /* WebKit browsers */
+                      color: #BFBFBF;
+                    }
+
+                    textarea::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+                      color: #BFBFBF;
+                    }
+
+                    textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+                      color: #BFBFBF;
+                    }
+
+                    textarea::-ms-input-placeholder { /* Internet Explorer 10+ */
+                      color: #BFBFBF;
+                    }
+                  }
+                }
+
                 .content-box {
                   position: relative;
 
@@ -57,8 +132,7 @@
                     overflow-anchor: none;
 
                     .engine {
-                      padding: 20px 40px 0;
-                      //min-height: 200px;
+                      padding: 15px 35px 0;
                       position: relative;
                       z-index: 1;
                       outline: none;
@@ -124,62 +198,206 @@
 
       .toolbar-ui {
         display: flex;
+        justify-content: space-between;
 
-        /deep/ .editor-toolbar {
-          border: none;
+        .toolbar-wrap {
+          display: flex;
 
-          .editor-toolbar-content {
-            justify-content: left !important;
-            padding: 10px 5px;
+          /deep/ .editor-toolbar {
+            border: none;
             width: unset;
 
-            .toolbar-button {
-              margin-right: 15px;
+            .editor-toolbar-content {
+              justify-content: left !important;
+              padding: 5px 5px;
+              width: unset;
 
-              .toolbar-title {
-                font-size: 14px;
-                margin-left: 5px;
-              }
-            }
+              .toolbar-button:not(:last-child) {
+                margin-right: 15px;
 
-            .toolbar-button:hover {
-              background-color: unset;
-              border: 1px solid unset;
-              color: #00B96B;
-            }
-
-            .toolbar-dropdown-heading {
-              margin-right: 10px;
-              .toolbar-button {
-                margin-right: 5px;
-                padding-left: 0;
-
-                .toolbar-dropdown-button-text {
-                  font-weight: normal;
+                .toolbar-title {
                   font-size: 14px;
+                  margin-left: 5px;
                 }
+              }
 
-                .data-icon-arrow {
-                  right: 15px;
+              .toolbar-button {
+                .toolbar-title {
+                  font-size: 14px;
+                  margin-left: 5px;
+                }
+              }
+
+              .toolbar-button:hover {
+                background-color: unset;
+                border: 1px solid unset;
+                color: #00B96B;
+              }
+
+              .toolbar-dropdown-heading {
+                margin-right: 10px;
+
+                .toolbar-button {
+                  margin-right: 5px;
+                  padding-left: 0;
+
+                  .toolbar-dropdown-button-text {
+                    font-weight: normal;
+                    font-size: 14px;
+                  }
+
+                  .data-icon-arrow {
+                    right: 15px;
+                  }
                 }
               }
             }
           }
+
+          .title-btn {
+            display: flex;
+            align-items: center;
+            margin-left: 5px;
+
+            .add-title {
+              font-size: 18px;
+              margin-right: 5px;
+            }
+          }
+
+          .title-btn:hover {
+            color: #00B96B;
+            cursor: pointer;
+          }
         }
 
+
+
         .rambly-module_button {
-          padding: 10px 5px;
+          padding: 5px 5px;
+        }
+      }
+
+      .rambly-module_button {
+        display: flex;
+        align-items: center;
+
+        .ant-btn:not([disabled]):hover {
+          border-color: #00B96B;
+          color: #00B96B;
         }
       }
     }
   }
 
   .extend-curtains {
-    height: calc(~"81vh");
+    height: calc(~"75vh");
   }
 
   .rambly-module_list {
-    margin: 65px 24px 0;
+    margin: 70px 30px 0;
+
+    .rambly-item {
+      border-radius: 6px;
+      margin: 0 0 30px;
+      padding: 20px;
+
+      a {
+        text-decoration: none;
+        color: #191919;
+      }
+
+      .index-menos, .menos-item, .post-time {
+        color: #aaa;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .post-tile {
+        margin: 10px 0 0;
+        h4 {
+          font-size: 18px;
+          margin: 0;
+        }
+      }
+
+      .post-content {
+        p {
+          color: #262626;
+          font-size: 15px;
+          line-height: 22px;
+          margin: 10px 0 0;
+          -webkit-box-orient: vertical;
+          display: -webkit-box;
+          max-height: 45px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          word-break: break-word;
+          -webkit-line-clamp: 2;
+        }
+
+        .photo-content {
+          margin: 10px 0 0;
+        }
+
+        .cover-url {
+          margin: 10px 0 0;
+
+          .cover-url-item {
+            max-height: 500px;
+            max-width: 100%;
+            overflow: hidden;
+            position: relative;
+
+            .bottom-mask {
+              display: block;
+              position: absolute;
+              z-index: 0;
+
+              .bottom-img {
+                height: 100%;
+                max-height: 500px;
+                max-width: 100%;
+                width: 100vw;
+              }
+            }
+
+            .blur {
+              backdrop-filter: blur(25px);
+              -webkit-backdrop-filter: blur(25px);
+              -moz-backdrop-filter: blur(25px);
+              -ms-backdrop-filter: blur(25px);
+              background: #70707003;
+              bottom: 0;
+              height: 100vh;
+              left: 0;
+              max-height: 500px;
+              position: absolute;
+              right: 0;
+              top: 0;
+              width: 100%;
+              z-index: 1;
+            }
+
+            .cover-item {
+              position: relative;
+              z-index: 2;
+
+              img {
+                max-height: 500px;
+                max-width: 100%;
+                overflow: hidden;
+                position: relative;
+                display: block;
+                margin: 0 auto;
+              }
+            }
+          }
+        }
+      }
+
+
+    }
   }
 }
 

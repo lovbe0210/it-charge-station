@@ -270,7 +270,7 @@
           config: pluginConfig,
           autoPrepend: false,
           // 文档提示语
-          placeholder: '直接输入正文，也可以选择一个模板：'
+          placeholder: '输入正文: '
         });
         // 设置显示成功消息UI，默认使用 console.log
         engine.messageSuccess = (msg) => {

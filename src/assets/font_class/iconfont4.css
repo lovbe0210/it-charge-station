@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_kwoj6t3v89s.woff2?t=1706260122449') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_fh8des9ibpn.woff2?t=1706662454630') format('woff2');
 }
 
 .iconfont {
@@ -113,5 +113,9 @@
 
 .unfold:before {
   content: "\e647";
+}
+
+.add-title:before {
+  content: "\e648";
 }
 
