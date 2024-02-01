@@ -13,7 +13,7 @@
                 <div class="editor-outer-wrap-box">
                   <div class="editor-wrap-box">
                     <div class="title-box" v-show="rambly.showTitle">
-                      <textarea class="title" placeholder="请输入标题" maxlength="130" tabindex="1" rows="1"
+                      <textarea class="title" placeholder="请输入标题" maxlength="100" tabindex="1" rows="1"
                                 v-model="rambly.title" ref="titleTextarea" @keydown.enter="completeTitle">
                       </textarea>
                     </div>
@@ -56,24 +56,55 @@
     </div>
     <div class="rambly-module_list">
       <div class="rambly-jot-wrap">
-        <div class="rambly-item">
+        <div class="rambly-item" v-for="item in ramblyList" :key="item.id">
           <a class="">
-            <div class="post-time"><span>Post 2天前 <span> · Views 207</span><span>· Comments 11</span></span></div>
-            <div class="post-content"><p>
-              经过数天的排查，一直在探究博客新框架为何正常模式浏览会变慢。无痕模式一点问题都没有，最终经过小关[@951008.com](https://951008.com)的判断禁用了扩展之后，原来是去广告插件Adblock
-              Plus的问题。在此我郑重向谷爹浏览器说句抱歉，错怪谷歌爹了。</p></div>
-            <div class="post-content photo-content p-1">
-              <div>
-                <div class="cover-url">
-                  <div class="cover-url-item">
-                    <div class="bottom-mask"><img
-                      src="https://blog-prod-1251110877.cos.ap-guangzhou.myqcloud.com/resource/upload/static/1/image/4284d96950ce17d8c6a9901c847cb3dc.jpeg?imageView2/2/w/540"
-                      alt="灵感时刻-2024-01-17 21:29:16" class="bottom-img"></div>
-                    <div class="blur"></div>
-                    <div class="cover-item"><img
-                      src="https://blog-prod-1251110877.cos.ap-guangzhou.myqcloud.com/resource/upload/static/1/image/4284d96950ce17d8c6a9901c847cb3dc.jpeg?imageView2/2/w/540"
-                      alt="灵感时刻-2024-01-17 21:29:16" class="cover-url-item"></div>
+            <div class="post-time">
+              <span>
+                Post {{item.postDate}}
+                <span> · Views {{item.views}}</span>
+                <span>· Comments {{item.comments}}</span>
+              </span>
+            </div>
+            <div class="post-tile" v-if="item.title?.length !== 0">
+              <h4>{{item.title}}</h4>
+            </div>
+            <div class="post-content">
+              <p>{{item.content}}</p>
+              <div class="photo-content p1" v-if="item.picList?.length === 1">
+                <div>
+                  <div class="cover-url">
+                    <div class="cover-url-item">
+                      <div class="bottom-mask">
+                        <img :src="item.picList[0]" :alt="'灵感时刻-' + item.createTime" class="bottom-img">
+                      </div>
+                      <div class="blur"></div>
+                      <div class="cover-item">
+                        <img :src="item.picList[0]" :alt="'灵感时刻-' + item.createTime" class="cover-url-item">
+                      </div>
+                    </div>
                   </div>
+                </div>
+              </div>
+              <div class="photo-content p2" v-if="item.picList?.length === 2">
+                <div>
+                  <div class="cover-url">
+                    <div class="cover-url-item">
+                      <div class="bottom-mask">
+                        <img v-for="pic in item.picList" :key="pic" :src="pic" :alt="'灵感时刻-' + item.createTime" class="bottom-img">
+                      </div>
+                      <div class="blur"></div>
+                      <div class="cover-item">
+                        <div v-for="pic in item.picList" :key="pic" class="cover-item-box">
+                          <img :src="pic" :alt="'灵感时刻-' + item.createTime" class="cover-url-item">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="photo-content p3" v-if="item.picList?.length === 3">
+                <div class="more-images">
+                  <div v-for="pic in item.picList" :key="pic" class="photo" :style="'background-image: url(' + pic + ');'"></div>
                 </div>
               </div>
             </div>
@@ -127,7 +158,58 @@
           showTitle: false,
           title: '',
           jsonValue: null
-        }
+        },
+        ramblyList: [
+          {
+            id: 1256668656461,
+            postDate: '1天前',
+            views: 201,
+            comments: 3,
+            title: '600条最强 Linux 命令总结',
+            content: '今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。',
+            createTime: '2024-01-31 19:02:18',
+            picList: [
+              require('@/assets/img/6.jpg')
+            ]
+          },
+          {
+            id: 1256668656465,
+            postDate: '1天前',
+            views: 201,
+            comments: 3,
+            title: null,
+            content: '今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。',
+            createTime: '2024-01-31 19:02:18',
+            picList: null
+          },
+          {
+            id: 1256668656462,
+            postDate: '2小时前',
+            views: 201,
+            comments: 3,
+            title: 'CentOS7.9中的Glibc2.17源码编译升级到Glibc2.31',
+            content: '一、引言 在Liunx系统CentOS7.9的中部署项目遇到了Glibc版本过低的问题，使用yum安装最高只能安装Glibc2.17并不能满足要求，本文介绍了如何用源码编译的方法升级Glibc的版本。',
+            createTime: '2024-01-31 19:02:18',
+            picList: [
+              require('@/assets/img/4.jpg'),
+              require('@/assets/img/5.jpg')
+            ]
+          },
+          {
+            id: 1256668656463,
+            postDate: '2024-01-11 11:32:18',
+            views: 201,
+            comments: 3,
+            title: null,
+            content: '遇到的问题：设置 backdrop-filter，Safari 浏览器首次加载没效果，通过ajax请求数据翻页之后，会出现部分高斯模糊效果无效，但是windows正常。',
+            createTime: '2024-01-31 19:02:18',
+            picList: [
+              require('@/assets/img/1.jpg'),
+              require('@/assets/img/2.jpg'),
+              require('@/assets/img/3.jpg')
+            ]
+          }
+        ]
       }
     },
     computed: {
