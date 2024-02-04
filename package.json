@@ -52,6 +52,7 @@
     "colorthief": "^2.4.0",
     "compression-webpack-plugin": "^6.1.1",
     "core-js": "^3.6.5",
+    "dayjs": "^1.11.10",
     "markdown-it-container": "^3.0.0",
     "swiper": "^7.3.2",
     "view-design": "^4.7.0",

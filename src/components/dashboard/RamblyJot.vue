@@ -104,7 +104,8 @@
               </div>
               <div class="photo-content p3" v-if="item.picList?.length === 3">
                 <div class="more-images">
-                  <div v-for="pic in item.picList" :key="pic" class="photo" :style="'background-image: url(' + pic + ');'"></div>
+                  <div v-for="pic in item.picList" :key="pic" class="photo" :alt="'灵感时刻-' + item.createTime"
+                       :style="'background-image: url(' + pic + ');'"></div>
                 </div>
               </div>
             </div>
