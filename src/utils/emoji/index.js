@@ -1,4 +1,4 @@
-// export * from './isEmpty'
+export * from './isEmpty'
 // export * from './deep'
 // export * from './install'
 // export * from './browser'

@@ -50,6 +50,10 @@
           <div ref="view"
                :class="['doc-reader','am-engine-view', docStyle.pageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
           </div>
+          <!-- 评论 -->
+          <div :class="['reply', docStyle.pageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
+            <reply-comment/>
+          </div>
         </div>
       </div>
     </div>
@@ -87,6 +91,7 @@
   import {View, $} from '@aomao/engine'
   import {plugins, cards, pluginConfig} from "@/components/common/editor/config"
   import {getTocData} from "@/components/common/editor/utils";
+  import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
 
   const event = document.createEvent('KeyboardEvent');
   event.initKeyboardEvent('keydown', true, true, window, false, false, false, false, 122, 0);
@@ -127,6 +132,9 @@
         return 'calc(100vw - ' + ((this.fullScreen ? 0 : this.sidebarWidth) +
             (this.scrollBarWidth !== undefined && this.scrollBarWidth !== 0 ? (this.scrollBarWidth - 2) : 0)) + 'px)'
       }
+    },
+    components: {
+      ReplyComment
     },
     methods: {
       /**
