@@ -21,7 +21,7 @@
   import 'view-design/dist/styles/iview.css'
   import {
     Tooltip, Card, Popover, Pagination, Tag, Select, Checkbox, Table, Radio, Popconfirm,
-    Skeleton
+    Skeleton, Empty
   } from 'ant-design-vue'
   import commonUtil from "@/utils/common"
   // 引入弹幕模块
@@ -64,6 +64,7 @@
   Vue.component('a-table', Table);
   Vue.component('a-popconfirm', Popconfirm);
   Vue.component('a-skeleton', Skeleton);
+  Vue.component('a-empty', Empty);
 
   export default {
     name: 'App',

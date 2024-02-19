@@ -2,37 +2,64 @@
   <div class="u-comment">
     <div v-if="showForm" class="comment-form">
       <slot name="header">
-        <div class="header">
+        <!--<div class="header">
           <span class="header-title">评论</span>
+          <div class="nav__sort">
+            <div class="item select-none" :class="{ active: latest }" @click="latest = true">
+              最新
+            </div>
+            <div class="item select-none" :class="{ active: !latest }" @click="latest = false">
+              最热
+            </div>
+          </div>
+        </div>-->
+        <div class="reply-header">
+          <div class="reply-navigation">
+            <ul class="nav-bar">
+              <li class="nav-title">
+                <span class="nav-title-text">评论</span>
+                <span class="total-reply">1947</span>
+              </li>
+              <li class="nav-sort hot">
+                <div :class="['hot-sort', latest ? 'apply-sort' : '']" @click="latest = true">最热</div>
+                <div class="part-symbol"></div>
+                <div :class="['time-sort', latest ? '' : 'apply-sort']" @click="latest = false">最新</div>
+              </li>
+            </ul>
+          </div>
         </div>
       </slot>
       <div class="content">
         <div class="avatar-box">
           <b-avatar :src="config.user.avatar" variant="light" to="/settings" size="6rem">
             <span v-if="config.user.username">{{ config.user.username }}</span>
-            <img v-else src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
+            <img v-else src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
           </b-avatar>
           <!--<el-avatar :size="40" :src="config.user.avatar">
             <span v-if="config.user.username">{{ config.user.username }}</span>
             <img v-else src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
           </el-avatar>-->
         </div>
-        <InputBox v-bind="$attrs" ref="inputBox" :placeholder="placeholder" content-btn="发表评论" />
+        <InputBox v-bind="$attrs"
+                  ref="inputBox"
+                  :placeholder="placeholder"
+                  :mentionConfig="config.mentionConfig"
+                  @mentionSearch="mentionSearch"
+                  @changeMetionList="changeMetionList"
+                  content-btn="发表评论"/>
       </div>
     </div>
     <!-- <div class="hot-list"></div> -->
     <div v-if="showContent" class="comment-list-wrapper">
-      <slot>
-        <div class="title">全部评论</div>
-      </slot>
-      <CommentList :data="config.comments"></CommentList>
+      <CommentList :data="config.comments" :contentBoxParam="contentBoxParam"></CommentList>
     </div>
   </div>
 </template>
 
 <script>
-  import { isNull } from '@/utils/emoji'
+  import {isNull, debounce} from '@/utils/emoji'
   import InputBox from './InputBox'
+  import CommentList from './CommentList'
 
   export default {
     name: 'UComment',
@@ -48,7 +75,8 @@
         showLikes: true,
         showAddress: true,
         showHomeLink: true,
-        showReply: true
+        showReply: true,
+        latest: true
       }
     },
     props: {
@@ -111,7 +139,7 @@
         return {
           page: this.page,
           replyPage: (parentId, pageNum, pageSize, finish) => {
-            this.$emit('replyPage', { parentId, pageNum, pageSize, finish })
+            this.$emit('replyPage', {parentId, pageNum, pageSize, finish})
           },
           replyShowSize: isNull(this.config.replyShowSize?.value, 3),
           comments: this.config.comments
@@ -119,13 +147,14 @@
       }
     },
     components: {
-      InputBox
+      InputBox,
+      CommentList
     },
     methods: {
       /**
        * 提交评论
        */
-      submit ({content, parentId, reply, files, clear}) {
+      submit({content, parentId, reply, files, clear}) {
         // 添加评论
         const finish = (comment) => {
           // 清空输入框内容
@@ -151,7 +180,7 @@
             }
           }
         }
-        this.$emit('submit', { content, parentId, reply, files, mentionList: this.mentionList, finish })
+        this.$emit('submit', {content, parentId, reply, files, mentionList: this.mentionList, finish})
       },
       focus() {
         this.$emit('focus')
@@ -159,7 +188,7 @@
       /**
        * 点赞评论数组处理
        */
-      editLikeCount (id, count) {
+      editLikeCount(id, count) {
         let tar = null;
         this.config.comments.value.forEach(v => {
           if (v.id === id) {
@@ -176,7 +205,7 @@
        * 点赞事件
        * @param id
        */
-      like (id) {
+      like(id) {
         // 点赞事件处理
         const likeIds = this.config.user.likeIds
         if (likeIds) {
@@ -202,7 +231,7 @@
        */
       remove(comment) {
         // 删除评论数据操作
-        const { parentId, id } = comment
+        const {parentId, id} = comment
         if (parentId) {
           let comment = this.config.comments.value.find(item => item.id === parentId)
           let reply = comment?.reply
@@ -229,17 +258,20 @@
       },
       cancelFn() {
         this.$emit('cancel')
+      },
+      // mentionList 触发事件
+      mentionSearch() {
+        debounce((searchStr) => {
+          this.$emit('mentionSearch', searchStr)
+        }, 300)
       }
     }
   }
 
 
-
   // 输入框盒子
   // provide(InjectInputBox, inputBoxParam)
   // provide('cancelFn', () => this.$emit('cancel'))
-
-
 
 
   // provide(InjectContentBox, contentBoxParam)
@@ -254,10 +286,7 @@
   // function getMentionList() {
   //   return mentionList.value
   // }
-  // mentionList 触发事件
-  // const mentionSearch = debounce((searchStr) => {
-  //   emit('mentionSearch', searchStr)
-  // }, 300)
+
   // 表情包
   // provide(InjectionEmojiApi, props.config.emoji)
   //提及配置
@@ -279,5 +308,5 @@
 </script>
 
 <style lang="less" scoped>
-@import '../style/comment.less';
+  @import '../style/comment.less';
 </style>

@@ -21,7 +21,7 @@
       <!-- <template #info>信息卡槽</template> -->
       <!-- <template #card>用户信息卡片卡槽</template> -->
       <!-- <template #func>功能区域卡槽</template> -->
-      <u-comment-nav v-model="latest" @sorted="sorted"></u-comment-nav>
+<!--      <u-comment-nav v-model="latest" @sorted="sorted"></u-comment-nav>-->
       <template #card="scope">
         <!--<el-skeleton :loading="loading" :throttle="200" animated>
           <template #template>
@@ -119,7 +119,7 @@
 <script>
   import UCommentScroll from "./CommentScroll";
   import UComment from "./Comment"
-  import UCommentNav from "./CommentNav"
+  // import UCommentNav from "./CommentNav"
   import Operate from "./Operate"
   import {createObjectURL} from "@/utils/emoji";
   import {usePage} from "@/utils/hooks";
@@ -275,7 +275,7 @@
     components: {
       UCommentScroll,
       UComment,
-      UCommentNav,
+      // UCommentNav,
       Operate
     },
     methods: {

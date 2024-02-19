@@ -1,5 +1,5 @@
 <template>
-  <div v-click-outside:[popperRef]="onClickOutside" class="comment-box">
+  <div v-click-outside="onClickOutside" class="comment-box">
     <u-editor
       ref="editorRef"
       v-model="content"
@@ -7,12 +7,14 @@
       :placeholder="placeholder"
       :min-height="64"
       :img-list="imgList"
+      :mentionConfig="mentionConfig"
       @click="() => (action = true)"
       @focus="onFocus"
       @input="input"
       @submit="onSubmit"
       @paste="change"
       @change-img-list-fn="changeFilesFn"
+      @mentionSearch="mentionSearch"
     ></u-editor>
     <div v-if="action" class="action-box">
       <u-emoji :emoji="emoji" @add-emoji="(val) => $refs.editorRef?.addText(val)"></u-emoji>
@@ -45,7 +47,7 @@
 
 <script>
   import { isNull, isEmpty, isImage, createObjectURL } from '@/utils/emoji'
-// import { ClickOutside as vClickOutside } from 'element-plus'
+  import UEditor from './Editor'
 // import { h, inject, nextTick, reactive, ref } from 'vue'
 // import { InjectionEmojiApi, EditorInstance, UToast, UEmoji, UEditor, EmojiApi } from '~/index'
 // import { ElButton } from '~/element'
@@ -85,12 +87,16 @@
       },
       cancelBtn: {
         type: String
+      },
+      mentionConfig: {
+        type: Object
       }
     },
     computed: {
 
     },
     components: {
+      UEditor
     },
     methods: {
       changeFilesFn(arr) {
@@ -192,6 +198,29 @@
               this.$Message.warn('请选择图片类型文件!')
             }
           }
+        }
+      },
+      mentionSearch(searchStr) {
+        this.$emit('mentionSearch', searchStr)
+      },
+      changeMetionList(users) {
+        this.$emit('changeMetionList', users)
+      }
+    },
+    directives: {
+      'click-outside': {
+        bind(el, binding, vnode) {
+          el.clickOutsideEvent = function(event) {
+            // 判断点击的元素是否在 el 内部
+            if (!(el === event.target || el.contains(event.target))) {
+              // 如果点击的不是 el 内部，则调用绑定的方法
+              binding.value();
+            }
+          };
+          document.addEventListener('click', el.clickOutsideEvent);
+        },
+        unbind(el) {
+          document.removeEventListener('click', el.clickOutsideEvent);
         }
       }
     }
