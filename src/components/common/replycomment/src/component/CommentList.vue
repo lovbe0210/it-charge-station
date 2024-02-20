@@ -1,8 +1,8 @@
 <template>
   <div v-if="data" class="comment-list">
     <ContentBox v-for="comment in data"
-                :id="str(comment.id)"
-                :key="str(comment.id)"
+                :id="safeStr(comment.id)"
+                :key="safeStr(comment.id)"
                 :data="comment"
                 :contentBoxParam="contentBoxParam">
       <ReplyBox :id="safeStr(comment.id)" :data="comment.reply"></ReplyBox>
@@ -31,9 +31,7 @@
       }
     },
     computed: {
-      safeStr(id) {
-        return str(id)
-      }
+
     },
     components: {
       ContentBox,
@@ -90,6 +88,9 @@
                     data-userName="${userName}"
                     data-id="${userId}"
                     draggable="false">`
+      },
+      safeStr(id) {
+        return str(id)
       }
     }
   }

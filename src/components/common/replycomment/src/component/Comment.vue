@@ -81,7 +81,7 @@
     },
     props: {
       // 定义page prop，默认值为false
-      page: {
+        page: {
         type: Boolean,
         default: false
       },

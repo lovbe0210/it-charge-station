@@ -43,11 +43,11 @@
           <span v-if="contentBoxParam.showAddress" class="address" style="color: #939393; font-size: 12px">
             &nbsp;&nbsp;{{ data.address }}
           </span>
-          <template v-if="slots.info">
+<!--          <template v-if="slots.info">-->
             <!--            <Info />-->
             这是啥
-          </template>
-          <time class="time">{{ relativeTime ? nowDateTime(data.createTime) : data.createTime }}</time>
+<!--          </template>-->
+          <time class="time">{{ contentBoxParam.relativeTime ? nowDateTime(data.createTime) : data.createTime }}</time>
         </div>
         <div class="content">
           <u-fold unfold>
@@ -76,9 +76,7 @@
             <span>{{ state.active ? $u('comment.cancelReply') : $u('comment.reply') }}</span>
           </div>
           <!-- 操作栏 -->
-          <template v-if="slots.operate">
-            <Operate/>
-          </template>
+          <Operate/>
         </div>
         <div v-if="state.active">
           <InputBox
@@ -94,7 +92,7 @@
         </div>
       </div>
       <!-- 回复列表 -->
-      <slot></slot>
+<!--      <slot></slot>-->
     </div>
   </div>
 </template>
@@ -148,9 +146,6 @@
       contents() {
         return useEmojiParsey(allEmoji, this.data.content);
       },
-      safeStr(id) {
-        return str(id)
-      },
       nowDateTime(dateTime) {
         return dayjs(dateTime).fromNow();
       }
@@ -178,6 +173,9 @@
         if (!this.$refs.btnRef?.contains(target)) {
           this.state.active = false
         }
+      },
+      safeStr(id) {
+        return str(id)
       }
     }
   }

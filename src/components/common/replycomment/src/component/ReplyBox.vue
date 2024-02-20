@@ -21,115 +21,142 @@
         </div>
       </div>
       <div v-if="state.over && page" class="fetch-more">
-        <el-pagination
-          small
-          hide-on-single-page
-          layout="total, prev, pager, next"
+        <br />
+        <a-pagination
+          show-size-changer
+          :current="state.currentPage"
+          :pageSize="state.pageSize"
           :total="data.total"
-          :current-page="state.currentPage"
-          :page-size="state.pageSize"
-          @current-change="currentChange"
-          @size-change="sizeChange"
-        ></el-pagination>
+          :change="currentChange"
+          @showSizeChange="sizeChange"
+        />
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { computed, inject, reactive, watch } from 'vue'
-import ContentBox from './ContentBox.vue'
-import { ReplyApi, ElPagination } from '~/index'
-import { InjectReplyBox, InjectReplyBoxApi } from '../key'
+<script>
+  // import { computed, inject, reactive, watch } from 'vue'
+  import ContentBox from './ContentBox'
+  // import { ReplyApi, ElPagination } from '~/index'
+  // import { InjectReplyBox, InjectReplyBoxApi } from '../key'
 
-interface Props {
-  data?: ReplyApi | null
-  id: string
-}
+  import { reply, comments } from '@/assets/emoji/comment';
+  import {usePage} from "@/utils/hooks";
 
-const props = defineProps<Props>()
-const state = reactive({
-  loading: false,
-  over: false,
-  currentPage: 1,
-  pageSize: 5
-})
+  export default {
+    name: 'ReplyBox',
+    data() {
+      return {
+        state: {
+          loading: false,
+          over: false,
+          currentPage: 1,
+          pageSize: 5,
+          replyShowSize: 5
+        }
+      }
+    },
+    props: {
+      data: {
+        type: Object
+      },
+      id: {
+        type: String
+      },
+      page: {
+        type: Boolean,
+        default: true
+      }
+    },
+    computed: {
+      // 分页操作
+      c_data() {
+        let _data = {
+          total: 0,
+          length: 0,
+          list: []
+        }
+        if (this.data) {
+          let length = this.data.list.length
+          _data = {
+            total: this.data.total,
+            length: length,
+            list: this.data.list
+          }
+        }
+        if (!this.state.over) {
+          let tmp = this.data.list.slice(0, this.replyShowSize)
+          _data.list = tmp
+        }
+        if (this.page) {
+          _data.list = this.data.list.slice(0, this.state.pageSize)
+        }
+        return _data;
+      }
+    },
+    components: {
+      ContentBox
+    },
+    watch: {
+      "data?.total"(val) {
+        if (val) {
+          let totalPage = Math.ceil(val / this.state.pageSize)
+          let currentPage = this.state.currentPage > totalPage ? totalPage : this.state.currentPage
+          currentPage = currentPage < 1 ? 1 : currentPage
+          if (this.state.currentPage !== currentPage) {
+            this.changePage(currentPage)
+          }
+        }
+      }
+    },
+    methods: {
+      replyPage({parentId, pageNum, pageSize, finish}) {
+        let tmp = {
+          total: reply.total,
+          list: usePage(pageNum, pageSize, reply.list)
+        }
+        console.log('回复分页')
+        setTimeout(() => {
+          finish(tmp)
+        }, 200)
+      },
+      replyMore() {
+        this.state.over = true
+      },
+      finish(val) {
+        comments.value.forEach(e => {
+          if (e.id === this.id) {
+            if (e.reply) {
+              e.reply = val
+            }
+          }
+        })
+      },
 
-const { replyPage, replyShowSize, comments } = inject(InjectReplyBox) as InjectReplyBoxApi
+      /**
+       * 改变当前页数
+       * @param val
+       */
+      changePage(val) {
+        console.log(val)
+        this.state.currentPage = val
+        this.replyPage(this.id, val, this.state.pageSize, reply => this.finish(reply))
+      },
 
-const { page } = inject(InjectReplyBox) as InjectReplyBoxApi
+      currentChange(val) {
+        this.changePage(val);
+      },
 
-// 分页操作
-const data = computed(() => {
-  let data = {
-    total: 0,
-    length: 0,
-    list: [] as any[]
-  }
-  if (props.data) {
-    let length = props.data.list.length
-    data = {
-      total: props.data.total,
-      length: length,
-      list: props.data.list
-    }
-  }
-  if (!state.over) {
-    let tmp = data.list.slice(0, replyShowSize)
-    data.list = tmp
-  }
-  if (page) {
-    data.list = data.list.slice(0, state.pageSize)
-  }
-  return data
-})
-
-watch(
-  () => props.data?.total,
-  val => {
-    if (val) {
-      let totalPage = Math.ceil(val / state.pageSize)
-      let currentPage = state.currentPage > totalPage ? totalPage : state.currentPage
-      currentPage = currentPage < 1 ? 1 : currentPage
-      if (state.currentPage != currentPage) {
-        changePage(currentPage)
+      sizeChange(val) {
+        this.state.pageSize = val
+        this.replyPage(this.id, this.state.currentPage, val, reply => this.finish(reply))
       }
     }
   }
-)
 
-const replyMore = () => {
-  state.over = true
-}
-
-const finish = (val: any) => {
-  comments.value.forEach(e => {
-    if (e.id == props.id) {
-      if (e.reply) {
-        e.reply = val
-      }
-    }
-  })
-}
-
-/**
- * 改变当前页数
- * @param val
- */
-const changePage = (val: number) => {
-  console.log(val)
-  state.currentPage = val
-  replyPage(props.id, val, state.pageSize, reply => finish(reply))
-}
-
-const currentChange = (val: number) => {
-  changePage(val)
-}
-
-const sizeChange = (val: number) => {
-  state.pageSize = val
-  replyPage(props.id, state.currentPage, val, reply => finish(reply))
-}
+  // const {replyPage, replyShowSize, comments} = inject(InjectReplyBox) as InjectReplyBoxApi
+  // const { page } = inject(InjectReplyBox) as InjectReplyBoxApi
 </script>
 
 <style lang="less" scoped>
