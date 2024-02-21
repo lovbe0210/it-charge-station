@@ -1,8 +1,8 @@
 <template>
   <div class="comment" :class="{ reply: reply }">
     <div class="comment-sub">
-      <UserCard :uid="safeStr(data.uid)">
-        <!-- avatar -->
+      <div class="settings" v-show="true" v-b-tooltip.hover.leftbottom.v-secondary
+           @mouseenter="contentBoxParam.showInfo(safeStr(data.uid))">
         <a
           :href="data.user.homeLink"
           :target="contentBoxParam.aTarget"
@@ -16,12 +16,13 @@
             <img v-else src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
           </b-avatar>
         </a>
-      </UserCard>
+      </div>
     </div>
     <div class="comment-primary">
       <div class="comment-main">
         <div class="user-info">
-          <UserCard :uid="safeStr(data.uid)">
+          <div class="settings" v-b-tooltip.hover.leftbottom.v-secondary
+               @mouseenter="contentBoxParam.showInfo(safeStr(data.uid))">
             <a
               :href="data.user.homeLink"
               :target="contentBoxParam.aTarget"
@@ -38,16 +39,16 @@
                 </span>
               </div>
             </a>
-          </UserCard>
+          </div>
           <!-- <span class="author-badge-text">（作者）</span> -->
           <span v-if="contentBoxParam.showAddress" class="address" style="color: #939393; font-size: 12px">
             &nbsp;&nbsp;{{ data.address }}
           </span>
-<!--          <template v-if="slots.info">-->
-            <!--            <Info />-->
-            这是啥
-<!--          </template>-->
-          <time class="time">{{ contentBoxParam.relativeTime ? nowDateTime(data.createTime) : data.createTime }}</time>
+          <!--          <template v-if="slots.info">-->
+          <!--            <Info />-->
+          这是啥
+          <!--          </template>-->
+          <time class="time">{{ contentBoxParam.relativeTime ? new Date() : data.createTime }}</time>
         </div>
         <div class="content">
           <u-fold unfold>
@@ -71,7 +72,8 @@
             <span v-if="data.likes != 0">{{ data.likes }}</span>
           </div>
           <!-- 回复 -->
-          <div v-if="contentBoxParam.showReply" ref="btnRef" class="item" :class="{ active: state.active }" @click="reply">
+          <div v-if="contentBoxParam.showReply" ref="btnRef" class="item" :class="{ active: state.active }"
+               @click="reply">
             <span>图标 ？</span>
             <span>{{ state.active ? $u('comment.cancelReply') : $u('comment.reply') }}</span>
           </div>
@@ -92,15 +94,15 @@
         </div>
       </div>
       <!-- 回复列表 -->
-<!--      <slot></slot>-->
+      <!--      <slot></slot>-->
     </div>
   </div>
 </template>
 
 <script>
   import { str, isEmpty } from '@/utils/emoji';
-  import { useEmojiParsey } from '@/utils/hooks';
-  import { allEmoji } from '@/assets/emoji/emoji.js';
+  import { useEmojiParse } from '@/utils/hooks';
+  import emoji from '@/assets/emoji/emoji.js';
   import { dayjs } from 'dayjs';
   // import { computed, inject, nextTick, ref, reactive, h } from 'vue'
   import InputBox from './InputBox';
@@ -144,10 +146,7 @@
         return temp?.split('||')
       },
       contents() {
-        return useEmojiParsey(allEmoji, this.data.content);
-      },
-      nowDateTime(dateTime) {
-        return dayjs(dateTime).fromNow();
+        return useEmojiParse(emoji.allEmoji, this.data.content);
       }
     },
     components: {
@@ -176,10 +175,12 @@
       },
       safeStr(id) {
         return str(id)
+      },
+      nowDateTime(dateTime) {
+        return dayjs.fromNow();
       }
     }
   }
-
   // const { allEmoji } = inject(InjectionEmojiApi) as EmojiApi
   // const { like, user, relativeTime, aTarget, showLevel, showLikes, showAddress, showHomeLink, showReply } = inject(
   //   InjectContentBox

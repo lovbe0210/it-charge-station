@@ -41,7 +41,7 @@
   // import { ReplyApi, ElPagination } from '~/index'
   // import { InjectReplyBox, InjectReplyBoxApi } from '../key'
 
-  import { reply, comments } from '@/assets/emoji/comment';
+  import { reply, comment } from '@/assets/emoji/comment.js';
   import {usePage} from "@/utils/hooks";
 
   export default {
@@ -125,7 +125,7 @@
         this.state.over = true
       },
       finish(val) {
-        comments.value.forEach(e => {
+        comment.value.forEach(e => {
           if (e.id === this.id) {
             if (e.reply) {
               e.reply = val

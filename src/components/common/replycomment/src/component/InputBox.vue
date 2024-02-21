@@ -48,11 +48,12 @@
 <script>
   import { isNull, isEmpty, isImage, createObjectURL } from '@/utils/emoji'
   import UEditor from './Editor'
+
 // import { h, inject, nextTick, reactive, ref } from 'vue'
 // import { InjectionEmojiApi, EditorInstance, UToast, UEmoji, UEditor, EmojiApi } from '~/index'
 // import { ElButton } from '~/element'
 // import { InjectInputBox, InjectInputBoxApi, InjectSlots } from '../../key'
-// import { CommentApi } from '~/index'
+import { UEmoji } from './Emoji'
 
 // export interface InputBoxApi {
 //   focus(): void
@@ -96,7 +97,8 @@
 
     },
     components: {
-      UEditor
+      UEditor,
+      UEmoji
     },
     methods: {
       changeFilesFn(arr) {
