@@ -1,6 +1,6 @@
 <template>
   <div class="u-emoji">
-    <div class="settings" v-b-tooltip.click.leftbottom.v-secondary="{ customClass: 'emoji-popover' }" :title="placement"
+    <div class="settings" v-b-tooltip.click.leftbottom.v-secondary="{ customClass: 'emoji-popover' }"
          @mouseenter="onBefore">
       <div class="face-tooltip-head select-none">
         <label

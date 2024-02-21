@@ -51,7 +51,7 @@
     </div>
     <!-- <div class="hot-list"></div> -->
     <div v-if="showContent" class="comment-list-wrapper">
-      <CommentList :data="config.comments" :contentBoxParam="contentBoxParam"></CommentList>
+      <CommentList :data="config.comments" :contentBoxParam="contentBoxParam" :upload="upload"></CommentList>
     </div>
   </div>
 </template>

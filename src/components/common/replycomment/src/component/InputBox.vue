@@ -1,6 +1,6 @@
 <template>
   <div v-click-outside="onClickOutside" class="comment-box">
-    <u-editor
+    <!--<u-editor
       ref="editorRef"
       v-model="content"
       :class="{ 'input-active': action }"
@@ -15,9 +15,60 @@
       @paste="change"
       @change-img-list-fn="changeFilesFn"
       @mentionSearch="mentionSearch"
-    ></u-editor>
+    ></u-editor>-->
+    <div class="u-editor" :class="{ active: active }">
+      <div
+        ref="editorRef"
+        class="rich-input"
+        contenteditable
+        :placeholder="placeholder"
+        @focus="onFocus"
+        @input="input"
+        @blur="onBlur"
+        @keydown.enter="keyDown"
+        @keydown.up.prevent="moveSelectionFn(-1)"
+        @keydown.down.prevent="moveSelectionFn(1)"
+        @paste="pasteFn"
+        v-html="text"
+      ></div>
+      <div ref="imageRef" class="image-preview-box">
+        <div v-for="(url, index) in imgList" :key="index" class="image-preview">
+          <img :src="url" alt=""/>
+          <div class="clean-btn" @click="removeImg(index)">
+            <svg
+              data-v-48a7e3c5=""
+              data-v-7c7c7498=""
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="12" height="12" rx="2" fill="#86909C"></rect>
+              <path
+                data-v-48a7e3c5=""
+                data-v-7c7c7498=""
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M5.98095 5.49307L8.22012 3.25389C8.28521 3.18881 8.39074 3.18881 8.45582 3.25389L8.69153 3.4896C8.75661 3.55468 8.75661 3.66021 8.69153 3.7253L6.45235 5.96447L8.69153 8.20364C8.75661 8.26873 8.75661 8.37426 8.69153 8.43934L8.45582 8.67505C8.39074 8.74013 8.28521 8.74013 8.22012 8.67505L5.98095 6.43587L3.74178 8.67505C3.67669 8.74013 3.57116 8.74013 3.50608 8.67505L3.27037 8.43934C3.20529 8.37426 3.20529 8.26873 3.27037 8.20364L5.50954 5.96447L3.27037 3.7253C3.20529 3.66021 3.20529 3.55468 3.27037 3.4896L3.50608 3.25389C3.57116 3.18881 3.67669 3.18881 3.74178 3.25389L5.98095 5.49307Z"
+                fill="white"
+              ></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <MentionList
+        ref="metionList"
+        :is-show="isShowMention"
+        :position="mentionPosition"
+        :list="mentionConfig?.userArr"
+        :show-avatar="mentionConfig?.showAvatar"
+        @insert="insertUser"
+        @change-show="changeMentionShow"
+      ></MentionList>
+    </div>
     <div v-if="action" class="action-box">
-      <u-emoji :emoji="emoji" @add-emoji="(val) => $refs.editorRef?.addText(val)"></u-emoji>
+      <u-emoji :emoji="c_emoji" @add-emoji="(val) => $refs.editorRef?.addText(val)"></u-emoji>
       <div v-if="upload" class="picture" @click="$refs.inputRef?.click">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon">
           <path
@@ -30,16 +81,17 @@
         <span>{{$u('comment.upload')}}</span>
         <input id="comment-upload" ref="inputRef" type="file" multiple @change="change" />
       </div>
-      <template v-if="slots.func">
+      <!--<template v-if="slots.func">
         <Func />
-      </template>
+      </template>-->
+      <div>FuncXXX</div>
       <div class="btn-box">
-        <el-button type="primary" :disabled="disabled" @click="onSubmit">
-          {{ props.contentBtn }}
-        </el-button>
-        <el-button v-if="props.cancelBtn" @click="onCancel">
-          {{ props.cancelBtn }}
-        </el-button>
+        <button :disabled="disabled" @click="onSubmit">
+          {{ contentBtn }}
+        </button>
+        <button v-if="cancelBtn" @click="onCancel">
+          {{ cancelBtn }}
+        </button>
       </div>
     </div>
   </div>
@@ -47,13 +99,14 @@
 
 <script>
   import { isNull, isEmpty, isImage, createObjectURL } from '@/utils/emoji'
-  import UEditor from './Editor'
+  // import UEditor from './Editor'
+  import emoji from '@/assets/emoji/emoji.js';
 
 // import { h, inject, nextTick, reactive, ref } from 'vue'
 // import { InjectionEmojiApi, EditorInstance, UToast, UEmoji, UEditor, EmojiApi } from '~/index'
 // import { ElButton } from '~/element'
 // import { InjectInputBox, InjectInputBoxApi, InjectSlots } from '../../key'
-import { UEmoji } from './Emoji'
+  import UEmoji from './Emoji'
 
 // export interface InputBoxApi {
 //   focus(): void
@@ -63,6 +116,7 @@ import { UEmoji } from './Emoji'
     name: 'InputBox',
     data() {
       return {
+        placeholder: '输入评论（Enter换行，Ctrl + Enter发送）',
         content: '',
         action: false,
         disabled: true,
@@ -74,9 +128,6 @@ import { UEmoji } from './Emoji'
       }
     },
     props: {
-      placeholder: {
-        type: String
-      },
       contentBtn: {
         type: String
       },
@@ -91,13 +142,20 @@ import { UEmoji } from './Emoji'
       },
       mentionConfig: {
         type: Object
+      },
+      // 定义upload prop，默认值为false
+      upload: {
+        type: Boolean,
+        default: false
       }
     },
     computed: {
-
+      c_emoji() {
+        return emoji;
+      }
     },
     components: {
-      UEditor,
+      // UEditor,
       UEmoji
     },
     methods: {
@@ -175,6 +233,58 @@ import { UEmoji } from './Emoji'
       },
       focus() {
         this.$refs.editorRef.value?.focus();
+      },
+      onBlur(event) {
+        // 记录光标
+        try {
+          this.range = window.getSelection()?.getRangeAt(0)
+        } catch (error) {
+          console.log(error)
+        }
+        this.$emit('blur', event)
+        if (!this.editorRef?.innerHTML) this.active = false
+        this.isLocked = false
+      },
+      keyDown(e) {
+        if (e.ctrlKey && e.key === 'Enter') {
+          //用户点击了ctrl+enter触发
+          // console.log('ctrl+enter')
+          if (isEmpty(this.modelValue.replace(/&nbsp;|<br>| /g, ''))) {
+            this.$Message.info('内容不能为空')
+          } else {
+            this.$emit('submit')
+          }
+        } else if (e.key === 'Enter' && this.isShowMention) {
+          // 插入用户操作
+          e.preventDefault()
+          const currentUser = this.enterConfirm()
+          this.insertUser(currentUser)
+          this.changeMentionShow(false)
+        } else {
+          //用户点击了enter触发
+          console.log('enter')
+        }
+      },
+      moveSelectionFn(num) {
+        if (this.metionList) {
+          this.metionList.moveSelection(num)
+        }
+      },
+      pasteFn(event) {
+        const clipboardData = event.clipboardData
+        if (clipboardData) {
+          const text = clipboardData.getData('text/plain')
+          const file = clipboardData.items.length > 0 ? clipboardData.items[0].getAsFile() : null
+          if (text) {
+            event.preventDefault() // 阻止默认的粘贴行为
+            document.execCommand('insertText', false, text) // 插入纯文本
+          } else if (file) {
+            console.log(file)
+            event.preventDefault() // 阻止默认的粘贴行为
+            // 处理粘贴的文件，例如上传到服务器
+            this.$emit('paste', event, file)
+          }
+        }
       },
       changeMentionShow(isShow) {
         console.log('死循环了')

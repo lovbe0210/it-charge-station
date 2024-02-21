@@ -59,6 +59,7 @@
     name: 'UEditor',
     data() {
       return {
+        placeholder: '输入评论（Enter换行，Ctrl + Enter发送）',
         metionList: null,
         mentionPosition: {
           left: 0,
@@ -76,9 +77,6 @@
       }
     },
     props: {
-      placeholder: {
-        type: String
-      },
       modelValue: {
         type: String
       },
@@ -183,7 +181,7 @@
           console.log(error)
         }
         this.$emit('blur', event)
-        if (!this.editorRef?.innerHTML) this.active.value = false
+        if (!this.editorRef?.innerHTML) this.active = false
         this.isLocked = false
       },
 
