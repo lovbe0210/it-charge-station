@@ -1,35 +1,18 @@
 <template>
   <div v-click-outside="onClickOutside" class="comment-box">
-    <!--<u-editor
-      ref="editorRef"
-      v-model="content"
-      :class="{ 'input-active': action }"
-      :placeholder="placeholder"
-      :min-height="64"
-      :img-list="imgList"
-      :mentionConfig="mentionConfig"
-      @click="() => (action = true)"
-      @focus="onFocus"
-      @input="input"
-      @submit="onSubmit"
-      @paste="change"
-      @change-img-list-fn="changeFilesFn"
-      @mentionSearch="mentionSearch"
-    ></u-editor>-->
     <div class="u-editor" :class="{ active: active }">
-      <div
-        ref="editorRef"
-        class="rich-input"
-        contenteditable
-        :placeholder="placeholder"
-        @focus="onFocus"
-        @input="input"
-        @blur="onBlur"
-        @keydown.enter="keyDown"
-        @keydown.up.prevent="moveSelectionFn(-1)"
-        @keydown.down.prevent="moveSelectionFn(1)"
-        @paste="pasteFn"
-        v-html="text"
+      <div ref="editorRef"
+           class="rich-input"
+           contenteditable
+           :placeholder="placeholder"
+           @focus="onFocus"
+           @input="input"
+           @blur="onBlur"
+           @keydown.enter="keyDown"
+           @keydown.up.prevent="moveSelectionFn(-1)"
+           @keydown.down.prevent="moveSelectionFn(1)"
+           @paste="pasteFn"
+           v-html="text"
       ></div>
       <div ref="imageRef" class="image-preview-box">
         <div v-for="(url, index) in imgList" :key="index" class="image-preview">
@@ -68,23 +51,48 @@
       ></MentionList>
     </div>
     <div v-if="action" class="action-box">
-      <u-emoji :emoji="c_emoji" @add-emoji="(val) => $refs.editorRef?.addText(val)"></u-emoji>
-      <div v-if="upload" class="picture" @click="$refs.inputRef?.click">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon">
-          <path
-            data-v-48a7e3c5=""
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M14 1.3335C14.3514 1.3335 14.6394 1.60546 14.6648 1.95041L14.6666 2.00016V14.0002C14.6666 14.3516 14.3947 14.6396 14.0497 14.665L14 14.6668H1.99998C1.64853 14.6668 1.36059 14.3949 1.33514 14.0499L1.33331 14.0002V2.00016C1.33331 1.64871 1.60527 1.36077 1.95023 1.33532L1.99998 1.3335H14ZM13.3333 2.66618H2.66664V13.3328H13.3333V2.66618ZM11.9219 6.7879C11.9719 6.83791 12 6.90574 12 6.97647V11.7993C12 11.9098 11.9104 11.9993 11.8 11.9993H6.81615C6.7975 11.9993 6.77945 11.9968 6.76232 11.992L3.91042 11.9847C3.79996 11.9844 3.71063 11.8947 3.7109 11.7842C3.71102 11.7313 3.73209 11.6807 3.76948 11.6433L6.52468 8.88807C6.62882 8.78393 6.79766 8.78393 6.9018 8.88807L8.17297 10.1593L11.5447 6.7879C11.6489 6.68376 11.8177 6.68376 11.9219 6.7879ZM5.99997 3.99951V5.99951H3.99997V3.99951H5.99997Z"
-          ></path>
-        </svg>
-        <span>{{$u('comment.upload')}}</span>
-        <input id="comment-upload" ref="inputRef" type="file" multiple @change="change" />
+      <div class="u-emoji">
+        <a-popover trigger="click">
+          <div slot="content" class="settings emoji-popover" @mouseenter="onBefore">
+            <div class="face-tooltip-head select-none">
+              <label
+                v-for="(item, index) in c_emoji.faceList"
+                :key="index"
+                :class="activeIndex == index ? 'active' : ''"
+                @click="changeEmoji(index)"
+              >
+                <img :src="item" alt=""/>
+              </label>
+            </div>
+            <div class="emoji-body select-none">
+              <div class="emjio-container" :style="{ transform: `translateX(${offsetX}%)` }">
+                <div v-for="(list, index) in emojis" :key="index" class="emoji-wrapper">
+                  <div style="padding: 0 5px">
+                  <span v-for="(value, key) in list"
+                        :key="key"
+                        class="emoji-item"
+                        @click="$refs.editorRef?.addText(key)">
+                <b-img class="emoji" style="width: 24px; height: 24px; margin: 5px" right fluid rounded :src="value"
+                       :alt="String(key)"/>
+              </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="emoji-btn select-none">
+            </div>
+          </div>
+          <div>
+            <span>表情<span class="iconfont emoji"></span></span>
+          </div>
+        </a-popover>
       </div>
-      <!--<template v-if="slots.func">
-        <Func />
-      </template>-->
-      <div>FuncXXX</div>
+
+      <div v-if="upload" class="picture" @click="$refs.inputRef?.click">
+        <span>图片<span class="iconfont image"></span></span>
+        <input id="comment-upload" ref="inputRef" type="file" multiple @change="change"/>
+      </div>
+
       <div class="btn-box">
         <button :disabled="disabled" @click="onSubmit">
           {{ contentBtn }}
@@ -98,25 +106,28 @@
 </template>
 
 <script>
-  import { isNull, isEmpty, isImage, createObjectURL } from '@/utils/emoji'
-  // import UEditor from './Editor'
+  import {isNull, isEmpty, isImage, createObjectURL, cloneDeep} from '@/utils/emoji'
   import emoji from '@/assets/emoji/emoji.js';
+  // import UEmoji from './Emoji'
+  import MentionList from './mentionList.vue'
 
-// import { h, inject, nextTick, reactive, ref } from 'vue'
-// import { InjectionEmojiApi, EditorInstance, UToast, UEmoji, UEditor, EmojiApi } from '~/index'
-// import { ElButton } from '~/element'
-// import { InjectInputBox, InjectInputBoxApi, InjectSlots } from '../../key'
-  import UEmoji from './Emoji'
-
-// export interface InputBoxApi {
-//   focus(): void
-// }
 
   export default {
     name: 'InputBox',
     data() {
       return {
         placeholder: '输入评论（Enter换行，Ctrl + Enter发送）',
+        // 是否显示提及框
+        isShowMention: false,
+        active: false,
+        text: null,
+        mentionPosition: {
+          left: 0,
+          top: 0
+        },
+        activeIndex: 0,
+        offsetX: 0,
+        emojis: new Array(2),
         content: '',
         action: false,
         disabled: true,
@@ -146,7 +157,7 @@
       // 定义upload prop，默认值为false
       upload: {
         type: Boolean,
-        default: false
+        default: true
       }
     },
     computed: {
@@ -156,7 +167,8 @@
     },
     components: {
       // UEditor,
-      UEmoji
+      // UEmoji,
+      MentionList
     },
     methods: {
       changeFilesFn(arr) {
@@ -205,11 +217,11 @@
 
       // 点击评论框外关闭操作栏和失去评论框焦点
       onClickOutside(event) {
-    // const child = event.target as HTMLElement
-    // const target = document.querySelector(".el-popper")
-    // if (!target?.contains(child) && isEmpty(content.value)) {
-    //   action.value = false
-    // }
+        // const child = event.target as HTMLElement
+        // const target = document.querySelector(".el-popper")
+        // if (!target?.contains(child) && isEmpty(content.value)) {
+        //   action.value = false
+        // }
 
         // 评论框有内容情况下不执行操作
         if (isEmpty(this.content) && !this.state.imgLength) {
@@ -317,12 +329,102 @@
       },
       changeMetionList(users) {
         this.$emit('changeMetionList', users)
+      },
+      // 移除图片
+      removeImg(val) {
+        this.imgList?.splice(val, 1);
+        cloneDeep(this.imgList)
+      },
+      //创建@标签
+      createSvgUrl(user) {
+        // 获取用户名和用户ID
+        const userName = user[this.mentionConfig.userNameKey]
+        const userId = user[this.mentionConfig.userIdKey]
+        const mentionColor = this.mentionConfig.mentionColor || '#409eff'
+
+        // 创建一个不可见的SVG元素用于测量文本宽度
+        const svgForMeasure = `<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0">
+                              <style>
+                                .mention-text { font: 14px 'PingFangSC-Regular', 'PingFang SC'; }
+                              </style>
+                              <text x="0" y="15" class="mention-text">@${userName}</text>
+                            </svg>`
+
+        // 将SVG添加到DOM中以测量文本
+        const container = document.createElement('div')
+        container.style.visibility = 'hidden' // 隐藏容器
+        container.innerHTML = svgForMeasure
+        document.body.appendChild(container)
+
+        // 测量文本宽度
+        const textElement = container.querySelector('text')
+        let textWidth = 200 // 默认宽度
+        if (textElement) {
+          textWidth = textElement.getComputedTextLength()
+        }
+
+        // 移除用于测量的SVG
+        document.body.removeChild(container)
+
+        // 创建最终的SVG元素
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${textWidth}" height="20">
+                      <style>
+                        .mention-text { font: 14px 'PingFangSC-Regular', 'PingFang SC'; fill: ${mentionColor}; }
+                      </style>
+                      <text x="0" y="15" class="mention-text">@${userName}</text>
+                    </svg>`
+
+        // 编码SVG以便作为URL使用
+        const encodedSvg = encodeURIComponent(svg).replace(/'/g, '%27').replace(/"/g, '%22')
+
+        const url = `data:image/svg+xml,${encodedSvg}`
+
+        // 返回img标签
+        return `<img src="${url}"
+                    alt="@${userName}"
+                    style="width:${textWidth}px;height:20px;user-select: none; vertical-align: sub;"
+                    data-userName="${userName}"
+                    data-id="${userId}"
+                    draggable="false">`
+      },
+      //@用户插入操作
+      insertUser(user) {
+        if (user) {
+          let img = this.createSvgUrl(user)
+          this.addText(`${img}\u2008`, true)
+        }
+      },
+      onBefore() {
+        this.emojis.value[0] = this.c_emoji.emojiList[0]
+      },
+      changeEmoji(val) {
+        this.activeIndex = val;
+        switch (val) {
+          case 0:
+            this.offsetX = 0
+            break
+          case 1:
+            this.offsetX = -50
+            this.emojis.value[1] = this.c_emoji.emojiList[1]
+            break
+        }
+      }
+    },
+    mounted() {
+      this.editorRef = this.$refs.editorRef;
+      if (this.editorRef) {
+        this.editorRef.addEventListener('mousemove', this.onEditorSelectionChange)
+      }
+    },
+    beforeDestroy() {
+      if (this.editorRef) {
+        this.editorRef.removeEventListener('mousemove', this.onEditorSelectionChange)
       }
     },
     directives: {
       'click-outside': {
         bind(el, binding, vnode) {
-          el.clickOutsideEvent = function(event) {
+          el.clickOutsideEvent = function (event) {
             // 判断点击的元素是否在 el 内部
             if (!(el === event.target || el.contains(event.target))) {
               // 如果点击的不是 el 内部，则调用绑定的方法
@@ -341,42 +443,54 @@
 </script>
 
 <style lang="less" scoped>
-.comment-box {
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-  .action-box {
-    display: flex;
-    align-items: center;
-    margin-top: 8px;
+  @import "../style/editor.less";
+  @import '../style/emoji';
 
-    & > div:not(.btn-box) {
-      margin-right: 16px;
-    }
-    .btn-box {
-      margin-left: auto;
+  .comment-box {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+
+    .action-box {
+      display: flex;
+      align-items: center;
+      margin-top: 8px;
+
+      & > div:not(.btn-box) {
+        margin-right: 16px;
+      }
+
+      .btn-box {
+        margin-left: auto;
+      }
+
+      .picture {
+        font-size: 14px;
+        color: var(--u-text-color-secondary);
+        cursor: pointer;
+
+        .icon {
+          fill: var(--u-text-color-secondary);
+          margin-right: 4px;
+          margin-bottom: 1px;
+        }
+
+        #comment-upload {
+          display: none;
+        }
+      }
     }
 
-    .picture {
-      font-size: 14px;
-      color: var(--u-text-color-secondary);
-      cursor: pointer;
+    .picture:hover {
+      color: var(--u-color-primary);
+
       .icon {
-        fill: var(--u-text-color-secondary);
-        margin-right: 4px;
-        margin-bottom: 1px;
-      }
-      #comment-upload {
-        display: none;
+        fill: var(--u-color-primary);
       }
     }
-  }
-  .picture:hover {
-    color: var(--u-color-primary);
 
-    .icon {
-      fill: var(--u-color-primary);
+    .emoji-popover {
+      padding: 12px 0 !important;
     }
   }
-}
 </style>

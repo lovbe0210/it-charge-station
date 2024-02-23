@@ -2,17 +2,6 @@
   <div class="u-comment">
     <div v-if="showForm" class="comment-form">
       <slot name="header">
-        <!--<div class="header">
-          <span class="header-title">评论</span>
-          <div class="nav__sort">
-            <div class="item select-none" :class="{ active: latest }" @click="latest = true">
-              最新
-            </div>
-            <div class="item select-none" :class="{ active: !latest }" @click="latest = false">
-              最热
-            </div>
-          </div>
-        </div>-->
         <div class="reply-header">
           <div class="reply-navigation">
             <ul class="nav-bar">
@@ -35,10 +24,6 @@
             <span v-if="config.user.username">{{ config.user.username }}</span>
             <img v-else src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
           </b-avatar>
-          <!--<el-avatar :size="40" :src="config.user.avatar">
-            <span v-if="config.user.username">{{ config.user.username }}</span>
-            <img v-else src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
-          </el-avatar>-->
         </div>
         <InputBox v-bind="$attrs"
                   ref="inputBox"
@@ -46,10 +31,10 @@
                   :mentionConfig="config.mentionConfig"
                   @mentionSearch="mentionSearch"
                   @changeMetionList="changeMetionList"
-                  content-btn="发表评论"/>
+                  content-btn="发表评论"
+                  cancel-btn="取消"/>
       </div>
     </div>
-    <!-- <div class="hot-list"></div> -->
     <div v-if="showContent" class="comment-list-wrapper">
       <CommentList :data="config.comments" :contentBoxParam="contentBoxParam" :upload="upload"></CommentList>
     </div>

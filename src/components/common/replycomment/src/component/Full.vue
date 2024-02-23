@@ -6,7 +6,6 @@
       relative-time
       page
       upload
-      cancel-btn="取消"
       :show-form="false"
       @submit="submit"
       @like="like"
