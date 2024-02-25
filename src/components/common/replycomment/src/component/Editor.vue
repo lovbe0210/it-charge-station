@@ -53,7 +53,7 @@
 </template>
 <script>
   import {cloneDeep, isEmpty} from '@/utils/emoji'
-  import MentionList from './mentionList.vue'
+  import MentionList from './MentionList.vue'
 
   export default {
     name: 'UEditor',

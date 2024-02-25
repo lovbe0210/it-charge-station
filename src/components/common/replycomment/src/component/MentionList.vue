@@ -32,7 +32,7 @@
 
 <script>
   export default {
-    name: 'UEditor',
+    name: 'MentionList',
     data() {
       return {
         scrollbarRef: null,

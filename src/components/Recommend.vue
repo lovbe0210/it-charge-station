@@ -35,7 +35,7 @@
               </div>
             </b-row>
           </b-col>
-          <b-col v-if="!isPhone && item.preview != null" cols="4" fluid class="image">
+          <b-col v-if="!isPhone && item.preview != null" cols="4" fluid class="preview-image">
             <b-img right fluid rounded :src="item.preview" alt="Image"/>
           </b-col>
         </b-row>

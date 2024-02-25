@@ -6,13 +6,12 @@
            contenteditable
            :placeholder="placeholder"
            @focus="onFocus"
-           @input="input"
+           @input="onInput"
            @blur="onBlur"
            @keydown.enter="keyDown"
            @keydown.up.prevent="moveSelectionFn(-1)"
            @keydown.down.prevent="moveSelectionFn(1)"
            @paste="pasteFn"
-           v-html="text"
       ></div>
       <div ref="imageRef" class="image-preview-box">
         <div v-for="(url, index) in imgList" :key="index" class="image-preview">
@@ -71,7 +70,7 @@
                   <span v-for="(value, key) in list"
                         :key="key"
                         class="emoji-item"
-                        @click="$refs.editorRef?.addText(key)">
+                        @click="addText(key)">
                 <b-img class="emoji" style="width: 24px; height: 24px; margin: 5px" right fluid rounded :src="value"
                        :alt="String(key)"/>
               </span>
@@ -83,15 +82,23 @@
             </div>
           </div>
           <div>
-            <span>表情<span class="iconfont emoji"></span></span>
+            <span class="iconfont emoji"/>
+            <span>表情</span>
           </div>
         </a-popover>
       </div>
 
-      <div v-if="upload" class="picture" @click="$refs.inputRef?.click">
-        <span>图片<span class="iconfont image"></span></span>
-        <input id="comment-upload" ref="inputRef" type="file" multiple @change="change"/>
-      </div>
+      <Upload v-if="upload" class="picture"
+              action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false"
+              :format="['jpg','jpeg','png']" :max-size="10240"
+              accept="image/png, image/jpeg"
+              :on-exceeded-size="handleMaxSize" :on-format-error="handleFormatError"
+              :on-success="handleServerSuccess" :on-error="handleServerError">
+        <div>
+          <span class="iconfont image"/>
+          <span>图片</span>
+        </div>
+      </Upload>
 
       <div class="btn-box">
         <button :disabled="disabled" @click="onSubmit">
@@ -108,8 +115,7 @@
 <script>
   import {isNull, isEmpty, isImage, createObjectURL, cloneDeep} from '@/utils/emoji'
   import emoji from '@/assets/emoji/emoji.js';
-  // import UEmoji from './Emoji'
-  import MentionList from './mentionList.vue'
+  import MentionList from './MentionList.vue'
 
 
   export default {
@@ -120,7 +126,6 @@
         // 是否显示提及框
         isShowMention: false,
         active: false,
-        text: null,
         mentionPosition: {
           left: 0,
           top: 0
@@ -129,6 +134,10 @@
         offsetX: 0,
         emojis: new Array(2),
         content: '',
+        isLocked: false,
+        searchStr: '',
+        metionList: null,
+        range: null,
         action: false,
         disabled: true,
         imgList: [],
@@ -175,9 +184,9 @@
         this.files2.value = arr
       },
       input() {
-        isEmpty(this.content.value.replace(/&nbsp;|<br>| /g, ""))
-          ? (this.disabled.value = true)
-          : (this.disabled.value = false)
+        isEmpty(this.content.replace(/&nbsp;|<br>| /g, ""))
+          ? (this.disabled = true)
+          : (this.disabled = false)
       },
       // 提交评论的数据
       onSubmit() {
@@ -207,7 +216,7 @@
       //清理提交后输入框和图片列表数据
       clearData() {
         // 清空评论框内容
-        this.$refs.editorRef.clear()
+        this.editorRef.clear()
         this.imgList.length = 0
         //清空图片列表
         this.files2 = []
@@ -241,12 +250,13 @@
         this.$parent.focus()
       },
       AddMention() {
-        console.log(this.$refs.editorRef.value)
+        console.log(this.editorRef)
       },
       focus() {
-        this.$refs.editorRef.value?.focus();
+        this.editorRef?.focus();
       },
       onBlur(event) {
+        console.log('丢失光标')
         // 记录光标
         try {
           this.range = window.getSelection()?.getRangeAt(0)
@@ -271,7 +281,7 @@
           e.preventDefault()
           const currentUser = this.enterConfirm()
           this.insertUser(currentUser)
-          this.changeMentionShow(false)
+
         } else {
           //用户点击了enter触发
           console.log('enter')
@@ -298,9 +308,53 @@
           }
         }
       },
+      // 修改提及框显示的方法
       changeMentionShow(isShow) {
-        console.log('死循环了')
-        this.$refs.editorRef.value?.changeMentionShow(isShow)
+        this.isShowMention = isShow;
+        if (!isShow) {
+          this.searchStr = ''
+        }
+      },
+      changeMentionPosition(position) {
+        this.mentionPosition = position
+      },
+      addText(val, isPop) {
+        let selection = window.getSelection()
+        if (selection) {
+          selection.removeAllRanges()
+          // 为空初始化光标
+          if (!this.range) {
+            this.editorRef?.focus()
+            this.range = selection.getRangeAt(0)
+          }
+
+          // 如果isPop为true 删除@字符
+          if (isPop && !this.searchStr) {
+            if (this.range.startOffset > 0) {
+              this.range.setStart(this.range.startContainer, this.range.startOffset - 1)
+              this.range.deleteContents()
+            }
+          } else if (isPop && this.searchStr) {
+            // 删除掉@符号以及searchStr
+            let deleteLength = this.searchStr.length + 1 // +1 for @ symbol
+            let actualStartOffset = this.range.startContainer.data.lastIndexOf('@' + this.searchStr)
+            if (actualStartOffset !== -1) {
+              this.range.setStart(this.range.startContainer, actualStartOffset)
+              this.range.setEnd(this.range.startContainer, actualStartOffset + deleteLength)
+              this.range.deleteContents()
+            }
+          }
+          // 删除选中内容
+          this.range.deleteContents()
+          // 添加内容
+          this.range.insertNode(this.range.createContextualFragment(val))
+          this.range.collapse(false)
+          selection.addRange(this.range)
+
+          this.$emit('update:modelValue', this.editorRef?.innerHTML || '')
+          const event = this.editorRef
+          this.$emit('input', event)
+        }
       },
       change(val, file) {
         if (!file) {
@@ -323,6 +377,19 @@
             }
           }
         }
+      },
+      handleMaxSize() {
+        this.$Message.warning('文件大小不得超过10MB！');
+      },
+      handleFormatError() {
+        this.$Message.warning('文件格式错误，请上传正确的图片');
+      },
+      handleServerSuccess() {
+        // 清空上一次的图片展示
+        this.$Message.success('替换图片表情成功');
+      },
+      handleServerError() {
+        this.$Message.error('网络错误，请稍后重试！');
       },
       mentionSearch(searchStr) {
         this.$emit('mentionSearch', searchStr)
@@ -393,9 +460,10 @@
           let img = this.createSvgUrl(user)
           this.addText(`${img}\u2008`, true)
         }
+        this.changeMentionShow(false)
       },
       onBefore() {
-        this.emojis.value[0] = this.c_emoji.emojiList[0]
+        this.emojis[0] = this.c_emoji.emojiList[0]
       },
       changeEmoji(val) {
         this.activeIndex = val;
@@ -405,8 +473,87 @@
             break
           case 1:
             this.offsetX = -50
-            this.emojis.value[1] = this.c_emoji.emojiList[1]
+            this.emojis[1] = this.c_emoji.emojiList[1]
             break
+        }
+      },
+      // 输入框事件
+      onInput(event) {
+        // debugger
+        const {innerHTML} = event.target;
+        console.log(innerHTML)
+        if (event.data === '@' && this.mentionConfig?.show) {
+          // 获取用户列表
+          // 记录光标
+          try {
+            this.range = window.getSelection()?.getRangeAt(0)
+          } catch (error) {
+            console.log(error)
+          }
+
+          let rect = this.range?.getBoundingClientRect()
+          // 显示提及组件
+          this.changeMentionShow(true)
+          if (rect) {
+            this.changeMentionPosition({
+              left: rect.left,
+              top: rect.top + rect.height + 10
+            })
+          }
+        }
+
+        this.content = innerHTML;
+        this.input();
+        this.onEditorSelectionChange()
+      },
+      //光标位置监听
+      onEditorSelectionChange() {
+        //实时保存光标位置
+        if (this.editorRef) {
+          this.range = this.editorRef?.ownerDocument.getSelection()?.getRangeAt(0)
+        }
+      }
+    },
+    watch: {
+      "content"(newVal, oldVal) {
+        // if (!this.isLocked) this.text = newVal;
+        // this.onEditorSelectionChange()
+        if (!this.mentionConfig?.show) return
+
+        // 移除 "br"
+        newVal = newVal.replace(/<br>/g, '')
+        oldVal = oldVal.replace(/<br>/g, '')
+        if ((oldVal.length >= newVal.length && oldVal.slice(-1) === '@') || newVal.slice(-7) === '@&nbsp;') {
+          // 隐藏提及组件
+          this.changeMentionShow(false)
+        }
+        // 搜索词
+        if (this.isShowMention && newVal.slice(-6) !== '&nbsp;') {
+          this.searchStr = newVal.split('@').pop() || ''
+          // 替换掉里面所有的单引号分隔符
+          this.searchStr = this.searchStr.replace(`'`, '')
+          console.log(this.searchStr)
+          this.mentionSearch(this.searchStr)
+          if (this.metionList) {
+            this.metionList.resetSelectIndex()
+          }
+        } else if (this.isShowMention && newVal.slice(-6) === '&nbsp;') {
+          this.changeMentionShow(false)
+        }
+        // 提取出来newVal里面所有拥有自定义属性的img标签
+        let imgTags = newVal.match(/<img [^>]*data-id="([^"]*)"[^>]*>/g)
+        if (imgTags) {
+          let dataIds = imgTags.map(tag => {
+            let match = tag.match(/data-id="([^"]*)"/)
+            return match ? match[1] : null
+          })
+          // 从mentionConfig.value.userArr里面获取id相同的user
+          let users = this.mentionConfig.userArr.filter((user) =>
+            dataIds.includes(`${user[this.mentionConfig.userIdKey]}`)
+          )
+          this.changeMetionList(users)
+        } else {
+          this.changeMetionList([])
         }
       }
     },

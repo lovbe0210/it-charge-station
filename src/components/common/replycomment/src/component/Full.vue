@@ -1,75 +1,39 @@
 <template>
-  <u-comment-scroll style="width: 820px; margin-left: 20px" :disable="disable" @more="more">
-    <u-comment
-      ref="commentRef"
-      :config="config"
-      relative-time
-      page
-      upload
-      :show-form="false"
-      @submit="submit"
-      @like="like"
-      @reply-page="replyPage"
-      @show-info="showInfo"
-      @focus="focus"
-      @cancel="cancelFn"
-      @mention-search="mentionSearchFn"
-    >
-      <!-- <template>导航栏卡槽</template> -->
-      <!-- <template #header>头部卡槽</template> -->
-      <!-- <template #info>信息卡槽</template> -->
-      <!-- <template #card>用户信息卡片卡槽</template> -->
-      <!-- <template #func>功能区域卡槽</template> -->
-<!--      <u-comment-nav v-model="latest" @sorted="sorted"></u-comment-nav>-->
-      <template #card="scope">
-        <!--<el-skeleton :loading="loading" :throttle="200" animated>
-          <template #template>
-            <el-skeleton-item variant="image" style="width: 50px; height: 50px; margin-bottom: 10px"/>
-            <div>
-              <el-skeleton-item variant="h3" style="width: 50%"/>
-              <el-skeleton-item variant="text" style="margin-right: 16px"/>
-              <el-skeleton-item variant="text" style="width: 30%"/>
-            </div>
-          </template>
-          <template #default>
-            <div class="user-card">
-              <div class="user-avatar">
-                <el-avatar style="margin-top: 5px" :size="40" fit="cover" :src="scope.avatar">
-                  <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
-                </el-avatar>
-              </div>
-              <div class="user-content">
-                <div class="user-info">
-                  <a href="" class="username" target="_blank">
-                    <span class="name" style="max-width: 10em">{{ scope.username }}</span>
-                    <span blank="true" class="rank">
-                      <u-icon size="24" v-html="useLevel(scope.level)"></u-icon>
-                    </span>
-                  </a>
-                </div>
-                <div class="social-info">
-                  <a href="" class="attention">
-                    <span>{{ scope.attention }}</span>
-                    <span>关注</span>
-                  </a>
-                  <a href="" class="follower">
-                    <span>{{ scope.follower }}</span>
-                    <span>粉丝</span>
-                  </a>
-                  <a href="" class="like">
-                    <span>{{ scope.like }}</span>
-                    <span>获赞</span>
-                  </a>
-                </div>
-                <div class="card-btn">
-                  <el-button type="primary">关注</el-button>
-                  <el-button>发消息</el-button>
-                </div>
-              </div>
-            </div>
-          </template>
-        </el-skeleton>-->
-        <a-skeleton :loading="loading" active>
+  <!--<u-comment-scroll style="width: 820px; margin-left: 20px" :disable="disable" @more="more">
+
+  </u-comment-scroll>-->
+  <u-comment
+    ref="commentRef"
+    :config="config"
+    relative-time
+    page
+    upload
+    :show-form="false"
+    @submit="submit"
+    @like="like"
+    @reply-page="replyPage"
+    @show-info="showInfo"
+    @focus="focus"
+    @cancel="cancelFn"
+    @mention-search="mentionSearchFn"
+  >
+    <!-- <template>导航栏卡槽</template> -->
+    <!-- <template #header>头部卡槽</template> -->
+    <!-- <template #info>信息卡槽</template> -->
+    <!-- <template #card>用户信息卡片卡槽</template> -->
+    <!-- <template #func>功能区域卡槽</template> -->
+    <!--      <u-comment-nav v-model="latest" @sorted="sorted"></u-comment-nav>-->
+    <template #card="scope">
+      <!--<el-skeleton :loading="loading" :throttle="200" animated>
+        <template #template>
+          <el-skeleton-item variant="image" style="width: 50px; height: 50px; margin-bottom: 10px"/>
+          <div>
+            <el-skeleton-item variant="h3" style="width: 50%"/>
+            <el-skeleton-item variant="text" style="margin-right: 16px"/>
+            <el-skeleton-item variant="text" style="width: 30%"/>
+          </div>
+        </template>
+        <template #default>
           <div class="user-card">
             <div class="user-avatar">
               <el-avatar style="margin-top: 5px" :size="40" fit="cover" :src="scope.avatar">
@@ -81,8 +45,8 @@
                 <a href="" class="username" target="_blank">
                   <span class="name" style="max-width: 10em">{{ scope.username }}</span>
                   <span blank="true" class="rank">
-                      <u-icon size="24" v-html="useLevel(scope.level)"></u-icon>
-                    </span>
+                    <u-icon size="24" v-html="useLevel(scope.level)"></u-icon>
+                  </span>
                 </a>
               </div>
               <div class="social-info">
@@ -105,18 +69,55 @@
               </div>
             </div>
           </div>
-        </a-skeleton>
+        </template>
+      </el-skeleton>-->
+      <a-skeleton :loading="loading" active>
+        <div class="user-card">
+          <div class="user-avatar">
+            <el-avatar style="margin-top: 5px" :size="40" fit="cover" :src="scope.avatar">
+              <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
+            </el-avatar>
+          </div>
+          <div class="user-content">
+            <div class="user-info">
+              <a href="" class="username" target="_blank">
+                <span class="name" style="max-width: 10em">{{ scope.username }}</span>
+                <span blank="true" class="rank">
+                      <u-icon size="24" v-html="useLevel(scope.level)"></u-icon>
+                    </span>
+              </a>
+            </div>
+            <div class="social-info">
+              <a href="" class="attention">
+                <span>{{ scope.attention }}</span>
+                <span>关注</span>
+              </a>
+              <a href="" class="follower">
+                <span>{{ scope.follower }}</span>
+                <span>粉丝</span>
+              </a>
+              <a href="" class="like">
+                <span>{{ scope.like }}</span>
+                <span>获赞</span>
+              </a>
+            </div>
+            <div class="card-btn">
+              <el-button type="primary">关注</el-button>
+              <el-button>发消息</el-button>
+            </div>
+          </div>
+        </div>
+      </a-skeleton>
 
-      </template>
-      <template #operate="scope">
-        <Operate :comment="scope" @remove="remove"/>
-      </template>
-    </u-comment>
-  </u-comment-scroll>
+    </template>
+    <template #operate="scope">
+      <Operate :comment="scope" @remove="remove"/>
+    </template>
+  </u-comment>
 </template>
 
 <script>
-  import UCommentScroll from "./CommentScroll";
+  // import UCommentScroll from "./CommentScroll";
   import UComment from "./Comment"
   // import UCommentNav from "./CommentNav"
   import Operate from "./Operate"
@@ -272,7 +273,7 @@
       }
     },
     components: {
-      UCommentScroll,
+      // UCommentScroll,
       UComment,
       // UCommentNav,
       Operate
