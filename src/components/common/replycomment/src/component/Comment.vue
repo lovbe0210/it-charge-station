@@ -149,7 +149,7 @@
           // 提交评论添加到评论列表
           if (comment) {
             if (parentId) {
-              let rawComment = this.config.comments.value.find(v => v.id === parentId)
+              let rawComment = this.config.comments.find(v => v.id === parentId)
               if (rawComment) {
                 let replys = rawComment.reply
                 if (replys) {
@@ -163,7 +163,7 @@
                 }
               }
             } else {
-              this.config.comments.value.unshift(comment)
+              this.config.comments.unshift(comment)
             }
           }
         }

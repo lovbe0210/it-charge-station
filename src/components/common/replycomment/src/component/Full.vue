@@ -22,7 +22,7 @@
     <!-- <template #card>用户信息卡片卡槽</template> -->
     <!-- <template #func>功能区域卡槽</template> -->
     <!--      <u-comment-nav v-model="latest" @sorted="sorted"></u-comment-nav>-->
-    <template #card="scope">
+    <!--<template #card="scope">-->
       <!--<el-skeleton :loading="loading" :throttle="200" animated>
         <template #template>
           <el-skeleton-item variant="image" style="width: 50px; height: 50px; margin-bottom: 10px"/>
@@ -70,7 +70,7 @@
           </div>
         </template>
       </el-skeleton>-->
-      <a-skeleton :loading="loading" active>
+     <!-- <a-skeleton :loading="loading" active>
         <div class="user-card">
           <div class="user-avatar">
             <el-avatar style="margin-top: 5px" :size="40" fit="cover" :src="scope.avatar">
@@ -106,12 +106,12 @@
             </div>
           </div>
         </div>
-      </a-skeleton>
+      </a-skeleton>-->
 
-    </template>
-    <template #operate="scope">
+   <!-- </template>-->
+    <!--<template #operate="scope">
       <Operate :comment="scope" @remove="remove"/>
-    </template>
+    </template>-->
   </u-comment>
 </template>
 
@@ -119,7 +119,7 @@
   // import UCommentScroll from "./CommentScroll";
   import UComment from "./Comment"
   // import UCommentNav from "./CommentNav"
-  import Operate from "./Operate"
+  // import Operate from "./Operate"
   import {createObjectURL} from "@/utils/emoji";
   import {usePage} from "@/utils/hooks";
   // 下载表情包资源emoji.zip https://gitee.com/undraw/undraw-ui/releases/tag/v0.0.0
@@ -273,9 +273,9 @@
     },
     components: {
       // UCommentScroll,
-      UComment,
+      UComment
       // UCommentNav,
-      Operate
+      // Operate
     },
     methods: {
       // 请求获取用户详细信息
@@ -299,14 +299,14 @@
         }, 200)
       },
       // 提交评论事件
-      submit(content, parentId, files, finish, reply, mentionList) {
-        let str = '提交评论:' + content + ';\t父id: ' + parentId + ';\t图片:' + files + ';\t被回复评论:' + reply +
+      submit(content, parentId, file, finish, reply, mentionList) {
+        let str = '提交评论:' + content + ';\t父id: ' + parentId + ';\t图片:' + file + ';\t被回复评论:' + reply +
           ';\t提及列表:' + JSON.stringify(mentionList)
         console.log(str)
         /**
          * 上传文件后端返回图片访问地址，格式以'||'为分割; 如:  '/static/img/program.gif||/static/img/normal.webp'
          */
-        let contentImg = files?.map(e => createObjectURL(e)).join('||')
+        let contentImg = file?.map(e => createObjectURL(e)).join('||')
 
         this.tempId += 1
         const comment = {
@@ -407,7 +407,7 @@
     },
     mounted() {
       // 初始化评论列表
-      this.config.comments = getComment(1, 1);
+      this.config.comments = getComment(1, 10);
       setTimeout(() => {
         const user = {
           id: 1,
