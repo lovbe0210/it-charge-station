@@ -31,6 +31,7 @@
                   :mentionConfig="config.mentionConfig"
                   @mentionSearch="mentionSearch"
                   @changeMetionList="changeMetionList"
+                  @submit="submit"
                   content-btn="发表评论"
                   cancel-btn="取消"/>
       </div>
@@ -141,27 +142,28 @@
        */
       submit({content, parentId, reply, files, clear}) {
         // 添加评论
+        debugger
         const finish = (comment) => {
           // 清空输入框内容
           clear();
           // 提交评论添加到评论列表
-          if (Comment) {
+          if (comment) {
             if (parentId) {
               let rawComment = this.config.comments.value.find(v => v.id === parentId)
               if (rawComment) {
                 let replys = rawComment.reply
                 if (replys) {
-                  replys.list.unshift(Comment)
+                  replys.list.unshift(comment)
                   replys.total++
                 } else {
                   rawComment.reply = {
                     total: 1,
-                    list: [Comment]
+                    list: [comment]
                   }
                 }
               }
             } else {
-              this.config.comments.value.unshift(Comment)
+              this.config.comments.value.unshift(comment)
             }
           }
         }
@@ -240,9 +242,6 @@
        */
       changeMetionList(list) {
         this.mentionList = list
-      },
-      cancelFn() {
-        this.$emit('cancel')
       },
       // mentionList 触发事件
       mentionSearch() {

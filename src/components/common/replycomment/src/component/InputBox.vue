@@ -181,7 +181,7 @@
     },
     methods: {
       changeFilesFn(arr) {
-        this.files2.value = arr
+        this.files2 = arr
       },
       input() {
         isEmpty(this.content.replace(/&nbsp;|<br>| /g, ""))
@@ -190,28 +190,30 @@
       },
       // 提交评论的数据
       onSubmit() {
-        this.$parent.submit({
+        debugger
+        let submitContent = {
           content:
             this.reply && this.parentId !== this.reply.id
               ? `回复 <span style="color: #6f42c1;">@${this.reply.user.username}:</span> ${this.content.value}`
-              : this.content.value,
+              : this.content,
           parentId: isNull(this.parentId, null),
           reply: this.reply,
-          files: this.files2.value,
+          files: this.files2,
           clear: () => {
             //清理输入框提交的数据
             this.clearData()
             // 关闭评论框事件
             this.$emit("close")
           }
-        })
+        };
+        this.$emit('submit', submitContent)
       },
       // 取消按钮的事件
       onCancel() {
         // 关闭评论框事件
         this.clearData()
         this.$emit("close")
-        this.$parent.cancelFn()
+        console.log('取消评论')
       },
       //清理提交后输入框和图片列表数据
       clearData() {

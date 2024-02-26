@@ -14,7 +14,6 @@
     @reply-page="replyPage"
     @show-info="showInfo"
     @focus="focus"
-    @cancel="cancelFn"
     @mention-search="mentionSearchFn"
   >
     <!-- <template>导航栏卡槽</template> -->
@@ -279,9 +278,6 @@
       Operate
     },
     methods: {
-      cancelFn() {
-        console.log('取消按钮')
-      },
       // 请求获取用户详细信息
       showInfo(uid, finish) {
         console.log(this.loading.value)
