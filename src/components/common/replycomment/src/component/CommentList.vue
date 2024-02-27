@@ -4,7 +4,6 @@
                 :id="safeStr(comment.id)"
                 :key="safeStr(comment.id)"
                 :data="comment"
-                :upload="upload"
                 :contentBoxParam="contentBoxParam">
       <ReplyBox :id="safeStr(comment.id)" :data="comment.reply"></ReplyBox>
     </ContentBox>
@@ -29,11 +28,6 @@
       },
       contentBoxParam: {
         type: Object
-      },
-      // 定义upload prop，默认值为false
-      upload: {
-        type: Boolean,
-        default: false
       }
     },
     computed: {

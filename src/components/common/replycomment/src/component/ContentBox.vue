@@ -88,7 +88,6 @@
             :reply="data"
             :content-btn="$u('comment.contentBtn2')"
             style="margin-top: 12px"
-            :upload="upload"
             @hide="hide"
             @close="state.active = false"
           />
@@ -138,11 +137,6 @@
       },
       contentBoxParam: {
         type: Object
-      },
-      // 定义upload prop，默认值为false
-      upload: {
-        type: Boolean,
-        default: false
       }
     },
     computed: {

@@ -60,7 +60,6 @@
     data() {
       return {
         placeholder: '输入评论（Enter换行，Ctrl + Enter发送）',
-        metionList: null,
         mentionPosition: {
           left: 0,
           top: 0

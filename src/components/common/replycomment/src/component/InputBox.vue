@@ -88,7 +88,7 @@
         </a-popover>
       </div>
 
-      <Upload v-if="upload" class="picture"
+      <Upload class="picture"
               action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false"
               :format="['jpg','jpeg','png']" :max-size="10240"
               accept="image/png, image/jpeg"
@@ -162,11 +162,6 @@
       },
       mentionConfig: {
         type: Object
-      },
-      // 定义upload prop，默认值为false
-      upload: {
-        type: Boolean,
-        default: true
       }
     },
     computed: {

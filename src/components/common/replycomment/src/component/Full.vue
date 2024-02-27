@@ -7,7 +7,7 @@
     :config="config"
     relative-time
     page
-    upload
+    formDisabled
     :show-form="false"
     @submit="submit"
     @like="like"

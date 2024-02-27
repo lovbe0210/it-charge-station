@@ -1,6 +1,6 @@
 <template>
   <div class="u-comment">
-    <div v-if="showForm" class="comment-form">
+    <div class="comment-form">
       <slot name="header">
         <div class="reply-header">
           <div class="reply-navigation">
@@ -36,75 +36,161 @@
                   cancel-btn="取消"/>
       </div>
     </div>
-    <div v-if="showContent" class="comment-list-wrapper">
-      <CommentList :data="config.comments" :contentBoxParam="contentBoxParam" :upload="upload"></CommentList>
+    <div class="comment-list-wrapper">
+      <CommentList :data="config.comments" :contentBoxParam="contentBoxParam"></CommentList>
     </div>
   </div>
 </template>
 
 <script>
-  import {isNull, debounce} from '@/utils/emoji'
+  import { isNull, debounce, createObjectURL } from '@/utils/emoji'
+  import { getComment } from '@/assets/emoji/comment';
   import InputBox from './InputBox'
   import CommentList from './CommentList'
+  import {dayjs} from "dayjs";
+
+  const baseUserArr = [
+    {
+      userId: 1,
+      userName: '张三',
+      userAvatar: 'https://gd-hbimg.huaban.com/cba6c7af94997ba172c32bbe668794553f29e91ef26f-qnroJ7_fw240webp'
+    },
+    {
+      userId: 2,
+      userName: '李四',
+      userAvatar: 'https://gd-hbimg.huaban.com/d01263d11d07748a2193bbbdd3b9a0c8a4b062b9f39d-PKvV2t_fw240webp'
+    },
+    {
+      userId: 3,
+      userName: '王五',
+      userAvatar: 'https://gd-hbimg.huaban.com/69d92bfbf36fc111e1f563403311e7943628c9fc108bf-6l34Pa_fw240webp'
+    },
+    {
+      userId: 4,
+      userName: '赵六',
+      userAvatar: 'https://gd-hbimg.huaban.com/7f5c54a455f61f431ec1f7b7c0e583f4a725fb73adba-5DgU3q_fw240webp'
+    },
+    {
+      userId: 5,
+      userName: '孙七',
+      userAvatar: 'https://gd-hbimg.huaban.com/edea85f44f3f8bce8d094ed78f390164a9eba229cb2e-1Lc22F_fw240webp'
+    },
+    {
+      userId: 6,
+      userName: '周八',
+      userAvatar: 'https://gd-hbimg.huaban.com/c1b2131c6977e01a430d6575ba678a4afeabcad222605-UJUwwb_fw240webp'
+    },
+    {
+      userId: 7,
+      userName: '吴九',
+      userAvatar: 'https://gd-hbimg.huaban.com/4942e77078bda39a458980049b528236bf79183814998-zVzEJv_fw240webp'
+    },
+    {
+      userId: 8,
+      userName: '郑十',
+      userAvatar: 'https://gd-hbimg.huaban.com/628236086a2ca12d2074bdd29f496f38a4d0c06ae50f-Rj3vsO_fw240webp'
+    },
+    {
+      userId: 9,
+      userName: '王富贵',
+      userAvatar: 'https://gd-hbimg.huaban.com/0108a6b65d211d3bc602bc0431e84b31f9e62ac08015f-JifENm_fw240webp'
+    },
+    {
+      userId: 10,
+      userName: '赵富贵',
+      userAvatar: 'https://gd-hbimg.huaban.com/d9643d6181d506ccc159a940e11bdc6b9a2b53ae57139-pxAnk9_fw240webp'
+    }
+  ];
 
   export default {
     name: 'UComment',
     data() {
       return {
+        tempId: 100,
         mentionList: [],
         replyShowSize: null,
         aTarget: null,
         placeholder: '输入评论（Enter换行，Ctrl + Enter发送）',
-        showForm: true,
-        showContent: true,
-        showLevel: true,
         showLikes: true,
         showAddress: true,
         showHomeLink: true,
         showReply: true,
-        latest: true
-      }
-    },
-    props: {
-      // 定义page prop，默认值为false
-        page: {
-        type: Boolean,
-        default: false
-      },
-      // 定义upload prop，默认值为false
-      upload: {
-        type: Boolean,
-        default: false
-      },
-      // 定义formDisabled prop，默认值为true
-      formDisabled: {
-        type: Boolean,
-        default: true
-      },
-      relativeTime: {
-        type: Boolean,
-        default: true
-      },
-      config: {
-        type: Object
-        /**
-         * {
-         *   user,
-         *   emoji,
-         *   comments,
-         *   mentionConfig
-         * }
-         * */
+        latest: true,
+        config: {
+          user: {
+            id: 0,
+            username: '',
+            avatar: ''
+            // // 评论id数组 建议:存储方式用户id和文章id和评论id组成关系,根据用户id和文章id来获取对应点赞评论id,然后加入到数组中返回
+            // likeIds: []
+          },
+          // emoji: emoji,
+          comments: [],
+          mentionConfig: {
+            userArr: [
+              {
+                userId: 1,
+                userName: '张三',
+                userAvatar: 'https://gd-hbimg.huaban.com/cba6c7af94997ba172c32bbe668794553f29e91ef26f-qnroJ7_fw240webp'
+              },
+              {
+                userId: 2,
+                userName: '李四',
+                userAvatar: 'https://gd-hbimg.huaban.com/d01263d11d07748a2193bbbdd3b9a0c8a4b062b9f39d-PKvV2t_fw240webp'
+              },
+              {
+                userId: 3,
+                userName: '王五',
+                userAvatar: 'https://gd-hbimg.huaban.com/69d92bfbf36fc111e1f563403311e7943628c9fc108bf-6l34Pa_fw240webp'
+              },
+              {
+                userId: 4,
+                userName: '赵六',
+                userAvatar: 'https://gd-hbimg.huaban.com/7f5c54a455f61f431ec1f7b7c0e583f4a725fb73adba-5DgU3q_fw240webp'
+              },
+              {
+                userId: 5,
+                userName: '孙七',
+                userAvatar: 'https://gd-hbimg.huaban.com/edea85f44f3f8bce8d094ed78f390164a9eba229cb2e-1Lc22F_fw240webp'
+              },
+              {
+                userId: 6,
+                userName: '周八',
+                userAvatar: 'https://gd-hbimg.huaban.com/c1b2131c6977e01a430d6575ba678a4afeabcad222605-UJUwwb_fw240webp'
+              },
+              {
+                userId: 7,
+                userName: '吴九',
+                userAvatar: 'https://gd-hbimg.huaban.com/4942e77078bda39a458980049b528236bf79183814998-zVzEJv_fw240webp'
+              },
+              {
+                userId: 8,
+                userName: '郑十',
+                userAvatar: 'https://gd-hbimg.huaban.com/628236086a2ca12d2074bdd29f496f38a4d0c06ae50f-Rj3vsO_fw240webp'
+              },
+              {
+                userId: 9,
+                userName: '王富贵',
+                userAvatar: 'https://gd-hbimg.huaban.com/0108a6b65d211d3bc602bc0431e84b31f9e62ac08015f-JifENm_fw240webp'
+              },
+              {
+                userId: 10,
+                userName: '赵富贵',
+                userAvatar: 'https://gd-hbimg.huaban.com/d9643d6181d506ccc159a940e11bdc6b9a2b53ae57139-pxAnk9_fw240webp'
+              }
+            ],
+            userIdKey: 'userId',
+            userNameKey: 'userName',
+            userAvatarKey: 'userAvatar',
+            show: true,
+            mentionColor: '#1e80ff',
+            showAvatar: true,
+            isLoading: true
+          }
+        }
       }
     },
     computed: {
-      inputBoxParam() {
-        return {
-          upload: this.upload,
-          submit: this.submit,
-          focus: () => this.$emit('focus')
-        }
-      },
       // 评论盒子参数或方法
       contentBoxParam() {
         return {
@@ -113,22 +199,10 @@
           relativeTime: isNull(this.relativeTime, false),
           showInfo: (uid, finish) => this.$emit("showInfo", uid, finish),
           aTarget: isNull(this.config.aTarget, "_blank"),
-          showLevel: this.config.showLevel,
           showLikes: this.config.showLikes,
           showAddress: this.config.showAddress,
           showHomeLink: this.config.showHomeLink,
           showReply: this.config.showReply
-        }
-      },
-      // 回复盒子
-      replyBoxParam() {
-        return {
-          page: this.page,
-          replyPage: (parentId, pageNum, pageSize, finish) => {
-            this.$emit('replyPage', {parentId, pageNum, pageSize, finish})
-          },
-          replyShowSize: isNull(this.config.replyShowSize?.value, 3),
-          comments: this.config.comments
         }
       }
     },
@@ -140,10 +214,37 @@
       /**
        * 提交评论
        */
-      submit({content, parentId, reply, files, clear}) {
+      submit({content, parentId, reply, file, clear}) {
         // 添加评论
         debugger
-        const finish = (comment) => {
+        let str = '提交评论:' + content + ';\t父id: ' + parentId + ';\t图片:' + file + ';\t被回复评论:' + reply +
+          ';\t提及列表:' + JSON.stringify(this.mentionList)
+        console.log(str)
+        /**
+         * 上传文件后端返回图片访问地址，格式以'||'为分割; 如:  '/static/img/program.gif||/static/img/normal.webp'
+         */
+        let contentImg = file?.map(e => createObjectURL(e)).join('||')
+
+        this.tempId += 1
+        const comment = {
+          id: this.tempId,
+          parentId: parentId,
+          uid: this.config.user.id,
+          address: '来自江苏',
+          content: content,
+          likes: 0,
+          createTime: dayjs().subtract(5, 'seconds').toString(),
+          contentImg: contentImg,
+          user: {
+            username: this.config.user.username,
+            avatar: this.config.user.avatar,
+            level: 6,
+            homeLink: `/${this.tempId}`
+          },
+          reply: null
+        }
+        setTimeout(() => {
+          console.log(comment)
           // 清空输入框内容
           clear();
           // 提交评论添加到评论列表
@@ -166,11 +267,11 @@
               this.config.comments.unshift(comment)
             }
           }
-        }
-        this.$emit('submit', {content, parentId, reply, files, mentionList: this.mentionList, finish})
+          this.$Message.success('评论成功!')
+        }, 200)
       },
       focus() {
-        this.$emit('focus')
+        console.log('评论框焦点事件')
       },
       /**
        * 点赞评论数组处理
@@ -196,7 +297,8 @@
         // 点赞事件处理
         const likeIds = this.config.user.likeIds
         if (likeIds) {
-          this.$emit('like', id, () => {
+          console.log('点赞: ' + id)
+          setTimeout(() => {
             if (likeIds.findIndex(item => item === id) === -1) {
               // 点赞
               likeIds.push(id)
@@ -209,7 +311,7 @@
                 this.editLikeCount(id, -1)
               }
             }
-          })
+          }, 200)
         }
       },
       /**
@@ -220,7 +322,7 @@
         // 删除评论数据操作
         const {parentId, id} = comment
         if (parentId) {
-          let comment = this.config.comments.value.find(item => item.id === parentId)
+          let comment = this.config.comments.find(item => item.id === parentId)
           let reply = comment?.reply
           if (reply) {
             let index = reply.list.findIndex(item => item.id === id)
@@ -230,9 +332,9 @@
             }
           }
         } else {
-          let index = this.config.comments.value.findIndex(item => item.id === id)
+          let index = this.config.comments.findIndex(item => item.id === id)
           if (index !== -1) {
-            this.config.comments.value.splice(index, 1)
+            this.config.comments.splice(index, 1)
           }
         }
       },
@@ -246,49 +348,54 @@
       // mentionList 触发事件
       mentionSearch() {
         debounce((searchStr) => {
-          this.$emit('mentionSearch', searchStr)
+          // this.$emit('mentionSearch', searchStr)
+          if (this.config && this.config.mentionConfig) {
+            this.config.mentionConfig.isLoading = true
+          }
+          if (!searchStr) {
+            setTimeout(() => {
+              if (this.config && this.config.mentionConfig) {
+                this.config.mentionConfig.userArr = baseUserArr
+              }
+            }, 1000)
+
+            if (this.config && this.config.mentionConfig) {
+              this.config.mentionConfig.isLoading = false
+            }
+            return
+          }
+          setTimeout(() => {
+            if (this.config && this.config.mentionConfig) {
+              this.config.mentionConfig.userArr = baseUserArr.filter(e => {
+                return e.userName.includes(searchStr)
+              })
+            }
+            if (this.config && this.config.mentionConfig) {
+              this.config.mentionConfig.isLoading = false
+            }
+          }, 1000)
         }, 300)
       }
+    },
+    mounted() {
+      // 初始化评论列表
+      this.config.comments = getComment(1, 10);
+      setTimeout(() => {
+        const user = {
+          id: 1,
+          username: 'user',
+          avatar: 'https://static.juzicon.com/avatars/avatar-200602130320-HMR2.jpeg?x-oss-process=image/resize,w_100',
+          // 评论id数组 建议:存储方式用户id和文章id和评论id组成关系,根据用户id和文章id来获取对应点赞评论id,然后加入到数组中返回
+          likeIds: [1, 2, 3]
+        }
+        this.config.user = user
+      }, 100)
+
+      setTimeout(() => {
+        this.config.user.likeIds = [2, 3]
+      }, 5000)
     }
   }
-
-
-  // 输入框盒子
-  // provide(InjectInputBox, inputBoxParam)
-  // provide('cancelFn', () => this.$emit('cancel'))
-
-
-  // provide(InjectContentBox, contentBoxParam)
-
-
-  // provide(InjectReplyBox, replyBoxParam)
-
-
-  // const inputBox = ref(null)
-  // const mentionList = ref([])
-
-  // function getMentionList() {
-  //   return mentionList.value
-  // }
-
-  // 表情包
-  // provide(InjectionEmojiApi, props.config.emoji)
-  //提及配置
-  // provide('mentionConfig', mentionConfig)
-  // 工具卡槽
-  // provide(InjectSlots, useSlots())
-  //修改提及列表
-  // provide('changeMetionList', changeMetionList)
-  //修改提及列表
-  // provide('mentionSearch', mentionSearch)
-  // defineExpose({
-  //   remove: remove,
-  //   mentionList: mentionList,
-  //   getMentionList: getMentionList,
-  //   setMentionShow: (show) => {
-  //     ;(inputBox.value).setMentionShow(show)
-  //   }
-  // })
 </script>
 
 <style lang="less" scoped>
