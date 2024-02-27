@@ -1,6 +1,5 @@
 <template>
   <ul
-    v-show="isShow"
     ref="mentionList"
     class="mention-list"
     tabindex="0"
@@ -9,11 +8,10 @@
     @keydown.down.prevent="moveSelection(1)"
     @keydown.enter.prevent="printSelectedItem"
   >
-    <div ref="scrollbarRef" style="padding: 10px">
+    <div ref="scrollbarRef" style="padding: 10px" class="mention-list-scroll">
       <li
         v-for="(item, index) in list"
         :key="index"
-        :class="{ hover: index === selectedIndex }"
         @click="clickSelectedItem(index)"
       >
         <slot name="user" :item="item" :index="index">
@@ -41,10 +39,6 @@
       }
     },
     props: {
-      isShow: {
-        type: Boolean,
-        default: false
-      },
       position: {
         type: Object,
         default() {
@@ -140,7 +134,9 @@
     font-size: 14px;
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
     border-radius: 5px;
-    z-index: 9999;
+    z-index: 99;
+    overflow-y: auto;
+    overflow-anchor: none;
 
     .empty {
       height: 150px;
@@ -206,4 +202,21 @@
       }
     }
   }
+
+  .mention-list::-webkit-scrollbar-thumb {
+    background-color: unset; /* 自定义滚动条滑块颜色 */
+  }
+
+  .mention-list::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .mention-list:hover::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .mention-list:hover::-webkit-scrollbar-thumb {
+    background-color: #E7E9E8; /* 自定义滚动条滑块颜色 */
+  }
+
 </style>

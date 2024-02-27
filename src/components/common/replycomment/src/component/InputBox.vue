@@ -39,16 +39,15 @@
           </div>
         </div>
       </div>
-      <MentionList
-        ref="metionList"
-        :is-show="isShowMention"
-        :position="mentionPosition"
-        :list="mentionConfig?.userArr"
-        :show-avatar="mentionConfig?.showAvatar"
-        @insert="insertUser"
-        @change-show="changeMentionShow"
-      ></MentionList>
     </div>
+    <MentionList v-show="isShowMention"
+      ref="metionList"
+      :position="mentionPosition"
+      :list="mentionConfig?.userArr"
+      :show-avatar="mentionConfig?.showAvatar"
+      @insert="insertUser"
+      @change-show="changeMentionShow"
+    ></MentionList>
     <div v-if="action" class="action-box">
       <div class="u-emoji">
         <a-popover trigger="click">
@@ -130,6 +129,7 @@
           left: 0,
           top: 0
         },
+        scHeight: 0,
         activeIndex: 0,
         offsetX: 0,
         emojis: new Array(2),
@@ -312,9 +312,6 @@
           this.searchStr = ''
         }
       },
-      changeMentionPosition(position) {
-        this.mentionPosition = position
-      },
       addText(val, isPop) {
         let selection = window.getSelection()
         if (selection) {
@@ -492,10 +489,10 @@
           // 显示提及组件
           this.changeMentionShow(true)
           if (rect) {
-            this.changeMentionPosition({
+            this.mentionPosition = {
               left: rect.left,
               top: rect.top + rect.height + 10
-            })
+            }
           }
         }
 
@@ -509,6 +506,11 @@
         if (this.editorRef) {
           this.range = this.editorRef?.ownerDocument.getSelection()?.getRangeAt(0)
         }
+      },
+      changeMentionPosition() {
+        // this.scHeight = document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset;
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        console.log(scrollTop)
       }
     },
     watch: {
@@ -552,6 +554,17 @@
         } else {
           this.changeMetionList([])
         }
+      },
+      "scHeight"(newVal, oldVal) {
+        if (newVal === oldVal) return;
+        if (!this.isShowMention) return;
+        let rect = this.range?.getBoundingClientRect()
+        if (rect) {
+          this.mentionPosition = {
+            left: rect.left,
+            top: rect.top + rect.height + 10
+          }
+        }
       }
     },
     mounted() {
@@ -559,11 +572,15 @@
       if (this.editorRef) {
         this.editorRef.addEventListener('mousemove', this.onEditorSelectionChange)
       }
+      window.addEventListener("scroll", this.changeMentionPosition, true);
+      /*let elVal = document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset;
+      console.log(elVal)*/
     },
     beforeDestroy() {
       if (this.editorRef) {
         this.editorRef.removeEventListener('mousemove', this.onEditorSelectionChange)
       }
+      window.removeEventListener("scroll", this.changeMentionPosition);
     },
     directives: {
       'click-outside': {

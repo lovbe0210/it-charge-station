@@ -53,7 +53,6 @@
         .editor-wrap {
           display: flex;
           height: 100%;
-          overflow-x: hidden;
           overflow-y: auto;
           overflow-x: hidden;
           position: relative;
@@ -158,8 +157,8 @@
           }
         }
 
-        .editor-wrap:hover::-webkit-scrollbar-thumb {
-          background-color: #FFFFFF; /* 自定义滚动条滑块颜色 */
+        .editor-wrap::-webkit-scrollbar-thumb {
+          background-color: unset; /* 自定义滚动条滑块颜色 */
         }
 
         .editor-wrap::-webkit-scrollbar {
