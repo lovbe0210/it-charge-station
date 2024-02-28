@@ -116,6 +116,58 @@
   import emoji from '@/assets/emoji/emoji.js';
   import MentionList from './MentionList.vue'
 
+  const baseUserArr = [
+    {
+      userId: 1,
+      userName: '张三',
+      userAvatar: 'https://gd-hbimg.huaban.com/cba6c7af94997ba172c32bbe668794553f29e91ef26f-qnroJ7_fw240webp'
+    },
+    {
+      userId: 2,
+      userName: '李四',
+      userAvatar: 'https://gd-hbimg.huaban.com/d01263d11d07748a2193bbbdd3b9a0c8a4b062b9f39d-PKvV2t_fw240webp'
+    },
+    {
+      userId: 3,
+      userName: '王五',
+      userAvatar: 'https://gd-hbimg.huaban.com/69d92bfbf36fc111e1f563403311e7943628c9fc108bf-6l34Pa_fw240webp'
+    },
+    {
+      userId: 4,
+      userName: '赵六',
+      userAvatar: 'https://gd-hbimg.huaban.com/7f5c54a455f61f431ec1f7b7c0e583f4a725fb73adba-5DgU3q_fw240webp'
+    },
+    {
+      userId: 5,
+      userName: '孙七',
+      userAvatar: 'https://gd-hbimg.huaban.com/edea85f44f3f8bce8d094ed78f390164a9eba229cb2e-1Lc22F_fw240webp'
+    },
+    {
+      userId: 6,
+      userName: '周八',
+      userAvatar: 'https://gd-hbimg.huaban.com/c1b2131c6977e01a430d6575ba678a4afeabcad222605-UJUwwb_fw240webp'
+    },
+    {
+      userId: 7,
+      userName: '吴九',
+      userAvatar: 'https://gd-hbimg.huaban.com/4942e77078bda39a458980049b528236bf79183814998-zVzEJv_fw240webp'
+    },
+    {
+      userId: 8,
+      userName: '郑十',
+      userAvatar: 'https://gd-hbimg.huaban.com/628236086a2ca12d2074bdd29f496f38a4d0c06ae50f-Rj3vsO_fw240webp'
+    },
+    {
+      userId: 9,
+      userName: '王富贵',
+      userAvatar: 'https://gd-hbimg.huaban.com/0108a6b65d211d3bc602bc0431e84b31f9e62ac08015f-JifENm_fw240webp'
+    },
+    {
+      userId: 10,
+      userName: '赵富贵',
+      userAvatar: 'https://gd-hbimg.huaban.com/d9643d6181d506ccc159a940e11bdc6b9a2b53ae57139-pxAnk9_fw240webp'
+    }
+  ];
 
   export default {
     name: 'InputBox',
@@ -141,7 +193,7 @@
         action: false,
         disabled: true,
         imgList: [],
-        files2: [],
+        files: [],
         state: {
           imgLength: 0
         }
@@ -170,8 +222,6 @@
       }
     },
     components: {
-      // UEditor,
-      // UEmoji,
       MentionList
     },
     methods: {
@@ -179,21 +229,17 @@
         this.files2 = arr
       },
       input() {
-        isEmpty(this.content.replace(/&nbsp;|<br>| /g, ""))
-          ? (this.disabled = true)
-          : (this.disabled = false)
+        this.disabled = isEmpty(this.content.replace(/&nbsp;|<br>| /g, ""));
       },
       // 提交评论的数据
       onSubmit() {
         debugger
         let submitContent = {
-          content:
-            this.reply && this.parentId !== this.reply.id
-              ? `回复 <span style="color: #6f42c1;">@${this.reply.user.username}:</span> ${this.content.value}`
-              : this.content,
+          content: this.reply && this.parentId !== this.reply.id
+             ? `回复 <span style="color: #6f42c1;">@${this.reply.user.username}:</span> ${this.content.value}` : this.content,
           parentId: isNull(this.parentId, null),
           reply: this.reply,
-          files: this.files2,
+          file: this.files,
           clear: () => {
             //清理输入框提交的数据
             this.clearData()
@@ -213,12 +259,20 @@
       //清理提交后输入框和图片列表数据
       clearData() {
         // 清空评论框内容
-        this.editorRef.clear()
+        this.clear()
         this.imgList.length = 0
         //清空图片列表
-        this.files2 = []
+        this.files = []
         //提交按钮禁用
         this.disabled = true
+      },
+
+      clear() {
+        if (this.editorRef) {
+          this.editorRef.innerHTML = '';
+          this.content = '';
+          this.active = false;
+        }
       },
 
       // 点击评论框外关闭操作栏和失去评论框焦点
@@ -345,9 +399,9 @@
           this.range.collapse(false)
           selection.addRange(this.range)
 
-          this.$emit('update:modelValue', this.editorRef?.innerHTML || '')
-          const event = this.editorRef
-          this.$emit('input', event)
+          this.content = this.editorRef?.innerHTML || ''
+          // const event = this.editorRef
+          // this.$emit('input', event)
         }
       },
       change(val, file) {
@@ -384,9 +438,6 @@
       },
       handleServerError() {
         this.$Message.error('网络错误，请稍后重试！');
-      },
-      mentionSearch(searchStr) {
-        this.$emit('mentionSearch', searchStr)
       },
       changeMetionList(users) {
         this.$emit('changeMetionList', users)
@@ -473,7 +524,6 @@
       },
       // 输入框事件
       onInput(event) {
-        // debugger
         const {innerHTML} = event.target;
         console.log(innerHTML)
         if (event.data === '@' && this.mentionConfig?.show) {
@@ -508,9 +558,36 @@
         }
       },
       changeMentionPosition() {
-        // this.scHeight = document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset;
-        let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-        console.log(scrollTop)
+        let scrollBox = document.getElementById("contentWrapper");
+        this.scHeight = scrollBox?.scrollTop;
+      },
+      mentionSearch(searchStr) {
+        if (!searchStr) {
+          setTimeout(() => {
+            if (this.config && this.config.mentionConfig) {
+              this.config.mentionConfig.userArr = baseUserArr
+            }
+          }, 1000)
+
+          if (this.config && this.config.mentionConfig) {
+            this.config.mentionConfig.isLoading = false
+          }
+          return
+        }
+        setTimeout(() => {
+          if (this.config && this.config.mentionConfig) {
+            this.config.mentionConfig.userArr = baseUserArr.filter(e => {
+              return e.userName.includes(searchStr)
+            })
+          }
+          if (this.config && this.config.mentionConfig) {
+            this.config.mentionConfig.isLoading = false
+          }
+        }, 1000)
+        /*debounce((searchStr) => {
+          debugger
+
+        }, 300)*/
       }
     },
     watch: {
@@ -531,7 +608,6 @@
           this.searchStr = newVal.split('@').pop() || ''
           // 替换掉里面所有的单引号分隔符
           this.searchStr = this.searchStr.replace(`'`, '')
-          console.log(this.searchStr)
           this.mentionSearch(this.searchStr)
           if (this.metionList) {
             this.metionList.resetSelectIndex()
@@ -572,15 +648,15 @@
       if (this.editorRef) {
         this.editorRef.addEventListener('mousemove', this.onEditorSelectionChange)
       }
-      window.addEventListener("scroll", this.changeMentionPosition, true);
-      /*let elVal = document.documentElement.scrollTop || document.body.scrollTop || window.pageYOffset;
-      console.log(elVal)*/
+      let elementById = document.getElementById("contentWrapper");
+      elementById.addEventListener('scroll', this.changeMentionPosition, true);
     },
     beforeDestroy() {
       if (this.editorRef) {
         this.editorRef.removeEventListener('mousemove', this.onEditorSelectionChange)
       }
-      window.removeEventListener("scroll", this.changeMentionPosition);
+      let elementById = document.getElementById("contentWrapper");
+      elementById.removeEventListener('scroll', this.changeMentionPosition);
     },
     directives: {
       'click-outside': {

@@ -43,64 +43,10 @@
 </template>
 
 <script>
-  import { isNull, debounce, createObjectURL } from '@/utils/emoji'
+  import { isNull, createObjectURL } from '@/utils/emoji'
   import { getComment } from '@/assets/emoji/comment';
   import InputBox from './InputBox'
   import CommentList from './CommentList'
-  import {dayjs} from "dayjs";
-
-  const baseUserArr = [
-    {
-      userId: 1,
-      userName: '张三',
-      userAvatar: 'https://gd-hbimg.huaban.com/cba6c7af94997ba172c32bbe668794553f29e91ef26f-qnroJ7_fw240webp'
-    },
-    {
-      userId: 2,
-      userName: '李四',
-      userAvatar: 'https://gd-hbimg.huaban.com/d01263d11d07748a2193bbbdd3b9a0c8a4b062b9f39d-PKvV2t_fw240webp'
-    },
-    {
-      userId: 3,
-      userName: '王五',
-      userAvatar: 'https://gd-hbimg.huaban.com/69d92bfbf36fc111e1f563403311e7943628c9fc108bf-6l34Pa_fw240webp'
-    },
-    {
-      userId: 4,
-      userName: '赵六',
-      userAvatar: 'https://gd-hbimg.huaban.com/7f5c54a455f61f431ec1f7b7c0e583f4a725fb73adba-5DgU3q_fw240webp'
-    },
-    {
-      userId: 5,
-      userName: '孙七',
-      userAvatar: 'https://gd-hbimg.huaban.com/edea85f44f3f8bce8d094ed78f390164a9eba229cb2e-1Lc22F_fw240webp'
-    },
-    {
-      userId: 6,
-      userName: '周八',
-      userAvatar: 'https://gd-hbimg.huaban.com/c1b2131c6977e01a430d6575ba678a4afeabcad222605-UJUwwb_fw240webp'
-    },
-    {
-      userId: 7,
-      userName: '吴九',
-      userAvatar: 'https://gd-hbimg.huaban.com/4942e77078bda39a458980049b528236bf79183814998-zVzEJv_fw240webp'
-    },
-    {
-      userId: 8,
-      userName: '郑十',
-      userAvatar: 'https://gd-hbimg.huaban.com/628236086a2ca12d2074bdd29f496f38a4d0c06ae50f-Rj3vsO_fw240webp'
-    },
-    {
-      userId: 9,
-      userName: '王富贵',
-      userAvatar: 'https://gd-hbimg.huaban.com/0108a6b65d211d3bc602bc0431e84b31f9e62ac08015f-JifENm_fw240webp'
-    },
-    {
-      userId: 10,
-      userName: '赵富贵',
-      userAvatar: 'https://gd-hbimg.huaban.com/d9643d6181d506ccc159a940e11bdc6b9a2b53ae57139-pxAnk9_fw240webp'
-    }
-  ];
 
   export default {
     name: 'UComment',
@@ -216,10 +162,6 @@
        */
       submit({content, parentId, reply, file, clear}) {
         // 添加评论
-        debugger
-        let str = '提交评论:' + content + ';\t父id: ' + parentId + ';\t图片:' + file + ';\t被回复评论:' + reply +
-          ';\t提及列表:' + JSON.stringify(this.mentionList)
-        console.log(str)
         /**
          * 上传文件后端返回图片访问地址，格式以'||'为分割; 如:  '/static/img/program.gif||/static/img/normal.webp'
          */
@@ -233,7 +175,7 @@
           address: '来自江苏',
           content: content,
           likes: 0,
-          createTime: dayjs().subtract(5, 'seconds').toString(),
+          createTime: Date.now(),
           contentImg: contentImg,
           user: {
             username: this.config.user.username,
@@ -344,38 +286,8 @@
        */
       changeMetionList(list) {
         this.mentionList = list
-      },
-      // mentionList 触发事件
-      mentionSearch() {
-        debounce((searchStr) => {
-          // this.$emit('mentionSearch', searchStr)
-          if (this.config && this.config.mentionConfig) {
-            this.config.mentionConfig.isLoading = true
-          }
-          if (!searchStr) {
-            setTimeout(() => {
-              if (this.config && this.config.mentionConfig) {
-                this.config.mentionConfig.userArr = baseUserArr
-              }
-            }, 1000)
-
-            if (this.config && this.config.mentionConfig) {
-              this.config.mentionConfig.isLoading = false
-            }
-            return
-          }
-          setTimeout(() => {
-            if (this.config && this.config.mentionConfig) {
-              this.config.mentionConfig.userArr = baseUserArr.filter(e => {
-                return e.userName.includes(searchStr)
-              })
-            }
-            if (this.config && this.config.mentionConfig) {
-              this.config.mentionConfig.isLoading = false
-            }
-          }, 1000)
-        }, 300)
       }
+
     },
     mounted() {
       // 初始化评论列表
