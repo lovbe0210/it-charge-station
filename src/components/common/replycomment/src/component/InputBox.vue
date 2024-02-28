@@ -1,16 +1,14 @@
 <template>
-  <div v-click-outside="onClickOutside" class="comment-box">
+  <div class="comment-box">
     <div class="u-editor" :class="{ active: active }">
-      <div ref="editorRef"
+      <div ref="editorRef" id="expectRange"
            class="rich-input"
            contenteditable
            :placeholder="placeholder"
-           @focus="onFocus"
+           @focus="action = true"
            @input="onInput"
            @blur="onBlur"
            @keydown.enter="keyDown"
-           @keydown.up.prevent="moveSelectionFn(-1)"
-           @keydown.down.prevent="moveSelectionFn(1)"
            @paste="pasteFn"
       ></div>
       <div ref="imageRef" class="image-preview-box">
@@ -42,7 +40,7 @@
     </div>
     <MentionList v-show="isShowMention"
                  :position="mentionPosition"
-                 :list="metionList"
+                 :list="mentionList"
                  @insert="insertUser"
     ></MentionList>
     <div v-if="action" class="action-box">
@@ -100,7 +98,7 @@
         <button :disabled="disabled" @click="onSubmit">
           {{ contentBtn }}
         </button>
-        <button v-if="cancelBtn" @click="onCancel">
+        <button v-if="cancelBtn" @click="resetComment">
           {{ cancelBtn }}
         </button>
       </div>
@@ -173,7 +171,10 @@
         placeholder: '输入评论（Enter换行，Ctrl + Enter发送）',
         // 是否显示提及框
         isShowMention: false,
+        // 评论框是否激活
         active: false,
+        // 操作栏是否激活（评论框有内容时一直为true）
+        action: false,
         mentionPosition: {
           left: 0,
           top: 0
@@ -189,11 +190,10 @@
         offsetX: 0,
         emojis: new Array(2),
         content: '',
-        isLocked: false,
         searchStr: '',
-        metionList: [],
+        mentionList: [],
         range: null,
-        action: false,
+
         disabled: true,
         imgList: [],
         files: [],
@@ -225,15 +225,8 @@
       MentionList
     },
     methods: {
-      changeFilesFn(arr) {
-        this.files2 = arr
-      },
-      input() {
-        this.disabled = isEmpty(this.content.replace(/&nbsp;|<br>| /g, ""));
-      },
       // 提交评论的数据
       onSubmit() {
-        debugger
         let submitContent = {
           content: this.reply && this.parentId !== this.reply.id
             ? `回复 <span style="color: #6f42c1;">@${this.reply.user.username}:</span> ${this.content}` : this.content,
@@ -242,105 +235,52 @@
           file: this.files,
           clear: () => {
             //清理输入框提交的数据
-            this.clearData()
-            // 关闭评论框事件
-            this.$emit("close")
+            this.resetComment()
           }
         };
         this.$emit('submit', submitContent)
       },
-      // 取消按钮的事件
-      onCancel() {
-        // 关闭评论框事件
-        this.clearData()
-        this.$emit("close")
-        console.log('取消评论')
-      },
-      //清理提交后输入框和图片列表数据
-      clearData() {
+      // 重置评论
+      resetComment() {
         // 清空评论框内容
-        this.clear()
+        if (this.editorRef) {
+          this.editorRef.innerHTML = '';
+          this.content = '';
+          this.active = false;
+          this.action = false;
+        }
         this.imgList.length = 0
         //清空图片列表
         this.files = []
         //提交按钮禁用
         this.disabled = true
       },
-
-      clear() {
-        if (this.editorRef) {
-          this.editorRef.innerHTML = '';
-          this.content = '';
-          this.active = false;
-        }
-      },
-
-      // 点击评论框外关闭操作栏和失去评论框焦点
-      onClickOutside(event) {
-        // const child = event.target as HTMLElement
-        // const target = document.querySelector(".el-popper")
-        // if (!target?.contains(child) && isEmpty(content.value)) {
-        //   action.value = false
-        // }
-
-        // 评论框有内容情况下不执行操作
-        if (isEmpty(this.content) && !this.state.imgLength) {
-          this.action = false
-          this.$emit("hide", event)
-        }
-      },
-
-      onFocus() {
-        this.action = true
-        // 显示操作栏
-        this.$nextTick(() => {
-          // 所有以'el-popper-container'开头的id且被选中的元素
-          this.$refs.popperRef = document.querySelector("div[id^='el-popper-container']")
-        })
-        // u-comment 评论框焦点事件
-        this.$parent.focus()
-      },
-      AddMention() {
-        console.log(this.editorRef)
-      },
-      focus() {
-        this.editorRef?.focus();
-      },
-      onBlur(event) {
-        console.log('丢失光标')
+      onBlur() {
         // 记录光标
         try {
           this.range = window.getSelection()?.getRangeAt(0)
         } catch (error) {
           console.log(error)
         }
-        this.$emit('blur', event)
-        if (!this.editorRef?.innerHTML) this.active = false
-        this.isLocked = false
+        if (!this.editorRef?.innerHTML) {
+          this.active = this.action = false;
+        }
       },
       keyDown(e) {
         if (e.ctrlKey && e.key === 'Enter') {
           //用户点击了ctrl+enter触发
-          // console.log('ctrl+enter')
-          if (isEmpty(this.modelValue.replace(/&nbsp;|<br>| /g, ''))) {
-            this.$Message.info('内容不能为空')
+          if (isEmpty(this.content.replace(/&nbsp;|<br>| /g, ''))) {
+            this.$Message.info('内容不能为空');
           } else {
-            this.$emit('submit')
+            this.onSubmit();
           }
         } else if (e.key === 'Enter' && this.isShowMention) {
-          // 插入用户操作
-          e.preventDefault()
+          // TODO 插入用户操作
+          /*e.preventDefault()
           const currentUser = this.enterConfirm()
-          this.insertUser(currentUser)
-
+          this.insertUser(currentUser)*/
         } else {
-          //用户点击了enter触发
-          console.log('enter')
-        }
-      },
-      moveSelectionFn(num) {
-        if (this.metionList) {
-          this.metionList.moveSelection(num)
+          console.log(e.key)
         }
       },
       pasteFn(event) {
@@ -352,10 +292,9 @@
             event.preventDefault() // 阻止默认的粘贴行为
             document.execCommand('insertText', false, text) // 插入纯文本
           } else if (file) {
+            // 此处不允许粘贴文件，只能通过按钮选择上传图片
             console.log(file)
             event.preventDefault() // 阻止默认的粘贴行为
-            // 处理粘贴的文件，例如上传到服务器
-            this.$emit('paste', event, file)
           }
         }
       },
@@ -400,8 +339,6 @@
           selection.addRange(this.range)
 
           this.content = this.editorRef?.innerHTML || ''
-          // const event = this.editorRef
-          // this.$emit('input', event)
         }
       },
       change(val, file) {
@@ -438,9 +375,6 @@
       },
       handleServerError() {
         this.$Message.error('网络错误，请稍后重试！');
-      },
-      changeMetionList(users) {
-        this.$emit('changeMetionList', users)
       },
       // 移除图片
       removeImg(val) {
@@ -531,8 +465,8 @@
 
           let rect = this.range?.getBoundingClientRect()
           // 获取预置数据
-          if (this.metionList?.length === 0) {
-            this.metionList = baseUserArr;
+          if (this.mentionList?.length === 0) {
+            this.mentionList = baseUserArr;
           }
           // 显示提及组件
           this.changeMentionShow(true)
@@ -545,7 +479,7 @@
         }
 
         this.content = innerHTML;
-        this.input();
+        this.disabled = isEmpty(this.content.replace(/&nbsp;|<br>| /g, ""));
         this.onEditorSelectionChange()
       },
       //光标位置监听
@@ -563,18 +497,28 @@
         // 模拟请求延时
         setTimeout(() => {
           if (this.mentionConfig) {
-            this.metionList = baseUserArr.filter(e => {
+            this.mentionList = baseUserArr.filter(e => {
               if (searchStr) {
                 return e.userName.includes(searchStr);
               } else {
                 return true;
               }
             });
-            if (this.metionList?.length === 0) {
-              this.metionList = baseUserArr;
+            if (this.mentionList?.length === 0) {
+              this.mentionList = baseUserArr;
             }
           }
         }, 1000)
+      },
+      findExpectRange(node) {
+        while (node) {
+          let id = node.id;
+          if (id === 'expectRange') {
+            return true;
+          }
+          node = node.parentNode;
+        }
+        return false;
       }
     },
     watch: {
@@ -598,21 +542,6 @@
         } else if (this.isShowMention && newVal.slice(-6) === '&nbsp;') {
           this.changeMentionShow(false)
         }
-        // 提取出来newVal里面所有拥有自定义属性的img标签
-        let imgTags = newVal.match(/<img [^>]*data-id="([^"]*)"[^>]*>/g)
-        if (imgTags) {
-          let dataIds = imgTags.map(tag => {
-            let match = tag.match(/data-id="([^"]*)"/)
-            return match ? match[1] : null
-          })
-          // 从mentionConfig.value.userArr里面获取id相同的user
-          let users = this.mentionConfig.userArr.filter((user) =>
-            dataIds.includes(`${user[this.mentionConfig.userIdKey]}`)
-          )
-          this.changeMetionList(users)
-        } else {
-          this.changeMetionList([])
-        }
       },
       "scHeight"(newVal, oldVal) {
         if (newVal === oldVal) return;
@@ -624,39 +553,37 @@
             top: rect.top + rect.height + 10
           }
         }
+      },
+      "range"(newVal, oldValue) {
+        if (!newVal) return;
+        let node;
+        let expectRange = newVal.commonAncestorContainer;
+        if (expectRange instanceof Element) {
+          node = expectRange;
+        } else if (expectRange instanceof Text) {
+          node = expectRange.parentNode;
+        } else {
+          this.range = oldValue;
+          return;
+        }
+        let changeRange = this.findExpectRange(node);
+        this.range = changeRange ? newVal : oldValue;
       }
     },
     mounted() {
       this.editorRef = this.$refs.editorRef;
-      if (this.editorRef) {
-        this.editorRef.addEventListener('mousemove', this.onEditorSelectionChange)
-      }
+      // if (this.editorRef) {
+      //   this.editorRef.addEventListener('mousemove', this.onEditorSelectionChange)
+      // }
       let elementById = document.getElementById("contentWrapper");
       elementById.addEventListener('scroll', this.changeMentionPosition, true);
     },
     beforeDestroy() {
-      if (this.editorRef) {
-        this.editorRef.removeEventListener('mousemove', this.onEditorSelectionChange)
-      }
+      // if (this.editorRef) {
+      //   this.editorRef.removeEventListener('mousemove', this.onEditorSelectionChange)
+      // }
       let elementById = document.getElementById("contentWrapper");
       elementById.removeEventListener('scroll', this.changeMentionPosition);
-    },
-    directives: {
-      'click-outside': {
-        bind(el, binding, vnode) {
-          el.clickOutsideEvent = function (event) {
-            // 判断点击的元素是否在 el 内部
-            if (!(el === event.target || el.contains(event.target))) {
-              // 如果点击的不是 el 内部，则调用绑定的方法
-              binding.value();
-            }
-          };
-          document.addEventListener('click', el.clickOutsideEvent);
-        },
-        unbind(el) {
-          document.removeEventListener('click', el.clickOutsideEvent);
-        }
-      }
     }
   }
 

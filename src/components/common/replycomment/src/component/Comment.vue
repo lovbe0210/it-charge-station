@@ -29,7 +29,6 @@
                   ref="inputBox"
                   :placeholder="placeholder"
                   :mentionConfig="config.mentionConfig"
-                  @changeMetionList="changeMetionList"
                   @submit="submit"
                   content-btn="发表评论"
                   cancel-btn="取消"/>
@@ -125,8 +124,6 @@
         }
         setTimeout(() => {
           console.log(comment)
-          // 清空输入框内容
-          clear();
           // 提交评论添加到评论列表
           if (comment) {
             if (parentId) {
@@ -147,11 +144,12 @@
               this.config.comments.unshift(comment)
             }
           }
+
+          // 清空输入框内容
+          clear();
+
           this.$Message.success('评论成功!')
         }, 200)
-      },
-      focus() {
-        console.log('评论框焦点事件')
       },
       /**
        * 点赞评论数组处理
@@ -217,15 +215,7 @@
             this.config.comments.splice(index, 1)
           }
         }
-      },
-      /**
-       *
-       * @param list
-       */
-      changeMetionList(list) {
-        this.mentionList = list
       }
-
     },
     mounted() {
       // 初始化评论列表
