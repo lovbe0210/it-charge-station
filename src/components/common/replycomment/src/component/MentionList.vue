@@ -9,19 +9,15 @@
     @keydown.enter.prevent="printSelectedItem"
   >
     <div ref="scrollbarRef" style="padding: 10px" class="mention-list-scroll">
-      <li
-        v-for="(item, index) in list"
-        :key="index"
-        @click="clickSelectedItem(index)"
-      >
+      <li v-for="(item, index) in list" :key="index" @click="clickSelectedItem(index)">
         <slot name="user" :item="item" :index="index">
           <div class="userInfo">
-            <img v-if="showAvatar" :src="item.userAvatar" width="30" class="avatar"/>
+            <img :src="item.userAvatar" width="30" class="avatar"/>
             <span class="username">{{ item.userName }}</span>
           </div>
         </slot>
       </li>
-      <div v-show="!list.length" class="empty">
+      <div v-show="!list?.length" class="empty">
         <a-empty description="暂无匹配数据"/>
       </div>
     </div>
@@ -53,10 +49,6 @@
         default() {
           return [];
         }
-      },
-      showAvatar: {
-        type: Boolean,
-        default: true
       }
     },
     computed: {},
@@ -101,9 +93,6 @@
         this.selectedIndex = index
         this.$emit('insert', this.list[this.selectedIndex])
         this.$emit('changeShow', false)
-      },
-      resetSelectIndex() {
-        this.selectedIndex = 0
       }
     },
     mounted() {

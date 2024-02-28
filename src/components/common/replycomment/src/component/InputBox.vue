@@ -41,12 +41,9 @@
       </div>
     </div>
     <MentionList v-show="isShowMention"
-      ref="metionList"
-      :position="mentionPosition"
-      :list="mentionConfig?.userArr"
-      :show-avatar="mentionConfig?.showAvatar"
-      @insert="insertUser"
-      @change-show="changeMentionShow"
+                 :position="mentionPosition"
+                 :list="metionList"
+                 @insert="insertUser"
     ></MentionList>
     <div v-if="action" class="action-box">
       <div class="u-emoji">
@@ -181,6 +178,12 @@
           left: 0,
           top: 0
         },
+        mentionConfig: {
+          // @提及 功能开关
+          functionStatus: true,
+          // @提及 渲染的颜色
+          mentionColor: '#409eff'
+        },
         scHeight: 0,
         activeIndex: 0,
         offsetX: 0,
@@ -188,7 +191,7 @@
         content: '',
         isLocked: false,
         searchStr: '',
-        metionList: null,
+        metionList: [],
         range: null,
         action: false,
         disabled: true,
@@ -211,9 +214,6 @@
       },
       cancelBtn: {
         type: String
-      },
-      mentionConfig: {
-        type: Object
       }
     },
     computed: {
@@ -236,7 +236,7 @@
         debugger
         let submitContent = {
           content: this.reply && this.parentId !== this.reply.id
-             ? `回复 <span style="color: #6f42c1;">@${this.reply.user.username}:</span> ${this.content.value}` : this.content,
+            ? `回复 <span style="color: #6f42c1;">@${this.reply.user.username}:</span> ${this.content}` : this.content,
           parentId: isNull(this.parentId, null),
           reply: this.reply,
           file: this.files,
@@ -449,17 +449,12 @@
       },
       //创建@标签
       createSvgUrl(user) {
-        // 获取用户名和用户ID
-        const userName = user[this.mentionConfig.userNameKey]
-        const userId = user[this.mentionConfig.userIdKey]
-        const mentionColor = this.mentionConfig.mentionColor || '#409eff'
-
         // 创建一个不可见的SVG元素用于测量文本宽度
         const svgForMeasure = `<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0">
                               <style>
                                 .mention-text { font: 14px 'PingFangSC-Regular', 'PingFang SC'; }
                               </style>
-                              <text x="0" y="15" class="mention-text">@${userName}</text>
+                              <text x="0" y="15" class="mention-text">@${user.userName}</text>
                             </svg>`
 
         // 将SVG添加到DOM中以测量文本
@@ -481,9 +476,9 @@
         // 创建最终的SVG元素
         const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${textWidth}" height="20">
                       <style>
-                        .mention-text { font: 14px 'PingFangSC-Regular', 'PingFang SC'; fill: ${mentionColor}; }
+                        .mention-text { font: 14px 'PingFangSC-Regular', 'PingFang SC'; fill: ${this.mentionConfig.mentionColor}; }
                       </style>
-                      <text x="0" y="15" class="mention-text">@${userName}</text>
+                      <text x="0" y="15" class="mention-text">@${user.userName}</text>
                     </svg>`
 
         // 编码SVG以便作为URL使用
@@ -493,10 +488,10 @@
 
         // 返回img标签
         return `<img src="${url}"
-                    alt="@${userName}"
+                    alt="@${user.userName}"
                     style="width:${textWidth}px;height:20px;user-select: none; vertical-align: sub;"
-                    data-userName="${userName}"
-                    data-id="${userId}"
+                    data-userName="${user.userName}"
+                    data-id="${user.userId}"
                     draggable="false">`
       },
       //@用户插入操作
@@ -525,8 +520,7 @@
       // 输入框事件
       onInput(event) {
         const {innerHTML} = event.target;
-        console.log(innerHTML)
-        if (event.data === '@' && this.mentionConfig?.show) {
+        if (this.mentionConfig.functionStatus && event.data === '@') {
           // 获取用户列表
           // 记录光标
           try {
@@ -536,6 +530,10 @@
           }
 
           let rect = this.range?.getBoundingClientRect()
+          // 获取预置数据
+          if (this.metionList?.length === 0) {
+            this.metionList = baseUserArr;
+          }
           // 显示提及组件
           this.changeMentionShow(true)
           if (rect) {
@@ -562,39 +560,26 @@
         this.scHeight = scrollBox?.scrollTop;
       },
       mentionSearch(searchStr) {
-        if (!searchStr) {
-          setTimeout(() => {
-            if (this.config && this.config.mentionConfig) {
-              this.config.mentionConfig.userArr = baseUserArr
-            }
-          }, 1000)
-
-          if (this.config && this.config.mentionConfig) {
-            this.config.mentionConfig.isLoading = false
-          }
-          return
-        }
+        // 模拟请求延时
         setTimeout(() => {
-          if (this.config && this.config.mentionConfig) {
-            this.config.mentionConfig.userArr = baseUserArr.filter(e => {
-              return e.userName.includes(searchStr)
-            })
-          }
-          if (this.config && this.config.mentionConfig) {
-            this.config.mentionConfig.isLoading = false
+          if (this.mentionConfig) {
+            this.metionList = baseUserArr.filter(e => {
+              if (searchStr) {
+                return e.userName.includes(searchStr);
+              } else {
+                return true;
+              }
+            });
+            if (this.metionList?.length === 0) {
+              this.metionList = baseUserArr;
+            }
           }
         }, 1000)
-        /*debounce((searchStr) => {
-          debugger
-
-        }, 300)*/
       }
     },
     watch: {
       "content"(newVal, oldVal) {
-        // if (!this.isLocked) this.text = newVal;
-        // this.onEditorSelectionChange()
-        if (!this.mentionConfig?.show) return
+        if (!this.mentionConfig.functionStatus) return
 
         // 移除 "br"
         newVal = newVal.replace(/<br>/g, '')
@@ -602,6 +587,7 @@
         if ((oldVal.length >= newVal.length && oldVal.slice(-1) === '@') || newVal.slice(-7) === '@&nbsp;') {
           // 隐藏提及组件
           this.changeMentionShow(false)
+          return;
         }
         // 搜索词
         if (this.isShowMention && newVal.slice(-6) !== '&nbsp;') {
@@ -609,9 +595,6 @@
           // 替换掉里面所有的单引号分隔符
           this.searchStr = this.searchStr.replace(`'`, '')
           this.mentionSearch(this.searchStr)
-          if (this.metionList) {
-            this.metionList.resetSelectIndex()
-          }
         } else if (this.isShowMention && newVal.slice(-6) === '&nbsp;') {
           this.changeMentionShow(false)
         }
