@@ -1,0 +1,371 @@
+<template>
+  <div ref="tooltipContainer">
+    <!-- 点赞信息 -->
+    <div class="reward-module_like">
+      <div class="like-btn" @click="$emit('like')">
+        <span :class="['like-btn-icon', ifLike ? 'liked' : 'will-like']"></span>
+      </div>
+      <p class="like-count">11 人点赞</p>
+      <ul class="like-user-list">
+        <li v-for="user in showUserList" :key="user.userId">
+            <span class="like-user-popover" style="cursor: pointer;">
+              <b-avatar :src="user.avatar" variant="light" href="javascript:void(0)" size="2.2rem">
+                <span v-if="!user.avatar">{{ user.username }}</span>
+              </b-avatar>
+            </span>
+        </li>
+        <!-- 超出13时只展示13个，然后显示更多 -->
+        <li v-if="likeUserList?.length > 13" class="show-more-like-list" @click="moreLikeUser = true">
+          <a-tooltip placement="bottom" :getPopupContainer="()=>this.$refs.tooltipContainer">
+            <template slot="title">
+              查看所有点赞用户
+            </template>
+            <b-avatar variant="light" href="javascript:void(0)" size="2.2rem">
+              <svg width="1.5em" height="1.5em" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"
+                   class="larkui-icon larkui-icon-new-ellipsis">
+                <path
+                  d="M227.008 128c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20ZM148 128c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20Zm-78.992 0c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20Z"
+                  fill="currentColor" fill-rule="nonzero"></path>
+              </svg>
+            </b-avatar>
+          </a-tooltip>
+          <Modal v-model="moreLikeUser" :mask-closable="true" :lock-scroll="false">
+            <ul class="like-user-list">
+              <li v-for="user in likeUserList" :key="user.userId">
+            <span class="like-user-popover" style="cursor: pointer;">
+              <b-avatar :src="user.avatar" variant="light" href="javascript:void(0)" size="2.2rem">
+                <span v-if="!user.avatar">{{ user.username }}</span>
+              </b-avatar>
+            </span>
+              </li>
+            </ul>
+          </Modal>
+        </li>
+      </ul>
+    </div>
+    <!-- 文章信息 -->
+    <div class="article-module_info">
+      <div class="info_meta">
+        <div class="reader-meta-wrapper">
+          <div class="meta-left">
+            <div class="meta-item">
+              <span class="author larkicon-author"></span>
+              <span class="author" style="cursor: pointer;">
+                <a href="/ximentata" class="index-module_popover">少多怪</a>
+              </span>
+            </div>
+            <div class="meta-item">
+              <span class="larkicon larkicon-clock"></span>
+              <span class="item-text">
+                02-25 17:56
+              </span>
+            </div>
+            <div class="meta-item">
+              <span class="larkicon larkicon-read"></span>
+              <span class="item-text">506</span>
+            </div>
+            <div class="meta-item">
+              <span class="item-text">IP 属地浙江</span>
+            </div>
+            <div class="meta-item" style="margin-left: 12px;">
+              <span>举报</span>
+            </div>
+          </div>
+        </div>
+        <div class="social-share">
+                <span>分享到：
+                  <a class="social-share-item larkui-tooltip" target="_blank"
+                     href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fwww.yuque.com%2Fximentata%2Fchlomu%2Flrdbp3xlg7rcmmbd&amp;pic=https%3A%2F%2Fcdn.nlark.com%2Fyuque%2F0%2F2024%2Fpng%2F34793967%2F1708855153148-2f1179f2-7ef5-4429-8a21-8936c8123f77.png&amp;title=DATA%20%7C%20Vol.002%20%7C%20%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E6%91%B8%E6%B8%85%E4%B8%80%E4%B8%AA%E8%A1%8C%E4%B8%9A%EF%BC%9F%20%7C%20%E5%BC%95%E8%A8%80%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E6%91%B8%E6%B8%85%E4%B8%80%E4%B8%AA%E8%A1%8C%E4%B8%9A%EF%BC%9F%E9%A6%96%E5%85%88%EF%BC%8C%E8%A6%81%E6%90%9E%E6%B8%85%E6%A5%9A%E8%A1%8C%E4%B8%9A%E5%88%86%E6%9E%90%E7%9A%84%E7%9B%AE%E7%9A%84%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E4%B9%9F%E5%B0%B1%E6%98%AF%E4%B8%BA%E4%BA%86%E5%BC%95%E5%AF%BC%E5%87%BA%E4%B8%80%E4%BB%BD%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E7%AD%94%E6%A1%88%E3%80%82%E4%B8%80%E8%88%AC%E6%9D%A5%E8%AF%B4%EF%BC%8C%E8%A1%8C%E4%B8%9A%E5%88%86%E6%9E%90%E5%9F%BA%E6%9C%AC%E5%AD%98%E5%9C%A8%E4%B8%A4%E7%A7%8D%E7%9B%AE%E7%9A%84%EF%BC%9A%E4%B8%80%E6%98%AF%E4%BD%9C%E4%B8%BA%E5%B1%80%E5%A4%96%E4%BA%BA%EF%BC%8C%E5%88%86%E6%9E%90%E4%BA%A7%E4%B8%9A%E6%95%B4%E4%BD%93%E6%83%85%E5%86%B5%EF%BC%8C%E5%AF%BB%E6%89%BE%E5%90%88%E9%80%82%E7%9A%84%E8%B5%9B%E9%81%93%E8%BF%9B%E8%A1%8C%E6%8A%95%E8%B5%84%E6%88%96%E8%BA%AC%E8%BA%AB%E5%85%A5%E5%B1%80%EF%BC%9B%E4%BA%8C%E6%98%AF%E4%BD%9C%E4%B8%BA%E5%B1%80%E5%86%85%E4%BA%BA%EF%BC%8C%E5%88%86%E6%9E%90%E6%89%80%E5%A4%84%E8%B5%9B%E9%81%93%E7%9A%84%E6%9C%BA%E4%BC%9A%E4%B8%8E%E9%A3%8E%E9%99%A9%E7%82%B9%EF%BC%8C%E8%B0%83%E6%95%B4%E4%BC%81%E4%B8%9A%E4%B8%8B%E4%B8%80%E6%AD%A5%E7%BB%8F%E8%90%A5%E7%AD%96%E7%95%A5%E3%80%82%E4%B8%A4%E8%80%85%E8%A7%86%E8%A7%92%E4%B8%8D%E5%90%8C%EF%BC%8C%E5%88%86%E6%9E%90%E5%86%85%E5%AE%B9%E8%87%AA%E7%84%B6...">
+                    <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                         class="larkui-icon larkui-icon-logo-weibo">
+                      <path
+                        d="M10.718 12.727c-1.596-.415-3.398.38-4.092 1.785-.706 1.435-.024 3.026 1.589 3.547 1.669.539 3.637-.286 4.322-1.836.672-1.514-.169-3.07-1.819-3.496Zm-1.219 3.66c-.323.518-1.02.743-1.542.507-.516-.235-.668-.837-.342-1.34.32-.502.991-.727 1.51-.51.524.223.693.82.374 1.343Zm1.067-1.37c-.118.201-.378.297-.58.213-.199-.082-.262-.307-.15-.504.118-.197.366-.29.566-.214.203.075.276.303.164.504Zm7.84-4.622a.67.67 0 0 0 .84-.43 2.61 2.61 0 0 0-3.028-3.359.667.667 0 1 0 .28 1.304c.43-.091.897.042 1.216.392.316.351.403.83.265 1.249a.667.667 0 0 0 .426.844Zm2.339-4.829a5.36 5.36 0 0 0-5.103-1.652.776.776 0 0 0 .326 1.519 3.811 3.811 0 0 1 4.425 4.903.774.774 0 1 0 1.474.48v-.002a5.369 5.369 0 0 0-1.122-5.248Zm-3.66 6.13c-.285-.085-.48-.144-.33-.519.324-.813.357-1.516.008-2.015-.657-.94-2.457-.889-4.52-.026 0 0-.646.284-.482-.23.316-1.02.27-1.872-.225-2.367-1.118-1.12-4.092.042-6.645 2.592-1.907 1.91-3.016 3.935-3.016 5.686 0 3.35 4.294 5.386 8.496 5.386 5.508 0 9.171-3.2 9.171-5.742 0-1.535-1.294-2.405-2.456-2.766Zm-6.702 7.307c-3.352.33-6.246-1.183-6.464-3.387-.218-2.2 2.325-4.253 5.676-4.584 3.352-.333 6.246 1.184 6.464 3.384.216 2.201-2.325 4.254-5.676 4.587Z"
+                        fill="currentColor" fill-rule="nonzero">
+                      </path>
+                    </svg>
+                  </a>
+                  <span class="social-share-item">
+                    <a class="social-share-wechat larkui-popover-trigger">
+                      <svg width="1em" height="1em"
+                           viewBox="0 0 24 24"
+                           xmlns="http://www.w3.org/2000/svg"
+                           class="larkui-icon larkui-icon-logo-weixin">
+                        <path
+                          d="M16.174 8.845c.139 0 .277.005.413.012-.572-3.016-3.71-5.323-7.498-5.323C4.9 3.534 1.5 6.361 1.5 9.848c0 1.901 1.022 3.614 2.623 4.772a.504.504 0 0 1 .187.575c-.129.475-.333 1.237-.342 1.272-.016.061-.04.122-.04.185 0 .139.113.253.253.253a.296.296 0 0 0 .146-.046l1.661-.959a.79.79 0 0 1 .403-.117.8.8 0 0 1 .223.033 8.999 8.999 0 0 0 2.895.337 4.811 4.811 0 0 1-.256-1.547c0-3.183 3.099-5.76 6.921-5.76ZM11.62 6.818a1.01 1.01 0 1 1 0 2.02 1.012 1.012 0 0 1-1.012-1.01c0-.558.454-1.01 1.012-1.01Zm-5.06 2.02a1.01 1.01 0 1 1 0-2.02 1.01 1.01 0 1 1 0 2.02Zm13.753 9.74c1.334-.965 2.185-2.39 2.185-3.976 0-2.907-2.832-5.262-6.326-5.262-3.492 0-6.326 2.355-6.326 5.262 0 2.906 2.831 5.261 6.326 5.261a7.5 7.5 0 0 0 2.065-.288.622.622 0 0 1 .52.068l1.385.797c.04.023.078.04.122.04a.21.21 0 0 0 .15-.061.21.21 0 0 0 .061-.15c0-.052-.021-.103-.033-.155l-.286-1.062a.529.529 0 0 1-.02-.133.433.433 0 0 1 .177-.34Zm-6.246-4.816a.843.843 0 0 1-.844-.84.843.843 0 0 1 1.688 0c0 .463-.38.84-.844.84Zm4.217 0a.843.843 0 0 1-.844-.84.843.843 0 0 1 1.687 0 .846.846 0 0 1-.843.84Z"
+                          fill="currentColor" fill-rule="nonzero">
+                        </path>
+                      </svg>
+                    </a>
+                    <div style="position: absolute; top: 0px; left: 0px; width: 100%;">
+                      <div>
+                        <div class="ant-popover larkui-popover ant-popover-placement-top  ant-popover-hidden"
+                             style="width: 200px; left: 212px; top: -846px; transform-origin: 50% 254px; pointer-events: none;">
+                          <div class="ant-popover-content">
+                            <div class="ant-popover-arrow">
+                              <span class="ant-popover-arrow-content"></span>
+                            </div>
+                            <div class="ant-popover-inner" role="tooltip">
+                              <div class="ant-popover-inner-content">
+                                <div class="qrcode-block">
+                                  <span class="img">
+                                    <img
+                                      src="data:image/png;base64,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">
+                                  </span>
+                                  <div class="text">
+                                    <p>微信扫一扫分享</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </span>
+                </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "ArticleFooter",
+    data() {
+      return {
+        likeUserList: [
+          {
+            userId: 1,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/01.jpg')
+          },
+          {
+            userId: 2,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/02.jpg')
+          },
+          {
+            userId: 3,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/03.jpg')
+          }, {
+            userId: 4,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/04.gif')
+          }, {
+            userId: 5,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/05.jpg')
+          }, {
+            userId: 6,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/06.jpg')
+          }, {
+            userId: 7,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/07.jpg')
+          }, {
+            userId: 8,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/08.jpg')
+          }, {
+            userId: 9,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/09.jpg')
+          }, {
+            userId: 10,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/10.jpg')
+          }, {
+            userId: 11,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/11.jpg')
+          }, {
+            userId: 12,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/12.jpg')
+          }, {
+            userId: 13,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/13.jpg')
+          }, {
+            userId: 14,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/14.jpg')
+          }, {
+            userId: 15,
+            username: '融码一生（IT 技术领域）',
+            avatar: require('@/assets/avatar/15.jpg')
+          }
+        ],
+        moreLikeUser: false
+      }
+    },
+    computed: {
+      showUserList() {
+        if (this.likeUserList?.length > 13) {
+          return this.likeUserList.slice(0, 13);
+        }
+        return this.likeUserList;
+      }
+    },
+    props: ['ifLike']
+  }
+</script>
+
+<style scoped lang="less">
+  .reward-module_like {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    text-align: center;
+    box-sizing: border-box;
+
+    .like-btn {
+      position: relative;
+      margin: 10px auto;
+      width: 40px;
+      height: 50px;
+      text-align: center;
+      cursor: pointer;
+      overflow: hidden;
+
+      .like-btn-icon {
+        position: absolute;
+        left: -18px;
+        bottom: -2px;
+        z-index: 1;
+        display: inline-block;
+        margin: -1px 0;
+        width: 80px;
+        height: 80px;
+        background: url(https://gw.alipayobjects.com/mdn/prod_resource/afts/img/A*eDsBTKcm1IcAAAAAAAAAAAAAARQnAQ) no-repeat 0 0;
+        background-size: auto 80px;
+      }
+
+      .will-like {
+        overflow: hidden;
+        animation-duration: 0s;
+      }
+
+      .liked {
+        animation-name: liked_shake;
+        animation-duration: .9s;
+        animation-iteration-count: 1;
+        animation-timing-function: steps(27);
+        animation-fill-mode: forwards;
+      }
+
+    }
+
+    .like-btn:hover {
+
+      .will-like {
+        animation-name: like_shake;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-out;
+        transform-origin: 25px 67px;
+      }
+
+    }
+
+    .like-count {
+      font-size: 14px;
+      color: #8A8F8D;
+    }
+
+    .like-user-list {
+      margin: 22px 0 0 -8px;
+      padding: 0;
+      list-style: none;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+
+      li {
+        margin-left: 8px;
+        margin-bottom: 8px;
+
+        .like-user-popover {
+          display: inline-block;
+        }
+
+      }
+    }
+  }
+
+  .article-module_info {
+    padding: 0 40px;
+
+    .info_meta {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 28px;
+      margin-bottom: 38px;
+
+      .reader-meta-wrapper {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        line-height: 24px;
+
+        .meta-item {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          display: inline-block;
+          vertical-align: middle;
+          max-width: 240px;
+          color: #8A8F8D;
+          cursor: default;
+
+          .author {
+            margin-right: 8px;
+            a {
+              color: #8A8F8D;
+            }
+          }
+
+
+          .larkicon {
+            display: inline-block;
+            font-style: normal;
+            vertical-align: baseline;
+            text-align: center;
+            text-transform: none;
+            line-height: 1;
+            text-rendering: auto;
+          }
+        }
+      }
+
+      .social-share {
+        ext-align: right;
+        font-size: 14px;
+        color: #8A8F8D;
+      }
+    }
+  }
+
+  @keyframes like_shake {
+    25% {
+      transform: rotate(6deg);
+    }
+    75% {
+      transform: rotate(-6deg);
+    }
+    100% {
+      transform: rotate(0);
+    }
+  }
+
+  @keyframes liked_shake {
+    100% {
+      background-position: -2160px 0;
+      overflow: hidden;
+    }
+  }
+</style>

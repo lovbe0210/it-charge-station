@@ -4,61 +4,27 @@
   border-radius: 4px;
   // 设置的边框和内边距的值是包含在width内
   box-sizing: border-box;
-  padding: 0 25px;
-  padding-bottom: 20px;
+  padding: 0 50px 5px 0;
   margin-top: 15px;
 
   .comment-form {
     padding-top: 20px;
+
     .reply-header {
-      .reply-navigation {
-        margin-bottom: 22px;
-
-        .nav-bar {
-          display: flex;
-          align-items: center;
-          list-style: none;
-          margin: 0;
-          padding: 0;
-
-          .nav-title {
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-
-            .nav-title-text {
-              color: #262626;
-              font-weight: 500;
-            }
-            .total-reply {
-              font-size: 14px;
-              margin: 0 36px 0 6px;
-              font-weight: 400;
-              color: #9499a0;
-            }
-          }
-
-          nav-sort {
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            color: #9499a0;
-
-            .time-sort, .hot-sort {
-              cursor: pointer;
-            }
-
-            .apply-sort {
-              color: #262626;
-            }
-          }
-        }
-      }
+      display: flex;
+      align-items: flex-start;
+      height: 39px;
+      color: #262626;
+      font-size: 15px;
+      font-weight: 700;
+      border-bottom: 1px solid #E7E9E8;
+      margin-top: 28px;
     }
 
     .content {
       margin-top: 20px;
       display: flex;
+
       .el-avatar {
         margin-right: 16px;
       }
@@ -67,6 +33,7 @@
 
   .comment-list-wrapper {
     padding: 40px 0 16px;
+
     .title {
       display: flex;
       align-items: center;

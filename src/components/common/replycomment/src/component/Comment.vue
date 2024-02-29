@@ -1,23 +1,9 @@
 <template>
   <div class="u-comment">
     <div class="comment-form">
-      <slot name="header">
-        <div class="reply-header">
-          <div class="reply-navigation">
-            <ul class="nav-bar">
-              <li class="nav-title">
-                <span class="nav-title-text">评论</span>
-                <span class="total-reply">1947</span>
-              </li>
-              <li class="nav-sort hot">
-                <div :class="['hot-sort', latest ? 'apply-sort' : '']" @click="latest = true">最热</div>
-                <div class="part-symbol"></div>
-                <div :class="['time-sort', latest ? '' : 'apply-sort']" @click="latest = false">最新</div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </slot>
+      <div class="reply-header">
+        所有评论（4）
+      </div>
       <div class="content">
         <div class="avatar-box">
           <b-avatar :src="config.user.avatar" variant="light" to="/settings" size="6rem">
@@ -59,7 +45,6 @@
         showAddress: true,
         showHomeLink: true,
         showReply: true,
-        latest: true,
         config: {
           user: {
             id: 0,

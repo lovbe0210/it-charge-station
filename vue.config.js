@@ -62,6 +62,11 @@ module.exports = {
           '^/m801': ''
         }
       },
+      '/yuque': {
+        target: 'https://cdn.nlark.com',
+        changeOrigin: true,
+        ws: true
+      },
       '/math': {
         target: 'https://editor.aomao.com',
         changeOrigin: true,

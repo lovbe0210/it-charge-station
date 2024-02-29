@@ -17,8 +17,8 @@
       border: none;
       border-bottom: 1px solid hsla(0, 0%, 0%, 0.04);
       transform: translateY(0);
-      transition: transform .2s ease .2s,left .2s cubic-bezier(.1,0,0,1) 0s;
-      will-change: transform,left;
+      transition: transform .2s ease .2s, left .2s cubic-bezier(.1, 0, 0, 1) 0s;
+      will-change: transform, left;
       font-size: 14px;
       display: flex;
       justify-content: space-between;
@@ -29,7 +29,7 @@
         display: flex;
         align-items: center;
         line-height: 32px;
-        transition: margin .1s cubic-bezier(.1,0,0,1) 0s;
+        transition: margin .1s cubic-bezier(.1, 0, 0, 1) 0s;
         overflow: hidden;
         height: 100%;
 
@@ -85,14 +85,12 @@
       min-height: 100vh;
 
       .doc_header {
-        padding: 0 50px;
-
         .doc_header_wrapper {
           margin: 24px 0 32px;
 
           .doc-article-title {
             word-break: break-word;
-            font-family: Chinese Quote,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji;
+            font-family: Chinese Quote, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji;
             font-size: 36px;
             line-height: 1.389;
             font-weight: 700;
@@ -104,16 +102,24 @@
         }
       }
 
-      .doc-reader {
-        padding: 0 50px;
-      }
-
       .reader-standard-wide {
+        padding: 0 50px;
         max-width: 850px;
         margin: 0 calc(~"50vw - 425px") 0 auto;
       }
+
       .reader-ultra-wide {
+        padding: 0 70px;
         margin: 0 305px 0 auto;
+
+        .u-comment {
+          padding: 0 100px 5px 0 !important;
+        }
+      }
+
+      .doc-footer {
+        max-width: 850px;
+        margin: 46px calc(~"50vw - 425px") 0 auto;
       }
     }
   }
@@ -192,22 +198,26 @@
           .toc-depth-1 {
             padding-left: 26px;
           }
+
           .toc-depth-2 {
             padding-left: 43px;
           }
+
           .toc-depth-3 {
             padding-left: 60px;
           }
+
           .toc-depth-4 {
             padding-left: 77px;
           }
+
           .toc-depth-5 {
             padding-left: 112px;
           }
+
           .toc-depth-6 {
             padding-left: 128px;
           }
-
 
 
           .toc-selected {
