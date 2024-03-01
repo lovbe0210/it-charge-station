@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_zv9yzmb57vm.woff2?t=1708681335954') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_gtabewt0eom.woff2?t=1709270927565') format('woff2');
 }
 
 .iconfont {
@@ -126,4 +126,17 @@
 .image:before {
   content: "\e650";
 }
+
+.author:before {
+  content: "\e651";
+}
+
+.clock:before {
+  content: "\e653";
+}
+
+.read:before {
+  content: "\e652";
+}
+
 

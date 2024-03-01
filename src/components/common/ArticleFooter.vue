@@ -16,7 +16,7 @@
         </li>
         <!-- 超出13时只展示13个，然后显示更多 -->
         <li v-if="likeUserList?.length > 13" class="show-more-like-list" @click="moreLikeUser = true">
-          <a-tooltip placement="bottom" :getPopupContainer="()=>this.$refs.tooltipContainer">
+          <a-tooltip placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer">
             <template slot="title">
               查看所有点赞用户
             </template>
@@ -49,32 +49,45 @@
         <div class="reader-meta-wrapper">
           <div class="meta-left">
             <div class="meta-item">
-              <span class="author larkicon-author"></span>
-              <span class="author" style="cursor: pointer;">
+              <span class="iconfont author"></span>
+              <span class="author-name item-content" style="cursor: pointer;">
                 <a href="/ximentata" class="index-module_popover">少多怪</a>
               </span>
             </div>
-            <div class="meta-item">
-              <span class="larkicon larkicon-clock"></span>
-              <span class="item-text">
+            <a-tooltip placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer">
+              <template slot="title">
+                更新于 2024-02-25 17:56:07
+              </template>
+              <div class="meta-item">
+                <span class="iconfont clock"></span>
+                <span class="item-text item-content">
                 02-25 17:56
               </span>
-            </div>
+              </div>
+            </a-tooltip>
+            <a-tooltip placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer">
+              <template slot="title">
+                文档浏览次数：529
+              </template>
+              <div class="meta-item">
+                <span class="iconfont read"></span>
+                <span class="item-content">506</span>
+              </div>
+            </a-tooltip>
             <div class="meta-item">
-              <span class="larkicon larkicon-read"></span>
-              <span class="item-text">506</span>
-            </div>
-            <div class="meta-item">
-              <span class="item-text">IP 属地浙江</span>
+              <span class="item-content">IP 属地浙江</span>
             </div>
             <div class="meta-item" style="margin-left: 12px;">
-              <span>举报</span>
+              <span class="item-content">
+                <a href="/ximentata" class="index-module_popover">举报</a>
+              </span>
             </div>
           </div>
         </div>
         <div class="social-share">
-                <span>分享到：
-                  <a class="social-share-item larkui-tooltip" target="_blank"
+                <span>
+                  分享到：
+                  <a class="social-share-item" target="_blank"
                      href="https://service.weibo.com/share/share.php?url=https%3A%2F%2Fwww.yuque.com%2Fximentata%2Fchlomu%2Flrdbp3xlg7rcmmbd&amp;pic=https%3A%2F%2Fcdn.nlark.com%2Fyuque%2F0%2F2024%2Fpng%2F34793967%2F1708855153148-2f1179f2-7ef5-4429-8a21-8936c8123f77.png&amp;title=DATA%20%7C%20Vol.002%20%7C%20%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E6%91%B8%E6%B8%85%E4%B8%80%E4%B8%AA%E8%A1%8C%E4%B8%9A%EF%BC%9F%20%7C%20%E5%BC%95%E8%A8%80%E5%A6%82%E4%BD%95%E5%BF%AB%E9%80%9F%E6%91%B8%E6%B8%85%E4%B8%80%E4%B8%AA%E8%A1%8C%E4%B8%9A%EF%BC%9F%E9%A6%96%E5%85%88%EF%BC%8C%E8%A6%81%E6%90%9E%E6%B8%85%E6%A5%9A%E8%A1%8C%E4%B8%9A%E5%88%86%E6%9E%90%E7%9A%84%E7%9B%AE%E7%9A%84%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E4%B9%9F%E5%B0%B1%E6%98%AF%E4%B8%BA%E4%BA%86%E5%BC%95%E5%AF%BC%E5%87%BA%E4%B8%80%E4%BB%BD%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E7%AD%94%E6%A1%88%E3%80%82%E4%B8%80%E8%88%AC%E6%9D%A5%E8%AF%B4%EF%BC%8C%E8%A1%8C%E4%B8%9A%E5%88%86%E6%9E%90%E5%9F%BA%E6%9C%AC%E5%AD%98%E5%9C%A8%E4%B8%A4%E7%A7%8D%E7%9B%AE%E7%9A%84%EF%BC%9A%E4%B8%80%E6%98%AF%E4%BD%9C%E4%B8%BA%E5%B1%80%E5%A4%96%E4%BA%BA%EF%BC%8C%E5%88%86%E6%9E%90%E4%BA%A7%E4%B8%9A%E6%95%B4%E4%BD%93%E6%83%85%E5%86%B5%EF%BC%8C%E5%AF%BB%E6%89%BE%E5%90%88%E9%80%82%E7%9A%84%E8%B5%9B%E9%81%93%E8%BF%9B%E8%A1%8C%E6%8A%95%E8%B5%84%E6%88%96%E8%BA%AC%E8%BA%AB%E5%85%A5%E5%B1%80%EF%BC%9B%E4%BA%8C%E6%98%AF%E4%BD%9C%E4%B8%BA%E5%B1%80%E5%86%85%E4%BA%BA%EF%BC%8C%E5%88%86%E6%9E%90%E6%89%80%E5%A4%84%E8%B5%9B%E9%81%93%E7%9A%84%E6%9C%BA%E4%BC%9A%E4%B8%8E%E9%A3%8E%E9%99%A9%E7%82%B9%EF%BC%8C%E8%B0%83%E6%95%B4%E4%BC%81%E4%B8%9A%E4%B8%8B%E4%B8%80%E6%AD%A5%E7%BB%8F%E8%90%A5%E7%AD%96%E7%95%A5%E3%80%82%E4%B8%A4%E8%80%85%E8%A7%86%E8%A7%92%E4%B8%8D%E5%90%8C%EF%BC%8C%E5%88%86%E6%9E%90%E5%86%85%E5%AE%B9%E8%87%AA%E7%84%B6...">
                     <svg width="1em" height="1em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                          class="larkui-icon larkui-icon-logo-weibo">
@@ -143,7 +156,7 @@
           {
             userId: 2,
             username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/02.jpg')
+            avatar: require('@/assets/avatar/04.jpg')
           },
           {
             userId: 3,
@@ -298,7 +311,7 @@
   }
 
   .article-module_info {
-    padding: 0 40px;
+    padding: 10px 40px 0 40px;
 
     .info_meta {
       display: flex;
@@ -309,43 +322,68 @@
       .reader-meta-wrapper {
         display: flex;
         justify-content: space-between;
+
         font-size: 14px;
         line-height: 24px;
 
-        .meta-item {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          display: inline-block;
-          vertical-align: middle;
-          max-width: 240px;
-          color: #8A8F8D;
-          cursor: default;
+        .meta-left {
+          display: flex;
 
-          .author {
-            margin-right: 8px;
-            a {
-              color: #8A8F8D;
+          .meta-item {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: middle;
+            max-width: 240px;
+            color: #8A8F8D;
+            display: flex;
+            align-items: center;
+
+
+            .item-content {
+              margin-left: 8px;
+              a {
+                color: #8A8F8D;
+              }
             }
+
+            .item-content {
+              line-height: 16px;
+            }
+
+
           }
 
+          .meta-item:nth-child(2), .meta-item:nth-child(3), .meta-item:nth-child(4) {
+            margin-left: 18px;
+          }
 
-          .larkicon {
-            display: inline-block;
-            font-style: normal;
-            vertical-align: baseline;
-            text-align: center;
-            text-transform: none;
-            line-height: 1;
-            text-rendering: auto;
+          .meta-item:nth-child(1), .meta-item:nth-child(2), .meta-item:nth-child(3) {
+            cursor: pointer;
+          }
+
+          .meta-item:last-child::before {
+            content: " ";
+            display: block;
+            width: 1px;
+            height: 12px;
+            background-color: #D8DAD9;
+            margin-right: 2px;
           }
         }
+
       }
 
       .social-share {
         ext-align: right;
         font-size: 14px;
         color: #8A8F8D;
+
+        .social-share-item {
+          a {
+            color: #D8DAD9;
+          }
+        }
       }
     }
   }
