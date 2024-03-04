@@ -53,7 +53,7 @@
             <article-footer :ifLike="ifLike" @like="ifLike = !ifLike"/>
           </div>
           <!-- 评论 -->
-          <div :class="['reply', docStyle.pageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
+          <div :class="[docStyle.pageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
             <reply-comment/>
           </div>
         </div>

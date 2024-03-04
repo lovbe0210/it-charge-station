@@ -6,28 +6,24 @@
       </div>
       <div class="content">
         <div class="avatar-box">
-          <b-avatar :src="config.user.avatar" variant="light" to="/settings" size="6rem">
-            <span v-if="config.user.username">{{ config.user.username }}</span>
-            <img v-else src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
+          <b-avatar variant="light" to="/settings" size="2.5rem">
+            <span v-if="userInfo.username">{{ userInfo.username }}</span>
+            <img v-else :src="userInfo.avatar"/>
           </b-avatar>
         </div>
-        <InputBox v-bind="$attrs"
-                  ref="inputBox"
-                  :placeholder="placeholder"
-                  :mentionConfig="config.mentionConfig"
-                  @submit="submit"
+        <InputBox @submit="submit"
                   content-btn="发表评论"
                   cancel-btn="取消"/>
       </div>
     </div>
     <div class="comment-list-wrapper">
-      <CommentList :data="config.comments" :contentBoxParam="contentBoxParam"></CommentList>
+      <CommentList :data="comments"></CommentList>
     </div>
   </div>
 </template>
 
 <script>
-  import { isNull, createObjectURL } from '@/utils/emoji'
+  import { createObjectURL } from '@/utils/emoji'
   import { getComment } from '@/assets/emoji/comment';
   import InputBox from './InputBox'
   import CommentList from './CommentList'
@@ -40,38 +36,16 @@
         mentionList: [],
         replyShowSize: null,
         aTarget: null,
-        placeholder: '输入评论（Enter换行，Ctrl + Enter发送）',
         showLikes: true,
         showAddress: true,
         showHomeLink: true,
         showReply: true,
-        config: {
-          user: {
-            id: 0,
-            username: '',
-            avatar: ''
-            // // 评论id数组 建议:存储方式用户id和文章id和评论id组成关系,根据用户id和文章id来获取对应点赞评论id,然后加入到数组中返回
-            // likeIds: []
-          },
-          // emoji: emoji,
-          comments: []
-        }
+        comments: []
       }
     },
     computed: {
-      // 评论盒子参数或方法
-      contentBoxParam() {
-        return {
-          user: this.config.user,
-          like: this.like,
-          relativeTime: isNull(this.relativeTime, false),
-          showInfo: (uid, finish) => this.$emit("showInfo", uid, finish),
-          aTarget: isNull(this.config.aTarget, "_blank"),
-          showLikes: this.config.showLikes,
-          showAddress: this.config.showAddress,
-          showHomeLink: this.config.showHomeLink,
-          showReply: this.config.showReply
-        }
+      userInfo() {
+        return this.$store.state.userInfo;
       }
     },
     components: {
@@ -93,17 +67,17 @@
         const comment = {
           id: this.tempId,
           parentId: parentId,
-          uid: this.config.user.id,
+          uid: this.userInfo.uid,
           address: '来自江苏',
           content: content,
           likes: 0,
           createTime: Date.now(),
           contentImg: contentImg,
           user: {
-            username: this.config.user.username,
-            avatar: this.config.user.avatar,
-            level: 6,
-            homeLink: `/${this.tempId}`
+            username: this.userInfo.username,
+            avatar: this.userInfo.avatar,
+            level: this.userInfo.level,
+            homeLink: this.userInfo.domain
           },
           reply: null
         }
@@ -112,7 +86,7 @@
           // 提交评论添加到评论列表
           if (comment) {
             if (parentId) {
-              let rawComment = this.config.comments.find(v => v.id === parentId)
+              let rawComment = this.comments.find(v => v.id === parentId)
               if (rawComment) {
                 let replys = rawComment.reply
                 if (replys) {
@@ -126,7 +100,7 @@
                 }
               }
             } else {
-              this.config.comments.unshift(comment)
+              this.comments.unshift(comment)
             }
           }
 
@@ -141,7 +115,7 @@
        */
       editLikeCount(id, count) {
         let tar = null;
-        this.config.comments.value.forEach(v => {
+        this.comments.forEach(v => {
           if (v.id === id) {
             tar = v;
           } else {
@@ -185,7 +159,7 @@
         // 删除评论数据操作
         const {parentId, id} = comment
         if (parentId) {
-          let comment = this.config.comments.find(item => item.id === parentId)
+          let comment = this.comments.find(item => item.id === parentId)
           let reply = comment?.reply
           if (reply) {
             let index = reply.list.findIndex(item => item.id === id)
@@ -195,30 +169,20 @@
             }
           }
         } else {
-          let index = this.config.comments.findIndex(item => item.id === id)
+          let index = this.comments.findIndex(item => item.id === id)
           if (index !== -1) {
-            this.config.comments.splice(index, 1)
+            this.comments.splice(index, 1)
           }
         }
       }
     },
     mounted() {
       // 初始化评论列表
-      this.config.comments = getComment(1, 10);
-      setTimeout(() => {
-        const user = {
-          id: 1,
-          username: 'user',
-          avatar: 'https://static.juzicon.com/avatars/avatar-200602130320-HMR2.jpeg?x-oss-process=image/resize,w_100',
-          // 评论id数组 建议:存储方式用户id和文章id和评论id组成关系,根据用户id和文章id来获取对应点赞评论id,然后加入到数组中返回
-          likeIds: [1, 2, 3]
-        }
-        this.config.user = user
-      }, 100)
+      this.comments = getComment(1, 10);
 
-      setTimeout(() => {
+      /*setTimeout(() => {
         this.config.user.likeIds = [2, 3]
-      }, 5000)
+      }, 5000)*/
     }
   }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="comment-box">
+  <div class="comment-box" v-click-outside="onClickOutside">
     <div class="u-editor" :class="{ active: active }">
       <div ref="editorRef" id="expectRange"
            class="rich-input"
@@ -168,7 +168,6 @@
     name: 'InputBox',
     data() {
       return {
-        placeholder: '输入评论（Enter换行，Ctrl + Enter发送）',
         // 是否显示提及框
         isShowMention: false,
         // 评论框是否激活
@@ -203,7 +202,14 @@
       }
     },
     props: {
+      placeholder: {
+        type: String,
+        default: '输入评论（Enter换行，Ctrl + Enter发送）'
+      },
       contentBtn: {
+        type: String
+      },
+      cancelBtn: {
         type: String
       },
       parentId: {
@@ -211,9 +217,6 @@
       },
       reply: {
         type: Object
-      },
-      cancelBtn: {
-        type: String
       }
     },
     computed: {
@@ -263,7 +266,10 @@
           console.log(error)
         }
         if (!this.editorRef?.innerHTML) {
-          this.active = this.action = false;
+          this.active = false;
+          // 告诉父组件状态
+          this.$emit('close')
+
         }
       },
       keyDown(e) {
@@ -519,6 +525,13 @@
           node = node.parentNode;
         }
         return false;
+      },
+      // 点击评论框外关闭操作栏和失去评论框焦点
+      onClickOutside() {
+        // 评论框有内容情况下不执行操作
+        if (isEmpty(this.content) && !this.state.imgLength) {
+          this.action = false;
+        }
       }
     },
     watch: {
@@ -577,6 +590,10 @@
       // }
       let elementById = document.getElementById("contentWrapper");
       elementById.addEventListener('scroll', this.changeMentionPosition, true);
+
+      if (!this.cancelBtn) {
+        this.$emit('exposeEditor', this.editorRef)
+      }
     },
     beforeDestroy() {
       // if (this.editorRef) {
@@ -584,6 +601,23 @@
       // }
       let elementById = document.getElementById("contentWrapper");
       elementById.removeEventListener('scroll', this.changeMentionPosition);
+    },
+    directives: {
+      'click-outside': {
+        bind(el, binding, vnode) {
+          el.clickOutsideEvent = function (event) {
+            // 判断点击的元素是否在 el 内部
+            if (!(el === event.target || el.contains(event.target))) {
+              // 如果点击的不是 el 内部，则调用绑定的方法
+              binding.value();
+            }
+          };
+          document.addEventListener('click', el.clickOutsideEvent);
+        },
+        unbind(el) {
+          document.removeEventListener('click', el.clickOutsideEvent);
+        }
+      }
     }
   }
 

@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_tlbfsy070d.woff2?t=1709547520339') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_yyq0ltljk.woff2?t=1709566402606') format('woff2');
 }
 
 .iconfont {
@@ -8,6 +8,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.reply:before {
+  content: "\e625";
 }
 
 .circle-hot:before {
@@ -145,6 +149,10 @@
 
 .xlweibo:before {
   content: "\e655";
+}
+
+.like:before {
+  content: "\e656";
 }
 
 

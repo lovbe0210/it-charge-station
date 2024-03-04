@@ -277,7 +277,6 @@
   }
 
   .article-module_info {
-    padding: 10px 40px 0 40px;
 
     .info_meta {
       display: flex;

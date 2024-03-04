@@ -11,6 +11,11 @@ export default new Vuex.Store({
     pageState: "init",
     // TODO 这里还是无法解决先切换到别的页面然后后台播放然后backplay = true，然后再刷新导致不能播放的问题
     userInfo: {
+      uid: 0,
+      username: '布衣草人',
+      domain: 'lovbe0210',
+      level: 6,
+      avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hndj43fdrsj30s010vgtz.jpg',
       token: '06ba1e5d8dcd4bf7b27ed10c6a202766'
     },
     // 是否有后台播放音乐的页面

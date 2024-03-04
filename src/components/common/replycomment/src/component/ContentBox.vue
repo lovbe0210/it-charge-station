@@ -1,54 +1,37 @@
 <template>
-  <div class="comment" :class="{ reply: reply }">
+  <div class="comment" :class="{ reply: reply }" ref="tooltipContainer">
     <div class="comment-sub">
-      <div class="settings" v-show="true" v-b-tooltip.hover.leftbottom.v-secondary
-           @mouseenter="contentBoxParam.showInfo(safeStr(data.uid))">
-        <a
-          :href="data.user.homeLink"
-          :target="contentBoxParam.aTarget"
-          :class="{ 'pointer-events-none': !contentBoxParam.showHomeLink }"
-          class="no-underline"
-          style="display: block"
-        >
-
-          <b-avatar :src="data.user.avatar" variant="light" to="/settings" size="6rem">
-            <span v-if="data.user.avatar">{{ data.user.username }}</span>
-            <img v-else src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
-          </b-avatar>
-        </a>
-      </div>
+      <a-popover placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer" overlayClassName="user-info-card">
+        <template slot="content">
+          <div>
+            用户信息卡片
+          </div>
+        </template>
+        <b-avatar :src="data.user.avatar" variant="light" :to="data.user.homeLink" size="2.5rem">
+          <span v-if="data.user.avatar">{{ data.user.username }}</span>
+          <img v-else src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
+        </b-avatar>
+      </a-popover>
     </div>
     <div class="comment-primary">
       <div class="comment-main">
         <div class="user-info">
-          <div class="settings" v-b-tooltip.hover.leftbottom.v-secondary
-               @mouseenter="contentBoxParam.showInfo(safeStr(data.uid))">
-            <a
-              :href="data.user.homeLink"
-              :target="contentBoxParam.aTarget"
-              :class="{ 'pointer-events-none': !contentBoxParam.showHomeLink }"
-              class="no-underline"
-              style="display: block"
-            >
-              <div class="username">
-                <span class="name" style="max-width: 10em">{{ data.user.username }}</span>
-                <!-- level -->
-                <span v-if="contentBoxParam.showLevel" blank="true" class="rank">
-                  <span>level ?</span>
-                  <!--                  <u-icon size="24" v-html="useLevel(data.user.level || 1)"></u-icon>-->
-                </span>
+          <a-popover placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer" overlayClassName="user-info-card">
+            <template slot="content">
+              <div>
+                用户信息卡片
               </div>
-            </a>
-          </div>
-          <!-- <span class="author-badge-text">（作者）</span> -->
-          <span v-if="contentBoxParam.showAddress" class="address" style="color: #939393; font-size: 12px">
-            &nbsp;&nbsp;{{ data.address }}
-          </span>
-          <!--          <template v-if="slots.info">-->
-          <!--            <Info />-->
-          这是啥
-          <!--          </template>-->
-          <time class="time">{{ contentBoxParam.relativeTime ? new Date() : data.createTime }}</time>
+            </template>
+            <div class="username">
+              <span class="name" style="max-width: 10em">{{ data.user.username }}</span>
+              <!-- level -->
+              <span blank="true" class="rank">
+                  <span :class="['iconfont',  'icon-level' + data.user.level]"></span>
+              </span>
+            </div>
+          </a-popover>
+
+          <time class="time">{{ data.createTime }}</time>
         </div>
         <div class="content">
           <u-fold unfold>
@@ -66,35 +49,32 @@
         </div>
         <div class="action-box select-none">
           <!-- 点赞 -->
-          <div v-if="contentBoxParam.showLikes" class="item" @click="contentBoxParam.like(str(data.id))">
-            <span>图标 ？</span>
-            <span>图标 ？</span>
+          <div class="item" @click="contentBoxParam.like(str(data.id))">
+            <span class="iconfont like"></span>
             <span v-if="data.likes != 0">{{ data.likes }}</span>
           </div>
           <!-- 回复 -->
-          <div v-if="contentBoxParam.showReply" ref="btnRef" class="item" :class="{ active: state.active }"
-               @click="reply">
-            <span>图标 ？</span>
-            <span>{{ state.active ? $u('comment.cancelReply') : $u('comment.reply') }}</span>
+          <div ref="btnRef" class="item" :class="{ active: state.active }" @click="reply1">
+            <span class="iconfont reply"></span>
+            <span>{{ state.active ? '取消回复' : '回复' }}</span>
           </div>
           <!-- 操作栏 -->
           <Operate/>
         </div>
-        <div v-if="state.active">
+        <div v-show="state.active">
           <InputBox
             ref="commentRef"
-            :parent-id="str(id)"
-            :placeholder="`${$u('comment.placeholder2')}@${data.user.username}...`"
+            :parent-id="safeStr(id)"
+            :placeholder="'回复@' + data.user.username"
             :reply="data"
-            :content-btn="$u('comment.contentBtn2')"
+            content-btn="发布"
             style="margin-top: 12px"
             @hide="hide"
             @close="state.active = false"
+            @exposeEditor="exposeEditor"
           />
         </div>
       </div>
-      <!-- 回复列表 -->
-      <!--      <slot></slot>-->
     </div>
   </div>
 </template>
@@ -104,17 +84,9 @@
   import { useEmojiParse } from '@/utils/hooks';
   import emoji from '@/assets/emoji/emoji.js';
   import { dayjs } from 'dayjs';
-  // import { computed, inject, nextTick, ref, reactive, h } from 'vue'
   import InputBox from './InputBox';
   import Operate from './Operate';
   import UFold from './Fold';
-  // import { EmojiApi, InjectionEmojiApi, UFold, UIcon, CommentApi } from '~/components'
-  // import type { InputBoxApi } from './tools/input-box.vue'
-  // import { ElAvatar } from '~/element'
-  // import { useEmojiParse, useLevel } from '~/hooks'
-  // import UserCard from './tools/user-card.vue'
-  // import { InjectContentBox, InjectContentBoxApi, InjectSlots } from '../key'
-  // import ReplyBox from "./ReplyBox";
 
   export default {
     name: 'ContentBox',
@@ -122,7 +94,8 @@
       return {
         state: {
           active: false
-        }
+        },
+        editorRef: null
       }
     },
     props: {
@@ -160,7 +133,7 @@
         this.state.active = !this.state.active
         if (this.state.active) {
           this.$nextTick(() => {
-            this.$refs.commentRef?.focus()
+            this.editorRef?.focus()
           })
         }
       },
@@ -178,24 +151,12 @@
       },
       nowDateTime(dateTime) {
         return dayjs.fromNow();
+      },
+      exposeEditor(editorRef) {
+        this.editorRef = editorRef;
       }
     }
   }
-  // const { allEmoji } = inject(InjectionEmojiApi) as EmojiApi
-  // const { like, user, relativeTime, aTarget, showLevel, showLikes, showAddress, showHomeLink, showReply } = inject(
-  //   InjectContentBox
-  // ) as InjectContentBoxApi
-
-
-  //工具slots
-  // const slots = inject(InjectSlots) as any
-  // 信息卡槽
-  // const Info = () => h('div', slots.info(props.data))
-
-  //操作栏卡槽
-  // const Operate = () => h('div', slots.operate(props.data))
-
-  // const contents = computed(() => )
 </script>
 
 <style lang="less" scoped>
