@@ -16,7 +16,8 @@
     <div class="comment-primary">
       <div class="comment-main">
         <div class="user-info">
-          <a-popover placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer" overlayClassName="user-info-card">
+          <a-popover placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer"
+                     overlayClassName="user-info-card">
             <template slot="content">
               <div>
                 用户信息卡片
@@ -36,14 +37,11 @@
         <div class="content">
           <u-fold unfold>
             <div v-html="contents"></div>
-            <div class="imgbox" style="display: flex">
-              <template v-for="(url, index) in imgList">
-                <b-img :src="url" :key="index"
-                       style="height: 72px; padding: 8px 4px"
-                       lazy
-                       :preview-src-list="imgList"
-                       :initial-index="index"></b-img>
-              </template>
+            <div class="imgbox" v-if="data.contentImg" style="display: flex">
+              <b-img :src="data.contentImg" @click="imgPreview = true"
+                     style="height: 72px; padding: 8px 4px"
+                     lazy/>
+              <image-preview :src="data.contentImg" :isPreviewOpen="imgPreview" @toggleFullScreen="imgPreview = false"/>
             </div>
           </u-fold>
         </div>
@@ -79,20 +77,22 @@
 </template>
 
 <script>
-  import { str, isEmpty } from '@/utils/emoji';
-  import { useEmojiParse } from '@/utils/hooks';
+  import {str} from '@/utils/emoji';
+  import {useEmojiParse} from '@/utils/hooks';
   import emoji from '@/assets/emoji/emoji.js';
-  import { dayjs } from 'dayjs';
+  import {dayjs} from 'dayjs';
   import InputBox from './InputBox';
   import Operate from './Operate';
   import UFold from './Fold';
+  import ImagePreview from '@/components/common/ImagePreview'
 
   export default {
     name: 'ContentBox',
     data() {
       return {
         active: false,
-        editorRef: null
+        editorRef: null,
+        imgPreview: false
       }
     },
     props: {
@@ -110,11 +110,6 @@
       }
     },
     computed: {
-      imgList() {
-        let temp = this.data.contentImg
-        if (isEmpty(temp)) return []
-        return temp?.split('||')
-      },
       contents() {
         return useEmojiParse(emoji.allEmoji, this.data.content);
       }
@@ -122,7 +117,8 @@
     components: {
       InputBox,
       Operate,
-      UFold
+      UFold,
+      ImagePreview
     },
     methods: {
       //点击回复按钮打开输入框

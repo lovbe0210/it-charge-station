@@ -535,7 +535,6 @@
       onClickOutside() {
         // 评论框有内容情况下不执行操作
         if (isEmpty(this.content) && !this.state.imgLength && this.initState > 0) {
-          console.log('外边框点击')
           this.action = false;
           this.$emit('hide')
           return;
@@ -590,9 +589,6 @@
         }
         let changeRange = this.findExpectRange(node);
         this.range = changeRange ? newVal : oldValue;
-      },
-      "action"(newval, oldval) {
-        console.log(newval, oldval)
       }
     },
     mounted() {
@@ -604,7 +600,11 @@
       elementById.addEventListener('scroll', this.changeMentionPosition, true);
 
       if (!this.cancelBtn) {
+        // 楼中楼
         this.$emit('exposeEditor', this.editorRef)
+      } else {
+        // 评论框
+        this.initState = 1;
       }
     },
     beforeDestroy() {
