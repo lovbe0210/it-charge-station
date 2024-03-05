@@ -178,6 +178,8 @@
           left: 0,
           top: 0
         },
+        // 初始化状态
+        initState: 0,
         mentionConfig: {
           // @提及 功能开关
           functionStatus: true,
@@ -202,6 +204,11 @@
       }
     },
     props: {
+      replyState: {
+        // 评论区输入框状态
+        type: Boolean,
+        default: false
+      },
       placeholder: {
         type: String,
         default: '输入评论（Enter换行，Ctrl + Enter发送）'
@@ -247,6 +254,7 @@
       resetComment() {
         // 清空评论框内容
         if (this.editorRef) {
+          console.log('清空')
           this.editorRef.innerHTML = '';
           this.content = '';
           this.active = false;
@@ -267,9 +275,6 @@
         }
         if (!this.editorRef?.innerHTML) {
           this.active = false;
-          // 告诉父组件状态
-          this.$emit('close')
-
         }
       },
       keyDown(e) {
@@ -529,9 +534,13 @@
       // 点击评论框外关闭操作栏和失去评论框焦点
       onClickOutside() {
         // 评论框有内容情况下不执行操作
-        if (isEmpty(this.content) && !this.state.imgLength) {
+        if (isEmpty(this.content) && !this.state.imgLength && this.initState > 0) {
+          console.log('外边框点击')
           this.action = false;
+          this.$emit('hide')
+          return;
         }
+        this.initState = ++this.initState;
       }
     },
     watch: {
@@ -581,6 +590,9 @@
         }
         let changeRange = this.findExpectRange(node);
         this.range = changeRange ? newVal : oldValue;
+      },
+      "action"(newval, oldval) {
+        console.log(newval, oldval)
       }
     },
     mounted() {

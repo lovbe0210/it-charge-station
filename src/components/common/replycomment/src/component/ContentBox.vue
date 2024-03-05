@@ -54,14 +54,14 @@
             <span v-if="data.likes != 0">{{ data.likes }}</span>
           </div>
           <!-- 回复 -->
-          <div ref="btnRef" class="item" :class="{ active: state.active }" @click="reply1">
+          <div ref="btnRef" class="item" :class="{ active }" @click="reply1">
             <span class="iconfont reply"></span>
-            <span>{{ state.active ? '取消回复' : '回复' }}</span>
+            <span>{{ active ? '取消回复' : '回复' }}</span>
           </div>
           <!-- 操作栏 -->
           <Operate/>
         </div>
-        <div v-show="state.active">
+        <div v-if="active">
           <InputBox
             ref="commentRef"
             :parent-id="safeStr(id)"
@@ -70,7 +70,6 @@
             content-btn="发布"
             style="margin-top: 12px"
             @hide="hide"
-            @close="state.active = false"
             @exposeEditor="exposeEditor"
           />
         </div>
@@ -92,9 +91,7 @@
     name: 'ContentBox',
     data() {
       return {
-        state: {
-          active: false
-        },
+        active: false,
         editorRef: null
       }
     },
@@ -130,8 +127,8 @@
     methods: {
       //点击回复按钮打开输入框
       reply1() {
-        this.state.active = !this.state.active
-        if (this.state.active) {
+        this.active = !this.active
+        if (this.active) {
           this.$nextTick(() => {
             this.editorRef?.focus()
           })
@@ -140,11 +137,12 @@
 
       // 提交评论关闭输入框
       hide(event) {
-        const target = event.target;
+        this.active = false
+        /*const target = event.target;
 
         if (!this.$refs.btnRef?.contains(target)) {
-          this.state.active = false
-        }
+          this.active = false
+        }*/
       },
       safeStr(id) {
         return str(id)
