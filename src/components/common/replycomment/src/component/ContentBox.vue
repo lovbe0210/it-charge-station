@@ -37,9 +37,9 @@
         <div class="content">
           <u-fold unfold>
             <div v-html="contents"></div>
-            <div class="imgbox" v-if="data.contentImg" style="display: flex">
+            <div class="imgbox" v-if="data.contentImg" style="display: flex;">
               <b-img :src="data.contentImg" @click="imgPreview = true"
-                     style="height: 72px; padding: 8px 4px"
+                     style="height: 72px; margin: 8px 4px; border-radius: 2px;"
                      lazy/>
               <image-preview :src="data.contentImg" :isPreviewOpen="imgPreview" @toggleFullScreen="imgPreview = false"/>
             </div>

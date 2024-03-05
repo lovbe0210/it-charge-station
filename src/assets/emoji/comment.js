@@ -24,6 +24,7 @@ export const comment = [
     uid: '2',
     address: '来自苏州',
     content: '知道在学校为什么感觉这么困吗？[大笑2]因为学校，是梦开始的地方。[脱单doge]',
+    contentImg: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hmv3dxxwbyj30k00of787.jpg',
     likes: 11,
     createTime: '2023-04-28 09:00',
     user: {
