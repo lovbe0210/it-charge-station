@@ -1,16 +1,9 @@
 .reply-box {
-  margin-top: 16px;
+  margin: 10px 0 10px 56px;
   background: #f7f7f7;
-  color: var(--u-text-color-regular);
-
-  .el-pagination {
-    --el-pagination-button-disabled-bg-color: none;
-    --el-pagination-bg-color: none;
-    padding: 0;
-  }
 
   .reply-list {
-    padding: 12px;
+    padding: 12px 12px 12px 0;
     border-radius: 4px;
   }
 
@@ -20,13 +13,40 @@
     color: #6d757a;
     font-size: 12px;
     line-height: 22px;
+
     .fetch-more-comment {
-      color: var(--u-color-primary);
+      color: #1890ff;
       box-sizing: border-box;
       cursor: pointer;
-      svg {
-        fill: currentColor;
-        margin-bottom: 3px;
+    }
+
+    /deep/.ant-pagination {
+      // 分页UI
+      font-size: 12px !important;
+
+      .ant-pagination-item-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: none !important;
+
+        i {
+          font-size: 10px;
+        }
+      }
+
+      .ant-pagination-prev:focus .ant-pagination-item-link, .ant-pagination-next:focus .ant-pagination-item-link {
+        color: unset;
+      }
+
+      .ant-pagination-item {
+        border: none !important;
+      }
+
+      .ant-pagination-item-active {
+        border: none !important;
+        background-color: unset !important;
+        color: #1890ff;
       }
     }
   }

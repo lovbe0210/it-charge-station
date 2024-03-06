@@ -1,5 +1,5 @@
 <template>
-  <div class="comment" :class="{ reply: reply }" ref="tooltipContainer">
+  <div class="comment" :class="{ 'reply-from-comment': data?.parentId !== null }" ref="tooltipContainer">
     <div class="comment-sub">
       <a-popover placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer" overlayClassName="user-info-card">
         <template slot="content">
@@ -31,7 +31,6 @@
               </span>
             </div>
           </a-popover>
-
           <time class="time">{{ data.createTime }}</time>
         </div>
         <div class="content">
@@ -52,7 +51,7 @@
             <span v-if="data.likes != 0">{{ data.likes }}</span>
           </div>
           <!-- 回复 -->
-          <div ref="btnRef" class="item" :class="{ active }" @click="reply1">
+          <div ref="btnRef" class="item" :class="{ active }" @click="reply">
             <span class="iconfont reply"></span>
             <span class="reply-btn">{{ active ? '取消回复' : '回复' }}</span>
           </div>
@@ -75,7 +74,7 @@
         <div v-if="active">
           <InputBox
             ref="commentRef"
-            :parent-id="safeStr(id)"
+            :parent-id="safeStr(data.parentId)"
             :placeholder="'回复@' + data.user.username"
             :reply="data"
             content-btn="发布"
@@ -109,14 +108,9 @@
       }
     },
     props: {
-      reply: {
-        type: Boolean
-      },
+      // 楼中楼的回复
       data: {
         type: Object
-      },
-      id: {
-        type: String
       },
       contentBoxParam: {
         type: Object
@@ -134,7 +128,8 @@
     },
     methods: {
       //点击回复按钮打开输入框
-      reply1() {
+      reply() {
+        debugger
         this.active = !this.active
         if (this.active) {
           this.$nextTick(() => {
