@@ -9,7 +9,7 @@ export const comment = [
     content:
       '缘生缘灭，缘起缘落，我在看别人的故事，别人何尝不是在看我的故事?别人在演绎人生，我又何尝不是在这场戏里?谁的眼神沧桑了谁?我的眼神，只是沧桑了自己[喝酒]',
     likes: 2,
-    contentImg: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hmv3dy382hj30k00oy0wu.jpg',
+    contentImg: 'https://pic3.zhimg.com/80/v2-01f317b3fed2c0788e59d3ceb4e3d0a2_720w.webp',
     createTime: '2023-04-30 16:22',
     user: {
       username: '落🤍尘',
@@ -24,7 +24,7 @@ export const comment = [
     uid: '2',
     address: '来自苏州',
     content: '知道在学校为什么感觉这么困吗？[大笑2]因为学校，是梦开始的地方。[脱单doge]',
-    contentImg: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hmv3dxxwbyj30k00of787.jpg',
+    contentImg: 'https://pic1.zhimg.com/80/v2-d80deceb2ae026b3713994c2fa8061ac_720w.webp',
     likes: 11,
     createTime: '2023-04-28 09:00',
     user: {

@@ -1,12 +1,15 @@
 .comment {
   display: flex;
   padding: 16px 0;
+
   a:hover {
     text-decoration: none;
   }
+
   .u-icon {
     font-size: 16px;
   }
+
   &-primary {
     flex: 1;
     margin-left: 16px;
@@ -18,9 +21,11 @@
   .user-info {
     display: flex;
     align-items: center;
+
     .username {
       display: flex;
       align-items: center;
+
       .name {
         max-width: 10px;
         font-weight: 500;
@@ -48,18 +53,46 @@
   .item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin-right: 16px;
-    line-height: 22px;
-    font-size: 14px;
+    font-size: 15px;
     cursor: pointer;
-    color: var(--u-text-color-secondary);
-    .u-icon {
+    color: #8A8F8D;
+
+    .iconfont {
       margin-right: 4px;
+      font-size: 15px;
+    }
+
+    .reply-btn {
+      font-size: 14px;
     }
   }
+
+  .item:last-child {
+    margin-left: auto;
+  }
+
   .item:hover,
   .active {
-    color: var(--u-color-primary);
+    color: #409eff;
+  }
+}
+
+/deep/ .operate-more {
+  padding: 0 !important;
+
+
+  .ant-popover-inner {
+    width: 120px;
+  }
+
+  .ant-popover-inner:hover {
+    background: #FAFAFA;
+  }
+
+  .ant-popover-arrow {
+    display: none;
   }
 }
 
@@ -71,11 +104,14 @@
   .content-box {
     margin-left: 12px;
   }
+
   .el-avatar {
     --el-avatar-size: 24px !important;
   }
+
   padding: 0;
 }
+
 .reply:not(:first-child) {
   margin-top: 2rem;
 }

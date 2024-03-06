@@ -17,14 +17,14 @@
       </div>
     </div>
     <div class="comment-list-wrapper">
-      <CommentList :data="comments"></CommentList>
+      <CommentList :data="commentList" :contentBoxParam="contentBoxParam"></CommentList>
     </div>
   </div>
 </template>
 
 <script>
-  import { createObjectURL } from '@/utils/emoji'
-  import { getComment } from '@/assets/emoji/comment';
+  import {createObjectURL} from '@/utils/emoji'
+  import {getComment} from '@/assets/emoji/comment';
   import InputBox from './InputBox'
   import CommentList from './CommentList'
 
@@ -40,12 +40,18 @@
         showAddress: true,
         showHomeLink: true,
         showReply: true,
-        comments: []
+        commentList: []
       }
     },
     computed: {
       userInfo() {
         return this.$store.state.userInfo;
+      },
+      contentBoxParam() {
+        return {
+          submit: this.submit,
+          remove: this.remove
+        }
       }
     },
     components: {
@@ -56,7 +62,8 @@
       /**
        * 提交评论
        */
-      submit({content, parentId, reply, file, clear}) {
+      submit({content, parentId, file, clear}) {
+        debugger
         // 添加评论
         /**
          * 上传文件后端返回图片访问地址，格式以'||'为分割; 如:  '/static/img/program.gif||/static/img/normal.webp'
@@ -86,7 +93,7 @@
           // 提交评论添加到评论列表
           if (comment) {
             if (parentId) {
-              let rawComment = this.comments.find(v => v.id === parentId)
+              let rawComment = this.commentList.find(v => v.id === parentId)
               if (rawComment) {
                 let replys = rawComment.reply
                 if (replys) {
@@ -100,7 +107,7 @@
                 }
               }
             } else {
-              this.comments.unshift(comment)
+              this.commentList.unshift(comment)
             }
           }
 
@@ -115,7 +122,7 @@
        */
       editLikeCount(id, count) {
         let tar = null;
-        this.comments.forEach(v => {
+        this.commentList.forEach(v => {
           if (v.id === id) {
             tar = v;
           } else {
@@ -159,7 +166,7 @@
         // 删除评论数据操作
         const {parentId, id} = comment
         if (parentId) {
-          let comment = this.comments.find(item => item.id === parentId)
+          let comment = this.commentList.find(item => item.id === parentId)
           let reply = comment?.reply
           if (reply) {
             let index = reply.list.findIndex(item => item.id === id)
@@ -169,20 +176,16 @@
             }
           }
         } else {
-          let index = this.comments.findIndex(item => item.id === id)
+          let index = this.commentList.findIndex(item => item.id === id)
           if (index !== -1) {
-            this.comments.splice(index, 1)
+            this.commentList.splice(index, 1)
           }
         }
       }
     },
     mounted() {
       // 初始化评论列表
-      this.comments = getComment(1, 10);
-
-      /*setTimeout(() => {
-        this.config.user.likeIds = [2, 3]
-      }, 5000)*/
+      this.commentList = getComment(1, 10);
     }
   }
 </script>

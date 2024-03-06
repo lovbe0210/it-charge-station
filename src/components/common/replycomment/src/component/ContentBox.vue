@@ -54,10 +54,23 @@
           <!-- 回复 -->
           <div ref="btnRef" class="item" :class="{ active }" @click="reply1">
             <span class="iconfont reply"></span>
-            <span>{{ active ? '取消回复' : '回复' }}</span>
+            <span class="reply-btn">{{ active ? '取消回复' : '回复' }}</span>
           </div>
           <!-- 操作栏 -->
-          <Operate/>
+          <div class="item">
+            <a-popover placement="leftTop"
+                       trigger="click"
+                       :getPopupContainer="()=>this.$refs.tooltipContainer"
+                       overlayClassName="operate-more">
+              <template slot="content">
+                <div @click="contentBoxParam.remove(data)">
+                  <span class="del">删除</span>
+                </div>
+              </template>
+              <span class="iconfont operate"></span>
+            </a-popover>
+
+          </div>
         </div>
         <div v-if="active">
           <InputBox
@@ -68,6 +81,7 @@
             content-btn="发布"
             style="margin-top: 12px"
             @hide="hide"
+            @submit="contentBoxParam.submit"
             @exposeEditor="exposeEditor"
           />
         </div>
@@ -82,7 +96,6 @@
   import emoji from '@/assets/emoji/emoji.js';
   import {dayjs} from 'dayjs';
   import InputBox from './InputBox';
-  import Operate from './Operate';
   import UFold from './Fold';
   import ImagePreview from '@/components/common/ImagePreview'
 
@@ -116,7 +129,6 @@
     },
     components: {
       InputBox,
-      Operate,
       UFold,
       ImagePreview
     },

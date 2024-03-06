@@ -237,6 +237,7 @@
     methods: {
       // 提交评论的数据
       onSubmit() {
+        debugger
         let submitContent = {
           content: this.reply && this.parentId !== this.reply.id
             ? `回复 <span style="color: #6f42c1;">@${this.reply.user.username}:</span> ${this.content}` : this.content,

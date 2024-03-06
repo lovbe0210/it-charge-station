@@ -1,12 +1,14 @@
 <template>
-  <div v-if="data" class="comment-list">
-    <ContentBox v-for="comment in data"
-                :id="safeStr(comment.id)"
-                :key="safeStr(comment.id)"
-                :data="comment"
-                :contentBoxParam="contentBoxParam">
-      <ReplyBox :id="safeStr(comment.id)" :data="comment.reply"></ReplyBox>
-    </ContentBox>
+  <div class="comment-list">
+    <div v-for="comment in data" :key="comment.id">
+      <ContentBox :id="comment.id"
+                  :data="comment"
+                  :contentBoxParam="contentBoxParam">
+      </ContentBox>
+      <!-- 回复列表 -->
+      <ReplyBox v-if="comment.reply?.total > 0" :id="safeStr(comment.id)" :data="comment.reply"></ReplyBox>
+    </div>
+
   </div>
 </template>
 
@@ -19,7 +21,6 @@
     name: 'CommentList',
     data() {
       return {
-        metionList: null
       }
     },
     props: {
@@ -27,6 +28,7 @@
         type: Array
       },
       contentBoxParam: {
+        // submit、delete
         type: Object
       }
     },

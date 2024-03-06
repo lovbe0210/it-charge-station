@@ -1,13 +1,13 @@
 <template>
-  <div v-if="data.length > 0" class="reply-box">
+  <div class="reply-box">
     <div class="reply-list">
       <ContentBox v-for="(reply, index) in data.list" :id="id" :key="index" :data="reply" reply></ContentBox>
       <div v-if="data.length > replyShowSize" class="fetch-more">
-        <span v-if="state.loading">{{ $u('comment.more.loading')}}</span>
+        <span v-if="loading">{{ comment.more.loading }}</span>
         <div v-else>
-          <div v-if="!state.over">
+          <div v-if="!over">
             <span class="fetch-more-comment select-none" @click="replyMore">
-              {{ $u('comment.more.prefixTotal')}}{{ data.total }}{{ $u('comment.more.suffixTotal')}}
+              {{ comment.more.prefixTotal }}{{ data.total }}{{ comment.more.suffixTotal }}
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
                 <path
                   data-v-d6f79dbc=""
@@ -20,12 +20,12 @@
           </div>
         </div>
       </div>
-      <div v-if="state.over && page" class="fetch-more">
+      <div v-if="over && page" class="fetch-more">
         <br />
         <a-pagination
           show-size-changer
-          :current="state.currentPage"
-          :pageSize="state.pageSize"
+          :current="currentPage"
+          :pageSize="pageSize"
           :total="data.total"
           :change="currentChange"
           @showSizeChange="sizeChange"
@@ -36,10 +36,7 @@
 </template>
 
 <script>
-  // import { computed, inject, reactive, watch } from 'vue'
   import ContentBox from './ContentBox'
-  // import { ReplyApi, ElPagination } from '~/index'
-  // import { InjectReplyBox, InjectReplyBoxApi } from '../key'
 
   import { reply, comment } from '@/assets/emoji/comment.js';
   import {usePage} from "@/utils/hooks";
@@ -48,13 +45,10 @@
     name: 'ReplyBox',
     data() {
       return {
-        state: {
-          loading: false,
-          over: false,
-          currentPage: 1,
-          pageSize: 5,
-          replyShowSize: 5
-        }
+        loading: false,
+        over: false,
+        currentPage: 1,
+        pageSize: 5
       }
     },
     props: {
@@ -78,19 +72,12 @@
           list: []
         }
         if (this.data) {
-          let length = this.data.list.length
+          let length = this.data.total;
+          let list = this.data.list.slice(0, this.pageSize);
           _data = {
-            total: this.data.total,
-            length: length,
-            list: this.data.list
+            total: length,
+            list: list
           }
-        }
-        if (!this.state.over) {
-          let tmp = this.data.list.slice(0, this.replyShowSize)
-          _data.list = tmp
-        }
-        if (this.page) {
-          _data.list = this.data.list.slice(0, this.state.pageSize)
         }
         return _data;
       }
@@ -99,12 +86,12 @@
       ContentBox
     },
     watch: {
-      "data?.total"(val) {
+      "c_data.total"(val) {
         if (val) {
-          let totalPage = Math.ceil(val / this.state.pageSize)
-          let currentPage = this.state.currentPage > totalPage ? totalPage : this.state.currentPage
+          let totalPage = Math.ceil(val / this.pageSize)
+          let currentPage = this.currentPage > totalPage ? totalPage : this.currentPage
           currentPage = currentPage < 1 ? 1 : currentPage
-          if (this.state.currentPage !== currentPage) {
+          if (this.currentPage !== currentPage) {
             this.changePage(currentPage)
           }
         }
@@ -122,7 +109,7 @@
         }, 200)
       },
       replyMore() {
-        this.state.over = true
+        this.over = true
       },
       finish(val) {
         comment.value.forEach(e => {
