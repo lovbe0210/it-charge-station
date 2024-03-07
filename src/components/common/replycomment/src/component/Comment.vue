@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import {createObjectURL} from '@/utils/emoji'
+  import { createObjectURL, cloneDeep } from '@/utils/emoji'
   import {getComment} from '@/assets/emoji/comment';
   import InputBox from './InputBox'
   import CommentList from './CommentList'
@@ -95,15 +95,21 @@
               let rawComment = this.commentList.find(v => v.id === parentId)
               if (rawComment) {
                 let replys = rawComment.reply
+                let tmpReply = null;
                 if (replys) {
-                  replys.list.unshift(comment)
-                  replys.total++
+                  let tmpReplyList = cloneDeep(replys.list);
+                  tmpReplyList.unshift(comment);
+                  tmpReply = {
+                    list: tmpReplyList,
+                    total: tmpReplyList.length
+                  }
                 } else {
-                  rawComment.reply = {
+                  tmpReply = {
                     total: 1,
                     list: [comment]
                   }
                 }
+                rawComment.reply = tmpReply;
               }
             } else {
               this.commentList.unshift(comment)

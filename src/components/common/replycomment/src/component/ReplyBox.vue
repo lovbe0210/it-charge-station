@@ -5,8 +5,7 @@
                   :key="index"
                   :data="reply"
                   :parent-id="parentId"
-                  :contentBoxParam="contentBoxParam"
-                  @submitReply="submitReply"/>
+                  :contentBoxParam="contentBoxParam"/>
       <!-- 如果total>3则进行折叠，打开折叠后如果小于分页数，直接全部显示，否则使用分页显示 -->
       <div v-if="data.total > 3" class="fetch-more">
         <div v-if="collapse">
@@ -34,7 +33,7 @@
 <script>
   import ContentBox from './ContentBox'
 
-  import {comment} from '@/assets/emoji/comment.js';
+  // import {comment} from '@/assets/emoji/comment.js';
 
   export default {
     name: 'ReplyBox',
@@ -61,12 +60,13 @@
     computed: {
       // 分页操作
       replyList() {
+        console.log("触发计算")
         if (this.collapse && this.data?.total > 3) {
           return this.data.list.slice(0, 3);
         } else if (this.collapse && this.data?.total <= 3) {
           return this.data.list
         } else {
-          return this.dataList;
+          return this.data.list.slice(this.pageSize * (this.currentPage - 1), this.pageSize * this.currentPage);
         }
       }
     },
@@ -79,26 +79,20 @@
        * @param val
        */
       changePage(val) {
-        let rawComment = comment.find(v => v.id === this.parentId)
+       /* let rawComment = comment.find(v => v.id === this.parentId)
         if (rawComment?.reply) {
           let replyList = rawComment.reply.list;
           this.dataList = replyList.slice(this.pageSize * (val - 1), this.pageSize * val)
           return;
         }
-        this.dataList = [];
+        this.dataList = [];*/
       },
       moreReply() {
         // 请求数据
         setTimeout(() => {
-          this.changePage(1);
+          // this.changePage(1);
           this.collapse = false;
         }, 200)
-      },
-      submitReply() {
-        setTimeout(() => {
-          console.log('主动刷新，replayList: ', this.data)
-          this.$forceUpdate();
-        }, 100)
       }
     }
   }

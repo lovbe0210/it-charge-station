@@ -143,7 +143,6 @@
       // 提交评论关闭输入框
       hide() {
         this.active = false;
-        this.$emit('submitReply');
       },
       safeStr(id) {
         return str(id)

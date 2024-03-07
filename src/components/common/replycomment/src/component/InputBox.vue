@@ -597,9 +597,6 @@
     },
     mounted() {
       this.editorRef = this.$refs.editorRef;
-      // if (this.editorRef) {
-      //   this.editorRef.addEventListener('mousemove', this.onEditorSelectionChange)
-      // }
       let elementById = document.getElementById("contentWrapper");
       elementById.addEventListener('scroll', this.changeMentionPosition, true);
 
@@ -612,9 +609,6 @@
       }
     },
     beforeDestroy() {
-      // if (this.editorRef) {
-      //   this.editorRef.removeEventListener('mousemove', this.onEditorSelectionChange)
-      // }
       let elementById = document.getElementById("contentWrapper");
       elementById.removeEventListener('scroll', this.changeMentionPosition);
     },
