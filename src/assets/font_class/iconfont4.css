@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_9606bz7jlzp.woff2?t=1709714102008') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_autawmy1hn7.woff2?t=1709774013230') format('woff2');
 }
 
 .iconfont {
@@ -8,6 +8,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.drop-down:before {
+  content: "\e623";
 }
 
 .operate:before {

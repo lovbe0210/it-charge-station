@@ -5,7 +5,7 @@
            class="rich-input"
            contenteditable
            :placeholder="placeholder"
-           @focus="action = true"
+           @focus="focus"
            @input="onInput"
            @blur="onBlur"
            @keydown.enter="keyDown"
@@ -237,7 +237,6 @@
     methods: {
       // 提交评论的数据
       onSubmit() {
-        debugger
         let submitContent = {
           content: this.reply && this.parentId !== this.reply.id
             ? `回复 <span style="color: #6f42c1;">@${this.reply.user.username}:</span> ${this.content}` : this.content,
@@ -249,13 +248,13 @@
             this.resetComment()
           }
         };
-        this.$emit('submit', submitContent)
+        this.$emit('submit', submitContent);
+        this.$emit('hide');
       },
       // 重置评论
       resetComment() {
         // 清空评论框内容
         if (this.editorRef) {
-          console.log('清空')
           this.editorRef.innerHTML = '';
           this.content = '';
           this.active = false;
@@ -266,6 +265,10 @@
         this.files = []
         //提交按钮禁用
         this.disabled = true
+      },
+      focus() {
+        this.action = true;
+        this.active = true
       },
       onBlur() {
         // 记录光标

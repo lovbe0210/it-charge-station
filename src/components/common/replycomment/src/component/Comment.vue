@@ -63,7 +63,6 @@
        * 提交评论
        */
       submit({content, parentId, file, clear}) {
-        debugger
         // 添加评论
         /**
          * 上传文件后端返回图片访问地址，格式以'||'为分割; 如:  '/static/img/program.gif||/static/img/normal.webp'
@@ -109,6 +108,8 @@
             } else {
               this.commentList.unshift(comment)
             }
+            // 更新列表
+            this.commentList = getComment(1, 10);
           }
 
           // 清空输入框内容

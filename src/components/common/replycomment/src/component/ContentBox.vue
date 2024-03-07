@@ -74,7 +74,7 @@
         <div v-if="active">
           <InputBox
             ref="commentRef"
-            :parent-id="safeStr(data.parentId)"
+            :parent-id="parentId"
             :placeholder="'回复@' + data.user.username"
             :reply="data"
             content-btn="发布"
@@ -112,6 +112,9 @@
       data: {
         type: Object
       },
+      parentId: {
+        type: String
+      },
       contentBoxParam: {
         type: Object
       }
@@ -129,7 +132,6 @@
     methods: {
       //点击回复按钮打开输入框
       reply() {
-        debugger
         this.active = !this.active
         if (this.active) {
           this.$nextTick(() => {
@@ -139,13 +141,9 @@
       },
 
       // 提交评论关闭输入框
-      hide(event) {
-        this.active = false
-        /*const target = event.target;
-
-        if (!this.$refs.btnRef?.contains(target)) {
-          this.active = false
-        }*/
+      hide() {
+        this.active = false;
+        this.$emit('submitReply');
       },
       safeStr(id) {
         return str(id)

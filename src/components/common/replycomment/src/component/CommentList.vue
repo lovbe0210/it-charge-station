@@ -1,13 +1,14 @@
 <template>
   <div class="comment-list">
     <div v-for="comment in data" :key="comment.id">
-      <ContentBox :data="comment" :contentBoxParam="contentBoxParam">
-      </ContentBox>
+      <ContentBox :data="comment"
+                  :parent-id="comment.id"
+                  :contentBoxParam="contentBoxParam"/>
       <!-- 回复列表 -->
       <ReplyBox v-if="comment.reply?.total > 0"
                 :parentId="safeStr(comment.id)"
                 :data="comment.reply"
-                :contentBoxParam="contentBoxParam"></ReplyBox>
+                :contentBoxParam="contentBoxParam"/>
     </div>
 
   </div>

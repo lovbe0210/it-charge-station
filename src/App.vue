@@ -133,7 +133,6 @@
     mounted() {
       // 加载背景
       commonUtil.flushCustomerSet(this.customerSet);
-
     },
 
     destroyed() {
