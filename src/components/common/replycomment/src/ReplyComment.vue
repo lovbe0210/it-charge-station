@@ -1,9 +1,9 @@
 <template>
-  <u-comment />
+  <comment-full />
 </template>
 
 <script>
-  import UComment from './component/Comment'
+  import CommentFull from './component/CommentFull'
 
   export default {
     name: 'ReplyComment',
@@ -12,7 +12,7 @@
       }
     },
     components: {
-      UComment
+      CommentFull
     }
   }
 </script>

@@ -34,15 +34,22 @@
           <time class="time">{{ data.createTime }}</time>
         </div>
         <div class="content">
-          <u-fold unfold>
-            <div v-html="contents"></div>
-            <div class="imgbox" v-if="data.contentImg" style="display: flex;">
-              <b-img :src="data.contentImg" @click="imgPreview = true"
-                     style="height: 72px; margin: 8px 4px; border-radius: 2px;"
-                     lazy/>
-              <image-preview :src="data.contentImg" :isPreviewOpen="imgPreview" @toggleFullScreen="imgPreview = false"/>
+          <div class="u-fold">
+            <div ref="textBox" class="txt-box" :class="{ 'over-hidden': !unfold }">
+              <div ref="divBox">
+                <div v-html="contents"></div>
+                <div class="imgbox" v-if="data.contentImg" style="display: flex;">
+                  <b-img :src="data.contentImg" @click="imgPreview = true"
+                         style="height: 72px; margin: 8px 4px; border-radius: 2px;"
+                         lazy/>
+                  <image-preview :src="data.contentImg" :isPreviewOpen="imgPreview" @toggleFullScreen="imgPreview = false"/>
+                </div>
+              </div>
             </div>
-          </u-fold>
+            <div class="action-box">
+              <div v-if="isOver" class="expand-btn" @click="unfold = !unfold">{{ unfold ? '收起' : '展开' }}</div>
+            </div>
+          </div>
         </div>
         <div class="action-box select-none">
           <!-- 点赞 -->
@@ -95,7 +102,6 @@
   import emoji from '@/assets/emoji/emoji.js';
   import {dayjs} from 'dayjs';
   import InputBox from './InputBox';
-  import UFold from './Fold';
   import ImagePreview from '@/components/common/ImagePreview'
 
   export default {
@@ -104,7 +110,13 @@
       return {
         active: false,
         editorRef: null,
-        imgPreview: false
+        imgPreview: false,
+        //文本是否超出五行，默认否
+        isOver: false,
+        // 文本是否是展开状态 默认为收起
+        unfold: false,
+        // dom监视器
+        observer: null
       }
     },
     props: {
@@ -126,7 +138,6 @@
     },
     components: {
       InputBox,
-      UFold,
       ImagePreview
     },
     methods: {
@@ -153,6 +164,22 @@
       exposeEditor(editorRef) {
         this.editorRef = editorRef;
       }
+    },
+    mounted() {
+      this.observer = new ResizeObserver(entry => {
+        if (!this.unfold && this.$refs.divBox && this.$refs.textBox) {
+          //offsetHeight：包括内容可见部分的高度，border，可见的padding，水平方向的scrollbar（如果存在）；不包括margin。
+          // clientHeight：包括内容可见部分的高度，可见的padding；不包括border，水平方向的scrollbar，margin。
+          //scrollHeight：包括内容的高度（可见与不可见），padding（可见与不可见）；不包括border，margin。
+          // isOver.value = divBox.value.offsetHeight < divBox.value.scrollHeight
+          //兼容火狐
+          this.isOver = this.$refs.textBox.clientHeight < this.$refs.divBox.scrollHeight
+        }
+      })
+      this.observer.observe(this.$refs.divBox)
+    },
+    beforeDestroy() {
+      this.observer?.disconnect()
     }
   }
 </script>

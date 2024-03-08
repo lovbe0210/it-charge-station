@@ -1,79 +1,106 @@
 <template>
-  <div class="u-comment">
-    <div class="comment-form">
-      <div class="reply-header">
-        所有评论（4）
-      </div>
-      <div class="content">
-        <div class="avatar-box">
-          <b-avatar variant="light" to="/settings" size="2.5rem">
-            <span v-if="userInfo.username">{{ userInfo.username }}</span>
-            <img v-else :src="userInfo.avatar"/>
-          </b-avatar>
+  <div>
+    <ContentBox :data="data"
+                :parent-id="data.id"
+                :contentBoxParam="param"/>
+    <div class="reply-box" v-if="data.reply?.total > 0">
+      <div class="reply-list">
+        <ContentBox v-for="(reply, index) in replyList(data.reply)"
+                    :key="index"
+                    :data="reply"
+                    :parent-id="data.id"
+                    :contentBoxParam="param"/>
+        <!-- 如果total>3则进行折叠，打开折叠后如果小于分页数，直接全部显示，否则使用分页显示 -->
+        <div v-if="data.reply.total > 3" class="fetch-more">
+          <div v-if="collapse">
+            <span>共{{ data.reply.total }}条回复,&nbsp;</span>
+            <span class="fetch-more-comment" @click="moreReply">
+                点击查看
+                <span class="iconfont drop-down"></span>
+              </span>
+          </div>
         </div>
-        <InputBox @submit="submit"
-                  content-btn="发表评论"
-                  cancel-btn="取消"/>
+        <div v-if="!collapse && data.reply.total > pageSize" class="fetch-more">
+          <a-pagination
+            size="small"
+            v-model="currentPage"
+            :pageSize="pageSize"
+            :total="data.reply.total"
+            :show-total="total => `共 ${total} 条`"
+          />
+        </div>
       </div>
-    </div>
-    <div class="comment-list-wrapper">
-      <CommentList :data="commentList" :contentBoxParam="contentBoxParam"></CommentList>
     </div>
   </div>
 </template>
 
 <script>
-  import { createObjectURL, cloneDeep } from '@/utils/emoji'
-  import {getComment} from '@/assets/emoji/comment';
-  import InputBox from './InputBox'
-  import CommentList from './CommentList'
+  import {str, createObjectURL, cloneDeep} from '@/utils/emoji'
+  import ContentBox from './ContentBox.vue'
 
   export default {
     name: 'UComment',
     data() {
       return {
-        tempId: 100,
-        mentionList: [],
-        replyShowSize: null,
-        aTarget: null,
-        showLikes: true,
-        showAddress: true,
-        showHomeLink: true,
-        showReply: true,
-        commentList: []
+        collapse: true,
+        currentPage: 1,
+        pageSize: 5,
+        tempId: 1000
+      }
+    },
+    props: {
+      data: {
+        type: Object
+      },
+      contentBoxParam: {
+        // submit、delete
+        type: Object
       }
     },
     computed: {
+      param() {
+        let { remove } = this.contentBoxParam;
+        return { remove, submit: this.submit};
+      },
       userInfo() {
         return this.$store.state.userInfo;
-      },
-      contentBoxParam() {
-        return {
-          submit: this.submit,
-          remove: this.remove
-        }
       }
     },
+
     components: {
-      InputBox,
-      CommentList
+      ContentBox
     },
     methods: {
+      safeStr(id) {
+        return str(id)
+      },
+      moreReply() {
+        // 请求数据
+        setTimeout(() => {
+          // this.changePage(1);
+          this.collapse = false;
+        }, 200)
+      },
+      replyList(reply) {
+        console.log("触发计算", reply.total)
+        if (this.collapse && reply?.total > 3) {
+          return reply.list.slice(0, 3);
+        } else if (this.collapse && reply?.total <= 3) {
+          return reply.list
+        } else {
+          return reply.list?.slice(this.pageSize * (this.currentPage - 1), this.pageSize * this.currentPage);
+        }
+      },
       /**
        * 提交评论
        */
       submit({content, parentId, file, clear}) {
-        // 添加评论
-        /**
-         * 上传文件后端返回图片访问地址，格式以'||'为分割; 如:  '/static/img/program.gif||/static/img/normal.webp'
-         */
         let contentImg = file?.map(e => createObjectURL(e)).join('||')
 
         this.tempId += 1
         const comment = {
           id: this.tempId,
           parentId: parentId,
-          uid: this.userInfo.uid,
           address: '来自江苏',
           content: content,
           likes: 0,
@@ -88,34 +115,36 @@
           reply: null
         }
         setTimeout(() => {
-          console.log(comment)
           // 提交评论添加到评论列表
+          debugger
           if (comment) {
-            if (parentId) {
-              let rawComment = this.commentList.find(v => v.id === parentId)
-              if (rawComment) {
-                let replys = rawComment.reply
-                let tmpReply = null;
-                if (replys) {
-                  let tmpReplyList = cloneDeep(replys.list);
+            let rawComment = this.data.reply.find(v => v.id === parentId)
+            if (rawComment) {
+              let replys = rawComment.reply
+              let tmpReply = null;
+              if (replys) {
+                let tmpReplyList = cloneDeep(replys.list);
+                if (this.collapse) {
+                  tmpReplyList.splice(2, 0, comment);
+                } else if (!this.collapse && tmpReplyList.length < 5) {
                   tmpReplyList.unshift(comment);
-                  tmpReply = {
-                    list: tmpReplyList,
-                    total: tmpReplyList.length
-                  }
+                } else if (!this.collapse && tmpReplyList.length >= 5) {
+                  tmpReplyList.splice(this.pageSize * this.currentPage - 1, 0, comment);
                 } else {
-                  tmpReply = {
-                    total: 1,
-                    list: [comment]
-                  }
+                  tmpReplyList.unshift(comment);
                 }
-                rawComment.reply = tmpReply;
+                tmpReply = {
+                  list: tmpReplyList,
+                  total: tmpReplyList.length
+                }
+              } else {
+                tmpReply = {
+                  total: 1,
+                  list: [comment]
+                }
               }
-            } else {
-              this.commentList.unshift(comment)
+              rawComment.reply = tmpReply;
             }
-            // 更新列表
-            this.commentList = getComment(1, 10);
           }
 
           // 清空输入框内容
@@ -123,80 +152,76 @@
 
           this.$Message.success('评论成功!')
         }, 200)
-      },
-      /**
-       * 点赞评论数组处理
-       */
-      editLikeCount(id, count) {
-        let tar = null;
-        this.commentList.forEach(v => {
-          if (v.id === id) {
-            tar = v;
-          } else {
-            tar = v.reply?.list.find(v => v.id === id);
-          }
-          if (tar && tar.likes) {
-            tar.likes += count;
-          }
-        })
-      },
-      /**
-       * 点赞事件
-       * @param id
-       */
-      like(id) {
-        // 点赞事件处理
-        const likeIds = this.config.user.likeIds
-        if (likeIds) {
-          console.log('点赞: ' + id)
-          setTimeout(() => {
-            if (likeIds.findIndex(item => item === id) === -1) {
-              // 点赞
-              likeIds.push(id)
-              this.editLikeCount(id, 1)
-            } else {
-              // 取消点赞
-              let index = likeIds.findIndex(item => item === id)
-              if (index !== -1) {
-                likeIds.splice(index, 1)
-                this.editLikeCount(id, -1)
-              }
-            }
-          }, 200)
-        }
-      },
-      /**
-       * 删除当前评论
-       * @param comment
-       */
-      remove(comment) {
-        // 删除评论数据操作
-        const {parentId, id} = comment
-        if (parentId) {
-          let comment = this.commentList.find(item => item.id === parentId)
-          let reply = comment?.reply
-          if (reply) {
-            let index = reply.list.findIndex(item => item.id === id)
-            if (index !== -1) {
-              reply.list.splice(index, 1)
-              reply.total--
-            }
-          }
-        } else {
-          let index = this.commentList.findIndex(item => item.id === id)
-          if (index !== -1) {
-            this.commentList.splice(index, 1)
-          }
-        }
       }
-    },
-    mounted() {
-      // 初始化评论列表
-      this.commentList = getComment(1, 10);
     }
   }
+
 </script>
 
 <style lang="less" scoped>
-  @import '../style/comment.less';
+  .comment-list > .comment > .comment-primary > .comment-main {
+    margin-right: 12px;
+  }
+
+  .reply-box {
+    margin: 10px 0 10px 56px;
+    background: #f7f7f7;
+
+    .reply-list {
+      padding: 12px 12px 12px 0;
+      border-radius: 4px;
+    }
+
+    .fetch-more {
+      margin-left: 36px;
+      margin-top: 10px;
+      color: #6d757a;
+      font-size: 12px;
+      line-height: 22px;
+
+      .fetch-more-comment {
+        color: #1890ff;
+        box-sizing: border-box;
+        cursor: pointer;
+
+        .iconfont {
+          font-size: 12px;
+        }
+      }
+
+      /deep/ .ant-pagination {
+        // 分页UI
+        font-size: 12px !important;
+
+        .ant-pagination-item-link {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: none !important;
+
+          i {
+            font-size: 10px;
+          }
+        }
+
+        .ant-pagination-prev:focus .ant-pagination-item-link, .ant-pagination-next:focus .ant-pagination-item-link {
+          color: unset;
+        }
+
+        .ant-pagination-item {
+          border: none !important;
+        }
+
+        .ant-pagination-item-active {
+          border: none !important;
+          background-color: unset !important;
+          color: #1890ff;
+        }
+      }
+    }
+  }
+
+  html.dark {
+  }
+
 </style>
