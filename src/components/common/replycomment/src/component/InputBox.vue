@@ -194,21 +194,13 @@
         searchStr: '',
         mentionList: [],
         range: null,
-
         disabled: true,
         imgList: [],
-        files: [],
-        state: {
-          imgLength: 0
-        }
+        file: null,
+        tempId: 1001
       }
     },
     props: {
-      replyState: {
-        // 评论区输入框状态
-        type: Boolean,
-        default: false
-      },
       placeholder: {
         type: String,
         default: '输入评论（Enter换行，Ctrl + Enter发送）'
@@ -229,6 +221,9 @@
     computed: {
       c_emoji() {
         return emoji;
+      },
+      userInfo() {
+        return this.$store.state.userInfo;
       }
     },
     components: {
@@ -237,18 +232,29 @@
     methods: {
       // 提交评论的数据
       onSubmit() {
-        let submitContent = {
-          content: this.reply && this.parentId !== this.reply.id
-            ? `回复 <span style="color: #6f42c1;">@${this.reply.user.username}:</span> ${this.content}` : this.content,
-          parentId: isNull(this.parentId, null),
-          reply: this.reply,
+        let htmlStr = this.reply && this.parentId !== this.reply.id
+          ? `回复 <span style="color: #6f42c1;">@${this.reply.user.username}:</span> ${this.content}` : this.content
+        let comment = {
+          id: ++this.tempId + '',
+          parentId: this.parentId,
+          address: null,
+          content: htmlStr,
+          likes: 0,
+          createTime: Date.now(),
           file: this.files,
-          clear: () => {
-            //清理输入框提交的数据
-            this.resetComment()
-          }
-        };
-        this.$emit('submit', submitContent);
+          user: {
+            username: this.userInfo.username,
+            avatar: this.userInfo.avatar,
+            level: this.userInfo.level,
+            homeLink: this.userInfo.domain
+          },
+          reply: null
+        }
+
+        this.$emit('submit', comment, () => {
+          //清理输入框提交的数据
+          this.resetComment()
+        });
         this.$emit('hide');
       },
       // 重置评论
@@ -538,7 +544,7 @@
       // 点击评论框外关闭操作栏和失去评论框焦点
       onClickOutside() {
         // 评论框有内容情况下不执行操作
-        if (isEmpty(this.content) && !this.state.imgLength && this.initState > 0) {
+        if (isEmpty(this.content) && !this.file && this.initState > 0) {
           this.action = false;
           this.$emit('hide')
           return;

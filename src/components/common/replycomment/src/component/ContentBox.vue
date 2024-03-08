@@ -1,5 +1,5 @@
 <template>
-  <div class="comment" :class="{ 'reply-from-comment': data?.parentId !== null }" ref="tooltipContainer">
+  <div class="comment" :class="{ 'reply-from-comment': data?.parentId }" ref="tooltipContainer">
     <div class="comment-sub">
       <a-popover placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer" overlayClassName="user-info-card">
         <template slot="content">

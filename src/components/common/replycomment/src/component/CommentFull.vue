@@ -2,7 +2,7 @@
   <div class="u-comment">
     <div class="comment-form">
       <div class="reply-header">
-        所有评论（4）
+        所有评论（{{total}}）
       </div>
       <div class="content">
         <div class="avatar-box">
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-  import { createObjectURL, cloneDeep } from '@/utils/emoji'
+  import { createObjectURL } from '@/utils/emoji'
   import {getComment} from '@/assets/emoji/comment';
   import InputBox from './InputBox'
   import UComment from './Comment'
@@ -38,14 +38,8 @@
     data() {
       return {
         tempId: 100,
-        mentionList: [],
-        replyShowSize: null,
-        aTarget: null,
-        showLikes: true,
-        showAddress: true,
-        showHomeLink: true,
-        showReply: true,
-        commentList: []
+        commentList: [],
+        total: '0'
       }
     },
     computed: {
@@ -55,7 +49,8 @@
       contentBoxParam() {
         return {
           submit: this.submit,
-          remove: this.remove
+          remove: this.remove,
+          updateTotal: this.updateTotal
         }
       }
     },
@@ -67,64 +62,22 @@
       /**
        * 提交评论
        */
-      submit({content, parentId, file, clear}) {
+      submit(comment, clear) {
+        debugger
         // 添加评论
-        /**
-         * 上传文件后端返回图片访问地址，格式以'||'为分割; 如:  '/static/img/program.gif||/static/img/normal.webp'
-         */
-        let contentImg = file?.map(e => createObjectURL(e)).join('||')
-
-        this.tempId += 1
-        const comment = {
-          id: this.tempId,
-          parentId: parentId,
-          uid: this.userInfo.uid,
-          address: '来自江苏',
-          content: content,
-          likes: 0,
-          createTime: Date.now(),
-          contentImg: contentImg,
-          user: {
-            username: this.userInfo.username,
-            avatar: this.userInfo.avatar,
-            level: this.userInfo.level,
-            homeLink: this.userInfo.domain
-          },
-          reply: null
+        if (!comment) {
+          return;
+        }
+        // TODO 开发完成后就不需要生成URL了，返回云端地址
+        if (comment.file) {
+          comment.contentImg = createObjectURL(comment.file)
         }
         setTimeout(() => {
-          console.log(comment)
           // 提交评论添加到评论列表
-          debugger
-          if (comment) {
-            if (parentId) {
-              let rawComment = this.commentList.find(v => v.id === parentId)
-              if (rawComment) {
-                let replys = rawComment.reply
-                let tmpReply = null;
-                if (replys) {
-                  let tmpReplyList = cloneDeep(replys.list);
-                  tmpReplyList.unshift(comment);
-                  tmpReply = {
-                    list: tmpReplyList,
-                    total: tmpReplyList.length
-                  }
-                } else {
-                  tmpReply = {
-                    total: 1,
-                    list: [comment]
-                  }
-                }
-                rawComment.reply = tmpReply;
-              }
-            } else {
-              this.commentList.unshift(comment)
-            }
-          }
-
+          this.commentList.unshift(comment);
+          this.total++;
           // 清空输入框内容
           clear();
-
           this.$Message.success('评论成功!')
         }, 200)
       },
@@ -192,11 +145,15 @@
             this.commentList.splice(index, 1)
           }
         }
+      },
+      updateTotal() {
+        this.total++;
       }
     },
-    mounted() {
+    created() {
       // 初始化评论列表
       this.commentList = getComment(1, 10);
+      this.total = this.commentList.length;
     }
   }
 </script>
