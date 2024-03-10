@@ -1,5 +1,5 @@
 <template>
-  <div class="comment-box" v-click-outside="onClickOutside">
+  <div class="comment-box" v-click-outside="onClickOutside" ref="popoverContainer">
     <div class="u-editor" :class="{ active: active }">
       <div ref="editorRef" id="expectRange"
            class="rich-input"
@@ -9,12 +9,12 @@
            @input="onInput"
            @blur="onBlur"
            @keydown.enter="keyDown"
-           @paste="pasteFn"
-      ></div>
-      <div ref="imageRef" class="image-preview-box">
-        <div v-for="(url, index) in imgList" :key="index" class="image-preview">
-          <img :src="url" alt=""/>
-          <div class="clean-btn" @click="removeImg(index)">
+           @paste="pasteFn">
+      </div>
+      <div class="image-preview-box" v-if="previewUrl">
+        <div class="image-preview">
+          <img :src="previewUrl" alt=""/>
+          <div class="clean-btn" @click="removeImg">
             <svg
               data-v-48a7e3c5=""
               data-v-7c7c7498=""
@@ -38,78 +38,49 @@
         </div>
       </div>
     </div>
-    <MentionList v-show="isShowMention"
-                 :position="mentionPosition"
-                 :list="mentionList"
-                 @insert="insertUser"
-    ></MentionList>
-    <div v-if="action" class="action-box">
-      <div class="u-emoji">
-        <a-popover trigger="click">
-          <div slot="content" class="settings emoji-popover" @mouseenter="onBefore">
-            <div class="face-tooltip-head select-none">
-              <label
-                v-for="(item, index) in c_emoji.faceList"
-                :key="index"
-                :class="activeIndex == index ? 'active' : ''"
-                @click="changeEmoji(index)"
-              >
-                <img :src="item" alt=""/>
-              </label>
-            </div>
-            <div class="emoji-body select-none">
-              <div class="emjio-container" :style="{ transform: `translateX(${offsetX}%)` }">
-                <div v-for="(list, index) in emojis" :key="index" class="emoji-wrapper">
-                  <div style="padding: 0 5px">
-                  <span v-for="(value, key) in list"
-                        :key="key"
-                        class="emoji-item"
-                        @click="addText(key)">
-                <b-img class="emoji" style="width: 24px; height: 24px; margin: 5px" right fluid rounded :src="value"
-                       :alt="String(key)"/>
-              </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="emoji-btn select-none">
-            </div>
-          </div>
-          <div>
-            <span class="iconfont emoji"/>
-            <span>表情</span>
-          </div>
-        </a-popover>
-      </div>
+    <mention-list v-show="showMention"
+                  :style="`left: ${mentionPosition.left}px; top: ${mentionPosition.top}px`"
+                  :list="mentionList"
+                  @insert="insertUser"/>
+    <emoji-selector v-show="showEmojiSelector"
+                    @addText="addText"
+                    :style="`left: ${EmojiSelectorPosition.left}px; top: ${EmojiSelectorPosition.top}px`"/>
 
-      <Upload class="picture"
-              action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false"
-              :format="['jpg','jpeg','png']" :max-size="10240"
+    <div v-if="action" class="action-box">
+      <div class="action-emoji">
+        <div class="emoji-content" @click="showEmoji" ref="emojiSelectorBtn">
+          <span class="iconfont emoji"/>
+          <span>表情</span>
+        </div>
+      </div>
+      <Upload class="action-picture"
+              action=""
+              :show-upload-list="false"
+              :format="['jpg','jpeg','png']"
               accept="image/png, image/jpeg"
-              :on-exceeded-size="handleMaxSize" :on-format-error="handleFormatError"
-              :on-success="handleServerSuccess" :on-error="handleServerError">
-        <div>
+              :before-upload="addImage">
+        <div class="picture-content">
           <span class="iconfont image"/>
           <span>图片</span>
         </div>
       </Upload>
-
       <div class="btn-box">
-        <button :disabled="disabled" @click="onSubmit">
+        <Button :disabled="disabled" type="primary" @click="onSubmit">
           {{ contentBtn }}
-        </button>
-        <button v-if="cancelBtn" @click="resetComment">
+        </Button>
+        <Button v-if="cancelBtn" @click="resetComment">
           {{ cancelBtn }}
-        </button>
+        </Button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import {isNull, isEmpty, isImage, createObjectURL, cloneDeep} from '@/utils/emoji'
+  import { isEmpty } from '@/utils/emoji'
   import emoji from '@/assets/emoji/emoji.js';
-  import MentionList from './MentionList.vue'
+  import MentionList from './MentionList'
+  import EmojiSelector from "./EmojiSelector";
 
   const baseUserArr = [
     {
@@ -169,12 +140,18 @@
     data() {
       return {
         // 是否显示提及框
-        isShowMention: false,
+        showMention: false,
+        // 是否显示表情选择器
+        showEmojiSelector: false,
         // 评论框是否激活
         active: false,
         // 操作栏是否激活（评论框有内容时一直为true）
         action: false,
         mentionPosition: {
+          left: 0,
+          top: 0
+        },
+        EmojiSelectorPosition: {
           left: 0,
           top: 0
         },
@@ -186,16 +163,14 @@
           // @提及 渲染的颜色
           mentionColor: '#409eff'
         },
+        // 记录滚动条变动值
         scHeight: 0,
-        activeIndex: 0,
-        offsetX: 0,
-        emojis: new Array(2),
         content: '',
         searchStr: '',
         mentionList: [],
         range: null,
         disabled: true,
-        imgList: [],
+        previewUrl: null,
         file: null,
         tempId: 1001
       }
@@ -227,7 +202,8 @@
       }
     },
     components: {
-      MentionList
+      MentionList,
+      EmojiSelector
     },
     methods: {
       // 提交评论的数据
@@ -241,7 +217,7 @@
           content: htmlStr,
           likes: 0,
           createTime: Date.now(),
-          file: this.files,
+          file: this.file,
           user: {
             username: this.userInfo.username,
             avatar: this.userInfo.avatar,
@@ -266,9 +242,9 @@
           this.active = false;
           this.action = false;
         }
-        this.imgList.length = 0
         //清空图片列表
-        this.files = []
+        this.file = null;
+        this.previewUrl = null;
         //提交按钮禁用
         this.disabled = true
       },
@@ -295,7 +271,7 @@
           } else {
             this.onSubmit();
           }
-        } else if (e.key === 'Enter' && this.isShowMention) {
+        } else if (e.key === 'Enter' && this.showMention) {
           // TODO 插入用户操作
           /*e.preventDefault()
           const currentUser = this.enterConfirm()
@@ -321,7 +297,7 @@
       },
       // 修改提及框显示的方法
       changeMentionShow(isShow) {
-        this.isShowMention = isShow;
+        this.showMention = isShow;
         if (!isShow) {
           this.searchStr = ''
         }
@@ -359,48 +335,39 @@
           this.range.collapse(false)
           selection.addRange(this.range)
 
-          this.content = this.editorRef?.innerHTML || ''
-        }
-      },
-      change(val, file) {
-        if (!file) {
-          this.imgList.value.length = 0 //清空上一次显示图片效果
-          this.files2.value.length = 0
-        }
+          this.content = this.editorRef?.innerHTML || '';
 
-        const files = file ? [file] : this.$refs.inputRef.value?.files //获取选中的文件对象
-        this.state.imgLength = isNull(files?.length, 0)
-        if (files) {
-          for (let i = 0; i < files.length; i++) {
-            let fileName = files[i].name //获取当-前文件的文件名
-            let url = createObjectURL(files[i]) //获取当前文件对象的URL
-            this.files2.value.push(files[i])
-            //判断文件是否是图片类型
-            if (isImage(fileName)) {
-              this.imgList.value.push(url)
-            } else {
-              this.$Message.warn('请选择图片类型文件!')
-            }
+          if (this.c_emoji.allEmoji[val]) {
+            // 当前输入对象为表情
+            this.showEmojiSelector = false;
           }
         }
       },
-      handleMaxSize() {
-        this.$Message.warning('文件大小不得超过10MB！');
-      },
-      handleFormatError() {
-        this.$Message.warning('文件格式错误，请上传正确的图片');
-      },
-      handleServerSuccess() {
-        // 清空上一次的图片展示
-        this.$Message.success('替换图片表情成功');
-      },
-      handleServerError() {
-        this.$Message.error('网络错误，请稍后重试！');
+      addImage(file) {
+        // 图片大小限制10MB
+        if (file?.size > 10 * 1024 * 1024) {
+          this.$Message.error('图片大小不得超过10MB！');
+          return false;
+        }
+        if (file?.type !== 'image/png' && file?.type !== 'image/jpeg') {
+          this.$Message.error('请选择正确的图片格式！');
+          return false;
+        }
+        // 生成base64格式进行显示
+        const reader = new FileReader(); // 创建FileReader对象
+        reader.onload = () => {
+          // 读取文件完成后将结果设置为预览图URL
+          this.previewUrl = reader.result;
+          this.file = file;
+        };
+        // 读取文件内容，这里使用DataURL格式
+        reader.readAsDataURL(file);
+        return false;
       },
       // 移除图片
-      removeImg(val) {
-        this.imgList?.splice(val, 1);
-        cloneDeep(this.imgList)
+      removeImg() {
+        this.previewUrl = null;
+        this.file = null;
       },
       //创建@标签
       createSvgUrl(user) {
@@ -457,21 +424,6 @@
         }
         this.changeMentionShow(false)
       },
-      onBefore() {
-        this.emojis[0] = this.c_emoji.emojiList[0]
-      },
-      changeEmoji(val) {
-        this.activeIndex = val;
-        switch (val) {
-          case 0:
-            this.offsetX = 0
-            break
-          case 1:
-            this.offsetX = -50
-            this.emojis[1] = this.c_emoji.emojiList[1]
-            break
-        }
-      },
       // 输入框事件
       onInput(event) {
         const {innerHTML} = event.target;
@@ -500,7 +452,6 @@
         }
 
         this.content = innerHTML;
-        this.disabled = isEmpty(this.content.replace(/&nbsp;|<br>| /g, ""));
         this.onEditorSelectionChange()
       },
       //光标位置监听
@@ -543,6 +494,10 @@
       },
       // 点击评论框外关闭操作栏和失去评论框焦点
       onClickOutside() {
+        if (this.showEmojiSelector) {
+          this.showEmojiSelector = false;
+          return;
+        }
         // 评论框有内容情况下不执行操作
         if (isEmpty(this.content) && !this.file && this.initState > 0) {
           this.action = false;
@@ -550,6 +505,16 @@
           return;
         }
         this.initState = ++this.initState;
+      },
+      showEmoji() {
+        let emojiRect = this.$refs.emojiSelectorBtn?.getBoundingClientRect();
+        if (emojiRect) {
+          this.EmojiSelectorPosition = {
+            left: emojiRect.left,
+            top: emojiRect.top + emojiRect.height + 10
+          }
+        }
+        this.showEmojiSelector = true;
       }
     },
     watch: {
@@ -565,23 +530,32 @@
           return;
         }
         // 搜索词
-        if (this.isShowMention && newVal.slice(-6) !== '&nbsp;') {
+        if (this.showMention && newVal.slice(-6) !== '&nbsp;') {
           this.searchStr = newVal.split('@').pop() || ''
           // 替换掉里面所有的单引号分隔符
           this.searchStr = this.searchStr.replace(`'`, '')
           this.mentionSearch(this.searchStr)
-        } else if (this.isShowMention && newVal.slice(-6) === '&nbsp;') {
+        } else if (this.showMention && newVal.slice(-6) === '&nbsp;') {
           this.changeMentionShow(false)
         }
+        // 更新disabled
+        this.disabled = isEmpty(this.content.replace(/&nbsp;|<br>| /g, ""));
       },
       "scHeight"(newVal, oldVal) {
         if (newVal === oldVal) return;
-        if (!this.isShowMention) return;
-        let rect = this.range?.getBoundingClientRect()
-        if (rect) {
+        if (!this.showMention && !this.showEmojiSelector) return;
+        let rangeRect = this.range?.getBoundingClientRect()
+        if (rangeRect) {
           this.mentionPosition = {
-            left: rect.left,
-            top: rect.top + rect.height + 10
+            left: rangeRect.left,
+            top: rangeRect.top + rangeRect.height + 10
+          }
+        }
+        let emojiRect = this.$refs.emojiSelectorBtn?.getBoundingClientRect();
+        if (emojiRect) {
+          this.EmojiSelectorPosition = {
+            left: emojiRect.left,
+            top: emojiRect.top + emojiRect.height + 10
           }
         }
       },
@@ -641,53 +615,5 @@
 
 <style lang="less" scoped>
   @import "../style/editor.less";
-  @import '../style/emoji';
-
-  .comment-box {
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-
-    .action-box {
-      display: flex;
-      align-items: center;
-      margin-top: 8px;
-
-      & > div:not(.btn-box) {
-        margin-right: 16px;
-      }
-
-      .btn-box {
-        margin-left: auto;
-      }
-
-      .picture {
-        font-size: 14px;
-        color: var(--u-text-color-secondary);
-        cursor: pointer;
-
-        .icon {
-          fill: var(--u-text-color-secondary);
-          margin-right: 4px;
-          margin-bottom: 1px;
-        }
-
-        #comment-upload {
-          display: none;
-        }
-      }
-    }
-
-    .picture:hover {
-      color: var(--u-color-primary);
-
-      .icon {
-        fill: var(--u-color-primary);
-      }
-    }
-
-    .emoji-popover {
-      padding: 12px 0 !important;
-    }
-  }
+  /*@import '../style/emoji';*/
 </style>

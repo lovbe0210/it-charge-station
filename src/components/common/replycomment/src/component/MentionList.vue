@@ -3,7 +3,6 @@
     ref="mentionList"
     class="mention-list"
     tabindex="0"
-    :style="`left: ${position.left}px; top: ${position.top}px`"
     @keydown.up.prevent="moveSelection(-1)"
     @keydown.down.prevent="moveSelection(1)"
     @keydown.enter.prevent="printSelectedItem"
@@ -35,15 +34,6 @@
       }
     },
     props: {
-      position: {
-        type: Object,
-        default() {
-          return {
-            left: 0,
-            top: 0
-          }
-        }
-      },
       list: {
         type: Array,
         default() {
@@ -121,7 +111,7 @@
     background-color: #fff;
     list-style: none;
     font-size: 14px;
-    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
     border-radius: 5px;
     z-index: 99;
     overflow-y: auto;

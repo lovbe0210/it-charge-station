@@ -130,8 +130,6 @@
         </div>
       </div>
     </b-col>
-
-<!--    <back-top></back-top>-->
   </b-row>
 </template>
 

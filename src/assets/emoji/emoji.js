@@ -1,6 +1,7 @@
+// 静态表情包的目录
 const raw = '/static'
-
-const faceList = [`${raw}/emoji/smile.webp`, `${raw}/emoji/tv/tv.webp`]
+// 各类表情包头部代表，顺序和emojiList相对应
+const headerList = [`${raw}/emoji/smile.webp`, `${raw}/emoji/tv/tv.webp`]
 
 const emojiList = [
   {
@@ -136,7 +137,7 @@ function allEmoji() {
 }
 
 export default {
-  faceList,
+  headerList,
   emojiList,
   allEmoji: allEmoji()
 }

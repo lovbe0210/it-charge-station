@@ -194,7 +194,7 @@
           <div class="setting-legacy-form-item-control-wrapper">
             <div class="update-editor-control">
               <span class="update-editor-control-content">
-                <button type="button" class="update-editor-control-btn">
+                <button type="button" class="lovbe-btn-default">
                   <span>更新信息</span>
                 </button>
               </span>

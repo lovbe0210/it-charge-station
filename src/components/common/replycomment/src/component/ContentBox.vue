@@ -8,8 +8,7 @@
           </div>
         </template>
         <b-avatar :src="data.user.avatar" variant="light" :to="data.user.homeLink" size="2.5rem">
-          <span v-if="data.user.avatar">{{ data.user.username }}</span>
-          <img v-else src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
+          <span v-if="!data.user.avatar">{{ data.user.username }}</span>
         </b-avatar>
       </a-popover>
     </div>

@@ -18,7 +18,8 @@
     Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload, Icon,
     Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane
   } from 'view-design'
-  import 'view-design/dist/styles/iview.css'
+  // import 'view-design/dist/styles/iview.css'
+  import './index.less'
   import {
     Tooltip, Card, Popover, Pagination, Tag, Select, Checkbox, Table, Radio, Popconfirm,
     Skeleton, Empty
@@ -284,5 +285,38 @@
 
   .ant-checkbox-indeterminate .ant-checkbox-inner::after {
     background-color: @editor-button-color;
+  }
+
+  .lovbe-btn-default {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+    text-align: center;
+    border: 1px solid #00B96B;
+    cursor: pointer;
+    transition: all .3s cubic-bezier(.645,.045,.355,1);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    height: 32px;
+    padding: 4px 15px;
+    font-size: 14px;
+    line-height: 1.15;
+    border-radius: 6px;
+    font-weight: 500;
+    color: #ffffff;
+    background: #00B96B;
+    text-shadow: none;
+    box-shadow: none;
+  }
+
+  .lovbe-btn-default:focus-visible {
+    outline: none;
+  }
+
+  .lovbe-btn-default:hover {
+    background: #009456;
+    border-color: #009456;
   }
 </style>

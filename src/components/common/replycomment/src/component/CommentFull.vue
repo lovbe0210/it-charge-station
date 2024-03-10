@@ -1,14 +1,13 @@
 <template>
-  <div class="u-comment">
+  <div class="u-comment" ref="popoverContainer">
     <div class="comment-form">
       <div class="reply-header">
         所有评论（{{total}}）
       </div>
       <div class="content">
         <div class="avatar-box">
-          <b-avatar variant="light" to="/settings" size="2.5rem">
-            <span v-if="userInfo.username">{{ userInfo.username }}</span>
-            <img v-else :src="userInfo.avatar"/>
+          <b-avatar :src="userInfo.avatar" variant="light" to="/settings" size="2.5rem">
+            <span v-if="!userInfo.avatar">{{ userInfo.username }}</span>
           </b-avatar>
         </div>
         <InputBox @submit="submit"
@@ -63,7 +62,6 @@
        * 提交评论
        */
       submit(comment, clear) {
-        debugger
         // 添加评论
         if (!comment) {
           return;

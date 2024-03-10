@@ -5,9 +5,14 @@ import store from './store'
 import request from './utils/request'
 import {Message} from 'view-design'
 
+Message.config({
+  top: 80
+})
+
 Vue.config.productionTip = false
 Vue.prototype.$request = request
 Vue.prototype.$Message = Message
+
 
 new Vue({
   router,
