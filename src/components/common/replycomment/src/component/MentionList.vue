@@ -91,12 +91,6 @@
     beforeDestroy() {
     }
   }
-
-  // defineExpose({
-  //   moveSelection,
-  //   printSelectedItem,
-  //   resetSelectIndex
-  // })
 </script>
 
 <style scoped lang="less">
@@ -120,25 +114,8 @@
     .empty {
       height: 150px;
       padding: 0;
-
-      .el-empty {
-        padding: 0;
-      }
-
-      :deep(.el-empty__image) {
-        width: 100px;
-      }
     }
 
-    .el-scrollbar {
-      flex: 1; /* 新增 */
-      display: flex;
-      flex-direction: column;
-
-      .el-scrollbar__wrap {
-        flex: 1;
-      }
-    }
 
     &:focus {
       outline: none;

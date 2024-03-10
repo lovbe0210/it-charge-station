@@ -151,3 +151,56 @@
 .reply-from-comment:not(:first-child) {
   margin-top: 1rem;
 }
+
+/deep/.user-info-card-box {
+
+  .ant-popover-arrow {
+    display: none;
+  }
+
+  .user-info-card {
+    display: flex;
+    margin: 15px 10px;
+    justify-content: space-around;
+
+    .user-avatar {
+      margin-right: 15px;
+    }
+
+    .user-content {
+      font-size: 16px;
+      a {
+        color: #585A5A;
+      }
+
+      .user-info {
+        margin-bottom: 10px;
+        .name {
+          margin-right: 5px;
+        }
+        .iconfont {
+          font-size: 20px;
+        }
+      }
+
+      .social-info {
+        margin-bottom: 15px;
+        font-size: 14px;
+
+        a {
+          color: #8A8F8D;
+        }
+
+        .attention, .follower {
+          margin-right: 8px;
+        }
+      }
+
+      .card-btn {
+        button:first-child {
+          margin-right: 12px;
+        }
+      }
+    }
+  }
+}

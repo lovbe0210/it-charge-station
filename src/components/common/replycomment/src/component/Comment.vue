@@ -26,7 +26,7 @@
             v-model="currentPage"
             :pageSize="pageSize"
             :total="total"
-            :show-total="total => `共 ${total} 条`"
+            :show-total="() => `共 ${total} 条`"
           />
         </div>
       </div>

@@ -1,13 +1,49 @@
 <template>
   <div class="comment" :class="{ 'reply-from-comment': data?.parentId }" ref="tooltipContainer">
     <div class="comment-sub">
-      <a-popover placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer" overlayClassName="user-info-card">
+      <a-popover placement="topLeft"
+                 trigger="hover"
+                 :getPopupContainer="()=>this.$refs.tooltipContainer"
+                 overlayClassName="user-info-card-box">
         <template slot="content">
-          <div>
-            用户信息卡片
+          <div class="user-info-card">
+            <div class="user-avatar">
+              <b-avatar :src="data.user.avatar" variant="light" :to="data.user.homeLink" size="2.5rem">
+                <span v-if="!data.user.avatar">{{ data.user.username }}</span>
+              </b-avatar>
+            </div>
+            <div class="user-content">
+              <div class="user-info">
+                <b-link class="username" target="_blank">
+                  <span class="name" style="max-width: 10em;">{{ data.user.username }}</span>
+                  <span :class="['iconfont',  'icon-level' + data.user.level]"></span>
+                </b-link>
+              </div>
+              <div class="social-info">
+                <b-link class="attention">
+                  <span>15</span>
+                  <span>关注</span>
+                </b-link>
+                <b-link class="follower">
+                  <span>6878</span>
+                  <span>粉丝</span>
+                </b-link>
+                <b-link class="likes">
+                  <span>36011</span>
+                  <span>获赞</span>
+                </b-link>
+              </div>
+              <div class="card-btn">
+                <Button type="primary">
+                  <span class="">关注</span></Button>
+                <Button>
+                  <span class="">发消息</span></Button>
+              </div>
+            </div>
           </div>
         </template>
-        <b-avatar :src="data.user.avatar" variant="light" :to="data.user.homeLink" size="2.5rem">
+        <!-- :to="data.user.homeLink" -->
+        <b-avatar :src="data.user.avatar" variant="light"  size="2.5rem">
           <span v-if="!data.user.avatar">{{ data.user.username }}</span>
         </b-avatar>
       </a-popover>
@@ -41,7 +77,8 @@
                   <b-img :src="data.contentImg" @click="imgPreview = true"
                          style="height: 72px; margin: 8px 4px; border-radius: 2px;"
                          lazy/>
-                  <image-preview :src="data.contentImg" :isPreviewOpen="imgPreview" @toggleFullScreen="imgPreview = false"/>
+                  <image-preview :src="data.contentImg" :isPreviewOpen="imgPreview"
+                                 @toggleFullScreen="imgPreview = false"/>
                 </div>
               </div>
             </div>
