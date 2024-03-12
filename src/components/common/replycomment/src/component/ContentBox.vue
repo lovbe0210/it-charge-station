@@ -66,7 +66,7 @@
               </span>
             </div>
           </a-popover>
-          <time class="time">{{ data.createTime }}</time>
+          <Time class="time" :time="data.createTime"/>
         </div>
         <div class="content">
           <div class="u-fold">
@@ -136,7 +136,6 @@
   import {str} from '@/utils/emoji';
   import {useEmojiParse} from '@/utils/hooks';
   import emoji from '@/assets/emoji/emoji.js';
-  import {dayjs} from 'dayjs';
   import InputBox from './InputBox';
   import ImagePreview from '@/components/common/ImagePreview'
 
@@ -193,9 +192,6 @@
       },
       safeStr(id) {
         return str(id)
-      },
-      nowDateTime(dateTime) {
-        return dayjs.fromNow();
       },
       exposeEditor(editorRef) {
         this.editorRef = editorRef;

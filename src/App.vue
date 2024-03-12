@@ -16,7 +16,7 @@
   // import ViewUI from 'view-design'
   import {
     Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload, Icon,
-    Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane
+    Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane, Time
   } from 'view-design'
   // import 'view-design/dist/styles/iview.css'
   import './index.less'
@@ -51,6 +51,7 @@
   Vue.component('ListItemMeta', List.Item.Meta);
   Vue.component('Tabs', Tabs);
   Vue.component('TabPane', TabPane);
+  Vue.component('Time', Time);
   Vue.component('a-radio-group', Radio.Group);
   Vue.component('a-radio', Radio);
   Vue.component('a-tooltip', Tooltip);
