@@ -209,7 +209,7 @@
       // 提交评论的数据
       onSubmit() {
         let htmlStr = this.reply && this.parentId !== this.reply.id
-          ? `回复 <span style="color: #6f42c1;">@${this.reply.user.username}:</span> ${this.content}` : this.content
+          ? `回复 <span style="color: #008Ac5;">@${this.reply.user.username}:</span> ${this.content}` : this.content
         let comment = {
           id: ++this.tempId + '',
           parentId: this.parentId,

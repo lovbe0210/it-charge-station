@@ -1,5 +1,5 @@
 <template>
-  <div class="comment" :class="{ 'reply-from-comment': data?.parentId }" ref="tooltipContainer">
+  <div class="comment" :class="{ 'reply-from-comment': commentReply?.parentId }" ref="tooltipContainer">
     <div class="comment-sub">
       <a-popover placement="topLeft"
                  trigger="hover"
@@ -8,8 +8,8 @@
         <template slot="content">
           <div class="user-info-card">
             <div class="user-avatar">
-              <b-avatar :src="data.user.avatar" variant="light" :to="data.user.homeLink" size="2.5rem">
-                <span v-if="!data.user.avatar">{{ data.user.username }}</span>
+              <b-avatar :src="commentReply.user.avatar" variant="light" :to="commentReply.user.homeLink" size="2.5rem">
+                <span v-if="!commentReply.user.avatar">{{ commentReply.user.username }}</span>
               </b-avatar>
             </div>
             <div class="user-content">
@@ -43,41 +43,75 @@
           </div>
         </template>
         <!-- :to="data.user.homeLink" -->
-        <b-avatar :src="data.user.avatar" variant="light"  size="2.5rem">
-          <span v-if="!data.user.avatar">{{ data.user.username }}</span>
+        <b-avatar :src="commentReply.user.avatar" variant="light" size="2.5rem">
+          <span v-if="!commentReply.user.avatar">{{ commentReply.user.username }}</span>
         </b-avatar>
       </a-popover>
     </div>
     <div class="comment-primary">
       <div class="comment-main">
         <div class="user-info">
-          <a-popover placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer"
-                     overlayClassName="user-info-card">
+          <a-popover placement="topLeft"
+                     :getPopupContainer="()=>this.$refs.tooltipContainer"
+                     overlayClassName="user-info-card-box">
             <template slot="content">
-              <div>
-                用户信息卡片
+              <div class="user-info-card">
+                <div class="user-avatar">
+                  <b-avatar :src="data.user.avatar" variant="light" :to="data.user.homeLink" size="2.5rem">
+                    <span v-if="!data.user.avatar">{{ data.user.username }}</span>
+                  </b-avatar>
+                </div>
+                <div class="user-content">
+                  <div class="user-info">
+                    <b-link class="username" target="_blank">
+                      <span class="name" style="max-width: 10em;">{{ data.user.username }}</span>
+                      <span :class="['iconfont',  'icon-level' + data.user.level]"></span>
+                    </b-link>
+                  </div>
+                  <div class="social-info">
+                    <b-link class="attention">
+                      <span>15</span>
+                      <span>关注</span>
+                    </b-link>
+                    <b-link class="follower">
+                      <span>6878</span>
+                      <span>粉丝</span>
+                    </b-link>
+                    <b-link class="likes">
+                      <span>36011</span>
+                      <span>获赞</span>
+                    </b-link>
+                  </div>
+                  <div class="card-btn">
+                    <Button type="primary">
+                      <span class="">关注</span></Button>
+                    <Button>
+                      <span class="">发消息</span></Button>
+                  </div>
+                </div>
               </div>
             </template>
             <div class="username">
-              <span class="name" style="max-width: 10em">{{ data.user.username }}</span>
+              <span class="name" style="max-width: 10em">{{ commentReply.user.username }}</span>
               <!-- level -->
               <span blank="true" class="rank">
-                  <span :class="['iconfont',  'icon-level' + data.user.level]"></span>
+                  <span :class="['iconfont',  'icon-level' + commentReply.user.level]"></span>
               </span>
             </div>
           </a-popover>
-          <Time class="time" :time="data.createTime"/>
+          <Time class="time" :time="commentReply.createTime" v-if="isFormatDate(commentReply.createTime)"/>
+          <Time class="time" :time="commentReply.createTime" v-else type="datetime"/>
         </div>
         <div class="content">
           <div class="u-fold">
             <div ref="textBox" class="txt-box" :class="{ 'over-hidden': !unfold }">
               <div ref="divBox">
                 <div v-html="contents"></div>
-                <div class="imgbox" v-if="data.contentImg" style="display: flex;">
-                  <b-img :src="data.contentImg" @click="imgPreview = true"
+                <div class="imgbox" v-if="commentReply.contentImg" style="display: flex;">
+                  <b-img :src="commentReply.contentImg" @click="imgPreview = true"
                          style="height: 72px; margin: 8px 4px; border-radius: 2px;"
                          lazy/>
-                  <image-preview :src="data.contentImg" :isPreviewOpen="imgPreview"
+                  <image-preview :src="commentReply.contentImg" :isPreviewOpen="imgPreview"
                                  @toggleFullScreen="imgPreview = false"/>
                 </div>
               </div>
@@ -87,25 +121,27 @@
             </div>
           </div>
         </div>
-        <div class="action-box select-none">
+        <div class="action-box">
           <!-- 点赞 -->
-          <div class="item" @click="contentBoxParam.like(str(data.id))">
-            <span class="iconfont like"></span>
-            <span v-if="data.likes != 0">{{ data.likes }}</span>
-          </div>
-          <!-- 回复 -->
-          <div ref="btnRef" class="item" :class="{ active }" @click="reply">
-            <span class="iconfont reply"></span>
-            <span class="reply-btn">{{ active ? '取消回复' : '回复' }}</span>
+          <div class="like-and-reply">
+            <div class="item" @click="like">
+              <span :class="['iconfont', 'like', commentReply.ilike ? 'ilike' : '']"></span>
+              <span v-if="data.likes != 0">{{ commentReply.likes }}</span>
+            </div>
+            <!-- 回复 -->
+            <div class="item" :class="{ active }" @click="reply">
+              <span class="iconfont reply"></span>
+              <span class="reply-btn">{{ active ? '取消回复' : '回复' }}</span>
+            </div>
           </div>
           <!-- 操作栏 -->
-          <div class="item">
+          <div class="item" v-if="commentReply.user.uid === userInfo.uid">
             <a-popover placement="leftTop"
                        trigger="click"
                        :getPopupContainer="()=>this.$refs.tooltipContainer"
                        overlayClassName="operate-more">
               <template slot="content">
-                <div @click="contentBoxParam.remove(data)">
+                <div @click="contentBoxParam.remove(commentReply.id)">
                   <span class="del">删除</span>
                 </div>
               </template>
@@ -118,8 +154,8 @@
           <InputBox
             ref="commentRef"
             :parent-id="parentId"
-            :placeholder="'回复@' + data.user.username"
-            :reply="data"
+            :placeholder="'回复@' + commentReply.user.username"
+            :reply="commentReply"
             content-btn="发布"
             style="margin-top: 12px"
             @hide="hide"
@@ -133,7 +169,7 @@
 </template>
 
 <script>
-  import {str} from '@/utils/emoji';
+  import {cloneDeep} from '@/utils/emoji';
   import {useEmojiParse} from '@/utils/hooks';
   import emoji from '@/assets/emoji/emoji.js';
   import InputBox from './InputBox';
@@ -151,7 +187,8 @@
         // 文本是否是展开状态 默认为收起
         unfold: false,
         // dom监视器
-        observer: null
+        observer: null,
+        commentReply: null
       }
     },
     props: {
@@ -169,6 +206,9 @@
     computed: {
       contents() {
         return useEmojiParse(emoji.allEmoji, this.data.content);
+      },
+      userInfo() {
+        return this.$store.state.userInfo;
       }
     },
     components: {
@@ -190,12 +230,26 @@
       hide() {
         this.active = false;
       },
-      safeStr(id) {
-        return str(id)
-      },
       exposeEditor(editorRef) {
         this.editorRef = editorRef;
+      },
+      isFormatDate(createTime) {
+        return Date.now() - createTime <= 86400 * 2 * 1000
+      },
+      like() {
+        if (this.commentReply.ilike) {
+          // 原来点赞，现在取消
+          --this.commentReply.likes;
+        } else {
+          // 相反
+          ++this.commentReply.likes;
+        }
+        this.commentReply.ilike = !this.commentReply.ilike;
+        // TODO commentReply.id action：like or cancelLike --> to server
       }
+    },
+    created() {
+      this.commentReply = cloneDeep(this.data);
     },
     mounted() {
       this.observer = new ResizeObserver(entry => {

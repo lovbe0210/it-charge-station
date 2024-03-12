@@ -55,7 +55,12 @@
 .action-box {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   position: relative;
+
+  .like-and-reply {
+    display: flex;
+  }
 
   .item {
     display: flex;
@@ -71,13 +76,13 @@
       font-size: 15px;
     }
 
+    .ilike {
+      color: #409eff;
+    }
+
     .reply-btn {
       font-size: 14px;
     }
-  }
-
-  .item:last-child {
-    margin-left: auto;
   }
 
   .item:hover,

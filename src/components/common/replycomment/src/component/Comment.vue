@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import {str, createObjectURL, cloneDeep} from '@/utils/emoji'
+  import {createObjectURL, cloneDeep} from '@/utils/emoji'
   import ContentBox from './ContentBox.vue'
 
   export default {
@@ -46,7 +46,9 @@
         currentPage: 1,
         pageSize: 5,
         tempId: 1000,
+        // 当前展示的回复list
         replyList: [],
+        // 首次初始化后获取的总回复数
         total: 0
       }
     },
@@ -55,14 +57,16 @@
         type: Object
       },
       contentBoxParam: {
-        // submit、remove、addTotal
+        // remove、addTotal
         type: Object
       }
     },
     computed: {
       param() {
-        let {remove} = this.contentBoxParam;
-        return {remove, submit: this.submit};
+        return {
+                  remove: this.remove,
+                  submit: this.submit
+                };
       },
       userInfo() {
         return this.$store.state.userInfo;
@@ -82,13 +86,9 @@
       ContentBox
     },
     methods: {
-      safeStr(id) {
-        return str(id)
-      },
       moreReply() {
         // 请求数据
         setTimeout(() => {
-          // this.changePage(1);
           this.collapse = false;
         }, 200)
       },
@@ -118,11 +118,36 @@
           }
           this.total++;
           // 外层评论总数也需要加1
-          this.contentBoxParam.updateTotal()
+          this.contentBoxParam.updateTotal(1)
           // 清空输入框内容
           clear();
           this.$Message.success('评论成功!')
         }, 200)
+      },
+
+      /**
+       * 删除当前评论
+       * @param comment
+       */
+      remove(id) {
+        if (!id) {
+          return;
+        }
+
+        if (id === this.data.id) {
+          // 需要向上删除
+          this.contentBoxParam.remove(id);
+          this.return;
+        }
+
+        // 删除掉具体的回复即可
+        let index = this.replyList.findIndex(item => item.id === id)
+        if (index !== -1) {
+          this.replyList.splice(index, 1)
+        }
+        this.total--;
+        // 外层评论总数也需要减1
+        this.contentBoxParam.updateTotal(-1)
       }
     },
     created() {

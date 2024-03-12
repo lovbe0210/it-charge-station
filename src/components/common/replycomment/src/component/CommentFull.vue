@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import { createObjectURL } from '@/utils/emoji'
+  import {createObjectURL} from '@/utils/emoji'
   import {getComment} from '@/assets/emoji/comment';
   import InputBox from './InputBox'
   import UComment from './Comment'
@@ -47,7 +47,6 @@
       },
       contentBoxParam() {
         return {
-          submit: this.submit,
           remove: this.remove,
           updateTotal: this.updateTotal
         }
@@ -80,72 +79,26 @@
         }, 200)
       },
       /**
-       * 点赞评论数组处理
-       */
-      editLikeCount(id, count) {
-        let tar = null;
-        this.commentList.forEach(v => {
-          if (v.id === id) {
-            tar = v;
-          } else {
-            tar = v.reply?.list.find(v => v.id === id);
-          }
-          if (tar && tar.likes) {
-            tar.likes += count;
-          }
-        })
-      },
-      /**
-       * 点赞事件
-       * @param id
-       */
-      like(id) {
-        // 点赞事件处理
-        const likeIds = this.config.user.likeIds
-        if (likeIds) {
-          console.log('点赞: ' + id)
-          setTimeout(() => {
-            if (likeIds.findIndex(item => item === id) === -1) {
-              // 点赞
-              likeIds.push(id)
-              this.editLikeCount(id, 1)
-            } else {
-              // 取消点赞
-              let index = likeIds.findIndex(item => item === id)
-              if (index !== -1) {
-                likeIds.splice(index, 1)
-                this.editLikeCount(id, -1)
-              }
-            }
-          }, 200)
-        }
-      },
-      /**
        * 删除当前评论
        * @param comment
        */
-      remove(comment) {
-        // 删除评论数据操作
-        const {parentId, id} = comment
-        if (parentId) {
-          let comment = this.commentList.find(item => item.id === parentId)
-          let reply = comment?.reply
-          if (reply) {
-            let index = reply.list.findIndex(item => item.id === id)
-            if (index !== -1) {
-              reply.list.splice(index, 1)
-              reply.total--
-            }
-          }
-        } else {
-          let index = this.commentList.findIndex(item => item.id === id)
-          if (index !== -1) {
-            this.commentList.splice(index, 1)
-          }
+      remove(id) {
+        if (!id) {
+          return;
+        }
+        let index = this.commentList.findIndex(item => item.id === id)
+        if (index !== -1) {
+          this.commentList.splice(index, 1);
+          this.total--;
         }
       },
-      updateTotal() {
-        this.total++;
+      /**
+       * 页面展示用的总数
+       * @param inc
+       */
+      updateTotal(inc) {
+        this.total = this.total + inc;
+        this.total = this.total < 0 ? 0 : this.total;
       }
     },
     created() {
