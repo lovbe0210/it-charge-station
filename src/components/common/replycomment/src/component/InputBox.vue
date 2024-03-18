@@ -590,7 +590,7 @@
     },
     beforeDestroy() {
       let elementById = document.getElementById("contentWrapper");
-      elementById.removeEventListener('scroll', this.changeMentionPosition);
+      elementById?.removeEventListener('scroll', this.changeMentionPosition);
     },
     directives: {
       'click-outside': {

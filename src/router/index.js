@@ -101,8 +101,8 @@ const routes = [
           {
             // 推荐专栏榜
             path: 'column',
-            name: 'SeriesColumn',
-            component: () => import('@/components/ranking/SeriesColumn')
+            name: 'RecommendColumn',
+            component: () => import('@/components/ranking/RecommendColumn')
           },
           {
             // 优质作者榜
@@ -142,6 +142,12 @@ const routes = [
             path: 'ramblyJot',
             name: 'RamblyJot',
             component: () => import('@/components/dashboard/RamblyJot')
+          },
+          {
+            // 随笔内容展示
+            path: 'ramblyJot/:rjId',
+            name: 'RamblyJotContent',
+            component: () => import('@/components/dashboard/RamblyJotContent')
           },
           {
             // 收藏

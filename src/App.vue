@@ -13,17 +13,15 @@
   import 'bootstrap/dist/css/bootstrap.css'
   import 'bootstrap-vue/dist/bootstrap-vue.css'
   // 引入ViewUI样式和组件
-  // import ViewUI from 'view-design'
   import {
     Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload, Icon,
     Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane, Time
   } from 'view-design'
-  // import 'view-design/dist/styles/iview.css'
   import './index.less'
-  import {
+/*  import {
     Tooltip, Card, Popover, Pagination, Tag, Select, Checkbox, Table, Radio, Popconfirm,
     Skeleton, Empty
-  } from 'ant-design-vue'
+  } from 'ant-design-vue'*/
   import commonUtil from "@/utils/common"
   // 引入弹幕模块
   import {vueBaberrage} from 'vue-baberrage'
@@ -52,21 +50,21 @@
   Vue.component('Tabs', Tabs);
   Vue.component('TabPane', TabPane);
   Vue.component('Time', Time);
-  Vue.component('a-radio-group', Radio.Group);
-  Vue.component('a-radio', Radio);
-  Vue.component('a-tooltip', Tooltip);
-  Vue.component('a-card', Card);
-  Vue.component('a-card-meta', Card.Meta);
-  Vue.component('a-popover', Popover);
-  Vue.component('a-pagination', Pagination);
-  Vue.component('a-tag', Tag);
-  Vue.component('a-select', Select);
-  Vue.component('a-select-option', Select.Option);
-  Vue.component('a-checkbox', Checkbox);
-  Vue.component('a-table', Table);
-  Vue.component('a-popconfirm', Popconfirm);
-  Vue.component('a-skeleton', Skeleton);
-  Vue.component('a-empty', Empty);
+  // Vue.component('a-radio-group', Radio.Group);
+  // Vue.component('a-radio', Radio);
+  // Vue.component('a-tooltip', Tooltip);
+  // Vue.component('a-card', Card);
+  // Vue.component('a-card-meta', Card.Meta);
+  // Vue.component('a-popover', Popover);
+  // Vue.component('a-pagination', Pagination);
+  // Vue.component('a-tag', Tag);
+  // Vue.component('a-select', Select);
+  // Vue.component('a-select-option', Select.Option);
+  // Vue.component('a-checkbox', Checkbox);
+  // Vue.component('a-table', Table);
+  // Vue.component('a-popconfirm', Popconfirm);
+  // Vue.component('a-skeleton', Skeleton);
+  // Vue.component('a-empty', Empty);
 
   export default {
     name: 'App',
@@ -262,7 +260,6 @@
 
   #app {
     // 全局字体
-    /*font-family: "PingFang SC", Microsoft YaHei, Helvetica, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;*/
     font-family: 'Chinese Quote', 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji';
     // 全局背景，可以是渐变色，可以是图片
     background: var(--background-color);
@@ -271,6 +268,8 @@
     background-size: cover;
     // 固定在屏幕上，不随滚动轴滚动
     background-attachment: fixed;
+    // 全局字体颜色
+    color: var(--font-color);
   }
 
   // 全局css
