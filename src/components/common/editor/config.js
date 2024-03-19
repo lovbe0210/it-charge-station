@@ -88,14 +88,13 @@ export const plugins = [
 ]
 
 export const ramblyPlugins = [
+  Undo,
   Image,
   ImageUploader,
-  Heading,
   File,
   FileUploader,
   Link,
   Tasklist,
-  CodeBlock,
   ToolbarPlugin
 ]
 

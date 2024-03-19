@@ -165,7 +165,7 @@
         rambly: {
           showTitle: false,
           title: '',
-          jsonValue: null
+          htmlValue: null
         },
         ramblyList: [
           {
@@ -247,14 +247,15 @@
         this.$refs.container.focus()
       },
       submitRambly() {
-        let jsonValue = this.engine.getJsonValue();
+        let htmlValue = this.engine.model?.toValue();
+        // 通过this.engine.model?.toText();获取纯文本
         let title;
         if (!this.rambly.showTitle) {
           title = null;
         } else {
           title = this.rambly.title.length > 0 ? this.rambly.title : null;
         }
-        console.log({jsonValue, title})
+        this.rambly = {...this.rambly, title, htmlValue};
       }
     },
     components: {

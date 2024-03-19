@@ -18,10 +18,10 @@
     Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane, Time
   } from 'view-design'
   import './index.less'
-/*  import {
+  import {
     Tooltip, Card, Popover, Pagination, Tag, Select, Checkbox, Table, Radio, Popconfirm,
     Skeleton, Empty
-  } from 'ant-design-vue'*/
+  } from 'ant-design-vue'
   import commonUtil from "@/utils/common"
   // 引入弹幕模块
   import {vueBaberrage} from 'vue-baberrage'
@@ -50,21 +50,21 @@
   Vue.component('Tabs', Tabs);
   Vue.component('TabPane', TabPane);
   Vue.component('Time', Time);
-  // Vue.component('a-radio-group', Radio.Group);
-  // Vue.component('a-radio', Radio);
-  // Vue.component('a-tooltip', Tooltip);
-  // Vue.component('a-card', Card);
-  // Vue.component('a-card-meta', Card.Meta);
-  // Vue.component('a-popover', Popover);
-  // Vue.component('a-pagination', Pagination);
-  // Vue.component('a-tag', Tag);
-  // Vue.component('a-select', Select);
-  // Vue.component('a-select-option', Select.Option);
-  // Vue.component('a-checkbox', Checkbox);
-  // Vue.component('a-table', Table);
-  // Vue.component('a-popconfirm', Popconfirm);
-  // Vue.component('a-skeleton', Skeleton);
-  // Vue.component('a-empty', Empty);
+  Vue.component('a-radio-group', Radio.Group);
+  Vue.component('a-radio', Radio);
+  Vue.component('a-tooltip', Tooltip);
+  Vue.component('a-card', Card);
+  Vue.component('a-card-meta', Card.Meta);
+  Vue.component('a-popover', Popover);
+  Vue.component('a-pagination', Pagination);
+  Vue.component('a-tag', Tag);
+  Vue.component('a-select', Select);
+  Vue.component('a-select-option', Select.Option);
+  Vue.component('a-checkbox', Checkbox);
+  Vue.component('a-table', Table);
+  Vue.component('a-popconfirm', Popconfirm);
+  Vue.component('a-skeleton', Skeleton);
+  Vue.component('a-empty', Empty);
 
   export default {
     name: 'App',

@@ -1,243 +1,116 @@
 <template>
   <div class="layout-module_RamblyJot">
-    <div :class="['rambly-module_editor', extendCurtains ? 'extend-curtains' : '']">
-      <div class="scrollbar-visible">
-        <div class="layout-mode-fixed">
-          <div class="editor-body">
-            <div class="editor-wrap" ref="scrollbarContext">
-              <div class="editor-wrap-content">
-                <div class="editor-outer-wrap-box">
-                  <div class="editor-wrap-box">
-                    <div class="title-box" v-show="rambly.showTitle">
-                      <textarea class="title" placeholder="请输入标题" maxlength="100" tabindex="1" rows="1"
-                                v-model="rambly.title" ref="titleTextarea" @keydown.enter="completeTitle">
-                      </textarea>
-                    </div>
-                    <div class="content-box">
-                      <div class="engine-box">
-                        <div class="engine">
-                          <div ref="container"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="rambly-header">
+      <span>
+        <span class="iconfont icon-more" style="transform: scaleX(-1);"></span>
+        返回
+      </span>
+    </div>
+    <div class="rambly-info">
+      <div class="content-title">
+        <h4>{{rambly.title}}</h4>
       </div>
-      <div class="curtain-operation">
-        <button class="curtain-wrap" @click="extendCurtains = !extendCurtains">
-          <span :class="['iconfont', !extendCurtains ? 'unfold' : 'shrink']"></span>
-        </button>
+      <div class="post-info">
+        撰写于: 2024-03-14 02:16:12
+        浏览: 110
+        喜欢: 1
       </div>
-      <div class="rambly-module_action">
-        <div class="toolbar-ui">
-          <div class="toolbar-wrap">
-            <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
-            <span class="title-btn" @click="addTitle">
-              <span class="iconfont add-title"></span>{{ rambly.showTitle ? '取消标题' : '插入标题' }}
-            </span>
-          </div>
-
-          <div class="rambly-module_button">
-            <button type="button" class="ant-btn" @click="submitRambly"
-                    :disabled="canSubmit">
-              <span>小记一下</span>
-            </button>
-          </div>
-        </div>
-      </div>
+    </div>
+    <div ref="view" class="rambly-content">
     </div>
   </div>
 </template>
 
 <script>
-  import Engine from '@aomao/engine'
-  import {$} from '@aomao/engine'
-  import Toolbar from 'am-editor-toolbar-vue2'
+  import { View } from '@aomao/engine'
   import {ramblyPlugins, cards, pluginConfig} from "@/components/common/editor/config"
 
   export default {
-    name: 'RamblyJot',
+    name: 'RamblyJotContent',
     data() {
       return {
-        engine: null,
-        // 工具栏内容：下拉面板、
-        items: [
-          [
-            {
-              type: "button",
-              name: "image-uploader",
-              icon: `<span class="toolbar-icon iconfont pic-upload"/><span class="toolbar-title">图片</span>`
-            },
-            {
-              name: "tasklist",
-              icon: `<span class="toolbar-icon iconfont task-list"/><span class="toolbar-title">任务</span>`,
-              title: ''
-            },
-            {
-              name: "link",
-              icon: `<span class="toolbar-icon iconfont link"/><span class="toolbar-title">链接</span>`,
-              title: ''
-            },
-            {
-              type: "button",
-              name: "file-uploader",
-              icon: `<span class="toolbar-icon iconfont attachment"/><span class="toolbar-title">附件</span>`
-            }
-          ]
-        ],
-        editorValueIsEmpty: true,
-        readmeEmpty: true,
-        extendCurtains: false,
+        view: null,
         rambly: {
-          showTitle: false,
-          title: '',
-          jsonValue: null
-        },
-        ramblyList: [
-          {
-            id: 1256668656461,
-            postDate: '1天前',
-            views: 201,
-            comments: 3,
-            title: '600条最强 Linux 命令总结',
-            content: '今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。',
-            createTime: '2024-01-31 19:02:18',
-            picList: [
-              require('@/assets/img/6.jpg')
-            ]
-          },
-          {
-            id: 1256668656465,
-            postDate: '1天前',
-            views: 201,
-            comments: 3,
-            title: null,
-            content: '今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。',
-            createTime: '2024-01-31 19:02:18',
-            picList: null
-          },
-          {
-            id: 1256668656462,
-            postDate: '2小时前',
-            views: 201,
-            comments: 3,
-            title: 'CentOS7.9中的Glibc2.17源码编译升级到Glibc2.31',
-            content: '一、引言 在Liunx系统CentOS7.9的中部署项目遇到了Glibc版本过低的问题，使用yum安装最高只能安装Glibc2.17并不能满足要求，本文介绍了如何用源码编译的方法升级Glibc的版本。',
-            createTime: '2024-01-31 19:02:18',
-            picList: [
-              require('@/assets/img/4.jpg'),
-              require('@/assets/img/5.jpg')
-            ]
-          },
-          {
-            id: 1256668656463,
-            postDate: '2024-01-11 11:32:18',
-            views: 201,
-            comments: 3,
-            title: null,
-            content: '遇到的问题：设置 backdrop-filter，Safari 浏览器首次加载没效果，通过ajax请求数据翻页之后，会出现部分高斯模糊效果无效，但是windows正常。',
-            createTime: '2024-01-31 19:02:18',
-            picList: [
-              require('@/assets/img/1.jpg'),
-              require('@/assets/img/2.jpg'),
-              require('@/assets/img/3.jpg')
-            ]
-          }
-        ]
-      }
-    },
-    computed: {
-      canSubmit() {
-        if (this.editorValueIsEmpty) {
-          return this.rambly.showTitle ? this.rambly.title.length === 0 : true;
-        } else {
-          return false;
+          title: '灵感时刻-2024-03-14 02:16:12',
+          jsonValue: "<p data-id=\"p1dr9j7ls-a0voamj9hq000\">虽然你不知道</p><ul class=\"data-list data-list-task\" data-id=\"u3zhx2ezt-kt43uk8mss000\"><li class=\"data-list-item\" data-id=\"l2wwhsngu-suzca6pzqvk0\" checked=\"true\"><card type=\"inline\" value=\"data:%7B%22id%22%3A%22dg0G9%22%2C%22type%22%3A%22inline%22%2C%22checked%22%3Atrue%7D\" name=\"checkbox\" editable=\"false\" ></card>as大师</li><li class=\"data-list-item\" data-id=\"l2zs3wsdg-5ekja1v8xqs00\"><card type=\"inline\" value=\"data:%7B%22id%22%3A%22ccmcv%22%2C%22type%22%3A%22inline%22%7D\" name=\"checkbox\" editable=\"false\" ></card>阿萨德</li></ul>"
         }
       }
     },
     methods: {
-      toolbarUI() {
-      },
-      addTitle() {
-        this.rambly.showTitle = !this.rambly.showTitle;
-        if (this.rambly.showTitle) {
-          this.$nextTick(() => {
-            this.$refs.titleTextarea.focus();
-          });
-        } else {
-          this.$refs.container.focus()
-        }
-      },
-      completeTitle(event) {
-        event.preventDefault();
-        this.$refs.container.focus()
-      },
-      submitRambly() {
-        let jsonValue = this.engine.getJsonValue();
-        let title;
-        if (!this.rambly.showTitle) {
-          title = null;
-        } else {
-          title = this.rambly.title.length > 0 ? this.rambly.title : null;
-        }
-        console.log({jsonValue, title})
-      }
-    },
-    components: {
-      Toolbar
     },
     mounted() {
-      pluginConfig.link = {hotkey: {key: ""}};
-      pluginConfig.tasklist = {hotkey: {key: ""}};
-      pluginConfig.heading = {hotkey: {key: ""}};
-      const container = this.$refs.container;
+      const container = this.$refs.view;
       if (container) {
         //实例化引擎
-        const engine = new Engine(container, {
-          // 启用插件
+        const view = new View(container, {
+          // 启用插件 TODO 注意插件的key必须是 plugins
           plugins: ramblyPlugins,
           // 启用卡片
           cards,
           // 所有的插件配置
           config: pluginConfig,
-          autoPrepend: false,
-          markdown: false,
-          // 文档提示语
-          placeholder: '记你想记...'
+          readonly: true
         });
-        // 设置显示成功消息UI，默认使用 console.log
-        engine.messageSuccess = (msg) => {
-          console.log(msg);
-        };
-        // 设置显示错误消息UI，默认使用 console.error
-        engine.messageError = (error) => {
-          console.log(error);
-        };
-        //卡片最大化时设置编辑页面样式
-        engine.on("card:maximize", () => {
-          $(".editor-toolbar").css("z-index", "9999").css("top", "0");
-          $(".card-maximize-header").css("height", "60px");
-          // $(".editor-toolbar").css("z-index", "9999");
-        });
-        engine.on("card:minimize", () => {
-          $(".editor-toolbar").css("z-index", "").css("top", "");
-        });
-
-        // 监听编辑器值改变事件
-        engine.on("change", () => {
-          this.editorValueIsEmpty = engine.isEmpty();
-        });
-
-        this.engine = engine;
+        if (this.rambly.jsonValue?.length !== 0) {
+          view.render(this.rambly.jsonValue, true)
+        }
+        this.view = view;
       }
     }
   }
 </script>
 
 <style scoped lang="less">
-  @import "../css/dashboard/ramblyJot.less";
+  .layout-module_RamblyJot {
+    width: 100%;
+    height: 100%;
+    padding: 0 40px 10px;
+
+    .rambly-header {
+      margin: 30px 30px 0;
+      display: flex;
+      height: 32px;
+      justify-content: space-between;
+      align-items: center;
+      font-style: normal;
+    }
+
+    .rambly-info {
+      margin: 25px 50px 0;
+      padding-bottom: 15px;
+      position: relative;
+      max-width: 100%;
+    }
+
+    .rambly-content {
+      height: calc(~"75vh");
+    }
+  }
+
+  // 第三方插件样式覆盖
+  /deep/.am-engine>:not(p) {
+    margin: 15px 0;
+  }
+
+  /deep/.am-engine>p {
+    margin: 8px 0;
+  }
+
+  /deep/.am-engine>ul {
+    margin: 8px 0;
+    li {
+      margin: 8px 0;
+    }
+    li:not(.data-list-item) {
+      margin: 8px 0  8px 15px;
+    }
+  }
+
+  /deep/.am-engine>ol {
+    margin: 8px 0;
+    li {
+      margin: 8px 0 8px 25px;
+    }
+  }
+
 </style>

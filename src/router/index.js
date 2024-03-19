@@ -325,7 +325,13 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  // 滚动条行为
+  scrollBehavior(to, from, savePosition) {
+    if (to.fullPath?.includes('/dashboard')) {
+      return {y: 0}
+    }
+  }
 })
 
 // router.afterEach((to, from) => {
