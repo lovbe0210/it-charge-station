@@ -77,7 +77,7 @@
 </template>
 
 <script>
-  import { isEmpty } from '@/utils/emoji'
+  import {isEmpty} from '@/utils/emoji'
   import emoji from '@/assets/emoji/emoji.js';
   import MentionList from './MentionList'
   import EmojiSelector from "./EmojiSelector";
@@ -463,6 +463,9 @@
       },
       changeMentionPosition() {
         let scrollBox = document.getElementById("contentWrapper");
+        if (!scrollBox) {
+          scrollBox = document.scrollingElement;
+        }
         this.scHeight = scrollBox?.scrollTop;
       },
       mentionSearch(searchStr) {
@@ -578,7 +581,11 @@
     mounted() {
       this.editorRef = this.$refs.editorRef;
       let elementById = document.getElementById("contentWrapper");
-      elementById.addEventListener('scroll', this.changeMentionPosition, true);
+      if (elementById) {
+        elementById.addEventListener('scroll', this.changeMentionPosition, true);
+      } else {
+        document.addEventListener('scroll', this.changeMentionPosition, true);
+      }
 
       if (!this.cancelBtn) {
         // 楼中楼
@@ -590,7 +597,11 @@
     },
     beforeDestroy() {
       let elementById = document.getElementById("contentWrapper");
-      elementById?.removeEventListener('scroll', this.changeMentionPosition);
+      if (elementById) {
+        elementById.removeEventListener('scroll', this.changeMentionPosition);
+      } else {
+        document.removeEventListener('scroll', this.changeMentionPosition);
+      }
     },
     directives: {
       'click-outside': {

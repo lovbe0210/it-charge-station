@@ -11,10 +11,14 @@
       <div class="post-info">
         撰写于: 2024-03-14 02:16:12&nbsp;
         浏览: 110&nbsp;
-        喜欢: 1
+        评论: 1
       </div>
     </div>
     <div ref="view" class="rambly-content">
+    </div>
+    <!-- 评论 -->
+    <div class="">
+      <reply-comment/>
     </div>
   </div>
 </template>
@@ -22,6 +26,7 @@
 <script>
   import { View } from '@aomao/engine'
   import {ramblyPlugins, cards, pluginConfig} from "@/components/common/editor/config"
+  import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
 
   export default {
     name: 'RamblyJotContent',
@@ -35,6 +40,9 @@
       }
     },
     methods: {
+    },
+    components: {
+      ReplyComment
     },
     mounted() {
       const container = this.$refs.view;
@@ -60,9 +68,9 @@
 
 <style scoped lang="less">
   .layout-module_RamblyJot {
-    height: 100%;
-    padding: 0 40px 10px;
-    margin: 30px 30px 0;
+    /*height: 100%;*/
+    padding: 0 40px 5px;
+    margin: 35px 30px 0;
 
     .rambly-header {
       width: 60px;
@@ -79,8 +87,8 @@
     }
 
     .rambly-info {
-      margin-top: 15px;
-      padding-bottom: 15px;
+      margin-top: 10px;
+      padding-bottom: 10px;
       position: relative;
       max-width: 100%;
 
@@ -97,7 +105,6 @@
 
     .rambly-content {
       margin-top: 10px;
-      height: calc(~"75vh");
     }
   }
 
