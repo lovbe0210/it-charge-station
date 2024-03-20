@@ -28,8 +28,8 @@
   }
 
   .rambly-module_editor {
-    margin: 25px 50px 0;
-    padding-bottom: 15px;
+    margin: 25px 30px 0;
+    padding: 10px 0 15px 10px ;
     position: relative;
     height: calc(~"20vh");
     max-width: 100%;
@@ -69,7 +69,7 @@
               .editor-wrap-box {
                 .title-box {
                   position: relative;
-                  padding: 15px 35px 0;
+                  padding: 15px 45px 0 35px;
                   margin: 0 auto;
                   font-family: Chinese Quote, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji;
                   position: relative;
@@ -131,7 +131,7 @@
                     overflow-anchor: none;
 
                     .engine {
-                      padding: 15px 35px 0;
+                      padding: 15px 45px 0 35px;
                       position: relative;
                       z-index: 1;
                       outline: none;
@@ -299,7 +299,7 @@
 
     .rambly-item {
       border-radius: 6px;
-      padding: 30px;
+      padding: 30px 0;
 
       a {
         text-decoration: none;
@@ -472,73 +472,21 @@
 }
 
 // 第三方插件样式覆盖
-/*/deep/ .data-link-editor {
-  p {
-    .ant-input:focus {
-      border-color: #00AE9D;
-      box-shadow: none !important;
-    }
-    .ant-input:hover {
-      border-color: #00AE9D;
-    }
-  }
-}
-
-/deep/ .data-toolbar-group .table-color-dropdown-trigger {
-  button {
-    height: 28px;
-    display: flex;
-    align-items: center;
-  }
-}
-
-/deep/ .data-toolbar-group .data-toolbar-item {
-  .data-toolbar-btn {
-    justify-content: center;
-  }
-}
-
 /deep/.am-engine>:not(p) {
-  margin: 15px 0;
-}*/
+  margin: 12px 0;
+}
 
-///deep/.am-engine>p {
-//  margin: 8px 0;
-//}
+/deep/.am-engine>p {
+  margin: 4px 0;
+}
 
-/*/deep/.am-engine>ul {
-  margin: 8px 0;
+/deep/.am-engine>ul {
+  margin: 4px 0;
   li {
-    margin: 8px 0;
+    margin-top: 4px;
+    margin-bottom: 4px;
   }
   li:not(.data-list-item) {
-    margin: 8px 0  8px 15px;
+    margin: 4px 0  4px 15px;
   }
 }
-
-/deep/.am-engine>ol {
-  margin: 8px 0;
-  li {
-    margin: 8px 0 8px 25px;
-  }
-}
-
-/deep/.am-engine>h2 {
-  margin: 13px 0;
-}
-
-/deep/.am-engine>h3 {
-  margin: 11px 0;
-}
-
-/deep/.am-engine>h4 {
-  margin: 9px 0;
-}
-
-/deep/.am-engine>h5 {
-  margin: 8px 0;
-}
-
-/deep/.am-engine>h6 {
-  margin: 8px 0;
-}*/

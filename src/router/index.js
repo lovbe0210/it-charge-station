@@ -327,10 +327,21 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
   // 滚动条行为
-  scrollBehavior(to, from, savePosition) {
-    if (to.fullPath?.includes('/dashboard')) {
-      return {y: 0}
+  scrollBehavior(to, from, position) {
+    if (from.fullPath?.includes('/dashboard/ramblyJot/') && to.fullPath === '/dashboard/ramblyJot') {
+      return position;
+    } else {
+      if (to.fullPath?.includes('/dashboard')) {
+        return {y: 0}
+      }
     }
+
+
+    /*if (!(from.fullPath?.includes('/dashboard/ramblyJot/') && to.fullPath === '/dashboard/ramblyJot')) {
+      if (to.fullPath?.includes('/dashboard')) {
+        return {y: 0}
+      }
+    }*/
   }
 })
 
