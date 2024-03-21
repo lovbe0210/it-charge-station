@@ -15,11 +15,11 @@
   // 引入ViewUI样式和组件
   import {
     Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload, Icon,
-    Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane, Time
+    Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane, Time, Table
   } from 'view-design'
   import './index.less'
   import {
-    Tooltip, Card, Popover, Pagination, Tag, Select, Checkbox, Table, Radio, Popconfirm,
+    Tooltip, Card, Popover, Pagination, Tag, Select, Checkbox, Radio, Popconfirm,
     Skeleton, Empty
   } from 'ant-design-vue'
   import commonUtil from "@/utils/common"
@@ -50,6 +50,7 @@
   Vue.component('Tabs', Tabs);
   Vue.component('TabPane', TabPane);
   Vue.component('Time', Time);
+  Vue.component('Table', Table);
   Vue.component('a-radio-group', Radio.Group);
   Vue.component('a-radio', Radio);
   Vue.component('a-tooltip', Tooltip);
@@ -61,7 +62,6 @@
   Vue.component('a-select', Select);
   Vue.component('a-select-option', Select.Option);
   Vue.component('a-checkbox', Checkbox);
-  Vue.component('a-table', Table);
   Vue.component('a-popconfirm', Popconfirm);
   Vue.component('a-skeleton', Skeleton);
   Vue.component('a-empty', Empty);

@@ -41,7 +41,7 @@
         }
 
         /deep/ .ivu-input:hover, /deep/ .ivu-input:focus {
-          border-color: #00B96B;
+          //border-color: #00B96B;
           outline: 0;
           box-shadow: none;
         }
@@ -64,7 +64,7 @@
           background: #FFFFFF;
           border-radius: 5px;
 
-          .order {
+          .filter {
             color: #262626;
           }
         }
@@ -78,6 +78,7 @@
 
           .ivu-dropdown-item {
             display: flex;
+            justify-content: center;
 
             color: #262626;
             font-size: 14px !important;
@@ -97,18 +98,45 @@
     overflow: hidden;
 
     .marks-group {
-      height: 100%;
+      height: calc(~"100vh - 240px");
       overflow: auto;
-      width: 235px;
-      min-width: 235px;
+      width: 160px;
+      min-width: 160px;
       border-right: 1px solid rgba(0,0,0,0.04);
-      padding: 0 12px 20px 32px;
+      padding: 0 12px 20px 0;
       margin-top: 20px;
+
+      .mark-item {
+        height: 74px;
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 4px;
+        cursor: pointer;
+
+        .mark-name {
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          color: #262626;
+          font-weight: 500;
+        }
+
+        .mark-action-count {
+          font-size: 12px;
+          color: #8A8F8D;
+          margin-top: 12px;
+        }
+      }
+
+      .active {
+        background: #eff0f0;
+      }
     }
 
     .marks-list {
       margin-bottom: 0!important;
-      padding: 20px 24px;
+      padding: 20px 10px;
       width: 100%;
       overflow-y: auto;
       height: 100%;
