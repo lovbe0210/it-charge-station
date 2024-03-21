@@ -68,13 +68,9 @@
 
 <style scoped lang="less">
   .layout-module_RamblyJot {
-    /*height: 100%;*/
-    padding: 0 40px 5px;
-    margin: 35px 30px 0;
 
     .rambly-header {
       width: 60px;
-      margin-top: 30px;
       height: 32px;
       line-height: 16px;
       font-size: 15px;

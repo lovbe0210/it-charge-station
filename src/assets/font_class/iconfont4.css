@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_6g3ltvyinvv.woff2?t=1710942246340') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_s1kq5xe7rni.woff2?t=1711022436492') format('woff2');
 }
 
 .iconfont {
@@ -8,6 +8,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.filter:before {
+  content: "\e622";
 }
 
 .return:before {

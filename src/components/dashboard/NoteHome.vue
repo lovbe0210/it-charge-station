@@ -78,9 +78,6 @@
         </div>
         <div class="index-module_rightToolBar">
           <div class="note-list-toolbar">
-            <div class="edit-btn" @click="routeNavigate('edit', noteItem.id)">
-              <span class="iconfont bianji"></span>
-            </div>
             <div class="menu-btn-wrapp">
               <Dropdown placement="bottom-end">
                 <a href="javascript:void(0)">
@@ -94,7 +91,6 @@
                   <DropdownItem>分享至动态</DropdownItem>
                   <DropdownItem>移动至专题</DropdownItem>
                   <DropdownItem>添加标签</DropdownItem>
-                  <DropdownItem>查看历史</DropdownItem>
                   <DropdownItem>删除</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
