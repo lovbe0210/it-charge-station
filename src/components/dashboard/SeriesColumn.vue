@@ -52,7 +52,7 @@
         <div class="column-card-body" :style="columnShowType == 1 ? 'border-radius: 0 0 8px 8px;border-top: 0;' : 'border-radius: 8px;'">
           <div class="column-meta">
             <div class="card-meta-title">
-              <a href="/lovbe0210/pb2d66" class="book-link" target="_self">
+              <a href="/column/pb2d66" class="book-link" target="_self">
                 <span class="lark-book-title">
                   <span class="book-name">
                     <span class="book-name-text">{{columnItem.columnName}}</span>
@@ -91,7 +91,7 @@
           <div v-else>
             <ul class="column-article" v-if="columnShowType == 2">
               <li>
-                <a target="_blank" href="/lovbe0210/pb2d66/vv91fhpithr0t7sl" title="it充电站系统架构图"
+                <a target="_blank" href="/column/pb2d66/vv91fhpithr0t7sl" title="it充电站系统架构图"
                    class="column-summary-item">
                   <span class="column-summary-itemText">it充电站系统架构图a架构图啊真的是吗</span>
                   <span class="column-summary-itemTime">
@@ -100,7 +100,7 @@
                 </a>
               </li>
               <li>
-                <a target="_blank" href="/lovbe0210/pb2d66/vv91fhpithr0t7sl" title="决策指挥大屏系统V4.30数据同步"
+                <a target="_blank" href="/column/pb2d66/vv91fhpithr0t7sl" title="决策指挥大屏系统V4.30数据同步"
                    class="column-summary-item">
                   <span class="column-summary-itemText">决策指挥大屏系统V4.30数据同步</span>
                   <span class="column-summary-itemTime">
@@ -108,7 +108,7 @@
                 </span>
                 </a>
               <li>
-                <a target="_blank" href="/lovbe0210/pb2d66/vv91fhpithr0t7sl" title="初识Vue"
+                <a target="_blank" href="/column/pb2d66/vv91fhpithr0t7sl" title="初识Vue"
                    class="column-summary-item">
                   <span class="column-summary-itemText">初识Vue</span>
                   <span class="column-summary-itemTime">

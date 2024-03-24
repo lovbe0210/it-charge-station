@@ -48,7 +48,7 @@
                 <span class="search-hot-key">Ctrl + J</span>
               </div>
             </div>
-            <div class="home-nav" v-if="domain !== undefined && columnId !== undefined"
+            <div class="home-nav" v-if="columnId !== undefined"
                  @click="routeNavigate('columnIndex')">
               <span class="iconfont icon-nav-home"></span>
               <span>专栏首页</span>
@@ -326,14 +326,14 @@
         view: null
       }
     },
-    props: ['domain', 'columnId', 'articleId'],
+    props: ['columnId', 'articleId'],
     computed: {
       // 自适应内容界面的宽度
       adaptiveContentWidth() {
         return 'calc(100vw - ' + (this.sidebarWidth) + 'px)'
       },
       isColumnView() {
-        return this.domain !== undefined && this.columnId !== undefined;
+        return this.columnId !== undefined;
       }
     },
     methods: {
@@ -426,12 +426,12 @@
       routeNavigate(routeParam) {
         if (routeParam === 'columnIndex') {
           // 专栏首页
-          this.$router.push({path: '/' + this.domain + '/' + this.columnId});
+          this.$router.push({path: '/column/' + this.columnId});
         } else {
           // 文章页面需要判断是专栏页面还是普通页面
-          if (this.domain !== undefined && this.columnId !== undefined) {
+          if (this.columnId !== undefined) {
             // 专栏页面
-            this.$router.push({path: '/' + this.domain + '/' + this.columnId + '/' + routeParam});
+            this.$router.push({path: '/column/' + this.columnId + '/' + routeParam});
           } else {
             // 普通页面
             this.$router.push({path: '/article/' + routeParam});

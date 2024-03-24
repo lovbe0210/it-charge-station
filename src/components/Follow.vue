@@ -105,7 +105,7 @@
           },
           {
             id: '005',
-            avatar: 'https://tva3.sinaimg.cn/large/718153f4gy1gy47gg8nutj20m80m8te2.jpg',
+            avatar: 'https://image.baidu.com/search/down?url=https://tvax1.sinaimg.cn/large/006BNqYCly1hnp2j1mz4yj30k00tzdli.jpg',
             nickName: 'lovbe0210'
           },
           {

@@ -293,7 +293,7 @@ const routes = [
   },
   {
     // 阅读中心/专栏文章
-    path: '/:domain/:columnId',
+    path: '/column/:columnId',
     name: 'ReadCenter',
     props: true,
     component: () => import('@/views/ReadCenter'),
@@ -335,13 +335,6 @@ const router = new VueRouter({
         return {y: 0}
       }
     }
-
-
-    /*if (!(from.fullPath?.includes('/dashboard/ramblyJot/') && to.fullPath === '/dashboard/ramblyJot')) {
-      if (to.fullPath?.includes('/dashboard')) {
-        return {y: 0}
-      }
-    }*/
   }
 })
 

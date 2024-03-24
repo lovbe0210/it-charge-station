@@ -62,7 +62,7 @@
             <Dropdown placement="bottom" @on-click="routeNavigate">
               <a href="javascript:void(0)">
                 <div class="avatar-wrapper">
-                  <b-avatar size="40px" src="https://tva3.sinaimg.cn/large/718153f4gy1gy47gg8nutj20m80m8te2.jpg"
+                  <b-avatar size="40px" src="https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hnvzo7s0f8j30k00tztdi.jpg"
                             href="javascript:void(0)">
                     <span v-if="0" class="iconfont icon-avatar-man" style="font-size:1.8rem;"></span>
                   </b-avatar>
