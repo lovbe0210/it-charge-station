@@ -163,13 +163,6 @@ const routes = [
             component: () => import('@/components/dashboard/Relational')
           },
           {
-            // 关注/粉丝
-            path: 'relational/:relational',
-            name: 'Relational',
-            props: true,
-            component: () => import('@/components/dashboard/Relational')
-          },
-          {
             // 数据中心
             path: 'stats',
             name: 'Stats',

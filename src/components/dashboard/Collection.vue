@@ -130,7 +130,7 @@
         ],
         // 收藏类型 1文章 2专栏
         collectList: [
-        /*  {
+          {
             id: 12345,
             name: '系统架构图',
             type: 1,
@@ -179,7 +179,7 @@
             columnId: 2323,
             columnName: 'Java开发技术手册',
             collectTime: 1711120838000
-          }*/
+          }
         ],
         tableHeader: [
           {

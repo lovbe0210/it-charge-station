@@ -49,11 +49,11 @@
               收藏
             </div>
           </div>
-          <div :class="['menu-item', activeMenu === 'concern' ? 'active-menu' : '']"
-               @click="routeNavigate('concern')">
+          <div :class="['menu-item', activeMenu === 'follow' ? 'active-menu' : '']"
+               @click="routeNavigate('follow')">
             <div class="light"></div>
             <div class="item">
-              <span class="iconfont icon-like-no"></span>
+              <span class="iconfont follow"></span>
               关注
             </div>
           </div>
@@ -61,7 +61,7 @@
                @click="routeNavigate('fans')">
             <div class="light"></div>
             <div class="item">
-              <span class="iconfont icon-fans" style="font-size: 17px;"></span>
+              <span class="iconfont fans" style="font-size: 17px;"></span>
               粉丝
             </div>
           </div>
@@ -90,12 +90,10 @@
     <div class="layout-module_dashboardContent enable-background">
       <router-view></router-view>
     </div>
-<!--    <back-top :immediate="true" :customHeight="300"></back-top>-->
   </div>
 </template>
 
 <script>
-  // import BackTop from '@/components/common/BackTop';
   export default {
     name: 'Dashboard',
     beforeRouteEnter(from, to, next) {
@@ -115,9 +113,6 @@
         needFixed: false,
         fixedHeight: 77
       }
-    },
-    components: {
-      // BackTop
     },
     watch: {
       $route(to) {
@@ -144,8 +139,8 @@
        */
       routeNavigate(itemName) {
         this.activeMenu = itemName;
-        if (itemName === 'concern') {
-          this.$router.push({path: '/dashboard/relational/concern'})
+        if (itemName === 'follow') {
+          this.$router.push({path: '/dashboard/relational/follow'})
         } else if (itemName === 'fans') {
           this.$router.push({path: '/dashboard/relational/fans'})
         } else {
