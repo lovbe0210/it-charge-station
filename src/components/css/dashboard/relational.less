@@ -40,6 +40,15 @@
           font-weight: 700;
         }
       }
+
+      .head-input-search {
+        /deep/.ivu-input-prefix {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #262626;
+        }
+      }
     }
   }
 
@@ -71,6 +80,7 @@
         tr {
           td {
             height: 60px;
+
             .ivu-table-cell {
               color: #585A5A;
 
@@ -118,7 +128,7 @@
 
     /deep/ .ivu-table-tip {
       overflow-x: hidden;
-      margin-top: 50px;
+      margin: 50px 0;
 
       table > tbody > tr > td {
         border: unset;
