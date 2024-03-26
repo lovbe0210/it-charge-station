@@ -1,14 +1,11 @@
 <template>
   <div class="layout-module_grade" ref="tooltipContainer">
-    <div id="main-right-content" class="layout-module_MainContent">
-      <div class="layout-module_MainContentChildren">
-        <div class="main-container grade-incentive">
-          <h1 class="setting-title">账户管理</h1>
-          <div class="layout-module_level layout-module_item">
-            <div class="level-module_nickName">
-              <span class="nick-name">布衣草人</span>
-            </div>
-            <div class="level-module_experienceBar">
+    <h1 class="setting-title">账号等级</h1>
+    <div class="layout-module_level layout-module_item">
+      <div class="level-module_nickName">
+        <span class="nick-name">布衣草人</span>
+      </div>
+      <div class="level-module_experienceBar">
               <span class="experience-bar-body">
                   <div class="progressBar">
                     <span class="experience-bar-level">LV5</span>
@@ -23,122 +20,122 @@
                     <i class="max-num">28800</i>
                   </span>
               </span>
+      </div>
+    </div>
+    <h1 class="setting-title">每日奖励</h1>
+    <div class="layout-module_dailyReward layout-module_item">
+      <div class="dailyReward-module_exp">
+        <div class="daily-exp-item">
+          <div class="daily-exp-box">
+            <span class="iconfont icon-exp-complete"></span>
+            <p class="daily-exp-info">每日登录</p>
+            <p class="daily-exp-getexp">5经验值到手</p>
+            <div class="h-line"></div>
+          </div>
+        </div>
+        <div class="daily-exp-item">
+          <div class="daily-exp-box">
+            <span class="iconfont icon-exp-complete"></span>
+            <p class="daily-exp-info">每日浏览文章</p>
+            <p class="daily-exp-getexp">5经验值到手</p>
+            <div class="h-line"></div>
+          </div>
+        </div>
+        <div class="daily-exp-item">
+          <div class="daily-exp-box">
+            <span class="iconfont icon-dengdai-copy"></span>
+            <p class="daily-exp-info">每日写作</p>
+            <p class="daily-exp-none">已获得0/10</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h1 class="setting-title">充电激励</h1>
+    <div class="layout-module_chargeIncentive layout-module_item">
+      <div class="chargeIncentive-module_wrapper">
+        <img :src="require('@/assets/img/charge.jpg')" class="charge-incentive-left-img">
+        <div class="charge-incentive-content">
+          <p class="charge-incentive-title">
+            已获得
+            <span class="charge-incentive-count">142</span>
+            节电池
+          </p>
+          <p class="charge-incentive-tip">
+            电池可通过收获文档点赞等方式获得，积累电池可兑换相应权益
+          </p>
+        </div>
+      </div>
+    </div>
+    <h1 class="setting-title">获取规则</h1>
+    <div class="layout-module_acquireRule">
+      <ul class="acquire-rule-wrapper">
+        <li class="acquire-rule-wrapper-item-wrapper">
+          <div class="acquire-rule-item">
+            <span class="acquire-rule-text">创建 1 篇文档</span>
+            <span class="acquire-rule-count">
+                      电池 +3 <span class="iconfont icon-battery"/>
+                    </span>
+          </div>
+        </li>
+        <li class="acquire-rule-wrapper-item-wrapper">
+          <div class="acquire-rule-item">
+            <span class="acquire-rule-text">文档获得 1 个赞</span>
+            <span class="acquire-rule-count">
+                      电池 +3 <span class="iconfont icon-battery"/>
+                    </span>
+          </div>
+        </li>
+        <li class="acquire-rule-wrapper-item-wrapper">
+          <div class="acquire-rule-item">
+            <span class="acquire-rule-text">文档获得 1 次精选</span>
+            <span class="acquire-rule-count">
+                      电池 +3 <span class="iconfont icon-battery"/>
+                    </span>
+          </div>
+        </li>
+        <li class="acquire-rule-wrapper-item-wrapper">
+          <div class="acquire-rule-item">
+            <span class="acquire-rule-text">评论 1 篇文档</span>
+            <span class="acquire-rule-count">
+                      电池 +3 <span class="iconfont icon-battery"/>
+                    </span>
+          </div>
+        </li>
+        <li class="acquire-rule-wrapper-item-wrapper">
+          <div class="acquire-rule-item">
+            <span class="acquire-rule-text">关注 1 个用户</span>
+            <span class="acquire-rule-count">
+                      电池 +3 <span class="iconfont icon-battery"/>
+                    </span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <h1 class="setting-title points">积分权益</h1>
+    <Tabs class="layout-module_pointsHistory layout-module_item" value="">
+      <TabPane label="积分记录" name="pointsHistory">
+        <div class="points-history">
+          <div class="history-list-header">
+            <div class="list-row">
+              <div class="list-col list-col-14">操作</div>
+              <div class="list-col list-col-6">时间</div>
+              <div class="list-col list-col-3 list-module_tr">电池数</div>
             </div>
           </div>
-          <h1 class="setting-title">每日奖励</h1>
-          <div class="layout-module_dailyReward layout-module_item">
-            <div class="dailyReward-module_exp">
-              <div class="daily-exp-item">
-                <div class="daily-exp-box">
-                  <span class="iconfont icon-exp-complete"></span>
-                  <p class="daily-exp-info">每日登录</p>
-                  <p class="daily-exp-getexp">5经验值到手</p>
-                  <div class="h-line"></div>
-                </div>
-              </div>
-              <div class="daily-exp-item">
-                <div class="daily-exp-box">
-                  <span class="iconfont icon-exp-complete"></span>
-                  <p class="daily-exp-info">每日浏览文章</p>
-                  <p class="daily-exp-getexp">5经验值到手</p>
-                  <div class="h-line"></div>
-                </div>
-              </div>
-              <div class="daily-exp-item">
-                <div class="daily-exp-box">
-                  <span class="iconfont icon-dengdai-copy"></span>
-                  <p class="daily-exp-info">每日写作</p>
-                  <p class="daily-exp-none">已获得0/10</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <h1 class="setting-title">充电激励</h1>
-          <div class="layout-module_chargeIncentive layout-module_item">
-            <div class="chargeIncentive-module_wrapper">
-              <img :src="require('@/assets/img/charge.jpg')" class="charge-incentive-left-img">
-              <div class="charge-incentive-content">
-                <p class="charge-incentive-title">
-                  已获得
-                  <span class="charge-incentive-count">142</span>
-                  节电池
-                </p>
-                <p class="charge-incentive-tip">
-                  电池可通过收获文档点赞等方式获得，积累电池可兑换相应权益
-                </p>
-              </div>
-            </div>
-          </div>
-          <h1 class="setting-title">获取规则</h1>
-          <div class="layout-module_acquireRule">
-            <ul class="acquire-rule-wrapper">
-              <li class="acquire-rule-wrapper-item-wrapper">
-                <div class="acquire-rule-item">
-                  <span class="acquire-rule-text">创建 1 篇文档</span>
-                  <span class="acquire-rule-count">
-                      电池 +3 <span class="iconfont icon-battery"/>
-                    </span>
-                </div>
-              </li>
-              <li class="acquire-rule-wrapper-item-wrapper">
-                <div class="acquire-rule-item">
-                  <span class="acquire-rule-text">文档获得 1 个赞</span>
-                  <span class="acquire-rule-count">
-                      电池 +3 <span class="iconfont icon-battery"/>
-                    </span>
-                </div>
-              </li>
-              <li class="acquire-rule-wrapper-item-wrapper">
-                <div class="acquire-rule-item">
-                  <span class="acquire-rule-text">文档获得 1 次精选</span>
-                  <span class="acquire-rule-count">
-                      电池 +3 <span class="iconfont icon-battery"/>
-                    </span>
-                </div>
-              </li>
-              <li class="acquire-rule-wrapper-item-wrapper">
-                <div class="acquire-rule-item">
-                  <span class="acquire-rule-text">评论 1 篇文档</span>
-                  <span class="acquire-rule-count">
-                      电池 +3 <span class="iconfont icon-battery"/>
-                    </span>
-                </div>
-              </li>
-              <li class="acquire-rule-wrapper-item-wrapper">
-                <div class="acquire-rule-item">
-                  <span class="acquire-rule-text">关注 1 个用户</span>
-                  <span class="acquire-rule-count">
-                      电池 +3 <span class="iconfont icon-battery"/>
-                    </span>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <h1 class="setting-title points">积分权益</h1>
-          <Tabs class="layout-module_pointsHistory layout-module_item" value="">
-            <TabPane label="积分记录" name="pointsHistory">
-              <div class="points-history">
-                <div class="history-list-header">
-                  <div class="list-row">
-                    <div class="list-col list-col-14">操作</div>
-                    <div class="list-col list-col-6">时间</div>
-                    <div class="list-col list-col-3 list-module_tr">电池数</div>
-                  </div>
-                </div>
-                <div class="history-list-container">
-                  <ul class="history-list-items">
-                    <li class="history-list-item" v-for="pointsGetItem in pointsHistory.list" :key="pointsGetItem.id">
-                      <div class="list-row">
-                        <div class="list-col list-col-14">
-                          <p class="list-module_operate">
-                            {{
-                              pointsGetItem.operateType === 1 ? '创建了文档' :
-                              pointsGetItem.operateType === 2 ? '关注了' :
-                              pointsGetItem.operateType === 3 ? '获得一个赞' :
-                              pointsGetItem.operateType === 4 ? '获得一条评论' :
-                              pointsGetItem.operateType === 5 ? '入选精选推荐' : ''
-                              }}
-                            <span class="list-module_content">
+          <div class="history-list-container">
+            <ul class="history-list-items">
+              <li class="history-list-item" v-for="pointsGetItem in pointsHistory.list" :key="pointsGetItem.id">
+                <div class="list-row">
+                  <div class="list-col list-col-14">
+                    <p class="list-module_operate">
+                      {{
+                      pointsGetItem.operateType === 1 ? '创建了文档' :
+                      pointsGetItem.operateType === 2 ? '关注了' :
+                      pointsGetItem.operateType === 3 ? '获得一个赞' :
+                      pointsGetItem.operateType === 4 ? '获得一条评论' :
+                      pointsGetItem.operateType === 5 ? '入选精选推荐' : ''
+                      }}
+                      <span class="list-module_content">
                                 <span v-if="pointsGetItem.operateType === 2">
                                   <a :href="'/' + pointsGetItem.userDomain" target="_blank" class="doc-link"
                                      :title="pointsGetItem.content">
@@ -153,45 +150,42 @@
                                   》
                                 </span>
                               </span>
-                          </p>
-                        </div>
-                        <div class="list-col list-col-6">
-                          2023-08-09 09:29
-                        </div>
-                        <div class="list-col list-col-3">
-                          <p class="list-module_tr">
-                            +3<span class="iconfont icon-battery"></span>
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
+                    </p>
+                  </div>
+                  <div class="list-col list-col-6">
+                    2023-08-09 09:29
+                  </div>
+                  <div class="list-col list-col-3">
+                    <p class="list-module_tr">
+                      +3<span class="iconfont icon-battery"></span>
+                    </p>
+                  </div>
                 </div>
-                <div class="history-list-pageHolder">
-                  <a-pagination :default-current="pageHolder.current"
-                                :page-size="pageHolder.pageSize"
-                                :page-size-options="pageHolder.pageSizeOptions"
-                                :total="pageHolder.total"
-                                :show-total="total => `总共 ${total} 条`"
-                                show-size-changer
-                                @showSizeChange="onShowSizeChange"
-                                @change="onChange">
-                    <template slot="buildOptionText" slot-scope="props">
-                      <span>{{ props.value }}条/页</span>
-                    </template>
-                  </a-pagination>
-                </div>
-              </div>
-            </TabPane>
-            <TabPane label="权益兑换" name="pointsRedemption">
-              <div class="points-redemption">
-                <span>敬请期待</span>
-              </div>
-            </TabPane>
-          </Tabs>
+              </li>
+            </ul>
+          </div>
+          <div class="history-list-pageHolder">
+            <a-pagination :default-current="pageHolder.current"
+                          :page-size="pageHolder.pageSize"
+                          :page-size-options="pageHolder.pageSizeOptions"
+                          :total="pageHolder.total"
+                          :show-total="total => `总共 ${total} 条`"
+                          show-size-changer
+                          @showSizeChange="onShowSizeChange"
+                          @change="onChange">
+              <template slot="buildOptionText" slot-scope="props">
+                <span>{{ props.value }}条/页</span>
+              </template>
+            </a-pagination>
+          </div>
         </div>
-      </div>
-    </div>
+      </TabPane>
+      <TabPane label="权益兑换" name="pointsRedemption">
+        <div class="points-redemption">
+          <span>敬请期待</span>
+        </div>
+      </TabPane>
+    </Tabs>
   </div>
 </template>
 

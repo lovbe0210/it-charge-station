@@ -1,471 +1,458 @@
 .layout-module_grade {
-  max-width: 1080px;
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
 
-  .layout-module_MainContent {
-    width: 100%;
-    overflow-y: auto;
-    padding-top: 0;
+  .setting-title {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 500;
+    color: #262626;
+    position: sticky;
+    background-color: #ffffff;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    margin: 0px;
+    text-align: inherit;
+  }
 
-    .layout-module_MainContentChildren {
-      min-height: calc(~"100vh - 108px");
+  .setting-title:not(:first-child) {
+    padding: 40px 0 30px 0;
+  }
 
-      .main-container {
-        width: 100%;
-        padding: 22px 16px 0 0;
+  .setting-title:first-child {
+    padding-bottom: 20px;
+  }
 
-        .setting-title {
-          font-size: 20px;
+  .points {
+    padding: 30px 0 20px 0 !important;
+  }
+
+  .layout-module_item {
+    width: 992px;
+    text-align: left;
+    margin-top: 5px;
+  }
+
+  .layout-module_level {
+    .nick-name {
+      display: inline-block;
+      font-size: 18px;
+      font-weight: 700;
+      color: #222;
+      margin-right: 8px;
+      cursor: default;
+    }
+
+    .level-module_experienceBar {
+      position: relative;
+
+      .experience-bar-body {
+        display: inline-block;
+        width: 684px;
+        margin-top: 10px;
+
+        .progressBar {
+          display: inline-block;
+          position: relative;
+
+          .experience-bar-level {
+            width: 48px;
+            height: 24px;
+            font-weight: 700;
+            color: #fff;
+            padding-left: 10px;
+            font-size: 12px;
+            line-height: 24px;
+            cursor: default;
+            display: inline-block;
+            background: url(//s1.hdslb.com/bfs/static/jinkela/account/assets/icons_m_2.png) no-repeat;
+            background-position: -264px -852px;
+          }
+
+          .experience-bar-progress {
+            width: 280px;
+            height: 24px;
+            line-height: 24px;
+            background-color: #e5e9ef;
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+            display: inline-block;
+            position: relative;
+            text-indent: -9999px;
+            text-align: center;
+          }
+
+          .experience-bar-upgo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #ff905a;
+            width: 0;
+            height: 24px;
+            transition: all .3s ease-in-out;
+            transition-delay: .3s;
+            border-radius: 0 4px 4px 0;
+          }
+        }
+
+        .experience-bar-level-number {
+          height: 24px;
+          color: #99a2aa;
+          margin-left: 8px;
+          font-size: 12px;
           line-height: 24px;
-          font-weight: 500;
+          cursor: default;
+
+          i {
+            font-style: normal;
+          }
+
+          .now-num {
+            color: #222;
+          }
+
+          .num-icon {
+            margin: 0 2px;
+          }
+        }
+      }
+    }
+  }
+
+  .layout-module_dailyReward {
+    .dailyReward-module_exp {
+
+      .daily-exp-item {
+        display: inline-block;
+        width: 186px;
+        box-sizing: border-box;
+        //padding: 22px 0 0;
+        position: relative;
+
+        .daily-exp-box {
+          text-align: center;
+
+          .position-ok {
+            background-position: -252px -508px;
+          }
+
+          .position-rest {
+            background-position: -252px -636px;
+          }
+
+          .iconfont {
+            font-size: 30px;
+          }
+        }
+
+
+        .daily-exp-icon {
+          width: 72px;
+          height: 72px;
+          border-radius: 72px;
+          background: url(//s1.hdslb.com/bfs/static/jinkela/account/assets/icons_m_2.png) no-repeat;
+          text-align: center;
+          line-height: 72px;
+          color: #fff;
+          margin: 0 auto;
+        }
+
+        .daily-exp-info {
+          font-size: 14px;
+          color: #222;
+          margin-top: 16px;
+          width: 100%;
+          text-align: center;
+        }
+
+        .daily-exp-getexp {
+          width: 80px;
+          height: 20px;
+          border-radius: 4px;
+          background-color: #8a95a8;
+          color: #fff;
+          text-align: center;
+          line-height: 19px;
+          margin: 15px auto 0;
+        }
+
+        .daily-exp-none {
+          font-size: 12px;
+          color: #99a2aa;
+          margin: 15px auto 0;
+          text-align: center;
+          width: 80px;
+          height: 20px;
+          border-radius: 4px;
+          border: 1px solid #8a95a8;;
+        }
+
+        .h-line {
+          display: inline-block;
+          position: absolute;
+          top: 54px;
+          right: 0;
+          width: 1px;
+          height: 74px;
+          border-left: 1px solid #e5e9ef;
+        }
+      }
+    }
+  }
+
+  .layout-module_chargeIncentive {
+
+    .chargeIncentive-module_wrapper {
+      position: relative;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      padding-right: 20px;
+
+      .charge-incentive-left-img {
+        vertical-align: middle;
+        border-style: none;
+        height: 120px;
+        opacity: 0.6;
+        border-radius: 6px;
+      }
+
+      .charge-incentive-content {
+        flex: 1;
+        margin-left: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 120px;
+        color: #262626;
+
+        .charge-incentive-count {
+          line-height: 1.4;
+          font-size: 24px;
+          display: inline-block;
+          margin: 0 8px;
           color: #262626;
-          position: sticky;
-          background-color: #ffffff;
-          z-index: 100;
-          padding: 48px 0 28px;
-          top: 0;
-          left: 0;
-          margin: 0px;
-          text-align: inherit;
+          font-weight: 600;
         }
 
-        .setting-title:not(:first-child) {
-          padding: 40px 0 30px 0;
+        .charge-incentive-tip {
+          margin-top: 12px;
+          color: #8A8F8D;
+        }
+      }
+    }
+  }
+
+  .layout-module_acquireRule {
+    max-width: 680px;
+
+    .acquire-rule-wrapper {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+
+      .acquire-rule-wrapper-item-wrapper {
+        height: 46px;
+        padding-right: 10px;
+        width: 33.33%;
+        margin-bottom: 12px;
+
+        .acquire-rule-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0 13px;
+          background-color: #FAFAFA;
+          height: 100%;
+          border-radius: 8px;
+
+          .acquire-rule-text {
+            color: #262626;
+          }
+
+          .acquire-rule-count {
+            color: #8A8F8D;
+          }
+        }
+      }
+    }
+  }
+
+  .layout-module_pointsHistory {
+    max-width: 668px;
+
+    /deep/ .ivu-tabs-ink-bar {
+      background-color: #8A8F8D;
+    }
+
+    /deep/ .ivu-tabs-nav .ivu-tabs-tab-active {
+      color: #262626;
+    }
+
+    /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover {
+      color: #00B96B;
+    }
+
+    /deep/ .ivu-tabs-nav .ivu-tabs-tab {
+      font-size: 14px;
+      color: #262626;
+    }
+
+    .points-history {
+      .list-row {
+        flex-flow: row wrap;
+        display: flex;
+        margin-left: -15px;
+        margin-right: -15px;
+        width: 100%;
+        row-gap: 0px;
+
+        .list-col-14 {
+          display: block;
+          flex: 0 0 58.33333333%;
+          max-width: 58.33333333%;
         }
 
-        .points {
-          padding: 30px 0 20px 0 !important;
+        .list-col-6 {
+          display: block;
+          flex: 0 0 25%;
+          max-width: 25%;
+        }
+
+        .list-col-3 {
+          display: block;
+          flex: 0 0 12.5%;
+          max-width: 12.5%;
+        }
+
+        .list-col {
+          padding-left: 15px;
+          padding-right: 15px;
+          position: relative;
+          min-height: 1px;
+        }
+
+        .list-module_tr {
+          text-align: right;
         }
       }
 
-      .grade-incentive {
-        .layout-module_item {
-          width: 992px;
-          text-align: left;
-          margin-top: 5px;
-        }
+      .history-list-header {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        padding: 12px 20px 12px 0;
+        color: #8A8F8D;
+        background: transparent;
+        border-top: 0;
+      }
 
+      .history-list-container {
+        position: relative;
+        transition: opacity .3s;
 
-        .layout-module_level {
-          .nick-name {
-            display: inline-block;
-            font-size: 18px;
-            font-weight: 700;
-            color: #222;
-            margin-right: 8px;
-            cursor: default;
-          }
+        .history-list-items {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          outline: none;
 
-          .level-module_experienceBar {
-            position: relative;
-
-            .experience-bar-body {
-              display: inline-block;
-              width: 684px;
-              margin-top: 10px;
-
-              .progressBar {
-                display: inline-block;
-                position: relative;
-
-                .experience-bar-level {
-                  width: 48px;
-                  height: 24px;
-                  font-weight: 700;
-                  color: #fff;
-                  padding-left: 10px;
-                  font-size: 12px;
-                  line-height: 24px;
-                  cursor: default;
-                  display: inline-block;
-                  background: url(//s1.hdslb.com/bfs/static/jinkela/account/assets/icons_m_2.png) no-repeat;
-                  background-position: -264px -852px;
-                }
-
-                .experience-bar-progress {
-                  width: 280px;
-                  height: 24px;
-                  line-height: 24px;
-                  background-color: #e5e9ef;
-                  border-top-right-radius: 4px;
-                  border-bottom-right-radius: 4px;
-                  display: inline-block;
-                  position: relative;
-                  text-indent: -9999px;
-                  text-align: center;
-                }
-
-                .experience-bar-upgo {
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  background-color: #ff905a;
-                  width: 0;
-                  height: 24px;
-                  transition: all .3s ease-in-out;
-                  transition-delay: .3s;
-                  border-radius: 0 4px 4px 0;
-                }
-              }
-
-              .experience-bar-level-number {
-                height: 24px;
-                color: #99a2aa;
-                margin-left: 8px;
-                font-size: 12px;
-                line-height: 24px;
-                cursor: default;
-
-                i {
-                  font-style: normal;
-                }
-
-                .now-num {
-                  color: #222;
-                }
-
-                .num-icon {
-                  margin: 0 2px;
-                }
-              }
-            }
-          }
-        }
-
-        .layout-module_dailyReward {
-          .dailyReward-module_exp {
-
-            .daily-exp-item {
-              display: inline-block;
-              width: 186px;
-              box-sizing: border-box;
-              //padding: 22px 0 0;
-              position: relative;
-
-              .daily-exp-box {
-                text-align: center;
-
-                .position-ok {
-                  background-position: -252px -508px;
-                }
-
-                .position-rest {
-                  background-position: -252px -636px;
-                }
-
-                .iconfont {
-                  font-size: 30px;
-                }
-              }
-
-
-              .daily-exp-icon {
-                width: 72px;
-                height: 72px;
-                border-radius: 72px;
-                background: url(//s1.hdslb.com/bfs/static/jinkela/account/assets/icons_m_2.png) no-repeat;
-                text-align: center;
-                line-height: 72px;
-                color: #fff;
-                margin: 0 auto;
-              }
-
-              .daily-exp-info {
-                font-size: 14px;
-                color: #222;
-                margin-top: 16px;
-                width: 100%;
-                text-align: center;
-              }
-
-              .daily-exp-getexp {
-                width: 80px;
-                height: 20px;
-                border-radius: 4px;
-                background-color: #8a95a8;
-                color: #fff;
-                text-align: center;
-                line-height: 19px;
-                margin: 15px auto 0;
-              }
-
-              .daily-exp-none {
-                font-size: 12px;
-                color: #99a2aa;
-                margin: 15px auto 0;
-                text-align: center;
-                width: 80px;
-                height: 20px;
-                border-radius: 4px;
-                border: 1px solid #8a95a8;;
-              }
-
-              .h-line {
-                display: inline-block;
-                position: absolute;
-                top: 54px;
-                right: 0;
-                width: 1px;
-                height: 74px;
-                border-left: 1px solid #e5e9ef;
-              }
-            }
-          }
-        }
-
-        .layout-module_chargeIncentive {
-
-          .chargeIncentive-module_wrapper {
-            position: relative;
-            height: 120px;
+          .history-list-item {
+            outline: none;
             display: flex;
             align-items: center;
-            padding-right: 20px;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            color: #585A5A;
+            padding: 12px 20px 12px 0;
 
-            .charge-incentive-left-img {
-              vertical-align: middle;
-              border-style: none;
-              height: 120px;
-              opacity: 0.6;
-              border-radius: 6px;
+            .list-module_operate {
+              display: block;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
             }
 
-            .charge-incentive-content {
-              flex: 1;
-              margin-left: 20px;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              height: 120px;
+            .list-module_content {
               color: #262626;
 
-              .charge-incentive-count {
-                line-height: 1.4;
-                font-size: 24px;
-                display: inline-block;
-                margin: 0 8px;
+              .doc-link {
                 color: #262626;
-                font-weight: 600;
-              }
 
-              .charge-incentive-tip {
-                margin-top: 12px;
-                color: #8A8F8D;
-              }
-            }
-          }
-        }
-
-        .layout-module_acquireRule {
-          max-width: 680px;
-
-          .acquire-rule-wrapper {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            display: flex;
-            flex-wrap: wrap;
-
-            .acquire-rule-wrapper-item-wrapper {
-              height: 46px;
-              padding-right: 10px;
-              width: 33.33%;
-              margin-bottom: 12px;
-
-              .acquire-rule-item {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 0 13px;
-                background-color: #FAFAFA;
-                height: 100%;
-                border-radius: 8px;
-
-                .acquire-rule-text {
-                  color: #262626;
-                }
-
-                .acquire-rule-count {
-                  color: #8A8F8D;
-                }
-              }
-            }
-          }
-        }
-
-        .layout-module_pointsHistory {
-          max-width: 668px;
-
-          /deep/ .ivu-tabs-ink-bar {
-            background-color: #8A8F8D;
-          }
-
-          /deep/ .ivu-tabs-nav .ivu-tabs-tab-active {
-            color: #262626;
-          }
-
-          /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover {
-            color: #00B96B;
-          }
-
-          /deep/ .ivu-tabs-nav .ivu-tabs-tab {
-            font-size: 14px;
-            color: #262626;
-          }
-
-          .points-history {
-            .list-row {
-              flex-flow: row wrap;
-              display: flex;
-              margin-left: -15px;
-              margin-right: -15px;
-              width: 100%;
-              row-gap: 0px;
-
-              .list-col-14 {
-                display: block;
-                flex: 0 0 58.33333333%;
-                max-width: 58.33333333%;
-              }
-
-              .list-col-6 {
-                display: block;
-                flex: 0 0 25%;
-                max-width: 25%;
-              }
-
-              .list-col-3 {
-                display: block;
-                flex: 0 0 12.5%;
-                max-width: 12.5%;
-              }
-
-              .list-col {
-                padding-left: 15px;
-                padding-right: 15px;
-                position: relative;
-                min-height: 1px;
-              }
-
-              .list-module_tr {
-                text-align: right;
-              }
-            }
-
-            .history-list-header {
-              border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-              padding: 12px 20px 12px 0;
-              color: #8A8F8D;
-              background: transparent;
-              border-top: 0;
-            }
-
-            .history-list-container {
-              position: relative;
-              transition: opacity .3s;
-
-              .history-list-items {
-                margin: 0;
-                padding: 0;
-                list-style: none;
-                outline: none;
-
-                .history-list-item {
-                  outline: none;
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                  border-bottom: 1px solid rgba(0,0,0,0.06);
+                .doc-title {
+                  font-size: 14px;
+                  line-height: 21px;
+                  text-overflow: ellipsis;
                   color: #585A5A;
-                  padding: 12px 20px 12px 0;
-
-                  .list-module_operate {
-                    display: block;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                  }
-
-                  .list-module_content {
-                    color: #262626;
-
-                    .doc-link {
-                      color: #262626;
-
-                      .doc-title {
-                        font-size: 14px;
-                        line-height: 21px;
-                        text-overflow: ellipsis;
-                        color: #585A5A;
-                        font-family: Chinese Quote,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji;
-                      }
-                    }
-                  }
+                  font-family: Chinese Quote,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji;
                 }
-              }
-            }
-
-            .history-list-pageHolder {
-              padding: 30px 0 12px 0;
-
-              /deep/ .ant-pagination-item-active, /deep/.ant-pagination-item:hover, /deep/.ant-pagination-prev:hover,
-              /deep/ .ant-pagination-next:hover, /deep/ .ant-pagination-item-link:hover{
-                border-color: #00B96B;
-                color: #00B96B;
-              }
-
-              /deep/.ant-pagination-prev:focus .ant-pagination-item-link,
-              /deep/.ant-pagination-next:focus .ant-pagination-item-link
-              {
-                border-color: #d9d9d9;
-                color: #8A8F8D;
-              }
-
-              /deep/.ant-pagination-prev:hover .ant-pagination-item-link,
-              /deep/.ant-pagination-next:hover .ant-pagination-item-link {
-                border-color: #00B96B;
-                color: #00B96B;
-               }
-
-              /deep/ .ant-pagination-disabled:hover {
-                border-color: #d9d9d9;
-
-                a {
-                  border-color: #d9d9d9;
-                  color: #8A8F8D;
-                }
-
-                .ant-pagination-item-link {
-                  border-color: #d9d9d9;
-                  color: #8A8F8D;
-                }
-              }
-
-              /deep/.ant-pagination-item-link {
-                display: flex;
-
-                .anticon {
-                  margin: auto;
-                }
-              }
-
-              /deep/.ant-select-selection:hover, /deep/.ant-select-selection:focus, /deep/.ant-select-selection:active,
-              /deep/.ant-select-open .ant-select-selection, /deep/.ant-select-open .ant-select-selection:hover,
-              /deep/.ant-select-open .ant-select-selection:active, /deep/.ant-select-open .ant-select-selection:focus {
-                border-color: #00B96B;
-                box-shadow: none;
-              }
-
-              /deep/.ant-select-dropdown-menu-item:hover:not(.ant-select-dropdown-menu-item-disabled),
-              /deep/.ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled)  {
-                background-color: rgba(0, 0, 0, 0.06);
-              }
-
-              /deep/ .ant-select-focused .ant-select-selection {
-                border-color: #d9d9d9;
-                box-shadow: none;
               }
             }
           }
+        }
+      }
+
+      .history-list-pageHolder {
+        padding: 30px 0 12px 0;
+
+        /deep/ .ant-pagination-item-active, /deep/.ant-pagination-item:hover, /deep/.ant-pagination-prev:hover,
+        /deep/ .ant-pagination-next:hover, /deep/ .ant-pagination-item-link:hover{
+          border-color: #00B96B;
+          color: #00B96B;
+        }
+
+        /deep/.ant-pagination-prev:focus .ant-pagination-item-link,
+        /deep/.ant-pagination-next:focus .ant-pagination-item-link
+        {
+          border-color: #d9d9d9;
+          color: #8A8F8D;
+        }
+
+        /deep/.ant-pagination-prev:hover .ant-pagination-item-link,
+        /deep/.ant-pagination-next:hover .ant-pagination-item-link {
+          border-color: #00B96B;
+          color: #00B96B;
+        }
+
+        /deep/ .ant-pagination-disabled:hover {
+          border-color: #d9d9d9;
+
+          a {
+            border-color: #d9d9d9;
+            color: #8A8F8D;
+          }
+
+          .ant-pagination-item-link {
+            border-color: #d9d9d9;
+            color: #8A8F8D;
+          }
+        }
+
+        /deep/.ant-pagination-item-link {
+          display: flex;
+
+          .anticon {
+            margin: auto;
+          }
+        }
+
+        /deep/.ant-select-selection:hover, /deep/.ant-select-selection:focus, /deep/.ant-select-selection:active,
+        /deep/.ant-select-open .ant-select-selection, /deep/.ant-select-open .ant-select-selection:hover,
+        /deep/.ant-select-open .ant-select-selection:active, /deep/.ant-select-open .ant-select-selection:focus {
+          border-color: #00B96B;
+          box-shadow: none;
+        }
+
+        /deep/.ant-select-dropdown-menu-item:hover:not(.ant-select-dropdown-menu-item-disabled),
+        /deep/.ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled)  {
+          background-color: rgba(0, 0, 0, 0.06);
+        }
+
+        /deep/ .ant-select-focused .ant-select-selection {
+          border-color: #d9d9d9;
+          box-shadow: none;
         }
       }
     }

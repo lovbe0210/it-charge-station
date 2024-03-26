@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="hotmap">
-      <svg width="100%" height="158.84000000000003" class="hotmap-module_hotmapSvg hotmap-svg">
+      <svg width="998.14" height="158.84000000000003" class="hotmap-module_hotmapSvg hotmap-svg">
         <g :transform="'translate(' + (4+index*19.14) + ')'" v-for="(dayItem,index) in hotMap.dayBox"
            :key="index">
           <a-tooltip overlayClassName="personal-center-tooltip" v-for="(item,index) in dayItem" :key="index"
@@ -2099,6 +2099,8 @@
 
     .hotmap {
       width: 100%;
+      overflow-x: auto;
+
       svg:not(:root) {
         overflow: hidden;
       }
@@ -2145,6 +2147,37 @@
         fill: #00663B;
       }
     }
+
+    /* WebKit 浏览器（Chrome、Safari）*/
+    /* 水平滚动条整体样式 */
+    .hotmap::-webkit-scrollbar {
+      width: 20px;
+      height: 7px;
+    }
+    /* 水平滚动条滑块样式 */
+    .hotmap::-webkit-scrollbar-thumb {
+      background-color: #E7E9E8;
+      border-radius: 3px;
+    }
+    /* Firefox 浏览器 */
+    .hotmap {
+      scrollbar-width: thin;
+      scrollbar-color: #8A8F8D #E7E9E8;
+    }
+    /* 水平滚动条滑块样式 */
+    .hotmap::-moz-scrollbar-thumb {
+      background-color: #E7E9E8;
+      border-radius: 3px;
+    }
+
+    .hotmap:hover::-webkit-scrollbar-thumb {
+      background-color: #8A8F8D;
+    }
+    .hotmap:hover::-moz-scrollbar-thumb {
+      background-color: #8A8F8D;
+    }
+
+
   }
 
   /deep/.personal-center-tooltip {
