@@ -2157,8 +2157,8 @@
 
     /* WebKit 浏览器（Chrome、Safari）*/
     /* 水平滚动条整体样式 */
-    /*.hotmap::-webkit-scrollbar {
-      !*width: 20px;*!
+    .hotmap::-webkit-scrollbar {
+      /*width: 20px;*/
       height: 7px;
       border-radius: 3px;
     }
@@ -2168,17 +2168,17 @@
       border-radius: 3px;
     }
 
-    !* 水平滚动条滑块样式 *!
+    /* 水平滚动条滑块样式 */
     .hotmap::-webkit-scrollbar-thumb {
       background-color: #E7E9E8;
       border-radius: 3px;
     }
-    !* Firefox 浏览器 *!
+    /* Firefox 浏览器 */
     .hotmap {
       scrollbar-width: thin;
       scrollbar-color: #8A8F8D #E7E9E8;
     }
-    !* 水平滚动条滑块样式 *!
+    /* 水平滚动条滑块样式 */
     .hotmap::-moz-scrollbar-thumb {
       background-color: #E7E9E8;
       border-radius: 3px;
@@ -2190,7 +2190,6 @@
     .hotmap:hover::-moz-scrollbar-thumb {
       background-color: #8A8F8D;
     }
-*/
 
   }
 

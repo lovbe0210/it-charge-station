@@ -72,11 +72,11 @@
       </div>
     </div>
     <div class="modal">
-      <Modal id="verify" v-model="showModal" :width="modalWidth" :lock-scroll="false"
+      <Modal id="verify" v-model="showModal" :width="modalWidth" :lock-scroll="true"
              :footer-hide="true" :mask-closable="false"
              :on-visible-change="modalStatusChange()"
              class-name="account-set-modal">
-        <div class="step-1" v-if="step == 1">
+        <div class="step-1" v-if="step == 1" id="appendDomContainer">
           <div class="header">
             <span>身份验证</span>
           </div>
@@ -89,7 +89,6 @@
                     :defaultActiveFirstOption="false"
                     :bordered="false"
                     style="min-width: 350px"
-                    :getPopupContainer="getContainer"
                     :default-value="options[0].key"
                     :options="options"
                     @select="onSelect">
