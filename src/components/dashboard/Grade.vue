@@ -1,6 +1,6 @@
 <template>
   <div class="layout-module_grade" ref="tooltipContainer">
-    <h1 class="setting-title">账号等级</h1>
+    <h1 class="setting-title">成长等级</h1>
     <div class="layout-module_level layout-module_item">
       <div class="level-module_nickName">
         <span class="nick-name">布衣草人</span>
@@ -43,7 +43,7 @@
         </div>
         <div class="daily-exp-item">
           <div class="daily-exp-box">
-            <span class="iconfont icon-dengdai-copy"></span>
+            <span class="iconfont icon-wait-complete"></span>
             <p class="daily-exp-info">每日写作</p>
             <p class="daily-exp-none">已获得0/10</p>
           </div>
