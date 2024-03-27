@@ -12,6 +12,7 @@
   overflow: hidden;
 
   .msg-notify-menu {
+    margin-top: 16px;
     padding-right: 16px;
     height: 610px;
     position: relative;
@@ -34,6 +35,7 @@
 
       .item {
         justify-content: center;
+        margin: 0 20px;
       }
 
       .iconfont {
@@ -51,15 +53,20 @@
 
       .item {
         width: 100%;
-        height: 30px;
+        height: 32px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 0 12px;
 
+        :first-child {
+          margin-right: 10px;
+        }
+
         .count {
           color: #8A8F8D;
           font-weight: 600;
+          font-size: 12px;
         }
       }
 
@@ -99,9 +106,143 @@
 
     .module-tabs-wrapper {
       max-height: 610px;
-      overflow-y: auto;
       display: flex;
       width: 100%;
+
+      .module-tabs-tabpane-active {
+        flex: none;
+        width: 100%;
+        outline: none;
+        min-height: 400px;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        color: #262626;
+        font-size: 14px;
+        font-variant: tabular-nums;
+        line-height: 1.5715;
+        list-style: none;
+        font-feature-settings: "tnum", "tnum";
+        position: relative;
+        background: #ffffff;
+        border-radius: 6px;
+
+        .tabs-tabpane-head {
+          min-height: 52px;
+          color: rgba(0,0,0,0.85);
+          font-weight: 500;
+          background: transparent;
+          border-radius: 6px 6px 0 0;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid rgba(0,0,0,0.06);
+          font-size: 14px;
+
+          .active-tab {
+            margin-left: 15px;
+          }
+
+          .all-read-action {
+            float: right;
+            margin-right: 46px;
+            color: #585A5A;
+            font-weight: 400;
+            cursor: pointer;
+          }
+
+          .all-read-action:hover {
+            color: #262626;
+          }
+        }
+
+        .tabs-content-holder {
+          box-sizing: border-box;
+          color: #262626;
+          font-size: 14px;
+          font-variant: tabular-nums;
+          line-height: 1.5715;
+          list-style: none;
+          font-feature-settings: "tnum", "tnum";
+          position: relative;
+          background: transparent;
+          max-height: 558px;
+          height: 558px;
+          border-radius: 0;
+
+          overflow-y: hidden;
+          -ms-overflow-style: -ms-autohiding-scrollbar;
+          scrollbar-width: thin;
+
+
+          .tab-list-items {
+            //width: 724px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            outline: none;
+
+            .tab-list-item {
+              display: block;
+
+              .notification-item {
+                display: flex;
+                background-color: #ffffff;
+                transition: background-color .3s ease;
+                word-break: break-word;
+                position: relative;
+                padding: 16px;
+
+                .avatar {
+                  margin-top: 2px;
+                }
+
+                .item-content {
+                  color: #8A8F8D;
+                  margin-left: 12px;
+                  font-size: 14px;
+                  word-wrap: break-word;
+                  overflow: hidden;
+                  width: 100%;
+
+                  p {
+                    margin-bottom: 0;
+                    max-width: 534px;
+
+                    .context-actor {
+                      font-weight: 600;
+                      color: #262626;
+                    }
+
+                    .context-subject {
+                      font-weight: 400;
+                      color: #262626;
+                    }
+
+                    .context-actor:hover, .context-subject:hover {
+                      color: #585A5A;
+                    }
+                  }
+
+                  time {
+                    font-size: 12px;
+                  }
+                }
+              }
+
+              .notification-item:hover {
+                background-color: #FAFAFA;
+              }
+            }
+          }
+
+
+        }
+
+        .tabs-content-holder:hover {
+          overflow-y: auto;
+        }
+      }
     }
   }
 }

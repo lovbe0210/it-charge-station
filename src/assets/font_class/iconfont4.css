@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_q0vwuv83ttr.woff2?t=1711379254756') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_1o71zosv3ug.woff2?t=1711548025992') format('woff2');
 }
 
 .iconfont {
@@ -8,6 +8,11 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+
+.clean:before {
+  content: "\e619";
 }
 
 .i-search:before {

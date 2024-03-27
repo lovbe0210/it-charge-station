@@ -205,7 +205,11 @@
     </b-navbar>
 
     <!-- 消息界面初始化就开始挂载 -->
-    <Modal v-model="showMessage" :lock-scroll="true" :footer-hide="true" class-name="message-box">
+    <Modal v-model="showMessage"
+           :lock-scroll="true"
+           :footer-hide="true"
+           :width="880"
+           class-name="message-box">
       <message-notification></message-notification>
     </Modal>
   </b-row>
