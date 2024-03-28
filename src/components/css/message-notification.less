@@ -105,7 +105,6 @@
     box-sizing: border-box;
 
     .module-tabs-wrapper {
-      max-height: 610px;
       display: flex;
       width: 100%;
 
@@ -166,17 +165,11 @@
           font-feature-settings: "tnum", "tnum";
           position: relative;
           background: transparent;
-          max-height: 558px;
-          height: 558px;
+          max-height: 570px;
+          height: 570px;
           border-radius: 0;
 
-          overflow-y: hidden;
-          -ms-overflow-style: -ms-autohiding-scrollbar;
-          scrollbar-width: thin;
-
-
           .tab-list-items {
-            //width: 724px;
             margin: 0;
             padding: 0;
             list-style: none;
@@ -222,6 +215,11 @@
                     .context-actor:hover, .context-subject:hover {
                       color: #585A5A;
                     }
+
+                    /deep/.ivu-badge>.ivu-badge-dot {
+                      height: 6px;
+                      width: 6px;
+                    }
                   }
 
                   time {
@@ -235,12 +233,28 @@
               }
             }
           }
-
-
         }
 
-        .tabs-content-holder:hover {
+        .tabs-content-holder {
           overflow-y: auto;
+
+          &::-webkit-scrollbar-thumb {
+            background-color: unset;
+            border-radius: 4px;
+          }
+
+          &::-webkit-scrollbar {
+            width: 6px;
+          }
+
+          &:hover::-webkit-scrollbar {
+            width: 6px;
+          }
+
+          &:hover::-webkit-scrollbar-thumb {
+            background-color: #8B8B8B;
+            border-radius: 4px;
+          }
         }
       }
     }

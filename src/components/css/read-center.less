@@ -201,8 +201,7 @@
                   will-change: transform;
                   direction: ltr;
                   padding-top: 8px;
-                  overflow-y: scroll;
-                  overflow-x: hidden;
+
 
                   .tabpane-tree {
                     padding: 0 10px 8px 10px;
@@ -348,20 +347,27 @@
                   }
                 }
 
-                .tabs-tabpane:hover::-webkit-scrollbar-thumb {
-                  background-color: #FFFFFF; /* 自定义滚动条滑块颜色 */
-                }
+                .tabs-tabpane {
+                  overflow-y: auto;
+                  overflow-x: hidden;
 
-                .tabs-tabpane::-webkit-scrollbar {
-                  width: 5px;
-                }
+                  &::-webkit-scrollbar-thumb {
+                    background-color: unset;
+                    border-radius: 4px;
+                  }
 
-                .tabs-tabpane:hover::-webkit-scrollbar {
-                  width: 5px;
-                }
+                  &::-webkit-scrollbar {
+                    width: 6px;
+                  }
 
-                .tabs-tabpane:hover::-webkit-scrollbar-thumb {
-                  background-color: #E7E9E8; /* 自定义滚动条滑块颜色 */
+                  &:hover::-webkit-scrollbar {
+                    width: 6px;
+                  }
+
+                  &:hover::-webkit-scrollbar-thumb {
+                    background-color: #8B8B8B;
+                    border-radius: 4px;
+                  }
                 }
               }
             }

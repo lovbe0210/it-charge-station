@@ -208,9 +208,9 @@
     <Modal v-model="showMessage"
            :lock-scroll="true"
            :footer-hide="true"
-           :width="880"
+           :width="900"
            class-name="message-box">
-      <message-notification></message-notification>
+      <message-notification :msgNotifyTypeActive="msgNotifyTypeActive"/>
     </Modal>
   </b-row>
 </template>
@@ -318,7 +318,8 @@
         ],
         flag: false,
         maxWidth: null,
-        showMessage: false
+        showMessage: false,
+        msgNotifyTypeActive: null
       }
     },
     components: {
@@ -401,28 +402,8 @@
         }
       },
       readMessage(itemName) {
-        /*
-         case 'commentReply':
-            this.$router.push({name: 'CommentReply'})
-            break;
-          case 'likesReceived':
-            this.$router.push({name: 'LikesReceived'})
-            break;
-          case 'newFans':
-            this.$router.push({name: 'NewFans'})
-            break;
-          case 'systemMessage':
-            this.$router.push({name: 'SystemMessage'})
-            break;
-          case 'chatMessage':
-            this.$router.push({name: 'ChatMessage'})
-            break;
-          case 'ramblyJot':
-            this.$router.push({name: 'RamblyJot'})
-            break;
-        **/
         this.showMessage = true;
-        console.log('阅读消息：', itemName)
+        this.msgNotifyTypeActive = itemName;
       }
     },
     mounted() {
