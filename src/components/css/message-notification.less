@@ -7,7 +7,7 @@
   font-variant: tabular-nums;
   line-height: 1.5715;
   list-style: none;
-  font-feature-settings: "tnum","tnum";
+  font-feature-settings: "tnum", "tnum";
   display: flex;
   overflow: hidden;
 
@@ -76,10 +76,11 @@
       }
     }
 
-    .msg-setting .item{
+    .msg-setting .item {
       .iconfont {
         margin-right: 8px;
       }
+
       justify-content: left;
     }
 
@@ -98,7 +99,7 @@
 
   .msg-notify-body {
     margin-left: -1px;
-    border-left: 1px solid rgba(0,0,0,0.06);
+    border-left: 1px solid rgba(0, 0, 0, 0.06);
     flex: auto;
     min-width: 0;
     min-height: 0;
@@ -128,14 +129,14 @@
 
         .tabs-tabpane-head {
           min-height: 52px;
-          color: rgba(0,0,0,0.85);
+          color: rgba(0, 0, 0, 0.85);
           font-weight: 500;
           background: transparent;
           border-radius: 6px 6px 0 0;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: 1px solid rgba(0,0,0,0.06);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.06);
           font-size: 14px;
 
           .active-tab {
@@ -155,7 +156,7 @@
           }
         }
 
-        .tabs-content-holder {
+        .tabs-notify-holder {
           box-sizing: border-box;
           color: #262626;
           font-size: 14px;
@@ -212,11 +213,15 @@
                       color: #262626;
                     }
 
+                    .sys-msg-label {
+                      color: #1389bf;
+                    }
+
                     .context-actor:hover, .context-subject:hover {
                       color: #585A5A;
                     }
 
-                    /deep/.ivu-badge>.ivu-badge-dot {
+                    /deep/ .ivu-badge > .ivu-badge-dot {
                       height: 6px;
                       width: 6px;
                     }
@@ -235,7 +240,7 @@
           }
         }
 
-        .tabs-content-holder {
+        .beauty-scroll {
           overflow-y: auto;
 
           &::-webkit-scrollbar-thumb {
@@ -254,6 +259,125 @@
           &:hover::-webkit-scrollbar-thumb {
             background-color: #8B8B8B;
             border-radius: 4px;
+          }
+        }
+
+        .tabs-message-holder {
+          position: relative;
+          -webkit-box-flex: 1;
+          -ms-flex: 1;
+          flex: 1;
+          max-height: 570px;
+          height: 570px;
+          overflow: hidden !important;
+
+          .lovbe-im {
+            background-color: #fff;
+            -webkit-box-shadow: 0 2px 4px 0 rgba(121,146,185,0.54);
+            box-shadow: 0 2px 4px 0 rgba(121,146,185,0.54);
+            border-radius: 4px;
+            height: 100%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            position: relative;
+
+            .session-list {
+              width: 180px;
+              border-right: 1px solid #e9eaec;
+              position: relative;
+
+              .list-container {
+                position: relative;
+
+                .list-item {
+                  width: 100%;
+                  display: -webkit-box;
+                  display: -ms-flexbox;
+                  display: flex;
+                  -webkit-box-orient: horizontal;
+                  -webkit-box-direction: normal;
+                  -ms-flex-direction: row;
+                  flex-direction: row;
+                  padding: 19px 24px;
+                  position: relative;
+                  overflow: hidden;
+                  cursor: pointer;
+
+                  .avatar {
+                    display: block;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    -ms-flex-negative: 0;
+                    flex-shrink: 0;
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-image: url(//static.hdslb.com/images/member/noface.gif);
+                    margin-right: 8px;
+                    position: relative;
+                  }
+
+                  .name-box {
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-orient: vertical;
+                    -webkit-box-direction: normal;
+                    -ms-flex-direction: column;
+                    flex-direction: column;
+                    -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                    justify-content: center;
+                  }
+
+                  .close {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                    justify-content: center;
+                    -webkit-box-align: center;
+                    -ms-flex-align: center;
+                    align-items: center;
+                    width: 24px;
+                    -webkit-transform: translateX(-100%);
+                    transform: translateX(-100%);
+                    opacity: 0;
+                    -webkit-transition: 300ms;
+                    transition: 300ms;
+                    font-size: 12px;
+                    color: #999;
+                  }
+
+                  &:hover {
+                    background-color: #e4e5e6;
+                    .close {
+                      -webkit-transform: translateX(0);
+                      transform: translateX(0);
+                      opacity: 1;
+                    }
+                  }
+                }
+
+                .active {
+                  background-color: #e4e5e6;
+                }
+              }
+            }
+
+            .right {
+              width: calc(100% - 240px);
+              -webkit-box-flex: 1;
+              -ms-flex: 1;
+              flex: 1;
+            }
           }
         }
       }
