@@ -319,4 +319,26 @@
     background: #009456;
     border-color: #009456;
   }
+
+  .beauty-scroll {
+    overflow-y: auto;
+
+    &::-webkit-scrollbar-thumb {
+      background-color: unset;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &:hover::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+      background-color: #8B8B8B;
+      border-radius: 4px;
+    }
+  }
 </style>

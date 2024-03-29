@@ -81,7 +81,7 @@
                   <DropdownItem><span class="iconfont setting"/> 更多设置</DropdownItem>
                   <DropdownItem><span class="iconfont delete"/> 删除</DropdownItem>
                 </DropdownMenu>
-              </Dropdown>
+            </Dropdown>
           </span>
           <div v-if="columnShowType === 2 && (columnItem.articleList == null || columnItem.articleList.length === 0)">
             <ul class="column-article empty-li">

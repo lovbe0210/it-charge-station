@@ -240,28 +240,6 @@
           }
         }
 
-        .beauty-scroll {
-          overflow-y: auto;
-
-          &::-webkit-scrollbar-thumb {
-            background-color: unset;
-            border-radius: 4px;
-          }
-
-          &::-webkit-scrollbar {
-            width: 6px;
-          }
-
-          &:hover::-webkit-scrollbar {
-            width: 6px;
-          }
-
-          &:hover::-webkit-scrollbar-thumb {
-            background-color: #8B8B8B;
-            border-radius: 4px;
-          }
-        }
-
         .tabs-message-holder {
           position: relative;
           -webkit-box-flex: 1;
@@ -305,18 +283,8 @@
                   cursor: pointer;
 
                   .avatar {
-                    display: block;
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    -ms-flex-negative: 0;
-                    flex-shrink: 0;
-                    background-size: cover;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    background-image: url(//static.hdslb.com/images/member/noface.gif);
-                    margin-right: 8px;
-                    position: relative;
+                    margin-right: 12px;
+                    margin-top: 2px;
                   }
 
                   .name-box {
@@ -330,6 +298,39 @@
                     -webkit-box-pack: center;
                     -ms-flex-pack: center;
                     justify-content: center;
+
+                    .name {
+                      width: 110px;
+                      display: -webkit-box;
+                      display: -ms-flexbox;
+                      display: flex;
+                      -webkit-box-align: center;
+                      -ms-flex-align: center;
+                      align-items: center;
+                      font-size: 14px;
+                      min-height: 16px;
+                      line-height: 1;
+
+                      .name-value {
+                        -webkit-box-flex: 1;
+                        -ms-flex: 1;
+                        flex: 1;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                      }
+                    }
+
+                    .last-word {
+                      font-size: 12px;
+                      color: #999;
+                      padding: 4px 0;
+                      margin-bottom: -6px;
+                      overflow: hidden;
+                      width: 110px;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                    }
                   }
 
                   .close {
@@ -372,11 +373,95 @@
               }
             }
 
-            .right {
-              width: calc(100% - 240px);
+            .session-box {
+              //width: calc(100% - 240px);
               -webkit-box-flex: 1;
               -ms-flex: 1;
               flex: 1;
+
+              .dialog {
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                -webkit-box-align: stretch;
+                -ms-flex-align: stretch;
+                align-items: stretch;
+                height: 100%;
+
+                .title {
+                  height: 36px;
+                  -ms-flex-negative: 0;
+                  flex-shrink: 0;
+                  display: -webkit-box;
+                  display: -ms-flexbox;
+                  display: flex;
+                  -webkit-box-pack: center;
+                  -ms-flex-pack: center;
+                  justify-content: center;
+                  -webkit-box-align: center;
+                  -ms-flex-align: center;
+                  align-items: center;
+                  border-bottom: 1px solid #e9eaec;
+                  position: relative;
+                  text-align: center;
+                  color: #333;
+
+                  .is-black {
+                    position: absolute;
+                    top: 36px;
+                    left: 0;
+                    z-index: 2;
+                    width: 100%;
+                    height: 32px;
+                    line-height: 32px;
+                    background-color: #fff;
+                    color: #fb7299;
+                    text-align: left;
+                    padding: 0 17px;
+                  }
+
+                  .action-menu {
+                    position: absolute;
+                    right: 10px;
+                    z-index: 2;
+                  }
+                }
+
+                .message-list {
+                  -webkit-box-flex: 1;
+                  -ms-flex: 1;
+                  flex: 1;
+                  position: relative;
+                  overflow-x: hidden;
+                  overflow-y: scroll;
+                  background-color: #f4f5f7;
+
+                  .message-list-content {
+                    min-height: 100% !important;
+
+                    .msg-more {
+                      padding: 16px 0 0;
+                      text-align: center;
+                      color: #23ade5;
+                      min-height: 38px;
+                      font-size: 12px;
+
+                      .error {
+                        color: #8A8F8D;
+
+                        .reload {
+                          color: #00b96b;
+                          cursor: pointer;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
