@@ -320,8 +320,13 @@
     border-color: #009456;
   }
 
+  // 滚动条全局美化
   .beauty-scroll {
-    overflow-y: auto;
+    overflow-y: hidden;
+
+    &:hover {
+      overflow-y: auto;
+    }
 
     &::-webkit-scrollbar-thumb {
       background-color: unset;

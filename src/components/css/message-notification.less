@@ -277,7 +277,7 @@
                   -webkit-box-direction: normal;
                   -ms-flex-direction: row;
                   flex-direction: row;
-                  padding: 19px 24px;
+                  padding: 17px 20px;
                   position: relative;
                   overflow: hidden;
                   cursor: pointer;
@@ -337,7 +337,7 @@
                     position: absolute;
                     top: 0;
                     bottom: 0;
-                    left: 0;
+                    left: -2px;
                     display: -webkit-box;
                     display: -ms-flexbox;
                     display: flex;
@@ -437,11 +437,11 @@
                   flex: 1;
                   position: relative;
                   overflow-x: hidden;
-                  overflow-y: scroll;
                   background-color: #f4f5f7;
 
                   .message-list-content {
-                    min-height: 100% !important;
+                    max-width: 555px;
+                    font-size: 13px;
 
                     .msg-more {
                       padding: 16px 0 0;
@@ -456,6 +456,63 @@
                         .reload {
                           color: #00b96b;
                           cursor: pointer;
+                        }
+                      }
+                    }
+
+                    .msg-time {
+                      padding: 16px 0 16px;
+                      text-align: center;
+                    }
+
+                    .msg-item {
+                      min-height: 48px;
+                      padding: 0 16px 16px;
+                      overflow: hidden;
+                      position: relative;
+
+                      .avatar {
+                        float: left;
+                      }
+
+                      .message {
+                        float: left;
+                        max-width: 440px;
+                        margin: 0 10px;
+                        position: relative;
+                        overflow: hidden;
+
+                        .message-content {
+                          line-height: 1.5;
+                          min-height: 37px;
+                          padding: 8px 16px;
+                          word-wrap: break-word;
+                          word-break: break-word;
+                          border-radius: 0 16px 16px 16px;
+                          overflow: hidden;
+                          background: #fff;
+                        }
+
+                        .message-content:not(.is-img) {
+                          position: relative;
+                          z-index: 1;
+                        }
+                      }
+                    }
+
+                    .is-me {
+                      .avatar {
+                        float: right;
+                      }
+
+                      .message {
+                        position: relative;
+                        float: right;
+                        color: #fff;
+
+                        .message-content {
+                          background: #80b9f2;
+                          border-radius: 16px 0 16px 16px;
                         }
                       }
                     }

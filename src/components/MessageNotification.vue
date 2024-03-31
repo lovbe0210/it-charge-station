@@ -189,7 +189,9 @@
             <div class="lovbe-im">
               <div class="session-list beauty-scroll">
                 <div class="list-container">
-                  <div class="list-item" v-for="session in sessionList" :key="session.session_id">
+                  <div :class="['list-item', session.session_user_id === currentSession.session_user_id ? 'active' : '']"
+                       v-for="session in sessionList"
+                       :key="session.session_id">
                     <b-avatar class="avatar"
                               :src="session.session_user_avatar"
                               variant="light" to="/asdasd" size="2rem">
@@ -231,8 +233,8 @@
                       </Dropdown>
                     </div>
                   </div>
-                  <div class="message-list">
-                    <div class="message-list-content beauty-scroll">
+                  <div class="message-list beauty-scroll">
+                    <div class="message-list-content">
                       <div class="msg-more">
                         <span class="loading" style="display: none;">
                           <div data-v-2fe28aba="" class="lds-spinner">
@@ -243,17 +245,16 @@
                           <span class="reload">点击重新加载</span>
                         </span>
                       </div>
-
                       <div v-for="msg in activeSession.messages"
                            :class="[msg.msg_type === 0?'msg-time':'msg-item', msg.sender_uid === userInfo.uid?'is-me':'not-me']"
                            :key="msg.msg_key">
-                        <span class="time" v-if="msg.msg_type === 0">{{new Date(msg.timestamp)}}</span>
+                        <span class="time" v-if="msg.msg_type === 0">{{ formatTime(msg.timestamp) }}</span>
                         <b-avatar v-if="msg.msg_type !== 0"
                                   class="avatar"
-                                  :src="msg.sender_uid === userInfo.uid ? userInfo.avatar : msg.session_user_avatar"
+                                  :src="msg.sender_uid === userInfo.uid ? userInfo.avatar : currentSession.session_user_avatar"
                                   variant="light" to="/asdasd" size="2rem">
-                          <span v-if="!(msg.sender_uid === userInfo.uid ? userInfo.avatar : msg.session_user_avatar)">
-                            {{ msg.sender_uid === userInfo.uid ? userInfo.username : msg.session_user_name }}
+                          <span v-if="!(msg.sender_uid === userInfo.uid ? userInfo.avatar : currentSession.session_user_avatar)">
+                            {{ msg.sender_uid === userInfo.uid ? userInfo.username : currentSession.session_user_name }}
                           </span>
                         </b-avatar>
                         <div class="message" v-if="msg.msg_type !== 0">
@@ -296,6 +297,7 @@
 </template>
 
 <script>
+  import { formatTime } from '@/utils/emoji';
   export default {
     name: "MessageNotification",
     data() {
@@ -330,7 +332,7 @@
           },
           {
             "session_id": 233200988,
-            "session_user_id": 123123123,
+            "session_user_id": 123122123123,
             "session_user_name": "Music郑在看",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1m6vedbj30is0qaabq.jpg",
             "is_follow": 0,
@@ -351,7 +353,7 @@
           },
           {
             "session_id": 3493297165175445,
-            "session_user_id": 123123123,
+            "session_user_id": 12312443123,
             "session_user_name": "鹏城杰森",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1maldlsj30m71fnn29.jpg",
             "is_follow": 0,
@@ -372,7 +374,7 @@
           },
           {
             "session_id": 1764905834,
-            "session_user_id": 123123123,
+            "session_user_id": 12367123123,
             "session_user_name": "保彪",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1mjb0hdj30vp1bj45k.jpg",
             "is_follow": 0,
@@ -395,7 +397,7 @@
           },
           {
             "session_id": 96081167,
-            "session_user_id": 123123123,
+            "session_user_id": 12387123123,
             "session_user_name": "江东刀郎",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1n13ni4j316o1kwgt1.jpg",
             "is_follow": 1,
@@ -424,7 +426,7 @@
           },
           {
             "session_id": 1803963357,
-            "session_user_id": 123123123,
+            "session_user_id": 12319823123,
             "session_user_name": "福利吧搬运工",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1n1w2m7j335s2dcx14.jpg",
             "is_follow": 1,
@@ -447,7 +449,7 @@
           },
           {
             "session_id": 18922263357,
-            "session_user_id": 123123123,
+            "session_user_id": 1231113423123,
             "session_user_name": "私募小日常",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hm7wguih2rj316o1kwk8h.jpg",
             "is_follow": 1,
@@ -468,7 +470,7 @@
           },
           {
             "session_id": 18922262886557,
-            "session_user_id": 123123123,
+            "session_user_id": 12083123123,
             "session_user_name": "依旧smile",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hmcl0nlc5sj335s23v7j6.jpg",
             "is_follow": 1,
@@ -489,7 +491,7 @@
           },
           {
             "session_id": 18222628453453,
-            "session_user_id": 123123123,
+            "session_user_id": 115723123123,
             "session_user_name": "深夜港湾",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hmet8wel4mj327x2yo4qp.jpg",
             "is_follow": 1,
@@ -513,50 +515,76 @@
           "session_id": 625315686,
           "session_user_id": 123123123,
           "session_user_name": "股市-目标1000万股桃哥",
-          "session_user_avatar": "https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hmv3du2z1zj30k00qowme.jpg"
+          "session_user_avatar": "https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1ho7hpy9c5fj31401hcqej.jpg"
         },
         activeSession: {
           "messages": [
             // msg_type 0用于时间显示 1文本消息
             {
               "msg_type": 0,
-              "timestamp": 1672072266
+              "timestamp": 1711211709000
             },
             {
-              "sender_uid": 1803963357,
+              "sender_uid": 123123123,
               "receiver_type": 1,
               "receiver_id": 271221082,
               "msg_type": 1,
               "content": {"content": "宝贝，请坐我的小板凳～来了就别走啦！我给你看我收藏的好东西(ू•ᴗ•ू❁)有啥想问的随时私信我！聊个5毛钱的哈哈哈哈哈"},
-              "timestamp": 1672072266,
+              "timestamp": 1706546109000,
               "at_uids": [],
               "msg_key": 7181495700031737000,
               "msg_status": 0
             },
             {
-              "sender_uid": 1803963357,
+              "msg_type": 0,
+              "timestamp": 1709481909000
+            },
+            {
+              "sender_uid": 0,
               "receiver_type": 1,
               "receiver_id": 271221082,
               "msg_type": 1,
               "content": {"content": "桃哥，怎么开0.5的"},
-              "timestamp": 1672072266,
+              "timestamp": 1672072266000,
               "at_uids": [],
               "msg_key": 718149570003173231,
               "msg_status": 0
             },
             {
               "msg_type": 0,
-              "timestamp": 1706524133
+              "timestamp": 1711730115671
             },
             {
-              "sender_uid": 1803963357,
+              "sender_uid": 123123123,
               "receiver_type": 1,
               "receiver_id": 271221082,
               "msg_type": 1,
               "content": {"content": "加下我qq<br>2156058387"},
-              "timestamp": 1672072266,
+              "timestamp": 1711730115671,
               "at_uids": [],
               "msg_key": 718149570038073231,
+              "msg_status": 0
+            },
+            {
+              "sender_uid": 123123123,
+              "receiver_type": 1,
+              "receiver_id": 271221082,
+              "msg_type": 1,
+              "content": {"content": "完了，BBQ了，停不下来了"},
+              "timestamp": 1711730115671,
+              "at_uids": [],
+              "msg_key": 718147890038073232,
+              "msg_status": 0
+            },
+            {
+              "sender_uid": 123123123,
+              "receiver_type": 1,
+              "receiver_id": 271221082,
+              "msg_type": 1,
+              "content": {"content": "再发我就不干了"},
+              "timestamp": 1711730115671,
+              "at_uids": [],
+              "msg_key": 718147890038073231,
               "msg_status": 0
             }
           ],
@@ -837,7 +865,8 @@
           case 'ramblyJot':
             break;
         }
-      }
+      },
+      formatTime
     },
     watch: {
       'msgNotifyTypeActive'(newVal) {
@@ -852,6 +881,10 @@
       userInfo() {
         return this.$store.state.userInfo;
       }
+    },
+    mounted() {
+      this.activeMenu = 'commentReply';
+      this.loadMsgNotify('commentReply');
     }
   }
 </script>
