@@ -11,13 +11,16 @@
     font-size: 14px;
 
     .rich-input {
-      min-height: 64px;
+      min-height: 70px;
+      max-height: 80px;
+      overflow-y: auto;
       line-height: 22px;
       padding: 4px 10px;
       outline: none;
       width: 100%;
       box-sizing: border-box;
-      resize: both;
+      // 是否可以手动改变大小
+      //resize: both;
       background-position: 120% -10px;
       transition: background 0.3s;
       .mentionUser {
@@ -41,15 +44,15 @@
         }
         .clean-btn {
           position: absolute;
-          top: 0;
+          top: -4px;
           right: 0;
           cursor: pointer;
-          svg {
-            display: block;
+          .iconfont {
+            color: #8A8F8D;
           }
         }
         .clean-btn:hover {
-          opacity: 0.8;
+          color: #FAFAFA;
         }
       }
     }

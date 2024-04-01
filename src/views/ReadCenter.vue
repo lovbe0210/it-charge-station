@@ -133,7 +133,7 @@
         isDragging: false,
         startX: 0,
         startWidth: 0,
-        sidebarWidth: 345, // 初始宽度
+        sidebarWidth: 350, // 初始宽度
         fullScreen: false, // 全屏演示模式
         dirData: [
           {

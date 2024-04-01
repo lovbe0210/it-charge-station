@@ -2,7 +2,7 @@
   <div class="comment-box" v-click-outside="onClickOutside" ref="popoverContainer">
     <div class="u-editor" :class="{ active: active }">
       <div ref="editorRef" id="expectRange"
-           class="rich-input"
+           class="rich-input beauty-scroll"
            contenteditable
            :placeholder="placeholder"
            @focus="focus"
@@ -15,25 +15,7 @@
         <div class="image-preview">
           <img :src="previewUrl" alt=""/>
           <div class="clean-btn" @click="removeImg">
-            <svg
-              data-v-48a7e3c5=""
-              data-v-7c7c7498=""
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect width="12" height="12" rx="2" fill="#86909C"></rect>
-              <path
-                data-v-48a7e3c5=""
-                data-v-7c7c7498=""
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M5.98095 5.49307L8.22012 3.25389C8.28521 3.18881 8.39074 3.18881 8.45582 3.25389L8.69153 3.4896C8.75661 3.55468 8.75661 3.66021 8.69153 3.7253L6.45235 5.96447L8.69153 8.20364C8.75661 8.26873 8.75661 8.37426 8.69153 8.43934L8.45582 8.67505C8.39074 8.74013 8.28521 8.74013 8.22012 8.67505L5.98095 6.43587L3.74178 8.67505C3.67669 8.74013 3.57116 8.74013 3.50608 8.67505L3.27037 8.43934C3.20529 8.37426 3.20529 8.26873 3.27037 8.20364L5.50954 5.96447L3.27037 3.7253C3.20529 3.66021 3.20529 3.55468 3.27037 3.4896L3.50608 3.25389C3.57116 3.18881 3.67669 3.18881 3.74178 3.25389L5.98095 5.49307Z"
-                fill="white"
-              ></path>
-            </svg>
+            <span class="iconfont remove"></span>
           </div>
         </div>
       </div>
@@ -46,7 +28,7 @@
                     @addText="addText"
                     :style="`left: ${EmojiSelectorPosition.left}px; top: ${EmojiSelectorPosition.top}px`"/>
 
-    <div v-if="action" class="action-box">
+    <div v-if="scene === 'message' || action" class="action-box">
       <div class="action-emoji">
         <div class="emoji-content" @click="showEmoji" ref="emojiSelectorBtn">
           <span class="iconfont emoji"/>
@@ -157,12 +139,6 @@
         },
         // 初始化状态
         initState: 0,
-        mentionConfig: {
-          // @提及 功能开关
-          functionStatus: true,
-          // @提及 渲染的颜色
-          mentionColor: '#409eff'
-        },
         // 记录滚动条变动值
         scHeight: 0,
         content: '',
@@ -176,9 +152,24 @@
       }
     },
     props: {
+      scene: {
+        // 业务场景 '评论区'、消息盒子
+        type: String
+      },
       placeholder: {
         type: String,
         default: '输入评论（Enter换行，Ctrl + Enter发送）'
+      },
+      mentionConfig: {
+        type: Object,
+        default() {
+          return {
+            // @提及 功能开关
+            functionStatus: true,
+            // @提及 渲染的颜色
+            mentionColor: '#409eff'
+          }
+        }
       },
       contentBtn: {
         type: String
@@ -522,14 +513,18 @@
     },
     watch: {
       "content"(newVal, oldVal) {
-        if (!this.mentionConfig.functionStatus) return
-
+        if (!this.mentionConfig.functionStatus) {
+          // 更新disabled
+          this.disabled = isEmpty(this.content.replace(/&nbsp;|<br>| /g, ""));
+          return;
+        }
         // 移除 "br"
         newVal = newVal.replace(/<br>/g, '')
         oldVal = oldVal.replace(/<br>/g, '')
         if ((oldVal.length >= newVal.length && oldVal.slice(-1) === '@') || newVal.slice(-7) === '@&nbsp;') {
           // 隐藏提及组件
           this.changeMentionShow(false)
+          this.disabled = isEmpty(this.content.replace(/&nbsp;|<br>| /g, ""));
           return;
         }
         // 搜索词

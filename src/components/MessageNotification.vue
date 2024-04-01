@@ -189,9 +189,10 @@
             <div class="lovbe-im">
               <div class="session-list beauty-scroll">
                 <div class="list-container">
-                  <div :class="['list-item', session.session_user_id === currentSession.session_user_id ? 'active' : '']"
-                       v-for="session in sessionList"
-                       :key="session.session_id">
+                  <div
+                    :class="['list-item', session.session_user_id === currentSession.session_user_id ? 'active' : '']"
+                    v-for="session in sessionList"
+                    :key="session.session_id">
                     <b-avatar class="avatar"
                               :src="session.session_user_avatar"
                               variant="light" to="/asdasd" size="2rem">
@@ -253,7 +254,8 @@
                                   class="avatar"
                                   :src="msg.sender_uid === userInfo.uid ? userInfo.avatar : currentSession.session_user_avatar"
                                   variant="light" to="/asdasd" size="2rem">
-                          <span v-if="!(msg.sender_uid === userInfo.uid ? userInfo.avatar : currentSession.session_user_avatar)">
+                          <span
+                            v-if="!(msg.sender_uid === userInfo.uid ? userInfo.avatar : currentSession.session_user_avatar)">
                             {{ msg.sender_uid === userInfo.uid ? userInfo.username : currentSession.session_user_name }}
                           </span>
                         </b-avatar>
@@ -266,25 +268,13 @@
                     </div>
                   </div>
                   <div class="send-box">
-                    <div class="row">
-                      <div class="space-margin"><label
-                        class="image-upload-btn"></label>
-                      </div>
-                      <div class="space-margin emoji-container">
-                        <button title="表情" class="emotion-btn-box"></button>
-                      </div>
-                    </div>
-                    <div placeholder="回复一下吧～" class="input-box">
-                      <div id="editor" class="core-style" contenteditable="true"
-                           style="height: 60px;">‍
-                      </div>
-                      <div class="indicator" style="bottom: -30px; right: 100px;"><span
-                        class="">0</span>/<span>500</span></div>
-                    </div>
-                    <div class="row right">
-                      <button data-v-70b6d4bb="" class="btn-box send-btn" title="enter 发送shift + enter 换行">发送
-                      </button>
-                    </div>
+                    <InputBox
+                      ref="commentRef"
+                      placeholder=" "
+                      content-btn=" 发 送 "
+                      :mentionConfig="mentionConfig"
+                      scene="message"
+                      @submit="addText"/>
                   </div>
                 </div>
               </div>
@@ -297,7 +287,9 @@
 </template>
 
 <script>
-  import { formatTime } from '@/utils/emoji';
+  import {formatTime} from '@/utils/emoji';
+  import InputBox from "@/components/common/replycomment/src/component/InputBox";
+
   export default {
     name: "MessageNotification",
     data() {
@@ -310,7 +302,7 @@
         systemMsgList: [],
         sessionList: [
           {
-            "session_id": 625315686,
+            "session_id": 1,
             "session_user_id": 123123123,
             "session_user_name": "股市-目标1000万股桃哥",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hmv3du2z1zj30k00qowme.jpg",
@@ -331,7 +323,7 @@
             }
           },
           {
-            "session_id": 233200988,
+            "session_id": 2,
             "session_user_id": 123122123123,
             "session_user_name": "Music郑在看",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1m6vedbj30is0qaabq.jpg",
@@ -352,7 +344,7 @@
             }
           },
           {
-            "session_id": 3493297165175445,
+            "session_id": 3,
             "session_user_id": 12312443123,
             "session_user_name": "鹏城杰森",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1maldlsj30m71fnn29.jpg",
@@ -373,7 +365,7 @@
             }
           },
           {
-            "session_id": 1764905834,
+            "session_id": 4,
             "session_user_id": 12367123123,
             "session_user_name": "保彪",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1mjb0hdj30vp1bj45k.jpg",
@@ -396,7 +388,7 @@
             }
           },
           {
-            "session_id": 96081167,
+            "session_id": 5,
             "session_user_id": 12387123123,
             "session_user_name": "江东刀郎",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1n13ni4j316o1kwgt1.jpg",
@@ -425,7 +417,7 @@
             }
           },
           {
-            "session_id": 1803963357,
+            "session_id": 6,
             "session_user_id": 12319823123,
             "session_user_name": "福利吧搬运工",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1n1w2m7j335s2dcx14.jpg",
@@ -448,7 +440,7 @@
             }
           },
           {
-            "session_id": 18922263357,
+            "session_id": 7,
             "session_user_id": 1231113423123,
             "session_user_name": "私募小日常",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hm7wguih2rj316o1kwk8h.jpg",
@@ -469,7 +461,7 @@
             }
           },
           {
-            "session_id": 18922262886557,
+            "session_id": 8,
             "session_user_id": 12083123123,
             "session_user_name": "依旧smile",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hmcl0nlc5sj335s23v7j6.jpg",
@@ -490,7 +482,7 @@
             }
           },
           {
-            "session_id": 18222628453453,
+            "session_id": 9,
             "session_user_id": 115723123123,
             "session_user_name": "深夜港湾",
             "session_user_avatar": "https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hmet8wel4mj327x2yo4qp.jpg",
@@ -532,7 +524,7 @@
               "content": {"content": "宝贝，请坐我的小板凳～来了就别走啦！我给你看我收藏的好东西(ू•ᴗ•ू❁)有啥想问的随时私信我！聊个5毛钱的哈哈哈哈哈"},
               "timestamp": 1706546109000,
               "at_uids": [],
-              "msg_key": 7181495700031737000,
+              "msg_key": 11,
               "msg_status": 0
             },
             {
@@ -547,7 +539,7 @@
               "content": {"content": "桃哥，怎么开0.5的"},
               "timestamp": 1672072266000,
               "at_uids": [],
-              "msg_key": 718149570003173231,
+              "msg_key": 22,
               "msg_status": 0
             },
             {
@@ -559,10 +551,10 @@
               "receiver_type": 1,
               "receiver_id": 271221082,
               "msg_type": 1,
-              "content": {"content": "加下我qq<br>2156058387"},
+              "content": {"content": "加下我qq 2156058387"},
               "timestamp": 1711730115671,
               "at_uids": [],
-              "msg_key": 718149570038073231,
+              "msg_key": 33,
               "msg_status": 0
             },
             {
@@ -573,7 +565,7 @@
               "content": {"content": "完了，BBQ了，停不下来了"},
               "timestamp": 1711730115671,
               "at_uids": [],
-              "msg_key": 718147890038073232,
+              "msg_key": 44,
               "msg_status": 0
             },
             {
@@ -584,7 +576,7 @@
               "content": {"content": "再发我就不干了"},
               "timestamp": 1711730115671,
               "at_uids": [],
-              "msg_key": 718147890038073231,
+              "msg_key": 55,
               "msg_status": 0
             }
           ],
@@ -592,7 +584,17 @@
           "min_seqno": 610292489338880,
           "max_seqno": 1275249677352997
         },
-        activeMenu: null
+        activeMenu: null,
+        ifShowEmojiSelector: false,
+        mentionConfig: {
+          // @提及 功能开关
+          functionStatus: false,
+          // @提及 渲染的颜色
+          mentionColor: '#409eff'
+        },
+        EmojiSelectorPosition: null,
+        previewUrl: null,
+        file: null
       }
     },
     props: ['msgNotifyTypeActive'],
@@ -824,35 +826,35 @@
           case 'systemMessage':
             this.systemMsgList = [
               {
-                id: 1231211113123,
+                id: 1,
                 content: '进来抽奖，即得100万现金红包瓜分资格! ',
                 label: '点此查看',
                 url: 'http://www.baidu.com',
                 read: 0
               },
               {
-                id: 12312313123,
+                id: 2,
                 content: '进来抽奖，即得100万现金红包瓜分资格! ',
                 label: '点此查看',
                 url: 'http://www.baidu.com',
                 read: 1
               },
               {
-                id: 12312313123,
+                id: 3,
                 content: '进来抽奖，即得100万现金红包瓜分资格! ',
                 label: '点此查看',
                 url: 'http://www.baidu.com',
                 read: 1
               },
               {
-                id: 12312313123,
+                id: 4,
                 content: '叮！你获得了新的限时任务啦！ ',
                 label: '查看任务',
                 url: 'https://message.bilibili.com/?spm_id_from=333.1228.0.0#/system',
                 read: 0
               },
               {
-                id: 12312313123,
+                id: 5,
                 content: '2022年的愿望，都来这里实现！ ',
                 label: '点我马上参与>>> ',
                 url: 'https://www.bilibili.com/blackboard/activity-DWi81m1Xbv.html',
@@ -866,7 +868,45 @@
             break;
         }
       },
-      formatTime
+      formatTime,
+      showEmojiSelector() {
+        if (this.EmojiSelectorPosition == null) {
+          // 表情选择器位置
+          let emojiRect = this.$refs.emojiSelectorBtn?.getBoundingClientRect();
+          if (emojiRect) {
+            this.EmojiSelectorPosition = {
+              left: emojiRect.left,
+              top: emojiRect.top + emojiRect.height + 10
+            }
+          }
+        }
+        this.ifShowEmojiSelector = true;
+      },
+      addText(emojiValue) {
+        console.log(emojiValue)
+        this.ifShowEmojiSelector = false;
+      },
+      addImage(file) {
+        // 图片大小限制10MB
+        if (file?.size > 10 * 1024 * 1024) {
+          this.$Message.error('图片大小不得超过10MB！');
+          return false;
+        }
+        if (file?.type !== 'image/png' && file?.type !== 'image/jpeg') {
+          this.$Message.error('请选择正确的图片格式！');
+          return false;
+        }
+        // 生成base64格式进行显示
+        const reader = new FileReader(); // 创建FileReader对象
+        reader.onload = () => {
+          // 读取文件完成后将结果设置为预览图URL
+          this.previewUrl = reader.result;
+          this.file = file;
+        };
+        // 读取文件内容，这里使用DataURL格式
+        reader.readAsDataURL(file);
+        return false;
+      }
     },
     watch: {
       'msgNotifyTypeActive'(newVal) {
@@ -881,6 +921,9 @@
       userInfo() {
         return this.$store.state.userInfo;
       }
+    },
+    components: {
+      InputBox
     },
     mounted() {
       this.activeMenu = 'commentReply';
