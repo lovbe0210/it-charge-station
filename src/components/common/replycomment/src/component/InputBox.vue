@@ -25,7 +25,7 @@
                   :list="mentionList"
                   @insert="insertUser"/>
     <emoji-selector v-show="showEmojiSelector"
-                    @addText="addText"
+                    @addText="insertEmoji"
                     :style="`left: ${EmojiSelectorPosition.left}px; top: ${EmojiSelectorPosition.top}px`"/>
 
     <div v-if="scene === 'message' || action" class="action-box">
@@ -294,6 +294,7 @@
         }
       },
       addText(val, isPop) {
+        // debugger
         let selection = window.getSelection()
         if (selection) {
           selection.removeAllRanges()
@@ -327,11 +328,6 @@
           selection.addRange(this.range)
 
           this.content = this.editorRef?.innerHTML || '';
-
-          if (this.c_emoji.allEmoji[val]) {
-            // 当前输入对象为表情
-            this.showEmojiSelector = false;
-          }
         }
       },
       addImage(file) {
@@ -361,7 +357,7 @@
         this.file = null;
       },
       //创建@标签
-      createSvgUrl(user) {
+      createSvgAtUser(user) {
         // 创建一个不可见的SVG元素用于测量文本宽度
         const svgForMeasure = `<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0">
                               <style>
@@ -410,10 +406,23 @@
       //@用户插入操作
       insertUser(user) {
         if (user) {
-          let img = this.createSvgUrl(user)
+          let img = this.createSvgAtUser(user)
           this.addText(`${img}\u2008`, true)
         }
         this.changeMentionShow(false)
+      },
+      // 表情插入操作
+      insertEmoji(emojiVal) {
+        let emoji;
+        let emojiPath = this.c_emoji.allEmoji[emojiVal];
+        if (emojiPath) {
+          // 当前输入对象为表情
+          emoji = `<img src="${emojiPath}" draggable="false" style="width: 20px;height: 20px">`
+          this.showEmojiSelector = false;
+        } else {
+          emoji = emojiVal;
+        }
+        this.addText(emoji);
       },
       // 输入框事件
       onInput(event) {
