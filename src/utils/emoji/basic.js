@@ -1,5 +1,3 @@
-
-
 /**
  * 转换字符串，为null转换为空字符串
  * @param val
@@ -54,22 +52,14 @@ export function formatTime(timestamp) {
 
   let time = new Date(timestamp) //实际时间
 
+  let hours = time.getHours() < 10 ? '0' + time.getHours() : time.getHours();
+  let minutes = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes();
   if (time.getTime() > today) {
-    return '今天 ' + time.getHours() + ':' + time.getMinutes()
+    return '今天 ' + hours + ':' + minutes;
   } else if (time.getTime() > yesterday) {
-    return '昨天 ' + time.getHours() + ':' + time.getMinutes()
+    return '昨天 ' + hours + ':' + minutes;
   } else {
-    return (
-      time.getFullYear() +
-      '/' +
-      time.getMonth() +
-      1 +
-      '/' +
-      time.getDate() +
-      ' ' +
-      time.getHours() +
-      ':' +
-      time.getMinutes()
-    )
+    return time.getFullYear() + '年' + (time.getMonth() + 1) + '月' + time.getDate() + '日 ' +
+          hours + ':' + minutes;
   }
 }

@@ -274,7 +274,8 @@
                       content-btn=" 发 送 "
                       :mentionConfig="mentionConfig"
                       scene="message"
-                      @submit="addText"/>
+                      @uploadImage="sendImage"
+                      @submit="sendMessage"/>
                   </div>
                 </div>
               </div>
@@ -511,7 +512,7 @@
         },
         activeSession: {
           "messages": [
-            // msg_type 0用于时间显示 1文本消息
+            // msg_type 0用于时间显示 1文本消息 2图片消息
             {
               "msg_type": 0,
               "timestamp": 1711211709000
@@ -523,7 +524,6 @@
               "msg_type": 1,
               "content": {"content": "宝贝，请坐我的小板凳～来了就别走啦！我给你看我收藏的好东西(ू•ᴗ•ू❁)有啥想问的随时私信我！聊个5毛钱的哈哈哈哈哈"},
               "timestamp": 1706546109000,
-              "at_uids": [],
               "msg_key": 11,
               "msg_status": 0
             },
@@ -538,7 +538,6 @@
               "msg_type": 1,
               "content": {"content": "桃哥，怎么开0.5的"},
               "timestamp": 1672072266000,
-              "at_uids": [],
               "msg_key": 22,
               "msg_status": 0
             },
@@ -553,7 +552,6 @@
               "msg_type": 1,
               "content": {"content": "加下我qq 2156058387"},
               "timestamp": 1711730115671,
-              "at_uids": [],
               "msg_key": 33,
               "msg_status": 0
             },
@@ -564,7 +562,6 @@
               "msg_type": 1,
               "content": {"content": "完了，BBQ了，停不下来了"},
               "timestamp": 1711730115671,
-              "at_uids": [],
               "msg_key": 44,
               "msg_status": 0
             },
@@ -575,7 +572,6 @@
               "msg_type": 1,
               "content": {"content": "再发我就不干了"},
               "timestamp": 1711730115671,
-              "at_uids": [],
               "msg_key": 55,
               "msg_status": 0
             }
@@ -882,30 +878,45 @@
         }
         this.ifShowEmojiSelector = true;
       },
-      addText(emojiValue) {
+      sendMessage(emojiValue) {
         console.log(emojiValue)
         this.ifShowEmojiSelector = false;
       },
-      addImage(file) {
-        // 图片大小限制10MB
-        if (file?.size > 10 * 1024 * 1024) {
-          this.$Message.error('图片大小不得超过10MB！');
-          return false;
-        }
-        if (file?.type !== 'image/png' && file?.type !== 'image/jpeg') {
-          this.$Message.error('请选择正确的图片格式！');
-          return false;
-        }
+      sendImage(file) {
         // 生成base64格式进行显示
         const reader = new FileReader(); // 创建FileReader对象
         reader.onload = () => {
           // 读取文件完成后将结果设置为预览图URL
-          this.previewUrl = reader.result;
-          this.file = file;
+          let fileUrl = reader.result;
+          // 比较当前时间与最后一条数据的时间差
+          let size = this.activeSession?.messages?.length;
+          if (!size) {
+            return;
+          }
+          let message = this.activeSession.messages[size - 1];
+          let now = Date.now();
+          if (message?.type !== 0 && (now - message.timestamp) > 1000 * 60 * 5) {
+            this.activeSession.messages.push({
+              "msg_type": 0,
+              "timestamp": now
+            });
+          }
+          // 发送消息
+          setTimeout(() => {
+            this.activeSession.messages.push({
+              "sender_uid": 0,
+              "receiver_type": 1,
+              "receiver_id": 271221082,
+              "msg_type": 2,
+              "content": {"content": "图片", "url": fileUrl},
+              "timestamp": now,
+              "msg_key": 55,
+              "msg_status": 0
+            });
+          }, 500)
         };
         // 读取文件内容，这里使用DataURL格式
         reader.readAsDataURL(file);
-        return false;
       }
     },
     watch: {

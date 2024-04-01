@@ -153,7 +153,7 @@
     },
     props: {
       scene: {
-        // 业务场景 '评论区'、消息盒子
+        // 业务场景 '评论comment'、消息盒子message
         type: String
       },
       placeholder: {
@@ -340,12 +340,18 @@
           this.$Message.error('请选择正确的图片格式！');
           return false;
         }
+        // 如果是消息盒子，直接返回文件
+        if (this.scene === 'message') {
+          this.$emit('uploadImage', file);
+          return false;
+        }
         // 生成base64格式进行显示
         const reader = new FileReader(); // 创建FileReader对象
         reader.onload = () => {
           // 读取文件完成后将结果设置为预览图URL
           this.previewUrl = reader.result;
           this.file = file;
+          // 如果是用于聊天消息，主动发起一次
         };
         // 读取文件内容，这里使用DataURL格式
         reader.readAsDataURL(file);
