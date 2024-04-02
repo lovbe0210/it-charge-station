@@ -33,6 +33,7 @@ module.exports = {
     'padded-blocks': "off",
     'prefer-const': "off",
     'no-constant-condition': "off",
-    'eol-last': "off"
+    'eol-last': "off",
+    "no-case-declarations": "off"
   }
 }

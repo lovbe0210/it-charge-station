@@ -47,7 +47,11 @@
         </div>
       </Upload>
       <div class="btn-box">
-        <Button :disabled="disabled" type="primary" @click="onSubmit">
+        <Button
+          :disabled="disabled"
+          type="primary"
+          @click="onSubmit"
+          title="Enter发送，Shift + Enter换行">
           {{ contentBtn }}
         </Button>
         <Button v-if="cancelBtn" @click="resetComment">
@@ -158,7 +162,7 @@
       },
       placeholder: {
         type: String,
-        default: '输入评论（Enter换行，Ctrl + Enter发送）'
+        default: '输入评论（Enter发送，Shift + Enter换行）'
       },
       mentionConfig: {
         type: Object,
@@ -238,6 +242,12 @@
         this.previewUrl = null;
         //提交按钮禁用
         this.disabled = true
+        // 删除光标
+        this.range = null;
+        // 强制编辑器失去焦点
+        if (this.editorRef) {
+          this.editorRef.blur();
+        }
       },
       focus() {
         this.action = true;
@@ -255,20 +265,25 @@
         }
       },
       keyDown(e) {
-        if (e.ctrlKey && e.key === 'Enter') {
-          //用户点击了ctrl+enter触发
-          if (isEmpty(this.content.replace(/&nbsp;|<br>| /g, ''))) {
-            this.$Message.info('内容不能为空');
-          } else {
-            this.onSubmit();
-          }
+        // 评论区时阻止通过快捷键发送
+        if (e.shiftKey && e.key === 'Enter') {
+          //用户点击了shift + enter触发Enter的换行
+        } else if (e.ctrlKey && e.key === 'Enter') {
+          // ctrl+enter直接跳过
+          e.preventDefault()
         } else if (e.key === 'Enter' && this.showMention) {
           // TODO 插入用户操作
           /*e.preventDefault()
           const currentUser = this.enterConfirm()
           this.insertUser(currentUser)*/
-        } else {
-          console.log(e.key)
+        } else if (e.key === 'Enter') {
+          // 阻止原生的enter换行
+          e.preventDefault()
+          if (isEmpty(this.content.replace(/&nbsp;|<br>| /g, ''))) {
+            this.$Message.warning('内容不能为空');
+          } else {
+            this.onSubmit();
+          }
         }
       },
       pasteFn(event) {
@@ -423,7 +438,16 @@
         let emojiPath = this.c_emoji.allEmoji[emojiVal];
         if (emojiPath) {
           // 当前输入对象为表情
-          emoji = `<img src="${emojiPath}" draggable="false" style="width: 20px;height: 20px">`
+          emoji = [
+            '<img src="',
+            emojiPath,
+            '" width="18" height="18" alt="',
+            emojiVal,
+            '" title="',
+            emojiVal,
+            '" style="margin: 0 1px; vertical-align: text-bottom"',
+            '/>'
+          ].join('');
           this.showEmojiSelector = false;
         } else {
           emoji = emojiVal;

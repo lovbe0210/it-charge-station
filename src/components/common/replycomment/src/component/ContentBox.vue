@@ -106,7 +106,7 @@
           <div class="u-fold">
             <div ref="textBox" class="txt-box" :class="{ 'over-hidden': !unfold }">
               <div ref="divBox">
-                <div v-html="contents"></div>
+                <div v-html="this.data.content"></div>
                 <div class="imgbox" v-if="commentReply.contentImg" style="display: flex;">
                   <b-img :src="commentReply.contentImg" @click="imgPreview = true"
                          style="height: 72px; margin: 8px 4px; border-radius: 2px;"
@@ -170,8 +170,8 @@
 
 <script>
   import {cloneDeep} from '@/utils/emoji';
-  import {useEmojiParse} from '@/utils/hooks';
-  import emoji from '@/assets/emoji/emoji.js';
+  // import {useEmojiParse} from '@/utils/hooks';
+  // import emoji from '@/assets/emoji/emoji.js';
   import InputBox from './InputBox';
   import ImagePreview from '@/components/common/ImagePreview'
 
@@ -204,9 +204,9 @@
       }
     },
     computed: {
-      contents() {
+     /* contents() {
         return useEmojiParse(emoji.allEmoji, this.data.content);
-      },
+      },*/
       userInfo() {
         return this.$store.state.userInfo;
       }
