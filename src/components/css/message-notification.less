@@ -221,7 +221,7 @@
                       color: #585A5A;
                     }
 
-                    /deep/ .ivu-badge > .ivu-badge-dot {
+                    .ivu-badge > .ivu-badge-dot {
                       height: 6px;
                       width: 6px;
                     }
@@ -375,7 +375,6 @@
             }
 
             .session-box {
-              //width: calc(100% - 240px);
               -webkit-box-flex: 1;
               -ms-flex: 1;
               flex: 1;
@@ -534,7 +533,7 @@
                   position: relative;
                   z-index: 2;
 
-                  /deep/ .comment-box {
+                  .comment-box {
                     height: 100%;
                     position: relative;
 
@@ -601,6 +600,68 @@
                     }
                   }
                 }
+              }
+            }
+          }
+        }
+
+        .tabs-setting-holder {
+          position: relative;
+          -webkit-box-flex: 1;
+          -ms-flex: 1;
+          flex: 1;
+          max-height: 570px;
+          height: 570px;
+          overflow: hidden !important;
+
+          .message-setting {
+            padding: 10px 16px;
+            margin: 0 12px;
+
+            .setting-subtitle {
+              margin: 0px 0px 10px;
+              color: #262626;
+              line-height: 24px;
+              font-weight: 500;
+              font-size: 16px;
+              text-align: inherit;
+            }
+
+            .setting-border {
+              border-bottom: 1px solid #F4F5F5;
+              margin-bottom: 15px;
+              box-sizing: border-box;
+            }
+
+            .settings-item {
+              position: relative;
+              padding: 0 0 10px 0;
+              margin-right: 10px;
+
+              h4 {
+                font-size: 14px;
+                line-height: 22px;
+                font-weight: 400;
+                color: #262626;
+                margin-bottom: 0;
+                margin-top: 0;
+              }
+
+              p {
+                margin: 2px 0;
+                font-size: 14px;
+                line-height: 22px;
+                color: #8A8F8D;
+              }
+
+              .settings-selector {
+                position: absolute;
+                right: 100px;
+                top: 0;
+              }
+
+              .settings-radio {
+                margin-top: 10px;
               }
             }
           }

@@ -15,11 +15,12 @@
   // 引入ViewUI样式和组件
   import {
     Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload, Icon,
-    Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane, Time, Table
+    Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane, Time, Table,
+    RadioGroup, Radio
   } from 'view-design'
   import './index.less'
   import {
-    Tooltip, Card, Popover, Pagination, Tag, Select, Checkbox, Radio, Popconfirm,
+    Tooltip, Card, Popover, Pagination, Tag, Select, Checkbox, Popconfirm,
     Skeleton, Empty
   } from 'ant-design-vue'
   import commonUtil from "@/utils/common"
@@ -51,8 +52,8 @@
   Vue.component('TabPane', TabPane);
   Vue.component('Time', Time);
   Vue.component('Table', Table);
-  Vue.component('a-radio-group', Radio.Group);
-  Vue.component('a-radio', Radio);
+  Vue.component('Radio', Radio);
+  Vue.component('RadioGroup', RadioGroup);
   Vue.component('a-tooltip', Tooltip);
   Vue.component('a-card', Card);
   Vue.component('a-card-meta', Card.Meta);

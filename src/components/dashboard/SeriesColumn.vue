@@ -69,17 +69,25 @@
           </div>
           <span class="column-hover-show"
                 :style="columnShowType == 1 ? 'bottom: 48px;' : 'top: 12px;'">
-            <Dropdown placement="bottom-end">
+            <Dropdown placement="bottom-end" @on-click="routeNavigate">
                 <a href="javascript:void(0)">
                   <div class="menu-btn">
                     <span class="iconfont icon-nav-menu"></span>
                   </div>
                 </a>
                 <DropdownMenu slot="list">
-                  <DropdownItem><span class="iconfont permissions"/> 权限</DropdownItem>
-                  <DropdownItem><span class="iconfont rename"/> 重命名</DropdownItem>
-                  <DropdownItem><span class="iconfont setting"/> 更多设置</DropdownItem>
-                  <DropdownItem><span class="iconfont delete"/> 删除</DropdownItem>
+                  <DropdownItem name="scope">
+                    <span class="iconfont permissions"/> 权限
+                  </DropdownItem>
+                  <DropdownItem name="rename">
+                    <span class="iconfont rename"/> 重命名
+                  </DropdownItem>
+                  <DropdownItem name="setting">
+                    <span class="iconfont setting"/> 更多设置
+                  </DropdownItem>
+                  <DropdownItem name="delete">
+                    <span class="iconfont delete"/> 删除
+                  </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
           </span>
@@ -132,10 +140,10 @@
           <div class="modal-title">
             <span>公开性</span>
           </div>
-          <a-radio-group v-model="isPublic" :defaultValue="isPublic" @change="changeScope">
-            <a-radio style="display: block; height: 30px; lineHeight: 30px" :value="0">
+          <RadioGroup v-model="isPublic" @change="changeScope">
+            <Radio style="display: block; height: 30px; lineHeight: 30px" :label="0">
               仅作者可访问
-            </a-radio>
+            </Radio>
             <a-popconfirm
               ok-text="确认"
               cancel-text="取消"
@@ -153,12 +161,12 @@
                     开启后，互联网所有获得链接的人皆可访问知识库下的全部内容。你需对其合法合规性负责，遵守相关法律法规及语雀 服务协议 约定，违规内容可能无法被查看。
                   </span>
               </div>
-              <a-radio style="display: block; height: 30px; lineHeight: 30px" :value="1">
+              <Radio style="display: block; height: 30px; lineHeight: 30px" :label="1">
                 互联网所有人可访问
-              </a-radio>
+              </Radio>
             </a-popconfirm>
 
-          </a-radio-group>
+          </RadioGroup>
         </div>
         <div v-if="deleteColumn">
           删除专栏

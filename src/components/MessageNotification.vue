@@ -21,7 +21,7 @@
       </div>
       <div class="menu-item" @click="routeNavigate('newFans')">
         <div :class="['item', activeMenu === 'newFans' ? 'active-menu' : '']">
-          <span>新增粉丝</span>
+          <span>新增关注</span>
           <span class="count">10</span>
         </div>
       </div>
@@ -59,7 +59,7 @@
                 收到的赞
               </span>
               <span v-if="activeMenu === 'newFans'">
-                新增粉丝
+                新增关注
               </span>
               <span v-if="activeMenu === 'systemMessage'">
                 系统消息
@@ -128,7 +128,7 @@
                       <a href="/u25607691" target="_blank" class="context-actor">{{item.username}}</a>
                       赞了我的{{ item.type == 1 ? '文档' : item.type == 2 ? '随笔' : '评论' }}
                       <a href="/go/notification/134715579" target="_blank">
-                        <span class="context-subject">{{item.targetVectorName}}</span>
+                        <span class="context-subject">{{item.targetVectorName}}&nbsp;</span>
                       </a>
                       <Badge dot v-if="item.read === 0" :offset="[-9, -3]"/>
                     </p>
@@ -185,7 +185,7 @@
               </li>
             </ul>
           </div>
-          <div class="tabs-message-holder ps" v-if="activeMenu === 'chatMessage'">
+          <div class="tabs-message-holder" v-if="activeMenu === 'chatMessage'">
             <div class="lovbe-im">
               <div class="session-list beauty-scroll">
                 <div class="list-container">
@@ -285,6 +285,86 @@
               </div>
             </div>
           </div>
+          <div class="tabs-setting-holder" v-if="activeMenu === 'messageSetting'">
+            <div class="message-setting">
+              <h2 class="setting-subtitle">提醒设置</h2>
+              <div class="setting-border">
+                <div class="settings-item">
+                  <h4>有新消息时显示消息提醒</h4>
+                  <p>关闭后，当有新动态时，不展示相应位置的红点提示</p>
+                  <span class="settings-selector">
+                    <i-switch v-model="messageSetting.msgDot"
+                              size="small"
+                              @on-change="msgNotifyChange">
+                    </i-switch>
+                  </span>
+                </div>
+                <div class="settings-item">
+                  <h4>有新消息时展示消息数量</h4>
+                  <p>关闭后，当有新消息时，不展示相应位置的未读统计</p>
+                  <span class="settings-selector">
+                    <i-switch v-model="messageSetting.msgCount"
+                              size="small"
+                              @on-change="msgNotifyChange">
+                    </i-switch>
+                  </span>
+                </div>
+              </div>
+              <h2 class="setting-subtitle">消息设置</h2>
+              <div class="settings-item">
+                <h4>回复我的消息提醒</h4>
+                <p>接受谁的评论、回复或@消息提醒</p>
+                <span class="settings-radio">
+                  <RadioGroup v-model="messageSetting.replyAccept" @on-change="msgNotifyChange">
+                      <Radio :label="1">所有人</Radio>
+                      <Radio :label="2">关注的人</Radio>
+                      <Radio :label="0">不接受任何消息提醒</Radio>
+                  </RadioGroup>
+                </span>
+              </div>
+              <div class="settings-item">
+                <h4>收到的赞消息提醒</h4>
+                <p>当他人给我的文档、随笔或评论点赞时</p>
+                <span class="settings-radio">
+                  <RadioGroup v-model="messageSetting.likeAccept" @on-change="msgNotifyChange">
+                      <Radio :label="1">所有人</Radio>
+                      <Radio :label="2">关注的人</Radio>
+                      <Radio :label="0">不接受任何消息提醒</Radio>
+                  </RadioGroup>
+                </span>
+              </div>
+              <div class="settings-item">
+                <h4>关注提醒</h4>
+                <p>当他人关注我时</p>
+                <span class="settings-selector">
+                  <i-switch v-model="messageSetting.newFollower"
+                            size="small"
+                            @on-change="msgNotifyChange">
+                    </i-switch>
+                </span>
+              </div>
+              <div class="settings-item">
+                <h4>系统消息</h4>
+                <p>风险提示，功能变更，运营活动</p>
+                <span class="settings-selector">
+                  <i-switch v-model="messageSetting.systemNotice"
+                            size="small"
+                            @on-change="msgNotifyChange">
+                    </i-switch>
+                </span>
+              </div>
+              <div class="settings-item">
+                <h4>我的消息</h4>
+                <p>我对别人发起或别人对我发起的私信消息</p>
+                <span class="settings-selector">
+                  <i-switch v-model="messageSetting.chatMessage"
+                            size="small"
+                            @on-change="msgNotifyChange">
+                    </i-switch>
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -319,7 +399,16 @@
           mentionColor: '#409eff'
         },
         EmojiSelectorPosition: null,
-        tmpId: 100
+        tmpId: 100,
+        messageSetting: {
+          msgDot: true,
+          msgCount: true,
+          replyAccept: 1,
+          likeAccept: 1,
+          newFollower: true,
+          systemNotice: true,
+          chatMessage: true
+        }
       }
     },
     props: ['msgNotifyTypeActive'],
@@ -890,6 +979,9 @@
             "timestamp": now
           });
         }
+      },
+      msgNotifyChange() {
+        this.$Message.success('设置成功');
       }
     },
     watch: {
@@ -969,6 +1061,19 @@
               "timestamp": 1711730115671,
               "msg_key": 55,
               "msg_status": 0
+            },
+            {
+              "sender_uid": 123123123,
+              "receiver_type": 1,
+              "receiver_id": 271221082,
+              "msg_type": 2,
+              "content": {
+                "content": "图片",
+                'imageUrl': 'https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1m6vedbj30is0qaabq.jpg'
+              },
+              "timestamp": 1711730115671,
+              "msg_key": 66,
+              "msg_status": 0
             }
           ];
           let messageScroll = this.$refs.messageScroll;
@@ -997,6 +1102,6 @@
   }
 </script>
 
-<style lang="less" scoped>
+<style lang="less" scope>
   @import "./css/message-notification.less";
 </style>
