@@ -48,9 +48,6 @@
                     <span class="iconfont icon-article"></span> 2233
                   </div>
                   <div>
-                    <span class="iconfont icon-collected"></span> 11223
-                  </div>
-                  <div>
                     <span class="iconfont icon-like1"></span> 11223
                   </div>
                 </b-row>

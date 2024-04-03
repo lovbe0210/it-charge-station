@@ -24,9 +24,6 @@
                 <span class="iconfont icon-like1"></span> 2233
               </div>
               <div>
-                <span class="iconfont icon-collected"></span> 11223
-              </div>
-              <div>
                 <span class="iconfont icon-read"></span> 777
               </div>
               <div class="from">
