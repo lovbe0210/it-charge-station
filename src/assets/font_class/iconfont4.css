@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_kehlc2fnbxn.woff2?t=1711641215889') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_zo49vt3q3g.woff2?t=1712491127787') format('woff2');
 }
 
 .iconfont {
@@ -9,7 +9,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 
 .remove:before {
   content: "\e618";
@@ -183,5 +182,40 @@
 .like:before {
   content: "\e656";
 }
+
+.hot-rank:before {
+  content: "\e657";
+}
+
+.article:before {
+  content: "\e658";
+}
+
+.series-column:before {
+  content: "\e688";
+}
+
+.topic-doc:before {
+  content: "\e660";
+}
+
+.author2:before {
+  content: "\e661";
+}
+
+.shuben1:before {
+  content: "\e797";
+}
+.shuben2:before {
+  content: "\e601";
+}
+.shuben3:before {
+  content: "\e600";
+}
+.shuben4:before {
+  content: "\e675";
+}
+
+
 
 

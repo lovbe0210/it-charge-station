@@ -18,7 +18,7 @@
                @click="routeNavigate('noteHome')">
             <div class="light"></div>
             <div class="item">
-              <span class="iconfont icon-doc-repository"></span>
+              <span class="iconfont article"></span>
               笔记
             </div>
           </div>
@@ -26,7 +26,7 @@
                @click="routeNavigate('seriesColumn')">
             <div class="light"></div>
             <div class="item">
-              <span class="iconfont icon-topic-doc"></span>
+              <span class="iconfont series-column"></span>
               专栏
             </div>
           </div>

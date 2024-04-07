@@ -5,25 +5,25 @@
         <div class="menu-wrap">
           <div class="fixed-anchor-point">
             <div class="item">
-              <span class="iconfont icon-rankings"></span>
+              <span class="iconfont hot-rank" style="font-size: 18px"></span>
               排行热榜
             </div>
           </div>
           <div class="menu-item" @click="routeNavigate('articles')">
             <div :class="['item', activeMenuForEq === 'FeaturedNotes' ? 'active-menu' : '']">
-              <span class="iconfont circle-hot"></span>
+              <span class="iconfont article"></span>
               <span>精选笔记榜</span>
             </div>
           </div>
           <div class="menu-item" @click="routeNavigate('column')">
             <div :class="['item', activeMenuForEq === 'SeriesColumn' ? 'active-menu' : '']">
-              <span class="iconfont circle-hot"></span>
+              <span class="iconfont shuben1"></span>
               <span>推荐专栏榜</span>
             </div>
           </div>
           <div class="menu-item" @click="routeNavigate('authors')">
             <div :class="['item', activeMenuForEq === 'QualityAuthors' ? 'active-menu' : '']">
-              <span class="iconfont circle-hot"></span>
+              <span class="iconfont author2"></span>
               <span>优秀作者榜</span>
             </div>
           </div>

@@ -109,7 +109,7 @@
                 </DropdownItem>
                 <DropdownItem name="seriesColumn">
                   <div class="routing-menu quick-start-item">
-                    <span class="iconfont icon-topic-doc"></span>
+                    <span class="iconfont series-column"></span>
                     <span class="routing-content">专栏文章</span>
                     <span class="iconfont icon-more"></span>
                   </div>

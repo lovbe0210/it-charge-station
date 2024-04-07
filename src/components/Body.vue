@@ -45,7 +45,7 @@
                 </span>
                 <b-row class="icon">
                   <div>
-                    <span class="iconfont icon-article"></span> 2233
+                    <span class="iconfont series-column"></span> 2233
                   </div>
                   <div>
                     <span class="iconfont icon-like1"></span> 11223
