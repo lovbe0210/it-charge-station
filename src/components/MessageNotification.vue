@@ -173,7 +173,7 @@
                         {{item.content}}
                       </span>
                       <a :href="item.url" target="_blank">
-                        <span class="sys-msg-label">&nbsp;{{item.label}}</span>
+                        <span class="sys-msg-label">&nbsp;{{item.label}}&nbsp;</span>
                       </a>
                       <Badge dot v-if="item.read === 0" :offset="[-9, -5]"/>
                     </p>

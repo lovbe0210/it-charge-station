@@ -9,11 +9,11 @@
     height: 100%;
 
     .layout-module_menu {
-      height: calc(~"100% / 3 * 2");
+      height: calc(~"100% / 3 * 1.7");
       width: 94%;
 
       .menu-wrap {
-        padding: 25px 12px;
+        padding: 25px;
 
         .menu-item {
           height: 38px;
@@ -31,18 +31,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0 12px;
+            padding: 0 15px;
 
             .iconfont {
               font-size: 18px;
-              margin-right: 10px;
+              margin-right: 6px;
             }
           }
 
           .item:hover, .active-menu {
-            //background: #eff0f0;
-            //border-radius: 6px;
-            color: #FC5531;
+            background: #eff0f0;
+            border-radius: 6px;
+            //color: #FC5531;
           }
         }
 
@@ -55,7 +55,7 @@
           width: 100%;
           display: flex;
           justify-content: center;
-          cursor: pointer;
+          user-select: none;
 
           .item {
             justify-content: center;
@@ -64,6 +64,18 @@
           .iconfont {
             margin-right: 10px;
           }
+        }
+      }
+
+      .rank-tip {
+        padding: 0 25px 25px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+
+        .iconfont {
+          font-size: 14px;
+          margin-right: 2px;
         }
       }
     }

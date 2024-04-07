@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_zo49vt3q3g.woff2?t=1712491127787') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_7obqatw3s1v.woff2?t=1712502396653') format('woff2');
 }
 
 .iconfont {
@@ -192,7 +192,7 @@
 }
 
 .series-column:before {
-  content: "\e688";
+  content: "\e662";
 }
 
 .topic-doc:before {
@@ -203,17 +203,12 @@
   content: "\e661";
 }
 
-.shuben1:before {
-  content: "\e797";
+.tips:before {
+  content: "\e610";
 }
-.shuben2:before {
-  content: "\e601";
-}
-.shuben3:before {
-  content: "\e600";
-}
-.shuben4:before {
-  content: "\e675";
+
+.tips1:before {
+  content: "\e684";
 }
 
 
