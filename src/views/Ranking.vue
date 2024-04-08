@@ -1,7 +1,7 @@
 <template>
   <div class="layout-module_ranking">
     <div class="layout-module_rankingMenu">
-      <div class="layout-module_menu enable-background">
+      <div class="layout-module_menu enable-background" :style="'top:' + fixedHeight + 'px;'">
         <div class="menu-wrap">
           <div class="fixed-anchor-point">
             <div class="item">
@@ -53,14 +53,14 @@
     name: 'Ranking',
     beforeRouteEnter(from, to, next) {
       next(vc => {
-        debugger
         vc.activeMenu = vc.$route.name;
         next();
       });
     },
     data() {
       return {
-        activeMenu: '精选笔记榜'
+        activeMenu: '精选笔记榜',
+        fixedHeight: 77
       }
     },
     components: {
@@ -78,15 +78,26 @@
       routeNavigate(itemName) {
         this.activeMenu = itemName;
         this.$router.push({path: '/hot/' + itemName})
+      },
+      // 滚动条滚动处理事件：
+      handleScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        let computeTop = 77 - scrollTop;
+        this.fixedHeight = computeTop < 2 ? 2 : computeTop > 77 ? 77 : computeTop;
       }
     },
     watch: {
       $route(to) {
-        debugger
         this.activeMenu = to.name;
       }
     },
     mounted() {
+      // 给window添加一个滚动监听事件
+      window.addEventListener('scroll', this.handleScroll)
+    },
+    destroyed() {
+      // 释放监听
+      window.removeEventListener('scroll', this.handleScroll)
     }
   }
 </script>

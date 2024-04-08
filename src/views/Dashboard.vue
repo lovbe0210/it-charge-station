@@ -110,7 +110,6 @@
     data() {
       return {
         activeMenu: 'RecentView',
-        needFixed: false,
         fixedHeight: 77
       }
     },
@@ -155,7 +154,6 @@
       }
     },
     mounted() {
-      this.needFixed = false;
       // 给window添加一个滚动监听事件
       window.addEventListener('scroll', this.handleScroll)
     },
