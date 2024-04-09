@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "iconfont";
+  src:
+      url('//at.alicdn.com/t/c/font_4499563_62y2wtmxwmq.woff2?t=1712638340582') format('woff2');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.rank-1:before {
+  content: "\e500";
+}
+
+.rank-2:before {
+  content: "\e501";
+}
+
+.rank-3:before {
+  content: "\e502";
+}
+
+
+
+
