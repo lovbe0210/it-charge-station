@@ -1,8 +1,20 @@
 <template>
-  <div class="layout-module_feature-note">
-    <div>
-      <p>精选笔记</p>
+  <div class="layout-module_feature-note" ref="popoverContainer">
+    <div class="hot-header">
+      <p>
+        精选笔记
+        <a-tooltip overlayClassName="feature-note-tooltip"
+                   :getPopupContainer="()=>this.$refs.popoverContainer">
+          <template slot="title">
+            <span style="font-size: 12px;">基于最近3日内的文章统计数据，依据文章有效阅读、点赞、评论、收藏数据计算热度</span>
+            <!--<span v-if="activeMenuForEq === 'RecommendColumn'">基于专栏内所有文章的有效阅读、点赞、评论、收藏数据计算热度</span>
+            <span v-if="activeMenuForEq === 'QualityAuthors'">按发表文章、随笔小计、互动数据计算热度</span>-->
+          </template>
+          <span class="iconfont doubt"></span>
+        </a-tooltip>
+      </p>
     </div>
+    <Divider class="divider"/>
     <div class="hot-list">
       <a href="/post/7353484906532995135" class="article-item-link" target="_blank" v-for="(item,index) in noteList" :key="item.noteId">
         <div class="article-item-wrap">
@@ -10,37 +22,47 @@
             <span :class="['iconfont', 'rank-' + (index+1), 'article-number']" v-if="index <= 2"></span>
             <span class="article-number" v-else>{{index}}</span>
             <div class="article-detail">
-              <div title="下一代 CSS 框架：Mojo CSS" class="article-title">
+              <div :title="item.noteTitle" class="article-title">
                 {{item.noteTitle}}
               </div>
               <div class="article-author">
                 <a href="/user/3468339576581548" class="article-author-name" target="_blank">
-                  <b-avatar
-                    :src="item.userInfo.avatar"
-                    size="1.5rem"
-                    class="avatar"
-                    to="/lovbe0210">
-                    <span v-if="!item.userInfo.avatar">{{item.userInfo.username}}</span>
-                  </b-avatar>
-                  <span class="article-author-name-text">{{item.userInfo.username}}</span>
+                  <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer">
+                    <slot>
+                      <b-avatar
+                        :src="item.userInfo.avatar"
+                        size="1.5rem"
+                        class="avatar"
+                        to="/lovbe0210">
+                        <span v-if="!item.userInfo.avatar">{{item.userInfo.username}}</span>
+                      </b-avatar>
+                    </slot>
+                  </user-card>
+                  <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer">
+                    <slot>
+                      <b-link to="/lovbe0210">
+                        <span class="article-author-name-text">{{item.userInfo.username}}&nbsp;·&nbsp;</span>
+                      </b-link>
+                    </slot>
+                  </user-card>
                 </a>
                 <div class="author-text">
-                  8.3k 浏览
+                  {{ formatNumber(item.viewCount) }} 浏览&nbsp;·&nbsp;
                 </div>
                 <div class="author-text">
-                  303 赞
+                  {{ formatNumber(item.likeCount) }} 赞&nbsp;·&nbsp;
                 </div>
                 <div class="author-text">
-                  67 收藏
+                  {{ formatNumber(item.collectCount) }} 收藏&nbsp;·&nbsp;
                 </div>
                 <div class="author-text">
-                  82 评论
+                  {{ formatNumber(item.commentCount) }} 评论
                 </div>
               </div>
             </div>
           </div>
-          <div class="article-right article-small-right">
-            <Button>
+          <div class="article-right">
+            <Button class="action-btn">
               <span>收藏</span>
             </Button>
           </div>
@@ -51,21 +73,24 @@
 </template>
 
 <script>
+  import { formatNumber } from '@/utils/emoji/index.js'
+  import UserCard from "@/components/common/UserCard.vue";
   export default {
     name: "FeaturedNotes",
     data() {
       return {
+        popoverContainer: null,
         noteList: [
           {
             noteId: 123,
             noteTitle: '我早就看现在的工作流不爽了！- 前端使用 Jenkins',
             userInfo: {
               username: 'bald3r',
-              avatar: 'https://p6-passport.byteacctimg.com/img/user-avatar/8f2b52c27958ebc5e420af7142f618f7~300x300.image',
+              avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hojglubq5nj311y1kwx4c.jpg',
               userId: 112,
               domain: '/lovbe0210'
             },
-            viewCount: 1000,
+            viewCount: 12000,
             collectCount: 201,
             likeCount: 203,
             commentCount: 23
@@ -75,11 +100,11 @@
             noteTitle: '你不知道的Vue最新功能：Vue Macros',
             userInfo: {
               username: '水煮鱼写前端',
-              avatar: 'https://p9-passport.byteacctimg.com/img/user-avatar/257fc5357a5336eaf304609e37a89d6d~100x100.awebp',
+              avatar: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hojgm70ztnj316p1kxqln.jpg',
               userId: 112,
               domain: '/lovbe0210'
             },
-            viewCount: 1000,
+            viewCount: 300,
             collectCount: 201,
             likeCount: 203,
             commentCount: 23
@@ -89,11 +114,11 @@
             noteTitle: '面试官：如何一次性渲染十万条数据',
             userInfo: {
               username: 'Dolphin_海豚',
-              avatar: 'https://p3-passport.byteacctimg.com/img/user-avatar/eaf9fde0679a72cb3d6b0b4d3c6bab73~100x100.awebp',
+              avatar: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hog855y6lpj30sg0zkdk1.jpg',
               userId: 112,
               domain: '/lovbe0210'
             },
-            viewCount: 1000,
+            viewCount: 400,
             collectCount: 201,
             likeCount: 203,
             commentCount: 23
@@ -103,11 +128,11 @@
             noteTitle: 'Flutter 即将放弃 Html renderer ，你是否支持这个提议？',
             userInfo: {
               username: '恋猫de小郭',
-              avatar: 'https://p3-passport.byteacctimg.com/img/user-avatar/527994262adc861f9291cad601e7ef8b~100x100.awebp',
+              avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog854ty1oj30u011hwij.jpg',
               userId: 112,
               domain: '/lovbe0210'
             },
-            viewCount: 1000,
+            viewCount: 5020,
             collectCount: 201,
             likeCount: 203,
             commentCount: 23
@@ -117,7 +142,7 @@
             noteTitle: '秒杀 ：这些问题帮你弄清楚分布式锁应该如何设计',
             userInfo: {
               username: '志字辈小蚂蚁',
-              avatar: 'https://p9-passport.byteacctimg.com/img/user-avatar/98fce255804de3671e095d2ecdca0b13~100x100.awebp',
+              avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hog858wjnhj30u011haf3.jpg',
               userId: 112,
               domain: '/lovbe0210'
             },
@@ -131,7 +156,7 @@
             noteTitle: '陌生Java项目历险记 2 ——搜索与回溯',
             userInfo: {
               username: ' 摸鱼总工',
-              avatar: 'https://p3-passport.byteacctimg.com/img/mosaic-legacy/3791/5035712059~100x100.awebp',
+              avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog859i4f5j30l40qego7.jpg',
               userId: 112,
               domain: '/lovbe0210'
             },
@@ -145,7 +170,7 @@
             noteTitle: 'Spring Cloud Gateway实战',
             userInfo: {
               username: '徐年',
-              avatar: 'https://p9-passport.byteacctimg.com/img/user-avatar/e530c2a3d9f08627c446cba489a710d9~100x100.awebp',
+              avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog6fy2jvxj316o1kwk96.jpg',
               userId: 112,
               domain: '/lovbe0210'
             },
@@ -159,7 +184,7 @@
             noteTitle: '写出好的Join语句，前提你得懂这些！',
             userInfo: {
               username: '程序员清风',
-              avatar: 'https://p3-passport.byteacctimg.com/img/user-avatar/cc924d630fa27d7fe10ed8c6053763ea~100x100.awebp',
+              avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hog6g0y71xj311y1kw7eb.jpg',
               userId: 112,
               domain: '/lovbe0210'
             },
@@ -184,11 +209,44 @@
           }
         ]
       }
+    },
+    components: {
+      UserCard
+    },
+    methods: {
+      formatNumber
+    },
+    mounted() {
+      this.popoverContainer = this.$refs.popoverContainer;
     }
   }
 </script>
 
 <style scoped type="less">
+  .layout-module_feature-note {
+    width: 95%;
+  }
+
+  .hot-header {
+    p {
+      font-size: 16px;
+      font-weight: 600;
+      color: #262626;
+      display: flex;
+      align-items: center;
+
+      .iconfont {
+        margin-left: 5px;
+        color: #D0D3D9;
+        font-size: 18px;
+      }
+    }
+  }
+
+  .divider {
+    margin: 24px 0 10px 0;
+  }
+
   .article-item-link {
     display: inline-block;
     padding: 0;
@@ -200,13 +258,14 @@
       flex-direction: row;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 1.33rem 1rem;
+      padding: 1.2rem 1rem 1rem 0;
       border-radius: 4px;
       cursor: pointer;
 
       .article-item-left {
         display: flex;
         flex-direction: row;
+        align-items: flex-start;
         min-width: 300px;
 
         .article-number {
@@ -223,14 +282,14 @@
         .article-detail {
           display: flex;
           flex-direction: column;
-          max-width: 400px;
-          min-width: 300px;
+          max-width: 600px;
+          min-width: 500px;
 
           .article-title {
             color: #262626;
             line-height: 28px;
             letter-spacing: 0.008em;
-            font-size: 18px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             display: -webkit-box;
@@ -238,11 +297,12 @@
             text-overflow: ellipsis;
             -webkit-box-orient: vertical;
             -webkit-line-clamp: 1;
+            margin-bottom: 5px;
           }
 
           .article-author {
-            font-size: 1.08rem;
-            line-height: 1.83rem;
+            font-size: 14px;
+            line-height: 26px;
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
@@ -251,6 +311,8 @@
             .article-author-name {
               cursor: pointer;
               color: #8A8F8D;
+              display: flex;
+              align-items: center;
 
               .avatar {
                 margin-right: 10px;
@@ -258,6 +320,10 @@
 
               .article-author-name-text {
                 vertical-align: middle;
+
+                &:hover {
+                  color: #1E80FF;
+                }
               }
             }
           }
@@ -269,8 +335,11 @@
         flex-direction: row;
         align-items: center;
         justify-content: flex-end;
-        width: 21rem;
         flex-shrink: 0;
+
+        .action-btn {
+          width: 70px;
+        }
       }
     }
   }

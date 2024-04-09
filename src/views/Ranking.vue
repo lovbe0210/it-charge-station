@@ -28,16 +28,14 @@
             </div>
           </div>
         </div>
-        <div class="rank-tip">
+        <!--<div class="rank-tip">
           <p>
             <span class="iconfont tips"></span>
-            <!--          <span class="iconfont tips1"></span>-->
+            &lt;!&ndash;          <span class="iconfont tips1"></span>&ndash;&gt;
             <span>排行榜说明：</span>
-            <span v-if="activeMenuForEq === 'FeaturedNotes'">基于最近3日内文章统计，基于有效阅读、点赞、评论、收藏数据计算热度</span>
-            <span v-if="activeMenuForEq === 'RecommendColumn'">基于专栏内所有文章的有效阅读、点赞、评论、收藏数据计算热度</span>
-            <span v-if="activeMenuForEq === 'QualityAuthors'">按发表文章、随笔小计、互动数据计算热度</span>
+
           </p>
-        </div>
+        </div>-->
       </div>
     </div>
     <div class="layout-module_rankingContent enable-background">

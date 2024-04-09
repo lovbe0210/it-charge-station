@@ -63,3 +63,18 @@ export function formatTime(timestamp) {
           hours + ':' + minutes;
   }
 }
+
+/**
+ * 数字格式化 输出"501" "1.5K" "1.2W"
+ * @param num
+ * @returns {string}
+ */
+export function formatNumber(num) {
+  if (num >= 1000 && num < 10000) {
+    return (num / 1000).toFixed(1) + 'K';
+  } else if (num >= 10000) {
+    return (num / 10000).toFixed(1) + 'W';
+  } else {
+    return num.toString();
+  }
+}
