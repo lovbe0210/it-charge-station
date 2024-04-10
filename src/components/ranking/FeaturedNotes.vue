@@ -7,8 +7,6 @@
                    :getPopupContainer="()=>this.$refs.popoverContainer">
           <template slot="title">
             <span style="font-size: 12px;">基于最近3日内的文章统计数据，依据文章有效阅读、点赞、评论、收藏数据计算热度</span>
-            <!--<span v-if="activeMenuForEq === 'RecommendColumn'">基于专栏内所有文章的有效阅读、点赞、评论、收藏数据计算热度</span>
-            <span v-if="activeMenuForEq === 'QualityAuthors'">按发表文章、随笔小计、互动数据计算热度</span>-->
           </template>
           <span class="iconfont doubt"></span>
         </a-tooltip>
@@ -53,10 +51,7 @@
                   {{ formatNumber(item.likeCount) }} 赞&nbsp;·&nbsp;
                 </div>
                 <div class="author-text">
-                  {{ formatNumber(item.collectCount) }} 收藏&nbsp;·&nbsp;
-                </div>
-                <div class="author-text">
-                  {{ formatNumber(item.commentCount) }} 评论
+                  {{ formatNumber(item.collectCount) }} 收藏
                 </div>
               </div>
             </div>
@@ -92,8 +87,7 @@
             },
             viewCount: 12000,
             collectCount: 201,
-            likeCount: 203,
-            commentCount: 23
+            likeCount: 203
           },
           {
             noteId: 1231,
@@ -106,8 +100,7 @@
             },
             viewCount: 300,
             collectCount: 201,
-            likeCount: 203,
-            commentCount: 23
+            likeCount: 203
           },
           {
             noteId: 1232,
@@ -120,8 +113,7 @@
             },
             viewCount: 400,
             collectCount: 201,
-            likeCount: 203,
-            commentCount: 23
+            likeCount: 203
           },
           {
             noteId: 1233,
@@ -134,8 +126,7 @@
             },
             viewCount: 5020,
             collectCount: 201,
-            likeCount: 203,
-            commentCount: 23
+            likeCount: 203
           },
           {
             noteId: 1234,
@@ -148,8 +139,7 @@
             },
             viewCount: 1000,
             collectCount: 201,
-            likeCount: 203,
-            commentCount: 23
+            likeCount: 203
           },
           {
             noteId: 1235,
@@ -162,8 +152,7 @@
             },
             viewCount: 1000,
             collectCount: 201,
-            likeCount: 203,
-            commentCount: 23
+            likeCount: 203
           },
           {
             noteId: 1236,
@@ -176,8 +165,7 @@
             },
             viewCount: 1000,
             collectCount: 201,
-            likeCount: 203,
-            commentCount: 23
+            likeCount: 203
           },
           {
             noteId: 1237,
@@ -190,8 +178,7 @@
             },
             viewCount: 1000,
             collectCount: 201,
-            likeCount: 203,
-            commentCount: 23
+            likeCount: 203
           },
           {
             noteId: 1238,
@@ -204,8 +191,7 @@
             },
             viewCount: 1000,
             collectCount: 201,
-            likeCount: 203,
-            commentCount: 23
+            likeCount: 203
           }
         ]
       }
@@ -237,7 +223,7 @@
 
       .iconfont {
         margin-left: 5px;
-        color: #D0D3D9;
+        color: #9e9d9d;
         font-size: 18px;
       }
     }
@@ -258,9 +244,13 @@
       flex-direction: row;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 1.2rem 1rem 1rem 0;
+      padding: 1.2rem 1rem 1rem 0.5rem;
       border-radius: 4px;
       cursor: pointer;
+
+      &:hover {
+        background-color: #FAFAFA;
+      }
 
       .article-item-left {
         display: flex;
