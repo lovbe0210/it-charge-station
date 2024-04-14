@@ -19,6 +19,7 @@
 
       // 编辑器内容区
       .editor-body {
+        border: 1px solid  #F2F3F5;
         height: calc(~"100%");
         position: relative;
         background-color: #F2F3F5;
@@ -91,6 +92,10 @@
             }
           }
         }
+      }
+
+      .editor-focus {
+        border-color: #00b96b;
       }
     }
 
@@ -400,6 +405,9 @@
   }
 }
 
+/deep/ .am-engine-placeholder:before {
+  color: #8A8F8D !important;
+}
 /deep/.am-engine>ul {
   margin: 4px 0;
   li {
