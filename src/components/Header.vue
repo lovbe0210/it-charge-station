@@ -396,6 +396,9 @@
           case 'creativeSpace':
             this.$router.push({name: 'Stats'})
             break;
+          case 'ramblyJot':
+            this.$router.push({path: '/ramblyJot'})
+            break;
           default:
             this.$router.push({path: '/cate/' + itemName})
             break

@@ -65,7 +65,7 @@
           </div>
           <b-list-group class="rank">
             <b-list-group-item to="some-link" v-for="item in creators" :key="item.id">
-              <b-avatar variant="info" :src="item.avatar" to="/lovbe0210"/>
+              <b-avatar variant="info" :src="item.avatar" to="/lovbe0210" class="creator-avatar"/>
               <div class="info">
                 <b-row>
                     <span class="nick-name">

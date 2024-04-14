@@ -35,6 +35,7 @@
                 <slot>
                   <b-link to="/lovbe0210" class="author-name">
                     <span class="author-name-text">{{item.username}}</span>
+                    <span :class="['iconfont', 'icon-level' + item.level]"></span>
                   </b-link>
                 </slot>
               </user-card>
@@ -104,7 +105,7 @@
           {
             username: '恋猫de小郭',
             avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog854ty1oj30u011hwij.jpg',
-            userId: 112,
+            userId: 1121,
             domain: '/lovbe0210',
             level: 5,
             articleCount: 201,
@@ -114,7 +115,7 @@
           {
             username: '志字辈小蚂蚁',
             avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hog858wjnhj30u011haf3.jpg',
-            userId: 112,
+            userId: 1122,
             domain: '/lovbe0210',
             level: 4,
             articleCount: 201,
@@ -124,7 +125,7 @@
           {
             username: ' 摸鱼总工',
             avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog859i4f5j30l40qego7.jpg',
-            userId: 112,
+            userId: 1123,
             domain: '/lovbe0210',
             level: 0,
             articleCount: 201,
@@ -134,7 +135,7 @@
           {
             username: '徐年',
             avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog6fy2jvxj316o1kwk96.jpg',
-            userId: 112,
+            userId: 1124,
             domain: '/lovbe0210',
             level: 5,
             articleCount: 201,
@@ -144,7 +145,7 @@
           {
             username: '程序员清风',
             avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hog6g0y71xj311y1kw7eb.jpg',
-            userId: 112,
+            userId: 1152,
             domain: '/lovbe0210',
             level: 6,
             articleCount: 201,
@@ -154,7 +155,7 @@
           {
             username: '小白858',
             avatar: 'https://p9-passport.byteacctimg.com/img/user-avatar/1231993a9352e0b6c0dd8102c8be5cd1~100x100.awebp',
-            userId: 112,
+            userId: 1126,
             domain: '/lovbe0210',
             level: 0,
             articleCount: 201,
@@ -255,6 +256,11 @@
             line-height: 26px;
             color: #262626;
             margin-bottom: 8px;
+
+            .iconfont {
+              margin-left: 5px;
+              font-size: 20px;
+            }
 
             &:hover {
               color: #585A5A;

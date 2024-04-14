@@ -1,0 +1,412 @@
+.layout-module_RamblyJot {
+  margin: 30px 60px;
+
+  .rambly-module_editor {
+    position: relative;
+    height: calc(~"19vh");
+    max-width: 100%;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+
+    .scrollbar-visible {
+      height: 100%;
+
+      .layout-mode-fixed {
+        height: 100%;
+        position: relative;
+      }
+
+      // 编辑器内容区
+      .editor-body {
+        height: calc(~"100%");
+        position: relative;
+        background-color: #F2F3F5;
+        border-radius: 4px;
+        padding: 20px 0 20px 30px;
+
+        .editor-wrap {
+          display: flex;
+          height: 100%;
+          overflow-y: auto;
+          overflow-x: hidden;
+          position: relative;
+          overflow-anchor: none;
+
+          .editor-wrap-content {
+            flex: 1;
+            min-width: 600px;
+
+            .title-box {
+              position: relative;
+              padding: 0 10px 10px 0px;
+              margin: 0 auto;
+              font-family: Chinese Quote, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji;
+              position: relative;
+
+              .title {
+                color: #262626;
+                font-weight: 600;
+                font-size: 20px;
+                max-height: 350px;
+                min-height: 24px;
+                // 此处表示font-size*1.389得到行高
+                line-height: 1.389;
+                max-width: 100%;
+                width: 100%;
+                resize: none;
+                border: none;
+                outline: none;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+                vertical-align: bottom;
+                transition: all .3s, height 0s;
+                font-variant: tabular-nums;
+                list-style: none;
+                font-feature-settings: "tnum";
+                position: relative;
+                display: inline-block;
+                background-color: unset;
+                border-radius: 4px;
+                overflow-x: hidden;
+                overflow-y: hidden;
+
+                // 设置placeholder字体颜色
+                textarea::-webkit-input-placeholder { /* WebKit browsers */
+                  color: #BFBFBF;
+                }
+
+                textarea::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+                  color: #BFBFBF;
+                }
+
+                textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+                  color: #BFBFBF;
+                }
+
+                textarea::-ms-input-placeholder { /* Internet Explorer 10+ */
+                  color: #BFBFBF;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .curtain-operation {
+      .curtain-wrap {
+        border: none;
+        background: none;
+        height: 30px;
+        width: 30px;
+        position: relative;
+        float: right;
+        bottom: 30px;
+        right: -2px;
+        .iconfont {
+          font-weight: bold;
+          font-size: 17px;
+        }
+      }
+    }
+
+    .rambly-module_action {
+      margin-top: 10px;
+
+      .toolbar-ui {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        .toolbar-wrap {
+          display: flex;
+
+          /deep/ .editor-toolbar {
+            border: none;
+            width: unset;
+
+            .editor-toolbar-content {
+              justify-content: left !important;
+              padding: 5px 5px;
+              width: unset;
+
+              .toolbar-button:not(:last-child) {
+                margin-right: 15px;
+
+                .toolbar-title {
+                  font-size: 14px;
+                  margin-left: 5px;
+                }
+              }
+
+              .toolbar-button {
+                .toolbar-title {
+                  font-size: 14px;
+                  margin-left: 5px;
+                }
+              }
+
+              .toolbar-button:hover {
+                background-color: unset;
+                border: 1px solid unset;
+                color: #00B96B;
+              }
+
+              .toolbar-dropdown-heading {
+                margin-right: 10px;
+
+                .toolbar-button {
+                  margin-right: 5px;
+                  padding-left: 0;
+
+                  .toolbar-dropdown-button-text {
+                    font-weight: normal;
+                    font-size: 14px;
+                  }
+
+                  .data-icon-arrow {
+                    right: 15px;
+                  }
+                }
+              }
+            }
+          }
+
+          .title-btn {
+            color: #595959;
+            display: flex;
+            align-items: center;
+            margin-left: 5px;
+
+            .add-title {
+              font-size: 17px;
+              margin-right: 5px;
+            }
+          }
+
+          .title-btn:hover {
+            color: #00B96B;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .rambly-module_button {
+        display: flex;
+        align-items: center;
+
+        .ant-btn:not([disabled]):hover {
+          border-color: #00B96B;
+          color: #00B96B;
+        }
+      }
+    }
+  }
+
+  .extend-curtains {
+    height: calc(~"80vh");
+  }
+
+  .rambly-module_list {
+
+    .rambly-item {
+      border-radius: 6px;
+      padding: 25px 0 20px 0;
+
+      a {
+        text-decoration: none;
+        color: #191919;
+      }
+
+      .index-menos, .menos-item, .post-time {
+        color: #595959;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .post-tile {
+        margin: 10px 0 0;
+        h4 {
+          font-size: 18px;
+          margin: 0;
+          display: block;
+          margin-block-start: 0.7em;
+          margin-block-end: 0.7em;
+          margin-inline-start: 0px;
+          margin-inline-end: 0px;
+          font-weight: bold;
+        }
+      }
+
+      .post-content {
+        p {
+          color: #262626;
+          font-size: 15px;
+          line-height: 22px;
+          margin: 10px 0 0;
+          -webkit-box-orient: vertical;
+          display: -webkit-box;
+          max-height: 45px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          word-break: break-word;
+          -webkit-line-clamp: 2;
+        }
+
+        .photo-content {
+          margin: 20px 0 0;
+
+          .cover-url {
+            margin: 10px 0 0;
+
+
+            .cover-url-item {
+              max-height: 400px;
+              max-width: 100%;
+              overflow: hidden;
+              position: relative;
+              border-radius: 5px;
+
+              .blur {
+                backdrop-filter: blur(25px);
+                -webkit-backdrop-filter: blur(25px);
+                -moz-backdrop-filter: blur(25px);
+                -ms-backdrop-filter: blur(25px);
+                background: #70707003;
+                bottom: 0;
+                height: 100vh;
+                left: 0;
+                max-height: 500px;
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: 100%;
+                z-index: 1;
+              }
+            }
+          }
+        }
+
+        .p1 {
+          .bottom-mask {
+            display: block;
+            position: absolute;
+            z-index: 0;
+            height: 100%;
+            width: 100%;
+
+            .bottom-img {
+              height: 100%;
+              width: 100%;
+            }
+          }
+
+          .cover-item {
+            position: relative;
+            z-index: 2;
+
+            img {
+              max-width: 80% !important;
+              display: block;
+              margin: 0 auto;
+            }
+          }
+        }
+
+        .p2 {
+          .bottom-mask {
+            display: flex;
+            position: absolute;
+            z-index: 0;
+            height: 100%;
+            width: 100%;
+
+            .bottom-img {
+              height: 100%;
+              width: 50%;
+            }
+          }
+
+          .cover-item {
+            display: flex;
+            position: relative;
+            z-index: 2;
+            justify-content: center;
+            height: 100%;
+
+            .cover-item-box {
+              height: 100%;
+
+              img {
+                max-width: 80% !important;
+                display: block;
+                margin: 0 auto;
+              }
+            }
+
+            .cover-item-box:first-child {
+              img {
+                float: right;
+              }
+            }
+            .cover-item-box:last-child {
+              img {
+                float: left;
+              }
+            }
+          }
+        }
+
+        .p3 {
+          .more-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+            .photo {
+              height: 270px;
+              width: 32%;
+              background-position: 50%;
+              background-size: cover;
+              border-radius: 5px;
+            }
+
+            .photo:nth-last-child(-n+3) {
+              margin: 0;
+            }
+          }
+        }
+      }
+
+
+    }
+  }
+}
+
+// 第三方插件样式覆盖
+/deep/.am-engine {
+  background-color: unset;
+  letter-spacing: .06em;
+  padding-right: 20px;
+
+  &>p {
+    line-height: 1.5;
+    margin: 4px 0;
+  }
+
+  &>:not(p) {
+    margin: 12px 0;
+  }
+}
+
+/deep/.am-engine>ul {
+  margin: 4px 0;
+  li {
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+  li:not(.data-list-item) {
+    margin: 4px 0  4px 15px;
+  }
+}

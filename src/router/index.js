@@ -67,10 +67,10 @@ const routes = [
           },
           {
             // 问答页面
-            path: '/rambly',
-            name: 'ramblyContainer',
+            path: '/ramblyJot',
+            name: 'RamblyJot',
             // 此方式为路由懒加载
-            component: () => import('@/components/RamblyContainer')
+            component: () => import('@/components/homecategory/RamblyJot.vue')
           },
           {
             // 分类承载容器
