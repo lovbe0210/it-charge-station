@@ -3,7 +3,7 @@
     <div :class="['rambly-module_editor', extendCurtains ? 'extend-curtains' : '']">
       <div class="scrollbar-visible">
         <div class="layout-mode-fixed">
-          <div class="editor-body">
+          <div :class="['editor-body',  editorFocus ? 'editor-focus' : '']">
             <div class="editor-wrap beauty-scroll" ref="scrollbarContext">
               <div class="editor-wrap-content">
                 <div class="title-box" v-show="rambly.showTitle">
@@ -14,6 +14,8 @@
                                 :rows="titleRows"
                                 v-model="rambly.title"
                                 ref="titleTextarea"
+                                @focus="editorFocusChange('titleFocus')"
+                                @blur="editorFocusChange('titleBlur')"
                                 @keydown.enter="completeTitle">
                       </textarea>
                 </div>
@@ -127,6 +129,7 @@
     data() {
       return {
         engine: null,
+        editorFocus: false,
         // 工具栏内容：下拉面板、
         items: [
           [
@@ -250,6 +253,9 @@
           title = this.rambly.title.length > 0 ? this.rambly.title : null;
         }
         this.rambly = {...this.rambly, title, htmlValue};
+      },
+      editorFocusChange(item) {
+        console.log(item)
       }
     },
     components: {
@@ -301,6 +307,12 @@
         // 监听编辑器值改变事件
         engine.on("change", () => {
           this.editorValueIsEmpty = engine.isEmpty();
+        });
+        engine.on("focus", () => {
+          console.log("engine:focus");
+        });
+        engine.on("blur", () => {
+          console.log("engine:blur");
         });
 
         this.engine = engine;
