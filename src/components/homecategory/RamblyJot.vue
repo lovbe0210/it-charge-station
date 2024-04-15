@@ -47,12 +47,8 @@
               <span class="username">{{item.userInfo.username}}</span>
             </slot>
           </user-card>
-          <div class="post-time">
-            <Time class="time" :time="item.createTime" v-if="needFormatDate(item.createTime)"/>
-            <Time class="time" :time="item.createTime" v-else type="datetime"/>
-          </div>
           <div class="post-content">
-            <b-link to="/dashboard/ramblyJot/sadasd">
+            <b-link to="/ramblyJot/sadasd">
               <p>{{item.content}}</p>
             </b-link>
           </div>
@@ -97,13 +93,26 @@
               </div>
             </div>
           </div>
-          <div>
-            <span>评论 {{item.comments}}</span>
-            <span>赞 {{item.likes}}</span>
+          <div class="action-box">
+            <div class="post-time">
+              <span>发布于 </span>
+              <Time class="time" :time="item.createTime" v-if="needFormatDate(item.createTime)"/>
+              <Time class="time" :time="item.createTime" v-else type="datetime"/>
+            </div>
+            <div class="action">
+              <span class="reply-btn">
+                <span class="iconfont reply"></span>
+                {{item.comments}}
+              </span>
+              <span class="like-btn">
+                <span class="iconfont like"></span>
+                {{item.likes}}
+              </span>
+            </div>
           </div>
         </div>
+      </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -113,7 +122,7 @@
   import Toolbar from 'am-editor-toolbar-vue2'
   import {ramblyPlugins, cards, pluginConfig} from "@/components/common/editor/config"
   import UserCard from "@/components/common/UserCard.vue";
-  import { needFormatDate } from '@/utils/emoji';
+  import {needFormatDate} from '@/utils/emoji';
 
   export default {
     name: 'RamblyJot',
@@ -167,7 +176,7 @@
             userInfo: {
               userId: 112,
               username: '闪魔亮晶晶',
-              avatar: "https://p3-passport.byteacctimg.com/img/user-avatar/8981a2c22d2a44241ebe6ecde853414f~50x50.awebp"
+              avatar: "https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog8972qyej30sg0zkqc6.jpg"
             }
           },
           {
@@ -180,7 +189,7 @@
             userInfo: {
               userId: 112,
               username: '山野寻雾灯',
-              avatar: "https://p3-passport.byteacctimg.com/img/user-avatar/8981a2c22d2a44241ebe6ecde853414f~50x50.awebp"
+              avatar: "https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hog8alwuhjj30qo0zk41l.jpg"
             }
           },
           {
@@ -196,7 +205,7 @@
             userInfo: {
               userId: 112,
               username: 'AbnerPei',
-              avatar: "https://p3-passport.byteacctimg.com/img/user-avatar/8981a2c22d2a44241ebe6ecde853414f~50x50.awebp"
+              avatar: "https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hog8amvawsj31jk2fz4hm.jpg"
             }
           },
           {
@@ -213,7 +222,41 @@
             userInfo: {
               userId: 112,
               username: 'AbnerPei',
-              avatar: "https://p3-passport.byteacctimg.com/img/user-avatar/8981a2c22d2a44241ebe6ecde853414f~50x50.awebp"
+              avatar: "https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hog894yoj1j30sg0zkk1l.jpg"
+            }
+          },
+          {
+            id: 125666116463,
+            likes: 201,
+            comments: 3,
+            content: '遇到的问题：设置 backdrop-filter，Safari 浏览器首次加载没效果，通过ajax请求数据翻页之后，会出现部分高斯模糊效果无效，但是windows正常。',
+            createTime: 1713164059000,
+            picList: [
+              require('@/assets/img/1.jpg'),
+              require('@/assets/img/2.jpg'),
+              require('@/assets/img/3.jpg')
+            ],
+            userInfo: {
+              userId: 112,
+              username: 'AbnerPei',
+              avatar: "https://image.baidu.com/search/down?url=https://tvax1.sinaimg.cn/large/006BNqYCly1hog89ayud5j30sg0zkjvo.jpg"
+            }
+          },
+          {
+            id: 1256661141263,
+            likes: 201,
+            comments: 3,
+            content: '遇到的问题：设置 backdrop-filter，Safari 浏览器首次加载没效果，通过ajax请求数据翻页之后，会出现部分高斯模糊效果无效，但是windows正常。',
+            createTime: 1713164059000,
+            picList: [
+              'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog89f319pj30u011i77t.jpg',
+              'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hog89eylycj30u011igo3.jpg',
+              'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog898xeeoj30u00ybjyj.jpg'
+            ],
+            userInfo: {
+              userId: 112,
+              username: 'AbnerPei',
+              avatar: "https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog89f319pj30u011i77t.jpg"
             }
           }
         ]

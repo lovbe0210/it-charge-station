@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-module_RamblyJot">
+  <div class="layout-module_RamblyJot-container">
     <div class="rambly-header" @click="$router.go(-1)">
       <span class="iconfont return"></span>
       <span>返回</span>
@@ -10,8 +10,8 @@
       </div>
       <div class="post-info">
         撰写于: 2024-03-14 02:16:12&nbsp;
-        浏览: 110&nbsp;
-        评论: 1
+        评论: 110&nbsp;
+        赞: 1
       </div>
     </div>
     <div ref="view" class="rambly-content">
@@ -67,7 +67,7 @@
 </script>
 
 <style scoped lang="less">
-  .layout-module_RamblyJot {
+  .layout-module_RamblyJot-container {
 
     .rambly-header {
       width: 60px;

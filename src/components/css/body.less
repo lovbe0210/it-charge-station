@@ -20,6 +20,10 @@
   margin-right: auto;
   margin-left: auto;
 
+  .layout-module_RamblyJot-container {
+    margin: 40px 60px;
+  }
+
   // 右侧div
   .col-lg-3 {
     flex: 0 0 32%;
@@ -117,17 +121,17 @@
       .list-group-item {
         border: none;
         padding: 0 20px 12px 20px;
+        display: flex;
+        align-items: center;
       }
 
       .b-avatar {
         width: 3rem;
         height: 3rem;
-        float: left;
-        margin-top: 12px;
       }
 
       .info {
-        margin-left: 65px;
+        margin-left: 20px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -141,8 +145,6 @@
         .nick-name {
           font-family: -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial;
           width: auto;
-          margin-top: 15px;
-          margin-right: 5px;
           font-size: 15px;
           font-weight: 400;
           color: var(--title-color);
@@ -153,7 +155,6 @@
         }
 
         .iconfont {
-          margin-top: 4px;
           font-size: 22px;
         }
 

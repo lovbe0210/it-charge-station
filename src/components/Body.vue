@@ -48,7 +48,7 @@
                     <span class="iconfont series-column"></span> 2233
                   </div>
                   <div>
-                    <span class="iconfont icon-like1"></span> 11223
+                    <span class="iconfont like"></span> 11223
                   </div>
                 </b-row>
               </b-list-group-item>
@@ -65,13 +65,14 @@
           </div>
           <b-list-group class="rank">
             <b-list-group-item to="some-link" v-for="item in creators" :key="item.id">
-              <b-avatar variant="info" :src="item.avatar" to="/lovbe0210" class="creator-avatar"/>
+              <b-avatar variant="info" :src="item.avatar" to="/lovbe0210" class="creator-avatar" size="40px"/>
               <div class="info">
                 <b-row>
                     <span class="nick-name">
                       {{item.nickName}}
+                      <span :class="'iconfont icon-level' + item.level"/>
                     </span>
-                  <span :class="'iconfont icon-level' + item.level"/>
+
                 </b-row>
                 <span class="tag">
                     {{item.tag.toString().replace(/,/g,' @ ')}}

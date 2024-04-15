@@ -182,7 +182,6 @@
         position: relative;
         float: right;
         bottom: 15px;
-        //right: 5px;
         .iconfont {
           font-weight: bold;
           font-size: 17px;
@@ -199,6 +198,7 @@
 
         .toolbar-wrap {
           display: flex;
+          align-items: center;
 
           /deep/ .editor-toolbar {
             border: none;
@@ -206,11 +206,14 @@
 
             .editor-toolbar-content {
               justify-content: left !important;
-              padding: 5px 5px;
               width: unset;
 
+              .editor-toolbar-group {
+                padding: 0;
+              }
+
               .toolbar-button:not(:last-child) {
-                margin-right: 15px;
+                margin-right: 5px;
 
                 .toolbar-title {
                   font-size: 14px;

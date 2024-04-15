@@ -66,11 +66,19 @@ const routes = [
             ]
           },
           {
-            // 问答页面
+            // 随笔页面
             path: '/ramblyJot',
             name: 'RamblyJot',
             // 此方式为路由懒加载
             component: () => import('@/components/homecategory/RamblyJot.vue')
+          },
+          {
+            // 随笔内容
+            path: '/ramblyJot/:id',
+            props: true,
+            name: 'RamblyJotContent',
+            // 此方式为路由懒加载
+            component: () => import('@/components/RamblyJotContent.vue')
           },
           {
             // 分类承载容器
@@ -147,7 +155,7 @@ const routes = [
             // 随笔内容展示
             path: 'ramblyJot/:rjId',
             name: 'RamblyJotContent',
-            component: () => import('@/components/dashboard/RamblyJotContent')
+            component: () => import('@/components/RamblyJotContent')
           },
           {
             // 收藏

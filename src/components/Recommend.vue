@@ -21,10 +21,10 @@
             </div>
             <b-row class="item-icons">
               <div>
-                <span class="iconfont icon-like1"></span> 2233
+                <span class="iconfont like"></span> 2233
               </div>
               <div>
-                <span class="iconfont icon-read"></span> 777
+                <span class="iconfont viewed"></span> 777
               </div>
               <div class="from">
                 来自🕊
@@ -65,7 +65,7 @@
           {
             id: '001',
             title: '臻默：整理100+语雀小技巧之后，我们开始了知识管理的大航海大巷哈',
-            description: '缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了',
+            description: 'https://juejin.cn/post/7343441462644195362 缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了',
             preview: require('@/assets/img/1.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
