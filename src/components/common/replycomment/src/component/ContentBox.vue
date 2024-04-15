@@ -99,7 +99,7 @@
               </span>
             </div>
           </a-popover>
-          <Time class="time" :time="commentReply.createTime" v-if="isFormatDate(commentReply.createTime)"/>
+          <Time class="time" :time="commentReply.createTime" v-if="needFormatDate(commentReply.createTime)"/>
           <Time class="time" :time="commentReply.createTime" v-else type="datetime"/>
         </div>
         <div class="content">
@@ -169,9 +169,7 @@
 </template>
 
 <script>
-  import {cloneDeep} from '@/utils/emoji';
-  // import {useEmojiParse} from '@/utils/hooks';
-  // import emoji from '@/assets/emoji/emoji.js';
+  import { cloneDeep, needFormatDate } from '@/utils/emoji';
   import InputBox from './InputBox';
   import ImagePreview from '@/components/common/ImagePreview'
 
@@ -233,9 +231,7 @@
       exposeEditor(editorRef) {
         this.editorRef = editorRef;
       },
-      isFormatDate(createTime) {
-        return Date.now() - createTime <= 86400 * 2 * 1000
-      },
+      needFormatDate,
       like() {
         if (this.commentReply.ilike) {
           // 原来点赞，现在取消

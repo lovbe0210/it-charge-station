@@ -12,11 +12,6 @@
               <div class="editor-wrap-content">
                 <div class="editor-outer-wrap-box">
                   <div class="editor-wrap-box">
-                    <div class="title-box" v-show="rambly.showTitle">
-                      <textarea class="title" placeholder="请输入标题" maxlength="100" tabindex="1" rows="1"
-                                v-model="rambly.title" ref="titleTextarea" @keydown.enter="completeTitle">
-                      </textarea>
-                    </div>
                     <div class="content-box">
                       <div class="engine-box">
                         <div class="engine">
@@ -40,9 +35,6 @@
         <div class="toolbar-ui">
           <div class="toolbar-wrap">
             <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
-            <span class="title-btn" @click="addTitle">
-              <span class="iconfont add-title"></span>{{ rambly.showTitle ? '取消标题' : '插入标题' }}
-            </span>
           </div>
 
           <div class="rambly-module_button">
@@ -65,9 +57,6 @@
                 <span> · 赞 {{item.likes}}</span>
                 <span>· 评论 {{item.comments}}</span>
               </span>
-              </div>
-              <div class="post-tile" v-if="item.title?.length !== 0">
-                <h4>{{item.title}}</h4>
               </div>
             </b-link>
 
@@ -173,7 +162,6 @@
             postDate: '1天前',
             likes: 201,
             comments: 3,
-            title: '600条最强 Linux 命令总结',
             content: '今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。',
             createTime: '2024-01-31 19:02:18',
             picList: [
@@ -185,7 +173,6 @@
             postDate: '1天前',
             likes: 201,
             comments: 3,
-            title: null,
             content: '今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。',
             createTime: '2024-01-31 19:02:18',
             picList: null
@@ -195,7 +182,6 @@
             postDate: '2小时前',
             likes: 201,
             comments: 3,
-            title: 'CentOS7.9中的Glibc2.17源码编译升级到Glibc2.31',
             content: '一、引言 在Liunx系统CentOS7.9的中部署项目遇到了Glibc版本过低的问题，使用yum安装最高只能安装Glibc2.17并不能满足要求，本文介绍了如何用源码编译的方法升级Glibc的版本。',
             createTime: '2024-01-31 19:02:18',
             picList: [
@@ -208,7 +194,6 @@
             postDate: '2024-01-11 11:32:18',
             likes: 201,
             comments: 3,
-            title: null,
             content: '遇到的问题：设置 backdrop-filter，Safari 浏览器首次加载没效果，通过ajax请求数据翻页之后，会出现部分高斯模糊效果无效，但是windows正常。',
             createTime: '2024-01-31 19:02:18',
             picList: [
@@ -231,20 +216,6 @@
     },
     methods: {
       toolbarUI() {
-      },
-      addTitle() {
-        this.rambly.showTitle = !this.rambly.showTitle;
-        if (this.rambly.showTitle) {
-          this.$nextTick(() => {
-            this.$refs.titleTextarea.focus();
-          });
-        } else {
-          this.$refs.container.focus()
-        }
-      },
-      completeTitle(event) {
-        event.preventDefault();
-        this.$refs.container.focus()
       },
       submitRambly() {
         let htmlValue = this.engine.model?.toValue();

@@ -1,24 +1,11 @@
 <template>
-  <div class="layout-module_RamblyJot">
+  <div class="layout-module_RamblyJot" ref="popoverContainer">
     <div :class="['rambly-module_editor', extendCurtains ? 'extend-curtains' : '']">
       <div class="scrollbar-visible">
         <div class="layout-mode-fixed">
           <div :class="['editor-body',  editorFocus ? 'editor-focus' : '']">
             <div class="editor-wrap beauty-scroll" ref="scrollbarContext">
               <div class="editor-wrap-content">
-                <div class="title-box" v-show="rambly.showTitle">
-                      <textarea class="title"
-                                placeholder="请输入标题"
-                                maxlength="60"
-                                tabindex="1"
-                                :rows="titleRows"
-                                v-model="rambly.title"
-                                ref="titleTextarea"
-                                @focus="editorFocus = true"
-                                @blur="editorFocus = false"
-                                @keydown.enter="completeTitle">
-                      </textarea>
-                </div>
                 <div ref="container"></div>
               </div>
             </div>
@@ -30,14 +17,10 @@
           </div>
         </div>
       </div>
-
       <div class="rambly-module_action">
         <div class="toolbar-ui">
           <div class="toolbar-wrap">
             <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
-            <span class="title-btn" @click="addTitle">
-              <span class="iconfont add-title"></span>{{ rambly.showTitle ? '取消标题' : '插入标题' }}
-            </span>
           </div>
 
           <div class="rambly-module_button">
@@ -50,138 +33,73 @@
       </div>
     </div>
     <div class="rambly-module_list">
-      <div class="rambly-jot-wrap">
-        <!--<div class="rambly-item" v-for="item in ramblyList" :key="item.id">
-          <a class="">
+      <div class="rambly-item" v-for="item in ramblyList" :key="item.id">
+        <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer" class="item-left">
+          <slot>
+            <b-avatar :src="item.userInfo.avatar" class="avatar">
+              <span v-if="!item.userInfo.avatar">{{item.userInfo.username}}</span>
+            </b-avatar>
+          </slot>
+        </user-card>
+        <div class="item-right">
+          <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer">
+            <slot>
+              <span class="username">{{item.userInfo.username}}</span>
+            </slot>
+          </user-card>
+          <div class="post-time">
+            <Time class="time" :time="item.createTime" v-if="needFormatDate(item.createTime)"/>
+            <Time class="time" :time="item.createTime" v-else type="datetime"/>
+          </div>
+          <div class="post-content">
             <b-link to="/dashboard/ramblyJot/sadasd">
-              <div class="post-time">
-              <span>
-                发布于 {{item.postDate}}
-                <span> · 浏览 {{item.likes}}</span>
-                <span>· 评论 {{item.comments}}</span>
-              </span>
-              </div>
-              <div class="post-tile" v-if="item.title?.length !== 0">
-                <h4>{{item.title}}</h4>
-              </div>
+              <p>{{item.content}}</p>
             </b-link>
-
-
-            <div class="post-content">
-              <b-link to="/dashboard/ramblyJot/sadasd">
-                <p>{{item.content}}</p>
-              </b-link>
-              <div class="photo-content p1" v-if="item.picList?.length === 1">
-                <div>
-                  <div class="cover-url">
-                    <div class="cover-url-item">
-                      <div class="bottom-mask">
-                        <img :src="item.picList[0]" :alt="'灵感时刻-' + item.createTime" class="bottom-img">
-                      </div>
-                      <div class="blur"></div>
-                      <div class="cover-item">
-                        <img :src="item.picList[0]" :alt="'灵感时刻-' + item.createTime" class="cover-url-item">
+          </div>
+          <div class="post-image">
+            <div class="photo-content p1" v-if="item.picList?.length === 1">
+              <div>
+                <div class="cover-url">
+                  <div class="cover-url-item">
+                    <div class="bottom-mask">
+                      <img :src="item.picList[0]" :alt="'灵感时刻-' + item.createTime" class="bottom-img">
+                    </div>
+                    <div class="blur"></div>
+                    <div class="cover-item">
+                      <img :src="item.picList[0]" :alt="'灵感时刻-' + item.createTime" class="cover-url-item">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="photo-content p2" v-if="item.picList?.length === 2">
+              <div>
+                <div class="cover-url">
+                  <div class="cover-url-item">
+                    <div class="bottom-mask">
+                      <img v-for="pic in item.picList" :key="pic" :src="pic" :alt="'灵感时刻-' + item.createTime"
+                           class="bottom-img">
+                    </div>
+                    <div class="blur"></div>
+                    <div class="cover-item">
+                      <div v-for="pic in item.picList" :key="pic" class="cover-item-box">
+                        <img :src="pic" :alt="'灵感时刻-' + item.createTime" class="cover-url-item">
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="photo-content p2" v-if="item.picList?.length === 2">
-                <div>
-                  <div class="cover-url">
-                    <div class="cover-url-item">
-                      <div class="bottom-mask">
-                        <img v-for="pic in item.picList" :key="pic" :src="pic" :alt="'灵感时刻-' + item.createTime"
-                             class="bottom-img">
-                      </div>
-                      <div class="blur"></div>
-                      <div class="cover-item">
-                        <div v-for="pic in item.picList" :key="pic" class="cover-item-box">
-                          <img :src="pic" :alt="'灵感时刻-' + item.createTime" class="cover-url-item">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="photo-content p3" v-if="item.picList?.length === 3">
-                <div class="more-images">
-                  <div v-for="pic in item.picList" :key="pic" class="photo" :alt="'灵感时刻-' + item.createTime"
-                       :style="'background-image: url(' + pic + ');'"></div>
-                </div>
-              </div>
             </div>
-          </a>
-        </div>-->
-        <div class="rambly-item" v-for="item in ramblyList" :key="item.id">
-          <div class="pin-header-row pin-header">
-            <div class="account-group">
-              <div class="popover-box user-popover" style="display: flex;">
-                <b-avatar :src="item.userInfo.avatar">
-                  <span v-if="!item.userInfo.avatar">{{item.userInfo.username}}</span>
-                </b-avatar>
-              </div>
-              <div class="pin-header-content">
-                <div class="pin-header-popover">
-                  <div class="popover-box user-popover">
-                    <a href="/user/2946346892140600" target="_blank" rel=""
-                       class="jj-link username">
-                      AbnerPei
-                    </a></div>
-                </div>
-                <div class="meta-box">
-                  <div class="position ellipsis"></div>
-                  <a
-                    href="/pin/7357292176944300059"
-                    target="_blank" rel=""
-                    class="jj-link">
-                    <time datetime="1713085963000" title="2024-04-14 17:12:43"
-                          class="time">
-                      4小时前
-                    </time>
-                  </a></div>
-              </div>
-            </div>
-            <div class="header-action"></div>
-          </div>
-          <div class="dislike-entry">
-            <div class="icon">
-              <div class="dislike-list dislike-list" style="display: none;">
-                <div class="dislike-menu">
-                  <ul>
-                    <li class="dislike-li block-author">
-                      icon
-                      <span class="text">屏蔽作者: AbnerPei</span>
-                    </li>
-                    <li class="dislike-li">
-                      icon
-                      <span class="text">举报</span></li>
-                  </ul>
-                </div>
+            <div class="photo-content p3" v-if="item.picList?.length === 3">
+              <div class="more-images">
+                <div v-for="pic in item.picList" :key="pic" class="photo" :alt="'灵感时刻-' + item.createTime"
+                     :style="'background-image: url(' + pic + ');'"></div>
               </div>
             </div>
           </div>
-          <div class="pin-content-row middle-row">
-            <div class="content-box content-box"> <span class="content content-d-bot">
-              大神们，最新Watch开发是不是域名必须是https？info.plist配置了，还是不行！</span>
-              <div class="limit-ctl-box"></div>
-              <div class="popover-box user-popover">
-              </div>
-            </div>
-          </div>
-          <div class="pin-action-row">
-            <div class="comment-action action">
-              <div class="action-title-box">
-                <span class="icon normal-icon comment-icon"></span>
-                <span class="action-title">2</span>
-              </div>
-            </div>
-            <div class="like-action action">
-              <div class="action-title-box">
-                <span class="icon Like small-icon"></span>
-                <span class="action-title">2</span>
-              </div>
-            </div>
+          <div>
+            <span>评论 {{item.comments}}</span>
+            <span>赞 {{item.likes}}</span>
           </div>
         </div>
     </div>
@@ -194,6 +112,8 @@
   import {$} from '@aomao/engine'
   import Toolbar from 'am-editor-toolbar-vue2'
   import {ramblyPlugins, cards, pluginConfig} from "@/components/common/editor/config"
+  import UserCard from "@/components/common/UserCard.vue";
+  import { needFormatDate } from '@/utils/emoji';
 
   export default {
     name: 'RamblyJot',
@@ -230,22 +150,48 @@
         readmeEmpty: true,
         extendCurtains: false,
         rambly: {
-          showTitle: false,
-          title: '',
           htmlValue: null
         },
+        popoverContainer: null,
         titleRows: 1,
         ramblyList: [
           {
             id: 1256668656461,
-            postDate: '1天前',
             likes: 201,
             comments: 3,
-            title: '600条最强 Linux 命令总结',
-            content: '今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。',
-            createTime: '2024-01-31 19:02:18',
+            content: '今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。建议小伙伴们可以先收藏后阅读记得建议小伙伴们可以先收藏后阅读',
+            createTime: 1713178465992,
             picList: [
               require('@/assets/img/6.jpg')
+            ],
+            userInfo: {
+              userId: 112,
+              username: '闪魔亮晶晶',
+              avatar: "https://p3-passport.byteacctimg.com/img/user-avatar/8981a2c22d2a44241ebe6ecde853414f~50x50.awebp"
+            }
+          },
+          {
+            id: 1256668656465,
+            likes: 201,
+            comments: 3,
+            content: '今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。',
+            createTime: 1712919259000,
+            picList: null,
+            userInfo: {
+              userId: 112,
+              username: '山野寻雾灯',
+              avatar: "https://p3-passport.byteacctimg.com/img/user-avatar/8981a2c22d2a44241ebe6ecde853414f~50x50.awebp"
+            }
+          },
+          {
+            id: 1256668656462,
+            likes: 201,
+            comments: 3,
+            content: '一、引言 在Liunx系统CentOS7.9的中部署项目遇到了Glibc版本过低的问题，使用yum安装最高只能安装Glibc2.17并不能满足要求，本文介绍了如何用源码编译的方法升级Glibc的版本。',
+            createTime: 1713005659000,
+            picList: [
+              require('@/assets/img/4.jpg'),
+              require('@/assets/img/5.jpg')
             ],
             userInfo: {
               userId: 112,
@@ -254,41 +200,21 @@
             }
           },
           {
-            id: 1256668656465,
-            postDate: '1天前',
-            likes: 201,
-            comments: 3,
-            title: null,
-            content: '今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。',
-            createTime: '2024-01-31 19:02:18',
-            picList: null
-          },
-          {
-            id: 1256668656462,
-            postDate: '2小时前',
-            likes: 201,
-            comments: 3,
-            title: 'CentOS7.9中的Glibc2.17源码编译升级到Glibc2.31',
-            content: '一、引言 在Liunx系统CentOS7.9的中部署项目遇到了Glibc版本过低的问题，使用yum安装最高只能安装Glibc2.17并不能满足要求，本文介绍了如何用源码编译的方法升级Glibc的版本。',
-            createTime: '2024-01-31 19:02:18',
-            picList: [
-              require('@/assets/img/4.jpg'),
-              require('@/assets/img/5.jpg')
-            ]
-          },
-          {
             id: 1256668656463,
-            postDate: '2024-01-11 11:32:18',
             likes: 201,
             comments: 3,
-            title: null,
             content: '遇到的问题：设置 backdrop-filter，Safari 浏览器首次加载没效果，通过ajax请求数据翻页之后，会出现部分高斯模糊效果无效，但是windows正常。',
-            createTime: '2024-01-31 19:02:18',
+            createTime: 1713164059000,
             picList: [
               require('@/assets/img/1.jpg'),
               require('@/assets/img/2.jpg'),
               require('@/assets/img/3.jpg')
-            ]
+            ],
+            userInfo: {
+              userId: 112,
+              username: 'AbnerPei',
+              avatar: "https://p3-passport.byteacctimg.com/img/user-avatar/8981a2c22d2a44241ebe6ecde853414f~50x50.awebp"
+            }
           }
         ]
       }
@@ -305,20 +231,6 @@
     methods: {
       toolbarUI() {
       },
-      addTitle() {
-        this.rambly.showTitle = !this.rambly.showTitle;
-        if (this.rambly.showTitle) {
-          this.$nextTick(() => {
-            this.$refs.titleTextarea.focus();
-          });
-        } else {
-          this.$refs.container.focus()
-        }
-      },
-      completeTitle(event) {
-        event.preventDefault();
-        this.$refs.container.focus()
-      },
       submitRambly() {
         let htmlValue = this.engine.model?.toValue();
         // 通过this.engine.model?.toText();获取纯文本
@@ -329,10 +241,12 @@
           title = this.rambly.title.length > 0 ? this.rambly.title : null;
         }
         this.rambly = {...this.rambly, title, htmlValue};
-      }
+      },
+      needFormatDate
     },
     components: {
-      Toolbar
+      Toolbar,
+      UserCard
     },
     watch: {
       "rambly.title"(newVal) {
@@ -341,6 +255,7 @@
       }
     },
     mounted() {
+      this.popoverContainer = this.$refs.popoverContainer;
       pluginConfig.link = {hotkey: {key: ""}};
       pluginConfig.tasklist = {hotkey: {key: ""}};
       pluginConfig.heading = {hotkey: {key: ""}};

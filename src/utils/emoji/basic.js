@@ -78,3 +78,7 @@ export function formatNumber(num) {
     return num.toString();
   }
 }
+
+export function needFormatDate(createTime) {
+  return Date.now() - createTime <= 86400 * 2 * 1000
+}
