@@ -26,14 +26,13 @@
   }
 
   .rambly-module_editor {
-    margin-top: 25px;
-    padding: 10px 0 15px 10px ;
+    margin-top: 10px;
     position: relative;
-    height: calc(~"20vh");
+    height: calc(~"19vh");
     max-width: 100%;
-    border-radius: 4px;
-    border: 1px solid #E7E9E8;
-    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .02);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
 
     .scrollbar-visible {
       height: 100%;
@@ -45,8 +44,12 @@
 
       // 编辑器内容区
       .editor-body {
+        border: 1px solid  #F2F3F5;
         height: calc(~"100%");
         position: relative;
+        background-color: #F2F3F5;
+        border-radius: 4px;
+        padding: 20px 0 20px 30px;
 
         .editor-wrap {
           display: flex;
@@ -58,118 +61,66 @@
 
           .editor-wrap-content {
             flex: 1;
-            min-width: 500px;
+            min-width: 600px;
 
-            .editor-outer-wrap-box {
-              min-width: 500px;
-              padding-bottom: 1px;
+            .title-box {
+              position: relative;
+              padding: 0 10px 10px 0px;
+              margin: 0 auto;
+              font-family: Chinese Quote, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji;
+              position: relative;
 
-              .editor-wrap-box {
-                .title-box {
-                  position: relative;
-                  padding: 15px 45px 0 35px;
-                  margin: 0 auto;
-                  font-family: Chinese Quote, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji;
-                  position: relative;
+              .title {
+                color: #262626;
+                font-weight: 600;
+                font-size: 20px;
+                max-height: 350px;
+                min-height: 24px;
+                // 此处表示font-size*1.389得到行高
+                line-height: 1.389;
+                max-width: 100%;
+                width: 100%;
+                resize: none;
+                border: none;
+                outline: none;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+                vertical-align: bottom;
+                transition: all .3s, height 0s;
+                font-variant: tabular-nums;
+                list-style: none;
+                font-feature-settings: "tnum";
+                position: relative;
+                display: inline-block;
+                background-color: unset;
+                border-radius: 4px;
+                overflow-x: hidden;
+                overflow-y: hidden;
 
-                  .title {
-                    color: #262626;
-                    font-weight: 600;
-                    font-size: 20px;
-                    max-height: 350px;
-                    min-height: 24px;
-                    // 此处表示font-size*1.389得到行高
-                    line-height: 1.389;
-                    max-width: 100%;
-                    width: 100%;
-                    resize: none;
-                    border: none;
-                    outline: none;
-                    -webkit-box-shadow: none;
-                    box-shadow: none;
-                    padding: 0;
-                    margin: 0;
-                    vertical-align: bottom;
-                    transition: all .3s, height 0s;
-                    font-variant: tabular-nums;
-                    list-style: none;
-                    font-feature-settings: "tnum";
-                    position: relative;
-                    display: inline-block;
-                    background-color: #fff;
-                    background-image: none;
-                    border-radius: 4px;
-                    overflow-x: hidden;
-                    overflow-y: hidden;
-
-                    // 设置placeholder字体颜色
-                    textarea::-webkit-input-placeholder { /* WebKit browsers */
-                      color: #BFBFBF;
-                    }
-
-                    textarea::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-                      color: #BFBFBF;
-                    }
-
-                    textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
-                      color: #BFBFBF;
-                    }
-
-                    textarea::-ms-input-placeholder { /* Internet Explorer 10+ */
-                      color: #BFBFBF;
-                    }
-                  }
+                // 设置placeholder字体颜色
+                textarea::-webkit-input-placeholder { /* WebKit browsers */
+                  color: #BFBFBF;
                 }
 
-                .content-box {
-                  position: relative;
+                textarea::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+                  color: #BFBFBF;
+                }
 
-                  .engine-box {
-                    position: relative;
-                    overflow-anchor: none;
+                textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+                  color: #BFBFBF;
+                }
 
-                    .engine {
-                      padding: 15px 35px 0 35px;
-                      position: relative;
-                      z-index: 1;
-                      outline: none;
-                      white-space: pre-wrap;
-                      white-space: break-spaces;
-                      word-break: break-word;
-                      word-wrap: break-word;
-                      font-variant-ligatures: none;
-                      --link-color: #117CEE;
-
-                      font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Segoe UI';
-                      letter-spacing: initial;
-
-                      .am-engine {
-                        background-color: unset;
-                        font-size: 14px;
-                      }
-                    }
-                  }
+                textarea::-ms-input-placeholder { /* Internet Explorer 10+ */
+                  color: #BFBFBF;
                 }
               }
             }
           }
         }
+      }
 
-        .editor-wrap::-webkit-scrollbar-thumb {
-          background-color: unset; /* 自定义滚动条滑块颜色 */
-        }
-
-        .editor-wrap::-webkit-scrollbar {
-          width: 5px;
-        }
-
-        .editor-wrap:hover::-webkit-scrollbar {
-          width: 5px;
-        }
-
-        .editor-wrap:hover::-webkit-scrollbar-thumb {
-          background-color: #E7E9E8; /* 自定义滚动条滑块颜色 */
-        }
+      .editor-focus {
+        border-color: #00b96b;
       }
     }
 
@@ -181,7 +132,8 @@
         width: 30px;
         position: relative;
         float: right;
-        bottom: 15px;
+        bottom: 30px;
+        right: -2px;
         .iconfont {
           font-weight: bold;
           font-size: 17px;
@@ -190,9 +142,10 @@
     }
 
     .rambly-module_action {
-      margin-top: 30px;
+      margin-top: 10px;
 
       .toolbar-ui {
+        width: 100%;
         display: flex;
         justify-content: space-between;
 
@@ -271,12 +224,6 @@
             cursor: pointer;
           }
         }
-
-
-
-        .rambly-module_button {
-          padding: 5px 5px;
-        }
       }
 
       .rambly-module_button {
@@ -296,11 +243,11 @@
   }
 
   .rambly-module_list {
-    margin: 70px 0 0;
+    margin: 10px 0 0;
 
     .rambly-item {
       border-radius: 6px;
-      padding: 30px 0;
+      padding: 20px 0;
 
       a {
         text-decoration: none;
@@ -334,9 +281,8 @@
           .cover-url {
             margin: 10px 0 0;
 
-
             .cover-url-item {
-              max-height: 400px;
+              max-height: 300px;
               max-width: 100%;
               overflow: hidden;
               position: relative;

@@ -7,29 +7,19 @@
     <div :class="['rambly-module_editor', extendCurtains ? 'extend-curtains' : '']">
       <div class="scrollbar-visible">
         <div class="layout-mode-fixed">
-          <div class="editor-body">
-            <div class="editor-wrap" ref="scrollbarContext">
+          <div :class="['editor-body',  editorFocus ? 'editor-focus' : '']">
+            <div class="editor-wrap beauty-scroll" ref="scrollbarContext">
               <div class="editor-wrap-content">
-                <div class="editor-outer-wrap-box">
-                  <div class="editor-wrap-box">
-                    <div class="content-box">
-                      <div class="engine-box">
-                        <div class="engine">
-                          <div ref="container"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <div ref="container"></div>
               </div>
             </div>
           </div>
+          <div class="curtain-operation">
+            <button class="curtain-wrap" @click="extendCurtains = !extendCurtains">
+              <span :class="['iconfont', !extendCurtains ? 'unfold' : 'shrink']"></span>
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="curtain-operation">
-        <button class="curtain-wrap" @click="extendCurtains = !extendCurtains">
-          <span :class="['iconfont', !extendCurtains ? 'unfold' : 'shrink']"></span>
-        </button>
       </div>
       <div class="rambly-module_action">
         <div class="toolbar-ui">
