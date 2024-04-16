@@ -1,20 +1,17 @@
 .fullscreen-wrapper {
   /* 弹性布局，水平垂直 */
-  height: 100vh;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #ffffff;
-  background-image: url("../../assets/login_bacc.png");
-  background-repeat: no-repeat;
-  background-size: 100% auto;
-  // 固定在屏幕上，不随滚动轴滚动
-  background-attachment: fixed;
 
   .container {
-    width: 50%;
-    height: 650px;
-    position: relative;
+    border-radius: 6px;
+    background-image: url("../../assets/login_bacc.png");
+    background-size: cover; /* 按比例铺满，保持宽高比 */
+    background-position: center; /* 背景图片居中显示 */
+    background-repeat: no-repeat; /* 背景图片不重复 */
+    height: 500px;
 
     .hidden {
       display: none;
@@ -23,13 +20,14 @@
 
     .form-box {
       position: absolute;
-      // top: -4%;
+       top: 10%;
       right: 7%;
-      background-image: url("../../assets/login_form_bg.jpg");
-      background-repeat: no-repeat;
-      background-size: 100% auto;
+      background-color: #ffffff;
+      //background-image: url("../../assets/login_form_bg.jpg");
+      //background-repeat: no-repeat;
+      //background-size: 100% auto;
       width: 42%;
-      height: 720px;
+      height: 400px;
       border-radius: 5px;
       box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
       z-index: 111;
@@ -135,7 +133,7 @@
     }
 
     .left {
-      left: 18%;
+      left: 10%;
     }
 
     .right {

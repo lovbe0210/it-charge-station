@@ -187,9 +187,13 @@
         <!--未登录功能栏-->
         <b-navbar-nav v-else class="ml-auto" :fill="true" align="center">
           <div class="login-register">
-            <b-button class="login" variant="outline-*" size="sm" to="/login">
-              登录/注册
-            </b-button>
+            <auth-modal>
+              <slot>
+                <Button>
+                  登录/注册
+                </Button>
+              </slot>
+            </auth-modal>
           </div>
         </b-navbar-nav>
 
@@ -217,6 +221,7 @@
 
 <script>
   import MessageNotification from "./MessageNotification";
+  import AuthModal from "@/components/common/AuthModal.vue";
   export default {
     name: 'Header',
     data() {
@@ -323,7 +328,8 @@
       }
     },
     components: {
-      MessageNotification
+      MessageNotification,
+      AuthModal
     },
     computed: {
       loginStatus() {

@@ -31,6 +31,16 @@
           </div>
         </div>
       </div>
+      <div class="modal-lock" v-if="!userInfo || userInfo.uid == null">
+        <span class="lock-tip">
+          <auth-modal>
+            <slot>
+              <a href="javascript: void(0)">登陆&nbsp;</a>
+            </slot>
+          </auth-modal>
+          <span>即刻记下随心所想</span>
+        </span>
+      </div>
     </div>
     <div class="rambly-module_list">
       <div class="rambly-item" v-for="item in ramblyList" :key="item.id">
@@ -123,6 +133,7 @@
   import {ramblyPlugins, cards, pluginConfig} from "@/components/common/editor/config"
   import UserCard from "@/components/common/UserCard.vue";
   import {needFormatDate} from '@/utils/emoji';
+  import AuthModal from "@/components/common/AuthModal.vue";
 
   export default {
     name: 'RamblyJot',
@@ -259,7 +270,8 @@
               avatar: "https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog89f319pj30u011i77t.jpg"
             }
           }
-        ]
+        ],
+        showLogin: false
       }
     },
     computed: {
@@ -269,6 +281,9 @@
         } else {
           return false;
         }
+      },
+      userInfo() {
+        return this.$store.state.userInfo;
       }
     },
     methods: {
@@ -289,7 +304,8 @@
     },
     components: {
       Toolbar,
-      UserCard
+      UserCard,
+      AuthModal
     },
     watch: {
       "rambly.title"(newVal) {

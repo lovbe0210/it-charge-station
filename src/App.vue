@@ -144,7 +144,7 @@
     },
     methods: {
       beforeunloadHandler() {
-        // 在页面刷新时将vuex里的信息保存到sessionStorage里
+        // 在页面刷新时将vuex里的信息保存到localStorage里
         // 兼容edge、chrome、firefox
         this.$store.commit("updatePageState", "flush");
         localStorage.setItem('store', JSON.stringify(this.$store.state))

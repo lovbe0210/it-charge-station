@@ -2,11 +2,11 @@
   <div class="fullscreen-wrapper">
     <b-container>
       <div class="form-box" ref="formBox">
-        <b-row class="logo">
-          <b-link to="/">
-            <span class="iconfont icon-logo"></span>
-          </b-link>
-        </b-row>
+<!--        <b-row class="logo">-->
+<!--          <b-link to="/">-->
+<!--            <span class="iconfont icon-logo"></span>-->
+<!--          </b-link>-->
+<!--        </b-row>-->
         <b-row :class="['login-box', hidden ? 'hidden' : '']">
           <Tabs :animated="false">
             <TabPane label="密码登录">
@@ -222,6 +222,7 @@
         // 保存token到store中
         let userInfo = {
           token: 'FKDMDK34D34DFGDFG45DE32DGH4G61AS',
+          uid: 0,
           username: '张三'
         }
 
