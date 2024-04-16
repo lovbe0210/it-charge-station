@@ -27,37 +27,55 @@
             <img :src="require('@/assets/login_bacc.png')" alt="">
           </div>
           <div class="login-main">
-            <div class="panel">
-              <h1 class="title">密码登录</h1>
+            <div class="panel-pwd" v-if="loginType === 1">
+              <h1 class="title">账号密码登录</h1>
               <div class="input-group">
-                <div class="input-box">
-                  <input name="loginPhoneOrEmail"
-                         autocomplete="off"
-                         placeholder="请输入邮箱/手机号（国际号码加区号）"
-                         class="input account-input" maxlength="64">
-                </div>
+                <Input v-model="account"
+                       placeholder="请输入账号"
+                       maxlength="20"
+                       style="width: 250px" />
                 <div class="error-text"></div>
-                <div class="input-box">
-                  <input name="loginPassword"
-                         autocomplete="off"
-                         type="password"
-                         maxlength="64"
-                         placeholder="请输入密码"
-                         class="input login-password">
-                  <span class="clickable find-password">
-                  忘记密码
-                </span>
-                </div>
+                <Input v-model="password"
+                       maxlength="50"
+                       type="password"
+                       password
+                       placeholder="请输入密码"
+                       style="width: 250px"/>
+                <span>忘记密码</span>
                 <div class="error-text"></div>
               </div>
               <div class="button-group">
-                <button type="button" class="btn btn-register">
-                  注册
-                </button>
-                <button class="btn btn-login">
+                <Button type="primary">
                   登录
-                </button>
+                </Button>
+                <Button>
+                  注册
+                </Button>
               </div>
+            </div>
+            <div class="panel-verify" v-if="loginType === 2">
+              <h1 class="title">验证码登录 / 注册</h1>
+              <div class="input-group">
+                <Input v-model="account">
+                  <Select v-model="select1" slot="prepend" style="width: 80px">
+                    <Option value="http">http://</Option>
+                    <Option value="https">https://</Option>
+                  </Select>
+                </Input>
+                <div class="error-text"></div>
+                <div class="input-box">
+                  <input autocomplete="off"
+                                              name="registerSmsCode" maxlength="4"
+                                              placeholder="请输入验证码" class="input">
+                  <button class="send-vcode-btn">
+                    获取验证码
+                  </button>
+                </div>
+                <div class="error-text"></div>
+              </div>
+              <button class="btn">
+                登录 / 注册
+              </button>
             </div>
             <div class="other-login-box">
               <div class="oauth-box"><span>其它登录：</span>
@@ -89,7 +107,11 @@
     name: "AuthModal",
     data() {
       return {
-        showLogin: false
+        showLogin: false,
+        // 登录类型：1 密码登录， 2 验证码登录
+        loginType: 1,
+        account: null,
+        password: null
       }
     }
   }
@@ -113,14 +135,30 @@
         width: 40%;
         display: flex;
         flex-direction: column;
+        justify-content: center;
 
         .site-tips {
           display: flex;
           flex-direction: column;
         }
 
-        img  {
+        img {
           max-width: 100%;
+        }
+      }
+
+      .login-main {
+        width: 60%;
+
+        .title {
+          font-size: 16px;
+          font-weight: 500;
+          color: #262626;
+          margin: 0 0 1.33rem;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
         }
       }
     }

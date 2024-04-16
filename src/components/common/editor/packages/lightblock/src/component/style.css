@@ -16,7 +16,7 @@
 
 .lightblock-editor-container {
     flex: 1;
-    max-width: calc(100% - 36px);
+    /*max-width: calc(100% - 36px);*/
 }
 
 .lightblock-icon-theme {
