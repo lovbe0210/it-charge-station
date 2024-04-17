@@ -1,7 +1,7 @@
 @font-face {
   font-family: "iconfont";
   src:
-      url('//at.alicdn.com/t/c/font_4499563_62y2wtmxwmq.woff2?t=1712638340582') format('woff2');
+      url('//at.alicdn.com/t/c/font_4499563_fpuutroj2ke.woff2?t=1713366843491') format('woff2');
 }
 
 .iconfont {
@@ -24,6 +24,13 @@
   content: "\e502";
 }
 
+.wechat:before {
+  content: "\e503";
+}
+
+.qq:before {
+  content: "\e504";
+}
 
 
 

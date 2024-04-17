@@ -1,7 +1,7 @@
 <template>
   <div class="top-setting">
     <div class="back-top" v-show="backTopShow" @click="backTop">
-      <span class="iconfont icon-top"/>
+      <span class="iconfont to-top"/>
     </div>
     <div class="settings" v-show="immediate || backTopShow" v-b-tooltip.hover.leftbottom.v-secondary :title="title"
          @click="$store.commit('showCustomer', true)">
