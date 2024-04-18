@@ -25,11 +25,12 @@
                 —— 永远电量满满，永远激情澎湃
               </span>
             </div>
-            <img :src="require('@/assets/img/charge.jpg')" alt="">
+            <img :src="require('@/assets/cy2.png')" alt="">
           </div>
           <div class="login-main">
+            <h1 class="title" v-if="loginType === 1">账号密码登录</h1>
+            <h1 class="title" v-if="loginType === 2">验证码登录 / 注册</h1>
             <div class="panel-pwd" v-if="loginType === 1">
-              <h1 class="title">账号密码登录</h1>
               <div class="pwd-input-group">
                 <Input v-model="account"
                        placeholder="请输入账号"
@@ -55,19 +56,21 @@
               </div>
             </div>
             <div class="panel-verify" v-if="loginType === 2">
-              <h1 class="title">验证码登录 / 注册</h1>
               <div class="verify-input-group">
                 <Input v-model="account">
-                  <Select v-model="select1" slot="prepend" style="width: 80px">
-                    <Option value="http">http://</Option>
-                    <Option value="https">https://</Option>
+                  <Select v-model="countryCode"
+                          slot="prepend"
+                          placeholder="请输入邮箱或手机号"
+                          style="width: 80px">
+                    <Option value="+86">中国      +86</Option>
+                    <Option value="+853">中国澳门    +853</Option>
                   </Select>
                 </Input>
                 <div class="error-text"></div>
                 <div class="input-box">
                   <input autocomplete="off"
-                                              name="registerSmsCode" maxlength="4"
-                                              placeholder="请输入验证码" class="input">
+                         name="registerSmsCode" maxlength="4"
+                         placeholder="请输入验证码" class="input">
                   <button class="send-vcode-btn">
                     获取验证码
                   </button>
@@ -89,7 +92,7 @@
                   </div>
                 </div>
               </div>
-              <span class="clickable">
+              <span class="clickable" @click="changeLoginType">
                 验证码登录
               </span>
             </div>
@@ -116,6 +119,8 @@
         loginType: 1,
         // 行为类型 1注册 2登录
         actionType: 1,
+        // 国家区号
+        countryCode: '+86',
         account: null,
         password: null
       }
@@ -123,6 +128,9 @@
     methods: {
       forgotPwd() {
         console.log('忘记密码了啊咋办呢')
+      },
+      changeLoginType() {
+        this.loginType = this.loginType === 1 ? 2 : 1;
       }
     }
   }
@@ -165,15 +173,17 @@
 
           .t2 {
             margin-left: 30px;
+            color: #585A5A;
           }
 
           .t3 {
             margin-left: 5px;
+            color: #585A5A;
           }
         }
 
         img {
-          max-width: 90%;
+          max-width: 100%;
           border-radius: 6px;
         }
       }
@@ -186,19 +196,27 @@
         justify-content: center;
 
         .title {
+          color: #262626;
           font-size: 16px;
           font-weight: 500;
-          margin: 0 0 1.33rem;
+          margin-bottom: 10px;
           display: flex;
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
         }
 
-        .pwd-input-group, .verify-input-group {
-          margin-bottom: 15px;
+        .panel-pwd, .panel-verify {
+          margin-bottom: 20px;
+          height: 70%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+        }
 
-          /deep/.ivu-input-suffix {
+        .pwd-input-group, .verify-input-group {
+
+          /deep/ .ivu-input-suffix {
             width: unset;
             display: flex;
             align-items: center;
@@ -233,10 +251,12 @@
         .other-login-box {
           width: 100%;
           display: flex;
-          margin-top: 20px;
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          user-select: none;
 
           .oauth-box {
             display: flex;
