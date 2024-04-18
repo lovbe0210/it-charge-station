@@ -1,5 +1,5 @@
 <template>
-  <div class="dragVerify">
+  <div class="drag-verify">
     <div class="spout" ref="spout">
       <div :class="['slidingBlock', releaseMouse ? 'transition': '', place < distance ? 'unfinished' : 'complete']"
            @mousedown="handleMouseDown"
@@ -82,7 +82,7 @@
 </script>
 
 <style scoped>
-  .dragVerify {
+  .drag-verify {
     border: 1px solid #e1e1e1;
     height: 40px;
     background: #E7E9E8;

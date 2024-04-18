@@ -81,7 +81,7 @@
             <span>身份验证</span>
           </div>
           <p class="warn">
-            <span>为了你的账户安全，请先验证身份。</span>
+            <span>为了您的账户安全，请先验证身份。</span>
           </p>
           <a-select class="select-option"
                     size="large"
@@ -94,7 +94,7 @@
                     @select="onSelect">
           </a-select>
           <div v-if="showModal" class="validation">
-            <slider-validation :verifyResult="verifyResult" @validate="validate"></slider-validation>
+            <slider-validation @validate="validate"></slider-validation>
           </div>
           <div class="check-code">
             <Input autocomplete="off"

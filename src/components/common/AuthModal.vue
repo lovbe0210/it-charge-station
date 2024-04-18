@@ -33,13 +33,12 @@
             <div class="panel-pwd" v-if="loginType === 1">
               <div class="pwd-input-group">
                 <Input v-model="account"
-                       placeholder="请输入账号"
-                       maxlength="20"
-                       size="large"/>
+                       placeholder="请输入邮箱/手机号（国家号码加区号）"
+                       @on-change="checkAccount('account')"
+                       maxlength="20"/>
                 <div class="error-text">ssd</div>
                 <Input v-model="password"
                        maxlength="30"
-                       size="large"
                        type="password"
                        placeholder="请输入密码">
                   <span slot="suffix" @click="forgotPwd">忘记密码</span>
@@ -50,36 +49,27 @@
                 <Button type="primary" size="large">
                   登录
                 </Button>
-                <Button size="large">
+                <Button size="large" @click="changeLoginType">
                   注册
                 </Button>
               </div>
             </div>
             <div class="panel-verify" v-if="loginType === 2">
               <div class="verify-input-group">
-                <Input v-model="account">
-                  <Select v-model="countryCode"
-                          slot="prepend"
-                          placeholder="请输入邮箱或手机号"
-                          style="width: 80px">
-                    <Option value="+86">中国      +86</Option>
-                    <Option value="+853">中国澳门    +853</Option>
-                  </Select>
+                <Input v-model="account"
+                       placeholder="请输入邮箱/手机号（国际号码加区号）">
                 </Input>
                 <div class="error-text"></div>
-                <div class="input-box">
-                  <input autocomplete="off"
-                         name="registerSmsCode" maxlength="4"
-                         placeholder="请输入验证码" class="input">
-                  <button class="send-vcode-btn">
-                    获取验证码
-                  </button>
-                </div>
+                <slider-validation @validate="validate"></slider-validation>
+                <Input v-model="verifyCode"
+                       placeholder="请输入验证码">
+                  <span slot="suffix" @click="getVerifyCode">获取验证码</span>
+                </Input>
                 <div class="error-text"></div>
               </div>
-              <button class="btn">
+              <Button size="large" type="primary" @click="login">
                 登录 / 注册
-              </button>
+              </Button>
             </div>
             <div class="other-login-box">
               <div class="oauth-box">
@@ -110,6 +100,8 @@
 </template>
 
 <script>
+  import SliderValidation from "@/components/common/SliderValidation";
+
   export default {
     name: "AuthModal",
     data() {
@@ -122,8 +114,13 @@
         // 国家区号
         countryCode: '+86',
         account: null,
-        password: null
+        password: null,
+        verifyCode: null,
+        sliderValidateResult: false
       }
+    },
+    components: {
+      SliderValidation
     },
     methods: {
       forgotPwd() {
@@ -131,6 +128,37 @@
       },
       changeLoginType() {
         this.loginType = this.loginType === 1 ? 2 : 1;
+      },
+      validate() {
+        this.sliderValidateResult = true;
+      },
+      getVerifyCode() {
+        if (!this.sliderValidateResult) {
+          this.$Message.error("请先完成滑块验证")
+        }
+      },
+      login() {
+        if (this.loginType === 1) {
+          this.$Message.success('手机号/邮箱登陆成功!')
+        } else {
+          this.$Message.success('验证码登陆成功!')
+        }
+        // 保存token到store中
+        let userInfo = {
+          token: 'FKDMDK34D34DFGDFG45DE32DGH4G61AS',
+          uid: 0,
+          username: '张三'
+        }
+
+        // 延时关闭登录窗口
+        setTimeout(() => {
+          this.showLogin = false;
+          this.$store.commit('login', userInfo)
+        }, 1000)
+      },
+      checkAccount() {
+        // 校验为邮箱和国际手机号码
+
       }
     }
   }
@@ -167,8 +195,8 @@
 
           .t1 {
             font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 10px;
+            font-size: 18px;
+            margin-bottom: 15px;
           }
 
           .t2 {
@@ -199,11 +227,19 @@
           color: #262626;
           font-size: 16px;
           font-weight: 500;
-          margin-bottom: 10px;
+          margin-bottom: 18px;
           display: flex;
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
+        }
+
+        /deep/ .ivu-input {
+          height: 40px;
+        }
+
+        .drag-verify {
+          margin-bottom: 20px;
         }
 
         .panel-pwd, .panel-verify {
@@ -240,11 +276,11 @@
           flex-direction: row;
 
           button {
-            width: 40%;
+            width: 45%;
           }
 
           button:first-child {
-            margin-right: 20%;
+            margin-right: 10%;
           }
         }
 
