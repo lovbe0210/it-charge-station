@@ -233,7 +233,7 @@
 
       .login-main {
         width: 60%;
-        padding: 5px 10px 0 40px;
+        padding: 8px 10px 0 40px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -242,7 +242,6 @@
           color: #262626;
           font-size: 17px;
           font-weight: 500;
-          /*margin-bottom: 25px;*/
           display: flex;
           flex-direction: row;
           align-items: center;
@@ -258,7 +257,6 @@
         }
 
         .panel-pwd, .panel-verify {
-          /*padding-bottom: 15px;*/
           display: flex;
           flex-direction: column;
           justify-content: space-around;
@@ -307,6 +305,7 @@
           width: 100%;
           margin-top: 5px;
           display: flex;
+          line-height: 30px;
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
