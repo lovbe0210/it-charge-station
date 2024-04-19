@@ -33,17 +33,18 @@
             <div class="panel-pwd" v-if="loginType === 1">
               <div class="pwd-input-group">
                 <Input v-model="account"
-                       placeholder="请输入邮箱/手机号（国家号码加区号）"
+                       class="account"
+                       placeholder="请输入邮箱/手机号（国际号码加区号如+86）"
                        @on-change="checkAccount('account')"
                        maxlength="20"/>
-                <div class="error-text">ssd</div>
+                <div class="error-text account-error">{{accountError ? '请输入正确的手机号或邮箱' : ''}}</div>
                 <Input v-model="password"
                        maxlength="30"
                        type="password"
                        placeholder="请输入密码">
                   <span slot="suffix" @click="forgotPwd">忘记密码</span>
                 </Input>
-                <div class="error-text">sdsd</div>
+                <div class="error-text"></div>
               </div>
               <div class="button-group">
                 <Button type="primary" size="large">
@@ -57,15 +58,14 @@
             <div class="panel-verify" v-if="loginType === 2">
               <div class="verify-input-group">
                 <Input v-model="account"
-                       placeholder="请输入邮箱/手机号（国际号码加区号）">
+                       placeholder="请输入邮箱/手机号（国际号码加区号如+86）">
                 </Input>
-                <div class="error-text"></div>
-                <slider-validation @validate="validate"></slider-validation>
+                <div class="error-text account-error">{{accountError ? '请输入正确的手机号或邮箱' : ''}}</div>
                 <Input v-model="verifyCode"
                        placeholder="请输入验证码">
                   <span slot="suffix" @click="getVerifyCode">获取验证码</span>
                 </Input>
-                <div class="error-text"></div>
+                <div class="error-text">{{verifyCodeError ? '请输入正确的验证码' : ''}}</div>
               </div>
               <Button size="large" type="primary" @click="login">
                 登录 / 注册
@@ -96,6 +96,18 @@
         </div>
       </div>
     </Modal>
+    <Modal v-model="showSliderValidate"
+           :lock-scroll="true"
+           :footer-hide="true"
+           :mask-closable="false"
+           :width="650"
+           :styles="{top: '20%'}"
+           class-name="login-box">
+      <div style="height: 350px;">
+        <span>请先完成滑块验证</span>
+        <slider-validation @validate="validate"></slider-validation>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -107,12 +119,14 @@
     data() {
       return {
         showLogin: false,
+        showSliderValidate: false,
         // 登录类型：1 密码登录， 2 验证码登录
         loginType: 1,
         // 行为类型 1注册 2登录
         actionType: 1,
+        accountError: false,
+        verifyCodeError: false,
         // 国家区号
-        countryCode: '+86',
         account: null,
         password: null,
         verifyCode: null,
@@ -131,11 +145,13 @@
       },
       validate() {
         this.sliderValidateResult = true;
+        this.showSliderValidate = false;
       },
       getVerifyCode() {
-        if (!this.sliderValidateResult) {
+        /*if (!this.sliderValidateResult) {
           this.$Message.error("请先完成滑块验证")
-        }
+        }*/
+        this.showSliderValidate = true;
       },
       login() {
         if (this.loginType === 1) {
@@ -167,19 +183,18 @@
 <style scoped lang="less">
   .auth-body {
     color: #262626;
-    height: 380px;
+    height: 340px;
     max-width: 100%;
     font-size: 14px;
-    padding: 10px 15px;
+    padding: 0 15px;
+    margin: 5px 0;
     box-sizing: border-box;
 
     .login-body {
       display: flex;
       flex-direction: row;
-      height: 95%;
 
       .site-flag {
-        height: 100%;
         width: 40%;
         display: flex;
         flex-direction: column;
@@ -196,7 +211,7 @@
           .t1 {
             font-weight: 600;
             font-size: 18px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
           }
 
           .t2 {
@@ -218,16 +233,16 @@
 
       .login-main {
         width: 60%;
-        padding: 10px 10px 10px 40px;
+        padding: 5px 10px 0 40px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
 
         .title {
           color: #262626;
-          font-size: 16px;
+          font-size: 17px;
           font-weight: 500;
-          margin-bottom: 18px;
+          /*margin-bottom: 25px;*/
           display: flex;
           flex-direction: row;
           align-items: center;
@@ -243,14 +258,17 @@
         }
 
         .panel-pwd, .panel-verify {
-          margin-bottom: 20px;
-          height: 70%;
+          /*padding-bottom: 15px;*/
           display: flex;
           flex-direction: column;
           justify-content: space-around;
         }
 
         .pwd-input-group, .verify-input-group {
+
+          .ivu-input-wrapper {
+            margin-bottom: 5px;
+          }
 
           /deep/ .ivu-input-suffix {
             width: unset;
@@ -265,6 +283,7 @@
             font-size: 12px;
             line-height: 20px;
             min-height: 20px;
+            margin-bottom: 10px;
             text-align: left;
             padding: 0 10px;
           }
@@ -286,6 +305,7 @@
 
         .other-login-box {
           width: 100%;
+          margin-top: 5px;
           display: flex;
           flex-direction: row;
           align-items: center;
@@ -320,6 +340,7 @@
 
     .agreement-box {
       text-align: center;
+      margin-top: 15px;
     }
   }
 </style>
