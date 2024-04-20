@@ -30,12 +30,13 @@
           <div class="login-main">
             <h1 class="title" v-if="loginType === 1">账号密码登录</h1>
             <h1 class="title" v-if="loginType === 2">验证码登录 / 注册</h1>
+            <h1 class="title" v-if="loginType === 3">重置密码</h1>
             <div class="panel-pwd" v-if="loginType === 1">
               <div class="pwd-input-group">
                 <Input v-model="account"
                        class="account"
                        placeholder="请输入邮箱/手机号（国际号码加区号如+86）"
-                       @on-change="checkAccount('account')"
+                       @on-change="checkALegitimacy(1)"
                        maxlength="20"/>
                 <div class="error-text account-error">{{accountError ? '请输入正确的手机号或邮箱' : ''}}</div>
                 <Input v-model="password"
@@ -58,10 +59,13 @@
             <div class="panel-verify" v-if="loginType === 2">
               <div class="verify-input-group">
                 <Input v-model="account"
-                       placeholder="请输入邮箱/手机号（国际号码加区号如+86）">
+                       placeholder="请输入邮箱/手机号（国际号码加区号如+86）"
+                       maxlength="20"
+                       @blur="checkALegitimacy(1)">
                 </Input>
                 <div class="error-text account-error">{{accountError ? '请输入正确的手机号或邮箱' : ''}}</div>
                 <Input v-model="verifyCode"
+                       maxlength="6"
                        placeholder="请输入验证码">
                   <span slot="suffix" @click="getVerifyCode">获取验证码</span>
                 </Input>
@@ -71,7 +75,36 @@
                 登录 / 注册
               </Button>
             </div>
-            <div class="other-login-box">
+            <div class="panel-reset-pwd" v-if="loginType === 3">
+              <div class="reset-input-group">
+                <Input v-model="account"
+                       placeholder="请输入邮箱/手机号（国际号码加区号如+86）"
+                       maxlength="20"
+                       @on-change="checkALegitimacy(1)">
+                </Input>
+                <div class="error-text account-error">{{accountError ? '请输入正确的手机号或邮箱' : ''}}</div>
+                <Input v-model="password"
+                       placeholder="请输入新密码"
+                       maxlength="30"
+                       type="password"
+                       @on-change="checkALegitimacy(2)">
+                </Input>
+                <div class="error-text account-error">{{ pwdErrorMsg }}</div>
+                <Input v-model="verifyCode"
+                       maxlength="6"
+                       placeholder="请输入验证码">
+                  <span slot="suffix" @click="getVerifyCode">获取验证码</span>
+                </Input>
+                <div class="error-text">{{verifyCodeError ? '请输入正确的验证码' : ''}}</div>
+              </div>
+              <div class="reset-action-group">
+                <Button size="large" type="primary" @click="login">
+                  修改
+                </Button>
+                <span class="return-login" @click="returnLogin">返回登录</span>
+              </div>
+            </div>
+            <div class="other-login-box" v-if="loginType < 3">
               <div class="oauth-box">
                 <span>其它登录：</span>
                 <div class="oauth">
@@ -83,7 +116,7 @@
                 </div>
               </div>
               <span class="clickable" @click="changeLoginType">
-                验证码登录
+                {{ loginType === 1 ? '验证码登录' : '密码登录' }}
               </span>
             </div>
           </div>
@@ -96,16 +129,16 @@
         </div>
       </div>
     </Modal>
+
     <Modal v-model="showSliderValidate"
            :lock-scroll="true"
            :footer-hide="true"
            :mask-closable="false"
-           :width="650"
-           :styles="{top: '20%'}"
-           class-name="login-box">
-      <div style="height: 350px;">
-        <span>请先完成滑块验证</span>
-        <slider-validation @validate="validate"></slider-validation>
+           :width="300"
+           :styles="{top: '28%'}">
+      <div class="slider-verify-box" style="height: 200px;">
+        <span class="content">请先完成滑块验证</span>
+        <slider-validation @validate="validate" :key="sliderValidateKey"></slider-validation>
       </div>
     </Modal>
   </div>
@@ -113,6 +146,7 @@
 
 <script>
   import SliderValidation from "@/components/common/SliderValidation";
+  import {emailRegex} from "@/utils/utils.js"
 
   export default {
     name: "AuthModal",
@@ -120,11 +154,13 @@
       return {
         showLogin: false,
         showSliderValidate: false,
+        sliderValidateKey: Date.now(),
         // 登录类型：1 密码登录， 2 验证码登录
         loginType: 1,
         // 行为类型 1注册 2登录
         actionType: 1,
         accountError: false,
+        pwdErrorMsg: '',
         verifyCodeError: false,
         // 国家区号
         account: null,
@@ -138,7 +174,7 @@
     },
     methods: {
       forgotPwd() {
-        console.log('忘记密码了啊咋办呢')
+        this.loginType = 3;
       },
       changeLoginType() {
         this.loginType = this.loginType === 1 ? 2 : 1;
@@ -148,10 +184,9 @@
         this.showSliderValidate = false;
       },
       getVerifyCode() {
-        /*if (!this.sliderValidateResult) {
-          this.$Message.error("请先完成滑块验证")
-        }*/
+        this.sliderValidateKey = Date.now();
         this.showSliderValidate = true;
+
       },
       login() {
         if (this.loginType === 1) {
@@ -172,9 +207,50 @@
           this.$store.commit('login', userInfo)
         }, 1000)
       },
-      checkAccount() {
-        // 校验为邮箱和国际手机号码
+      checkALegitimacy(checkType) {
+        // 校验为邮箱和国际手机号码/密码
+        if (checkType === 2) {
+          // 密码校验
+          if (this.password && this.password.length < 8) {
+            this.pwdErrorMsg = '密码长度不能小于8位';
+            return;
+          }
+          if (this.password) {
+            let set = new Set();
+            this.password.forEach(c => set.add(c));
+            if (set.size === 1) {
+              this.pwdErrorMsg = '密码过于简单，不得使用重复数字或字母';
+              return;
+            }
+          }
+        }
 
+        if (checkType === 1) {
+          if (!this.account) {
+            return;
+          }
+
+          let indexOf = this.account.indexOf("@");
+          if (indexOf !== -1 && !emailRegex.test(this.account)) {
+            // 邮箱校验
+            this.accountError = true
+          }
+        }
+
+      },
+      returnLogin() {
+        this.loginType = 1;
+      }
+    },
+    watch: {
+      "loginType"() {
+        this.accountError = false;
+        this.pwdErrorMsg = '';
+        this.verifyCodeError = false;
+        this.account = null;
+        this.password = null;
+        this.verifyCode = null;
+        this.sliderValidateResult = false;
       }
     }
   }
@@ -233,7 +309,7 @@
 
       .login-main {
         width: 60%;
-        padding: 8px 10px 0 40px;
+        padding: 5px 10px 0 40px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -242,6 +318,7 @@
           color: #262626;
           font-size: 17px;
           font-weight: 500;
+          margin-bottom: 8px;
           display: flex;
           flex-direction: row;
           align-items: center;
@@ -252,11 +329,8 @@
           height: 40px;
         }
 
-        .drag-verify {
-          margin-bottom: 20px;
-        }
 
-        .panel-pwd, .panel-verify {
+        .panel-pwd, .panel-verify, .panel-reset-pwd {
           display: flex;
           flex-direction: column;
           justify-content: space-around;
@@ -284,6 +358,46 @@
             margin-bottom: 10px;
             text-align: left;
             padding: 0 10px;
+          }
+        }
+
+        .reset-input-group {
+          /deep/ .ivu-input-suffix {
+            width: unset;
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+            cursor: pointer;
+          }
+
+          .ivu-input-wrapper {
+            margin-bottom: 3px;
+          }
+
+          .error-text {
+            color: #F44336;
+            font-size: 12px;
+            line-height: 20px;
+            min-height: 20px;
+            margin-bottom: 8px;
+            text-align: left;
+            padding: 0 10px;
+          }
+        }
+
+        .reset-action-group {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 5px;
+
+          button {
+            width: 45%;
+          }
+
+          .return-login {
+            margin-right: 10px;
+            cursor: pointer;
           }
         }
 
@@ -340,6 +454,17 @@
     .agreement-box {
       text-align: center;
       margin-top: 15px;
+    }
+  }
+
+  .slider-verify-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .content {
+      margin-bottom: 30px;
     }
   }
 </style>

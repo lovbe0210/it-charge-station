@@ -476,9 +476,9 @@
 
           }
         } else {
-          if (this.confirmValue.length < 6) {
+          if (this.confirmValue.length < 8) {
             this.checkConfirmValueResult = false;
-            this.tipString = '密码长度至少 6 位';
+            this.tipString = '密码长度至少 8 位';
             return;
           }
         }
