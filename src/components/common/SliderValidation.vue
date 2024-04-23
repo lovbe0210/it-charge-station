@@ -2,9 +2,12 @@
   <div class="drag-verify">
     <div class="spout" ref="spout">
       <div :class="['slidingBlock', releaseMouse ? 'transition': '', place < distance ? 'unfinished' : 'complete']"
+           id="sliderValidationBox"
            @mousedown="handleMouseDown"
            ref="slidingBlock" :style="{ left: `${place}%` }">
-        <span :class="['iconfont', verifyResult ? 'icon-exp-complete' : 'double-right']"></span>
+        <span id="sliderValidationIcon"
+              :class="['iconfont', verifyResult ? 'icon-exp-complete' : 'double-right']">
+        </span>
       </div>
       <span v-show="!verifyResult" class="tip-text">请按住滑块，拖动到最右边</span>
       <span class="hight-light"></span>
@@ -36,6 +39,10 @@
     },
     methods: {
       handleMouseDown(event) {
+        let id = event.target.getAttribute("id");
+        if (id !== 'sliderValidationBox' && id !== 'sliderValidationIcon') {
+          return;
+        }
         if (this.place < this.distance) {
           this.sliding.isDown = true;
           // 计算百分比

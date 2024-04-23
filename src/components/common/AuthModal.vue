@@ -43,7 +43,7 @@
                        maxlength="30"
                        type="password"
                        placeholder="请输入密码">
-                  <span slot="suffix" @click="forgotPwd">忘记密码</span>
+                  <Button slot="suffix"  @click="forgotPwd" type="text">忘记密码</Button>
                 </Input>
                 <div class="error-text"></div>
               </div>
@@ -67,7 +67,12 @@
                 <Input v-model="verifyCode"
                        maxlength="6"
                        placeholder="请输入验证码">
-                  <span slot="suffix" @click="getVerifyCode">获取验证码</span>
+                  <Button slot="suffix"
+                          type="text"
+                          @click="getVerifyCode"
+                          :disabled="sendCodeSuccess">
+                    {{ btnValue }}
+                  </Button>
                 </Input>
                 <div class="error-text">{{verifyCodeError ? '请输入正确的验证码' : ''}}</div>
               </div>
@@ -93,7 +98,12 @@
                 <Input v-model="verifyCode"
                        maxlength="6"
                        placeholder="请输入验证码">
-                  <span slot="suffix" @click="getVerifyCode">获取验证码</span>
+                  <Button slot="suffix"
+                          type="text"
+                          @click="getVerifyCode"
+                          :disabled="sendCodeSuccess">
+                    {{ btnValue }}
+                  </Button>
                 </Input>
                 <div class="error-text">{{verifyCodeError ? '请输入正确的验证码' : ''}}</div>
               </div>
@@ -166,7 +176,10 @@
         account: null,
         password: null,
         verifyCode: null,
-        sliderValidateResult: false
+        sliderValidateResult: false,
+        sendCodeSuccess: false,
+        btnValue: '获取验证码',
+        sendCodeInterval: null
       }
     },
     components: {
@@ -182,6 +195,23 @@
       validate() {
         this.sliderValidateResult = true;
         this.showSliderValidate = false;
+        // TODO 发送验证码
+        this.sendCodeSuccess = true;
+        let tmp = this.account && this.account.indexOf('@') !== -1 ? '邮箱' : '手机';
+        this.sendCodeString = '已发送短信验证码到指定' + tmp;
+        let time = 60;
+        this.btnValue = '重新获取(' + time + ')';
+        this.sendCodeInterval = setInterval(() => {
+          if (time > 0) {
+            time = time - 1;
+            this.btnValue = '重新获取(' + time + ')';
+          } else {
+            this.btnValue = '获取验证码';
+            this.sendCodeSuccess = false;
+            clearInterval(this.sendCodeInterval);
+            this.sendCodeInterval = null;
+          }
+        }, 1000)
       },
       getVerifyCode() {
         this.sliderValidateKey = Date.now();
@@ -346,8 +376,7 @@
             width: unset;
             display: flex;
             align-items: center;
-            margin-right: 10px;
-            cursor: pointer;
+            padding-right: 1px;
           }
 
           .error-text {
@@ -366,8 +395,7 @@
             width: unset;
             display: flex;
             align-items: center;
-            margin-right: 10px;
-            cursor: pointer;
+            padding-right: 1px;
           }
 
           .ivu-input-wrapper {
