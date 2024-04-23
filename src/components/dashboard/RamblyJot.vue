@@ -113,6 +113,7 @@
     data() {
       return {
         engine: null,
+        editorFocus: false,
         // 工具栏内容：下拉面板、
         items: [
           [
@@ -262,6 +263,13 @@
         // 监听编辑器值改变事件
         engine.on("change", () => {
           this.editorValueIsEmpty = engine.isEmpty();
+        });
+
+        engine.on("focus", () => {
+          this.editorFocus = true;
+        });
+        engine.on("blur", () => {
+          this.editorFocus = false;
         });
 
         this.engine = engine;

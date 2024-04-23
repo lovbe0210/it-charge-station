@@ -35,7 +35,7 @@
     flex-direction: column;
 
     .scrollbar-visible {
-      height: 100%;
+      height: calc(~"100% - 42px");
 
       .layout-mode-fixed {
         height: 100%;
@@ -404,22 +404,17 @@
   }
 }
 
-// 第三方插件样式覆盖
-/deep/.am-engine>:not(p) {
-  margin: 12px 0;
-}
+/deep/.am-engine {
+  background-color: unset;
+  letter-spacing: .06em;
+  padding-right: 12px;
 
-/deep/.am-engine>p {
-  margin: 4px 0;
-}
-
-/deep/.am-engine>ul {
-  margin: 4px 0;
-  li {
-    margin-top: 4px;
-    margin-bottom: 4px;
+  &>p {
+    line-height: 1.5;
+    margin: 4px 0;
   }
-  li:not(.data-list-item) {
-    margin: 4px 0  4px 15px;
+
+  &>:not(p) {
+    margin: 12px 0;
   }
 }

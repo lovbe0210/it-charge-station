@@ -148,7 +148,9 @@
            :styles="{top: '28%'}">
       <div class="slider-verify-box" style="height: 200px;">
         <span class="content">请先完成滑块验证</span>
-        <slider-validation @validate="validate" :key="sliderValidateKey"></slider-validation>
+        <div v-if="showSliderValidate" class="validation">
+          <slider-validation @validate="validate"></slider-validation>
+        </div>
       </div>
     </Modal>
   </div>
@@ -219,11 +221,7 @@
 
       },
       login() {
-        if (this.loginType === 1) {
-          this.$Message.success('手机号/邮箱登陆成功!')
-        } else {
-          this.$Message.success('验证码登陆成功!')
-        }
+        this.$Message.success('登陆成功!')
         // 保存token到store中
         let userInfo = {
           token: 'FKDMDK34D34DFGDFG45DE32DGH4G61AS',
@@ -493,6 +491,10 @@
 
     .content {
       margin-bottom: 30px;
+    }
+
+    .validation {
+      width: 100%;
     }
   }
 </style>

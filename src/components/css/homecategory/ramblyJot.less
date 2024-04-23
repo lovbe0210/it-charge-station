@@ -10,7 +10,7 @@
     flex-direction: column;
 
     .scrollbar-visible {
-      height: 100%;
+      height: calc(~"100% - 42px");
 
       .layout-mode-fixed {
         height: 100%;
@@ -421,7 +421,7 @@
 /deep/.am-engine {
   background-color: unset;
   letter-spacing: .06em;
-  padding-right: 20px;
+  padding-right: 12px;
 
   &>p {
     line-height: 1.5;

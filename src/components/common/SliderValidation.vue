@@ -39,10 +39,7 @@
     },
     methods: {
       handleMouseDown(event) {
-        let id = event.target.getAttribute("id");
-        if (id !== 'sliderValidationBox' && id !== 'sliderValidationIcon') {
-          return;
-        }
+        this.releaseMouse = true;
         if (this.place < this.distance) {
           this.sliding.isDown = true;
           // 计算百分比
@@ -67,10 +64,15 @@
         }
       },
       handleMouseUp() {
+        if (this.verifyResult) {
+          return;
+        }
         this.releaseMouse = true;
         if (this.place === this.distance) {
           this.verifyResult = true;
-          this.$emit('validate');
+          setTimeout(() => {
+            this.$emit('validate');
+          }, 300)
         } else {
           this.sliding.isDown = false;
           this.place = 0

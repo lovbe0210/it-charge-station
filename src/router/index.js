@@ -265,12 +265,6 @@ const routes = [
     ]
   },
   {
-    // 登陆
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/Login')
-  },
-  {
     // 写作中心
     path: '/editor/:docId',
     name: 'WriteCenter',
@@ -329,7 +323,7 @@ const router = new VueRouter({
   routes,
   // 滚动条行为
   scrollBehavior(to, from, position) {
-    if (from.fullPath?.includes('/dashboard/ramblyJot/') && to.fullPath === '/dashboard/ramblyJot') {
+    if (from.fullPath?.includes('/ramblyJot/') && to.fullPath === '/ramblyJot') {
       return position;
     } else {
       if (to.fullPath?.includes('/dashboard')) {
