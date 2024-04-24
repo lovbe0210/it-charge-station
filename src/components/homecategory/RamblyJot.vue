@@ -98,8 +98,9 @@
             </div>
             <div class="photo-content p3" v-if="item.picList?.length === 3">
               <div class="more-images">
-                <div v-for="pic in item.picList" :key="pic" class="photo" :alt="'灵感时刻-' + item.createTime"
-                     :style="'background-image: url(' + pic + ');'"></div>
+                <div v-for="pic in item.picList" :key="pic" class="photo">
+                  <img :src="pic" :alt="'灵感时刻-' + item.createTime">
+                </div>
               </div>
             </div>
           </div>
@@ -187,7 +188,7 @@
             userInfo: {
               userId: 112,
               username: '闪魔亮晶晶',
-              avatar: "https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog8972qyej30sg0zkqc6.jpg"
+              avatar: require('@/assets/avatar/16.png')
             }
           },
           {
@@ -200,7 +201,7 @@
             userInfo: {
               userId: 112,
               username: '山野寻雾灯',
-              avatar: "https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hog8alwuhjj30qo0zk41l.jpg"
+              avatar: require('@/assets/avatar/15.jpg')
             }
           },
           {
@@ -216,7 +217,7 @@
             userInfo: {
               userId: 112,
               username: 'AbnerPei',
-              avatar: "https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hog8amvawsj31jk2fz4hm.jpg"
+              avatar: require('@/assets/avatar/14.jpg')
             }
           },
           {
@@ -233,7 +234,7 @@
             userInfo: {
               userId: 112,
               username: 'AbnerPei',
-              avatar: "https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hog894yoj1j30sg0zkk1l.jpg"
+              avatar: require('@/assets/avatar/13.jpg')
             }
           },
           {
@@ -250,7 +251,7 @@
             userInfo: {
               userId: 112,
               username: 'AbnerPei',
-              avatar: "https://image.baidu.com/search/down?url=https://tvax1.sinaimg.cn/large/006BNqYCly1hog89ayud5j30sg0zkjvo.jpg"
+              avatar: require('@/assets/avatar/12.jpg')
             }
           },
           {
@@ -260,14 +261,14 @@
             content: '遇到的问题：设置 backdrop-filter，Safari 浏览器首次加载没效果，通过ajax请求数据翻页之后，会出现部分高斯模糊效果无效，但是windows正常。',
             createTime: 1713164059000,
             picList: [
-              'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog89f319pj30u011i77t.jpg',
-              'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hog89eylycj30u011igo3.jpg',
-              'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog898xeeoj30u00ybjyj.jpg'
+              require('@/assets/avatar/01.jpg'),
+              require('@/assets/avatar/04.jpg'),
+              require('@/assets/avatar/05.jpg')
             ],
             userInfo: {
               userId: 112,
               username: 'AbnerPei',
-              avatar: "https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog89f319pj30u011i77t.jpg"
+              avatar: require('@/assets/avatar/11.jpg')
             }
           }
         ],

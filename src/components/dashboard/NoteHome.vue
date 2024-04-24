@@ -56,15 +56,15 @@
           </a-checkbox>
         </div>
         <div class="index-module_noteItem">
-          <div class="index-module_meta">
+          <div class="index-module_meta un-select">
             <div class="article-tag">
               <a-tag :color="tag.color" v-for="(tag,index) in noteItem.tags" :key="index">
                 {{tag.content}}
               </a-tag>
             </div>
             <div class="order-time">
-              <span class="note-status-module_text" v-if="orderType === 'updateTime'">更新于 09-03 16:51</span>
-              <span class="note-status-module_text" v-if="orderType === 'createTime'">创建于 09-03 16:51</span>
+              <span class="note-status-module_text un-select" v-if="orderType === 'updateTime'">更新于 09-03 16:51</span>
+              <span class="note-status-module_text un-select" v-if="orderType === 'createTime'">创建于 09-03 16:51</span>
             </div>
           </div>
           <div class="index-module_content">

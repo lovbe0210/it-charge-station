@@ -372,15 +372,19 @@
           .p3 {
             .more-images {
               display: flex;
-              flex-wrap: wrap;
               justify-content: space-between;
 
               .photo {
-                height: 270px;
-                width: 32%;
-                background-position: 50%;
-                background-size: cover;
-                border-radius: 5px;
+                display: flex;
+                width: 31%;
+
+                img {
+                  height: 270px;
+                  width: 100%;
+                  //background-position: 50%;
+                  //background-size: cover;
+                  border-radius: 5px;
+                }
               }
 
               .photo:nth-last-child(-n+3) {

@@ -1,7 +1,7 @@
 <template>
   <div ref="tooltipContainer">
     <!-- 点赞信息 -->
-    <div class="reward-module_like">
+    <div class="reward-module_like un-select">
       <div class="like-btn" @click="$emit('like')">
         <span :class="['like-btn-icon', ifLike ? 'liked' : 'will-like']"></span>
       </div>
@@ -215,9 +215,6 @@
 
 <style scoped lang="less">
   .reward-module_like {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
     text-align: center;
     box-sizing: border-box;
 

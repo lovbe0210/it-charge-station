@@ -67,6 +67,13 @@ const routes = [
           },
           {
             // 随笔页面
+            path: '/arithmetic',
+            name: 'Arithmetic',
+            // 此方式为路由懒加载
+            component: () => import('@/components/homecategory/Arithmetic.vue')
+          },
+          {
+            // 随笔页面
             path: '/ramblyJot',
             name: 'RamblyJot',
             // 此方式为路由懒加载

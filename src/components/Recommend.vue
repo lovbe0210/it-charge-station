@@ -1,11 +1,6 @@
 <template>
   <b-container fluid>
     <b-list-group>
-      <BackTop :height="300" :bottom="50" v-if="isPhone">
-        <div class="to-top">
-          <b-icon icon="arrow-bar-up"></b-icon>
-        </div>
-      </BackTop>
       <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
         <b-row v-for="item in data" :key="item.id" fluid="true" class="item">
           <b-col :cols="isPhone || item.preview == null ? 12 : 8" class="text">

@@ -1,5 +1,5 @@
 <template>
-  <div class="drag-verify">
+  <div class="drag-verify un-select">
     <div class="spout" ref="spout">
       <div :class="['slidingBlock', releaseMouse ? 'transition': '', place < distance ? 'unfinished' : 'complete']"
            id="sliderValidationBox"
@@ -97,10 +97,6 @@
     background: #E7E9E8;
     border-radius: 4px;
     width: 100%;
-    -webkit-user-select: none; /* 禁止 DIV 中的文本被鼠标选中 */
-    -moz-user-select: none; /* 禁止 DIV 中的文本被鼠标选中 */
-    -ms-user-select: none; /* 禁止 DIV 中的文本被鼠标选中 */
-    user-select: none;
   }
 
   .spout {

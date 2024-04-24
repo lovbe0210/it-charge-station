@@ -9,7 +9,7 @@
     </div>
     <!-- surprise -->
     <Drawer placement="right" v-model="showCustomer" :closable="false"
-            width="18" :lock-scroll="false" class-name="customer">
+            width="18" :lock-scroll="false" class-name="customer un-select">
       <div class="theme">
         <customer-set></customer-set>
       </div>
@@ -166,10 +166,6 @@
   // 底部自定义主题栏
   /deep/ .customer {
     color: @light-font-color;
-    -webkit-user-select: none; /* 禁止 DIV 中的文本被鼠标选中 */
-    -moz-user-select: none; /* 禁止 DIV 中的文本被鼠标选中 */
-    -ms-user-select: none; /* 禁止 DIV 中的文本被鼠标选中 */
-    user-select: none;
 
     .ivu-drawer {
       height: 45%;

@@ -66,7 +66,7 @@
                   <div class="Slider-module_slideTitle">
                     <span>正文大小</span>
                   </div>
-                  <div class="Slider-module_slideContainer" @mouseenter="docStyle.showSelect = true"
+                  <div class="Slider-module_slideContainer un-select" @mouseenter="docStyle.showSelect = true"
                        @mouseleave="docStyle.showSelect = false">
                     <div class="ant-slider ant-slider-with-marks classic">
                       <div class="ant-slider-rail"></div>
@@ -154,7 +154,7 @@
               </div>
             </DropdownItem>
             <Divider/>
-            <div class="doc-info">
+            <div class="doc-info un-select">
               <div>字数统计：0</div>
               <div>创建于：03-15</div>
               <div>最后编辑于：昨天 11:20</div>

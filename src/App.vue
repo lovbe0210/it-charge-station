@@ -297,9 +297,6 @@
     border: 1px solid #00B96B;
     cursor: pointer;
     transition: all .3s cubic-bezier(.645,.045,.355,1);
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
     touch-action: manipulation;
     height: 32px;
     padding: 4px 15px;

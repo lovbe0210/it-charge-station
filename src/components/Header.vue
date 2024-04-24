@@ -63,7 +63,7 @@
               <a href="javascript:void(0)">
                 <div class="avatar-wrapper">
                   <b-avatar size="40px"
-                            src="https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hnvzo7s0f8j30k00tztdi.jpg"
+                            src="https://i3.wp.com/tvax2.sinaimg.cn/large/006BNqYCly1hosevzvlfvj31401e0tdc.jpg"
                             href="javascript:void(0)">
                     <span v-if="0" class="iconfont icon-avatar-man" style="font-size:1.8rem;"></span>
                   </b-avatar>
@@ -310,7 +310,7 @@
           },
           {
             uid: 'sgfg566',
-            code: 'algorithm',
+            code: 'arithmetic',
             canExpanded: 0,
             menuName: '算法'
           },
@@ -404,6 +404,9 @@
             break;
           case 'ramblyJot':
             this.$router.push({path: '/ramblyJot'})
+            break;
+          case 'arithmetic':
+            this.$router.push({path: '/arithmetic'})
             break;
           default:
             this.$router.push({path: '/cate/' + itemName})

@@ -114,7 +114,7 @@
                 <span class="return-login" @click="returnLogin">返回登录</span>
               </div>
             </div>
-            <div class="other-login-box" v-if="loginType < 3">
+            <div class="other-login-box un-select" v-if="loginType < 3">
               <div class="oauth-box">
                 <span>其它登录：</span>
                 <div class="oauth">
@@ -449,9 +449,6 @@
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          user-select: none;
 
           .oauth-box {
             display: flex;

@@ -33,7 +33,7 @@
                     <span :class="'iconfont icon-level' + 6"></span>
                   </div>
                   <div class="userInfo-module_action">
-                    <button :class="['userInfo-module_followBtn', userInfo.follow ? 'default_followBtn' : '']"
+                    <button :class="['userInfo-module_followBtn un-select', userInfo.follow ? 'default_followBtn' : '']"
                             @click="userInfo.follow = !userInfo.follow">
                       <span>已关注</span>
                     </button>
