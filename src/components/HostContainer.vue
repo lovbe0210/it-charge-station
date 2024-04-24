@@ -50,8 +50,6 @@
     .top {
       border-radius: 3px;
       margin-bottom: 30px;
-      margin-left: 30px;
-      margin-right: 30px;
     }
 
     ul > a {

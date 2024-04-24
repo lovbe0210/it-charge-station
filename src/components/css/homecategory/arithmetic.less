@@ -1,6 +1,7 @@
-.layout-module_RamblyJot {
+.layout-module_Arithmetic {
+  margin: 30px 60px;
 
-  .rambly-module_editor {
+  .arithmetic-module_header {
     position: relative;
     height: calc(~"19vh");
     max-width: 100%;
@@ -228,11 +229,7 @@
     }
   }
 
-  .extend-curtains {
-    height: calc(~"60vh");
-  }
-
-  .rambly-module_list {
+  .arithmetic-module_list {
 
     .rambly-item {
       border-radius: 6px;
@@ -413,35 +410,5 @@
         }
       }
     }
-  }
-}
-
-// 第三方插件样式覆盖
-/deep/.am-engine {
-  background-color: unset;
-  letter-spacing: .06em;
-  padding-right: 12px;
-
-  &>p {
-    line-height: 1.5;
-    margin: 4px 0;
-  }
-
-  &>:not(p) {
-    margin: 12px 0;
-  }
-}
-
-/deep/ .am-engine-placeholder:before {
-  color: #8A8F8D !important;
-}
-/deep/.am-engine>ul {
-  margin: 4px 0;
-  li {
-    margin-top: 4px;
-    margin-bottom: 4px;
-  }
-  li:not(.data-list-item) {
-    margin: 4px 0  4px 15px;
   }
 }

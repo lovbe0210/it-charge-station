@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-module_RamblyJot" ref="popoverContainer">
+  <div class="layout-module_RamblyJot category" ref="popoverContainer">
     <div :class="['rambly-module_editor', extendCurtains ? 'extend-curtains' : '']">
       <div class="scrollbar-visible">
         <div class="layout-mode-fixed">
