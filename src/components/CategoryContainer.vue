@@ -58,7 +58,7 @@
                   id: '002',
                   title: '工作中的23个设计模式',
                   description: '从基础的角度看，设计模式是研究类本身或者类与类之间的协作模式，是进行抽象归纳的一个很好的速成思路。后面阅读设计模式后，为了加深理解，对相关图片进行了描绘和微调。从技术的角度已经有很多好的总结，本文会换一种角度思考，既然设计模式研究的是类与类的关系，作为工作的个体，一些工作中的策略是不是也可以进行类比，可以更好地去思考这些模式？答案是肯定的。',
-                  preview: require('@/assets/img/2.jpg'),
+                  preview: null,
                   content: 'This is the content, this is the content, this is the content, this is the content.'
                 },
                 {
