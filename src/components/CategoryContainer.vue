@@ -113,4 +113,117 @@
 </script>
 
 <style scoped lang="less">
+  @import "./css/common-var.less";
+
+  .t-scroll {
+    position: relative;
+    overflow: scroll;
+  }
+
+  .to-top {
+    padding: 10px;
+    color: @border-color_hover;
+    text-align: center;
+    font-size: 30px;
+  }
+  // 定义行高
+  @line-height: 127.61px;
+  .container {
+    .list-group {
+      .row {
+        margin: 0;
+      }
+
+      .item {
+        margin-bottom: 25px;
+
+        height: @line-height;
+
+        .text {
+          width: auto;
+          padding: 0 15px 0 12px;
+        }
+
+        .preview-image {
+          padding: 0 5px 0 10px;
+
+          .img-fluid {
+            width: 100%;
+            height: auto;
+            height: @line-height;
+            overflow: hidden;
+            transform: translateY(0);
+            border-radius: 16px;
+          }
+        }
+
+        .title {
+          margin-bottom: 14px;
+
+          :hover {
+            color: #00B5E5;
+          }
+
+          span {
+            color: var(--title-color);
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 25px;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
+        .description {
+          width: auto;
+          height: 45px;
+          margin-bottom: 5px;
+
+          span {
+            color: var(--font-color);
+            margin-top: 8px;
+            display: -webkit-box;
+            max-height: 44px;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 22px;
+            height: 44px;
+          }
+        }
+
+        .item-icons {
+          margin: 0;
+          font-size: 13px;
+          color: var(--font-color);
+          display: flex;
+          align-items: center;
+
+          .from {
+            position: absolute;
+            right:0;
+            //transform: translateY(-50%);
+            padding-top: 2px;
+            padding-right: 17px;
+            :hover {
+              color: var(--font-color);
+            }
+            span {
+              color: var(--font-color);
+              font-size: 13px;
+            }
+          }
+
+          div {
+            margin-right: 8px;
+          }
+
+        }
+      }
+    }
+  }
+
 </style>

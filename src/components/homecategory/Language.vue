@@ -18,7 +18,7 @@
   import CategoryContainer from "../CategoryContainer";
 
   export default {
-    name: "Arithmetic",
+    name: "Language",
     data() {
       return {
         tagList: [
@@ -29,22 +29,27 @@
           },
           {
             id: 122,
-            name: '数据结构',
+            name: 'C/C++',
             sort: 2
           },
           {
             id: 123,
-            name: '算法思想',
+            name: 'Java',
             sort: 3
           },
           {
+            id: 126,
+            name: 'Javascript',
+            sort: 4
+          },
+          {
             id: 124,
-            name: '力扣题解',
+            name: 'Python',
             sort: 4
           },
           {
             id: 125,
-            name: '其他',
+            name: 'Golang',
             sort: 5
           }
         ],

@@ -66,7 +66,35 @@ const routes = [
             ]
           },
           {
-            // 随笔页面
+            // 编程语言分类
+            path: '/compute&network',
+            name: 'ComputeNetwork',
+            // 此方式为路由懒加载
+            component: () => import('@/components/homecategory/ComputeNetwork.vue')
+          },
+          {
+            // 编程语言分类
+            path: '/language',
+            name: 'Language',
+            // 此方式为路由懒加载
+            component: () => import('@/components/homecategory/Language.vue')
+          },
+          {
+            // 数据库分类
+            path: '/database',
+            name: 'Database',
+            // 此方式为路由懒加载
+            component: () => import('@/components/homecategory/Database.vue')
+          },
+          {
+            // 中间件分类
+            path: '/middleware',
+            name: 'Middleware',
+            // 此方式为路由懒加载
+            component: () => import('@/components/homecategory/Middleware.vue')
+          },
+          {
+            // 算法分类
             path: '/arithmetic',
             name: 'Arithmetic',
             // 此方式为路由懒加载

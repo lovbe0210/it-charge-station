@@ -31,7 +31,7 @@
         <!-- 菜单栏 -->
         <b-navbar-nav class="menu" :fill="true" align="center">
           <b-nav-item v-for="item in quickLink" class="mr-2" :key="item.uid">
-            <div v-if="item.canExpanded === 1">
+            <!--<div v-if="item.canExpanded === 1">
               <Dropdown trigger="hover" :transfer="true" @on-click="routeNavigate">
                 <a href="javascript:void(0)">
                   <div class="menu-wrapper">
@@ -46,11 +46,9 @@
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-            </div>
-            <div v-else>
-              <div @click="routeNavigate(item.code)">
-                <span>{{item.menuName}}</span>
-              </div>
+            </div>-->
+            <div @click="routeNavigate(item.code)">
+              <span>{{item.menuName}}</span>
             </div>
           </b-nav-item>
         </b-navbar-nav>
@@ -232,92 +230,32 @@
         quickLink: [
           {
             uid: 'sdfsf55',
-            menuName: '计算机与网络',
-            canExpanded: 1,
-            children: [
-              {
-                uid: 'asds01',
-                code: 'compute',
-                menuName: '计算机基础'
-              },
-              {
-                uid: 'asds02',
-                code: 'system',
-                menuName: '操作系统'
-              },
-              {
-                uid: 'asds03',
-                code: 'cybersecurity',
-                menuName: '网络安全'
-              }
-            ]
+            code: 'compute&network',
+            menuName: '计算机与网络'
           },
           {
             uid: 'asdas34213',
             menuName: '编程语言',
-            canExpanded: 1,
-            children: [
-              {
-                uid: '2342sdfsdfs',
-                code: 'java',
-                menuName: 'Java'
-              },
-              {
-                uid: '2342dssddfsdf',
-                code: 'c',
-                menuName: 'C语言'
-              },
-              {
-                uid: '2342dsdfsdf',
-                code: 'c++',
-                menuName: 'C++'
-              }
-            ]
+            code: 'language'
           },
           {
             uid: 'sdfs453',
-            menuName: '数据库',
-            canExpanded: 1,
-            children: [
-              {
-                uid: 'e65dfgdf',
-                code: 'mysql',
-                menuName: 'Mysql'
-              },
-              {
-                uid: 'dfgd4634',
-                code: 'oracle',
-                menuName: 'Oracle'
-              }
-            ]
+            code: 'database',
+            menuName: '数据库'
           },
           {
             uid: 'dfg345g',
-            menuName: '中间件',
-            canExpanded: 1,
-            children: [
-              {
-                uid: 'e65dfgdf',
-                code: 'redis',
-                menuName: 'Redis'
-              },
-              {
-                uid: 'dfgd4634',
-                code: 'kafka',
-                menuName: 'Kafka'
-              }
-            ]
+            code: 'middleware',
+            menuName: '中间件'
           },
           {
             uid: 'sgfg566',
             code: 'arithmetic',
-            canExpanded: 0,
             menuName: '算法'
           },
           {
             uid: '4564gdgd',
             code: 'ramblyJot',
-            canExpanded: 0,
             menuName: '随笔'
           }
         ],
@@ -407,6 +345,18 @@
             break;
           case 'arithmetic':
             this.$router.push({path: '/arithmetic'})
+            break;
+          case 'middleware':
+            this.$router.push({path: '/middleware'})
+            break;
+          case 'database':
+            this.$router.push({path: '/database'})
+            break;
+          case 'language':
+            this.$router.push({path: '/language'})
+            break;
+          case 'compute&network':
+            this.$router.push({path: '/compute&network'})
             break;
           default:
             this.$router.push({path: '/cate/' + itemName})

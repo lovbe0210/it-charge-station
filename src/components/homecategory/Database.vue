@@ -18,7 +18,7 @@
   import CategoryContainer from "../CategoryContainer";
 
   export default {
-    name: "Arithmetic",
+    name: "Database",
     data() {
       return {
         tagList: [
@@ -29,23 +29,38 @@
           },
           {
             id: 122,
-            name: '数据结构',
+            name: 'Mysql',
             sort: 2
           },
           {
             id: 123,
-            name: '算法思想',
+            name: 'Oracle',
             sort: 3
           },
           {
             id: 124,
-            name: '力扣题解',
+            name: 'HBase',
             sort: 4
           },
           {
             id: 125,
-            name: '其他',
+            name: 'Mongodb',
             sort: 5
+          },
+          {
+            id: 126,
+            name: 'Redis',
+            sort: 6
+          },
+          {
+            id: 127,
+            name: 'SQLite',
+            sort: 7
+          },
+          {
+            id: 128,
+            name: 'Elasticsearch',
+            sort: 8
           }
         ],
         activeTag: 121

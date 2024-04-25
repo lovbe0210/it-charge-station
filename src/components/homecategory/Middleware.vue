@@ -18,7 +18,7 @@
   import CategoryContainer from "../CategoryContainer";
 
   export default {
-    name: "Arithmetic",
+    name: "Middleware",
     data() {
       return {
         tagList: [
@@ -29,22 +29,27 @@
           },
           {
             id: 122,
-            name: '数据结构',
+            name: 'Nginx',
             sort: 2
           },
           {
             id: 123,
-            name: '算法思想',
+            name: 'Tomcat',
             sort: 3
           },
           {
+            id: 126,
+            name: 'Redis',
+            sort: 4
+          },
+          {
             id: 124,
-            name: '力扣题解',
+            name: 'RabbitMQ',
             sort: 4
           },
           {
             id: 125,
-            name: '其他',
+            name: 'Kafka',
             sort: 5
           }
         ],
