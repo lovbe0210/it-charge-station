@@ -115,17 +115,6 @@
 <style scoped lang="less">
   @import "./css/common-var.less";
 
-  .t-scroll {
-    position: relative;
-    overflow: scroll;
-  }
-
-  .to-top {
-    padding: 10px;
-    color: @border-color_hover;
-    text-align: center;
-    font-size: 30px;
-  }
   // 定义行高
   @line-height: 127.61px;
   .container {
@@ -205,7 +194,6 @@
           .from {
             position: absolute;
             right:0;
-            //transform: translateY(-50%);
             padding-top: 2px;
             padding-right: 17px;
             :hover {

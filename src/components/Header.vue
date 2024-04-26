@@ -140,7 +140,7 @@
             <Dropdown placement="bottom" @on-click="readMessage">
               <a href="javascript:void(0)">
                 <div class="message-menu-wrapper">
-                  <div class="message-menu-body" @click="readMessage('commentReply')">
+                  <div class="message-menu-body">
                     <div class="c-badge" v-if="1"/>
                     <span class="iconfont icon-hy-message"></span>
                   </div>

@@ -243,12 +243,6 @@ const routes = [
             path: 'account',
             name: 'Account',
             component: () => import('@/components/settings/Account')
-          },
-          {
-            // 音乐播放
-            path: 'musicPlay',
-            name: 'MusicPlay',
-            component: () => import('@/components/settings/MusicPlay')
           }
         ]
       },

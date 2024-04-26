@@ -1,14 +1,18 @@
 <template>
   <div class="layout-module_setting">
     <div class="layout-module_settingOverview">
-      <div class="layout-module_overview enable-background" :style="'top:' + fixedHeight + 'px;'">
+      <div class="layout-module_overview enable-background un-select" :style="'top:' + fixedHeight + 'px;'">
         <div class="userInfo-avatar">
-          <b-avatar :src="userInfo.avatar" variant="light" class="topic-avatar" to="/settings" size="6rem"/>
+          <b-avatar :src="userInfo.avatar"
+                    variant="light"
+                    class="topic-avatar"
+                    to="/settings"
+                    size="6rem"/>
         </div>
-        <div class="userInfo-nickName" @click="routeNavigate('')">
+        <div class="userInfo-nickName">
           <span>{{userInfo.nickname}}</span>
         </div>
-        <div class="user-location-industry" @click="routeNavigate('')">
+        <div class="user-location-industry">
           <span class="index-module_meta">
             <span class="iconfont icon-location"></span>
             <span>四川省成都市成华区水电费水电费胜多负少胜多负少的胜多负少的胜多负少的胜多负少的水电费水电费胜多负少的水电费水电费</span>
@@ -28,6 +32,10 @@
           <hr>
         </div>
         <div class="userInfo-action">
+          <div @click="routeNavigate('')" class="action-btn">
+            <span class="iconfont user-info"></span>
+            <span class="content">个人信息</span>
+          </div>
           <div @click="routeNavigate('account')" class="action-btn">
             <span class="iconfont icon-account-set"></span>
             <span class="content">账号设置</span>
@@ -35,10 +43,6 @@
           <div @click="routeNavigate('domain')" class="action-btn">
             <span class="iconfont icon-preferences"></span>
             <span class="content">主页设置</span>
-          </div>
-          <div @click="routeNavigate('musicPlay')" class="action-btn">
-            <span class="iconfont icon-music-setting"></span>
-            <span class="content">音乐播放</span>
           </div>
         </div>
       </div>

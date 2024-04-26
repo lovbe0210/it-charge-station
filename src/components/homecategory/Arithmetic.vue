@@ -44,7 +44,7 @@
           },
           {
             id: 125,
-            name: '其他',
+            name: '剑指offer',
             sort: 5
           }
         ],

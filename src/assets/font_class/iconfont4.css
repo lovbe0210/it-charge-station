@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_7yr74ixvz6q.woff2?t=1713366872711') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_kbacviagy7.woff2?t=1714127403858') format('woff2');
 }
 
 .iconfont {
@@ -217,5 +217,13 @@
 
 .github:before {
   content: "\e666";
+}
+
+.user-info:before {
+  content: "\e667";
+}
+
+.user-info1:before {
+  content: "\e668";
 }
 
