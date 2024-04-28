@@ -1,119 +1,65 @@
 <template>
   <b-container fluid>
-    <b-row v-if="1" class="creator-avatar">
-      <Button ghost type="text" @click="previous()">
-          <span :class="leftHoverClass?'iconfont icon-left-hover':'iconfont icon-left'"
-                @mouseenter="isHover('left',true)" @mouseleave="isHover('left',false)"/>
-      </Button>
-      <b-avatar-group overlap="0.65">
-        <b-link class="creator-item">
-          <div class="avatar-wrapper">
-            <b-avatar variant="light">
-              <span class="iconfont icon-all-flush" style="font-size:2.5rem;"></span>
-            </b-avatar>
-          </div>
-          <p>查看全部</p>
-        </b-link>
-        <div v-for="item in creators" :key="item.id" class="creator-item">
-          <div class="avatar-wrapper">
-            <b-avatar :src="item.avatar" variant="light" :to="'/some-link' + item.id">
+    <div v-if="userInfo?.uid">
+      <b-row v-if="creatorTrend && creatorTrend.length == 0" class="creator-trend">
+        <b-card body-class="trend-item" v-for="(item,index) in creatorTrend" :key="item.id">
+          <b-card-title>
+            <b-avatar variant="light" :src="item.avatar" to="some-link">
               <span v-if="!item.avatar" class="iconfont icon-all-flush" style="font-size:2.5rem;"></span>
             </b-avatar>
-            <div class="c-badge" v-if="1"></div>
-          </div>
-          <b-link :to="'/some-link' + item.id">
-            <p style="width:62px;font-size:12px;margin-top:8px;">{{item.nickName}}</p>
-          </b-link>
+            <span class="title">{{item.trendTitle}}</span>
+            <span class="time">{{item.publicTime}}</span>
+          </b-card-title>
+          <b-card-text>
+            {{item.previewContent}}
+          </b-card-text>
+          <b-card-text class="small text-muted">
+            <span class="iconfont icon-personal-man"></span><span>{{item.nickName}}</span>
+            <span class="iconfont icon-comment" style="margin-left: 5px;"></span><span>{{item.commentCount}}</span>
+            <span class="iconfont icon-like1" style="margin-left: 5px;"></span><span>{{item.likeCount}}</span>
+          </b-card-text>
+          <hr v-if="index !== creatorTrend.length-1">
+        </b-card>
+      </b-row>
+      <b-row v-else class="trend-empty">
+        <span class="iconfont beauty-empty"></span>
+        <div class="list-empty-text un-select">
+          <span>好像没有新动态</span>
+          <span class="empty-btn">
+            去<b-link class="highlight" to="/recommend"> 推荐 </b-link>看看
+          </span>
         </div>
-      </b-avatar-group>
-      <Button ghost type="text" @click="next()">
-          <span :class="rightHoverClass?'iconfont icon-right-hover':'iconfont icon-right'"
-                @mouseenter="isHover('right',true)" @mouseleave="isHover('right',false)"/>
-      </Button>
-    </b-row>
-    <b-row v-else class="creator-avatar">
-      <div class="_blank">
-        <b-row>
-          <span class="iconfont icon-no-follow"></span>
-        </b-row>
-        <b-row>
-          空空如也，去
-          <b-link>发现</b-link>
-        </b-row>
+      </b-row>
+    </div>
+    <div v-else>
+      <div class="unlogin un-select">
+        <div class="unlogin_img">
+          <img :src="require('@/assets/img/unlogin.png')" alt="">
+        </div>
+        <div class="to-login">
+          <div class="unlogin_title">登录后看看都有哪些新动态</div>
+          <span class="unlogin_btn">
+            <auth-modal>
+              <slot>
+                赶快
+                <a href="javascript: void(0)">登陆&nbsp;</a>
+                吧
+              </slot>
+            </auth-modal>
+          </span>
+        </div>
       </div>
-    </b-row>
-    <b-row v-if="1" class="creator-trend">
-      <b-card body-class="trend-item" v-for="(item,index) in creatorTrend" :key="item.id">
-        <b-card-title>
-          <b-avatar variant="light" :src="item.avatar" to="some-link">
-            <span v-if="!item.avatar" class="iconfont icon-all-flush" style="font-size:2.5rem;"></span>
-          </b-avatar>
-          <span class="title">{{item.trendTitle}}</span>
-          <span class="time">{{item.publicTime}}</span>
-        </b-card-title>
-        <b-card-text>
-          {{item.previewContent}}
-        </b-card-text>
-        <b-card-text class="small text-muted">
-          <span class="iconfont icon-personal-man"></span><span>{{item.nickName}}</span>
-          <span class="iconfont icon-comment" style="margin-left: 5px;"></span><span>{{item.commentCount}}</span>
-          <span class="iconfont icon-like1" style="margin-left: 5px;"></span><span>{{item.likeCount}}</span>
-        </b-card-text>
-        <hr v-if="index !== creatorTrend.length-1">
-      </b-card>
-    </b-row>
-    <b-row v-else class="creator-trend">
-      <div class="_blank">
-        <b-row>
-          <span class="iconfont icon-blank" style="font-size:50px;"></span>
-        </b-row>
-        <b-row>
-          暂无动态更新，先去
-          <b-link>推荐</b-link>
-          看看
-        </b-row>
-      </div>
-    </b-row>
+    </div>
   </b-container>
 </template>
 
 <script>
+  import AuthModal from "@/components/common/AuthModal.vue";
+
   export default {
     name: 'Follow',
     data() {
       return {
-        creators: [
-          {
-            id: '001',
-            avatar: 'https://tvax1.sinaimg.cn/large/718153f4gy1gy47gm06y9j20m80rsq8t.jpg',
-            nickName: '昵称多的字数需要限制'
-          },
-          {
-            id: '002',
-            avatar: 'https://tvax3.sinaimg.cn/large/718153f4gy1gy1ob6nxj1j20lo0ot41b.jpg',
-            nickName: 'lovbe0210'
-          },
-          {
-            id: '003',
-            avatar: 'https://tvax1.sinaimg.cn/large/718153f4gy1gxzk3fro87j20nc0ncq3z.jpg',
-            nickName: 'lovbe0210'
-          },
-          {
-            id: '004',
-            avatar: 'https://tvax2.sinaimg.cn/large/718153f4gy1gy47gj6p22j20xc0p0n1v.jpg',
-            nickName: 'lovbe0210'
-          },
-          {
-            id: '005',
-            avatar: 'https://image.baidu.com/search/down?url=https://tvax1.sinaimg.cn/large/006BNqYCly1hnp2j1mz4yj30k00tzdli.jpg',
-            nickName: 'lovbe0210'
-          },
-          {
-            id: '006',
-            avatar: 'https://tvax1.sinaimg.cn/large/718153f4gy1gy47fewe03g20a205m1ky.gif',
-            nickName: 'lovbe0210'
-          }
-        ],
         creatorTrend: [
           {
             id: '001',
@@ -145,26 +91,18 @@
             likeCount: 15,
             commentCount: 15
           }
-        ],
-        leftHoverClass: false,
-        rightHoverClass: false
+        ]
       }
     },
-    methods: {
-      isHover(position, flag) {
-        if (position === 'left') {
-          this.leftHoverClass = flag;
-        } else {
-          this.rightHoverClass = flag;
-        }
-      },
-      previous() {
-        console.log('previous page')
-      },
-      next() {
-        console.log('next page')
+    computed: {
+      userInfo() {
+        return this.$store.state.userInfo
       }
-    }
+    },
+    components: {
+      AuthModal
+    },
+    methods: {}
   }
 </script>
 

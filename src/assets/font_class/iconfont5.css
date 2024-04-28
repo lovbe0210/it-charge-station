@@ -1,7 +1,7 @@
 @font-face {
   font-family: "iconfont";
   src:
-      url('//at.alicdn.com/t/c/font_4499563_fpuutroj2ke.woff2?t=1713366843491') format('woff2');
+      url('//at.alicdn.com/t/c/font_4499563_zv9brduc1d.woff2?t=1714319897575') format('woff2');
 }
 
 .iconfont {
@@ -30,6 +30,10 @@
 
 .qq:before {
   content: "\e504";
+}
+
+.beauty-empty:before {
+  content: "\e505";
 }
 
 

@@ -5,7 +5,6 @@
     padding: 15px 10px;
     width: 90%;
     align-items: center;
-    border: 1px solid @border-color_normal;
     border-radius: 4px;
 
     .ivu-btn {
@@ -16,42 +15,6 @@
       width: 3rem;
       height: 3rem;
       border: 0;
-    }
-  }
-
-  .creator-avatar {
-    .iconfont {
-      font-size: 19px;
-    }
-
-    .b-avatar-group {
-      margin: 0 10px;
-
-      .creator-item {
-        margin: 0 11px;
-        text-align: center;
-
-        .avatar-wrapper {
-          .c-badge {
-            background: @badge_color;
-            border: 3px solid @badge_color;
-            border-radius: 100%;
-            position: absolute;
-            margin: -10px 0 0 45px;
-          }
-        }
-
-        p {
-          width: 62px;
-          font-size: 12px;
-          color: var(--font-color);
-          margin-top: 8px;
-        }
-
-        p:hover {
-          color: @font-hover;
-        }
-      }
     }
   }
 
@@ -99,16 +62,58 @@
     }
   }
 
-  ._blank {
-    .row {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      border: none;
+  .trend-empty {
+    display: flex;
+    margin: 100px auto;
+    width: 80%;
+
+    .beauty-empty {
+      font-size: 90px;
+      margin-right: 10px;
     }
 
-    .iconfont {
-      font-size: 40px;
+    .list-empty-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .empty-btn {
+        margin-top: 8px;
+      }
+
+      .highlight {
+        color: #57a3f3;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .unlogin {
+    display: flex;
+    margin: 100px auto;
+    width: 80%;
+
+    .unlogin_img {
+      width: 40%;
+      display: flex;
+      flex-direction: row-reverse;
+
+      img {
+        width: 40%;
+        margin-right: 10px;
+      }
+    }
+
+    .to-login {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      .unlogin_btn {
+        margin-top: 8px;
+      }
     }
   }
 }

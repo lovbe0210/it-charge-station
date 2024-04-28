@@ -225,7 +225,7 @@
         // 保存token到store中
         let userInfo = {
           token: 'FKDMDK34D34DFGDFG45DE32DGH4G61AS',
-          uid: 0,
+          uid: 9527,
           username: '张三'
         }
 

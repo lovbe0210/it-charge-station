@@ -11,7 +11,7 @@ export default new Vuex.Store({
     pageState: "init",
     // TODO 这里还是无法解决先切换到别的页面然后后台播放然后backplay = true，然后再刷新导致不能播放的问题
     userInfo: {
-      uid: 0,
+      uid: 9527,
       username: '布衣草人',
       domain: 'lovbe0210',
       level: 6,
