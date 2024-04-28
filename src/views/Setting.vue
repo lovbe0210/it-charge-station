@@ -33,7 +33,7 @@
         </div>
         <div class="userInfo-action">
           <div @click="routeNavigate('')" class="action-btn">
-            <span class="iconfont user-info"></span>
+            <span class="iconfont person-info"></span>
             <span class="content">个人信息</span>
           </div>
           <div @click="routeNavigate('account')" class="action-btn">

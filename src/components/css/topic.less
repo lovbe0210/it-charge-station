@@ -1,11 +1,10 @@
 .container {
   .header-row {
-    margin-right: 40px;
-    margin-left: 40px;
+    display: flex;
+    flex-direction: row-reverse;
     .ivu-dropdown {
       margin-top: -10px;
-      position: absolute;
-      right: 10px;
+      margin-bottom: 20px;
     }
     .ivu-dropdown-rel a {
       color: var(--font-color);
@@ -14,18 +13,20 @@
   }
 
   .topic-row {
-    margin: 30px 16px 0 40px;
+    display: flex;
+    flex-wrap: wrap;
     .topic-card {
-      width: 233px;
-      margin: 0 15px 20px 0;
-      padding: 0px;
-      font-family: Rubik,Avenir,Helvetica,Arial,sans-serif;
-      box-shadow: 6px 6px 8px rgba(58,61,74,.02);
+      width: 32%;
       border: 1px solid hsla(0, 0%, 0%, 0.04);
       border-radius: 8px;
       position: relative;
       box-sizing: border-box;
       overflow: hidden;
+      margin-bottom: 15px;
+
+      &:not(:nth-child(3n)) {
+        margin-right: calc(6% / 3);
+      }
 
       /deep/.ant-card-cover {
         width: 100%;

@@ -66,39 +66,39 @@ const routes = [
             ]
           },
           {
-            // 编程语言分类
-            path: '/compute&network',
+            // 计算机与网络
+            path: '/computenetwork',
             name: 'ComputeNetwork',
             // 此方式为路由懒加载
-            component: () => import('@/components/homecategory/ComputeNetwork.vue')
+            component: () => import('@/components/homecategory/CategoryContainer.vue')
           },
           {
             // 编程语言分类
             path: '/language',
             name: 'Language',
             // 此方式为路由懒加载
-            component: () => import('@/components/homecategory/Language.vue')
+            component: () => import('@/components/homecategory/CategoryContainer.vue')
           },
           {
             // 数据库分类
             path: '/database',
             name: 'Database',
             // 此方式为路由懒加载
-            component: () => import('@/components/homecategory/Database.vue')
+            component: () => import('@/components/homecategory/CategoryContainer.vue')
           },
           {
             // 中间件分类
             path: '/middleware',
             name: 'Middleware',
             // 此方式为路由懒加载
-            component: () => import('@/components/homecategory/Middleware.vue')
+            component: () => import('@/components/homecategory/CategoryContainer.vue')
           },
           {
             // 算法分类
             path: '/arithmetic',
             name: 'Arithmetic',
             // 此方式为路由懒加载
-            component: () => import('@/components/homecategory/Arithmetic.vue')
+            component: () => import('@/components/homecategory/CategoryContainer.vue')
           },
           {
             // 随笔页面
@@ -114,14 +114,6 @@ const routes = [
             name: 'RamblyJotContent',
             // 此方式为路由懒加载
             component: () => import('@/components/RamblyJotContent.vue')
-          },
-          {
-            // 分类承载容器
-            path: '/cate/:category',
-            props: true,
-            name: 'CategoryContainer',
-            // 此方式为路由懒加载
-            component: () => import('@/components/CategoryContainer')
           }
         ]
       },

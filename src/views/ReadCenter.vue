@@ -119,7 +119,7 @@
 <script>
   export default {
     name: 'ReadCenter',
-    beforeRouteEnter(from, to, next) {
+  /*  beforeRouteEnter(to, from, next) {
       next(vc => {
         // 通过 `vc` 访问组件实例
         if (vc.$route.params.index) {
@@ -127,7 +127,7 @@
         }
         next();
       })
-    },
+    },*/
     data() {
       return {
         isDragging: false,

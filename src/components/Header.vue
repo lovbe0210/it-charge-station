@@ -230,7 +230,7 @@
         quickLink: [
           {
             uid: 'sdfsf55',
-            code: 'compute&network',
+            code: 'computenetwork',
             menuName: '计算机与网络'
           },
           {
@@ -355,8 +355,8 @@
           case 'language':
             this.$router.push({path: '/language'})
             break;
-          case 'compute&network':
-            this.$router.push({path: '/compute&network'})
+          case 'computenetwork':
+            this.$router.push({path: '/computenetwork'})
             break;
           default:
             this.$router.push({path: '/cate/' + itemName})

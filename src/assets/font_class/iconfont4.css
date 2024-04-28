@@ -219,11 +219,7 @@
   content: "\e666";
 }
 
-.user-info:before {
+.person-info:before {
   content: "\e667";
-}
-
-.user-info1:before {
-  content: "\e668";
 }
 

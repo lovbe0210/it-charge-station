@@ -61,7 +61,7 @@
 <script>
   export default {
     name: 'Notifications',
-    beforeRouteEnter(from, to, next) {
+    beforeRouteEnter(to, from, next) {
       next(vc => {
         vc.activeMenu = vc.$route.name;
         next();

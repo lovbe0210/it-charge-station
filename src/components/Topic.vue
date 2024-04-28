@@ -1,6 +1,6 @@
 <template>
   <b-container fluid>
-    <b-row class="header-row">
+    <div class="header-row">
       <Dropdown trigger="click" :transfer="true" @on-click="sortBy">
         <a href="javascript:void(0)">
           {{sortedValue.at(curSort).name}}
@@ -12,8 +12,8 @@
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
-    </b-row>
-    <b-row class="topic-row">
+    </div>
+    <div class="topic-row">
       <a-card hoverable v-for="item in topicList" :key="item.uid" size="small" class="topic-card">
         <img slot="cover" alt="example" :src="item.coverUrl"/>
         <a-card-meta>
@@ -35,7 +35,7 @@
           </template>
         </a-card-meta>
       </a-card>
-    </b-row>
+    </div>
   </b-container>
 </template>
 

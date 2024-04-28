@@ -96,7 +96,7 @@
 <script>
   export default {
     name: 'Dashboard',
-    beforeRouteEnter(from, to, next) {
+    beforeRouteEnter(to, from, next) {
       next(vc => {
         let activeMenu = vc.$route.name;
         if (activeMenu === 'Relational') {

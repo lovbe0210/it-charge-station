@@ -43,7 +43,7 @@
   export default {
     name: 'Recommend',
     // 如果通过首页进来则一定显示推荐页面，否则显示用户自己上次选择的页面，这样如果用户不点击主页无论怎么刷新页面都将会显示上次浏览的页面
-    beforeRouteEnter(from, to, next) {
+    beforeRouteEnter(to, from, next) {
       next(vc => {
         // 通过 `vc` 访问组件实例
         if (vc.$route.params.index) {
