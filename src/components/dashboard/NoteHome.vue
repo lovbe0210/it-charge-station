@@ -90,7 +90,7 @@
                   <DropdownItem>复制链接</DropdownItem>
                   <DropdownItem>分享至动态</DropdownItem>
                   <DropdownItem>移动至专题</DropdownItem>
-                  <DropdownItem>添加标签</DropdownItem>
+                  <DropdownItem>beforeRouteEnter(to, from, next)</DropdownItem>
                   <DropdownItem>删除</DropdownItem>
                 </DropdownMenu>
               </Dropdown>

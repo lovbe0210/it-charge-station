@@ -26,7 +26,7 @@
         <div class="list-empty-text un-select">
           <span>好像没有新动态</span>
           <span class="empty-btn">
-            去<b-link class="highlight" to="/recommend"> 推荐 </b-link>看看
+            去<b-link class="highlight" to="/"> 推荐 </b-link>看看
           </span>
         </div>
       </b-row>
