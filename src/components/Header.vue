@@ -57,7 +57,10 @@
         <b-navbar-nav v-if="loginStatus" class="ml-auto user-info" :fill="true" align="center">
           <!--用户快捷导航-->
           <b-nav-item class="avatar mr-2">
-            <Dropdown placement="bottom" @on-click="routeNavigate">
+            <Dropdown placement="bottom"
+                      @on-click="routeNavigate"
+                      transfer-class-name="enable-background"
+                      trigger="click">
               <a href="javascript:void(0)">
                 <div class="avatar-wrapper">
                   <b-avatar size="40px"
