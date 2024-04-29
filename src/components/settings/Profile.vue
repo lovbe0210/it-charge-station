@@ -11,7 +11,10 @@
           </div>
           <div class="setting-legacy-form-item-control-wrapper">
             <div class="avatar-uploader-control">
-              <b-avatar :src="userInfo.avatar" variant="light" class="avatar-uploader-show">
+              <b-avatar :src="userInfo.avatar"
+                        variant="light"
+                        href="javascript:void(0)"
+                        class="avatar-uploader-show">
               </b-avatar>
               <div class="avatar-uploader-btn-wrapper">
                 <Upload action="/"

@@ -23,7 +23,7 @@
       </b-row>
       <b-row v-else class="trend-empty">
         <span class="iconfont beauty-empty"></span>
-        <div class="list-empty-text un-select">
+        <div class="list-empty-text">
           <span>好像没有新动态</span>
           <span class="empty-btn">
             去<b-link class="highlight" to="/"> 推荐 </b-link>看看

@@ -5,7 +5,7 @@
  */
 module.exports = {
   // 根路径  @ is an alias to /src
-  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  publicPath: '/',
   // 是否打包.map文件，在运行报错时可输出代码定位
   productionSourceMap: true,
   css: {

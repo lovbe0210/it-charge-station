@@ -3,8 +3,11 @@
     <div class="userInfo-module_userWrapper">
       <div class="userInfo-module_avatarWrapper">
         <div class="ant-image">
-          <img alt="小黑bu惑" class="userInfo-module_avatar"
-               src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">
+          <b-avatar alt="小黑bu惑"
+                    class="userInfo-module_avatar"
+                    href="javascript:void(0)"
+               src="https://image.baidu.com/search/down?thumburl=https://baidu.com&url=https://tvax2.sinaimg.cn/large/006BNqYCly1hosf11gmg0j30x81duk9x.jpg">
+          </b-avatar>
         </div>
       </div>
       <div class="userInfo-module_info">
