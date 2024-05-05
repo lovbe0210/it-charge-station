@@ -208,7 +208,7 @@
   }
 </script>
 
-<style scoped type="less">
+<style scoped lang="less">
   .layout-module_feature-note {
     width: 95%;
   }

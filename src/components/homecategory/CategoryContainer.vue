@@ -118,8 +118,8 @@
               },
               {
                 id: '005',
-                title: '单例模式',
-                description: '人在干，天在看”，看来是苍天有眼啊，看着国办同志多年来辛辛苦苦、扎扎实实做出奉献，应该给予奖赏……',
+                title: '结构性思维——解构问题的基础',
+                description: '表达一个态度：思维只是一种思考角度或工具，不要过度解读和神话，一切是为了找到遇到问题更优的解法',
                 preview: require('@/assets/img/5.jpg'),
                 content: 'This is the content, this is the content, this is the content, this is the content.'
               },

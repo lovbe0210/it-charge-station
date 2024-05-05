@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="music-index">
     <playlist-and-search></playlist-and-search>
     <music-detail-card></music-detail-card>
     <bottom-control></bottom-control>
@@ -24,6 +24,9 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="less">
+  .music-index {
+    height: 100%;
+  }
 
 </style>

@@ -59,9 +59,9 @@
         data: [
           {
             id: '001',
-            title: '臻默：整理100+语雀小技巧之后，我们开始了知识管理的大航海大巷哈',
-            description: 'https://juejin.cn/post/7343441462644195362 缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了',
-            preview: require('@/assets/img/1.jpg'),
+            title: '8051单片机结构与原理',
+            description: '单片机的基本结构包括中央处理器(CPU) 、存储器、定时/计数器、输入输出接口、中断控制系统和时钟电路六部分',
+            preview: require('@/assets/img/640.png'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
           {
@@ -87,8 +87,8 @@
           },
           {
             id: '005',
-            title: '单例模式',
-            description: '人在干，天在看”，看来是苍天有眼啊，看着国办同志多年来辛辛苦苦、扎扎实实做出奉献，应该给予奖赏……',
+            title: '结构性思维——解构问题的基础',
+            description: '表达一个态度：思维只是一种思考角度或工具，不要过度解读和神话，一切是为了找到遇到问题更优的解法',
             preview: require('@/assets/img/5.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },

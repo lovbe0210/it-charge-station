@@ -50,7 +50,7 @@
             </div>
             <div class="home-nav" v-if="columnId !== undefined"
                  @click="routeNavigate('columnIndex')">
-              <span class="iconfont icon-nav-home"></span>
+              <span class="iconfont nav-home"></span>
               <span>专栏首页</span>
             </div>
             <div class="nav-tabs">

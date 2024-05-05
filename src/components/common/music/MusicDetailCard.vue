@@ -5,7 +5,7 @@
     <div class="glassCard"></div>
     <div class="left">
       <div class="toList" @click="toPlayList()">
-        <div :class="['iconfont',returnStatus == 0 ? 'icon-return' : 'icon-return-copy']"
+        <div :class="['iconfont',returnStatus == 0 ? 'return' : 'return']"
              :style="'color:' + (returnStatus == 0 ? '#ffffff' : '#515a6e')">返回
         </div>
       </div>
