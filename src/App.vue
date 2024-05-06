@@ -254,12 +254,6 @@
     flex-grow: 0;
   }
 
-  // 统一设置各个主题背景色和边框圆角
-  .enable-background {
-    background: var(--theme-color);
-    border-radius: 5px;
-  }
-
   #app {
     // 全局字体
     font-family: 'Chinese Quote', 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji';

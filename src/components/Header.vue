@@ -59,7 +59,7 @@
           <b-nav-item class="avatar mr-2">
             <Dropdown placement="bottom"
                       @on-click="routeNavigate"
-                      transfer-class-name="enable-background"
+                      transfer-class-name="enable-background dropdown-background"
                       trigger="click">
               <a href="javascript:void(0)">
                 <div class="avatar-wrapper">
@@ -140,7 +140,10 @@
           </b-nav-item>
 
           <b-nav-item class="msg mr-2">
-            <Dropdown placement="bottom" @on-click="readMessage">
+            <Dropdown placement="bottom"
+                      trigger="click"
+                      transfer-class-name="enable-background dropdown-background"
+                      @on-click="readMessage">
               <a href="javascript:void(0)">
                 <div class="message-menu-wrapper">
                   <div class="message-menu-body">

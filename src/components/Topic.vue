@@ -14,7 +14,7 @@
       </Dropdown>
     </div>
     <div class="topic-row">
-      <a-card hoverable v-for="item in topicList" :key="item.uid" size="small" class="topic-card">
+      <a-card hoverable v-for="item in topicList" :key="item.uid" size="small" class="topic-card enable-background dropdown-background">
         <img slot="cover" alt="example" :src="item.coverUrl"/>
         <a-card-meta>
           <template slot="description">

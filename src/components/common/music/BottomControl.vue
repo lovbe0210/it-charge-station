@@ -47,7 +47,7 @@
              @click="musicList.length != 0 ? likeIt() : ''"></i>
         </span>
         <span id="volumeController">
-              <i class="iconfont" :class="isMuted ? 'icon-volume-close' : 'icon-volume-open'"
+              <i class="iconfont" :class="isMuted ? 'volume-close' : 'volume-open'"
                  @click="changeVolumeState()"></i>
         </span>
         <b-tooltip target="volumeController" triggers="hover" custom-class="volume-controller" placement="top"

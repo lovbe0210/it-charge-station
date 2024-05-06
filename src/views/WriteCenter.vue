@@ -1,5 +1,5 @@
 <template>
-  <div class="editor-center">
+  <div :class="['editor-center', docStyle.customerTheme ? 'enable-background' : 'normal-background']">
     <b-row class="editor-header">
       <div class="left-dropdown-wrapp">
         <Dropdown trigger="click" placement="bottom-start">
@@ -44,12 +44,17 @@
         <b-button class="update-btn" variant="outline-*" size="sm" @click="updateDocConten" id="update-btn">
           更新
         </b-button>
-        <Dropdown placement="bottom-end" trigger="click">
+        <Dropdown placement="bottom-end"
+                  transfer-class-name="enable-background dropdown-background"
+                  trigger="click">
           <div class="setting-icon">
             <span class="iconfont icon-edit-more"/>
           </div>
           <DropdownMenu slot="list">
-            <Dropdown placement="left-start" class="doc-set-style-wrapp" trigger="hover">
+            <Dropdown placement="left-start"
+                      transfer-class-name="enable-background dropdown-background"
+                      class="doc-set-style-wrapp"
+                      trigger="click">
               <DropdownItem>
                 <div class="editor-set doc-set-style">
                   <span class="editor-icon iconfont icon-editor-style"/>
@@ -63,10 +68,10 @@
               </DropdownItem>
               <DropdownMenu slot="list">
                 <div class="style-item font-size">
-                  <div class="Slider-module_slideTitle">
+                  <div class="slider-module_slideTitle">
                     <span>正文大小</span>
                   </div>
-                  <div class="Slider-module_slideContainer un-select" @mouseenter="docStyle.showSelect = true"
+                  <div class="slider-module_slideContainer un-select" @mouseenter="docStyle.showSelect = true"
                        @mouseleave="docStyle.showSelect = false">
                     <div class="ant-slider ant-slider-with-marks classic">
                       <div class="ant-slider-rail"></div>
@@ -85,17 +90,14 @@
                   <div>{{docStyle.docFontSize}}px</div>
                 </div>
                 <div class="style-item segment-space">
-                  <div class="Slider-module_slideTitle">段间距</div>
+                  <div class="slider-module_slideTitle">段间距</div>
                   <i-switch v-model="docStyle.segmentSpaceStatus" class="switch-btn" size="small" true-color="#00B96B">
                     <span slot="true"/>
                     <span slot="false"/>
                   </i-switch>
                 </div>
-                <div class="style-item set-default">
-                  <a-checkbox v-model="docStyle.SetDefault">&nbsp;保存为默认设置</a-checkbox>
-                </div>
                 <Divider/>
-                <div class="style-item">页面尺寸</div>
+                <div class="style-item">页面主题</div>
                 <div class="style-item page-size">
                   <div :class="['standard-wide', docStyle.pageSize === 1 ? 'Select-module_optionActive' : '']" @click="changePageSize(1)">
                     <svg width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"
@@ -127,6 +129,13 @@
                     </svg>
                     <div class="Select-module_optionTitle">超宽模式</div>
                   </div>
+                </div>
+                <div class="style-item segment-space">
+                  <div class="slider-module_slideTitle">主题偏好</div>
+                  <i-switch v-model="docStyle.customerTheme" class="switch-btn" size="small" true-color="#00B96B">
+                    <span slot="true"/>
+                    <span slot="false"/>
+                  </i-switch>
                 </div>
               </DropdownMenu>
             </Dropdown>
@@ -204,7 +213,7 @@
             type: '2'
           }
         ],
-        // 全局字体大小
+        // 全局设置
         docStyle: {
           fontSizeRange: [12, 13, 14, 15, 16, 17, 18, 19],
           docFontSize: 15,
@@ -212,7 +221,7 @@
           // 统一文章段间距
           segmentSpaceStatus: false,
           // 是否设置当前格式为默认格式（主要就包含正文字体大小和标准段落间距）
-          SetDefault: true,
+          customerTheme: true,
           // 页面大小1=标宽模式，2=超宽模式
           pageSize: 1
         }

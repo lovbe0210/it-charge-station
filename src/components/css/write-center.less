@@ -14,7 +14,6 @@
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  background: #ffffff;
   min-height: 100vh;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -29,7 +28,6 @@
     border-bottom: 1px solid #eeeeee;
     position: relative;
     height: 60px;
-    background: #fff;
 
     .mock-hover {
       background-color: #eeeeee;
@@ -61,6 +59,7 @@
       width: 40%;
 
       .list-group-item {
+        background-color: unset;
         border: none;
         padding: 0 0 0 0;
       }
@@ -210,6 +209,7 @@
           .style-item {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 10px 24px;
           }
 
@@ -219,11 +219,11 @@
             cursor: auto;
             background: none !important;
 
-            .Slider-module_slideTitle {
+            .slider-module_slideTitle {
               font-size: 14px;
             }
 
-            .Slider-module_slideContainer {
+            .slider-module_slideContainer {
               display: block;
               position: relative;
               flex: 1;
@@ -331,10 +331,6 @@
           }
 
           .segment-space {
-            .Slider-module_slideTitle {
-              margin-right: 220px;
-            }
-
             .ivu-switch:not(.ivu-switch-disabled):focus {
               box-shadow: unset !important;
             }
@@ -418,6 +414,10 @@
 
     }
   }
+}
+
+.normal-background {
+  background-color: #ffffff;
 }
 
 
