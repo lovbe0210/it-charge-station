@@ -29,7 +29,7 @@
             </div>
           </div>
           <div class="editor-sidebar">
-            <div class="editor-view">
+            <div class="editor-view enable-background">
               <div class="editor-toc-pin">
                 <span class="editor-toc-pin-text">大纲</span>
                 <div class="editor-toc-pin-wrap">
