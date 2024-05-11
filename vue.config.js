@@ -93,6 +93,10 @@ module.exports = {
         pathRewrite: {
           '^/math': '/api/latex'
         }
+      },
+      '/icharge': {
+        target: 'http://localhost:10211',
+        changeOrigin: true
       }
     }
   }

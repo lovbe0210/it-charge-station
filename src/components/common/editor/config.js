@@ -41,7 +41,7 @@ import AmLoading from "./Loading.vue"
 
 import Lightblock, {LightblockComponent} from "./packages/lightblock/src";
 
-const DOMAIN = "http://localhost:8080"
+const DOMAIN = "http://localhost:8080/icharge"
 
 export const HightLightIcon = '<div style="display: flex; align-items: center; justify-content: center; width: 23px; height: 23px; border: 1px solid #e8e8e8;"><span class="iconfont icon-hight-light" style="font-size: 13px;"></span></div>';
 
@@ -120,20 +120,27 @@ export const pluginConfig = {
     markdown: "*"
   },
   [Image.pluginName]: {
+    maxHeight: 300,
     onBeforeRender: (status, url) => {
       if (url.startsWith("data:image/")) return url
-      return url + `?token=12323`
+      return url
     }
   },
   [ImageUploader.pluginName]: {
     file: {
-      action: `${DOMAIN}/upload/image`, //图片上传
+      action: `${DOMAIN}/common/upload`, //图片上传
       headers: {Authorization: 213434}
     },
     remote: {
       action: `${DOMAIN}/upload/image` //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
     },
-    isRemote: src => src.indexOf(DOMAIN) < 0
+    isRemote: src => src.indexOf(DOMAIN) < 0,
+    parse: response => {
+      return {
+        result: response.result,
+        data: response.data
+      }
+    }
   },
   [FileUploader.pluginName]: {
     action: `${DOMAIN}/upload/file`
