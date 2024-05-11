@@ -1,0 +1,38 @@
+{
+  "name": "@aomao/plugin-image",
+  "version": "2.10.0",
+  "description": "图片",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "lib",
+    "src"
+  ],
+  "author": "me@aomao.com",
+  "license": "MIT",
+  "homepage": "https://github.com/big-camel/am-editor#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/big-camel/am-editor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/big-camel/am-editor/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.13.10",
+    "eventemitter2": "^6.4.4",
+    "photoswipe": "^4.1.3"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^12.2.3",
+    "@types/photoswipe": "^4.1.1"
+  },
+  "peerDependencies": {
+    "@aomao/engine": ">=2.9"
+  }
+}
