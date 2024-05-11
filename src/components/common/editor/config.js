@@ -22,7 +22,8 @@ import Quote from "@aomao/plugin-quote"
 import PaintFormat from "@aomao/plugin-paintformat"
 import RemoveFormat from "@aomao/plugin-removeformat"
 import SelectAll from "@aomao/plugin-selectall"
-import Image, {ImageComponent, ImageUploader} from "@aomao/plugin-image"
+// import Image, {ImageComponent, ImageUploader} from "@aomao/plugin-image"
+import Image, {ImageComponent, ImageUploader} from "./packages/image/src"
 import Table, {TableComponent} from "@aomao/plugin-table"
 import File, {FileComponent, FileUploader} from "@aomao/plugin-file"
 import Video, {VideoComponent, VideoUploader} from "@aomao/plugin-video"
@@ -41,7 +42,7 @@ import AmLoading from "./Loading.vue"
 
 import Lightblock, {LightblockComponent} from "./packages/lightblock/src";
 
-const DOMAIN = "http://localhost:8080/icharge"
+const DOMAIN = "/icharge"
 
 export const HightLightIcon = '<div style="display: flex; align-items: center; justify-content: center; width: 23px; height: 23px; border: 1px solid #e8e8e8;"><span class="iconfont icon-hight-light" style="font-size: 13px;"></span></div>';
 

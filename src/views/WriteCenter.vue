@@ -221,7 +221,7 @@
           // 统一文章段间距
           segmentSpaceStatus: false,
           // 是否设置当前格式为默认格式（主要就包含正文字体大小和标准段落间距）
-          customerTheme: true,
+          customerTheme: false,
           // 页面大小1=标宽模式，2=超宽模式
           pageSize: 1
         }
