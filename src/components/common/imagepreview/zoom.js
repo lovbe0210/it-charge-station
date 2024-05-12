@@ -1,4 +1,5 @@
 import { $, Tooltip } from "@aomao/engine"
+import CN from "@/components/common/editor/packages/image/src/locales/zh-CN.js"
 
 class Zoom {
   prevStatus = "default"
@@ -40,7 +41,8 @@ class Zoom {
 
     const toolbarContent = root.find(".pswp-toolbar-content")
 
-    const lang = this.editor.language.get("image")
+    // const lang = this.editor.language.get("image")
+    const lang = CN.image
 
     toolbarContent.append(
       this.renderBtn("arrow-left", lang.prev, this.prevStatus, () => {

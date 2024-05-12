@@ -58,7 +58,7 @@ class Pswp extends EventEmitter2 {
                     <div class="pswp__item"></div>
                 </div>
                 <div class="pswp__ui pswp__ui--hidden">
-                    <button type="button" class="pswp__button data-pswp-button-close" title="Close (Esc)"></button>
+                    <button type="button" class="pswp__button data-pswp-button-close" title="关闭(Esc)"></button>
                     <div class="data-pswp-custom-top-bar"></div>
                 </div>
             </div>
@@ -122,9 +122,9 @@ class Pswp extends EventEmitter2 {
     if (this.timeouts[id]) {
       clearTimeout(this.timeouts[id])
     }
-    this.timeouts[id] = setTimeout(() => {
-      node.addClass("pswp-fade-out")
-    }, 3000)
+    // this.timeouts[id] = setTimeout(() => {
+    //   node.addClass("pswp-fade-out")
+    // }, 3000)
   }
 
   bindClickEvent() {

@@ -4,7 +4,7 @@
       <div class="layout-mode-fixed">
         <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
         <div class="editor-body">
-          <div class="editor-wrap" ref="scrollbarContext" @wheel="debounceScroll">
+          <div class="editor-wrap beauty-scroll" ref="scrollbarContext" @wheel="debounceScroll">
             <div class="editor-wrap-content">
               <div class="editor-outer-wrap-box">
                 <div class="editor-wrap-box">
@@ -29,7 +29,7 @@
             </div>
           </div>
           <div class="editor-sidebar">
-            <div class="editor-view enable-background">
+            <div class="editor-view">
               <div class="editor-toc-pin">
                 <span class="editor-toc-pin-text">大纲</span>
                 <div class="editor-toc-pin-wrap">

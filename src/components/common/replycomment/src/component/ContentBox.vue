@@ -108,11 +108,11 @@
               <div ref="divBox">
                 <div v-html="this.data.content"></div>
                 <div class="imgbox" v-if="commentReply.contentImg" style="display: flex;">
-                  <b-img :src="commentReply.contentImg" @click="imgPreview = true"
+                  <b-img :src="commentReply.contentImg" @click="previewImage"
                          style="height: 72px; margin: 8px 4px; border-radius: 2px;"
                          lazy/>
-                  <image-preview :src="commentReply.contentImg" :isPreviewOpen="imgPreview"
-                                 @toggleFullScreen="imgPreview = false"/>
+<!--                  <image-preview :src="commentReply.contentImg" :isPreviewOpen="imgPreview"-->
+<!--                                 @toggleFullScreen="imgPreview = false"/>-->
                 </div>
               </div>
             </div>
@@ -171,7 +171,8 @@
 <script>
   import { cloneDeep, needFormatDate } from '@/utils/emoji';
   import InputBox from './InputBox';
-  import ImagePreview from '@/components/common/ImagePreview'
+  import Pswp from "@/components/common/imagepreview/index"
+  // import ImagePreview from '@/components/common/ImagePreview'
 
   export default {
     name: 'ContentBox',
@@ -179,14 +180,16 @@
       return {
         active: false,
         editorRef: null,
-        imgPreview: false,
+        // imgPreview: false,
         //文本是否超出五行，默认否
         isOver: false,
         // 文本是否是展开状态 默认为收起
         unfold: false,
         // dom监视器
         observer: null,
-        commentReply: null
+        commentReply: null,
+        // 图片预览
+        pswp: null
       }
     },
     props: {
@@ -210,8 +213,8 @@
       }
     },
     components: {
-      InputBox,
-      ImagePreview
+      InputBox
+      // ImagePreview
     },
     methods: {
       //点击回复按钮打开输入框
@@ -242,6 +245,20 @@
         }
         this.commentReply.ilike = !this.commentReply.ilike;
         // TODO commentReply.id action：like or cancelLike --> to server
+      },
+      previewImage(event) {
+        // debugger
+        if (this.pswp === null) {
+          this.pswp = new Pswp(null);
+        }
+        let img = event.target;
+        let items = [{
+          src: img.src,
+          msrc: img.src,
+          w: img.naturalWidth,
+          h: img.naturalHeight
+        }]
+        this.pswp.open(items, 0)
       }
     },
     created() {
@@ -258,7 +275,7 @@
           this.isOver = this.$refs.textBox.clientHeight < this.$refs.divBox.scrollHeight
         }
       })
-      this.observer.observe(this.$refs.divBox)
+      this.observer.observe(this.$refs.divBox);
     },
     beforeDestroy() {
       this.observer?.disconnect()

@@ -8,7 +8,7 @@ import {
   Resizer,
   CardType
 } from "@aomao/engine"
-import Pswp from "../pswp"
+import Pswp from "@/components/common/imagepreview/index.js"
 import "./index.css"
 
 export const winPixelRatio = window.devicePixelRatio
@@ -44,7 +44,6 @@ class Image {
 
   renderTemplate(message) {
     console.log("renderTemplate...")
-    debugger
     const { link, percent, className, onBeforeRender } = this.options
 
     if (this.status === "error") {
@@ -125,7 +124,6 @@ class Image {
 
   imageLoadCallback() {
     console.log("imageLoadCallback...")
-    debugger
     const editor = this.editor
     const root = editor.card.closest(this.root)
     if (!root || this.status === "uploading") {
@@ -432,7 +430,6 @@ class Image {
 
   render(loadingBg) {
     console.log("render...")
-    debugger
     // 阅读模式不展示错误
     const { container, display, enableResizer } = this.options
     if (display === CardType.BLOCK) {
@@ -467,16 +464,27 @@ class Image {
     if (this.status === "done" && !this.isLoad) {
       if (!this.root.inEditor()) container.empty().append(this.root)
     }
-    this.maxWidth = this.getMaxWidth()
+    // 获取节点的最大宽度
+    // this.maxWidth = this.getMaxWidth()
+
     let { width, height } = this.size
     if ((width && height) || !this.src) {
-      if (width > this.maxWidth) {
+     /* if (width > this.maxWidth) {
         width = this.maxWidth
         height = Math.round((width * height) / this.size.width)
       } else if (!this.src && !width && !height) {
         width = this.maxWidth
         height = this.maxWidth / 2
+      }*/
+      if (height > this.maxHeight) {
+        height = this.maxHeight;
+        width = Math.round((height * width) / this.size.height)
+      } else if (!this.src && !width && !height) {
+        height = this.maxHeight
+        width = this.maxWidth / 2
       }
+
+
       if (this.src) {
         if (this.options.enableResizer === false) {
           this.image.css({

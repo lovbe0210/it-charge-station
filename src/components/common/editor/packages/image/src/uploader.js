@@ -109,8 +109,6 @@ export default class extends Plugin {
   }
 
   loadImage(id, value) {
-    console.log("loadImage...")
-    debugger
     if (!this.loadCounts[id]) this.loadCounts[id] = 1
     const image = new Image()
     const editor = this.editor
@@ -336,7 +334,6 @@ export default class extends Plugin {
   }
 
   pasteFiles = ({ files }) => {
-    console.log("pasteFiles...")
     const editor = this.editor
     if (!isEngine(editor)) return
     files = files.filter(file => this.isImage(file))
@@ -439,7 +436,6 @@ export default class extends Plugin {
   }
 
   async uploadAddress(src, component) {
-    console.log("uploadAddress...")
     const editor = this.editor
     if (!isEngine(editor)) return
     const {
@@ -532,7 +528,6 @@ export default class extends Plugin {
   }
 
   pasteAfter = () => {
-    console.log("pasteAfter...")
     const editor = this.editor
     editor.container.find("[data-card-key=image]").each((node, key) => {
       const component = editor.card.find(node)

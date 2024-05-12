@@ -1,3 +1,7 @@
+.pswp {
+    z-index: 999;
+}
+
 .pswp .data-pswp-tool-bar {
     position: absolute;
     top: initial;
@@ -7,7 +11,9 @@
     height: 54px;
     width: 100%;
     text-align: center;
-   
+    display: flex;
+    justify-content: center;
+
 }
 
 .pswp .data-pswp-tool-bar .separation {
@@ -21,7 +27,8 @@
 
 .pswp .data-pswp-tool-bar .btn {
     color: #f8f9fa;
-    display: inline-block;
+    display: flex;
+    align-items: center;
     width: 32px;
     height: 32px;
     padding: 6px;
@@ -39,7 +46,7 @@
     display: inline-block;
     background-repeat: no-repeat;
     opacity: 0.65;
-    background-position: -1px -1px;
+    /*background-position: -1px -1px;*/
    
 }
 
@@ -125,7 +132,9 @@
 }
 
 .pswp .data-pswp-tool-bar .pswp-toolbar-content {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: auto;
     background: #252525;
     border-radius: 4px;
@@ -183,8 +192,8 @@
 }
 
 .pswp .data-pswp-button-close {
-   margin: 32px;
-   margin-right: 0px;
+   margin: 15px;
+   /*margin-right: 0px;*/
    width: 40px;
    height: 40px;
    z-index: 999999;
