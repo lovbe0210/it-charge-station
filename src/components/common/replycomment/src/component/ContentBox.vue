@@ -172,7 +172,6 @@
   import { cloneDeep, needFormatDate } from '@/utils/emoji';
   import InputBox from './InputBox';
   import Pswp from "@/components/common/imagepreview/index"
-  // import ImagePreview from '@/components/common/ImagePreview'
 
   export default {
     name: 'ContentBox',

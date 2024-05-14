@@ -1,6 +1,6 @@
 <template>
   <b-container fluid>
-    <div v-if="userInfo?.uid">
+    <div v-if="userInfo?.uid" class="un-select">
       <div v-if="creatorTrend && creatorTrend.length > 0" class="creator-trend">
         <div class="trend-item" v-for="item in creatorTrend" :key="item.id">
           <div class="trend-info">
@@ -24,23 +24,56 @@
           </div>
 
           <div :class="['trend-content', item.pubType === '2' ? 'rambly' : '']">
-            <b-link to="/ramblyJot/sadasd" class="post-desc">
+            <b-link :to="getRouterPath(item)" class="post-desc">
               <p class="post-title" v-if="item.pubType !== '2'">{{ item.PublicTitle }}</p>
               <p class="post-content">{{ item.PublicContent }}</p>
+              <div class="action" v-if="item.pubType !== '2'">
+                <span class="reply-btn">
+                  <span class="iconfont reply"></span>
+                  {{ item.comments }}
+                </span>
+                <span class="like-btn">
+                  <span class="iconfont like"></span>
+                  {{ item.likes }}
+                </span>
+              </div>
             </b-link>
             <div class="post-image" v-if="item.picList && item.picList.length > 0">
-              <b-img-lazy v-for="(pic, index) in item.picList"
-                          :key="index"
-                          :src="pic">
-              </b-img-lazy>
+              <b-link v-if="item.pubType !== '2'" to="/column/sadasd">
+                <b-img-lazy v-for="(pic, index) in item.picList" height="100%" rounded
+                            :key="index"
+                            :src="pic">
+                </b-img-lazy>
+              </b-link>
+              <div v-else :id="item.id" class="rambly-img-box">
+                <div v-for="(pic, index) in item.picList"
+                     :key="index"
+                     class="rambly-img"
+                     @click="previewImage(item, index)">
+                  <b-img-lazy height="100%"
+                              rounded
+                              :src="pic">
+                  </b-img-lazy>
+                </div>
+              </div>
+            </div>
+            <div class="action" v-if="item.pubType === '2'">
+                <span class="reply-btn">
+                  <span class="iconfont reply"></span>
+                  {{ item.comments }}
+                </span>
+              <span class="like-btn">
+                  <span class="iconfont like"></span>
+                  {{ item.likes }}
+                </span>
             </div>
           </div>
         </div>
       </div>
       <b-row v-else class="trend-empty">
-        <span class="iconfont beauty-empty"></span>
+        <span class="iconfont on-the-way"></span>
         <div class="list-empty-text">
-          <span>好像没有新动态</span>
+          <span>新动态好像还在路上哦</span>
           <span class="empty-btn">
             去<b-link class="highlight" to="/"> 推荐 </b-link>看看
           </span>
@@ -71,24 +104,33 @@
 
 <script>
 import UserCard from "@/components/common/UserCard.vue";
+import AuthModal from "@/components/common/AuthModal.vue";
 import {needFormatDate} from '@/utils/emoji';
+import Pswp from "@/components/common/imagepreview/index"
 
 export default {
   name: 'Follow',
   data() {
     return {
       popoverContainer: null,
+      // 图片预览
+      pswp: null,
       creatorTrend: [
         {
           id: '001',
           // 动态类型 1笔记 2随笔 3专栏
           pubType: '1',
           PublicTitle: '运算符🔣Family',
-          PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
+          PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索得懂，我这句话主要说了什么？你要不尝试说一下引初见闻MySQL索引初见闻',
           picList: [
             require('@/assets/img/6.jpg')
           ],
           pubTime: 1715609438640,
+          comments: 10,
+          likes: 20,
+          columnId: '1231231df',
+          articleId: 'ssasdas',
+          ramblyId: 'asd32442sdf',
           userInfo: {
             userId: 1,
             username: '闪魔亮晶晶',
@@ -99,7 +141,12 @@ export default {
           id: '002',
           pubType: '2',
           PublicTitle: null,
-          PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
+          PublicContent: '我就随便发表一句话，就看你能不能看得懂，我这句话主要说了什么？你要不尝试说一下，我们也好互相了解我就随便发表一句话，就看你能不能看得懂，我这句话主要说了什么？你要不尝试说一下，我们也好互相了解我就随便发表一句话，就看你能不能看得懂，我这句话主要说了什么？你要不尝试说一下，我们也好互相了解我就随便发表一句话，就看你能不能看得懂，我这句话主要说了什么？你要不尝试说一下，我们也好互相了解',
+          comments: 15,
+          likes: 202,
+          columnId: '1231231df',
+          articleId: 'ssasdas',
+          ramblyId: 'asd32442sdf',
           picList: [
             require('@/assets/img/5.jpg'),
             require('@/assets/avatar/04.jpg'),
@@ -115,12 +162,17 @@ export default {
         {
           id: '003',
           pubType: '3',
-          PublicTitle: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
+          PublicTitle: 'MySQL索引初见闻',
           PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
           picList: [
             require('@/assets/img/5.jpg')
           ],
           pubTime: 1715602224000,
+          comments: 10,
+          likes: 20,
+          columnId: '1231231df',
+          articleId: 'ssasdas',
+          ramblyId: 'asd32442sdf',
           userInfo: {
             userId: 1,
             username: '无懈可击',
@@ -129,13 +181,18 @@ export default {
         },
         {
           id: '004',
-          pubType: '3',
-          PublicTitle: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
+          pubType: '1',
+          PublicTitle: 'MySQL索引初见闻',
           PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
           picList: [
             require('@/assets/img/3.jpg')
           ],
           pubTime: 1715584224000,
+          comments: 10,
+          likes: 20,
+          columnId: '',
+          articleId: 'ssasdas',
+          ramblyId: 'asd32442sdf',
           userInfo: {
             userId: 1,
             username: '这是啥撒啊阿萨 ',
@@ -151,10 +208,61 @@ export default {
     }
   },
   components: {
-    UserCard
+    UserCard,
+    AuthModal
   },
   methods: {
-    needFormatDate
+    previewImage(trendItem, currentIndex) {
+      if (this.pswp === null) {
+        this.pswp = new Pswp(null);
+      }
+      let imgWrapp = document.getElementById(trendItem.id);
+      let imgBoxList = imgWrapp?.children;
+      if (imgBoxList) {
+        let imgItems = [];
+        for (let imgBox of imgBoxList) {
+          let img = imgBox.firstChild;
+          imgItems.push({
+            src: img.src,
+            msrc: img.src,
+            w: img.naturalWidth,
+            h: img.naturalHeight
+          })
+        }
+        this.pswp.open(imgItems, currentIndex)
+      }
+
+
+
+     /* let img = event.target;
+      let items = [{
+        src: img.src,
+        msrc: img.src,
+        w: img.naturalWidth,
+        h: img.naturalHeight
+      }]
+      this.pswp.open(items, 0)*/
+    },
+    needFormatDate,
+    getRouterPath(trendItem) {
+      let routerPath = "/";
+      switch (trendItem.pubType) {
+        case "1":
+          if (trendItem.columnId) {
+            routerPath += ("column/" + trendItem.columnId + "/" + trendItem.articleId);
+          } else {
+            routerPath += ("article/" + trendItem.articleId);
+          }
+          break;
+        case "2":
+          routerPath += ("ramblyJot/" + trendItem.ramblyId);
+          break;
+        case "3":
+          routerPath += ("column/" + trendItem.columnId)
+          break
+      }
+      return routerPath;
+    }
   },
   mounted() {
     this.popoverContainer = this.$refs.popoverContainer;

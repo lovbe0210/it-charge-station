@@ -2,9 +2,13 @@
   .creator-trend {
     .trend-item {
       border-radius: 6px;
-      padding: 25px 0 20px 0;
+      padding:10px 0 15px 0;
       display: flex;
       flex-direction: column;
+
+      &:first-child {
+        padding-top: 0;
+      }
 
       .trend-info {
         display: flex;
@@ -18,13 +22,13 @@
             font-size: 14px;
             font-weight: 600;
             color: #262626;
-            line-height: 32px;
+            line-height: 30px;
           }
 
           .post-time, .post-type {
             font-size: 12px;
             color: #8A8F8D;
-            line-height: 32px;
+            line-height: 30px;
             margin-left: 5px;
             letter-spacing: .02rem;
           }
@@ -33,17 +37,20 @@
 
       .trend-content {
         margin-left: 60px;
+        margin-top: -3px;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
 
         .post-desc {
-          width: 68%;
+          width: 76%;
+          color: #585A5A;
+
           .post-title {
             font-size: 16px;
             font-weight: 700;
             color: #262626;
             line-height: 24px;
-            margin-bottom: 12px;
+            margin-bottom: 5px;
             display: block;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -56,31 +63,13 @@
 
           .post-content {
             font-size: 14px;
-            color: #585A5A;
             line-height: 24px;
             display: -webkit-box;
-            max-height: 72px;
-            -webkit-line-clamp: 3;
+            max-height: 48px;
+            margin-bottom: 5px;
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
-          }
-        }
-
-        .post-image {
-          width: 30%;
-
-          img {
-            max-height: 85%;
-            flex: none;
-            width: 100%;
-            margin-left: 10px;
-            border: 1px solid rgba(0,0,0,0.04);
-            border-radius: 5px;
-
-            &:first-child {
-              margin-left: 0;
-            }
           }
         }
       }
@@ -88,29 +77,57 @@
       .rambly {
         flex-direction: column;
 
+        .post-desc {
+          width: 100%;
+        }
+
         .post-image {
-          img {
-            flex: none;
-            max-width: 24%;
-            margin-left: 10px;
-            border: 1px solid rgba(0,0,0,0.04);
-            border-radius: 5px;
+
+          .rambly-img-box {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+
+            .rambly-img {
+              max-width: 24%;
+              margin-left: 10px;
+              img {
+                flex: none;
+                border: 1px solid rgba(0,0,0,0.04);
+                border-radius: 5px;
+                cursor: zoom-in;
+              }
+
+              &:first-child {
+                margin-left: 0;
+              }
+            }
           }
+        }
+
+        .action {
+          margin-top: 5px;
         }
       }
 
-
+      .action {
+        margin-right: 3px;
+        .like-btn {
+          margin-left: 8px;
+        }
+      }
     }
 
   }
 
   .trend-empty {
     display: flex;
+    justify-content: center;
     margin: 100px auto;
     width: 80%;
 
-    .beauty-empty {
-      font-size: 90px;
+    .on-the-way {
+      font-size: 70px;
       margin-right: 10px;
     }
 
