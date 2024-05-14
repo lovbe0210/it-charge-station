@@ -101,9 +101,9 @@ export default {
           PublicTitle: null,
           PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
           picList: [
-            require('@/assets/avatar/01.jpg'),
+            require('@/assets/img/5.jpg'),
             require('@/assets/avatar/04.jpg'),
-            require('@/assets/avatar/05.jpg')
+            require('@/assets/img/19.jpg')
           ],
           pubTime: 1707833424000,
           userInfo: {
