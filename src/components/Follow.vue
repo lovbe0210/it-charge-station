@@ -33,7 +33,7 @@
                   {{ item.comments }}
                 </span>
                 <span class="like-btn">
-                  <span class="iconfont like"></span>
+                  <span :class="['iconfont', 'like', item.ilike ? 'ilike' : '']"></span>
                   {{ item.likes }}
                 </span>
               </div>
@@ -62,8 +62,8 @@
                   <span class="iconfont reply"></span>
                   {{ item.comments }}
                 </span>
-              <span class="like-btn">
-                  <span class="iconfont like"></span>
+                <span class="like-btn">
+                  <span :class="['iconfont', 'like', item.ilike ? 'ilike' : '']"></span>
                   {{ item.likes }}
                 </span>
             </div>
@@ -103,174 +103,177 @@
 </template>
 
 <script>
-import UserCard from "@/components/common/UserCard.vue";
-import AuthModal from "@/components/common/AuthModal.vue";
-import {needFormatDate} from '@/utils/emoji';
-import Pswp from "@/components/common/imagepreview/index"
+  import UserCard from "@/components/common/UserCard.vue";
+  import AuthModal from "@/components/common/AuthModal.vue";
+  import {needFormatDate} from '@/utils/emoji';
+  import Pswp from "@/components/common/imagepreview/index"
 
-export default {
-  name: 'Follow',
-  data() {
-    return {
-      popoverContainer: null,
-      // 图片预览
-      pswp: null,
-      creatorTrend: [
-        {
-          id: '001',
-          // 动态类型 1笔记 2随笔 3专栏
-          pubType: '1',
-          PublicTitle: '运算符🔣Family',
-          PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索得懂，我这句话主要说了什么？你要不尝试说一下引初见闻MySQL索引初见闻',
-          picList: [
-            require('@/assets/img/6.jpg')
-          ],
-          pubTime: 1715609438640,
-          comments: 10,
-          likes: 20,
-          columnId: '1231231df',
-          articleId: 'ssasdas',
-          ramblyId: 'asd32442sdf',
-          userInfo: {
-            userId: 1,
-            username: '闪魔亮晶晶',
-            avatar: require('@/assets/avatar/16.png')
+  export default {
+    name: 'Follow',
+    data() {
+      return {
+        popoverContainer: null,
+        // 图片预览
+        pswp: null,
+        creatorTrend: [
+          {
+            id: '001',
+            // 动态类型 1笔记 2随笔 3专栏
+            pubType: '1',
+            PublicTitle: '运算符🔣Family',
+            PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索得懂，我这句话主要说了什么？你要不尝试说一下引初见闻MySQL索引初见闻',
+            picList: [
+              require('@/assets/img/6.jpg')
+            ],
+            pubTime: 1715609438640,
+            comments: 10,
+            likes: 20,
+            ilike: false,
+            columnId: '1231231df',
+            articleId: 'ssasdas',
+            ramblyId: 'asd32442sdf',
+            userInfo: {
+              userId: 1,
+              username: '闪魔亮晶晶',
+              avatar: require('@/assets/avatar/16.png')
+            }
+          },
+          {
+            id: '002',
+            pubType: '2',
+            PublicTitle: null,
+            PublicContent: '我就随便发表一句话，就看你能不能看得懂，我这句话主要说了什么？你要不尝试说一下，我们也好互相了解我就随便发表一句话，就看你能不能看得懂，我这句话主要说了什么？你要不尝试说一下，我们也好互相了解我就随便发表一句话，就看你能不能看得懂，我这句话主要说了什么？你要不尝试说一下，我们也好互相了解我就随便发表一句话，就看你能不能看得懂，我这句话主要说了什么？你要不尝试说一下，我们也好互相了解',
+            comments: 15,
+            likes: 202,
+            ilike: true,
+            columnId: '1231231df',
+            articleId: 'ssasdas',
+            ramblyId: 'asd32442sdf',
+            picList: [
+              require('@/assets/img/5.jpg'),
+              require('@/assets/avatar/04.jpg'),
+              require('@/assets/img/19.jpg')
+            ],
+            pubTime: 1707833424000,
+            userInfo: {
+              userId: 1,
+              username: '晶莹剔透的Q宝',
+              avatar: require('@/assets/avatar/03.jpg')
+            }
+          },
+          {
+            id: '003',
+            pubType: '3',
+            PublicTitle: 'MySQL索引初见闻',
+            PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
+            picList: [
+              require('@/assets/img/5.jpg')
+            ],
+            pubTime: 1715602224000,
+            comments: 10,
+            likes: 20,
+            ilike: false,
+            columnId: '1231231df',
+            articleId: 'ssasdas',
+            ramblyId: 'asd32442sdf',
+            userInfo: {
+              userId: 1,
+              username: '无懈可击',
+              avatar: require('@/assets/avatar/01.jpg')
+            }
+          },
+          {
+            id: '004',
+            pubType: '1',
+            PublicTitle: 'MySQL索引初见闻',
+            PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
+            picList: [
+              require('@/assets/img/3.jpg')
+            ],
+            pubTime: 1715584224000,
+            comments: 10,
+            likes: 20,
+            ilike: true,
+            columnId: '',
+            articleId: 'ssasdas',
+            ramblyId: 'asd32442sdf',
+            userInfo: {
+              userId: 1,
+              username: '这是啥撒啊阿萨 ',
+              avatar: require('@/assets/avatar/01.jpg')
+            }
           }
-        },
-        {
-          id: '002',
-          pubType: '2',
-          PublicTitle: null,
-          PublicContent: '我就随便发表一句话，就看你能不能看得懂，我这句话主要说了什么？你要不尝试说一下，我们也好互相了解我就随便发表一句话，就看你能不能看得懂，我这句话主要说了什么？你要不尝试说一下，我们也好互相了解我就随便发表一句话，就看你能不能看得懂，我这句话主要说了什么？你要不尝试说一下，我们也好互相了解我就随便发表一句话，就看你能不能看得懂，我这句话主要说了什么？你要不尝试说一下，我们也好互相了解',
-          comments: 15,
-          likes: 202,
-          columnId: '1231231df',
-          articleId: 'ssasdas',
-          ramblyId: 'asd32442sdf',
-          picList: [
-            require('@/assets/img/5.jpg'),
-            require('@/assets/avatar/04.jpg'),
-            require('@/assets/img/19.jpg')
-          ],
-          pubTime: 1707833424000,
-          userInfo: {
-            userId: 1,
-            username: '晶莹剔透的Q宝',
-            avatar: require('@/assets/avatar/03.jpg')
-          }
-        },
-        {
-          id: '003',
-          pubType: '3',
-          PublicTitle: 'MySQL索引初见闻',
-          PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
-          picList: [
-            require('@/assets/img/5.jpg')
-          ],
-          pubTime: 1715602224000,
-          comments: 10,
-          likes: 20,
-          columnId: '1231231df',
-          articleId: 'ssasdas',
-          ramblyId: 'asd32442sdf',
-          userInfo: {
-            userId: 1,
-            username: '无懈可击',
-            avatar: require('@/assets/avatar/01.jpg')
-          }
-        },
-        {
-          id: '004',
-          pubType: '1',
-          PublicTitle: 'MySQL索引初见闻',
-          PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
-          picList: [
-            require('@/assets/img/3.jpg')
-          ],
-          pubTime: 1715584224000,
-          comments: 10,
-          likes: 20,
-          columnId: '',
-          articleId: 'ssasdas',
-          ramblyId: 'asd32442sdf',
-          userInfo: {
-            userId: 1,
-            username: '这是啥撒啊阿萨 ',
-            avatar: require('@/assets/avatar/01.jpg')
-          }
-        }
-      ]
-    }
-  },
-  computed: {
-    userInfo() {
-      return this.$store.state.userInfo
-    }
-  },
-  components: {
-    UserCard,
-    AuthModal
-  },
-  methods: {
-    previewImage(trendItem, currentIndex) {
-      if (this.pswp === null) {
-        this.pswp = new Pswp(null);
+        ]
       }
-      let imgWrapp = document.getElementById(trendItem.id);
-      let imgBoxList = imgWrapp?.children;
-      if (imgBoxList) {
-        let imgItems = [];
-        for (let imgBox of imgBoxList) {
-          let img = imgBox.firstChild;
-          imgItems.push({
-            src: img.src,
-            msrc: img.src,
-            w: img.naturalWidth,
-            h: img.naturalHeight
-          })
-        }
-        this.pswp.open(imgItems, currentIndex)
-      }
-
-
-
-     /* let img = event.target;
-      let items = [{
-        src: img.src,
-        msrc: img.src,
-        w: img.naturalWidth,
-        h: img.naturalHeight
-      }]
-      this.pswp.open(items, 0)*/
     },
-    needFormatDate,
-    getRouterPath(trendItem) {
-      let routerPath = "/";
-      switch (trendItem.pubType) {
-        case "1":
-          if (trendItem.columnId) {
-            routerPath += ("column/" + trendItem.columnId + "/" + trendItem.articleId);
-          } else {
-            routerPath += ("article/" + trendItem.articleId);
-          }
-          break;
-        case "2":
-          routerPath += ("ramblyJot/" + trendItem.ramblyId);
-          break;
-        case "3":
-          routerPath += ("column/" + trendItem.columnId)
-          break
+    computed: {
+      userInfo() {
+        return this.$store.state.userInfo
       }
-      return routerPath;
+    },
+    components: {
+      UserCard,
+      AuthModal
+    },
+    methods: {
+      previewImage(trendItem, currentIndex) {
+        if (this.pswp === null) {
+          this.pswp = new Pswp(null);
+        }
+        let imgWrapp = document.getElementById(trendItem.id);
+        let imgBoxList = imgWrapp?.children;
+        if (imgBoxList) {
+          let imgItems = [];
+          for (let imgBox of imgBoxList) {
+            let img = imgBox.firstChild;
+            imgItems.push({
+              src: img.src,
+              msrc: img.src,
+              w: img.naturalWidth,
+              h: img.naturalHeight
+            })
+          }
+          this.pswp.open(imgItems, currentIndex)
+        }
+
+
+        /* let img = event.target;
+         let items = [{
+           src: img.src,
+           msrc: img.src,
+           w: img.naturalWidth,
+           h: img.naturalHeight
+         }]
+         this.pswp.open(items, 0)*/
+      },
+      needFormatDate,
+      getRouterPath(trendItem) {
+        let routerPath = "/";
+        switch (trendItem.pubType) {
+          case "1":
+            if (trendItem.columnId) {
+              routerPath += ("column/" + trendItem.columnId + "/" + trendItem.articleId);
+            } else {
+              routerPath += ("article/" + trendItem.articleId);
+            }
+            break;
+          case "2":
+            routerPath += ("ramblyJot/" + trendItem.ramblyId);
+            break;
+          case "3":
+            routerPath += ("column/" + trendItem.columnId)
+            break
+        }
+        return routerPath;
+      }
+    },
+    mounted() {
+      this.popoverContainer = this.$refs.popoverContainer;
     }
-  },
-  mounted() {
-    this.popoverContainer = this.$refs.popoverContainer;
   }
-}
 </script>
 
 <style scoped lang="less">
-@import "./css/follow.less";
-@import "./css/common-var";
+  @import "./css/follow.less";
+  @import "./css/common-var";
 </style>
