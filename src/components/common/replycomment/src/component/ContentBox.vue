@@ -284,4 +284,5 @@
 
 <style lang="less" scoped>
   @import '../style/content-box.less';
+  @import "../../../../css/common-var.less";
 </style>

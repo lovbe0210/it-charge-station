@@ -2,6 +2,7 @@
  * 修改view框架的主题
  */
 @import '~view-design/src/styles/index.less';
+@import "./components/css/common-var.less";
 
 @primary-color: #00b96b;
 
@@ -93,17 +94,15 @@
   }
 }
 
-.login-box {
-  .ivu-modal-body {
-    //padding: 0;
-  }
-}
-
 .un-select {
   -webkit-user-select: none; /* 禁止 DIV 中的文本被鼠标选中 */
   -moz-user-select: none; /* 禁止 DIV 中的文本被鼠标选中 */
   -ms-user-select: none; /* 禁止 DIV 中的文本被鼠标选中 */
   user-select: none;
+}
+
+.ilike {
+  color: @like-color;
 }
 
 // 滚动条全局美化

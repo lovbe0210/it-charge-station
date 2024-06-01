@@ -14,12 +14,12 @@
                 {{item.description}}
               </span>
             </div>
-            <b-row class="item-icons">
+            <b-row class="item-icons un-select">
               <div>
-                <span class="iconfont like"></span> 2233
+                <span class="iconfont like"/> 2233
               </div>
               <div>
-                <span class="iconfont viewed"></span> 777
+                <span class="iconfont views-count"/> 777
               </div>
               <div class="from">
                 来自🕊

@@ -24,9 +24,11 @@
           </div>
 
           <div :class="['trend-content', item.pubType === '2' ? 'rambly' : '']">
-            <b-link :to="getRouterPath(item)" class="post-desc">
-              <p class="post-title" v-if="item.pubType !== '2'">{{ item.PublicTitle }}</p>
-              <p class="post-content">{{ item.PublicContent }}</p>
+            <div class="post-desc">
+              <b-link :to="getRouterPath(item)">
+                <p class="post-title" v-if="item.pubType !== '2'">{{ item.PublicTitle }}</p>
+                <p class="post-content">{{ item.PublicContent }}</p>
+              </b-link>
               <div class="action" v-if="item.pubType !== '2'">
                 <span class="reply-btn">
                   <span class="iconfont reply"></span>
@@ -37,7 +39,7 @@
                   {{ item.likes }}
                 </span>
               </div>
-            </b-link>
+            </div>
             <div class="post-image" v-if="item.picList && item.picList.length > 0">
               <b-link v-if="item.pubType !== '2'" to="/column/sadasd">
                 <b-img-lazy v-for="(pic, index) in item.picList" height="100%" rounded
@@ -73,7 +75,7 @@
       <b-row v-else class="trend-empty">
         <span class="iconfont on-the-way"></span>
         <div class="list-empty-text">
-          <span>新动态好像还在路上哦</span>
+          <span>新动态好像还在路上</span>
           <span class="empty-btn">
             去<b-link class="highlight" to="/"> 推荐 </b-link>看看
           </span>

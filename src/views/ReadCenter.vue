@@ -13,20 +13,6 @@
                 <span class="iconfont icon-more"></span>
                 <div class="action">
                   <a href="/lovbe0210" class="crumb-text">布衣草人</a>
-                  <a-tooltip overlayClassName="read-header-tooltip"
-                             :getPopupContainer="()=>this.$refs.tooltipContainer">
-                    <template slot="title">
-                      关注
-                    </template>
-                    <span class="iconfont to-follow"></span>
-                  </a-tooltip>
-                  <a-tooltip overlayClassName="read-header-tooltip"
-                             :getPopupContainer="()=>this.$refs.tooltipContainer">
-                    <template slot="title">
-                      发消息
-                    </template>
-                    <span class="iconfont start-chat"></span>
-                  </a-tooltip>
                 </div>
               </div>
             </div>

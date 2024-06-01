@@ -1,3 +1,4 @@
+
 .comment {
   display: flex;
   padding: 16px 0;
@@ -60,34 +61,36 @@
 
   .like-and-reply {
     display: flex;
-  }
 
-  .item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-right: 16px;
-    font-size: 15px;
-    cursor: pointer;
-    color: #8A8F8D;
-
-    .iconfont {
-      margin-right: 4px;
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-right: 16px;
       font-size: 15px;
+      cursor: pointer;
+      color: #8A8F8D;
+
+      .iconfont {
+        margin-right: 4px;
+        font-size: 15px;
+      }
+
+      .reply-btn {
+        font-size: 14px;
+      }
     }
 
-    .ilike {
+    .item:nth-child(1) {
+      .iconfont:hover {
+        color: @like-color;
+      }
+    }
+
+    .item:nth-child(2):hover,
+    .active {
       color: #409eff;
     }
-
-    .reply-btn {
-      font-size: 14px;
-    }
-  }
-
-  .item:hover,
-  .active {
-    color: #409eff;
   }
 }
 

@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_ckyslscduk4.woff2?t=1714971089204') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_zzvgc4sx7wp.woff2?t=1717167055142') format('woff2');
 }
 
 .iconfont {
@@ -233,4 +233,8 @@
 
 .volume-close:before {
   content: "\e670";
+}
+
+.views-count:before {
+  content: "\e671";
 }
