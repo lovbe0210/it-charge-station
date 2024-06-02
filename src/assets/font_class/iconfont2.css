@@ -109,10 +109,6 @@
   content: "\eb70";
 }
 
-.icon-search:before {
-  content: "\e607";
-}
-
 .icon-music-list:before {
   content: "\ea86";
 }
@@ -129,13 +125,7 @@
   content: "\e6af";
 }
 
-.icon-nav-home:before {
-  content: "\e619";
-}
 
-.icon-nav-tree:before {
-  content: "\e622";
-}
 
 .icon-nav-close:before {
   content: "\e7ee";

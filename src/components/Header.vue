@@ -20,7 +20,7 @@
         <b-navbar-nav :fill="true" align="center">
           <div :class="{changeColor:changeBorderColor}" id="search_wrapp">
             <span class="index-module_input">
-              <span class="iconfont icon-search"></span>
+              <span class="iconfont i-search"></span>
               <input placeholder="请输入搜索关键字..." class="search-input enable-background" maxlength="250"
                      @blur="changeBorder(false)"
                      @focus="changeBorder(true)">

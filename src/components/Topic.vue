@@ -1,14 +1,17 @@
 <template>
   <b-container fluid>
     <div class="header-row">
-      <Dropdown trigger="click" :transfer="true" @on-click="sortBy">
+      <Dropdown trigger="click" placement="bottom-end" @on-click="sortBy">
         <a href="javascript:void(0)">
           {{sortedValue.at(curSort).name}}
-          <Icon type="ios-arrow-down"></Icon>
+          <span class="iconfont expand" style="font-size: 14px;"/>
         </a>
         <DropdownMenu slot="list">
-          <DropdownItem v-for="item in sortedValue" :key="item.value" :selected="curSort === item.value"
-                        :name="item.value">{{item.name}}
+          <DropdownItem v-for="item in sortedValue"
+                        :class="curSort === item.value ? 'selected' : ''"
+                        :key="item.value"
+                        :name="item.value">
+            {{item.name}}
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
@@ -56,7 +59,7 @@
           },
           {
             value: 2,
-            name: "最新发布"
+            name: "最近更新"
           }
         ],
         topicList: [

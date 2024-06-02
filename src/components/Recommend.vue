@@ -8,12 +8,12 @@
               <div class="title">
                 <span>{{item.title}}</span>
               </div>
-            </b-link>
-            <div class="description">
+              <div class="description">
               <span>
                 {{item.description}}
               </span>
-            </div>
+              </div>
+            </b-link>
             <b-row class="item-icons un-select">
               <div>
                 <span class="iconfont like"/> 2233
@@ -28,7 +28,9 @@
             </b-row>
           </b-col>
           <b-col v-if="!isPhone && item.preview != null" cols="4" fluid class="preview-image">
-            <b-img right fluid rounded :src="item.preview" alt="Image"/>
+            <b-link :to="'/article/' + item.id">
+              <b-img right fluid rounded :src="item.preview" alt="Image"/>
+            </b-link>
           </b-col>
         </b-row>
       </div>

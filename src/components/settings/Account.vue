@@ -49,14 +49,14 @@
         <div class="third-binding-list">
           <div class="third-binding-item">
                 <span class="bind-text">
-                  <span class="iconfont icon-qq"></span>
+                  <span class="iconfont qq"></span>
                   QQ
                 </span>
             <a class="bind-btn">绑定</a>
           </div>
           <div class="third-binding-item">
                 <span class="bind-text">
-                  <span class="iconfont icon-wechat"></span>
+                  <span class="iconfont wechat"></span>
                   微信
                 </span>
             <a class="bind-btn">绑定</a>

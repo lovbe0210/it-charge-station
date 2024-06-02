@@ -8,9 +8,9 @@
             <div class="book-info">
               <div class="crumb">
                 <a href="/" class="website-logo">
-                  <span class="iconfont icon-logo"></span>
+                  <span class="iconfont logo"></span>
                 </a>
-                <span class="iconfont icon-more"></span>
+                <span class="iconfont to-right"></span>
                 <div class="action">
                   <a href="/lovbe0210" class="crumb-text">布衣草人</a>
                 </div>
@@ -22,28 +22,21 @@
                'will-change': isDragging ? 'width' : null,
                transition: isDragging ? 'width 200ms cubic-bezier(0.1, 0, 0, 1) 0s' : null }">
             <div class="search-nav">
-              <div class="search-bar">
-                <svg width="1em" height="1em" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"
-                     class="larkui-icon larkui-icon-help-search ReaderLayout-module_navIcon_eoaa4">
-                  <path
-                    d="M114 20c51.362 0 93 41.638 93 93 0 21.782-7.489 41.816-20.032 57.666l45.82 46.277c4.275 4.317 4.24 11.282-.077 15.556-4.317 4.275-11.281 4.24-15.556-.077l-45.774-46.23C155.576 198.602 135.652 206 114 206c-51.362 0-93-41.638-93-93s41.638-93 93-93Zm0 20c-40.317 0-73 32.683-73 73s32.683 73 73 73 73-32.683 73-73-32.683-73-73-73Z"
-                    fill="currentColor" fill-rule="nonzero">
-                  </path>
-                </svg>
+              <div class="search-bar" @click="modalSearch = true">
+                <span class="iconfont i-search"></span>
                 <span>搜索</span>
-                <span class="search-hot-key">Ctrl + J</span>
               </div>
             </div>
             <div class="home-nav" v-if="columnId !== undefined"
                  @click="routeNavigate('columnIndex')">
-              <span class="iconfont nav-home"></span>
+              <span class="iconfont home"></span>
               <span>专栏首页</span>
             </div>
             <div class="nav-tabs">
               <div class="tabs-bar">
                 <span class="tab-title popover-trigger"
                       @click="navShowType = isColumnView ? (navShowType === 'tree' ? 'list' : 'tree') : navShowType">
-                  <span :class="['iconfont', navShowType === 'tree' ? 'icon-nav-tree' : 'list']"></span>
+                  <span :class="['iconfont', navShowType === 'tree' ? 'nav-tree' : 'list']"></span>
                   <span>目录</span>
                 </span>
                 <div class="actions-cont" v-show="isColumnView && navShowType === 'tree'">
@@ -97,6 +90,102 @@
       <div :style="{ width: adaptiveContentWidth}">
         <router-view :sidebarWidth="sidebarWidth"></router-view>
       </div>
+      <Modal v-model="modalSearch"
+             width="700"
+             :lock-scroll="false"
+             :footer-hide="true">
+        <span slot="close"/>
+        <div class="modal-search-body">
+          <div class="modal-search-input">
+            <span class="input-prefix">
+              <span class="iconfont i-search"/>
+              <span class="search-scope">
+                <span v-show="searchScope > 0">
+                  Ep流苏
+                  <em>/</em>
+                </span>
+                <span v-show="searchScope > 1">
+                  guli-mall
+                  <em>/</em>
+                </span>
+              </span>
+            </span>
+            <span class="input-box">
+              <input :class="searchError ? 'search-error' : ''"
+                     placeholder="输入搜索内容"
+                     v-model="keyWords"
+                     @input="handleInput"/>
+              <span class="iconfont clear" v-show="keyWords?.length > 0"/>
+            </span>
+            <span class="input-suffix un-select">
+              <span class="iconfont arrow-top"/>
+              <span class="iconfont arrow-bottom"/>
+              <span class="search-scope-keys">
+                切换搜索范围
+              </span>
+            </span>
+          </div>
+          <Divider/>
+          <div class="select-search-scope">
+            <span class="search-tip">搜索范围</span>
+            <ul class="search-scope-list">
+              <li :class="['search-scope-item', searchScope === 2 ? 'selected' : '']" v-if="isColumnView">
+                <span class="scope-content">
+                  <span class="iconfont series-column"/>
+                  <span class="scope-text">不做手机控帮助文档</span>
+                </span>
+                <span class="select-scope">
+                  <span class="iconfont enter"/>&nbsp;专栏内搜索
+                </span>
+              </li>
+              <li :class="['search-scope-item', searchScope === 1 ? 'selected' : '']">
+                <span class="scope-content">
+                  <b-avatar :src="authorInfo.avatar" size="18px">
+                    <span v-if="!authorInfo.avatar">{{authorInfo.username}}</span>
+                  </b-avatar>
+                  <span class="scope-text">十个雨点</span>
+                </span>
+                <span class="select-scope">
+                  <span class="iconfont enter"/>&nbsp;公开内容搜索
+                </span>
+              </li>
+              <li :class="['search-scope-item', searchScope === 0 ? 'selected' : '']">
+                <span class="scope-content">
+                  <span class="iconfont logo"/>
+                  <span class="scope-text">it充电站</span>
+                </span>
+                <span class="select-scope">
+                  <span class="iconfont enter"/>&nbsp;全站搜索
+                </span>
+              </li>
+            </ul>
+          </div>
+          <Divider/>
+          <ul class="search-result-list">
+            <span class="search-tip">相关内容</span>
+            <li class="search-result-item">
+              <div class="JumpMenu-module_jumpItemWrapper_vfjfO">
+                <svg width="1em" height="1em" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+                     class="larkui-icon larkui-icon-doc-type-default icon-svg JumpMenu-module_jumpItemIcon_bOWlR index-module_size_wVASz"
+                     data-name="DocTypeDefault" style="width: 18px; min-width: 18px; height: 18px;">
+                  <g fill="none" fill-rule="evenodd">
+                    <path
+                      d="M4.75 1.267h10.5a2 2 0 0 1 2 2v13.5a2 2 0 0 1-2 2H4.75a2 2 0 0 1-2-2v-13.5a2 2 0 0 1 2-2Z"
+                      stroke="#3471AF" fill="#FFF"></path>
+                    <path
+                      d="M6.3 4.5h7.4a.8.8 0 0 1 .8.8v1.9a.8.8 0 0 1-.8.8H6.3a.8.8 0 0 1-.8-.8V5.3a.8.8 0 0 1 .8-.8Z"
+                      fill="#3B8EE3"></path>
+                    <path
+                      d="M14 10.75a.5.5 0 0 1 .09.992l-.09.008H6a.5.5 0 0 1-.09-.992L6 10.75h8Zm-3 3a.5.5 0 0 1 .09.992l-.09.008H6a.5.5 0 0 1-.09-.992L6 13.75h5Z"
+                      fill="#9DC6F1" fill-rule="nonzero"></path>
+                  </g>
+                </svg>
+                <span class="JumpMenu-module_jumpItemLabel_OPbMQ">整合SpringSession</span><span
+                class="JumpMenu-module_jumpItemTime_inSO2"><span>2021-05-22 15:53</span></span></div>
+            </li>
+          </ul>
+        </div>
+      </Modal>
     </div>
   </div>
 
@@ -105,17 +194,25 @@
 <script>
   export default {
     name: 'ReadCenter',
-  /*  beforeRouteEnter(to, from, next) {
-      next(vc => {
-        // 通过 `vc` 访问组件实例
-        if (vc.$route.params.index) {
-          vc.$store.commit('changeActiveRoute', 'recommend')
-        }
-        next();
-      })
-    },*/
+    /*  beforeRouteEnter(to, from, next) {
+        next(vc => {
+          // 通过 `vc` 访问组件实例
+          if (vc.$route.params.index) {
+            vc.$store.commit('changeActiveRoute', 'recommend')
+          }
+          next();
+        })
+      },*/
     data() {
       return {
+        // 搜索框显示
+        modalSearch: false,
+        keyWords: null,
+        searchError: false,
+        // 搜索范围 0全站搜索 1作者公开内容搜索 2专栏内搜索
+        searchScope: 1,
+        // 节流定时器
+        throttle: null,
         isDragging: false,
         startX: 0,
         startWidth: 0,
@@ -194,9 +291,7 @@
                     id: '2322342342',
                     title: '测试空目录该怎么展示',
                     expand: true,
-                    children: [
-
-                    ]
+                    children: []
                   },
                   {
                     id: '2322342342',
@@ -309,7 +404,14 @@
         // 菜单列表展示方式  list or tree
         navShowType: null,
         openAllTree: false,
-        view: null
+        view: null,
+        authorInfo: {
+          uid: 9527,
+          username: '布衣草人',
+          domain: 'lovbe0210',
+          level: 6,
+          avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hndj43fdrsj30s010vgtz.jpg'
+        }
       }
     },
     props: ['columnId', 'articleId'],
@@ -319,7 +421,7 @@
         return 'calc(100vw - ' + (this.sidebarWidth) + 'px)'
       },
       isColumnView() {
-        return this.columnId !== undefined;
+        return this.columnId !== undefined && this.columnId !== null;
       }
     },
     methods: {
@@ -432,15 +534,50 @@
           console.log(currentNode.id)
           this.routeNavigate(currentNode.id)
         }
+      },
+      handleInput(event) {
+        if (this.keyWords?.trim().length > 0) {
+          // 清除之前的节流计时器
+          if (this.throttle) {
+            clearTimeout(this.throttle);
+          }
+          this.searchError = false;
+          // 设置新的节流计时器
+          this.throttle = setTimeout(() => {
+            // 在这里执行特定的操作
+            this.$Message.success(this.keyWords);
+          }, 500); // 节流间隔为300ms
+        }
+      },
+      handleKeydown(event) {
+        if (this.modalSearch) {
+          switch (event.key) {
+            case 'ArrowUp':
+              this.searchScope = (this.searchScope + 1) > 2 ? 0 : (this.searchScope + 1);
+              break;
+            case 'ArrowDown':
+              this.searchScope = (this.searchScope - 1) < 0 ? 2 : (this.searchScope - 1);
+              break;
+            case 'Enter':
+              if (this.keyWords?.trim().length > 0) {
+                this.$Message.success('搜索。。。');
+              } else {
+                this.searchError = true;
+              }
+              break;
+          }
+        }
       }
-
     },
     mounted() {
-      // (document.body)?.setAttribute('style', "overflow: hidden;");
-      // window.addEventListener('resize', this.checkFullscreen);
-      // const scrollContainer = this.$refs.scrollbarContext;
-      // scrollContainer?.addEventListener('wheel', this.handleScrollForToc);
       this.navShowType = this.isColumnView ? 'tree' : 'list';
+      window.addEventListener('keydown', this.handleKeydown);
+      if (this.isColumnView) {
+        this.searchScope = 2;
+      }
+    },
+    beforeDestroy() {
+      window.removeEventListener('keydown', this.handleKeydown);
     }
   }
 </script>

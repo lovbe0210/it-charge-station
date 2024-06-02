@@ -1,7 +1,7 @@
 @font-face {
   font-family: "iconfont";
   src:
-      url('//at.alicdn.com/t/c/font_4499563_4gfpo1w02dz.woff2?t=1717213727637') format('woff2');
+      url('//at.alicdn.com/t/c/font_4499563_zin1x21v8y.woff2?t=1717309886326') format('woff2');
 }
 
 .iconfont {
@@ -36,8 +36,8 @@
   content: "\e505";
 }
 
-.huo:before {
-  content: "\e7bd";
+.logo:before {
+  content: "\e506";
 }
 
 

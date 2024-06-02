@@ -14,7 +14,7 @@
   import 'bootstrap-vue/dist/bootstrap-vue.css'
   // 引入ViewUI样式和组件
   import {
-    Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload, Icon,
+    Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload,
     Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane, Time, Table,
     RadioGroup, Radio
   } from 'view-design'
@@ -37,7 +37,7 @@
   Vue.component('ColorPicker', ColorPicker);
   Vue.component('i-switch', Switch);
   Vue.component('Upload', Upload);
-  Vue.component('Icon', Icon);
+  // Vue.component('Icon', Icon);
   Vue.component('Menu', Menu);
   Vue.component('MenuItem', MenuItem);
   Vue.component('Input', Input);
