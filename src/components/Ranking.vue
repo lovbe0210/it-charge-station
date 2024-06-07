@@ -74,5 +74,5 @@
 </script>
 
 <style scoped lang="less">
-  @import '../components/css/ranking/ranking.less';
+  @import './css/ranking/ranking.less';
 </style>

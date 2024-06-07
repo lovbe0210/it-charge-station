@@ -95,5 +95,5 @@
 </script>
 
 <style scoped lang="less">
-  @import '../components/css/setting/setting.less';
+  @import './css/setting/setting.less';
 </style>

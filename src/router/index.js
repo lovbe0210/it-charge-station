@@ -124,7 +124,7 @@ const routes = [
         redirect: {
           name: 'FeaturedNotes'
         },
-        component: () => import('@/views/Ranking'),
+        component: () => import('@/components/Ranking'),
         children: [
           {
             // 精选笔记榜
@@ -216,7 +216,7 @@ const routes = [
         path: '/settings',
         name: 'Setting',
         redirect: {name: 'Profile'},
-        component: () => import('@/views/Setting'),
+        component: () => import('@/components/Setting'),
         children: [
           {
             // 基本信息
