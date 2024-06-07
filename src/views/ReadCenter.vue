@@ -91,7 +91,7 @@
         <router-view :sidebarWidth="sidebarWidth"></router-view>
       </div>
       <Modal v-model="modalSearch"
-             width="700"
+             width="750"
              :lock-scroll="false"
              :footer-hide="true">
         <span slot="close"/>
@@ -129,7 +129,8 @@
           <div class="select-search-scope">
             <span class="search-tip">搜索范围</span>
             <ul class="search-scope-list">
-              <li :class="['search-scope-item', searchScope === 2 ? 'selected' : '']" v-if="isColumnView">
+              <li :class="['search-scope-item', searchScope === 2 ? 'selected' : '']" v-if="isColumnView"
+                  @click="searchScope = 2">
                 <span class="scope-content">
                   <span class="iconfont series-column"/>
                   <span class="scope-text">不做手机控帮助文档</span>
@@ -138,7 +139,8 @@
                   <span class="iconfont enter"/>&nbsp;专栏内搜索
                 </span>
               </li>
-              <li :class="['search-scope-item', searchScope === 1 ? 'selected' : '']">
+              <li :class="['search-scope-item', searchScope === 1 ? 'selected' : '']"
+                  @click="searchScope = 1">
                 <span class="scope-content">
                   <b-avatar :src="authorInfo.avatar" size="18px">
                     <span v-if="!authorInfo.avatar">{{authorInfo.username}}</span>
@@ -149,7 +151,8 @@
                   <span class="iconfont enter"/>&nbsp;公开内容搜索
                 </span>
               </li>
-              <li :class="['search-scope-item', searchScope === 0 ? 'selected' : '']">
+              <li :class="['search-scope-item', searchScope === 0 ? 'selected' : '']"
+                  @click="searchScope = 0">
                 <span class="scope-content">
                   <span class="iconfont logo"/>
                   <span class="scope-text">it充电站</span>
@@ -161,29 +164,29 @@
             </ul>
           </div>
           <Divider/>
-          <ul class="search-result-list">
-            <span class="search-tip">相关内容</span>
-            <li class="search-result-item">
-              <div class="JumpMenu-module_jumpItemWrapper_vfjfO">
-                <svg width="1em" height="1em" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
-                     class="larkui-icon larkui-icon-doc-type-default icon-svg JumpMenu-module_jumpItemIcon_bOWlR index-module_size_wVASz"
-                     data-name="DocTypeDefault" style="width: 18px; min-width: 18px; height: 18px;">
-                  <g fill="none" fill-rule="evenodd">
-                    <path
-                      d="M4.75 1.267h10.5a2 2 0 0 1 2 2v13.5a2 2 0 0 1-2 2H4.75a2 2 0 0 1-2-2v-13.5a2 2 0 0 1 2-2Z"
-                      stroke="#3471AF" fill="#FFF"></path>
-                    <path
-                      d="M6.3 4.5h7.4a.8.8 0 0 1 .8.8v1.9a.8.8 0 0 1-.8.8H6.3a.8.8 0 0 1-.8-.8V5.3a.8.8 0 0 1 .8-.8Z"
-                      fill="#3B8EE3"></path>
-                    <path
-                      d="M14 10.75a.5.5 0 0 1 .09.992l-.09.008H6a.5.5 0 0 1-.09-.992L6 10.75h8Zm-3 3a.5.5 0 0 1 .09.992l-.09.008H6a.5.5 0 0 1-.09-.992L6 13.75h5Z"
-                      fill="#9DC6F1" fill-rule="nonzero"></path>
-                  </g>
-                </svg>
-                <span class="JumpMenu-module_jumpItemLabel_OPbMQ">整合SpringSession</span><span
-                class="JumpMenu-module_jumpItemTime_inSO2"><span>2021-05-22 15:53</span></span></div>
+          <div class="search-result-list">
+            <div class="search-tip">相关内容</div>
+            <li class="search-result-item" v-for="item in searchResult" :key="item.id">
+              <div class="item-icon">
+                <span class="iconfont article" v-if="item.type === 2"/>
+                <span class="iconfont series-column" v-if="item.type === 1"/>
+              </div>
+              <b-link class="item-desc"
+                      :to="item.type === 1 ? ('/column/' + item.columnId)
+                          : (item.columnId ? ('/column/' + item.columnId + '/' + item.id) : '/article/' + item.id)">
+                <span class="title-label" v-html="item.title"></span>
+                <span class="content-label" v-html="item.content"></span>
+              </b-link>
+              <div class="item-info">
+                <span class="time-label un-select">
+                  {{ formatDate(new Date(item.updateTime), 'yyyy-MM-dd HH:mm') }}
+                </span>
+                <span class="provenance-label un-select" :title="item.type === 1 ? '' : item.columnName">
+                  {{item.columnId && item.type === 2 ? authorInfo.username + ' / ' + item.columnName : authorInfo.username}}
+                </span>
+              </div>
             </li>
-          </ul>
+          </div>
         </div>
       </Modal>
     </div>
@@ -192,6 +195,7 @@
 </template>
 
 <script>
+  import { formatDate } from "@/utils/utils.js"
   export default {
     name: 'ReadCenter',
     /*  beforeRouteEnter(to, from, next) {
@@ -411,7 +415,37 @@
           domain: 'lovbe0210',
           level: 6,
           avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hndj43fdrsj30s010vgtz.jpg'
-        }
+        },
+        searchResult: [
+          {
+            id: 1,
+            // 1 专栏 2 文章
+            type: 2,
+            title: 'Elasticsearch-Elasticsearch-使用入门ElasticElasticsearch-使用入门Elasticsearch-使用入门search-使用入门使用入门',
+            content: '前面介绍说，Elasticsearch 都是通过 REST API <span style="color: red;">接口</span>来操作数据的，那么下面接通过几个<span style="color: red;">接口</span>的请求来演示它的使用。（当前虚拟机IP为192.168.163.131）',
+            columnId: 123,
+            columnName: '全文检索技术探讨',
+            updateTime: 1717429008233
+          },
+          {
+            id: 2,
+            type: 1,
+            title: '如何讨富婆欢心-使用入门',
+            content: '前面介绍说，Elasticsearch 都是通过 REST API <span style="color: red;">接口</span>来操作数据的，那么下面接通过几个<span style="color: red;">接口</span>的请求来演示它的使用。（当前虚拟机IP为192.168.163.131）',
+            columnId: 124,
+            columnName: '如何讨富婆欢心',
+            updateTime: 1717429237310
+          },
+          {
+            id: 3,
+            type: 2,
+            title: '随笔该如何使用？',
+            content: '前面介绍说，Elasticsearch 都是通过 REST API 接口来操作数据的，那么下面接通过几个接口的请求来演示它的使用。（当前虚拟机IP为192.168.163.131）',
+            columnId: null,
+            columnName: null,
+            updateTime: 1717429296426
+          }
+        ]
       }
     },
     props: ['columnId', 'articleId'],
@@ -425,6 +459,7 @@
       }
     },
     methods: {
+      formatDate,
       // 组装目录树
       getListDirData() {
         if (this.dirData.length === 0) {

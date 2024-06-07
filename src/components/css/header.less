@@ -40,13 +40,6 @@
   // 下面兩個css屬性表示在输入框hover时的状态
   .index-module_input {
     border: 1px solid #9e9d9d;
-  }
-
-  .index-module_input:hover {
-    border: 1px solid #00AE9D;
-  }
-
-  .index-module_input {
     width: 160px;
     -webkit-transition: width .1s ease-in-out;
     transition: width .1s ease-in-out;
@@ -63,6 +56,14 @@
     transition: all .3s;
     display: inline-flex;
 
+    &:hover {
+      border: 1px solid #00AE9D;
+    }
+
+    .i-search {
+      margin-right: 5px;
+    }
+
     .search-input {
       padding: 0;
       border: none;
@@ -76,7 +77,6 @@
       position: relative;
       display: inline-block;
       width: 100%;
-      min-width: 0;
       color: var(--font-color);
       font-size: 14px;
       line-height: 1.5;
