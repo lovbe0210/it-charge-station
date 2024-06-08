@@ -44,7 +44,7 @@
 
 <script>
   export default {
-    name: 'Topic',
+    name: 'SeriesColumn',
     data() {
       return {
         curSort: 0,
@@ -120,6 +120,6 @@
 </script>
 
 <style scoped lang="less">
-  @import "./css/topic.less";
-  @import "./css/common-var";
+  @import "../css/homecategory/series-column.less";
+  @import "../css/common-var";
 </style>

@@ -59,9 +59,9 @@ const routes = [
               },
               {
                 // 主题
-                path: 'topic',
-                name: 'Topic',
-                component: () => import('@/components/Topic')
+                path: 'scolumn',
+                name: 'SeriesColumn',
+                component: () => import('@/components/homecategory/SeriesColumn.vue')
               }
             ]
           },
@@ -114,6 +114,13 @@ const routes = [
             name: 'RamblyJotContent',
             // 此方式为路由懒加载
             component: () => import('@/components/RamblyJotContent.vue')
+          },
+          {
+            // 搜索页面
+            path: '/search',
+            name: 'GlobalSearch',
+            // 此方式为路由懒加载
+            component: () => import('@/components/homecategory/GlobalSearch.vue')
           }
         ]
       },
@@ -317,8 +324,8 @@ const routes = [
       {
         // 专栏首页
         path: '',
-        name: 'SeriesColumnHome',
-        component: () => import('@/components/SeriesColumnHome')
+        name: 'SColumnReadHome',
+        component: () => import('@/components/SColumnReadHome')
       },
       {
         // 内容阅读

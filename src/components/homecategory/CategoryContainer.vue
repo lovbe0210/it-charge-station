@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-module_Arithmetic category">
+  <div class="layout-module_Category adjust">
     <div class="arithmetic-module_header">
       <div v-for="menuTag in categoryMenu"
            :key="menuTag.id"
@@ -330,7 +330,7 @@
 <style scoped lang="less">
   @import "../css/common-var.less";
 
-  .layout-module_Arithmetic {
+  .layout-module_Category {
 
     .arithmetic-module_header {
       font-size: 14px;

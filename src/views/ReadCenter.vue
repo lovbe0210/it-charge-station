@@ -112,14 +112,15 @@
             </span>
             <span class="input-box">
               <input :class="searchError ? 'search-error' : ''"
+                     ref="searchInput"
                      placeholder="输入搜索内容"
-                     v-model="keyWords"
+                     v-model="keywords"
                      @input="handleInput"/>
-              <span class="iconfont clear" v-show="keyWords?.length > 0"/>
+              <span class="iconfont clear" v-show="keywords?.length > 0"/>
             </span>
             <span class="input-suffix un-select">
-              <span class="iconfont arrow-top"/>
-              <span class="iconfont arrow-bottom"/>
+              <span class="iconfont arrow-top" @click="searchScope = (searchScope + 1) > 2 ? 0 : (searchScope + 1)"/>
+              <span class="iconfont arrow-bottom" @click="searchScope = (searchScope - 1) < 0 ? 2 : (searchScope - 1)"/>
               <span class="search-scope-keys">
                 切换搜索范围
               </span>
@@ -129,35 +130,32 @@
           <div class="select-search-scope">
             <span class="search-tip">搜索范围</span>
             <ul class="search-scope-list">
-              <li :class="['search-scope-item', searchScope === 2 ? 'selected' : '']" v-if="isColumnView"
-                  @click="searchScope = 2">
-                <span class="scope-content">
+              <li :class="['search-scope-item', searchScope === 2 ? 'selected' : '']" v-if="isColumnView">
+                <span class="scope-content" @click="searchScope = 2">
                   <span class="iconfont series-column"/>
                   <span class="scope-text">不做手机控帮助文档</span>
                 </span>
-                <span class="select-scope">
+                <span class="select-scope" @click="executeSearch(2)">
                   <span class="iconfont enter"/>&nbsp;专栏内搜索
                 </span>
               </li>
-              <li :class="['search-scope-item', searchScope === 1 ? 'selected' : '']"
-                  @click="searchScope = 1">
-                <span class="scope-content">
+              <li :class="['search-scope-item', searchScope === 1 ? 'selected' : '']">
+                <span class="scope-content" @click="searchScope = 1">
                   <b-avatar :src="authorInfo.avatar" size="18px">
                     <span v-if="!authorInfo.avatar">{{authorInfo.username}}</span>
                   </b-avatar>
                   <span class="scope-text">十个雨点</span>
                 </span>
-                <span class="select-scope">
+                <span class="select-scope" @click="executeSearch(1)">
                   <span class="iconfont enter"/>&nbsp;公开内容搜索
                 </span>
               </li>
-              <li :class="['search-scope-item', searchScope === 0 ? 'selected' : '']"
-                  @click="searchScope = 0">
-                <span class="scope-content">
+              <li :class="['search-scope-item', searchScope === 0 ? 'selected' : '']">
+                <span class="scope-content" @click="searchScope = 0">
                   <span class="iconfont logo"/>
                   <span class="scope-text">it充电站</span>
                 </span>
-                <span class="select-scope">
+                <span class="select-scope" @click="executeSearch(0)">
                   <span class="iconfont enter"/>&nbsp;全站搜索
                 </span>
               </li>
@@ -179,7 +177,7 @@
               </b-link>
               <div class="item-info">
                 <span class="time-label un-select">
-                  {{ formatDate(new Date(item.updateTime), 'yyyy-MM-dd HH:mm') }}
+                  {{ formatDate(new Date(item.updateTime), 'yyyy-MM-dd HH:mm:ss') }}
                 </span>
                 <span class="provenance-label un-select" :title="item.type === 1 ? '' : item.columnName">
                   {{item.columnId && item.type === 2 ? authorInfo.username + ' / ' + item.columnName : authorInfo.username}}
@@ -195,7 +193,8 @@
 </template>
 
 <script>
-  import { formatDate } from "@/utils/utils.js"
+  import {formatDate} from "@/utils/utils.js"
+
   export default {
     name: 'ReadCenter',
     /*  beforeRouteEnter(to, from, next) {
@@ -211,7 +210,7 @@
       return {
         // 搜索框显示
         modalSearch: false,
-        keyWords: null,
+        keywords: null,
         searchError: false,
         // 搜索范围 0全站搜索 1作者公开内容搜索 2专栏内搜索
         searchScope: 1,
@@ -458,6 +457,11 @@
         return this.columnId !== undefined && this.columnId !== null;
       }
     },
+    watch: {
+      "modalSearch"(newVal) {
+
+      }
+    },
     methods: {
       formatDate,
       // 组装目录树
@@ -571,7 +575,7 @@
         }
       },
       handleInput(event) {
-        if (this.keyWords?.trim().length > 0) {
+        if (this.keywords?.trim().length > 0) {
           // 清除之前的节流计时器
           if (this.throttle) {
             clearTimeout(this.throttle);
@@ -580,8 +584,26 @@
           // 设置新的节流计时器
           this.throttle = setTimeout(() => {
             // 在这里执行特定的操作
-            this.$Message.success(this.keyWords);
+            if (this.searchScope === 0) {
+              return;
+            }
+            this.executeSearch();
           }, 500); // 节流间隔为300ms
+        }
+      },
+      executeSearch(searchScope) {
+        if (searchScope !== undefined) {
+          this.searchScope = searchScope;
+        }
+        if (this.keywords?.trim().length > 0) {
+          this.$Message.success('搜索。。。');
+          if (this.searchScope === 0) {
+            let path = '/search?k=' + this.keywords;
+            this.$router.push({path: path})
+          }
+        } else {
+          this.searchError = true;
+          this.$refs.searchInput.focus();
         }
       },
       handleKeydown(event) {
@@ -594,11 +616,7 @@
               this.searchScope = (this.searchScope - 1) < 0 ? 2 : (this.searchScope - 1);
               break;
             case 'Enter':
-              if (this.keyWords?.trim().length > 0) {
-                this.$Message.success('搜索。。。');
-              } else {
-                this.searchError = true;
-              }
+              this.executeSearch();
               break;
           }
         }

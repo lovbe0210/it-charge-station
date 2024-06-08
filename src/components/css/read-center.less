@@ -441,12 +441,21 @@
         line-height: 32px;
       }
 
+      &:hover{
+        color: @light-font-color;
+
+        .iconfont {
+          border-color: @light-font-color;
+        }
+      }
+
       .iconfont {
         border: 1px solid #8A8F8D;
         border-radius: 3px;
+        cursor: pointer;
 
         &:first-child {
-          margin-right: 2px;
+          margin-right: 5px;
         }
       }
     }
@@ -457,7 +466,7 @@
       align-items: center;
 
       input {
-        width: 95%;
+        min-width: 95%;
         border: none;
         outline: none;
       }
@@ -525,7 +534,7 @@
       .search-scope-item {
         line-height: 16px;
         margin: 5px 0 5px -5px;
-        padding: 8px 5px;
+        padding: 4px 5px;
         border-radius: 5px;
         display: flex;
         align-items: center;
@@ -535,6 +544,8 @@
         .scope-content {
           display: flex;
           align-items: center;
+          width: 80%;
+          line-height: 24px;
 
           .scope-text {
             margin-left: 5px;
@@ -543,16 +554,19 @@
           .logo {
             font-size: 17px;
           }
-
-          .series-column {
-
-          }
         }
 
         .select-scope {
           color: #BEC0BF;
           visibility: hidden;
 
+          &:hover {
+            color: @dark-font-color;
+
+            .enter {
+              border-color: @dark-font-color;
+            }
+          }
           .enter {
             border: 1px solid #8A8F8D;
             border-radius: 3px;

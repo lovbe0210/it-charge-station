@@ -21,9 +21,12 @@
           <div :class="{changeColor:changeBorderColor}" id="search_wrapp">
             <span class="index-module_input">
               <span class="iconfont i-search"></span>
-              <input placeholder="请输入搜索关键字..." class="search-input enable-background" maxlength="250"
+              <input :placeholder="placeholder"
+                     class="search-input enable-background"
+                     maxlength="250"
+                     v-model="keywords"
                      @blur="changeBorder(false)"
-                     @focus="changeBorder(true)">
+                     @focus="changeBorder(true)" @keydown.enter="search">
             </span>
           </div>
         </b-navbar-nav>
@@ -204,7 +207,14 @@
         <!-- 公共部分 -->
         <b-navbar-nav class="ml-auto" :fill="true" align="center">
           <div class="charge">
-            <b-button class="write" variant="outline-*" size="sm" @click="toWriteCenter">
+            <auth-modal v-if="!loginStatus">
+              <slot>
+                <b-button class="write" variant="outline-*" size="sm">
+                  <span class="iconfont icon-charge"/>写笔记
+                </b-button>
+              </slot>
+            </auth-modal>
+            <b-button v-else class="write" variant="outline-*" size="sm" @click="toWriteCenter">
               <span class="iconfont icon-charge"/>写笔记
             </b-button>
           </div>
@@ -230,6 +240,8 @@
     name: 'Header',
     data() {
       return {
+        keywords: '',
+        placeholder: '请输入搜索关键字...',
         changeBorderColor: false,
         messageMenu: [],
         searchKey: '',
@@ -372,6 +384,10 @@
       readMessage(itemName) {
         this.showMessage = true;
         this.msgNotifyTypeActive = itemName;
+      },
+      search() {
+        let path = '/search?k=' + (this.keywords ? this.keywords : this.placeholder);
+        this.$router.push({path: path})
       }
     },
     mounted() {

@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-module_RamblyJot-container category">
+  <div class="layout-module_RamblyJot-container adjust">
     <div class="rambly-header" @click="$router.go(-1)">
       <span class="iconfont return"></span>
       <span>返回</span>

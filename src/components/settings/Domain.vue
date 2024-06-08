@@ -28,14 +28,14 @@
         </div>
         <div class="userInfo-module_description">我生来就是高山而非溪流，我欲于群峰之巅俯视平庸的沟壑</div>
         <div class="userInfo-module_detail">
-                  <span class="index-module_meta">
-                    <span class="iconfont icon-location"></span>
-                    <span>天下为公</span>
-                  </span>
           <span class="index-module_meta">
-                    <span class="iconfont icon-industry"></span>
-                    <span>新时代『农民工』</span>
-                </span>
+            <span class="iconfont location"></span>
+            <span>天下为公</span>
+          </span>
+          <span class="index-module_meta">
+            <span class="iconfont industry"></span>
+            <span>新时代『农民工』</span>
+          </span>
         </div>
         <div class="userInfo-module_followInfo">
           <a href="/explore/follows?type=User&userId=27044221" class="userInfo-module_followItem"
