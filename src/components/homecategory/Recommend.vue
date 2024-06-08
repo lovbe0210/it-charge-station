@@ -141,8 +141,8 @@
 </script>
 
 <style scoped lang="less">
-  @import "./css/recommend.less";
-  @import "./css/common-var.less";
+  @import "../css/recommend.less";
+  @import "../css/common-var.less";
 
   .t-scroll {
     position: relative;

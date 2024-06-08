@@ -276,6 +276,6 @@
 </script>
 
 <style scoped lang="less">
-  @import "./css/follow.less";
-  @import "./css/common-var";
+  @import "../css/follow.less";
+  @import "../css/common-var";
 </style>

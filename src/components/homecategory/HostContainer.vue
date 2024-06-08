@@ -40,7 +40,7 @@
 </script>
 
 <style scoped lang="less">
-  @import './css/common-var.less';
+  @import '../css/common-var.less';
 
   .ivu-menu-light {
     background-color: transparent;

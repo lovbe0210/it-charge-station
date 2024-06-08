@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../views/Index.vue'
-import Recommend from '@/components/Recommend'
+import Recommend from '@/components/homecategory/Recommend'
 import Body from '@/components/Body'
-import HostContainer from '@/components/HostContainer'
+import HostContainer from '@/components/homecategory/HostContainer'
 
 // 解决router.push报重复路由错误，实际并没有重复
 const originalPush = VueRouter.prototype.push
@@ -49,7 +49,7 @@ const routes = [
                 path: 'follow',
                 name: 'Follow',
                 // 此方式为路由懒加载
-                component: () => import('@/components/Follow')
+                component: () => import('@/components/homecategory/Follow')
               },
               {
                 // 推荐

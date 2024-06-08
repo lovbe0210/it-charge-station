@@ -2,8 +2,8 @@
   <b-row fluid class="header-row enable-background">
     <b-navbar class="navbar-expand-lg navbar-light" toggleable="xl" type="light">
       <!-- logo -->
-      <b-navbar-brand to="/">
-        <span class="iconfont icon-logo"></span>
+      <b-navbar-brand to="/" class="website-index">
+        <span class="iconfont logo"></span>
         <a id="title">IT充电站</a>
       </b-navbar-brand>
 
