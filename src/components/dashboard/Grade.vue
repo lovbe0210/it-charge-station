@@ -164,19 +164,42 @@
               </li>
             </ul>
           </div>
-          <div class="history-list-pageHolder">
-            <a-pagination :default-current="pageHolder.current"
-                          :page-size="pageHolder.pageSize"
-                          :page-size-options="pageHolder.pageSizeOptions"
-                          :total="pageHolder.total"
-                          :show-total="total => `总共 ${total} 条`"
-                          show-size-changer
-                          @showSizeChange="onShowSizeChange"
-                          @change="onChange">
-              <template slot="buildOptionText" slot-scope="props">
-                <span>{{ props.value }}条/页</span>
+          <div class="history-list-pagination un-select">
+            <div class="pagination-prefix">
+              <span>总共{{pageHolder.total}}条</span>
+            </div>
+            <b-pagination
+              v-model="pageHolder.current"
+              :total-rows="pageHolder.total"
+              :per-page="pageHolder.pageSize"
+              first-number
+              last-number>
+              <template #prev-text>
+                <span class="iconfont return"></span>
               </template>
-            </a-pagination>
+              <template #next-text>
+                <span class="iconfont to-right"></span>
+              </template>
+              <template #ellipsis-text>
+                <span class="iconfont operate-standard"></span>
+              </template>
+            </b-pagination>
+            <div class="pagination-suffix">
+              <Dropdown placement="top"
+                        trigger="click"
+                        @on-visible-change="visibleChange"
+                        @on-click="changePageSize">
+            <span class="pageSize-select">
+              {{pageHolder.pageSize}}条/页
+              <span :class="['iconfont', 'expand', showSelection ? 'rotate' : '']"></span>
+            </span>
+                <DropdownMenu slot="list">
+                  <DropdownItem name="15" :selected="pageSize == 15">15条/页</DropdownItem>
+                  <DropdownItem name="30" :selected="pageSize == 30">30条/页</DropdownItem>
+                  <DropdownItem name="50" :selected="pageSize == 50">50条/页</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
           </div>
         </div>
       </TabPane>
@@ -194,11 +217,12 @@
     name: 'Grade',
     data() {
       return {
+        showSelection: false,
         pageHolder: {
           pageSizeOptions: ['15', '30', '50'],
           current: 1,
           pageSize: 15,
-          total: 52
+          total: 520
         },
         pointsHistory: {
           total: 52,
@@ -320,6 +344,12 @@
       },
       onChange(pageNumber) {
         console.log('Page: ', pageNumber, 'Size: ', this.pageHolder.pageSize);
+      },
+      changePageSize(selectPageSize) {
+        this.pageHolder.pageSize = selectPageSize;
+      },
+      visibleChange(visible) {
+        this.showSelection = visible;
       }
     }
   }

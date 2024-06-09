@@ -18,12 +18,12 @@
                   <div class="title">
                     <span>{{item.title}}</span>
                   </div>
+                  <div class="description">
+                  <span>
+                    {{item.description}}
+                  </span>
+                  </div>
                 </b-link>
-                <div class="description">
-              <span>
-                {{item.description}}
-              </span>
-                </div>
                 <b-row class="item-icons">
                   <div>
                     <span class="iconfont like"></span> 2233
@@ -400,7 +400,7 @@
           margin-bottom: 14px;
 
           :hover {
-            color: #00B5E5;
+            color: #585A5A;
           }
 
           span {

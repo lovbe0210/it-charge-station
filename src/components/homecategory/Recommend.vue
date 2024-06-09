@@ -9,9 +9,9 @@
                 <span>{{item.title}}</span>
               </div>
               <div class="description">
-              <span>
-                {{item.description}}
-              </span>
+                <span>
+                  {{item.description}}
+                </span>
               </div>
             </b-link>
             <b-row class="item-icons un-select">

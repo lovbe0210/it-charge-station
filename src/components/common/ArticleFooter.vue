@@ -29,7 +29,10 @@
               </svg>
             </b-avatar>
           </a-tooltip>
-          <Modal v-model="moreLikeUser" :lock-scroll="false" :closable="false" :footer-hide="true" class-name="more-like-list">
+          <Modal v-model="moreLikeUser"
+                 :closable="false"
+                 :footer-hide="true"
+                 class-name="more-like-list">
             <div class="like-btn">
               <span class="like-btn-icon will-like"></span>
             </div>

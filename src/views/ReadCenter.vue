@@ -92,7 +92,6 @@
       </div>
       <Modal v-model="modalSearch"
              width="750"
-             :lock-scroll="false"
              :footer-hide="true">
         <span slot="close"/>
         <div class="modal-search-body">
@@ -189,7 +188,6 @@
       </Modal>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -598,6 +596,7 @@
         if (this.keywords?.trim().length > 0) {
           this.$Message.success('搜索。。。');
           if (this.searchScope === 0) {
+            this.modalSearch = false;
             let path = '/search?k=' + this.keywords;
             this.$router.push({path: path})
           }

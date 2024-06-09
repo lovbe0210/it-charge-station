@@ -35,7 +35,6 @@
                 v-model="showAvatarCropper"
                 title="编辑头像"
                 :mask-closable="false"
-                :lock-scroll="false"
                 @on-ok="confirmAvatarCrop">
                 <div class="avatar-cropper">
                   <vueCropper
@@ -118,15 +117,15 @@
                 </a-tooltip>
               </template>
               <span v-if="userInfo.tags && userInfo.tags.length < 4">
-                  <Input class="tag-input" v-if="inputVisible" ref="input" type="text" size="small" maxlength="4"
-                         :style="{ width: '78px' }" v-model="inputValue"
-                         @on-blur="handleInputConfirm"
-                         @on-enter="handleInputConfirm"/>
-                  <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
-                    <span class="iconfont add" style="font-size: 12px"></span>
-                    添加标签
-                  </a-tag>
-                </span>
+                <Input class="tag-input" v-if="inputVisible" ref="input" type="text" size="small" maxlength="4"
+                       :style="{ width: '78px' }" v-model="inputValue"
+                       @on-blur="handleInputConfirm"
+                       @on-enter="handleInputConfirm"/>
+                <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
+                  <span class="iconfont add" style="font-size: 12px"></span>
+                  添加标签
+                </a-tag>
+              </span>
             </div>
           </div>
         </div>

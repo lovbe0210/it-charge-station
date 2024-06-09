@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-module_NoteHome">
+  <div class="layout-module_NoteHome" ref="TooltipContainer">
     <div class="note-home-header">
       <h2 class="title">创作笔记</h2>
       <hr class="separator-line">
@@ -57,10 +57,36 @@
         </div>
         <div class="index-module_noteItem">
           <div class="index-module_meta un-select">
-            <div class="article-tag">
-              <a-tag :color="tag.color" v-for="(tag,index) in noteItem.tags" :key="index">
-                {{tag.content}}
-              </a-tag>
+            <div class="tag-add-control">
+              <template v-for="(tag, index) in noteItem.tags">
+                <a-tooltip :key="index" overlayClassName="tag-color-tooltip" :getPopupContainer="getTooltipContainer">
+                  <template slot="title">
+                    <div :style="{background: tag.color}" @click="changeTagColor(tag)" class="tag-color-btn">
+                      <div class="hazy">
+                        <span class="iconfont random"></span>
+                      </div>
+                    </div>
+                  </template>
+                  <a-tag :color=tag.color closable @close="() => handleClose(noteItem, tag)">
+                    {{ tag.content }}
+                  </a-tag>
+                </a-tooltip>
+              </template>
+              <span v-if="!noteItem.tags || noteItem.tags.length < 4">
+                <Input class="tag-input"
+                       v-if="inputVisibleId === noteItem.id"
+                       :ref="'input' + noteItem.id"
+                       type="text" size="small"
+                       maxlength="10"
+                       :style="{ width: '78px' }"
+                       v-model="inputValue"
+                       @on-blur="handleInputConfirm(noteItem)"
+                       @on-enter="handleInputConfirm(noteItem)"/>
+                <a-tag v-else class="add-tag-btn" @click="showInput(noteItem.id)">
+                  <span class="iconfont add" style="font-size: 12px"></span>
+                  添加标签
+                </a-tag>
+              </span>
             </div>
             <div class="order-time">
               <span class="note-status-module_text un-select" v-if="orderType === 'updateTime'">更新于 09-03 16:51</span>
@@ -88,9 +114,7 @@
                 <DropdownMenu slot="list">
                   <DropdownItem>取消置顶</DropdownItem>
                   <DropdownItem>复制链接</DropdownItem>
-                  <DropdownItem>分享至动态</DropdownItem>
-                  <DropdownItem>移动至专题</DropdownItem>
-                  <DropdownItem>beforeRouteEnter(to, from, next)</DropdownItem>
+                  <DropdownItem>移动至专栏</DropdownItem>
                   <DropdownItem>删除</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
@@ -103,6 +127,8 @@
 </template>
 
 <script>
+  import {getRandomColor} from '@/utils/utils'
+
   export default {
     name: 'NoteHome',
     data() {
@@ -129,7 +155,8 @@
             desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大啊沙发啦班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大咔咔好卡手打发撒公司控股见大好',
             createTime: '2023-12-23 22:09:11',
             updateTime: '2023-12-23 22:09:11',
-            sort: 0
+            sort: 0,
+            tags: []
           },
           {
             id: '76558fghfghfccbc',
@@ -165,7 +192,8 @@
             desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大啊沙发啦班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大咔咔好卡手打发撒公司控股见大好',
             createTime: '2023-12-23 22:09:11',
             updateTime: '2023-12-23 22:09:11',
-            sort: 0
+            sort: 0,
+            tags: []
           },
           {
             id: 'sdadsa2323',
@@ -173,7 +201,8 @@
             desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
             createTime: '2023-12-23 22:09:11',
             updateTime: '2023-12-23 22:09:11',
-            sort: 0
+            sort: 0,
+            tags: []
           },
           {
             id: '333323243234234234',
@@ -181,7 +210,8 @@
             desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
             createTime: '2023-12-23 22:09:11',
             updateTime: '2023-12-23 22:09:11',
-            sort: 1
+            sort: 1,
+            tags: []
           },
           {
             id: '66767dfgdfgdfgd',
@@ -189,7 +219,8 @@
             desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大啊沙发啦班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大咔咔好卡手打发撒公司控股见大好',
             createTime: '2023-12-23 22:09:11',
             updateTime: '2023-12-23 22:09:11',
-            sort: 0
+            sort: 0,
+            tags: []
           },
           {
             id: '1112121212',
@@ -197,11 +228,14 @@
             desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
             createTime: '2023-12-23 22:09:11',
             updateTime: '2023-12-23 22:09:11',
-            sort: 0
+            sort: 0,
+            tags: []
           }
         ],
         checkedList: [],
-        showCheckToolBar: false
+        showCheckToolBar: false,
+        inputVisibleId: '',
+        inputValue: ''
       }
     },
     computed: {
@@ -249,6 +283,35 @@
           case 'history':
             this.$Message.warning("敬请期待，感谢支持！")
         }
+      },
+      changeTagColor(tag) {
+        tag.color = getRandomColor();
+      },
+      // 标签移除
+      handleClose(noteItem, removedTag) {
+        noteItem.tags = noteItem.tags.filter(tag => tag !== removedTag);
+      },
+      // 展示添加新标签
+      showInput(noteId) {
+        this.inputVisibleId = noteId;
+
+        this.$nextTick(function () {
+          let inputId = 'input' + noteId;
+          this.$refs[inputId][0].focus();
+        });
+      },
+      // 标签添加完成
+      handleInputConfirm(noteItem) {
+        const tag = {content: this.inputValue, color: getRandomColor()};
+        let tags = noteItem.tags;
+        if (tag.content && tags.indexOf(tag) === -1) {
+          noteItem.tags = [...tags, tag];
+        }
+        this.inputVisibleId = '';
+        this.inputValue = '';
+      },
+      getTooltipContainer() {
+        return this.$refs.TooltipContainer
       }
     },
     mounted() {

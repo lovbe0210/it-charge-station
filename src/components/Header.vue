@@ -350,7 +350,7 @@
             this.$router.push({path: '/dashboard/relational/concern'})
             break;
           case 'seriesColumn':
-            this.$router.push({name: 'SeriesColumn'})
+            this.$router.push({path: '/dashboard/seriesColumn'})
             break;
           case 'userHome':
             this.$router.push({name: 'Domain'})

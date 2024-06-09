@@ -5,9 +5,32 @@
     color: @light-font-color;
     line-height: 20px;
 
+    .return-all {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      margin: 20px 0 0 10px;
+
+      &:hover {
+        color: @dark-font-color;
+      }
+
+      span {
+        line-height: 16px;
+      }
+    }
+
     .search-result-extend {
       float: right;
       cursor: pointer;
+
+      &:hover {
+        color: @dark-font-color;
+      }
+
+      span {
+        line-height: 16px;
+      }
     }
   }
 
@@ -19,7 +42,6 @@
     .suggestions-item-user {
       width: 32%;
       display: flex;
-      justify-content: space-between;
       color: @grey-white-font-color;
       border: 1px solid @border-004;
       border-radius: 8px;
@@ -56,7 +78,6 @@
     .suggestions-item-column {
       width: 32%;
       display: flex;
-      justify-content: space-between;
       color: @grey-white-font-color;
       border: 1px solid @border-004;
       border-radius: 8px;
@@ -66,12 +87,12 @@
       .series-column {
         font-size: 22px;
         margin-right: 10px;
+        margin-top: -3px;
         color: @dark-font-color;
       }
 
       .item-columnInfo {
         overflow: hidden;
-        color: @dark-font-color;
 
         .item-title {
           font-size: 16px;
@@ -109,8 +130,156 @@
         }
 
         .item-belong {
+          color: @grey-white-font-color;
+        }
+      }
+    }
+  }
+
+  .only-user-column {
+    flex-direction: column;
+    margin-top: 0;
+
+    .suggestions-item-user, .suggestions-item-column {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid @border-004;
+    }
+  }
+
+  .search-result-suggestions-article {
+    .article-item-container {
+      .suggestions-article-item {
+        display: flex;
+        align-content: space-between;
+        padding: 20px 20px;
+        border-bottom: 1px solid #eff0f0;
+        margin-bottom: 10px;
+
+        a {
           color: @dark-font-color;
         }
+
+        .article {
+          font-size: 22px;
+          margin-right: 10px;
+          margin-top: -3px;
+          color: @dark-font-color;
+        }
+
+        .article-item-info {
+
+          .article-item-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+            font-weight: 500;
+            line-height: 22px;
+          }
+
+          .article-item-abstract {
+            display: -webkit-box;
+            max-height: 36px;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 18px;
+            font-size: 14px;
+            margin-bottom: 8px;
+          }
+
+          .article-item-belongInfo {
+            line-height: 18px;
+            font-size: 14px;
+
+            a, .article-item-date {
+              color: #8a8f8d;
+            }
+
+            .article-item-date {
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .suggestions-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    line-height: 32px;
+    margin: 20px;
+
+    .pagination-prefix {
+      margin-right: 20px;
+    }
+
+    .pagination-suffix {
+      margin-left: 15px;
+
+      .ivu-dropdown {
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        .ivu-dropdown-item-selected, .ivu-dropdown-item-selected:hover {
+          background: #f3f3f3;
+        }
+      }
+
+      .pageSize-select {
+        margin: 0 15px;
+        cursor: pointer;
+
+        .expand {
+          font-size: 14px;
+          color: #8a8f8d;
+        }
+
+        .rotate {
+          display: inline-block;
+          transform: rotate(-180deg);
+          transition: transform 0.3s ease-in-out;
+        }
+      }
+    }
+
+    /deep/.pagination {
+
+      .page-item {
+        border-radius: 4px;
+        margin-right: 8px;
+
+        .page-link {
+          padding: 0;
+          line-height: 32px;
+          width: 32px;
+          margin: 0 1px;
+          text-align: center;
+          border-radius: 4px;
+          color: #585A5A;
+
+          &:focus {
+            outline: 0;
+            box-shadow: none;
+          }
+
+          .iconfont {
+            font-size: 14px;
+          }
+        }
+      }
+
+      .disabled:not([role="separator"]) > .page-link {
+        cursor: not-allowed;
+        pointer-events: unset;
+      }
+
+      .page-item.active .page-link,  .page-item:not(.disabled):hover .page-link{
+        z-index: 3;
+        color: #00b96b;
+        background-color: unset;
+        border-color: #00b96b;
       }
     }
   }

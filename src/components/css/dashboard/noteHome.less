@@ -63,7 +63,6 @@
           align-items: center;
           cursor: pointer;
           border: 1px solid #dbdada;
-          background: #FFFFFF;
           border-radius: 5px;
 
           .order {
@@ -132,6 +131,38 @@
           padding-left: 12px;
           padding-right: 42px;
 
+          .tag-add-control {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            padding: 5px;
+
+            /deep/.ant-tag {
+              display: flex;
+              line-height: 24.5px;
+              align-items: center;
+              justify-content: center;
+
+              .anticon-close {
+                height: 24.5px;
+                display: flex;
+                align-items: center;
+              }
+
+              .ivu-input:focus {
+                border-color: #0BD07D;
+                outline: 0;
+                box-shadow: none;
+              }
+            }
+
+            .add-tag-btn {
+              border-style: dashed;
+              background: unset;
+            }
+          }
+
           .note-status-module_text {
             font-size: 12px;
             color: #8A8F8D;
@@ -143,12 +174,16 @@
           color: #262626;
 
           .viewer-header {
-            margin: 10px 0 5px;
+            margin: 10px 0 0;
             line-height: 28px;
             letter-spacing: 0.008em;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
+
+            &:hover {
+              color: #585A5A;
+            }
 
             span {
               display: inline-block;
@@ -163,6 +198,7 @@
             font-size: 15px;
             line-height: 20px;
             height: 40px;
+            color: #8a8f8d;
 
             span {
               display: -webkit-box;
@@ -183,7 +219,7 @@
         .note-list-toolbar {
           opacity: 0;
           transition: 0.5s;
-          margin-top: 3px;
+          margin-top: 10px;
 
           .edit-btn, .menu-btn {
             display: flex;
@@ -253,4 +289,48 @@
     }
   }
 
+}
+
+/deep/ .tag-color-tooltip {
+  padding-top: 0 !important;
+}
+
+/deep/ .ant-tooltip-placement-top {
+  padding-bottom: 0 !important;
+}
+
+/deep/.ant-tooltip-inner {
+  font-size: 12px;
+  background-color: rgba(0, 0, 0, 0.75);
+  min-width: unset;
+  min-height: unset;
+  padding: 0;
+
+  .tag-color-btn {
+    width: 32px;
+    height: 26px;
+    border-radius: 3px;
+
+    .hazy {
+      width: 32px;
+      height: 26px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255,255,255,0.5);
+    }
+  }
+}
+
+/deep/ .ant-tooltip-arrow {
+  display: none;
+}
+
+/deep/ .tag-input {
+
+  .ivu-input {
+    border-color: #0BD07D;
+    outline: none;
+    box-shadow: none;
+  }
 }

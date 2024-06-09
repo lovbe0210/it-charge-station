@@ -134,7 +134,6 @@
         v-model="showModal"
         :title="changePermission ? '权限编辑' : deleteColumn ? '删除专栏' : ''"
         :mask-closable="false"
-        :lock-scroll="false"
         :footer-hide="true">
         <div v-if="changePermission">
           <div class="modal-title">
