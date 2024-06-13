@@ -49,7 +49,8 @@
           </a-tooltip>
 
         </div>
-        <div class="column-card-body" :style="columnShowType == 1 ? 'border-radius: 0 0 8px 8px;border-top: 0;' : 'border-radius: 8px;'">
+        <div class="column-card-body"
+             :style="columnShowType == 1 ? 'border-radius: 0 0 8px 8px;border-top: 0;' : 'border-radius: 8px;'">
           <div class="column-meta">
             <div class="card-meta-title">
               <a href="/column/pb2d66" class="book-link" target="_self">
@@ -139,33 +140,33 @@
           <div class="modal-title">
             <span>公开性</span>
           </div>
-          <RadioGroup v-model="isPublic" @change="changeScope">
+          <div permission-radio>
+            <input type="radio" :checked="!isPublic" @click="isPublic = 0"/> 仅作者可访问
+
+            <Poptip confirm
+                    placement="right"
+                    title="开启后，互联网所有获得链接的人皆可访问专栏内的全部内容。你需对其合法合规性负责，遵守相关法律法规及it充电站 服务协议 约定，违规内容可能无法被查看。"
+                    @on-ok="isPublic = 1"
+                    @on-cancel="isPublic = 0">
+              <input type="radio" :checked="isPublic" @click="isPublic = 0"/> 互联网所有人可访问
+            </Poptip>
+          </div>
+          <!--<RadioGroup class="permission-radio"
+                      v-model="isPublic">
             <Radio style="display: block; height: 30px; lineHeight: 30px" :label="0">
               仅作者可访问
             </Radio>
-            <a-popconfirm
-              ok-text="确认"
-              cancel-text="取消"
-              @confirm="confirmChangeScope(true)"
-              @cancel="confirmChangeScope(false)"
-              placement="rightBottom"
-              :disabled="isPublic === 1"
-            >
-              <span class="iconfont delete" slot="icon"></span>
-              <div slot="title">
-                  <span>
-                    确认公开给互联网所有人
-                  </span>
-                <span>
-                    开启后，互联网所有获得链接的人皆可访问知识库下的全部内容。你需对其合法合规性负责，遵守相关法律法规及语雀 服务协议 约定，违规内容可能无法被查看。
-                  </span>
-              </div>
-              <Radio style="display: block; height: 30px; lineHeight: 30px" :label="1">
+            <Poptip
+              confirm
+              placement="right"
+              title="开启后，互联网所有获得链接的人皆可访问专栏内的全部内容。你需对其合法合规性负责，遵守相关法律法规及it充电站 服务协议 约定，违规内容可能无法被查看。"
+              @on-ok="confirmChangeScope(true)"
+              @on-cancel="confirmChangeScope(false)">
+              <Radio style="display: block; height: 30px; lineHeight: 30px" :label="1" :class="confirmPublic ? '': 'un-public-confirm'">
                 互联网所有人可访问
               </Radio>
-            </a-popconfirm>
-
-          </RadioGroup>
+            </Poptip>
+          </RadioGroup>-->
         </div>
         <div v-if="deleteColumn">
           删除专栏
@@ -288,6 +289,7 @@
           {
             id: '1112121212',
             columnName: '是个标题啊',
+            isPublic: 1,
             columnHome: '/lovbe0210/sd45454',
             coverImg: require('@/assets/cover/cover2.png'),
             desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
