@@ -354,13 +354,47 @@
 }
 
 /deep/.permission-radio {
-  .un-public-confirm {
-    .ivu-radio-inner {
-      border-color: #dcdee2;
+  margin: 20px 0;
+  .private-radio, .public-radio {
+    display: flex;
+    margin-bottom: 15px;
+    margin-left: 10px;
 
-      &::after {
-        opacity: 0;
+    input {
+      margin-right: 8px;
+
+      &::before {
+        position: relative;
+        content: "";
+        top: 3px;
+        left: -1px;
+        width: 16px;
+        height: 16px;
+        display: block;
+        border-radius: 50%;
+        background-color: #FFFFFF;
+        border: 1px solid #00b96b;
+        z-index: 5;
       }
+
+      &:checked::after {
+        position: relative;
+        content: "";
+        bottom: 9px;
+        left: 3px;
+        width: 8px;
+        height: 8px;
+        display: block;
+        border-radius: 50%;
+        visibility: visible;
+        background-color: #00b96b;
+        z-index: 6;
+      }
+    }
+
+
+    .permission-label {
+      margin: 0;
     }
   }
 }

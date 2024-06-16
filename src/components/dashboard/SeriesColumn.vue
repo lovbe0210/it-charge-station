@@ -70,7 +70,7 @@
           </div>
           <span class="column-hover-show"
                 :style="columnShowType == 1 ? 'bottom: 48px;' : 'top: 12px;'">
-            <Dropdown placement="bottom-end" @on-click="routeNavigate">
+            <Dropdown placement="bottom-end">
                 <a href="javascript:void(0)">
                   <div class="menu-btn">
                     <span class="iconfont icon-nav-menu"></span>
@@ -78,16 +78,24 @@
                 </a>
                 <DropdownMenu slot="list">
                   <DropdownItem name="scope">
-                    <span class="iconfont permissions"/> 权限
+                    <span @click="routeNavigate(columnItem,'scope')">
+                      <span class="iconfont permissions"/> 权限
+                    </span>
                   </DropdownItem>
                   <DropdownItem name="rename">
-                    <span class="iconfont rename"/> 重命名
+                    <span @click="routeNavigate(columnItem,'rename')">
+                      <span class="iconfont rename"/> 重命名
+                    </span>
                   </DropdownItem>
                   <DropdownItem name="setting">
-                    <span class="iconfont setting"/> 更多设置
+                    <span @click="routeNavigate(columnItem,'setting')">
+                      <span class="iconfont setting"/> 更多设置
+                    </span>
                   </DropdownItem>
                   <DropdownItem name="delete">
-                    <span class="iconfont delete"/> 删除
+                    <span @click="routeNavigate(columnItem,'delete')">
+                      <span class="iconfont delete"/> 删除
+                    </span>
                   </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
@@ -113,9 +121,10 @@
                    class="column-summary-item">
                   <span class="column-summary-itemText">决策指挥大屏系统V4.30数据同步</span>
                   <span class="column-summary-itemTime">
-                  <span>08-08 14:09</span>
-                </span>
+                    <span>08-08 14:09</span>
+                  </span>
                 </a>
+              </li>
               <li>
                 <a target="_blank" href="/column/pb2d66/vv91fhpithr0t7sl" title="初识Vue"
                    class="column-summary-item">
@@ -134,39 +143,44 @@
       <Modal
         v-model="showModal"
         :title="changePermission ? '权限编辑' : deleteColumn ? '删除专栏' : ''"
-        :mask-closable="false"
         :footer-hide="true">
         <div v-if="changePermission">
           <div class="modal-title">
             <span>公开性</span>
           </div>
-          <div permission-radio>
-            <input type="radio" :checked="!isPublic" @click="isPublic = 0"/> 仅作者可访问
-
-            <Poptip confirm
+          <div class="permission-radio">
+            <div class="private-radio">
+              <input type="radio"
+                     id="private"
+                     name="isPublic"
+                     value="0"
+                     :checked="!isPublic" />
+              <label class="permission-label un-select" for="private">仅作者可访问</label>
+            </div>
+            <Poptip class="un-select"
+                    confirm
                     placement="right"
-                    title="开启后，互联网所有获得链接的人皆可访问专栏内的全部内容。你需对其合法合规性负责，遵守相关法律法规及it充电站 服务协议 约定，违规内容可能无法被查看。"
                     @on-ok="isPublic = 1"
                     @on-cancel="isPublic = 0">
-              <input type="radio" :checked="isPublic" @click="isPublic = 0"/> 互联网所有人可访问
+              <div class="public-radio">
+                <input type="radio"
+                       name="isPublic"
+                       value="1"
+                       :checked="isPublic"
+                       @click="readPublicPermission"/>
+                <span class="permission-label un-select">互联网可访问</span>
+              </div>
+              <div slot="title">
+                <span>
+                  开启后，互联网所有获得链接的人皆可访问专栏内的全部内容。你需对其合法合规性负责，遵守相关法律法规及it充电站
+                </span>
+                <a class="color: #43C8EC" href="/">服务协议</a>
+                <span>
+                  约定，违规内容可能无法被查看。
+                </span>
+              </div>
             </Poptip>
           </div>
-          <!--<RadioGroup class="permission-radio"
-                      v-model="isPublic">
-            <Radio style="display: block; height: 30px; lineHeight: 30px" :label="0">
-              仅作者可访问
-            </Radio>
-            <Poptip
-              confirm
-              placement="right"
-              title="开启后，互联网所有获得链接的人皆可访问专栏内的全部内容。你需对其合法合规性负责，遵守相关法律法规及it充电站 服务协议 约定，违规内容可能无法被查看。"
-              @on-ok="confirmChangeScope(true)"
-              @on-cancel="confirmChangeScope(false)">
-              <Radio style="display: block; height: 30px; lineHeight: 30px" :label="1" :class="confirmPublic ? '': 'un-public-confirm'">
-                互联网所有人可访问
-              </Radio>
-            </Poptip>
-          </RadioGroup>-->
         </div>
         <div v-if="deleteColumn">
           删除专栏
@@ -315,10 +329,11 @@
       getTooltipContainer() {
         return this.$refs.TooltipContainer
       },
-      routeNavigate(itemName) {
+      routeNavigate(columnItem, itemName) {
         switch (itemName) {
           case "scope":
             // 权限编辑，使用模态框显示
+            this.isPublic = columnItem.isPublic;
             this.changePermission = true;
             break;
           case "rename":
@@ -336,6 +351,9 @@
         if (value) {
           this.isPublic = 1;
         }
+      },
+      readPublicPermission(event) {
+        event.preventDefault();
       }
     },
     mounted() {
