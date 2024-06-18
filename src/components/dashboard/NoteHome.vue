@@ -105,7 +105,7 @@
         <div class="index-module_rightToolBar">
           <div class="note-list-toolbar">
             <div class="menu-btn-wrapp">
-              <Dropdown placement="bottom-end">
+              <Dropdown placement="bottom-end" trigger="click">
                 <a href="javascript:void(0)">
                   <div class="menu-btn">
                     <span class="iconfont icon-nav-menu"></span>

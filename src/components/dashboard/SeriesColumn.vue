@@ -5,7 +5,7 @@
       <hr class="separator-line">
       <div class="operation">
         <div class="action">
-          <div class="icon-box">
+          <div class="icon-box" @click="createNewColumn = true">
             <a-tooltip :getPopupContainer="getTooltipContainer">
               <template slot="title">
                 新建专栏
@@ -47,30 +47,38 @@
               <span class="iconfont bianji"></span>
             </div>
           </a-tooltip>
-
         </div>
         <div class="column-card-body"
              :style="columnShowType == 1 ? 'border-radius: 0 0 8px 8px;border-top: 0;' : 'border-radius: 8px;'">
           <div class="column-meta">
             <div class="card-meta-title">
-              <a href="/column/pb2d66" class="book-link" target="_self">
-                <span class="lark-book-title">
-                  <span class="book-name">
-                    <span class="book-name-text">{{columnItem.columnName}}</span>
-                    <span class="book-name-scope">
-                      <span class="iconfont lock"></span>
-                    </span>
-                  </span>
+              <span class="book-name" v-show="columnRenameId !== columnItem.id">
+                <a href="/column/pb2d66" class="book-link" target="_self">
+                  <span class="book-name-text" :title="columnItem.columnName">{{columnItem.columnName}}</span>
+                </a>
+                <span class="book-name-scope">
+                  <span :class="['iconfont', columnItem.isPublic ? 'public' : 'lock']"
+                        :title="columnItem.isPublic ? '互联网可访问' : '仅作者自己访问'"/>
                 </span>
-              </a>
+              </span>
+              <div v-if="columnRenameId === columnItem.id" class="book-rename">
+                <Input type="text"
+                       ref="renameInput"
+                       v-model="columnItem.columnName"
+                       :placeholder="columnItem.columnName"
+                       maxlength="30"
+                       @on-enter="columnNameRename"
+                       @on-blur="columnNameRename"
+                       />
+              </div>
             </div>
             <div class="card-meta-description">
               <span class="columns-module_description">forever study a little everyday</span>
             </div>
           </div>
           <span class="column-hover-show"
-                :style="columnShowType == 1 ? 'bottom: 48px;' : 'top: 12px;'">
-            <Dropdown placement="bottom-end">
+                :style="columnShowType == 1 ? 'bottom: 48px;' : 'top: 15px;'">
+            <Dropdown placement="bottom-end" trigger="click">
                 <a href="javascript:void(0)">
                   <div class="menu-btn">
                     <span class="iconfont icon-nav-menu"></span>
@@ -142,31 +150,29 @@
     <div class="modal-box">
       <Modal
         v-model="showModal"
-        :title="changePermission ? '权限编辑' : deleteColumn ? '删除专栏' : ''"
+        :title="createNewColumn ? '新建专栏' : changePermission ? '权限编辑' : deleteColumn ? '删除专栏' : ''"
         :footer-hide="true">
         <div v-if="changePermission">
           <div class="modal-title">
             <span>公开性</span>
           </div>
           <div class="permission-radio">
-            <div class="private-radio">
+            <div class="private-radio" @click="currentColumn.isPublic = 0">
               <input type="radio"
                      id="private"
-                     name="isPublic"
                      value="0"
-                     :checked="!isPublic" />
+                     :class="currentColumn.isPublic ? '' : 'checked'"/>
               <label class="permission-label un-select" for="private">仅作者可访问</label>
             </div>
             <Poptip class="un-select"
                     confirm
                     placement="right"
-                    @on-ok="isPublic = 1"
-                    @on-cancel="isPublic = 0">
+                    @on-ok="currentColumn.isPublic = 1"
+                    @on-cancel="currentColumn.isPublic = 0">
               <div class="public-radio">
                 <input type="radio"
-                       name="isPublic"
                        value="1"
-                       :checked="isPublic"
+                       :class="currentColumn.isPublic ? 'checked' : ''"
                        @click="readPublicPermission"/>
                 <span class="permission-label un-select">互联网可访问</span>
               </div>
@@ -182,8 +188,81 @@
             </Poptip>
           </div>
         </div>
-        <div v-if="deleteColumn">
-          删除专栏
+        <div class="delete-warn" v-if="deleteColumn">
+          <div class="warn-content un-select">
+            <span class="iconfont warn"></span>
+            <span>
+              正在删除知识库
+              <span class="column-name">
+                {{currentColumn.columnName}}
+              </span>
+              ，该操作不可逆，一旦操作成功，知识库下的所有内容将会删除。请输入下面内容再次确认操作。
+            </span>
+          </div>
+          <div class="warn-confirm">
+            <span>请在下方输入框中输入 “{{currentColumn.id}}” 以确认操作</span>
+            <Input type="text"
+                   :class="['confirm-input', cannotDelete ? 'cannot-delete' : '']"
+                   @on-change="cannotDelete = false"
+                   :clearable="cannotDelete"
+                   v-model="columnDeleteId"/>
+            <span v-if="cannotDelete" class="tips">请按提示重新输入</span>
+          </div>
+          <div>
+            <Button type="error" class="warn-btn" @click="columnDelete">
+              <span class="column-name">确定删除 {{currentColumn.columnName}}</span>
+            </Button>
+          </div>
+        </div>
+        <div class="create-column" v-if="createNewColumn">
+          <span class="label">基本信息</span>
+          <div class="input-group">
+            <Input type="text"
+                   class="column-name"
+                   maxlength="30"
+                   placeholder="专栏名称"
+                   v-model="currentColumn.columnName"/>
+            <Input type="textarea"
+                   class="desc"
+                   :rows="4"
+                   placeholder="专栏简介（选填）"
+                   v-model="currentColumn.desc"/>
+          </div>
+          <span class="label">访问权限</span>
+          <div class="permission-radio">
+              <div class="private-radio" @click="currentColumn.isPublic = 0">
+                <input type="radio"
+                       id="initPrivate"
+                       value="0"
+                       :class="currentColumn.isPublic ? '' : 'checked'"/>
+                <span class="permission-label un-select" for="initPrivate">仅作者可访问</span>
+              </div>
+              <Poptip class="un-select"
+                      confirm
+                      placement="right"
+                      @on-ok="currentColumn.isPublic = 1"
+                      @on-cancel="currentColumn.isPublic = 0">
+                <div class="public-radio">
+                  <input type="radio"
+                         value="1"
+                         :class="currentColumn.isPublic ? 'checked' : ''"
+                         @click="readPublicPermission"/>
+                  <span class="permission-label un-select">互联网可访问</span>
+                </div>
+                <div slot="title">
+                <span>
+                  开启后，互联网所有获得链接的人皆可访问专栏内的全部内容。你需对其合法合规性负责，遵守相关法律法规及it充电站
+                </span>
+                  <a class="color: #43C8EC" href="/">服务协议</a>
+                  <span>
+                  约定，违规内容可能无法被查看。
+                </span>
+                </div>
+              </Poptip>
+            </div>
+          <Button type="success" class="create-btn" :disabled="!currentColumn?.columnName">
+            <span>新建</span>
+          </Button>
         </div>
       </Modal>
     </div>
@@ -198,10 +277,19 @@
         // 专栏展示方式 1图文模式，2列表模式
         columnShowType: 2,
         // 控制专栏名称编辑或显示
-        editColumnName: false,
+        columnRenameId: '',
+        // 删除专栏时的确认输入内容
+        columnDeleteId: '',
+        cannotDelete: false,
         // 控制权限和删除页面模态框的显示
         changePermission: false,
         deleteColumn: false,
+        createNewColumn: false,
+        currentColumn: {
+          columnName: '',
+          isPublic: 0,
+          desc: ''
+        },
         seriesColumnList: [
           {
             id: '1231asdasdad',
@@ -310,16 +398,16 @@
             updateTime: '2023-12-23 22:09:11',
             sort: 0
           }
-        ],
-        isPublic: 0
+        ]
       }
     },
     computed: {
       showModal: {
         get() {
-          return this.changePermission || this.deleteColumn;
+          return this.createNewColumn || this.changePermission || this.deleteColumn;
         },
         set(value) {
+          this.createNewColumn = value;
           this.changePermission = value;
           this.deleteColumn = value;
         }
@@ -330,14 +418,19 @@
         return this.$refs.TooltipContainer
       },
       routeNavigate(columnItem, itemName) {
+        this.currentColumn = columnItem;
         switch (itemName) {
           case "scope":
             // 权限编辑，使用模态框显示
-            this.isPublic = columnItem.isPublic;
             this.changePermission = true;
             break;
           case "rename":
-            this.editColumnName = true;
+            this.columnRenameId = columnItem.id;
+            this.$nextTick(() => {
+              this.$refs.renameInput[0].focus({
+                cursor: 'end'
+              });
+            })
             break;
           case "setting":
             this.$router.push({})
@@ -347,16 +440,55 @@
             break;
         }
       },
-      confirmChangeScope(value) {
-        if (value) {
-          this.isPublic = 1;
+      columnDelete() {
+        if (this.columnDeleteId !== this.currentColumn?.id) {
+          this.cannotDelete = true;
+        } else {
+          this.deleteColumn = false;
+          this.$Message.success('删除成功')
         }
       },
       readPublicPermission(event) {
         event.preventDefault();
+      },
+      columnNameRename() {
+        if (this.columnRenameId === '' || !this.columnRenameId) {
+          return;
+        }
+        this.columnRenameId = '';
+        this.$Message.success('修改成功')
       }
     },
-    mounted() {
+    watch: {
+      "deleteColumn"(val) {
+        if (!val) {
+          this.cannotDelete = false;
+          this.columnDeleteId = '';
+          this.currentColumn = {
+            columnName: '',
+            isPublic: 0,
+            desc: ''
+          };
+        }
+      },
+      "changePermission"(val) {
+        if (!val) {
+          this.currentColumn = {
+            columnName: '',
+            isPublic: 0,
+            desc: ''
+          };
+        }
+      },
+      "createNewColumn"(val) {
+        if (!val) {
+          this.currentColumn = {
+            columnName: '',
+            isPublic: 0,
+            desc: ''
+          };
+        }
+      }
     }
   }
 </script>

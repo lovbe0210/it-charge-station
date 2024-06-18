@@ -16,7 +16,7 @@
         </li>
         <!-- 超出13时只展示13个，然后显示更多 -->
         <li v-if="likeUserList?.length > 13" class="show-more-like-list" @click="moreLikeUser = true">
-          <a-tooltip placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer">
+          <a-tooltip placement="top" :getPopupContainer="()=>this.$refs.console.logpContainer">
             <template slot="title">
               查看所有点赞用户
             </template>

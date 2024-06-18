@@ -20,7 +20,7 @@
   } from 'view-design'
   import './index.less'
   import {
-    Tooltip, Card, Popover, Pagination, Tag, Select, Checkbox, Skeleton, Empty
+    Tooltip, Card, Popover, Tag, Select, Checkbox, Skeleton, Empty
   } from 'ant-design-vue'
   import commonUtil from "@/utils/common"
   // 引入弹幕模块
@@ -57,7 +57,6 @@
   Vue.component('a-card', Card);
   Vue.component('a-card-meta', Card.Meta);
   Vue.component('a-popover', Popover);
-  Vue.component('a-pagination', Pagination);
   Vue.component('a-tag', Tag);
   Vue.component('a-select', Select);
   Vue.component('a-select-option', Select.Option);
