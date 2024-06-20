@@ -180,6 +180,12 @@ const routes = [
             component: () => import('@/components/dashboard/SeriesColumn')
           },
           {
+            // 专栏设置
+            path: 'seriesColumnSetting',
+            name: 'SeriesColumnSetting',
+            component: () => import('@/components/dashboard/SeriesColumnSetting')
+          },
+          {
             // 随笔
             path: 'ramblyJot',
             name: 'RamblyJot',
