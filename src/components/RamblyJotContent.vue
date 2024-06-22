@@ -41,6 +41,7 @@
     },
     methods: {
     },
+    props: ['rjId'],
     components: {
       ReplyComment
     },

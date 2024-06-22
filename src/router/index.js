@@ -181,7 +181,8 @@ const routes = [
           },
           {
             // 专栏设置
-            path: 'seriesColumnSetting',
+            path: 'column/setting/:columnId',
+            props: true,
             name: 'SeriesColumnSetting',
             component: () => import('@/components/dashboard/SeriesColumnSetting')
           },
@@ -194,6 +195,7 @@ const routes = [
           {
             // 随笔内容展示
             path: 'ramblyJot/:rjId',
+            props: true,
             name: 'RamblyJotContent',
             component: () => import('@/components/RamblyJotContent')
           },
@@ -357,7 +359,9 @@ const router = new VueRouter({
   routes,
   // 滚动条行为
   scrollBehavior(to, from, position) {
-    if (from.fullPath?.includes('/ramblyJot/') && to.fullPath === '/ramblyJot') {
+    let fixed = from.fullPath?.includes('/ramblyJot/') && to.fullPath === '/ramblyJot';
+    fixed = fixed || (from.fullPath?.includes('/column/setting/') && to.fullPath === '/dashboard/seriesColumn');
+    if (fixed) {
       return position;
     } else {
       if (to.fullPath?.includes('/dashboard')) {

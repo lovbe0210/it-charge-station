@@ -225,6 +225,7 @@
             <Input type="textarea"
                    class="desc"
                    :rows="4"
+                   maxlength="255"
                    placeholder="专栏简介（选填）"
                    v-model="currentColumn.desc"/>
           </div>
@@ -433,7 +434,9 @@
             })
             break;
           case "setting":
-            this.$router.push({})
+            this.$router.push({
+              path: '/dashboard/column/setting/' + columnItem.id
+            })
             break;
           case "delete":
             this.deleteColumn = true;

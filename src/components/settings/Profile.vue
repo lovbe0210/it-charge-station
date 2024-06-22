@@ -46,6 +46,7 @@
                     :centerBox="true"
                     :fixed="true"
                     :canScale="false"
+                    :canMove="false"
                     :maxImgSize="400"
                     :info="false"
                     @cropMoving="cropMoving"
@@ -269,7 +270,6 @@
         this.$refs.cropper.getCropData(data => {
           this.avatarPreview = data;
         })
-
       },
       imgLoadOver(data) {
         if (data) {
