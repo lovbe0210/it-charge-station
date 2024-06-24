@@ -49,7 +49,7 @@
             <div class="desc form-item">
               <div class="label">
                 <div class="label-text">简介</div>
-                <div>{{columnInfo.desc?.length ? columnInfo.desc?.length : 0}} / 255</div>
+                <div>{{ columnInfo.desc?.length ? columnInfo.desc?.length : 0 }} / 255</div>
               </div>
               <Input type="textarea"
                      class="desc-input form-input"
@@ -182,7 +182,7 @@
               </div>
               <div class="item-checked" v-if="checkedList.length > 0 || showCheckToolBar">
                 <span>
-                  共选择了{{checkedList.length}}篇笔记
+                  共选择了{{ checkedList.length }}篇笔记
                 </span>
                 <Button type="text" @click="cancelCheck">
                   取消选择
@@ -222,23 +222,28 @@
                       </div>
                     </a>
                     <DropdownMenu slot="list">
-                      <DropdownItem name="scope">
-                     <span @click="articleAction(noteItem,'edit')" class="action-item">
+                      <DropdownItem>
+                        <span @click="articleAction(noteItem,'edit')" class="action-item">
                        <span class="iconfont bianji"/> 编辑文档
                      </span>
                       </DropdownItem>
-                      <DropdownItem name="rename">
-                     <span @click="articleAction(noteItem,'setting')" class="action-item">
+                      <DropdownItem>
+                        <span @click="articleAction(noteItem,'setting')" class="action-item">
                        <span class="iconfont article-setting"/> 文档设置
                      </span>
                       </DropdownItem>
-                      <DropdownItem name="setting">
-                     <span @click="articleAction(noteItem,'export')" class="action-item">
-                       <span class="iconfont export"/> 导出
-                     </span>
+                      <DropdownItem>
+                        <span @click="articleAction(noteItem,'remove')" class="action-item">
+                          <span class="iconfont remove"/> 移出专栏
+                        </span>
                       </DropdownItem>
-                      <DropdownItem name="delete">
-                     <span @click="articleAction(noteItem,'delete')" class="action-item">
+                      <DropdownItem>
+                        <span @click="articleAction(noteItem,'export')" class="action-item">
+                          <span class="iconfont export"/> 导出
+                        </span>
+                      </DropdownItem>
+                      <DropdownItem>
+                        <span @click="articleAction(noteItem,'delete')" class="action-item">
                        <span class="iconfont delete"/> 删除
                      </span>
                       </DropdownItem>
@@ -262,19 +267,124 @@
         :title="actionType === 'setting' ? '文档设置' : actionType === 'export' ? '导出' : ''"
         :footer-hide="true">
         <div v-if="actionType === 'setting'">
-          <div class="modal-title">
-            <span>公开性</span>
-          </div>
+          <form class="base-info-form">
+            <div class="name form-item">
+              <div class="label">
+                <span class="required">*</span>
+                <span class="label-text">名称</span>
+              </div>
+              <Input type="text"
+                     :class="['name-input', 'form-input', showColumnNameError ? 'empty-input' : '']"
+                     maxlength="30"
+                     placeholder="专栏名称"
+                     @on-change="showColumnNameError = columnInfo.columnName?.length === 0"
+                     v-model="columnInfo.columnName"/>
+              <span v-if="showColumnNameError" class="error-tip">请输入专栏名称</span>
+            </div>
+            <div class="desc form-item">
+              <div class="label">
+                <div class="label-text">简介</div>
+                <div>{{ columnInfo.desc?.length ? columnInfo.desc?.length : 0 }} / 255</div>
+              </div>
+              <Input type="textarea"
+                     class="desc-input form-input"
+                     :rows="4"
+                     maxlength="255"
+                     placeholder="专栏简介（选填）"
+                     v-model="columnInfo.desc"/>
+            </div>
+            <div class="permission form-item">
+              <div class="label">
+                <span class="required">*</span>
+                <span class="label-text">权限</span>
+              </div>
+              <div class="permission-input form-input">
+                <div class="private-radio" @click="columnInfo.isPublic = 0">
+                  <input type="radio"
+                         id="initPrivate"
+                         value="0"
+                         :class="columnInfo.isPublic ? '' : 'checked'"/>
+                  <span class="permission-label un-select" for="initPrivate">仅作者可访问</span>
+                </div>
+                <Poptip class="un-select"
+                        confirm
+                        placement="right"
+                        @on-ok="columnInfo.isPublic = 1"
+                        @on-cancel="columnInfo.isPublic = 0">
+                  <div class="public-radio">
+                    <input type="radio"
+                           value="1"
+                           :class="columnInfo.isPublic ? 'checked' : ''"
+                           @click="readPublicPermission"/>
+                    <span class="permission-label un-select">互联网可访问</span>
+                  </div>
+                  <div slot="title">
+                <span>
+                  开启后，互联网所有获得链接的人皆可访问专栏内的全部内容。你需对其合法合规性负责，遵守相关法律法规及it充电站
+                </span>
+                    <a class="color: #43C8EC" href="/">服务协议</a>
+                    <span>
+                  约定，违规内容可能无法被查看。
+                </span>
+                  </div>
+                </Poptip>
+              </div>
+            </div>
+            <div class="cover form-item">
+              <div class="label">
+                <span class="label-text">封面</span>
+              </div>
+              <div class="cover-input form-input">
+                <vueCropper
+                  :class="['crop-box', coverOriginalFile ? '' : 'cover-placeholder']"
+                  ref="cropper"
+                  :img="coverOriginalFile"
+                  :autoCrop="true"
+                  :fixedBox="false"
+                  :centerBox="true"
+                  :fixed="true"
+                  :fixedNumber="[2, 1]"
+                  :canMove="false"
+                  :canScale="false"
+                  :maxImgSize="400"
+                  :info="true"
+                  @cropMoving="cropMoving"
+                  @imgLoad="imgLoadOver">
+                </vueCropper>
+                <div class="cover-preview">
+                  <div>
+                    <img v-if="coverPreview" :src="coverPreview" class="img" alt="预览">
+                    <div class="cover-upload-select">
+                      <Upload action="/"
+                              :format="['jpg','jpeg','png']"
+                              :max-size="5120"
+                              accept="image/*"
+                              :show-upload-list="false"
+                              :before-upload="fileHandle">
+                        <Button class="cover-upload-btn">
+                          <span v-if="!coverOriginalFile"><span class="iconfont upload"/>上传图片</span>
+                          <span v-else>重新上传</span>
+                        </Button>
+                      </Upload>
+                      <div class="clear-cover-btn">
+                      <span v-show="coverPreview" class="un-select" @click="clearCoverPreview">
+                        <span class="iconfont delete"></span>
+                        清除
+                      </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="action">
+              <Button type="primary" @click="updateColumnInfo">更新信息</Button>
+            </div>
+          </form>
         </div>
-        <div class="export" v-if="actionType === 'export'">
-          <div class="warn-content un-select">
-            <span class="iconfont warn"></span>
-            <span>
-              正在删除知识库
-              <span class="column-name">
-              </span>
-              ，该操作不可逆，一旦操作成功，知识库下的所有内容将会删除。请输入下面内容再次确认操作。
-            </span>
+        <div v-if="actionType === 'export'">
+          <div class="export-content un-select">
+            敬请期待！
           </div>
         </div>
       </Modal>
@@ -283,268 +393,275 @@
 </template>
 
 <script>
-  import {VueCropper} from 'vue-cropper'
-  import {formatTime} from '@/utils/emoji';
+import {VueCropper} from 'vue-cropper'
+import {formatTime} from '@/utils/emoji';
 
-  export default {
-    name: 'SeriesColumnSetting',
-    data() {
-      return {
-        activeItem: 'base',
-        columnInfo: {
-          columnName: '',
-          isPublic: 0,
-          desc: '',
-          cover: ''
+export default {
+  name: 'SeriesColumnSetting',
+  data() {
+    return {
+      activeItem: 'base',
+      columnInfo: {
+        columnName: '',
+        isPublic: 0,
+        desc: '',
+        cover: ''
+      },
+      showColumnNameError: false,
+      coverOriginalFile: null,
+      coverPreview: null,
+      cropInfo: {
+        height: 0,
+        width: 0,
+        flushPreview: null
+      },
+      searchKeywords: '',
+      checkedList: [],
+      showCheckToolBar: false,
+      showModal: false,
+      // setting 文档设置； export 导出
+      actionType: 'setting',
+      articleTreeList: [],
+      articleList: [
+        {
+          id: 'asda221313',
+          articleName: '什么是零样本学习',
+          createTime: 1708754002000,
+          updateTime: 1711271490000
         },
-        showColumnNameError: false,
-        coverOriginalFile: null,
-        coverPreview: null,
-        cropInfo: {
-          height: 0,
-          width: 0,
-          flushPreview: null
+        {
+          id: 'swe23233',
+          articleName: '广义零样本学习 (GSZL)',
+          createTime: 1711271490000,
+          updateTime: 1719204802000
         },
-        searchKeywords: '',
-        checkedList: [],
-        showCheckToolBar: false,
-        showModal: false,
-        // setting 文档设置； export 导出
-        actionType: 'setting',
-        articleTreeList: [],
-        articleList: [
-          {
-            id: 'asda221313',
-            articleName: '什么是零样本学习',
-            createTime: 1708754002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: 'swe23233',
-            articleName: '广义零样本学习 (GSZL)',
-            createTime: 1711271490000,
-            updateTime: 1719204802000
-          },
-          {
-            id: '3345dffdf',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '3345df09fdf',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '3345d99ffdf',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '3345df86fdf',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '3345dff67df',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '3345df8fdf',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '3345df67fdf',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '3345dffd6f',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '334545dffdf',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '3345dff4df',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '3345df21fdf',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '3345df3fdf',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '3345dff2df',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '3345dffd12f',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          },
-          {
-            id: '3345dffdf1',
-            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-            createTime: 1719158002000,
-            updateTime: 1711271490000
-          }
-        ]
+        {
+          id: '3345dffdf',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '3345df09fdf',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '3345d99ffdf',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '3345df86fdf',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '3345dff67df',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '3345df8fdf',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '3345df67fdf',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '3345dffd6f',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '334545dffdf',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '3345dff4df',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '3345df21fdf',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '3345df3fdf',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '3345dff2df',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '3345dffd12f',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        },
+        {
+          id: '3345dffdf1',
+          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+          createTime: 1719158002000,
+          updateTime: 1711271490000
+        }
+      ]
+    }
+  },
+  props: ['columnId'],
+  computed: {
+    checkAll() {
+      return this.checkedList.length > 0 && this.checkedList.length === this.articleList.length;
+    },
+    indeterminate() {
+      return this.checkedList.length > 0 && this.checkedList.length !== this.articleList.length
+    }
+  },
+  components: {
+    VueCropper
+  },
+  methods: {
+    readPublicPermission(event) {
+      event.preventDefault();
+    },
+    updateColumnInfo() {
+      if (this.columnInfo?.columnName?.length === 0) {
+        this.showColumnNameError = true;
+        return;
       }
+      this.$Message.success('更新成功')
     },
-    computed: {
-      checkAll() {
-        return this.checkedList.length > 0 && this.checkedList.length === this.articleList.length;
-      },
-      indeterminate() {
-        return this.checkedList.length > 0 && this.checkedList.length !== this.articleList.length
-      }
-    },
-    components: {
-      VueCropper
-    },
-    methods: {
-      readPublicPermission(event) {
-        event.preventDefault();
-      },
-      updateColumnInfo() {
-        if (this.columnInfo?.columnName?.length === 0) {
-          this.showColumnNameError = true;
-          return;
-        }
-        this.$Message.success('更新成功')
-      },
-      fileHandle(file) {
-        if (file?.size > 5120 * 1024) {
-          this.$Message.error('文件大小不得超过5M')
-          return false;
-        }
-        let _this = this;
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-          _this.coverOriginalFile = this.result;
-        }
+    fileHandle(file) {
+      if (file?.size > 5120 * 1024) {
+        this.$Message.error('文件大小不得超过5M')
         return false;
-      },
-      /**
-       * 处理截图框移动事件
-       * @param data
-       */
-      cropMoving(data) {
-        if (!data?.moving) {
-          // 移动停止，获取截图框内图片
-          this.getNewCropImage();
-        }
-      },
-      getNewCropImage() {
-        this.$refs.cropper.getCropData(data => {
-          this.coverPreview = data;
-        })
-      },
-      imgLoadOver(data) {
-        if (data) {
-          this.$nextTick(() => {
-            this.getNewCropImage();
-            this.cropInfo.height = this.$refs.cropper.cropH;
-            this.cropInfo.width = this.$refs.cropper.cropW;
-            this.cropInfo.flushPreview = setInterval(() => {
-              if (!this.coverOriginalFile) {
-                clearInterval(this.cropInfo.flushPreview);
-                this.cropInfo.flushPreview = null;
-                return;
-              }
-              let cropH = this.$refs.cropper.cropH;
-              let cropW = this.$refs.cropper.cropW;
-              if (this.cropInfo.height !== cropH || this.cropInfo.width !== cropW) {
-                this.cropInfo.height = cropH;
-                this.cropInfo.width = cropW;
-                this.getNewCropImage();
-              }
-            }, 1000)
-          })
-        }
-      },
-      clearCoverPreview() {
-        this.coverPreview = null;
-        this.coverOriginalFile = null;
-      },
-      articleAction(row, action) {
-        switch (action) {
-          case 'edit':
-            this.$router.push({
-              path: '/editor/' + row.id
-            })
-            break;
-          case 'setting':
-            this.showModal = true;
-            this.actionType = 'setting';
-            break;
-          case 'export':
-            this.showModal = true;
-            this.actionType = 'export';
-            break;
-          case 'delete':
-            break;
-        }
-      },
-      onCheckAllChange(e) {
-        this.showCheckToolBar = true;
-        this.checkedList = e.target.checked ? this.articleList.map(note => note.id) : [];
-      },
-      cancelCheck() {
-        this.showCheckToolBar = false;
-        this.checkedList = [];
-      },
-      isCheck(noteId) {
-        return this.checkedList.indexOf(noteId) !== -1;
-      },
-      onCheckChange(noteId, e) {
-        this.showCheckToolBar = true;
-        if (e.target.checked) {
-          this.checkedList.push(noteId);
-        } else {
-          this.checkedList = this.checkedList.filter(nid => nid !== noteId);
-        }
-      },
-      formatTime
+      }
+      let _this = this;
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        _this.coverOriginalFile = this.result;
+      }
+      return false;
     },
-    props: ['columnId'],
-    destroyed() {
-      if (this.cropInfo.flushPreview) {
-        clearInterval(this.cropInfo.flushPreview);
-        this.cropInfo.flushPreview = null;
+    /**
+     * 处理截图框移动事件
+     * @param data
+     */
+    cropMoving(data) {
+      if (!data?.moving) {
+        // 移动停止，获取截图框内图片
+        this.getNewCropImage();
+      }
+    },
+    getNewCropImage() {
+      this.$refs.cropper.getCropData(data => {
+        this.coverPreview = data;
+      })
+    },
+    imgLoadOver(data) {
+      if (data) {
+        this.$nextTick(() => {
+          this.getNewCropImage();
+          this.cropInfo.height = this.$refs.cropper.cropH;
+          this.cropInfo.width = this.$refs.cropper.cropW;
+          this.cropInfo.flushPreview = setInterval(() => {
+            if (!this.coverOriginalFile) {
+              clearInterval(this.cropInfo.flushPreview);
+              this.cropInfo.flushPreview = null;
+              return;
+            }
+            let cropH = this.$refs.cropper.cropH;
+            let cropW = this.$refs.cropper.cropW;
+            if (this.cropInfo.height !== cropH || this.cropInfo.width !== cropW) {
+              this.cropInfo.height = cropH;
+              this.cropInfo.width = cropW;
+              this.getNewCropImage();
+            }
+          }, 1000)
+        })
+      }
+    },
+    clearCoverPreview() {
+      this.coverPreview = null;
+      this.coverOriginalFile = null;
+    },
+    articleAction(row, action) {
+      switch (action) {
+        case 'edit':
+          this.$router.push({
+            path: '/editor/' + row.id
+          })
+          break;
+        case 'setting':
+          this.showModal = true;
+          this.actionType = 'setting';
+          break;
+        case 'export':
+          this.showModal = true;
+          this.actionType = 'export';
+          break;
+        case 'delete':
+          break;
+      }
+    },
+    onCheckAllChange(e) {
+      this.showCheckToolBar = true;
+      this.checkedList = e.target.checked ? this.articleList.map(note => note.id) : [];
+    },
+    cancelCheck() {
+      this.showCheckToolBar = false;
+      this.checkedList = [];
+    },
+    isCheck(noteId) {
+      return this.checkedList.indexOf(noteId) !== -1;
+    },
+    onCheckChange(noteId, e) {
+      this.showCheckToolBar = true;
+      if (e.target.checked) {
+        this.checkedList.push(noteId);
+      } else {
+        this.checkedList = this.checkedList.filter(nid => nid !== noteId);
+      }
+    },
+    formatTime
+  },
+  watch: {
+    "showModal"(val) {
+      if (!val) {
+        this.actionType = '';
       }
     }
+  },
+  destroyed() {
+    if (this.cropInfo.flushPreview) {
+      clearInterval(this.cropInfo.flushPreview);
+      this.cropInfo.flushPreview = null;
+    }
   }
+}
 </script>
 
 <style scoped lang="less">
-  @import '../css/dashboard/seriesColumnSetting.less';
+@import '../css/dashboard/seriesColumnSetting.less';
 </style>
