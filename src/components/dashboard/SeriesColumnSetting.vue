@@ -198,7 +198,7 @@
                 <Button type="text">批量导出</Button>
               </div>
             </div>
-            <div class="article-list-wrapper">
+            <div class="article-list-wrapper beauty-scroll">
               <div class="note-list-item" v-for="noteItem in articleList" :key="noteItem.id">
                 <div class="left-checkbox">
                   <a-checkbox :class="showCheckToolBar ? '' : 'check-show'" :checked="isCheck(noteItem.id)"
@@ -223,22 +223,22 @@
                     </a>
                     <DropdownMenu slot="list">
                       <DropdownItem name="scope">
-                     <span @click="articleAction(row,'edit')" class="action-item">
+                     <span @click="articleAction(noteItem,'edit')" class="action-item">
                        <span class="iconfont bianji"/> 编辑文档
                      </span>
                       </DropdownItem>
                       <DropdownItem name="rename">
-                     <span @click="articleAction(row,'setting')" class="action-item">
+                     <span @click="articleAction(noteItem,'setting')" class="action-item">
                        <span class="iconfont article-setting"/> 文档设置
                      </span>
                       </DropdownItem>
                       <DropdownItem name="setting">
-                     <span @click="articleAction(row,'export')" class="action-item">
+                     <span @click="articleAction(noteItem,'export')" class="action-item">
                        <span class="iconfont export"/> 导出
                      </span>
                       </DropdownItem>
                       <DropdownItem name="delete">
-                     <span @click="articleAction(row,'delete')" class="action-item">
+                     <span @click="articleAction(noteItem,'delete')" class="action-item">
                        <span class="iconfont delete"/> 删除
                      </span>
                       </DropdownItem>
@@ -248,8 +248,6 @@
               </div>
             </div>
           </div>
-
-
         </div>
         <div v-if="activeItem === 'more'">
           <div class="index-area">
@@ -257,6 +255,29 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="modal-box">
+      <Modal
+        v-model="showModal"
+        :title="actionType === 'setting' ? '文档设置' : actionType === 'export' ? '导出' : ''"
+        :footer-hide="true">
+        <div v-if="actionType === 'setting'">
+          <div class="modal-title">
+            <span>公开性</span>
+          </div>
+        </div>
+        <div class="export" v-if="actionType === 'export'">
+          <div class="warn-content un-select">
+            <span class="iconfont warn"></span>
+            <span>
+              正在删除知识库
+              <span class="column-name">
+              </span>
+              ，该操作不可逆，一旦操作成功，知识库下的所有内容将会删除。请输入下面内容再次确认操作。
+            </span>
+          </div>
+        </div>
+      </Modal>
     </div>
   </div>
 </template>
@@ -287,6 +308,9 @@
         searchKeywords: '',
         checkedList: [],
         showCheckToolBar: false,
+        showModal: false,
+        // setting 文档设置； export 导出
+        actionType: 'setting',
         articleTreeList: [],
         articleList: [
           {
@@ -479,8 +503,12 @@
             })
             break;
           case 'setting':
+            this.showModal = true;
+            this.actionType = 'setting';
             break;
           case 'export':
+            this.showModal = true;
+            this.actionType = 'export';
             break;
           case 'delete':
             break;
