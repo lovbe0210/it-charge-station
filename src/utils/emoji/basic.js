@@ -37,7 +37,7 @@ export function createObjectURL(blob) {
 
 /**
  * 格式化时间 今日内显示今日 超过一天显示昨天，否则显示日期
- * @param targetTime
+ * @param timestamp 时间戳
  * @returns {string}
  */
 export function formatTime(timestamp) {
@@ -79,6 +79,11 @@ export function formatNumber(num) {
   }
 }
 
+/**
+ * 是否需要格式化时间
+ * @param createTime  时间戳
+ * @returns {boolean}
+ */
 export function needFormatDate(createTime) {
-  return Date.now() - createTime <= 86400 * 2 * 1000
+  return Date.now() - createTime <= 60 * 60 * 1000 * 24 * 2
 }

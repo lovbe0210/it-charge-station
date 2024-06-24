@@ -147,10 +147,115 @@
             </div>
           </form>
         </div>
-        <div v-if="activeItem === 'permission'"></div>
-        <div v-if="activeItem === 'dir'"></div>
-        <div v-if="activeItem === 'article'"></div>
-        <div v-if="activeItem === 'more'"></div>
+        <div v-if="activeItem === 'dir'">
+          <div class="index-area">
+            <h4>目录管理</h4>
+            <div class="action-wrapper">
+              <Input placeholder="请输入标题进行搜索"
+                     class="search-input"
+                     v-model="searchKeywords"
+                     maxlength="30">
+                <span class="iconfont i-search" slot="prefix"/>
+              </Input>
+              <Button type="success">新建</Button>
+            </div>
+          </div>
+        </div>
+        <div v-if="activeItem === 'article'">
+          <div class="index-area">
+            <h4>文章管理</h4>
+            <div class="action-wrapper">
+              <Input placeholder="请输入标题进行搜索"
+                     class="search-input"
+                     v-model="searchKeywords"
+                     maxlength="30">
+                <span class="iconfont i-search" slot="prefix"/>
+              </Input>
+              <Button type="success">新建</Button>
+            </div>
+          </div>
+          <div class="article-list un-select">
+            <div class="article-header-wrapper">
+              <div class="header-left-checkbox">
+                <a-checkbox :indeterminate="indeterminate" :checked="checkAll" @change="onCheckAllChange">
+                </a-checkbox>
+              </div>
+              <div class="item-checked" v-if="checkedList.length > 0 || showCheckToolBar">
+                <span>
+                  共选择了{{checkedList.length}}篇笔记
+                </span>
+                <Button type="text" @click="cancelCheck">
+                  取消选择
+                </Button>
+              </div>
+              <div class="table-header" v-if="!showCheckToolBar">
+                <div class="article-name">文档名称</div>
+                <div class="create-time">创建时间</div>
+                <div class="update-time">更新时间</div>
+              </div>
+              <div class="right-action" v-if="checkedList.length > 0 || showCheckToolBar">
+                <Button type="text">批量删除</Button>
+                <Button type="text">批量导出</Button>
+              </div>
+            </div>
+            <div class="article-list-wrapper">
+              <div class="note-list-item" v-for="noteItem in articleList" :key="noteItem.id">
+                <div class="left-checkbox">
+                  <a-checkbox :class="showCheckToolBar ? '' : 'check-show'" :checked="isCheck(noteItem.id)"
+                              @change="onCheckChange(noteItem.id, $event)">
+                  </a-checkbox>
+                </div>
+                <div class="center-table-view">
+                  <div class="article-name" :title="noteItem.articleName">
+                  <span>
+                    {{ noteItem.articleName }}
+                  </span>
+                  </div>
+                  <div class="create-time">{{ formatTime(noteItem.createTime) }}</div>
+                  <div class="update-time">{{ formatTime(noteItem.updateTime) }}</div>
+                </div>
+                <div class="right-action">
+                  <Dropdown placement="bottom-end" trigger="click">
+                    <a href="javascript:void(0)">
+                      <div class="menu-btn">
+                        <span class="iconfont operate"></span>
+                      </div>
+                    </a>
+                    <DropdownMenu slot="list">
+                      <DropdownItem name="scope">
+                     <span @click="articleAction(row,'edit')" class="action-item">
+                       <span class="iconfont bianji"/> 编辑文档
+                     </span>
+                      </DropdownItem>
+                      <DropdownItem name="rename">
+                     <span @click="articleAction(row,'setting')" class="action-item">
+                       <span class="iconfont article-setting"/> 文档设置
+                     </span>
+                      </DropdownItem>
+                      <DropdownItem name="setting">
+                     <span @click="articleAction(row,'export')" class="action-item">
+                       <span class="iconfont export"/> 导出
+                     </span>
+                      </DropdownItem>
+                      <DropdownItem name="delete">
+                     <span @click="articleAction(row,'delete')" class="action-item">
+                       <span class="iconfont delete"/> 删除
+                     </span>
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div v-if="activeItem === 'more'">
+          <div class="index-area">
+            <h4>更多设置</h4>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -158,6 +263,7 @@
 
 <script>
   import {VueCropper} from 'vue-cropper'
+  import {formatTime} from '@/utils/emoji';
 
   export default {
     name: 'SeriesColumnSetting',
@@ -177,7 +283,123 @@
           height: 0,
           width: 0,
           flushPreview: null
-        }
+        },
+        searchKeywords: '',
+        checkedList: [],
+        showCheckToolBar: false,
+        articleTreeList: [],
+        articleList: [
+          {
+            id: 'asda221313',
+            articleName: '什么是零样本学习',
+            createTime: 1708754002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: 'swe23233',
+            articleName: '广义零样本学习 (GSZL)',
+            createTime: 1711271490000,
+            updateTime: 1719204802000
+          },
+          {
+            id: '3345dffdf',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '3345df09fdf',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '3345d99ffdf',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '3345df86fdf',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '3345dff67df',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '3345df8fdf',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '3345df67fdf',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '3345dffd6f',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '334545dffdf',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '3345dff4df',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '3345df21fdf',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '3345df3fdf',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '3345dff2df',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '3345dffd12f',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          },
+          {
+            id: '3345dffdf1',
+            articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
+            createTime: 1719158002000,
+            updateTime: 1711271490000
+          }
+        ]
+      }
+    },
+    computed: {
+      checkAll() {
+        return this.checkedList.length > 0 && this.checkedList.length === this.articleList.length;
+      },
+      indeterminate() {
+        return this.checkedList.length > 0 && this.checkedList.length !== this.articleList.length
       }
     },
     components: {
@@ -248,7 +470,42 @@
       clearCoverPreview() {
         this.coverPreview = null;
         this.coverOriginalFile = null;
-      }
+      },
+      articleAction(row, action) {
+        switch (action) {
+          case 'edit':
+            this.$router.push({
+              path: '/editor/' + row.id
+            })
+            break;
+          case 'setting':
+            break;
+          case 'export':
+            break;
+          case 'delete':
+            break;
+        }
+      },
+      onCheckAllChange(e) {
+        this.showCheckToolBar = true;
+        this.checkedList = e.target.checked ? this.articleList.map(note => note.id) : [];
+      },
+      cancelCheck() {
+        this.showCheckToolBar = false;
+        this.checkedList = [];
+      },
+      isCheck(noteId) {
+        return this.checkedList.indexOf(noteId) !== -1;
+      },
+      onCheckChange(noteId, e) {
+        this.showCheckToolBar = true;
+        if (e.target.checked) {
+          this.checkedList.push(noteId);
+        } else {
+          this.checkedList = this.checkedList.filter(nid => nid !== noteId);
+        }
+      },
+      formatTime
     },
     props: ['columnId'],
     destroyed() {
