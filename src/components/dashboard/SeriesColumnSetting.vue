@@ -101,9 +101,9 @@
               </div>
               <div class="cover-input form-input">
                 <vueCropper
-                  :class="['crop-box', avatarOriginalFile ? '' : 'cover-placeholder']"
+                  :class="['crop-box', coverOriginalFile ? '' : 'cover-placeholder']"
                   ref="cropper"
-                  :img="avatarOriginalFile"
+                  :img="coverOriginalFile"
                   :autoCrop="true"
                   :fixedBox="false"
                   :centerBox="true"
@@ -112,13 +112,13 @@
                   :canMove="false"
                   :canScale="false"
                   :maxImgSize="400"
-                  :info="false"
+                  :info="true"
                   @cropMoving="cropMoving"
                   @imgLoad="imgLoadOver">
                 </vueCropper>
                 <div class="cover-preview">
                   <div>
-                    <img v-if="avatarPreview" :src="avatarPreview" class="img" alt="预览">
+                    <img v-if="coverPreview" :src="coverPreview" class="img" alt="预览">
                     <div class="cover-upload-select">
                       <Upload action="/"
                               :format="['jpg','jpeg','png']"
@@ -127,11 +127,12 @@
                               :show-upload-list="false"
                               :before-upload="fileHandle">
                         <Button class="cover-upload-btn">
-                          <span><span class="iconfont upload"/>重新上传</span>
+                          <span v-if="!coverOriginalFile"><span class="iconfont upload"/>上传图片</span>
+                          <span v-else>重新上传</span>
                         </Button>
                       </Upload>
                       <div class="clear-cover-btn">
-                      <span v-show="avatarPreview" class="un-select" @click="clearCoverPreview">
+                      <span v-show="coverPreview" class="un-select" @click="clearCoverPreview">
                         <span class="iconfont delete"></span>
                         清除
                       </span>
@@ -170,8 +171,13 @@
           cover: ''
         },
         showColumnNameError: false,
-        avatarOriginalFile: null,
-        avatarPreview: null
+        coverOriginalFile: null,
+        coverPreview: null,
+        cropInfo: {
+          height: 0,
+          width: 0,
+          flushPreview: null
+        }
       }
     },
     components: {
@@ -197,7 +203,7 @@
         let reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function () {
-          _this.avatarOriginalFile = this.result;
+          _this.coverOriginalFile = this.result;
         }
         return false;
       },
@@ -213,24 +219,43 @@
       },
       getNewCropImage() {
         this.$refs.cropper.getCropData(data => {
-          this.avatarPreview = data;
+          this.coverPreview = data;
         })
       },
       imgLoadOver(data) {
         if (data) {
           this.$nextTick(() => {
             this.getNewCropImage();
+            this.cropInfo.height = this.$refs.cropper.cropH;
+            this.cropInfo.width = this.$refs.cropper.cropW;
+            this.cropInfo.flushPreview = setInterval(() => {
+              if (!this.coverOriginalFile) {
+                clearInterval(this.cropInfo.flushPreview);
+                this.cropInfo.flushPreview = null;
+                return;
+              }
+              let cropH = this.$refs.cropper.cropH;
+              let cropW = this.$refs.cropper.cropW;
+              if (this.cropInfo.height !== cropH || this.cropInfo.width !== cropW) {
+                this.cropInfo.height = cropH;
+                this.cropInfo.width = cropW;
+                this.getNewCropImage();
+              }
+            }, 1000)
           })
         }
       },
       clearCoverPreview() {
-        this.avatarPreview = null;
-        this.avatarOriginalFile = null;
-
+        this.coverPreview = null;
+        this.coverOriginalFile = null;
       }
     },
     props: ['columnId'],
-    mounted() {
+    destroyed() {
+      if (this.cropInfo.flushPreview) {
+        clearInterval(this.cropInfo.flushPreview);
+        this.cropInfo.flushPreview = null;
+      }
     }
   }
 </script>
