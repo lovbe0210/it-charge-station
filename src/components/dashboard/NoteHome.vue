@@ -112,10 +112,12 @@
                   </div>
                 </a>
                 <DropdownMenu slot="list">
+                  <DropdownItem>编辑</DropdownItem>
+                  <DropdownItem>发布</DropdownItem>
+                  <DropdownItem>删除</DropdownItem>
                   <DropdownItem>取消置顶</DropdownItem>
                   <DropdownItem>复制链接</DropdownItem>
-                  <DropdownItem>移动至专栏</DropdownItem>
-                  <DropdownItem>删除</DropdownItem>
+                  <DropdownItem>移至专栏</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>

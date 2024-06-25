@@ -246,6 +246,11 @@
                   justify-content: space-between;
                   align-items: center;
 
+                  .cover-upload-btn {
+                    color: #262626;
+                    font-weight: 500;
+                  }
+
                   .clear-cover-btn {
                     cursor: pointer;
 
@@ -276,7 +281,7 @@
                   display: flex;
                   width: 300px;
                   height: 240px;
-                  background: url("../../../assets/img-placeholder.png");
+                  background: url("../../../assets/column-placeholder-cover.png");
                 }
               }
             }
@@ -317,7 +322,11 @@
             width: 92%;
 
             .article-name {
-              width: 52%;
+              width: 46%;
+            }
+
+            .status {
+              width: 8%;
             }
 
             .create-time, .update-time {
@@ -362,13 +371,17 @@
             display: flex;
 
             .article-name {
-              width: 52%;
+              width: 46%;
               padding-right: 8px;
               display: block;
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
               cursor: pointer;
+            }
+
+            .status {
+              width: 8%;
             }
 
             .create-time, .update-time {
@@ -386,7 +399,7 @@
               color: #585A5A;
               padding: 0 5px;
 
-              .article-setting {
+              .article-setting, .remove {
                 font-weight: 500;
                 font-size: 17px;
               }
@@ -404,7 +417,265 @@
           }
         }
       }
+
+      .more-setting {
+        margin-top: 25px;
+
+        .more-setting-item {
+          .setting-enable-comment, .setting-auto-publish {
+            margin-bottom: 24px;
+
+            .checkbox-label {
+              color: #262626;
+            }
+
+            .setting-tips {
+              margin-left: 24px;
+            }
+          }
+
+          .setting-action-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: #FAFAFA;
+            border-radius: 8px;
+            margin-bottom: 20px;
+
+            .setting-action-title {
+              font-size: 14px;
+              color: #262626;
+              line-height: 22px;
+            }
+
+            .ivu-btn {
+              margin-left: 10px;
+            }
+          }
+
+          .setting-tips-content {
+            line-height: 22px;
+            margin-top: 6px;
+            font-size: 14px;
+            color: #8A8F8D;
+          }
+        }
+      }
+    }
+  }
+}
+
+.article-info-form {
+  margin: 15px 10px 20px;
+  width:90%;
+
+  .form-item {
+    margin-bottom: 20px;
+
+    .label {
+      color: #585A5A;
+      margin: 15px 0;
+
+      .required {
+        color: red;
+      }
+
+      .label-text {
+        margin-left: 3px;
+      }
     }
 
+    .form-input {
+      margin-left: 10px;
+    }
+  }
+
+  .name {
+    width: 70%;
+
+    .name-input {
+      margin-bottom: 5px;
+    }
+
+    .empty-input {
+      /deep/.ivu-input {
+        border-color: red;
+
+        &:hover, &:focus {
+          border-color: red;
+        }
+      }
+    }
+
+    .error-tip {
+      color: red;
+      margin-left: 10px;
+    }
+  }
+
+  .desc {
+    width: 100%;
+
+    .label {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+
+      .label-text {
+        margin-left: 8px;
+      }
+    }
+  }
+
+  .cover {
+    .label {
+      .label-text {
+        margin-left: 8px;
+      }
+    }
+
+    .cover-input {
+      width: 98%;
+      display: flex;
+      margin: 10px 0 35px 10px;
+      justify-content: space-between;
+
+      .crop-box {
+        width: 238px;
+        min-width: 238px;
+        height: 146px;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+
+      .cover-preview {
+        height: 146px;
+        min-height: 146px;
+        width: 153px;
+        min-width: 153px;
+        display: flex;
+        flex-direction: column-reverse;
+
+        .img {
+          width: 153px;
+          min-width: 153px;
+          height: 95px;
+          min-height: 95px;
+          border-radius: 3px;
+        }
+
+        .cover-upload-select {
+          margin-top: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .cover-upload-btn {
+            color: #262626;
+            font-weight: 500;
+          }
+
+          .clear-cover-btn {
+            cursor: pointer;
+
+            &:hover {
+              color: #00b96b;
+            }
+          }
+
+        }
+      }
+
+      .cover-placeholder {
+        &::before {
+          width: 238px;
+          display: flex;
+          justify-content: center;
+          content: '添加封面有助于吸引读者哦';
+          font-size: 12px;
+          color: #8a8f8d;
+          position: absolute;
+          z-index: 9;
+          bottom: 20px;
+        }
+
+        &::after {
+          content: '';
+          z-index: 8;
+          position: relative;
+          display: flex;
+          width: 238px;
+          height: 146px;
+          background: url("../../../assets/article-placeholder-cover.png");
+        }
+      }
+    }
+  }
+
+  .action {
+    margin-left: 10px;
+  }
+}
+
+.delete-warn {
+  color: #262626;
+
+  .warn-content {
+    display: flex;
+    background-color: #F9EFCD;
+    border: 1px solid #F5D480;
+    border-radius: 6px;
+    padding: 15px;
+
+    .warn {
+      font-size: 18px;
+      color: red;
+      margin-right: 5px;
+      margin-top: -2px;
+    }
+
+    .column-name {
+      color: red;
+    }
+  }
+
+  .warn-confirm {
+    margin: 20px 4px;
+    height: 80px;
+
+    .confirm-input {
+      margin: 10px 0 5px 0;
+    }
+
+    .cannot-delete {
+      .ivu-input {
+        border-color: red;
+      }
+    }
+
+    .tips {
+      color: red;
+    }
+  }
+
+  .warn-btn {
+    margin: 10px 4px;
+    width: 98.5%;
+    display: flex;
+    align-items: center;
+
+    & span {
+      width: 100%;
+    }
+
+    .column-name {
+      display: block;
+
+      //margin: 0 auto;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 }

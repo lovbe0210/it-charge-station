@@ -3,7 +3,7 @@
     <div class="msg-notify-menu">
       <div class="fixed-anchor-point">
         <div class="item">
-          <span class="iconfont icon-paper-plane"></span>
+          <span class="iconfont icon-hy-message"></span>
           消息中心
         </div>
       </div>

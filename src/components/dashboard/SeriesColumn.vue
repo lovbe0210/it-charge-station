@@ -97,7 +97,7 @@
                   </DropdownItem>
                   <DropdownItem name="setting">
                     <span @click="routeNavigate(columnItem,'setting')">
-                      <span class="iconfont setting"/> 更多设置
+                      <span class="iconfont setting"/> 专栏设置
                     </span>
                   </DropdownItem>
                   <DropdownItem name="delete">
@@ -192,11 +192,11 @@
           <div class="warn-content un-select">
             <span class="iconfont warn"></span>
             <span>
-              正在删除知识库
+              正在删除专栏
               <span class="column-name">
                 {{currentColumn.columnName}}
               </span>
-              ，该操作不可逆，一旦操作成功，知识库下的所有内容将会删除。请输入下面内容再次确认操作。
+              ，该操作不可逆，一旦操作成功，专栏下的所有内容将会删除。请输入下面内容再次确认操作。
             </span>
           </div>
           <div class="warn-confirm">
@@ -205,7 +205,7 @@
                    :class="['confirm-input', cannotDelete ? 'cannot-delete' : '']"
                    @on-change="cannotDelete = false"
                    :clearable="cannotDelete"
-                   v-model="columnDeleteId"/>
+                   v-model="tmpValue"/>
             <span v-if="cannotDelete" class="tips">请按提示重新输入</span>
           </div>
           <div>
@@ -280,7 +280,7 @@
         // 控制专栏名称编辑或显示
         columnRenameId: '',
         // 删除专栏时的确认输入内容
-        columnDeleteId: '',
+        tmpValue: '',
         cannotDelete: false,
         // 控制权限和删除页面模态框的显示
         changePermission: false,
@@ -444,7 +444,7 @@
         }
       },
       columnDelete() {
-        if (this.columnDeleteId !== this.currentColumn?.id) {
+        if (this.tmpValue !== this.currentColumn?.id) {
           this.cannotDelete = true;
         } else {
           this.deleteColumn = false;
@@ -466,7 +466,7 @@
       "deleteColumn"(val) {
         if (!val) {
           this.cannotDelete = false;
-          this.columnDeleteId = '';
+          this.tmpValue = '';
           this.currentColumn = {
             columnName: '',
             isPublic: 0,

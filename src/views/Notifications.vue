@@ -1,3 +1,4 @@
+<!--
 <template>
   <div class="layout-module_notifications">
     <div class="layout-module_notificationsMenu">
@@ -5,8 +6,8 @@
         <div class="menu-wrap">
           <div class="fixed-anchor-point">
             <div class="item">
-              <span class="iconfont icon-paper-plane"></span>
-              消息中心
+              <span class="iconfont icon-paper-planes"></span>
+              消息中心asda
             </div>
           </div>
           <div class="menu-item" @click="routeNavigate('commentReply')">
@@ -100,3 +101,4 @@
 <style scoped lang="less">
   @import '../components/css/notifications/notifications.less';
 </style>
+-->

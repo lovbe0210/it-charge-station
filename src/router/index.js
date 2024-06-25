@@ -252,51 +252,6 @@ const routes = [
             component: () => import('@/components/settings/Account')
           }
         ]
-      },
-      {
-        // 消息通知
-        path: '/notifications',
-        name: 'Notifications',
-        redirect: {name: 'CommentReply'},
-        component: () => import('@/views/Notifications'),
-        children: [
-          {
-            // 评论与回复
-            path: 'commentReply',
-            name: 'CommentReply',
-            component: () => import('@/components/notifications/CommentReply')
-          },
-          {
-            // 新增粉丝
-            path: 'newFans',
-            name: 'NewFans',
-            component: () => import('@/components/notifications/NewFans')
-          },
-          {
-            // 收到的赞
-            path: 'likesReceived',
-            name: 'LikesReceived',
-            component: () => import('@/components/notifications/LikesReceived')
-          },
-          {
-            // 我的消息
-            path: 'chatMessage',
-            name: 'ChatMessage',
-            component: () => import('@/components/notifications/ChatMessage')
-          },
-          {
-            // 系统消息
-            path: 'systemMessage',
-            name: 'SystemMessage',
-            component: () => import('@/components/notifications/SystemMessage')
-          },
-          {
-            // 消息设置
-            path: 'messageSetting',
-            name: 'MessageSetting',
-            component: () => import('@/components/notifications/MessageSetting')
-          }
-        ]
       }
     ]
   },
