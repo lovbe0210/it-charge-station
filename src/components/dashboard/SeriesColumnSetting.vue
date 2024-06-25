@@ -160,6 +160,11 @@
               <Button type="success">新建</Button>
             </div>
           </div>
+          <Table row-key="id"
+                 :draggable="true"
+                 :columns="columns16"
+                 :data="data12">
+          </Table>
         </div>
         <div v-if="activeItem === 'article'">
           <div class="index-area">
@@ -244,8 +249,8 @@
                         </span>
                       </DropdownItem>
                       <DropdownItem>
-                        <span @click="articleAction(noteItem,'setting')" class="action-item">
-                          <span class="iconfont article-setting"/> 发布
+                        <span @click="articleAction(noteItem,'publish')" class="action-item">
+                          <span class="iconfont publish"/> 发布
                         </span>
                       </DropdownItem>
                       <DropdownItem>
@@ -304,7 +309,8 @@
               <div class="setting-action-area">
                 <div>
                   <p class="setting-action-title">导入文档</p>
-                  <p class="setting-tips-content">支持导入Markdown格式的文件，单次导入一个Markdown文件，为单个文档，默认位于专栏根目录下，如需导入多个文件，可将文件压缩为zip包导入，最多支持五层目录。</p>
+                  <p class="setting-tips-content">
+                    支持导入Markdown格式的文件，单次导入一个Markdown文件，为单个文档，默认位于专栏根目录下，如需导入多个文件，可将文件压缩为zip包导入，最多支持五层目录。</p>
                 </div>
                 <Button size="small" @click="exportOrImport('1')">
                   <span>导入</span>
@@ -313,7 +319,8 @@
               <div class="setting-action-area">
                 <div>
                   <p class="setting-action-title">导出专栏</p>
-                  <p class="setting-tips-content">可将专栏内容按照目录层级导出，当专栏内文档数量较大时，耗时可能增加或失败，如果导出超时，可在文档管理页面进行分批导出。</p>
+                  <p class="setting-tips-content">
+                    可将专栏内容按照目录层级导出，当专栏内文档数量较大时，耗时可能增加或失败，如果导出超时，可在文档管理页面进行分批导出。</p>
                 </div>
                 <Button size="small" @click="exportOrImport('2')">
                   <span>导出</span>
@@ -431,13 +438,13 @@
               <span>
               正在删除专栏
               <span class="column-name">
-                {{columnId}}
+                {{ columnId }}
               </span>
               ，该操作不可逆，一旦操作成功，专栏下的所有内容将会删除。请输入下面内容再次确认操作。
             </span>
             </div>
             <div class="warn-confirm">
-              <span>请在下方输入框中输入 “{{columnId}}” 以确认操作</span>
+              <span>请在下方输入框中输入 “{{ columnId }}” 以确认操作</span>
               <Input type="text"
                      :class="['confirm-input', cannotDelete ? 'cannot-delete' : '']"
                      @on-change="cannotDelete = false"
@@ -447,7 +454,7 @@
             </div>
             <div>
               <Button type="error" class="warn-btn" @click="columnDelete">
-                <span class="column-name">确定删除 {{baseInfo.columnName}}</span>
+                <span class="column-name">确定删除 {{ baseInfo.columnName }}</span>
               </Button>
             </div>
           </div>
@@ -489,6 +496,75 @@ export default {
       actionType: 'setting',
       cannotDelete: false,
       tmpValue: '',
+      columns16: [
+        {
+          title: 'Name',
+          key: 'name',
+          tree: true
+        },
+        {
+          title: 'Age',
+          key: 'age'
+        },
+        {
+          title: 'Address',
+          key: 'address'
+        }
+      ],
+      data12: [
+        {
+          id: '100',
+          name: 'John Brown',
+          age: 18,
+          address: 'New York No. 1 Lake Park'
+        },
+        {
+          id: '101',
+          name: 'Jim Green',
+          age: 24,
+          address: 'London No. 1 Lake Park',
+          children: [
+            {
+              id: '10100',
+              name: 'John Brown',
+              age: 18,
+              address: 'New York No. 1 Lake Park'
+            },
+            {
+              id: '10101',
+              name: 'Joe Blackn',
+              age: 30,
+              address: 'Sydney No. 1 Lake Park'
+            },
+            {
+              id: '10102',
+              name: 'Jon Snow',
+              age: 26,
+              address: 'Ottawa No. 2 Lake Park',
+              children: [
+                {
+                  id: '1010200',
+                  name: 'Jim Green',
+                  age: 24,
+                  address: 'New York No. 1 Lake Park'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: '102',
+          name: 'Joe Black',
+          age: 30,
+          address: 'Sydney No. 1 Lake Park'
+        },
+        {
+          id: '103',
+          name: 'Jon Snow',
+          age: 26,
+          address: 'Ottawa No. 2 Lake Park'
+        }
+      ],
       articleTreeList: [],
       articleList: [
         {
@@ -696,6 +772,9 @@ export default {
             path: (row.columnId ? ('/column/' + row.columnId + '/') : ('/article/')) + row.id
           })
           window.open(readUrl.href, '_blank')
+          break;
+        case 'publish':
+          this.$Message.success('发布成功，审核通过后将会同步到阅读页')
           break;
         case 'setting':
           this.showModal = true;
