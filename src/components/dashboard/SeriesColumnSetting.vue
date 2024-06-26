@@ -160,11 +160,9 @@
               <Button type="success">新建</Button>
             </div>
           </div>
-          <Table row-key="id"
-                 :draggable="true"
-                 :columns="columns16"
-                 :data="data12">
-          </Table>
+          <div>
+            <drag-tree />
+          </div>
         </div>
         <div v-if="activeItem === 'article'">
           <div class="index-area">
@@ -467,6 +465,7 @@
 <script>
 import {VueCropper} from 'vue-cropper'
 import {formatTime} from '@/utils/emoji';
+import DragTree from "@/components/common/dragtree/DragTree";
 
 export default {
   name: 'SeriesColumnSetting',
@@ -691,7 +690,8 @@ export default {
     }
   },
   components: {
-    VueCropper
+    VueCropper,
+    DragTree
   },
   methods: {
     readPublicPermission(event) {
