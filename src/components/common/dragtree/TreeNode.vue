@@ -6,7 +6,7 @@
       class="item-container"
       v-model="treeList"
     >
-      <div class="item-group" :key="el.id" v-for="el in treeList">
+      <div class="item-group" :key="el.id" v-for="el in showTreeData">
         <div class="item">{{ el.name }}</div>
         <tree-node class="drag-tree" :treeList="el.elements"/>
       </div>
@@ -55,7 +55,7 @@
     },
     props: {
       treeList: {
-        type: Object,
+        type: Array,
         required: true
       }
     },
@@ -71,6 +71,9 @@
           disabled: false,
           ghostClass: "ghost"
         };
+      },
+      showTreeData() {
+        return this.treeList;
       }
     },
     methods: {

@@ -160,9 +160,7 @@
               <Button type="success">新建</Button>
             </div>
           </div>
-          <div>
-            <drag-tree />
-          </div>
+          <drag-tree />
         </div>
         <div v-if="activeItem === 'article'">
           <div class="index-area">

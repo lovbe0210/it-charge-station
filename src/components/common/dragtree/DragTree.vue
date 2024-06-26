@@ -1,11 +1,11 @@
 <template>
   <div class="tree-container">
-    <div>
-      <button @click="selectAll">全选</button>
-      <button @click="deselectAll">取消全选</button>
+    <div class="tree-header">
+      <Button @click="selectAll">全选</Button>
+      <Button @click="deselectAll">取消全选</Button>
     </div>
-    <div>
-      <tree-node class="drag-tree" :treeList="treeData" />
+    <div class="tree-wrapper">
+      <tree-node :treeList="treeData" />
       <!--<draggable
         v-bind="dragOptions"
         tag="div"
@@ -160,11 +160,11 @@
 
 <style scoped lang="less">
   .tree-container {
-    max-width: 600px;
-    margin: 0 auto;
-  }
+    width: 100%;
 
-  .tree-node {
-    margin-left: 20px;
+    .tree-wrapper {
+      width: 98%;
+      margin: 0 auto;
+    }
   }
 </style>
