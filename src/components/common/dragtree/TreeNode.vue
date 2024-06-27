@@ -4,41 +4,19 @@
       v-bind="dragOptions"
       tag="div"
       class="item-container"
-      v-model="treeList"
-    >
-      <div class="item-group" :key="el.id" v-for="el in showTreeData">
-        <div class="item">{{ el.name }}</div>
-        <tree-node class="drag-tree" :treeList="el.elements"/>
+      v-model="dragTree">
+      <div class="item-group" :key="treeNode.id" v-for="treeNode in treeList">
+        <div class="item">
+          <span>{{ treeNode.type === 1 ? 'node ' : 'dir ' }}</span>
+          <span>{{ treeNode.title }}</span>
+        </div>
+        <div class="children" v-if="treeNode.type === 2">
+          <tree-node class="drag-tree"
+                     :treeList="treeNode.children"
+                     @treeUpdate="node => treeNode.children = node"/>
+        </div>
       </div>
     </draggable>
-    <!--<div>
-      <input type="checkbox" :checked="isSelected" @change="toggleSelect"/>
-      <span @click="editNode" class="node-name">{{ node.name }}</span>
-      <Button type="text" @click="addNode">添加子节点</Button>
-      <Button type="text" @click="deleteNode">删除</Button>
-    </div>-->
-    <!--<ul v-if="node.children && node.children.length">
-      <draggable tag="div"
-                 v-model="node.children"
-                 :move="checkMove"
-                 :fallbackOnBody="true"
-                 :inverSwap="true"
-                 group="drag"
-                 @end="onDragEnd"
-                 :animation="200">
-        <transition-group>
-          <tree-node
-            v-for="(element, index) in node.children"
-            :key="index"
-            :node="element"
-            @add-node="addNode(element)"
-            @edit-node="editNode(element)"
-            @delete-node="deleteNode(element)"
-          />
-        </transition-group>
-
-      </draggable>
-    </ul>-->
   </div>
 </template>
 
@@ -68,12 +46,17 @@
         return {
           animation: 200,
           group: "description",
-          disabled: false,
+          pull: false,
           ghostClass: "ghost"
         };
       },
-      showTreeData() {
-        return this.treeList;
+      dragTree: {
+        get() {
+          return this.treeList;
+        },
+        set(data) {
+          this.$emit('treeUpdate', data);
+        }
       }
     },
     methods: {
