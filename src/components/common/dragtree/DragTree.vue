@@ -1,14 +1,32 @@
 <template>
   <div class="tree-container">
     <div class="tree-header">
-      <a-checkbox :indeterminate="selectedNodes.size > 0 && selectedNodes.size < totalDirNode"
-                  :checked="totalDirNode === selectedNodes.size"
-                  @change="onCheckAllChange">
-        <span>选择{{ selectedNodes.size }}个</span>
-      </a-checkbox>
+      <div>
+        <a-checkbox :indeterminate="checkedNodes.size > 0 && checkedNodes.size < totalDirNode"
+                    :checked="totalDirNode === checkedNodes.size"
+                    @change="onCheckAllChange">
+          <span>选择{{ checkedNodes.size }}个</span>
+        </a-checkbox>
+        <Button type="text" @click="expandTreeNode">
+          <span :class="['iconfont', openAllTree ? 'nav-open' : 'nav-close']"/>
+          {{ openAllTree ? '全部折叠' : '全部展开' }}
+        </Button>
+      </div>
+      <div class="action-btn">
+        <Button type="text">
+          <span class="iconfont copy"></span>
+          复制
+        </Button>
+        <Button type="text">
+          <span class="iconfont delete"></span>
+          删除
+        </Button>
+      </div>
     </div>
     <div class="tree-wrapper">
       <tree-node :treeList="dirData"
+                 :checkedNodes="checkedNodes"
+                 @checkChange="checkChange"
                  @treeUpdate="treeUpdate"/>
     </div>
   </div>
@@ -61,13 +79,11 @@ export default {
                     {
                       id: 21131,
                       type: 1,
-                      sort: 0,
                       title: '深层文章21131'
                     },
                     {
                       id: 21132,
                       type: 1,
-                      sort: 1,
                       title: '深层文章21132'
                     }
                   ]
@@ -82,47 +98,17 @@ export default {
           title: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
         }
       ],
-      treeData: [
-        {
-          id: 1,
-          name: "1号",
-          type: 2,
-          children: []
-        },
-        {
-          id: 2,
-          name: "2号",
-          type: 1,
-          children: [
-            {
-              id: 4,
-              type: 2,
-              name: "4号",
-              children: []
-            },
-            {
-              id: 5,
-              name: "5号",
-              type: 1,
-              children: []
-            }
-          ]
-        },
-        {
-          id: 3,
-          type: 1,
-          name: "3号",
-          children: []
-        }
-      ],
       totalDirNode: 5,
-      selectedNodes: new Set()
+      openAllTree: false,
+      checkedNodes: new Set()
     }
   },
   components: {
     TreeNode
   },
   props: ['columnId'],
+  computed: {
+  },
   methods: {
     treeUpdate(data) {
       this.dirData = data;
@@ -151,13 +137,11 @@ export default {
     onCheckAllChange(e) {
       if (e.target.checked) {
         // 全选
-        this.selectedNodes = new Set(this.dirData.flatMap(node => this.collectIds(node.id)));
+        this.checkedNodes = new Set(this.dirData.flatMap(node => this.collectIds(node.id)));
       } else {
-        this.selectedNodes.clear();
+        this.checkedNodes.clear();
       }
     },
-
-
     addNode(node) {
       return () => {
         const newNode = {
@@ -205,27 +189,36 @@ export default {
       }
       return null;
     },
-    selectAll() {
-
+    /**
+     * tree节点展开/收起
+     */
+    expandTreeNode() {
+      this.openAllTree = !this.openAllTree;
+      if (this.dirData?.length > 0) {
+        this.dirData.forEach(dir => {
+          if (dir.type === 2) {
+            let children = dir.children;
+            this.recursiveExpansion(children, this.openAllTree);
+          }
+        });
+      }
     },
-    deselectAll() {
-      this.selectedNodes.clear();
+    recursiveExpansion(children, isOpen) {
+      if (children && children.length > 0) {
+        children.forEach(treeNode => {
+          if (treeNode.expand !== undefined) {
+            treeNode.expand = isOpen;
+          }
+          this.recursiveExpansion(children.children, isOpen)
+        })
+      }
     },
-    collectIds(node) {
-      return [node.id, ...(node.children || []).flatMap(child => this.collectIds(child))];
-    },
-    checkMove(evt) {
-      // 检查是否可以拖动
-      return true;
-    },
-    onDragEnd(evt) {
-      // 拖动结束的处理
-      console.log('拖动结束:', evt);
-    },
-    moveResult(evt, originalEvent) {
-      console.log(originalEvent);
-      console.log(evt);
-      return false;
+    checkChange(treeNode) {
+      if (this.checkedNodes.has(treeNode.id)) {
+        this.checkedNodes.delete(treeNode.id)
+      } else {
+        this.checkedNodes.add(treeNode.id)
+      }
     }
   }
 }
@@ -239,6 +232,13 @@ export default {
     margin-bottom: 20px;
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .ivu-btn {
+      padding: 0 10px;
+    }
   }
 
   .tree-wrapper {

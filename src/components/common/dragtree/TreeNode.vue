@@ -7,12 +7,16 @@
       v-model="dragTree">
       <div class="item-group" :key="treeNode.id" v-for="treeNode in treeList">
         <div class="item">
+          <a-checkbox :checked="checkedNodes.has(treeNode.id)" @change="onCheckChange(treeNode)">
+          </a-checkbox>
           <span>{{ treeNode.type === 1 ? 'node ' : 'dir ' }}</span>
           <span>{{ treeNode.title }}</span>
         </div>
         <div class="children" v-if="treeNode.type === 2">
           <tree-node class="drag-tree"
                      :treeList="treeNode.children"
+                     :checkedNodes="checkedNodes"
+                     @checkChange="checkChange"
                      @treeUpdate="node => treeNode.children = node"/>
         </div>
       </div>
@@ -34,6 +38,10 @@
     props: {
       treeList: {
         type: Array,
+        required: true
+      },
+      checkedNodes: {
+        type: Set,
         required: true
       }
     },
@@ -67,9 +75,8 @@
           this.$parent.selectedNodes.add(this.node.id);
         }
       },
-      checkMove(evt) {
-        // 检查是否可以拖动
-        return true;
+      onCheckChange(treeNode) {
+        this.$emit('checkChange', treeNode);
       },
       addNode() {
         this.$emit('add-node');
@@ -79,10 +86,6 @@
       },
       deleteNode() {
         this.$emit('delete-node');
-      },
-      onDragEnd(evt) {
-        // 拖动结束的处理
-        console.log('拖动结束:', evt);
       }
     }
   }

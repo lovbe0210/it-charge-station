@@ -3,7 +3,7 @@
     <div class="layout-module_wrapper">
       <div class="layout-module_directoryWrapper" :style="{ width: sidebarWidth + 'px' }">
         <div class="layout-module_dragbar" @mousedown="startDrag"></div>
-        <div class="layout-module_directory">
+        <div class="layout-module_directory un-select">
           <div class="directory-header">
             <div class="book-info">
               <div class="crumb">
@@ -45,21 +45,21 @@
                       {{openAllTree ? '全部折叠' : '全部展开'}}
                     </template>
                     <span class="action-item" @click="expandTreeNode()">
-                    <span :class="['iconfont', openAllTree ? 'icon-nav-open' : 'icon-nav-close']"></span>
+                    <span :class="['iconfont', openAllTree ? 'nav-open' : 'nav-close']"></span>
                   </span>
                   </a-tooltip>
                 </div>
               </div>
               <div class="tabs-content-holder">
                 <div class="tabs-content">
-                  <div class="tabs-tabpane" v-show="navShowType === 'list'">
+                  <div class="tabs-tabpane" v-if="navShowType === 'list'">
                     <div class="tabpane-list" :style="{ width: sidebarWidth + 'px' }">
                       <List>
                         <ListItem v-for="item in getListDirData()" :key="item.id">
                           <ListItemMeta description="hahsd沙拉领导啦啦啦速度快垃圾啊猎杀对决垃圾离开见识到了吉拉到家了案件受得了爱讲道理就asdads asd asd按">
                             <template slot="title">
                               <div class="title-content" @click="routeNavigate(item.id)">
-                                {{item.data}}
+                                {{item.title}}
                               </div>
                               <span class="iconfont icon-nav-menu"></span>
                             </template>
@@ -73,10 +73,10 @@
                       <div v-for="item in dirData" :key="item.id"
                            :class="['tree-content',item.type===1?'single-node-tree':item.type===2?'composite-nodes-tree':'']">
                         <div v-if="item.type === 1" class="single-tree-node" @click="routeNavigate(item.id)">
-                          {{item.data}}
+                          {{item.title}}
                         </div>
                         <div v-if="item.type === 2" class="composite-tree-node">
-                          <Tree :data="item.data" @on-select-change="selectTreeNode"></Tree>
+                          <Tree :data="new Array(item)" @on-select-change="selectTreeNode"></Tree>
                         </div>
                       </div>
                     </div>
@@ -223,88 +223,51 @@
           {
             id: 1,
             type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
+            title: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
           },
           {
             id: 2,
             type: 1,
-            data: '单文章节点2'
+            title: '单文章节点as打实阿萨达1'
           },
           {
             id: 3,
-            type: 1,
-            data: '单文章节点3'
-          },
-          {
-            id: 4,
-            type: 1,
-            data: '单文章节点4'
-          },
-          {
-            id: 6,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 7,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 8,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 9,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 10,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 11,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 12,
-            type: 1,
-            data: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 5,
             type: 2,
-            data: [
+            title: '下游多层目录',
+            expand: false,
+            children: [
               {
                 id: '2322342342',
+                type: 2,
                 title: '达啊实打实多爱文章文章文章文章文章文章文章文章文章文章',
                 expand: false,
                 children: [
                   {
                     id: 'asdasd',
+                    type: 1,
                     title: '单独文章'
                   },
                   {
                     id: '2322342342',
+                    type: 2,
                     title: '测试空目录该怎么展示',
                     expand: true,
                     children: []
                   },
                   {
                     id: '2322342342',
+                    type: 2,
                     title: 'parent 1-2',
                     expand: true,
                     children: [
                       {
                         id: '2322342342',
+                        type: 1,
                         title: 'leaf 1-2-1'
                       },
                       {
                         id: '2322342342',
+                        type: 1,
                         title: 'leaf 1-2-1'
                       }
                     ]
@@ -312,40 +275,48 @@
                 ]
               },
               {
-                id: '2322342342',
+                id: '2322342341',
+                type: 2,
                 title: '多层目录',
                 expand: false,
                 children: [
                   {
                     id: 'sfsdfsdfsdf',
+                    type: 1,
                     title: '单独文章'
                   },
                   {
                     id: '2322342342',
-                    title: '目录文章',
+                    type: 2,
+                    title: '目录文章收到撒阿萨',
                     expand: false,
                     children: [
                       {
                         id: '2322342342',
+                        type: 1,
                         title: 'leaf 1-1-1'
                       },
                       {
                         id: '2322342342',
+                        type: 1,
                         title: 'leaf 1-1-2'
                       }
                     ]
                   },
                   {
                     id: '2322342342',
+                    type: 2,
                     title: 'parent 1-2',
                     expand: true,
                     children: [
                       {
                         id: '2322342342',
+                        type: 1,
                         title: 'leaf 1-2-1'
                       },
                       {
                         id: '2322342342',
+                        type: 1,
                         title: 'leaf 1-2-1'
                       }
                     ]
@@ -357,42 +328,52 @@
           {
             id: 13,
             type: 2,
-            data: [
+            title: '这也是多层目录',
+            expand: true,
+            children: [
               {
                 id: 'asd23131',
+                type: 2,
                 title: 'parent 11文章文章文章文章文章文章文章文章文章文章',
                 expand: true,
                 children: [
                   {
                     id: 'asd23131',
+                    type: 1,
                     title: '单独文章'
                   },
                   {
                     id: 'asd23131',
+                    type: 2,
                     title: '目录文章',
                     expand: true,
                     children: [
                       {
                         id: 'asd23131',
+                        type: 1,
                         title: 'leaf 1-1-1录文录文录文录文录文录文录文录文录文录文录文录文录文录文录文'
                       },
                       {
                         id: 'asd23131',
+                        type: 1,
                         title: 'leaf 1-1-2'
                       }
                     ]
                   },
                   {
                     id: 'asd23131',
+                    type: 2,
                     title: 'parent 1-2',
                     expand: true,
                     children: [
                       {
                         id: 'asd23131',
+                        type: 1,
                         title: 'leaf 1-2-1'
                       },
                       {
                         id: 'asd23131',
+                        type: 1,
                         title: 'leaf 1-2-1'
                       }
                     ]
@@ -472,10 +453,21 @@
           if (dir.type === 1) {
             array.push(dir)
           } else if (dir.type === 2) {
-
+            this.recursiveGetDirList(array, dir);
           }
         })
         return array;
+      },
+      recursiveGetDirList(ListArray, dirData) {
+        if (dirData.children && dirData.children.length > 0) {
+          dirData.children.forEach(dir => {
+            if (dir.type === 1) {
+              ListArray.push(dir);
+            } else if (dir.type === 2) {
+              this.recursiveGetDirList(ListArray, dir);
+            }
+          })
+        }
       },
       /**
        * 为子组件定义的事件方法
@@ -527,19 +519,20 @@
         if (this.dirData.length > 0) {
           this.dirData.forEach(dir => {
             if (dir.type === 2) {
-              let children = dir.data;
+              dir.expand = this.openAllTree;
+              let children = dir.children;
               this.recursiveExpansion(children, this.openAllTree);
             }
           });
         }
       },
-      recursiveExpansion(children, ifOpen) {
+      recursiveExpansion(children, isOpen) {
         if (children && children.length > 0) {
           children.forEach(treeNode => {
-            if (treeNode.expand !== undefined) {
-              treeNode.expand = ifOpen;
+            if (treeNode.type === 2) {
+              treeNode.expand = isOpen;
+              this.recursiveExpansion(treeNode.children, isOpen)
             }
-            this.recursiveExpansion(children.children, ifOpen)
           })
         }
       },

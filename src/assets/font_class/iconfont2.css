@@ -126,12 +126,3 @@
 }
 
 
-
-.icon-nav-close:before {
-  content: "\e7ee";
-}
-
-.icon-nav-open:before {
-  content: "\e68b";
-}
-
