@@ -56,7 +56,7 @@
 
           .connect-driver {
             flex: 1;
-            margin-left: 3%;
+            margin: 0 2% 0 3%;
             color: #e1e3e2;
             width: auto;
             overflow: hidden;
@@ -74,6 +74,8 @@
           .article-action, .dir-action {
             display: unset;
             cursor: pointer;
+            border-radius: 2px;
+            padding: 3.5px 4px;
           }
           .article-time {
             display: none;
@@ -93,7 +95,14 @@
       }
 
       .dir {
-        width: 100%;
+        width: 90%;
+
+        .node-title>span {
+          width: 80%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
       }
 
       &:hover {
@@ -102,6 +111,10 @@
 
         .node-label {
           width: calc(~"100% - 28px");
+        }
+
+        .dir {
+          width: 90%;
         }
 
         .article-time {

@@ -186,6 +186,11 @@ export default {
       if (node?.type === 2 && node.children?.length > 0) {
         node.children.forEach(child => {
           child.parentId = node.id;
+          if (this.checkedNodes.has(node.id)) {
+            this.checkedNodes.add(child.id);
+          } else {
+            this.checkedNodes.delete(child.id);
+          }
           total += this.getDirTotal(child);
         })
       }

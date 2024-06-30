@@ -19,7 +19,15 @@
             </a-checkbox>
             <div class="node-title">
               <span class="title-content">
-                {{ treeNode.title }}
+                <span v-if="!showInput">
+                  {{ treeNode.title }}
+                </span>
+                <input type="text"
+                       :ref="treeNode.id"
+                       v-if="showInput && treeNode.id === currentNode?.id"
+                       @blur="updateNodeTitle"
+                       @ended="updateNodeTitle"
+                       v-model="tmpName"/>
               </span>
               <span class="connect-driver">
                 --------------------------------------------------------------------------------------------------------
@@ -34,14 +42,14 @@
               }}
             </span>
             <Dropdown placement="bottom-end"
-                      @on-click="changeCollectType"
                       trigger="click">
               <span class="article-action">
                 <span class="iconfont operate"/>
               </span>
               <DropdownMenu slot="list">
-                <DropdownItem name="">
-                  <span>
+                <DropdownItem>
+                  <span @click="nodeAction(treeNode, 'rename')">
+                    <span class="iconfont rename"></span>
                     重命名
                   </span>
                 </DropdownItem>
@@ -52,22 +60,22 @@
                 </DropdownItem>
                 <DropdownItem name="2">
                   <span>
-                    移出专栏
-                  </span>
-                </DropdownItem>
-                <DropdownItem name="2">
-                  <span>
                     编辑文档
                   </span>
                 </DropdownItem>
                 <DropdownItem name="2">
                   <span>
-                    复制
+                    导出文档
                   </span>
                 </DropdownItem>
                 <DropdownItem name="2">
                   <span>
-                    导出文档
+                    移出专栏
+                  </span>
+                </DropdownItem>
+                <DropdownItem name="2">
+                  <span>
+                    复制
                   </span>
                 </DropdownItem>
                 <DropdownItem name="2">
@@ -90,11 +98,19 @@
                         :disabled="treeParamBox.checkedNodes.has(treeNode.parentId)">
             </a-checkbox>
             <span class="node-title">
-              {{ treeNode.title }}
+              <span v-if="!showInput">
+                {{ treeNode.title }}
+              </span>
+              <input type="text"
+                     :ref="treeNode.id"
+                     v-if="showInput && treeNode.id === currentNode?.id"
+                     @blur="updateNodeTitle"
+                     @ended="updateNodeTitle"
+                     v-model="tmpName"/>
             </span>
           </div>
-          <div class="action-more">
-            <Dropdown placement="bottom-end" @on-click="changeCollectType">
+          <div class="action-more" tabindex="1">
+            <Dropdown placement="bottom-end">
               <span class="dir-action">
                 <span class="iconfont add"/>
               </span>
@@ -104,6 +120,50 @@
                 </DropdownItem>
                 <DropdownItem name="1">
                   文档
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown placement="bottom-end"
+                      trigger="click">
+              <span class="dir-action" style="margin-left: 6px">
+                <span class="iconfont operate"/>
+              </span>
+              <DropdownMenu slot="list">
+                <DropdownItem>
+                  <span @click="nodeAction(treeNode, 'rename')">
+                    <span class="iconfont rename"></span>
+                    重命名
+                  </span>
+                </DropdownItem>
+                <DropdownItem name="1">
+                  <span>
+                    查看文档
+                  </span>
+                </DropdownItem>
+                <DropdownItem name="2">
+                  <span>
+                    编辑文档
+                  </span>
+                </DropdownItem>
+                <DropdownItem name="2">
+                  <span>
+                    导出文档
+                  </span>
+                </DropdownItem>
+                <DropdownItem name="2">
+                  <span>
+                    移出专栏
+                  </span>
+                </DropdownItem>
+                <DropdownItem name="2">
+                  <span>
+                    复制
+                  </span>
+                </DropdownItem>
+                <DropdownItem name="2">
+                  <span>
+                    删除
+                  </span>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -126,7 +186,11 @@ import draggable from 'vuedraggable';
 export default {
   name: "TreeNode",
   data() {
-    return {}
+    return {
+      showInput: false,
+      currentNode: null,
+      tmpName: ''
+    }
   },
   components: {
     draggable
@@ -159,7 +223,33 @@ export default {
       }
     }
   },
-  methods: {}
+  methods: {
+    nodeAction(treeNode, actionType) {
+      switch (actionType) {
+        case "rename":
+          this.currentNode = treeNode;
+          this.showInput = true;
+          this.tmpName = treeNode.title;
+          this.$nextTick(function () {
+            this.$refs[treeNode.id][0].focus();
+          });
+      }
+    },
+    updateNodeTitle() {
+      if (this.tmpName?.trim().length > 0) {
+        this.currentNode.title = this.tmpName.trim();
+      }
+      this.showInput = false;
+    }
+  },
+  watch: {
+    "showInput"(val) {
+      if (!val) {
+        this.currentNode = null;
+        this.tmpName = '';
+      }
+    }
+  }
 }
 </script>
 
