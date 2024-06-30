@@ -1,0 +1,53 @@
+.tree-container {
+  width: 100%;
+
+  .tree-header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .ivu-btn {
+      padding: 0 10px;
+    }
+
+    .article-info {
+      .menu-icon {
+        cursor: pointer;
+
+        .iconfont {
+          font-size: 14px;
+          margin-left: 3px;
+        }
+      }
+
+      .ivu-dropdown-menu {
+        margin-bottom: 0;
+        min-width: 130px;
+
+        .ivu-dropdown-item {
+          padding: 7px 10px;
+          display: flex;
+          justify-content: space-between;
+          .iconfont {
+            color: #00b96b;
+            visibility: hidden;
+          }
+        }
+
+        .selected {
+          background: #F3F3F3;
+          .iconfont {
+            visibility: visible;
+          }
+        }
+      }
+    }
+  }
+
+  .tree-wrapper {
+    margin-left: -3.5%;
+  }
+}

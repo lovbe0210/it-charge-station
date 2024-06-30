@@ -1,22 +1,55 @@
 <template>
-  <div class="tree-node">
+  <div class="drag-tree">
     <draggable
       v-bind="dragOptions"
       tag="div"
-      class="item-container"
+      class="drag-tree-wrapper"
+      @change="treeParamBox.onTreeChange"
       v-model="dragTree">
-      <div class="item-group" :key="treeNode.id" v-for="treeNode in treeList">
-        <div class="item">
-          <a-checkbox :checked="checkedNodes.has(treeNode.id)" @change="onCheckChange(treeNode)">
-          </a-checkbox>
-          <span>{{ treeNode.type === 1 ? 'node ' : 'dir ' }}</span>
-          <span>{{ treeNode.title }}</span>
+      <div class="node-item-container" :key="treeNode.id" v-for="treeNode in treeList">
+        <div class="node-item-content" v-if="treeNode.type === 1">
+          <span class="node-label node">
+            <span @click="treeNode.expand = !treeNode.expand">
+              <span class="iconfont dir-open" v-if="treeNode.expand"/>
+              <span class="iconfont dir-collapse" v-else/>
+            </span>
+            <a-checkbox :checked="treeParamBox.checkedNodes.has(treeNode.id)"
+                        @change="treeParamBox.checkChange(treeNode)"
+                        :disabled="treeParamBox.checkedNodes.has(treeNode.parentId)">
+            </a-checkbox>
+            <span class="node-title">
+              {{ treeNode.title }}
+            </span>
+          </span>
+          <span class="article-more">
+            <span class="article-time">
+              {{ treeParamBox.articleShowInfo === 'updateTime'
+                ? treeParamBox.formatTime(treeNode.updateTime) : treeParamBox.formatTime(treeNode.createTime) }}
+            </span>
+            <span class="article-action">
+              <span class="iconfont operate"/>
+            </span>
+          </span>
         </div>
-        <div class="children" v-if="treeNode.type === 2">
-          <tree-node class="drag-tree"
+        <div class="node-item-content" v-else>
+          <span class="node-label dir">
+            <span @click="treeNode.expand = !treeNode.expand">
+              <span class="iconfont dir-open" v-if="treeNode.expand"/>
+              <span class="iconfont dir-collapse" v-else/>
+            </span>
+            <a-checkbox :checked="treeParamBox.checkedNodes.has(treeNode.id)"
+                        @change="treeParamBox.checkChange(treeNode)"
+                        :disabled="treeParamBox.checkedNodes.has(treeNode.parentId)">
+            </a-checkbox>
+            <span class="node-title">
+              {{ treeNode.title }}
+            </span>
+          </span>
+        </div>
+        <div class="node-item-children" v-if="treeNode.type === 2">
+          <tree-node v-show="treeNode.expand"
                      :treeList="treeNode.children"
-                     :checkedNodes="checkedNodes"
-                     @checkChange="checkChange"
+                     :treeParamBox="treeParamBox"
                      @treeUpdate="node => treeNode.children = node"/>
         </div>
       </div>
@@ -40,19 +73,15 @@
         type: Array,
         required: true
       },
-      checkedNodes: {
-        type: Set,
+      treeParamBox: {
+        type: Object,
         required: true
       }
     },
     computed: {
-      isSelected() {
-        return true;
-        // return this.$parent.selectedNodes.has(this.node.id);
-      },
       dragOptions() {
         return {
-          animation: 200,
+          animation: 400,
           group: "description",
           pull: false,
           ghostClass: "ghost"
@@ -68,38 +97,11 @@
       }
     },
     methods: {
-      toggleSelect() {
-        if (this.isSelected) {
-          this.$parent.selectedNodes.delete(this.node.id);
-        } else {
-          this.$parent.selectedNodes.add(this.node.id);
-        }
-      },
-      onCheckChange(treeNode) {
-        this.$emit('checkChange', treeNode);
-      },
-      addNode() {
-        this.$emit('add-node');
-      },
-      editNode() {
-        this.$emit('edit-node');
-      },
-      deleteNode() {
-        this.$emit('delete-node');
-      }
+
     }
   }
 </script>
 
 <style scoped lang="less">
-  .tree-node {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 5px;
-
-    .node-name {
-      border: 1px solid #9e9d9d;
-    }
-  }
-
+  @import "./css/treenode.less";
 </style>

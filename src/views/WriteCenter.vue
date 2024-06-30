@@ -22,7 +22,7 @@
               新建
             </DropdownItem>
             <DropdownItem>
-              <span class="iconfont icon-collapse"/>
+              <span class="iconfont collapse"/>
               专栏
             </DropdownItem>
           </DropdownMenu>

@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_ej4ojt2mmtd.woff2?t=1719558306257') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_okh7fpc5ejb.woff2?t=1719662682405') format('woff2');
 }
 
 .iconfont {
@@ -321,4 +321,12 @@
 
 .nav-close:before {
   content: "\e692";
+}
+
+.dir-collapse:before {
+  content: "\e693";
+}
+
+.dir-open:before {
+  content: "\e694";
 }
