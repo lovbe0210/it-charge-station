@@ -5,10 +5,14 @@
       justify-content: space-between;
       align-items: center;
       padding: 8px 8px 8px 0;
+      width: 100%;
 
       .node-label {
         display: flex;
+        flex: 1;
         align-items: center;
+        line-height: 25px;
+        width: calc(~"100% - 145px");
 
         .iconfont {
           font-size: 14px;
@@ -39,16 +43,47 @@
         }
 
         .node-title {
-          margin-left: 10px;
-          min-width: 100%;
-          background: #0BD07D;
+          display: flex;
+          width: 90%;
+          margin: 0 10px;
+
+          .title-content {
+            max-width: 80%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .connect-driver {
+            flex: 1;
+            margin-left: 3%;
+            color: #e1e3e2;
+            width: auto;
+            overflow: hidden;
+            white-space: nowrap;
+          }
         }
       }
 
-      .article-more {
-        .article-action {
-          display: none;
+      .action-more {
+        .article-time {
+          padding: 3px 4px;
         }
+
+        &:focus {
+          .article-action, .dir-action {
+            display: unset;
+            cursor: pointer;
+          }
+          .article-time {
+            display: none;
+          }
+        }
+      }
+
+      .article-action, .dir-action {
+        display: none;
+        cursor: pointer;
       }
 
       .node {
@@ -57,19 +92,27 @@
         }
       }
 
+      .dir {
+        width: 100%;
+      }
+
       &:hover {
         background: #eff0f0;
         border-radius: 4px;
+
+        .node-label {
+          width: calc(~"100% - 28px");
+        }
 
         .article-time {
           display: none;
         }
 
-        .article-action {
+        .article-action, .dir-action {
           display: unset;
           background: #E7E9E8;
           border-radius: 2px;
-          padding: 3px 3px;
+          padding: 3.5px 4px;
         }
       }
     }
