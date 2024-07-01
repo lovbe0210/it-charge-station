@@ -53,26 +53,6 @@
                     重命名
                   </span>
                 </DropdownItem>
-                <DropdownItem name="1">
-                  <span>
-                    查看文档
-                  </span>
-                </DropdownItem>
-                <DropdownItem name="2">
-                  <span>
-                    编辑文档
-                  </span>
-                </DropdownItem>
-                <DropdownItem name="2">
-                  <span>
-                    导出文档
-                  </span>
-                </DropdownItem>
-                <DropdownItem name="2">
-                  <span>
-                    移出专栏
-                  </span>
-                </DropdownItem>
                 <DropdownItem name="2">
                   <span>
                     复制
@@ -81,6 +61,11 @@
                 <DropdownItem name="2">
                   <span>
                     删除
+                  </span>
+                </DropdownItem>
+                <DropdownItem name="2">
+                  <span>
+                    移出专栏
                   </span>
                 </DropdownItem>
               </DropdownMenu>
