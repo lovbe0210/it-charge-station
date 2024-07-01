@@ -17,16 +17,17 @@
                         @change="treeParamBox.checkChange(treeNode)"
                         :disabled="treeParamBox.checkedNodes.has(treeNode.parentId)">
             </a-checkbox>
-            <div class="node-title">
+            <div :class="['node-title', showInput && treeNode.id === currentNode?.id ? 'editing' : '']">
               <span class="title-content">
-                <span v-if="!showInput">
+                <span class="content">
                   {{ treeNode.title }}
                 </span>
                 <input type="text"
                        :ref="treeNode.id"
                        v-if="showInput && treeNode.id === currentNode?.id"
                        @blur="updateNodeTitle"
-                       @ended="updateNodeTitle"
+                       @keyup="updateNodeTitle"
+                       maxlength="30"
                        v-model="tmpName"/>
               </span>
               <span class="connect-driver">
@@ -48,23 +49,30 @@
               </span>
               <DropdownMenu slot="list">
                 <DropdownItem>
-                  <span @click="nodeAction(treeNode, 'rename')">
+                  <span @click="nodeAction(treeNode, 'rename')"
+                        class="action-item">
                     <span class="iconfont rename"></span>
                     重命名
                   </span>
                 </DropdownItem>
                 <DropdownItem name="2">
-                  <span>
+                  <span class="action-item"
+                        @click="nodeAction(treeNode, 'copy')" >
+                    <span class="iconfont copy"></span>
                     复制
                   </span>
                 </DropdownItem>
                 <DropdownItem name="2">
-                  <span>
+                  <span class="action-item"
+                        @click="nodeAction(treeNode, 'delete')" >
+                    <span class="iconfont delete"></span>
                     删除
                   </span>
                 </DropdownItem>
                 <DropdownItem name="2">
-                  <span>
+                  <span class="action-item"
+                        @click="nodeAction(treeNode, 'remove')" >
+                    <span class="iconfont remove"></span>
                     移出专栏
                   </span>
                 </DropdownItem>
@@ -82,8 +90,8 @@
                         @change="treeParamBox.checkChange(treeNode)"
                         :disabled="treeParamBox.checkedNodes.has(treeNode.parentId)">
             </a-checkbox>
-            <span class="node-title">
-              <span v-if="!showInput">
+            <span :class="['node-title', showInput && treeNode.id === currentNode?.id ? 'editing' : '']">
+              <span class="content" @click="treeNode.expand = !treeNode.expand">
                 {{ treeNode.title }}
               </span>
               <input type="text"
@@ -91,6 +99,7 @@
                      v-if="showInput && treeNode.id === currentNode?.id"
                      @blur="updateNodeTitle"
                      @ended="updateNodeTitle"
+                     maxlength="30"
                      v-model="tmpName"/>
             </span>
           </div>
@@ -101,10 +110,16 @@
               </span>
               <DropdownMenu slot="list">
                 <DropdownItem name="">
-                  目录
+                  <span class="action-item">
+                    <span class="iconfont article"></span>
+                    文档
+                  </span>
                 </DropdownItem>
                 <DropdownItem name="1">
-                  文档
+                  <span class="action-item">
+                    <span class="iconfont dir-fold"></span>
+                    新建分组
+                  </span>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -115,39 +130,27 @@
               </span>
               <DropdownMenu slot="list">
                 <DropdownItem>
-                  <span @click="nodeAction(treeNode, 'rename')">
+                  <span @click="nodeAction(treeNode, 'rename')" class="action-item">
                     <span class="iconfont rename"></span>
                     重命名
                   </span>
                 </DropdownItem>
-                <DropdownItem name="1">
-                  <span>
-                    查看文档
-                  </span>
-                </DropdownItem>
                 <DropdownItem name="2">
-                  <span>
-                    编辑文档
-                  </span>
-                </DropdownItem>
-                <DropdownItem name="2">
-                  <span>
-                    导出文档
-                  </span>
-                </DropdownItem>
-                <DropdownItem name="2">
-                  <span>
-                    移出专栏
-                  </span>
-                </DropdownItem>
-                <DropdownItem name="2">
-                  <span>
+                  <span class="action-item">
+                    <span class="iconfont copy"></span>
                     复制
                   </span>
                 </DropdownItem>
                 <DropdownItem name="2">
-                  <span>
+                  <span class="action-item">
+                    <span class="iconfont delete"></span>
                     删除
+                  </span>
+                </DropdownItem>
+                <DropdownItem name="2">
+                  <span class="action-item">
+                    <span class="iconfont remove"></span>
+                    移出专栏
                   </span>
                 </DropdownItem>
               </DropdownMenu>
@@ -218,13 +221,19 @@ export default {
           this.$nextTick(function () {
             this.$refs[treeNode.id][0].focus();
           });
+          break
+        case "copy":
+          // 找出父级
+
       }
     },
-    updateNodeTitle() {
-      if (this.tmpName?.trim().length > 0) {
-        this.currentNode.title = this.tmpName.trim();
+    updateNodeTitle(event) {
+      if ((event instanceof KeyboardEvent && event.key === 'Enter') || event instanceof FocusEvent) {
+        if (this.tmpName?.trim().length > 0) {
+          this.currentNode.title = this.tmpName.trim();
+        }
+        this.showInput = false;
       }
-      this.showInput = false;
     }
   },
   watch: {

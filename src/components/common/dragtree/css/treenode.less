@@ -44,6 +44,7 @@
 
         .node-title {
           display: flex;
+          align-items: center;
           width: 90%;
           margin: 0 10px;
 
@@ -52,6 +53,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            line-height: 21px;
           }
 
           .connect-driver {
@@ -61,6 +63,20 @@
             width: auto;
             overflow: hidden;
             white-space: nowrap;
+          }
+        }
+
+        .editing {
+          input {
+            width: 300px;
+            outline: none;
+            border: 1px solid #00b96b;
+            border-radius: 4px;
+            padding: 0 5px;
+          }
+
+          .content {
+            display: none;
           }
         }
       }

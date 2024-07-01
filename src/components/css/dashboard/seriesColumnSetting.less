@@ -396,20 +396,6 @@
             width: 4%;
             color: #585A5A;
 
-            .action-item {
-              color: #585A5A;
-              padding: 0 5px;
-
-              .article-setting, .remove {
-                font-weight: 500;
-                font-size: 17px;
-              }
-
-              .iconfont {
-                margin-right: 5px;
-              }
-            }
-
             .operate {
               color: #585A5A;
               font-weight: 600;
@@ -677,6 +663,32 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+  }
+}
+
+/deep/ .ivu-dropdown-menu {
+  min-width: 120px;
+  padding: 5px 0;
+
+  .ivu-dropdown-item {
+    padding: 8px 0;
+    text-align: left;
+
+    .action-item {
+      color: #585A5A;
+      padding-left: 15%;
+      width: 100%;
+      display: inline-block;
+
+      .article-setting, .remove {
+        font-weight: 500;
+        font-size: 17px;
+      }
+
+      .iconfont {
+        margin-right: 6px;
+      }
     }
   }
 }
