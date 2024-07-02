@@ -136,7 +136,7 @@
                   </span>
                 </DropdownItem>
                 <DropdownItem name="2">
-                  <span class="action-item">
+                  <span class="action-item"  @click="nodeAction(treeNode, 'copy')">
                     <span class="iconfont copy"></span>
                     复制
                   </span>
@@ -223,8 +223,7 @@ export default {
           });
           break
         case "copy":
-          // 找出父级
-
+          this.treeParamBox.copyNode(treeNode);
       }
     },
     updateNodeTitle(event) {

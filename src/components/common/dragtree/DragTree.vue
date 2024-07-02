@@ -138,7 +138,7 @@ export default {
       openAllTree: false,
       articleShowInfo: 'updateTime',
       checkedNodes: new Set(),
-      tmpAllNodeIds: new Set()
+      tmpAllNodeMap: new Map()
     }
   },
   components: {
@@ -156,7 +156,9 @@ export default {
         onTreeChange: this.onTreeChange,
         // 文章显示信息
         articleShowInfo: this.articleShowInfo,
-        formatTime: formatTime
+        formatTime: formatTime,
+        // 复制节点
+        copyNode: this.copyNode
       }
     }
   },
@@ -174,11 +176,11 @@ export default {
         this.totalDirNode = total;
       } else {
         this.totalDirNode = 0;
-        this.tmpAllNodeIds.clear();
+        this.tmpAllNodeMap.clear();
       }
     },
     getDirTotal(node) {
-      this.tmpAllNodeIds.add(node.id);
+      this.tmpAllNodeMap.set(node.id, node);
       if (node?.type === 1) {
         return 1;
       }
@@ -199,9 +201,35 @@ export default {
     onCheckAllChange(e) {
       if (e.target.checked) {
         // 全选
-        this.checkedNodes = new Set(this.tmpAllNodeIds.keys());
+        this.checkedNodes = new Set(this.tmpAllNodeMap.keys());
       } else {
         this.checkedNodes = new Set();
+      }
+    },
+
+    // 节点的新增、复制、删除
+    copyNode(node) {
+      // 本级节点构造
+      let newNode = {
+        id: node.id + 100,
+        type: node.type,
+        title: node.title + ' 副本',
+        createTime: Date.now(),
+        updateTime: Date.now(),
+        children: []
+      };
+      if (!node.parentId) {
+        this.dirData.unshift(newNode);
+        return;
+      }
+      let parentNode = this.tmpAllNodeMap.get(node.parentId);
+      if (!parentNode && parentNode.type !== 2) {
+        return;
+      }
+      if (parentNode.children) {
+        parentNode.children().unshift(newNode);
+      } else {
+        parentNode.children = [newNode];
       }
     },
     addNode(node) {
@@ -212,14 +240,6 @@ export default {
           children: []
         };
         node.children.push(newNode);
-      };
-    },
-    editNode(node) {
-      return () => {
-        const newName = prompt('请输入新节点名称', node.name);
-        if (newName) {
-          node.name = newName;
-        }
       };
     },
     deleteNode(node) {
