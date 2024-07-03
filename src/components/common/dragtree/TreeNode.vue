@@ -13,9 +13,9 @@
               <span class="iconfont dir-open" v-if="treeNode.expand"/>
               <span class="iconfont dir-collapse" v-else/>
             </div>
-            <a-checkbox :checked="treeParamBox.checkedNodes.has(treeNode.id)"
+            <a-checkbox :checked="!!treeParamBox.checkedNodes[treeNode.id]"
                         @change="treeParamBox.checkChange(treeNode)"
-                        :disabled="treeParamBox.checkedNodes.has(treeNode.parentId)">
+                        :disabled="!!(treeNode.parentId && treeParamBox.checkedNodes[treeNode.parentId])">
             </a-checkbox>
             <div :class="['node-title', showInput && treeNode.id === currentNode?.id ? 'editing' : '']">
               <span class="title-content">
@@ -86,9 +86,9 @@
               <span class="iconfont dir-open" v-if="treeNode.expand"/>
               <span class="iconfont dir-collapse" v-else/>
             </span>
-            <a-checkbox :checked="treeParamBox.checkedNodes.has(treeNode.id)"
+            <a-checkbox :checked="!!treeParamBox.checkedNodes[treeNode.id]"
                         @change="treeParamBox.checkChange(treeNode)"
-                        :disabled="treeParamBox.checkedNodes.has(treeNode.parentId)">
+                        :disabled="!!(treeNode.parentId && treeParamBox.checkedNodes[treeNode.parentId])">
             </a-checkbox>
             <span :class="['node-title', showInput && treeNode.id === currentNode?.id ? 'editing' : '']">
               <span class="content" @click="treeNode.expand = !treeNode.expand">
@@ -104,19 +104,19 @@
             </span>
           </div>
           <div class="action-more" tabindex="1">
-            <Dropdown placement="bottom-end">
+            <Dropdown placement="bottom-end" trigger="click">
               <span class="dir-action">
                 <span class="iconfont add"/>
               </span>
               <DropdownMenu slot="list">
-                <DropdownItem name="">
-                  <span class="action-item">
+                <DropdownItem>
+                  <span class="action-item" @click="nodeAction(treeNode, 'newNode', 1)">
                     <span class="iconfont article"></span>
                     文档
                   </span>
                 </DropdownItem>
-                <DropdownItem name="1">
-                  <span class="action-item">
+                <DropdownItem>
+                  <span class="action-item" @click="nodeAction(treeNode, 'newNode', 2)">
                     <span class="iconfont dir-fold"></span>
                     新建分组
                   </span>
@@ -142,13 +142,13 @@
                   </span>
                 </DropdownItem>
                 <DropdownItem name="2">
-                  <span class="action-item">
+                  <span class="action-item" @click="nodeAction(treeNode, 'delete')" >
                     <span class="iconfont delete"></span>
                     删除
                   </span>
                 </DropdownItem>
                 <DropdownItem name="2">
-                  <span class="action-item">
+                  <span class="action-item" @click="nodeAction(treeNode, 'remove')" >
                     <span class="iconfont remove"></span>
                     移出专栏
                   </span>
@@ -195,7 +195,9 @@ export default {
   },
   computed: {
     dragOptions() {
+      let keywords = this.treeParamBox.filterKeywords;
       return {
+        disabled: keywords ? keywords.trim().length > 0 : false,
         animation: 400,
         group: "description",
         pull: false,
@@ -212,7 +214,7 @@ export default {
     }
   },
   methods: {
-    nodeAction(treeNode, actionType) {
+    nodeAction(treeNode, actionType, newNodeType) {
       switch (actionType) {
         case "rename":
           this.currentNode = treeNode;
@@ -224,6 +226,10 @@ export default {
           break
         case "copy":
           this.treeParamBox.copyNode(treeNode);
+          break;
+        case "newNode":
+          this.treeParamBox.createNode(treeNode, newNodeType);
+          break;
       }
     },
     updateNodeTitle(event) {

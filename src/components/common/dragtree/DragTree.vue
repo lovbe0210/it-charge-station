@@ -1,23 +1,23 @@
 <template>
   <div class="tree-container un-select">
     <div class="tree-header">
-      <div>
-        <a-checkbox :indeterminate="checkedNodes.size > 0 && checkedNodes.size < totalDirNode"
-                    :checked="checkedNodes.size === totalDirNode"
+      <div class="action-select">
+        <a-checkbox :indeterminate="Object.keys(checkedNodes).length > 0 && Object.keys(checkedNodes).length < totalDirNode"
+                    :checked="Object.keys(checkedNodes).length === totalDirNode"
                     @change="onCheckAllChange">
-          <span>选择{{ checkedNodes.size }}个</span>
+          <span>选择{{ Object.keys(checkedNodes).length }}个</span>
         </a-checkbox>
-        <Button type="text" @click="expandTreeNode">
+        <Button type="text" @click="expandTreeNode" v-show="!filterKeywords || filterKeywords.trim().length === 0">
           <span :class="['iconfont', openAllTree ? 'nav-open' : 'nav-close']"/>
           {{ openAllTree ? '全部折叠' : '全部展开' }}
         </Button>
       </div>
-      <div class="action-btn" v-if="checkedNodes.size > 0">
+      <div class="action-btn" v-if="Object.keys(checkedNodes).length > 0">
         <Button type="text">
           <span class="iconfont copy"></span>
           复制
         </Button>
-        <Button type="text">
+        <Button type="text" @click="deleteNode(checkedNodes)">
           <span class="iconfont delete"></span>
           删除
         </Button>
@@ -43,10 +43,30 @@
         </Dropdown>
       </div>
     </div>
-    <div class="tree-wrapper">
-      <tree-node :treeList="dirData"
+    <div class="tree-wrapper beauty-scroll">
+      <tree-node :treeList="treeData"
                  :treeParamBox="treeParamBox"
                  @treeUpdate="treeUpdate"/>
+    </div>
+    <div class="modal-box">
+      <Modal
+        v-model="showModal"
+        :title="actionType.indexOf('remove') !== -1 ? '移出专栏'
+              : actionType.indexOf('delete1') !== -1 ? '删除文档'
+              : actionType.indexOf('delete2') !== -1 ? '删除分组' : ''">
+        <div v-if="actionType.indexOf('remove1') !== -1">
+          确定将文档移出专栏吗？
+        </div>
+        <div v-if="actionType.indexOf('remove2') !== -1">
+          确定将分组内的所有文档移出专栏吗？
+        </div>
+        <div v-if="actionType.indexOf('delete1') !== -1">
+          确定删除文档吗？
+        </div>
+        <div v-if="actionType.indexOf('delete2') !== -1">
+          确定删除分组及分组内的所有文档吗？
+        </div>
+      </Modal>
     </div>
   </div>
 </template>
@@ -137,14 +157,17 @@ export default {
       totalDirNode: 5,
       openAllTree: false,
       articleShowInfo: 'updateTime',
-      checkedNodes: new Set(),
-      tmpAllNodeMap: new Map()
+      checkedNodes: {},
+      tmpAllNodeMap: {},
+      showModal: false,
+      // remove 移出 delete 删除 1 文档 2节点
+      actionType: 'remove1'
     }
   },
   components: {
     TreeNode
   },
-  props: ['columnId'],
+  props: ['columnId', 'filterKeywords'],
   computed: {
     treeParamBox() {
       return {
@@ -158,7 +181,20 @@ export default {
         articleShowInfo: this.articleShowInfo,
         formatTime: formatTime,
         // 复制节点
-        copyNode: this.copyNode
+        copyNode: this.copyNode,
+        // 新建节点
+        createNode: this.createNode,
+        // 搜索过滤关键字
+        filterKeywords: this.filterKeywords
+      }
+    },
+    treeData() {
+      if (this.filterKeywords && this.filterKeywords.trim().length > 0) {
+        return Object.values(this.tmpAllNodeMap)
+          .filter(node => node.type === 1 && node.title.indexOf(this.filterKeywords.trim()) !== -1)
+          .sort((n1, n2) => n2.updateTime - n1.updateTime);
+      } else {
+        return this.dirData;
       }
     }
   },
@@ -176,11 +212,11 @@ export default {
         this.totalDirNode = total;
       } else {
         this.totalDirNode = 0;
-        this.tmpAllNodeMap.clear();
+        this.tmpAllNodeMap = {};
       }
     },
     getDirTotal(node) {
-      this.tmpAllNodeMap.set(node.id, node);
+      this.$set(this.tmpAllNodeMap, node.id, node);
       if (node?.type === 1) {
         return 1;
       }
@@ -188,10 +224,10 @@ export default {
       if (node?.type === 2 && node.children?.length > 0) {
         node.children.forEach(child => {
           child.parentId = node.id;
-          if (this.checkedNodes.has(node.id)) {
-            this.checkedNodes.add(child.id);
+          if (this.checkedNodes[node.id]) {
+            this.$set(this.checkedNodes, child.id, child);
           } else {
-            this.checkedNodes.delete(child.id);
+            this.$delete(this.checkedNodes, child.id);
           }
           total += this.getDirTotal(child);
         })
@@ -201,9 +237,9 @@ export default {
     onCheckAllChange(e) {
       if (e.target.checked) {
         // 全选
-        this.checkedNodes = new Set(this.tmpAllNodeMap.keys());
+        this.checkedNodes = {...this.tmpAllNodeMap};
       } else {
-        this.checkedNodes = new Set();
+        this.checkedNodes = {};
       }
     },
 
@@ -211,38 +247,63 @@ export default {
     copyNode(node) {
       // 本级节点构造
       let newNode = {
-        id: node.id + 100,
+        id: node.id + Math.floor(Math.random() * 1000),
         type: node.type,
         title: node.title + ' 副本',
         createTime: Date.now(),
         updateTime: Date.now(),
-        children: []
+        parentId: null
       };
+      if (node.type === 2) {
+        newNode.expand = false;
+        newNode.children = [];
+      }
       if (!node.parentId) {
         this.dirData.unshift(newNode);
+        this.onTreeChange();
         return;
       }
-      let parentNode = this.tmpAllNodeMap.get(node.parentId);
+      let parentNode = this.tmpAllNodeMap[node.parentId];
       if (!parentNode && parentNode.type !== 2) {
+        this.onTreeChange();
         return;
       }
+      newNode.parentId = node.parentId;
       if (parentNode.children) {
-        parentNode.children().unshift(newNode);
+        parentNode.children.unshift(newNode);
       } else {
         parentNode.children = [newNode];
       }
+      this.onTreeChange();
     },
-    addNode(node) {
-      return () => {
-        const newNode = {
-          id: Date.now(),
-          name: `新节点${node.children.length + 1}`,
-          children: []
-        };
-        node.children.push(newNode);
+    createNode(currentNode, newNodeType) {
+      // 本级节点构造
+      let newNode = {
+        id: Math.floor(Math.random() * 1000),
+        type: newNodeType,
+        title: newNodeType === 1 ? '无标题文档' : newNodeType === 2 ? '新分组' : '请输入标题',
+        createTime: Date.now(),
+        updateTime: Date.now(),
+        parentId: currentNode?.id
       };
+      if (newNodeType === 2) {
+        newNode.expand = false;
+        newNode.children = [];
+      }
+      if (!currentNode) {
+        this.dirData.unshift(newNode);
+        this.onTreeChange();
+        return;
+      }
+      currentNode.expand = true;
+      if (currentNode.children) {
+        currentNode.children.unshift(newNode);
+      } else {
+        currentNode.children = [newNode];
+      }
+      this.onTreeChange();
     },
-    deleteNode(node) {
+    deleteNode(checkNodes) {
       return () => {
         if (confirm('确定删除该节点吗？')) {
           const parent = this.findParent(node.id, this.treeData);
@@ -289,7 +350,7 @@ export default {
     recursiveExpansion(children, isOpen) {
       if (children && children.length > 0) {
         children.forEach(treeNode => {
-          if (treeNode.expand !== undefined) {
+          if (treeNode.type === 2) {
             treeNode.expand = isOpen;
           }
           this.recursiveExpansion(children.children, isOpen)
@@ -298,33 +359,36 @@ export default {
     },
     checkChange(treeNode) {
       // 本级
-      let currentNodeStatus = this.checkedNodes.has(treeNode.id);
+      let currentNodeStatus = !!this.checkedNodes[treeNode.id];
       if (currentNodeStatus) {
-        this.checkedNodes.delete(treeNode.id)
+        this.$delete(this.checkedNodes, treeNode.id);
       } else {
-        this.checkedNodes.add(treeNode.id)
+        this.$set(this.checkedNodes, treeNode.id, treeNode);
       }
       // 如果时目录，则需要联动下级，无需关注上级
       if (treeNode.type === 2 && treeNode.children && treeNode.children.length > 0) {
         treeNode.children.forEach(node => this.recursiveChecked(node, !currentNodeStatus));
       }
-      this.checkedNodes = new Set(this.checkedNodes.keys());
     },
     recursiveChecked(treeNode, parentNodeStatus) {
       if (parentNodeStatus) {
-        this.checkedNodes.add(treeNode.id)
+        this.$set(this.checkedNodes, treeNode.id, treeNode);
       } else {
-        this.checkedNodes.delete(treeNode.id)
+        this.$delete(this.checkedNodes, treeNode.id);
       }
       if (treeNode.type === 1 || !treeNode.children) {
         return;
       }
       treeNode.children.forEach(node => this.recursiveChecked(node, parentNodeStatus));
     }
+  },
+  mounted() {
+    this.$emit('reportParamBox', this.treeParamBox)
+    this.onTreeChange();
   }
 }
 </script>
 
 <style scoped lang="less">
-  @import "./css/dragtree.less";
+@import "./css/dragtree.less";
 </style>

@@ -157,10 +157,28 @@
                      maxlength="30">
                 <span class="iconfont i-search" slot="prefix"/>
               </Input>
-              <Button type="success">新建</Button>
+              <Dropdown placement="bottom">
+                <Button type="success">新建</Button>
+                <DropdownMenu slot="list">
+                  <DropdownItem>
+                  <span class="action-item" @click="treeParamBox.createNode(null, 1)">
+                    <span class="iconfont article"></span>
+                    文档
+                  </span>
+                  </DropdownItem>
+                  <DropdownItem>
+                  <span class="action-item" @click="treeParamBox.createNode(null, 2)">
+                    <span class="iconfont dir-fold"></span>
+                    新建分组
+                  </span>
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
             </div>
           </div>
-          <drag-tree :columnId="columnId"/>
+          <drag-tree :columnId="columnId"
+                     :filterKeywords="searchKeywords"
+                     @reportParamBox="reportParamBox"/>
         </div>
         <div v-if="activeItem === 'article'">
           <div class="index-area">
@@ -675,7 +693,8 @@ export default {
           createTime: 1719158002000,
           updateTime: 1711271490000
         }
-      ]
+      ],
+      treeParamBox: null
     }
   },
   props: ['columnId'],
@@ -820,7 +839,10 @@ export default {
       this.actionType = 'delete';
       this.showModal = true;
     },
-    formatTime
+    formatTime,
+    reportParamBox(treeParamBox) {
+      this.treeParamBox = treeParamBox;
+    }
   },
   watch: {
     "showModal"(val) {

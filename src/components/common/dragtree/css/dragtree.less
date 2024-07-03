@@ -2,15 +2,29 @@
   width: 100%;
 
   .tree-header {
-    margin-bottom: 20px;
+    line-height: 24px;
+    margin: 20px 0;
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     display: flex;
     justify-content: space-between;
     align-items: center;
 
+    .action-select {
+      display: flex;
+      align-items: center;
+    }
+
+    .action-btn {
+      line-height: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+    }
+
     .ivu-btn {
       padding: 0 10px;
+      height: 24px;
     }
 
     .article-info {
@@ -49,5 +63,7 @@
 
   .tree-wrapper {
     margin-left: -3.5%;
+    height: 650px;
+    overflow-y: auto;
   }
 }
