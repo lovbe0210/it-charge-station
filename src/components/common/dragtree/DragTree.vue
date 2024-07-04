@@ -304,18 +304,33 @@ export default {
       this.onTreeChange();
     },
     deleteNode(checkNodes) {
-      return () => {
-        if (confirm('确定删除该节点吗？')) {
-          const parent = this.findParent(node.id, this.treeData);
-          if (parent) {
-            const childIndex = parent.children.findIndex(child => child.id === node.id);
-            parent.children.splice(childIndex, 1);
-          } else {
-            const index = this.treeData.findIndex(n => n.id === node.id);
-            this.treeData.splice(index, 1);
-          }
+      let keys = Object.keys(this.checkedNodes);
+      if (keys.length === 0) {
+        return;
+      }
+
+      let iterator = this.dirData.iterator;
+      while (iterator.hasNext()) {
+        let node = iterator.next();
+        if (checkNodes[node.id]) {
+          iterator.remove();
+        } else if (node.type === 2 && )
+      }
+
+      this.dirData.forEach(node => {
+        if (node.type === 1) {
+
+        } else {
+
         }
-      };
+
+
+      })
+
+
+      keys.forEach(nodeId => {
+
+      })
     },
     findParent(id, nodes) {
       for (const node of nodes) {
