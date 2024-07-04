@@ -64,15 +64,15 @@
                 </DropdownItem>
                 <DropdownItem name="2">
                   <span class="action-item"
-                        @click="nodeAction(treeNode, 'delete')" >
+                        @click="nodeAction(treeNode, 'delete1')" >
                     <span class="iconfont delete"></span>
                     删除
                   </span>
                 </DropdownItem>
                 <DropdownItem name="2">
                   <span class="action-item"
-                        @click="nodeAction(treeNode, 'remove')" >
-                    <span class="iconfont remove"></span>
+                        @click="nodeAction(treeNode, 'remove1')" >
+                    <span class="iconfont remove-from-column"></span>
                     移出专栏
                   </span>
                 </DropdownItem>
@@ -142,14 +142,14 @@
                   </span>
                 </DropdownItem>
                 <DropdownItem name="2">
-                  <span class="action-item" @click="nodeAction(treeNode, 'delete')" >
+                  <span class="action-item" @click="nodeAction(treeNode, 'delete2')">
                     <span class="iconfont delete"></span>
                     删除
                   </span>
                 </DropdownItem>
                 <DropdownItem name="2">
-                  <span class="action-item" @click="nodeAction(treeNode, 'remove')" >
-                    <span class="iconfont remove"></span>
+                  <span class="action-item" @click="nodeAction(treeNode, 'remove2')" >
+                    <span class="iconfont remove-from-column"></span>
                     移出专栏
                   </span>
                 </DropdownItem>
@@ -225,10 +225,20 @@ export default {
           });
           break
         case "copy":
-          this.treeParamBox.copyNode(treeNode);
+          let copyNode = {};
+          this.$set(copyNode, treeNode.id, treeNode);
+          this.treeParamBox.copyNode(copyNode);
           break;
         case "newNode":
           this.treeParamBox.createNode(treeNode, newNodeType);
+          break;
+        case "delete1":
+        case "delete2":
+        case "remove1":
+        case "remove2":
+          let checkNode = {};
+          this.$set(checkNode, treeNode.id, treeNode);
+          this.treeParamBox.confirmAction(checkNode, actionType);
           break;
       }
     },

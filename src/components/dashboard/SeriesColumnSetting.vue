@@ -274,7 +274,7 @@
                       </DropdownItem>
                       <DropdownItem>
                         <span @click="articleAction(noteItem,'remove')" class="action-item">
-                          <span class="iconfont remove"/> 移出专栏
+                          <span class="iconfont remove-from-column"/> 移出专栏
                         </span>
                       </DropdownItem>
                       <DropdownItem>

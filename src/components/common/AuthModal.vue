@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div>
     <!-- 未登录状态载体 -->
     <div @click="showLogin = true">
@@ -242,11 +242,15 @@
           if (this.password && this.password.length < 8) {
             this.pwdErrorMsg = '密码长度不能小于8位';
             return;
+          } else if (this.password && this.password.length >= 8) {
+            this.pwdErrorMsg = '';
           }
           if (this.password) {
             let set = new Set();
-            this.password.forEach(c => set.add(c));
-            if (set.size === 1) {
+            for (let char of this.password) {
+              set.add(char);
+            }
+            if (set.size <= 2) {
               this.pwdErrorMsg = '密码过于简单，不得使用重复数字或字母';
               return;
             }

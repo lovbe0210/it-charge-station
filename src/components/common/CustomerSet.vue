@@ -19,13 +19,13 @@
         <span slot="close">Color</span>
       </i-switch>
       <Upload v-show="!gradientColor"
-              action="//jsonplaceholder.typicode.com/posts/" :show-upload-list="false"
+              action="/icharge/common/upload" :show-upload-list="false"
               :format="['jpg','jpeg','png']" :max-size="10240" :on-progress="uploading"
               accept="image/png, image/jpeg" :disabled="uploadStatus === 1"
               :on-exceeded-size="handleMaxSize" :on-format-error="handleFormatError"
               :on-success="handleServerSuccess" :on-error="handleServerError">
         <div class="upload-icon align-items-center">
-          <span v-show="uploadStatus == 0" class="iconfont icon-upload-img" style="font-size: 24px;"></span>
+          <span v-show="uploadStatus !== 1" class="iconfont icon-upload-img" style="font-size: 24px;"></span>
       <!--    <Icon :type="uploadIcon" size="24" :color="uploadStatus===3?'#00AE9D':uploadStatus===2?'red': ''"
                 v-show="uploadStatus !== 1 && uploadStatus !== 0"/>-->
           <b-spinner style="width: 1.1rem; height: 1.1rem;color: #00AE9D;" v-show="uploadStatus === 1"/>
@@ -113,10 +113,15 @@
           title: '文件格式错误，请上传正确的图片'
         });
       },
-      handleServerSuccess() {
-        this.uploadIcon = 'md-cloud-done';
-        this.uploadStatus = 3;
-        let tmp = Math.ceil(Math.random() * 10);
+      handleServerSuccess(response) {
+        if (response.result) {
+          this.uploadStatus = 3;
+          let baccObj = {
+            backgroundImg: 'url(' + response.data + ')'
+          }
+          this.$store.commit('customerSet', baccObj)
+        }
+        /*let tmp = Math.ceil(Math.random() * 10);
         console.log(tmp)
         let baccObj;
         switch (tmp) {
@@ -147,8 +152,8 @@
           case 9:
             baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/t01948ff2341a5d1ac3.jpg)'}
             break;
-        }
-        this.$store.commit('customerSet', baccObj)
+        }*/
+
       },
       handleServerError() {
         this.uploadIcon = 'md-close-circle';

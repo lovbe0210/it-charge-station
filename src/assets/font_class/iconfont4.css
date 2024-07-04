@@ -303,7 +303,7 @@
   content: "\e687";
 }
 
-.remove:before {
+.remove-from-column:before {
   content: "\e688";
 }
 

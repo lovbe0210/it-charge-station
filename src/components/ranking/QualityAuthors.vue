@@ -54,7 +54,7 @@
           </div>
           <div class="author-right">
             <Button class="action-btn">
-              <span>收藏</span>
+              <span>关注</span>
             </Button>
           </div>
         </div>

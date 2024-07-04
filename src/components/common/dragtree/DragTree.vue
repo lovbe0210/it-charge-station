@@ -2,9 +2,10 @@
   <div class="tree-container un-select">
     <div class="tree-header">
       <div class="action-select">
-        <a-checkbox :indeterminate="Object.keys(checkedNodes).length > 0 && Object.keys(checkedNodes).length < totalDirNode"
-                    :checked="Object.keys(checkedNodes).length === totalDirNode"
-                    @change="onCheckAllChange">
+        <a-checkbox
+          :indeterminate="Object.keys(checkedNodes).length > 0 && Object.keys(checkedNodes).length < totalDirNode"
+          :checked="Object.keys(checkedNodes).length === totalDirNode && totalDirNode !== 0"
+          @change="onCheckAllChange">
           <span>选择{{ Object.keys(checkedNodes).length }}个</span>
         </a-checkbox>
         <Button type="text" @click="expandTreeNode" v-show="!filterKeywords || filterKeywords.trim().length === 0">
@@ -13,13 +14,17 @@
         </Button>
       </div>
       <div class="action-btn" v-if="Object.keys(checkedNodes).length > 0">
-        <Button type="text">
+        <Button type="text" @click="copyNode(checkedNodes)">
           <span class="iconfont copy"></span>
           复制
         </Button>
-        <Button type="text" @click="deleteNode(checkedNodes)">
+        <Button type="text" @click="confirmAction(checkedNodes, 'delete0')">
           <span class="iconfont delete"></span>
           删除
+        </Button>
+        <Button type="text" @click="confirmAction(checkedNodes, 'remove0')">
+          <span class="iconfont remove-from-column"></span>
+          移出专栏
         </Button>
       </div>
       <div class="article-info" v-else>
@@ -52,19 +57,25 @@
       <Modal
         v-model="showModal"
         :title="actionType.indexOf('remove') !== -1 ? '移出专栏'
-              : actionType.indexOf('delete1') !== -1 ? '删除文档'
-              : actionType.indexOf('delete2') !== -1 ? '删除分组' : ''">
+              : actionType.indexOf('delete') !== -1 ? '删除' : ''"
+        @on-ok="deleteNode">
         <div v-if="actionType.indexOf('remove1') !== -1">
           确定将文档移出专栏吗？
         </div>
         <div v-if="actionType.indexOf('remove2') !== -1">
-          确定将分组内的所有文档移出专栏吗？
+          确定将分组移出专栏吗？如果分组下有节点也将全部移出专栏！
+        </div>
+        <div v-if="actionType.indexOf('remove0') !== -1">
+          确定将所选节点移出专栏吗？如果包含分组，则分组下的节点也将全部移出专栏！
         </div>
         <div v-if="actionType.indexOf('delete1') !== -1">
           确定删除文档吗？
         </div>
         <div v-if="actionType.indexOf('delete2') !== -1">
-          确定删除分组及分组内的所有文档吗？
+          确定删除分组吗？如果分组下有节点也将全部删除，请慎重操作！
+        </div>
+        <div v-if="actionType.indexOf('delete0') !== -1">
+          确定删除所选节点吗？如果包含分组，则分组下的节点也将全部删除，请慎重操作！
         </div>
       </Modal>
     </div>
@@ -161,7 +172,8 @@ export default {
       tmpAllNodeMap: {},
       showModal: false,
       // remove 移出 delete 删除 1 文档 2节点
-      actionType: 'remove1'
+      actionType: 'remove1',
+      delCheckNodes: {}
     }
   },
   components: {
@@ -184,6 +196,8 @@ export default {
         copyNode: this.copyNode,
         // 新建节点
         createNode: this.createNode,
+        // 删除/移出节点
+        confirmAction: this.confirmAction,
         // 搜索过滤关键字
         filterKeywords: this.filterKeywords
       }
@@ -203,6 +217,8 @@ export default {
       this.dirData = data;
     },
     onTreeChange() {
+      this.totalDirNode = 0;
+      this.tmpAllNodeMap = {};
       if (this.dirData && this.dirData.length > 0) {
         let total = 0;
         this.dirData.forEach(node => {
@@ -211,8 +227,7 @@ export default {
         })
         this.totalDirNode = total;
       } else {
-        this.totalDirNode = 0;
-        this.tmpAllNodeMap = {};
+        this.checkedNodes = {}
       }
     },
     getDirTotal(node) {
@@ -244,36 +259,39 @@ export default {
     },
 
     // 节点的新增、复制、删除
-    copyNode(node) {
-      // 本级节点构造
-      let newNode = {
-        id: node.id + Math.floor(Math.random() * 1000),
-        type: node.type,
-        title: node.title + ' 副本',
-        createTime: Date.now(),
-        updateTime: Date.now(),
-        parentId: null
-      };
-      if (node.type === 2) {
-        newNode.expand = false;
-        newNode.children = [];
-      }
-      if (!node.parentId) {
-        this.dirData.unshift(newNode);
-        this.onTreeChange();
+    copyNode(nodeList) {
+      if (!nodeList || Object.keys(nodeList).length === 0) {
         return;
       }
-      let parentNode = this.tmpAllNodeMap[node.parentId];
-      if (!parentNode && parentNode.type !== 2) {
-        this.onTreeChange();
-        return;
-      }
-      newNode.parentId = node.parentId;
-      if (parentNode.children) {
-        parentNode.children.unshift(newNode);
-      } else {
-        parentNode.children = [newNode];
-      }
+      Object.values(nodeList).forEach(node => {
+        // 本级节点构造
+        let newNode = {
+          id: node.id + Math.floor(Math.random() * 1000),
+          type: node.type,
+          title: node.title + ' 副本',
+          createTime: Date.now(),
+          updateTime: Date.now(),
+          parentId: null
+        };
+        if (node.type === 2) {
+          newNode.expand = false;
+          newNode.children = [];
+        }
+        if (!node.parentId) {
+          this.dirData.unshift(newNode);
+          return;
+        }
+        let parentNode = this.tmpAllNodeMap[node.parentId];
+        if (!parentNode && parentNode.type !== 2) {
+          return;
+        }
+        newNode.parentId = node.parentId;
+        if (parentNode.children) {
+          parentNode.children.unshift(newNode);
+        } else {
+          parentNode.children = [newNode];
+        }
+      })
       this.onTreeChange();
     },
     createNode(currentNode, newNodeType) {
@@ -303,49 +321,30 @@ export default {
       }
       this.onTreeChange();
     },
-    deleteNode(checkNodes) {
-      let keys = Object.keys(this.checkedNodes);
+    deleteNode() {
+      let keys = Object.keys(this.delCheckNodes);
       if (keys.length === 0) {
         return;
       }
-
-      let iterator = this.dirData.iterator;
-      while (iterator.hasNext()) {
-        let node = iterator.next();
-        if (checkNodes[node.id]) {
-          iterator.remove();
-        } else if (node.type === 2 && )
-      }
-
-      this.dirData.forEach(node => {
-        if (node.type === 1) {
-
-        } else {
-
-        }
-
-
-      })
-
-
-      keys.forEach(nodeId => {
-
-      })
+      this.dirData = this.recursiveDeleteNode(this.delCheckNodes, this.dirData);
+      this.$Message.success(this.actionType.indexOf('remove') !== -1 ? '移出专栏' : '删除')
+      this.onTreeChange();
+      // 可能会存在一部分数据有直接删掉了父节点导致子节点的check状态未被清除
+      Object.keys(this.delCheckNodes).forEach(delNodeId => this.$delete(this.checkedNodes, delNodeId))
     },
-    findParent(id, nodes) {
-      for (const node of nodes) {
-        if (node.children) {
-          if (node.children.some(child => child.id === id)) {
-            return node;
-          } else {
-            const found = this.findParent(id, node.children);
-            if (found) {
-              return found;
-            }
-          }
+    recursiveDeleteNode(checkNodes, nodeList) {
+      let newDir = [];
+      nodeList.forEach(node => {
+        if (checkNodes[node.id]) {
+          this.$delete(this.checkedNodes, node.id);
+          return;
         }
-      }
-      return null;
+        if (node.type === 2 && node.children) {
+          node.children = this.recursiveDeleteNode(checkNodes, node.children);
+        }
+        newDir.push(node);
+      })
+      return newDir;
     },
     /**
      * tree节点展开/收起
@@ -395,6 +394,20 @@ export default {
         return;
       }
       treeNode.children.forEach(node => this.recursiveChecked(node, parentNodeStatus));
+    },
+    confirmAction(checkNodes, actionType) {
+      this.showModal = true;
+      this.actionType = actionType;
+      this.delCheckNodes = checkNodes;
+    }
+  },
+  watch: {
+    "showModal"(val) {
+      if (val) {
+        return;
+      }
+      this.actionType = '';
+      this.delCheckNodes = {};
     }
   },
   mounted() {

@@ -82,7 +82,7 @@
       return {
         musicInfo: {
           // 页面需要使用v-if判断，所以先赋给默认值
-          name: "小布音乐站",
+          name: "it充电站",
           id: null,
           al: {
             picUrl: null
@@ -427,7 +427,7 @@
           this.pauseMusic();
           // 数据初始化
           this.musicInfo = {
-            name: "小布音乐站",
+            name: "it充电站",
             id: null,
             al: {
               picUrl: null
