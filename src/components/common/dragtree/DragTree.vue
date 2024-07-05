@@ -6,7 +6,7 @@
           :indeterminate="Object.keys(checkedNodes).length > 0 && Object.keys(checkedNodes).length < totalDirNode"
           :checked="Object.keys(checkedNodes).length === totalDirNode && totalDirNode !== 0"
           @change="onCheckAllChange">
-          <span>选择{{ Object.keys(checkedNodes).length }}个</span>
+          <div>选择{{ Object.keys(checkedNodes).length }}个</div>
         </a-checkbox>
         <Button type="text" @click="expandTreeNode" v-show="!filterKeywords || filterKeywords.trim().length === 0">
           <span :class="['iconfont', openAllTree ? 'nav-open' : 'nav-close']"/>
@@ -326,21 +326,33 @@ export default {
       if (keys.length === 0) {
         return;
       }
-      this.dirData = this.recursiveDeleteNode(this.delCheckNodes, this.dirData);
+      let delNodeList = [];
+      this.dirData = this.recursiveDeleteNode(this.delCheckNodes, false, this.dirData, delNodeList);
       this.$Message.success(this.actionType.indexOf('remove') !== -1 ? '移出专栏' : '删除')
-      this.onTreeChange();
+      console.log(delNodeList)
       // 可能会存在一部分数据有直接删掉了父节点导致子节点的check状态未被清除
-      Object.keys(this.delCheckNodes).forEach(delNodeId => this.$delete(this.checkedNodes, delNodeId))
+      this.onTreeChange();
     },
-    recursiveDeleteNode(checkNodes, nodeList) {
+    recursiveDeleteNode(checkNodes, parentDel, nodeList, delNodeList) {
       let newDir = [];
       nodeList.forEach(node => {
-        if (checkNodes[node.id]) {
+        // 如果是节点直接删除
+        let directDel = parentDel && (node.type === 1 || (node.type === 2 && node.children?.length === 0));
+        directDel = directDel || (checkNodes[node.id] && (node.type === 1 || (node.type === 2 && node.children?.length === 0)));
+        if (directDel) {
           this.$delete(this.checkedNodes, node.id);
+          delNodeList.push(node);
           return;
         }
+        // 如果是分组则继续递归
         if (node.type === 2 && node.children) {
-          node.children = this.recursiveDeleteNode(checkNodes, node.children);
+          node.children = this.recursiveDeleteNode(checkNodes, parentDel ? true : !!checkNodes[node.id], node.children, delNodeList);
+          // 处理完下级后判断分组是否需要删除
+          if (parentDel || !!checkNodes[node.id]) {
+            this.$delete(this.checkedNodes, node.id);
+            delNodeList.push(node);
+            return;
+          }
         }
         newDir.push(node);
       })
