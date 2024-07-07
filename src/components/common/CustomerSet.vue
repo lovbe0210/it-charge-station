@@ -192,17 +192,17 @@
           case 0:
             customerSet = {
               themeColor: 'rgba(255,255,255,1)',
-              fontColor: '#404040',
-              titleColor: '#0a0a0a',
+              fontColor: '#262626',
+              titleColor: '#585A5A',
               backgroundImg: 'linear-gradient(45deg, #F4F5F7 0%, #F4F5F7 100%)'
             }
             break;
           case 1:
             customerSet = {
-              themeColor: 'rgba(18,18,18,1)',
-              fontColor: '#404040',
-              titleColor: '#0a0a0a',
-              backgroundImg: 'linear-gradient(45deg, #0D0D0D 0%, #0D0D0D 100%)'
+              themeColor: 'rgba(31,31,31,1)',
+              fontColor: '#E2E2E2',
+              titleColor: '#B3B3B3',
+              backgroundImg: 'linear-gradient(45deg, #141414 0%, #141414 100%)'
             }
             break;
           case 2:

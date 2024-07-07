@@ -31,6 +31,10 @@ module.exports = {
     ]
   },
   devServer: {
+    // ipv6支持
+    host: '::',
+    disableHostCheck: true,
+    port: 10210,
     proxy: {
       '/api': {
         // target: 'https://www.codeman.store',

@@ -133,7 +133,6 @@
 
 <script>
   import CarouselSwipe from '@/components/common/CarouselSwipe';
-  // import BackTop from '@/components/common/BackTop';
   import {MESSAGE_TYPE} from 'vue-baberrage'
 
   export default {

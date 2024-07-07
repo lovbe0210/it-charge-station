@@ -42,31 +42,32 @@
 <style scoped lang="less">
   @import '../css/common-var.less';
 
-  .ivu-menu-light {
-    background-color: transparent;
-  }
   // 左侧div
   .host-container {
     .top {
+      background-color: transparent;
       border-radius: 3px;
       margin-bottom: 30px;
-    }
 
-    ul > a {
-      color: var(--font-color) !important;;
-      font-size: 14px !important;;
-    }
+      &:after {
+        background: var(--title-color);
+      }
 
-    ul > a:hover {
-      color: var(--title-color) !important;
-      border-bottom: 0px solid #e5e5e5 !important;
-    }
+      a {
+        color: var(--font-color);
+        font-size: 14px;
 
-    ul > a.ivu-menu-item-active {
-      color: var(--title-color) !important;;
-      font-weight: 900 !important;
-      border-bottom: 2px solid var(--title-color) !important;;
-    }
+        &:hover {
+          color: var(--title-color);
+          border-color: var(--title-color);
+        }
+      }
 
+      a.ivu-menu-item-active {
+        color: var(--font-color);
+        font-weight: 900;
+        border-bottom: 2px solid var(--title-color);
+      }
+    }
   }
 </style>
