@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_ndkgdlonld.woff2?t=1719845707957') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_ofi9f5ydxd.woff2?t=1720425568316') format('woff2');
 }
 
 .iconfont {
@@ -333,4 +333,8 @@
 
 .dir-fold:before {
   content: "\e695";
+}
+
+.message:before {
+  content: "\e696";
 }

@@ -34,22 +34,6 @@
         <!-- 菜单栏 -->
         <b-navbar-nav class="menu" :fill="true" align="center">
           <b-nav-item v-for="item in quickLink" class="mr-2" :key="item.uid">
-            <!--<div v-if="item.canExpanded === 1">
-              <Dropdown trigger="hover" :transfer="true" @on-click="routeNavigate">
-                <a href="javascript:void(0)">
-                  <div class="menu-wrapper">
-                    <div class="menu-body">
-                      <span>{{item.menuName}}</span>
-                    </div>
-                  </div>
-                </a>
-                <DropdownMenu slot="list">
-                  <DropdownItem v-for="item in item.children" :key="item.uid" :name="item.uid">
-                    {{item.menuName}}
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </div>-->
             <div @click="routeNavigate(item.code)">
               <span>{{item.menuName}}</span>
             </div>
@@ -151,7 +135,7 @@
                 <div class="message-menu-wrapper">
                   <div class="message-menu-body">
                     <div class="c-badge" v-if="1"/>
-                    <span class="iconfont icon-hy-message"></span>
+                    <span class="iconfont message"></span>
                   </div>
                 </div>
               </a>
@@ -196,8 +180,8 @@
           <div class="login-register">
             <auth-modal>
               <slot>
-                <Button>
-                  登录/注册
+                <Button type="primary" ghost>
+                  <span>登录/注册</span>
                 </Button>
               </slot>
             </auth-modal>
@@ -209,14 +193,14 @@
           <div class="charge">
             <auth-modal v-if="!loginStatus">
               <slot>
-                <b-button class="write" variant="outline-*" size="sm">
-                  <span class="iconfont icon-charge"/>写笔记
-                </b-button>
+                <Button type="primary" ghost>
+                  <span>写笔记</span>
+                </Button>
               </slot>
             </auth-modal>
-            <b-button v-else class="write" variant="outline-*" size="sm" @click="toWriteCenter">
-              <span class="iconfont icon-charge"/>写笔记
-            </b-button>
+            <Button type="primary" ghost v-else @click="toWriteCenter">
+              <span>写笔记</span>
+            </Button>
           </div>
         </b-navbar-nav>
       </b-collapse>

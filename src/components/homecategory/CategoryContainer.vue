@@ -347,16 +347,16 @@
 
         span{
           cursor: pointer;
-          color: #585A5A;
+          color: var(--font-color);
 
           &:hover {
-            color: #262626;
+            color: var(--title-color);
           }
         }
       }
 
       .active {
-        background-color: #E7E9E8;
+        background-color: rgba(0,0,0, 0.12);
       }
     }
 
@@ -400,11 +400,11 @@
           margin-bottom: 14px;
 
           :hover {
-            color: #585A5A;
+            color: var(--title-color);
           }
 
           span {
-            color: var(--title-color);
+            color: var(--font-color);
             font-weight: 600;
             font-size: 16px;
             line-height: 25px;
@@ -421,7 +421,7 @@
           margin-bottom: 5px;
 
           span {
-            color: var(--font-color);
+            color: var(--title-color);
             margin-top: 8px;
             display: -webkit-box;
             max-height: 44px;

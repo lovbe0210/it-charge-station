@@ -20,7 +20,7 @@
       }
 
       #title {
-        color: var(--title-color);
+        color: var(--font-color);
         font-size: 1.1rem;
         font-weight: 800;
         margin-right: 20px;
@@ -34,12 +34,8 @@
   // 当点击搜索框时的ui效果，绿色边框加输入框向右扩展
   .changeColor {
     .index-module_input {
-      border: 1px solid @border-color_hover;
+      border: 1px solid @primary-color;
       margin-right: 40px;
-
-      .iconfont {
-        color: #262626;
-      }
     }
   }
 
@@ -63,10 +59,11 @@
     display: inline-flex;
 
     &:hover {
-      border: 1px solid #00AE9D;
+      border-color: @primary-color;
     }
 
     .i-search {
+      color: var(--font-color);
       margin-right: 5px;
     }
 
@@ -284,46 +281,35 @@
             position: absolute;
             right: 15px;
             top: 9px;
-            transition: transform 0.3s ease-in-out;
-          }
-          span {
-            font-size: 15px;
-            color: var(--font-color);
           }
 
           .iconfont {
+            color: var(--font-color);
             display: inline-block;
             font-size: 20px;
-            transition: transform 0.3s ease-in-out; /* 添加过渡效果 */
+          }
+
+          &:hover {
+            .iconfont{
+              animation: bounce 0.6s ease; /* 使用 bounce 动画，但不设置 infinite */
+              z-index: 268;
+            }
+
+            .c-badge {
+              animation: bounce 0.6s ease; /* 使用 bounce 动画，但不设置 infinite */
+              z-index: 269;
+            }
+          }
+
+          @keyframes bounce {
+            0%, 100% {
+              transform: translateY(0);
+            }
+            25% {
+              transform: translateY(-8px); /* 只在动画的开始阶段跳动一次 */
+            }
           }
         }
-
-        .message-menu-body:hover {
-          .iconfont{
-            animation: bounce 0.6s ease; /* 使用 bounce 动画，但不设置 infinite */
-            z-index: 268;
-          }
-
-          .c-badge {
-            animation: bounce 0.6s ease; /* 使用 bounce 动画，但不设置 infinite */
-            z-index: 269;
-          }
-        }
-
-        @keyframes bounce {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          25% {
-            transform: translateY(-8px); /* 只在动画的开始阶段跳动一次 */
-          }
-        }
-      }
-
-      .msg-badge {
-        margin-left: 5px;
-        width: 35px;
-        height: 8px;
       }
 
       /deep/ .ivu-select-dropdown {
@@ -366,30 +352,12 @@
   .login-register {
     padding: 0 10px 0 20px;
     margin-right: 10px;
-
-    button {
-      padding: 0 10px;
-    }
   }
 
   // 公用部分
   .charge {
-    background: @border-color_hover;
-    border-radius: 3px;
-
-    .btn {
-      height: 31px;
-      padding: 0 8px 0 8px !important;
-      border-radius: 3px;
-    }
-
-    .icon-charge {
-      font-size: 19px;
-      margin-right: 3px;
-    }
-
-    .write {
-      color: #FFFFFF;
+    .ivu-btn {
+      padding: 0 15px;
     }
   }
 }

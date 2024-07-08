@@ -144,7 +144,7 @@
   @import "../css/homecategory/recommend.less";
   @import "../css/common-var.less";
 
-  .t-scroll {
+ /* .t-scroll {
     position: relative;
     overflow: scroll;
   }
@@ -154,5 +154,5 @@
     color: @border-color_hover;
     text-align: center;
     font-size: 30px;
-  }
+  }*/
 </style>
