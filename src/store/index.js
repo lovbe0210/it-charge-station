@@ -41,7 +41,11 @@ export default new Vuex.Store({
       // 标题颜色
       titleColor: '#0a0a0a',
       // 背景图(可以设置渐变色和图片两种，渐变色也可以设置纯色，只要起始色和结束色相同即可)
-      backgroundImg: 'linear-gradient(45deg, #F4F5F7 0%, #F4F5F7 100%)'
+      backgroundImg: 'linear-gradient(45deg, #F4F5F7 0%, #F4F5F7 100%)',
+      // 下拉框背景色
+      dropdownBackgroundColor: '#FFFFFF',
+      // 下拉框内的item-hover颜色
+      dropdownItemHover: '#E9E9E9'
     },
     // 显示自定义主题开关background-color: #4158D0;
     // background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);

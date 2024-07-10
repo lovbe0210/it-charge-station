@@ -72,7 +72,7 @@
                @click="routeNavigate('stats')">
             <div class="light"></div>
             <div class="item">
-              <span class="iconfont icon-data-stats"></span>
+              <span class="iconfont data-stats"></span>
               创作中心
             </div>
           </div>

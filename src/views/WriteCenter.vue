@@ -45,14 +45,14 @@
           更新
         </b-button>
         <Dropdown placement="bottom-end"
-                  transfer-class-name="enable-background dropdown-background"
+                  transfer-class-name="dropdown-background"
                   trigger="click">
           <div class="setting-icon">
             <span class="iconfont icon-edit-more"/>
           </div>
           <DropdownMenu slot="list">
             <Dropdown placement="left-start"
-                      transfer-class-name="enable-background dropdown-background"
+                      transfer-class-name="dropdown-background"
                       class="doc-set-style-wrapp"
                       trigger="click">
               <DropdownItem>
@@ -60,7 +60,7 @@
                   <span class="editor-icon iconfont icon-editor-style"/>
                   <div>
                     <span>文档样式</span>
-                    <span class="iconfont icon-more"></span>
+                    <span class="iconfont i-more"></span>
                     <br>
                     <span style="color: #8c8c8c; font-size: 12px;">设置正文大小、段间距、超宽…</span>
                   </div>

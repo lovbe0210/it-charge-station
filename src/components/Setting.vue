@@ -23,7 +23,7 @@
           </span>
         </div>
         <div class="userInfo-domain">
-          <span class="iconfont icon-user-domain"></span>
+          <span class="iconfont user-domain"></span>
           <a :href="'/' + userInfo.domain" title="个人主页">
             {{'http://www.itcast.com/' + userInfo.domain}}
           </a>

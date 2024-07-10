@@ -65,9 +65,6 @@
   content: "\e639";
 }
 
-.icon-user-domain:before {
-  content: "\e62e";
-}
 
 .icon-account-set:before {
   content: "\e673";
@@ -77,9 +74,6 @@
   content: "\e6ac";
 }
 
-.icon-data-stats:before {
-  content: "\e614";
-}
 
 .icon-drop-down:before {
   content: "\e691";
@@ -103,10 +97,6 @@
 
 .icon-topic-doc:before {
   content: "\e659";
-}
-
-.icon-login-out:before {
-  content: "\e6b2";
 }
 
 .icon-preferences:before {

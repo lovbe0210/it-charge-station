@@ -46,7 +46,7 @@
           <b-nav-item class="avatar mr-2">
             <Dropdown placement="bottom"
                       @on-click="routeNavigate"
-                      transfer-class-name="enable-background dropdown-background"
+                      transfer-class-name="dropdown-background"
                       trigger="click">
               <a href="javascript:void(0)">
                 <div class="avatar-wrapper">
@@ -99,26 +99,26 @@
                   <div class="routing-menu quick-start-item">
                     <span class="iconfont series-column"></span>
                     <span class="routing-content">专栏文章</span>
-                    <span class="iconfont icon-more"></span>
+                    <span class="iconfont i-more"></span>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="userHome">
                   <div class="routing-menu quick-start-item">
-                    <span class="iconfont icon-user-domain"></span>
+                    <span class="iconfont user-domain"></span>
                     <span class="routing-content">个人主页</span>
-                    <span class="iconfont icon-more"></span>
+                    <span class="iconfont i-more"></span>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="creativeSpace" class="create-center">
                   <div class="routing-menu quick-start-item">
-                    <span class="iconfont icon-data-stats"></span>
+                    <span class="iconfont data-stats"></span>
                     <span class="routing-content">创作中心</span>
-                    <span class="iconfont icon-more"></span>
+                    <span class="iconfont i-more"></span>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="logout">
                   <div class="routing-menu quick-start-item">
-                    <span class="iconfont icon-login-out"></span>
+                    <span class="iconfont login-out"></span>
                     <span class="routing-content">退出登录</span>
                   </div>
                 </DropdownItem>
@@ -129,7 +129,7 @@
           <b-nav-item class="msg mr-2">
             <Dropdown placement="bottom"
                       trigger="click"
-                      transfer-class-name="enable-background dropdown-background"
+                      transfer-class-name="dropdown-background dropdown-item-all-hover"
                       @on-click="readMessage">
               <a href="javascript:void(0)">
                 <div class="message-menu-wrapper">

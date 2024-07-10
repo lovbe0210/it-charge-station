@@ -16,7 +16,7 @@
             精选笔记
             <b-link class="more" to="/hot/articles">
               <span class="content">更多</span>
-              <span class="iconfont icon-more"></span>
+              <span class="iconfont i-more"></span>
             </b-link>
             <hr>
           </div>
@@ -28,7 +28,7 @@
           <div class="text">
             推荐专栏
             <b-link class="more" to="/hot/column">
-              更多<span class="iconfont icon-more"></span>
+              更多<span class="iconfont i-more"></span>
             </b-link>
             <hr>
           </div>
@@ -59,7 +59,7 @@
           <div class="text">
             创作者排行榜
             <b-link class="more" to="/hot/authors">
-              完整榜单<span class="iconfont icon-more"></span>
+              完整榜单<span class="iconfont i-more"></span>
             </b-link>
             <hr>
           </div>

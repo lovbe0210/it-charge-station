@@ -9,7 +9,9 @@ export default {
       `--background-color: ${themProperty.backgroundColor};` +
       `--theme-color: ${themProperty.themeColor};` +
       `--font-color: ${themProperty.fontColor};` +
-      `--title-color: ${themProperty.titleColor};`
+      `--title-color: ${themProperty.titleColor};` +
+      `--dropdown-bg-color: ${themProperty.dropdownBackgroundColor};` +
+      `--dropdown-item-hover: ${themProperty.dropdownItemHover};`
     document.querySelector(':root').setAttribute('style', styleProperty)
   },
 

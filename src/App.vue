@@ -269,7 +269,7 @@
 
   // 全局css
 
-  .ant-checkbox-checked .ant-checkbox-inner {
+/*  .ant-checkbox-checked .ant-checkbox-inner {
     border-color: @primary-color;
     background-color: @primary-color;
   }
@@ -280,35 +280,5 @@
 
   .ant-checkbox-indeterminate .ant-checkbox-inner::after {
     background-color: @primary-color;
-  }
-
-  .lovbe-btn-default {
-    position: relative;
-    display: inline-block;
-    white-space: nowrap;
-    text-align: center;
-    border: 1px solid #00B96B;
-    cursor: pointer;
-    transition: all .3s cubic-bezier(.645,.045,.355,1);
-    touch-action: manipulation;
-    height: 32px;
-    padding: 4px 15px;
-    font-size: 14px;
-    line-height: 1.15;
-    border-radius: 6px;
-    font-weight: 500;
-    color: #ffffff;
-    background: #00B96B;
-    text-shadow: none;
-    box-shadow: none;
-  }
-
-  .lovbe-btn-default:focus-visible {
-    outline: none;
-  }
-
-  .lovbe-btn-default:hover {
-    background: #009456;
-    border-color: #009456;
-  }
+  }*/
 </style>

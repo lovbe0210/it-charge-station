@@ -39,7 +39,7 @@
         </div>
         <Button type="text" class="edit-color-btn" @click="changeGradientColor(true)"
                 :disabled="editColors.firstColor !== null && editColors.secondColor !== null && editColors.thirdColor !== null">
-                  <span class="iconfont icon-add"
+                  <span class="iconfont i-add"
                         style="font-size: 1.1rem;line-height: 1.4rem;margin-left: 5px;"></span>
         </Button>
         <Button type="text" class="edit-color-btn" @click="changeGradientColor(false)"
@@ -194,7 +194,9 @@
               themeColor: 'rgba(255,255,255,1)',
               fontColor: '#262626',
               titleColor: '#585A5A',
-              backgroundImg: 'linear-gradient(45deg, #F4F5F7 0%, #F4F5F7 100%)'
+              backgroundImg: 'linear-gradient(45deg, #F4F5F7 0%, #F4F5F7 100%)',
+              dropdownBackgroundColor: '#FFFFFF',
+              dropdownItemHover: '#E9E9E9'
             }
             break;
           case 1:
@@ -202,23 +204,29 @@
               themeColor: 'rgba(31,31,31,1)',
               fontColor: '#E2E2E2',
               titleColor: '#B3B3B3',
-              backgroundImg: 'linear-gradient(45deg, #141414 0%, #141414 100%)'
+              backgroundImg: 'linear-gradient(45deg, #141414 0%, #141414 100%)',
+              dropdownBackgroundColor: '#292929',
+              dropdownItemHover: '#393939'
             }
             break;
           case 2:
             customerSet = {
               themeColor: 'rgba(255,255,255,0.90)',
-              fontColor: '#404040',
-              titleColor: '#0a0a0a',
-              backgroundImg: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)'
+              fontColor: '#262626',
+              titleColor: '#585A5A',
+              backgroundImg: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)',
+              dropdownBackgroundColor: 'rgb(255,248,248,0.98)',
+              dropdownItemHover: '#edeaea'
             }
             break;
           case 3:
             customerSet = {
               themeColor: 'rgba(255,255,255,0.89)',
-              fontColor: '#404040',
-              titleColor: '#0a0a0a',
-              backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'
+              fontColor: '#262626',
+              titleColor: '#585A5A',
+              backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)',
+              dropdownBackgroundColor: 'rgba(255,255,255,0.98)',
+              dropdownItemHover: '#E9E9E9'
             }
             break;
         }

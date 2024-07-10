@@ -148,7 +148,7 @@
           }
 
           .quick-start-item:hover {
-            background: #f3f3f3;
+            background: var(--dropdown-item-hover);
             border-radius: 4px;
           }
 
@@ -157,7 +157,6 @@
             width: auto;
             font-size: 14px;
             font-weight: 400;
-            color: var(--title-color);
             justify-content: center;
           }
 
@@ -199,7 +198,7 @@
             }
 
             .level-bar-text {
-              color: #8A8F8D;
+              color: var(--title-color);
               font-size: 12px;
             }
           }
@@ -218,11 +217,10 @@
 
               .count-num {
                 font-weight: 600;
-                color: #262626;
               }
 
               .count-text {
-                color: #8A8F8D;
+                color: var(--title-color);
                 font-weight: 400;
                 font-size: 12px;
                 transition: color .2s;
@@ -231,18 +229,18 @@
           }
 
           .routing-menu {
-            color: #262626;
-
             .routing-content {
               margin-left: 6px;
             }
 
-            .series-column,.icon-user-domain,.icon-data-stats,.icon-login-out {
+            .series-column,.user-domain,.data-stats,.login-out {
+              font-size: 17px;
               margin-left: 10px;
+              margin-right: 5px;
             }
 
-            .icon-more {
-              font-size: 12px;
+            .i-more {
+              font-size: 13px;
               margin-left: 125px;
             }
           }
