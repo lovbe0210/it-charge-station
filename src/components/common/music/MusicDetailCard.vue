@@ -26,7 +26,7 @@
     <div class="right">
       <div class="title">
         <div class="musicInfo">
-          <div class="musicName" :title="musicInfo.name">
+          <div class="music-name" :title="musicInfo.name">
             {{ musicInfo.name }}
           </div>
           <div class="singer" @click="goToDetailPage('singerDetail', musicInfo.ar[0].id)">

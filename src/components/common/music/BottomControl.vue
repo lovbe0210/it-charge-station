@@ -1,5 +1,5 @@
 <template>
-  <div class="bottom-control">
+  <div class="bottom-control" ref="btoContainer">
     <audio
       :src="musicUrl"
       ref="audioPlayer"
@@ -15,7 +15,7 @@
         <img :src="require('@/assets/img/test.jpg')" alt="" v-else :draggable="false"/>
       </div>
       <div class="musicInfo">
-        <div class="musicName" v-show="musicInfo.name" :title="musicInfo.name">
+        <div class="music-name" v-show="musicInfo.name" :title="musicInfo.name">
           {{ musicInfo.name }}
         </div>
         <div class="singer" v-show="musicInfo.ar[0].name" @click="goToSingerDetail">
@@ -28,33 +28,36 @@
       <div class="buttons">
         <span
           @click="playType = playType === 'listLoop' ? 'singleLoop' : playType === 'singleLoop' ? 'listRandom' : 'listLoop'">
-          <i class="iconfont icon-list-loop" v-show="playType == 'listLoop'"></i>
-          <i class="iconfont icon-single-loop" v-show="playType == 'singleLoop'"></i>
-          <i class="iconfont icon-list-random" v-show="playType == 'listRandom'"></i>
+          <span class="iconfont list-loop" v-show="playType == 'listLoop'"/>
+          <span class="iconfont single-loop" v-show="playType == 'singleLoop'"/>
+          <span class="iconfont list-random" v-show="playType == 'listRandom'"/>
         </span>
         <span @click="musicList.length != 0 ? changeMusic('pre') : ''">
-          <i class="iconfont icon-previous"></i>
+          <span class="iconfont previous"/>
         </span>
         <span @click="musicList.length != 0 ? changePlayState() : ''">
-          <i class="iconfont icon-play" v-show="this.$store.state.musicInfo.isPlay"></i>
-          <i class="iconfont icon-paused" v-show="!this.$store.state.musicInfo.isPlay"></i>
+          <span class="iconfont play" v-show="this.$store.state.musicInfo.isPlay"/>
+          <span class="iconfont paused" v-show="!this.$store.state.musicInfo.isPlay"/>
         </span>
         <span @click="musicList.length != 0 ? changeMusic('next') : ''">
-          <i class="iconfont icon-next"></i>
+          <span class="iconfont next"/>
         </span>
         <span>
-          <i class="iconfont" :class="isUserLikeCurrentMusic ? 'icon-like-yes' : 'icon-like-no'"
-             @click="musicList.length != 0 ? likeIt() : ''"></i>
+          <span class="iconfont" :class="isUserLikeCurrentMusic ? 'like-yes' : 'like-no'"
+             @click="musicList.length != 0 ? likeIt() : ''"/>
         </span>
-        <span id="volumeController">
-              <i class="iconfont" :class="isMuted ? 'volume-close' : 'volume-open'"
-                 @click="changeVolumeState()"></i>
+        <a-tooltip placement="top"
+                   overlayClassName="volume-control-tooltip"
+                   :getPopupContainer="()=>this.$refs.btoContainer">
+          <template slot="title">
+            <input type="range" min=0 max=100 step=2 v-model="volume" @change="changeVolume"
+                   class="volume-input"/>
+          </template>
+          <span>
+          <span class="iconfont" :class="isMuted ? 'volume-close' : 'volume-open'" id="volumeController"
+                @click="changeVolumeState()"/>
         </span>
-        <b-tooltip target="volumeController" triggers="hover" custom-class="volume-controller" placement="top"
-                   container="volumeController">
-          <input type="range" min=0 max=100 step=2 v-model="volume" @change="changeVolume"
-                 class="volume-input"/>
-        </b-tooltip>
+        </a-tooltip>
       </div>
       <!-- 进度条 -->
       <div class="progressBar">

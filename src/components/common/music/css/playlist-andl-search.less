@@ -3,17 +3,26 @@
   max-width: 100%;
   min-width: 100%;
   z-index: 1;
-  padding: 10px 15px 0 10px;
+  padding: 15px 15px 0 10px;
   border-radius: 5px;
   height: 100%;
 
   .title-search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .return-playlist {
+      cursor: pointer;
+    }
+
     .iconfont {
-      font-size: 13px;
+      font-size: 12px;
       padding-left: 1px;
-      .icon-context {
-        margin-left: 3px;
-      }
+    }
+
+    .icon-context {
+      margin-left: 5px;
     }
 
     .search {
@@ -29,9 +38,10 @@
           background-color: unset;
           border-radius: 15px;
           border-color: @border-color_normal;
+          color: var(--font-color);
         }
         .ivu-input:focus, .ivu-input:hover {
-          //border-color: @border-color_hover;
+          border-color: @primary-color;
         }
 
 
@@ -50,9 +60,10 @@
   }
 
   .music-list {
-    height: 110px;
+    height: 55%;
     font-size: 12px;
-    margin: 10px 0 10px 5px;
+    margin-top: 6px;
+    padding-left: 5px;
     width: 100%;
     overflow-y: hidden;
 
@@ -68,7 +79,7 @@
         font-weight: bold;
         color: @badge_color;
       }
-      .musicName {
+      .music-name {
         padding-left: 15px;
         padding-right: 8px;
         white-space: nowrap;
@@ -92,13 +103,14 @@
     }
 
     .list-group-item {
-      padding: 4px 0 3px 0;
+      padding: 3px 0;
       border: none;
       cursor: pointer;
       background-color: unset;
+      border-radius: 2px;
     }
     .list-group-item:hover {
-      background-color: #eaeaea;
+      background-color: var(--dropdown-item-hover);
     }
 
   }

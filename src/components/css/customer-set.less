@@ -16,9 +16,8 @@
 
 .customer-set {
   .title {
-    padding: 25px 0 5px 15px;
+    padding: 20px 0 5px 15px;
     font-size: 1.0em;
-    color: @light-font-color;
   }
 
   .settings {
@@ -40,6 +39,10 @@
       .ivu-input {
         border: 1px solid @border-color_normal;
         background-color: transparent;
+      }
+
+      .ivu-color-picker-color {
+        background-image: none;
       }
 
       .ivu-color-picker-focused {
@@ -97,7 +100,6 @@
   }
 
   /deep/ .bacc-color {
-    //height: 24px;
 
     .switch-btn {
       height: 22px;
@@ -158,6 +160,10 @@
         width: 28px;
         padding: 0;
         border: none;
+
+        .i-add, .delete {
+          color: var(--title-color);
+        }
       }
 
       .ivu-btn-text[disabled] {
@@ -186,6 +192,7 @@
             width: @circle-size;
             height: @circle-size;
             top: 2px;
+            background-image: unset;
 
             div {
               border-radius: 50%;
@@ -232,20 +239,22 @@
   }
 
   .quick-setting {
-    margin-top: 5px;
     .ivu-btn {
       border: 1px solid @border-color_normal;
       margin-right: 10px;
       width: 64px;
       padding: 0;
+      color: var(--title-color);
     }
+
     .ivu-btn-default:hover {
       color: @primary-color;
       border-color: @primary-color;
     }
 
-    .ivu-btn-primary {
-      background: @primary-color;
-    }
+  }
+
+  /deep/.ivu-color-picker-input {
+    cursor: pointer;
   }
 }

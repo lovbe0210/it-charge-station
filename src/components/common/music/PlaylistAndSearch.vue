@@ -1,16 +1,20 @@
 <template>
   <div class="playlist" v-show="playListShow">
     <div class="title-search">
-      <span class="iconfont icon-music-list" v-show="ifSearchOrPlayList === 0">
+      <span v-show="ifSearchOrPlayList === 0">
+        <span class="iconfont i-music-list"/>
         <span class="icon-context">共{{playList.length}}首</span>
       </span>
-      <span class="iconfont icon-return-copy" @click="ifSearchOrPlayList = 0" v-show="ifSearchOrPlayList === 1">
-        <span>返回</span>
+      <span class="return-playlist"
+            v-show="ifSearchOrPlayList === 1"
+            @click="ifSearchOrPlayList = 0">
+        <span class="iconfont return"/>
+        <span class="icon-context">返回</span>
       </span>
       <span class="search">
         <Input search :placeholder="placeholder" @on-search="searchMusic()" v-model="keywords" clearable>
         </Input>
-        </span>
+      </span>
     </div>
     <!-- 歌单 -->
     <b-list-group class="music-list" @wheel="handleScrollWheel">
@@ -18,7 +22,7 @@
         <b-row :class="[$store.state.musicInfo.musicId === item.id ? 'currentPlay' : '']"
                @mouseenter="currentShowId=item.id"
                @mouseleave="currentShowId=null">
-          <b-col cols="6" class="musicName" :title="item.name">
+          <b-col cols="6" class="music-name" :title="item.name">
             {{item.name}}
           </b-col>
           <b-col cols="3" class="signerName" :title="item.ar[0].name">

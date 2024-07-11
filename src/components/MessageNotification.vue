@@ -42,7 +42,7 @@
       </div>
       <div class="menu-item msg-setting" @click="routeNavigate('messageSetting')">
         <div :class="['item', activeMenu === 'messageSetting' ? 'active-menu' : '']">
-          <span class="iconfont icon-preferences"></span>
+          <span class="iconfont setting-c"></span>
           消息设置
         </div>
       </div>

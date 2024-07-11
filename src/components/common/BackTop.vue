@@ -137,7 +137,7 @@
       width: 46px;
       height: 46px;
       border-radius: 50%;
-      background: #fff;
+      background: var(--theme-color);
       cursor: pointer;
       box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
 
@@ -149,7 +149,7 @@
     }
 
     .back-top:hover {
-      background: @background-color-base;
+      //background: @background-color-base;
     }
 
     .settings {
@@ -184,15 +184,20 @@
           > div {
             width: 100%;
             border-radius: 6px;
-            background-color: var(--theme-color);
+            color: var(--font-color);
+            background-color: var(--dropdown-bg-color);
+            border-left: 1px solid rgba(255,255,255, 0.2);
+            border-right: 1px solid rgba(255,255,255, 0.2);
           }
 
           .theme {
             height: 100/2%;
+            border-top: 1px solid rgba(255,255,255, 0.2);
           }
 
           .music {
             height: 100/2%;
+            border-bottom: 1px solid rgba(255,255,255, 0.2);
           }
 
           .other {

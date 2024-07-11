@@ -41,7 +41,7 @@
             <span class="content">账号设置</span>
           </div>
           <div @click="routeNavigate('domain')" class="action-btn">
-            <span class="iconfont icon-preferences"></span>
+            <span class="iconfont setting-c"></span>
             <span class="content">主页设置</span>
           </div>
         </div>

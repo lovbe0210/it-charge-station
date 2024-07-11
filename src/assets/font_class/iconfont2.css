@@ -53,41 +53,6 @@
   content: "\eb6f";
 }
 
-.icon-single-loop:before {
-  content: "\e66d";
-}
-
-.icon-list-random:before {
-  content: "\e610";
-}
-
-.icon-list-loop:before {
-  content: "\e61f";
-}
-
-.icon-play:before {
-  content: "\e616";
-}
-
-.icon-paused:before {
-  content: "\e87c";
-}
-
-.icon-previous:before {
-  content: "\e63c";
-}
-
-.icon-next:before {
-  content: "\e63e";
-}
-
-.icon-like-no:before {
-  content: "\e930";
-}
-
-.icon-like-yes:before {
-  content: "\e6fc";
-}
 
 .icon-volume-open:before {
   content: "\e617";
@@ -103,10 +68,6 @@
 
 .icon-return-copy:before {
   content: "\eb70";
-}
-
-.icon-music-list:before {
-  content: "\ea86";
 }
 
 .icon-loading:before {

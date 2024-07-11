@@ -5,9 +5,7 @@
   bottom: 0;
   display: flex;
   padding: 5px 5px;
-  //margin: 2px 0;
   z-index: 10000;
-  //background-color: #ffffff;
 
   .left {
     display: flex;
@@ -28,11 +26,11 @@
 
 
     .musicInfo {
-      color: rgb(37, 37, 37);
+      color: var(--font-color);
       font-size: 13px;
       width: 70px;
 
-      .musicName {
+      .music-name {
         margin-bottom: 3px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -61,9 +59,8 @@
       align-items: center;
       height: 13px;
 
-      i {
-        font-size: 20px;
-        color: #313131;
+      .iconfont {
+        font-size: 19px;
       }
 
       span {
@@ -129,14 +126,17 @@
 
 }
 
-// tip提示在MusicIndex下与bottom-control平级
-.volume-controller {
-  padding: 0;
-  /deep/.tooltip-inner {
-    background-color: transparent !important;
-    padding: 0;
+/deep/.volume-control-tooltip {
+
+  .ant-tooltip-content {
+    .ant-tooltip-inner {
+      background-color: transparent !important;
+      box-shadow: none;
+      padding: 0;
+      margin-bottom: -5px;
+    }
   }
-  /deep/.arrow::before {
+  .ant-tooltip-arrow {
     display: none;
   }
   .volume-input {
@@ -180,11 +180,6 @@
   color: #aaa;
   padding: 15px 0;
 }
-
-
-
-
-
 
 .downloadContainer {
   height: 100%;
