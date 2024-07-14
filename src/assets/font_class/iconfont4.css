@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_ebnyq6fc7su.woff2?t=1720712041160') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_uf9aigrgrh.woff2?t=1720927436726') format('woff2');
 }
 
 .iconfont {
@@ -397,4 +397,40 @@
 
 .like-no:before {
   content: "\e710";
+}
+
+.industry:before {
+  content: "\e711";
+}
+
+.location:before {
+  content: "\e712";
+}
+
+.account-set:before {
+  content: "\e713";
+}
+
+.upload:before {
+  content: "\e714";
+}
+
+.mood-calendar:before {
+  content: "\e715";
+}
+
+.recent-view:before {
+  content: "\e716";
+}
+
+.grade-incentive:before {
+  content: "\e717";
+}
+
+.collect:before {
+  content: "\e718";
+}
+
+.history:before {
+  content: "\e719";
 }

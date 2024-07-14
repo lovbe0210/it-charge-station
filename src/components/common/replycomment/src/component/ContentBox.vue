@@ -283,6 +283,6 @@
 </script>
 
 <style lang="less" scoped>
-  @import '../style/content-box.less';
-  @import "../../../../css/common-var.less";
+@import "../../../../css/common-var.less";
+@import '../style/content-box.less';
 </style>

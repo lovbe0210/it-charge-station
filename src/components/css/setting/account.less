@@ -6,7 +6,7 @@
     font-size: 20px;
     line-height: 24px;
     font-weight: 500;
-    color: #262626;
+    color: var(--font-color);
     position: sticky;
     padding: 48px 0 28px;
     top: 0;
@@ -18,7 +18,7 @@
   .setting-subtitle {
     line-height: 24px;
     font-weight: 500;
-    color: #262626;
+    color: var(--font-color);
     margin: 0px;
     text-align: inherit;
     font-size: 16px;
@@ -27,11 +27,11 @@
   .settings-form {
     width: 100%;
     margin-top: 16px;
-    color: #262626;
+    color: var(--font-color);
 
     .form-item {
       position: relative;
-      background-color: #FAFAFA;
+      background: var(--on-theme-bg-color);
       border-radius: 8px;
       padding: 16px;
       margin-bottom: 0;
@@ -51,7 +51,7 @@
         }
 
         .tip {
-          color: #8A8F8D;
+          color: var(--title-color);
           margin-top: 8px;
         }
       }
@@ -60,7 +60,7 @@
         display: inline-block;
         white-space: nowrap;
         text-align: center;
-        border: 1px solid #E7E9E8;
+        border: 1px solid @border-color_normal;
         transition: all .3s cubic-bezier(.645, .045, .355, 1);
         -moz-user-select: none;
         user-select: none;
@@ -73,8 +73,8 @@
         text-shadow: none;
         border-radius: 6px;
         font-weight: 500;
-        color: #262626;
-        background: #ffffff;
+        color: var(--font-color);
+        background: unset;
         font-size: 12px;
         position: absolute;
         right: 16px;
@@ -89,9 +89,9 @@
       }
 
       .control-button:focus, .control-button:hover {
-        color: #009456;
-        background: #ffffff;
-        border-color: #009456;
+        color: @primary-color;
+        //background: #ffffff;
+        border-color: @primary-color;
       }
     }
 
@@ -105,7 +105,7 @@
       .setting-subtitle {
         line-height: 24px;
         font-weight: 500;
-        color: #262626;
+        color: var(--font-color);
         font-size: 16px;
         text-align: inherit;
         margin: 0px 0px 6px;
@@ -113,7 +113,7 @@
 
       .subtitle-tip {
         line-height: 22px;
-        color: #8A8F8D;
+        color: var(--title-color);
       }
 
       .third-binding-list {
@@ -121,10 +121,10 @@
         margin-left: -16px;
         display: flex;
         flex-direction: row;
-        color: #000000;
+        //color: #000000;
 
         .third-binding-item {
-          background-color: #FAFAFA;
+          background: var(--on-theme-bg-color);
           border-radius: 8px;
           height: 46px;
           line-height: 46px;

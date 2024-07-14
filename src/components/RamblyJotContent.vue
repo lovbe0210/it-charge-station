@@ -68,6 +68,7 @@
 </script>
 
 <style scoped lang="less">
+@import "./css/common-var";
   .layout-module_RamblyJot-container {
 
     .rambly-header {
@@ -96,12 +97,17 @@
 
       .post-info {
         margin-top: 10px;
-        color: #8A8F8D;
+        color: var(--title-color);
       }
     }
 
     .rambly-content {
       margin-top: 10px;
+      color: var(--font-color);
+
+      /deep/.data-list {
+        color: var(--font-color);
+      }
     }
   }
 

@@ -49,11 +49,11 @@
                 </div>
                 <div class="userInfo-module_detail">
                   <span class="index-module_meta">
-                    <span class="iconfont icon-location"></span>
+                    <span class="iconfont location"></span>
                     <span>天下为公</span>
                   </span>
                   <span class="index-module_meta">
-                    <span class="iconfont icon-industry"></span>
+                    <span class="iconfont industry"></span>
                     <span>新时代『农民工』</span>
                   </span>
                 </div>

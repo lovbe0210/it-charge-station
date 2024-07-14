@@ -25,7 +25,7 @@
                         :show-upload-list="false"
                         :before-upload="fileHandle">
                   <div class="avatar-uploader-btn" ref="avatarBtn">
-                    <span class="iconfont icon-avatar-upload"></span>
+                    <span class="iconfont upload"></span>
                     <span>更新头像</span>
                   </div>
                 </Upload>
@@ -64,7 +64,7 @@
                     <div class="avatar-upload-select-text">
                       <span tabindex="0" class="avatar-upload-button">
                         <button type="button" class="custom-btn" @click="reUploadAvatar">
-                          <span class="iconfont icon-avatar-upload"></span>
+                          <span class="iconfont upload"></span>
                           <span class="text">重新选择</span>
                         </button>
                       </span>
@@ -197,9 +197,9 @@
           <div class="setting-legacy-form-item-control-wrapper">
             <div class="update-editor-control">
               <span class="update-editor-control-content">
-                <button type="button" class="lovbe-btn-default">
+                <Button type="success">
                   <span>更新信息</span>
-                </button>
+                </Button>
               </span>
             </div>
           </div>

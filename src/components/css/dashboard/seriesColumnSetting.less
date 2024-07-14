@@ -1,8 +1,10 @@
+@import "../../css/common-var";
 .layout-module_column-setting {
   width: 100%;
   height: 100%;
 
   .setting-header {
+    color: @grey-white-font-color;
     width: 60px;
     height: 32px;
     line-height: 16px;
@@ -41,18 +43,18 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
-          color: #262626;
+          color: var(--title-color);
           font-weight: 500;
 
           &:hover {
             border-radius: 4px;
-            background: #EFF0F0;
+            background: var(--on-theme-bg-color);
           }
         }
       }
 
       .active .setting-label {
-        background: #eff0f0;
+        background: var(--on-theme-bg-color);
       }
     }
 
@@ -67,7 +69,7 @@
 
         h4 {
           font-size: 20px;
-          color: #262626;
+          color: var(--font-color);
           line-height: 32px;
           font-weight: 500;
           flex: auto;
@@ -84,7 +86,6 @@
 
           .i-search {
             line-height: 32px;
-            color: #262626;
           }
         }
       }
@@ -100,7 +101,7 @@
             margin-bottom: 20px;
 
             .label {
-              color: #585A5A;
+              color: var(--title-color);
               margin: 15px 0;
 
               .required {
@@ -162,6 +163,7 @@
 
               input {
                 margin-right: 8px;
+                cursor: pointer;
 
                 &::before {
                   position: relative;
@@ -194,10 +196,24 @@
 
               .permission-label {
                 margin: 0;
+                cursor: pointer;
               }
 
               .public-radio {
                 margin-bottom: 10px;
+              }
+            }
+
+            /deep/.ivu-poptip-arrow {
+              display: none;
+            }
+
+            /deep/.ivu-poptip-inner {
+              border: 1px solid @border-color_normal;
+              background: var(--modal-bg-color);
+
+              .ivu-btn-text {
+                background: unset;
               }
             }
           }
@@ -248,8 +264,16 @@
                   align-items: center;
 
                   .cover-upload-btn {
-                    color: #262626;
                     font-weight: 500;
+                    color: var(--title-color);
+                    background: var(--on-theme-bg-color);
+                    border-color: @border-color_normal;
+                    padding: 0 13px;
+
+                    &:hover {
+                      color: @primary-color;
+                      border-color: @primary-color;
+                    }
                   }
 
                   .clear-cover-btn {
@@ -296,7 +320,6 @@
       }
 
       .article-list {
-        color: #262626;
         .article-header-wrapper {
           width: 100%;
           line-height: 32px;
@@ -304,15 +327,7 @@
           align-items: center;
           padding: 12px 0;
           margin-bottom: 10px;
-          border-bottom: 1px solid #E7E9E8;
-
-          /deep/.ivu-btn-text>span {
-              color: #262626;
-
-            &:hover {
-              color: #00b96b;
-            }
-          }
+          border-bottom: 1px solid @border-color_normal;
 
           .header-left-checkbox {
             width: 4%;
@@ -360,7 +375,7 @@
           border-radius: 4px;
 
           &:hover {
-            background: #EFF0F0;
+            background: var(--on-theme-bg-color);
           }
 
           .left-checkbox {
@@ -388,16 +403,16 @@
             .create-time, .update-time {
               width: 25%;
               text-align: center;
-              color: #585A5A;
+              color: @grey-white-font-color;
             }
           }
 
           .right-action {
             width: 4%;
-            color: #585A5A;
+            color: @grey-white-font-color;
 
             .operate {
-              color: #585A5A;
+              color: @grey-white-font-color;
               font-weight: 600;
             }
 
@@ -413,7 +428,7 @@
             margin-bottom: 24px;
 
             .checkbox-label {
-              color: #262626;
+              color: var(--font-color);
             }
 
             .setting-tips {
@@ -426,13 +441,12 @@
             justify-content: space-between;
             align-items: center;
             padding: 16px;
-            background: #FAFAFA;
+            background: var(--on-theme-bg-color);
             border-radius: 8px;
             margin-bottom: 20px;
 
             .setting-action-title {
               font-size: 14px;
-              color: #262626;
               line-height: 22px;
             }
 
@@ -445,7 +459,7 @@
             line-height: 22px;
             margin-top: 6px;
             font-size: 14px;
-            color: #8A8F8D;
+            color: var(--title-color);
           }
         }
       }
@@ -559,7 +573,6 @@
           align-items: center;
 
           .cover-upload-btn {
-            color: #262626;
             font-weight: 500;
           }
 
@@ -606,10 +619,10 @@
 }
 
 .delete-warn {
-  color: #262626;
 
   .warn-content {
     display: flex;
+    color: #262626;
     background-color: #F9EFCD;
     border: 1px solid #F5D480;
     border-radius: 6px;
@@ -676,7 +689,7 @@
     text-align: left;
 
     .action-item {
-      color: #585A5A;
+      color: var(--title-color);
       padding-left: 15%;
       width: 100%;
       display: inline-block;

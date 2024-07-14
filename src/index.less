@@ -28,8 +28,17 @@
   }
 }
 
+.ivu-input {
+  border-color: @border-color_normal;
+  color: var(--font-color);
+  background: unset;
+}
 
-.ivu-btn:focus, .ivu-input:focus {
+.ivu-btn-text {
+  color: var(--title-color);
+}
+
+.ivu-btn:focus, .ivu-input:focus, .ivu-btn-text:focus {
   box-shadow: none !important;
 }
 
@@ -49,6 +58,23 @@
 
 .ivu-modal {
   font-family: 'Chinese Quote', 'Segoe UI', Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji';
+
+  .ivu-modal-content {
+    color: var(--font-color);
+    background: var(--modal-bg-color);
+
+    .ivu-modal-header {
+      border-color: @border-color_normal;
+
+      .ivu-modal-header-inner {
+        color: var(--font-color);
+      }
+    }
+
+    .ivu-icon-ios-close {
+      color: @grey-white-font-color;
+    }
+  }
 }
 
 .user-info-card-box {
@@ -162,4 +188,20 @@
   color: var(--title-color);
 }
 
+.ant-checkbox-indeterminate .ant-checkbox-inner::after {
+  background: @primary-color;
+}
 
+.ant-checkbox-checked .ant-checkbox-inner {
+  background: @primary-color;
+  border-color: @primary-color;
+}
+
+.ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner {
+  border-color: @primary-color;
+}
+
+.ant-checkbox-disabled .ant-checkbox-inner {
+  background-color: #f5f5f5;
+  border-color: #d9d9d9 !important;
+}

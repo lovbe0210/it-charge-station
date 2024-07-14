@@ -166,7 +166,7 @@
 
   .reply-box {
     margin: 10px 0 10px 56px;
-    background: #f7f7f7;
+    background: var(--on-theme-bg-color);
 
     .reply-list {
       padding: 12px 12px 12px 0;

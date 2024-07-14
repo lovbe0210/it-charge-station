@@ -45,7 +45,11 @@ export default new Vuex.Store({
       // 下拉框背景色
       dropdownBackgroundColor: '#FFFFFF',
       // 下拉框内的item-hover颜色
-      dropdownItemHover: '#E9E9E9'
+      dropdownItemHover: '#E9E9E9',
+      // 主题色上面的小块背景色
+      onThemeBackgroundColor: '#FAFAFA',
+      ramblyJotEditorBackgroundColor: '#F2F3F5',
+      modalBackgroundColor: '#FFFFFF'
     },
     // 显示自定义主题开关background-color: #4158D0;
     // background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);

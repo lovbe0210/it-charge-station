@@ -13,10 +13,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-history:before {
-  content: "\e704";
-}
-
 .icon-editor-style:before {
   content: "\e61b";
 }
@@ -27,10 +23,6 @@
 
 .icon-cloud:before {
   content: "\e6c2";
-}
-
-.icon-like:before {
-  content: "\e606";
 }
 
 .icon-home:before {

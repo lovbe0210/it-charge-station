@@ -3,7 +3,7 @@
  * 作为一个可选配置，配置vue脚手架中的一些公共配置
  * 配置项地址见：https://cli.vuejs.org/zh/config/#pages
  */
-const FileManagerPlugin = require('filemanager-webpack-plugin') //引入插件
+// const FileManagerPlugin = require('filemanager-webpack-plugin') //引入插件
 module.exports = {
   // 根路径  @ is an alias to /src
   publicPath: '/',
@@ -18,17 +18,17 @@ module.exports = {
     }
   },
   configureWebpack: {
-    devtool: "source map",
-    plugins: [
-      new FileManagerPlugin({
-        events: {
-          onEnd: {
-            delete: ['./dist.zip'],
-            archive: [{source: './dist', destination: './dist.zip'}]
-          }
-        }
-      })
-    ]
+    devtool: "source map"
+    // plugins: [
+    //   new FileManagerPlugin({
+    //     events: {
+    //       onEnd: {
+    //         delete: ['./dist.zip'],
+    //         archive: [{source: './dist', destination: './dist.zip'}]
+    //       }
+    //     }
+    //   })
+    // ]
   },
   devServer: {
     // ipv6支持

@@ -19,7 +19,7 @@
               {{ifLike ? '取消收藏' : '收藏'}}
             </template>
             <div class="header-module_likeButton action-icon" @click="ifLike = !ifLike">
-              <span :class="['iconfont', ifLike ? 'icon-like3' : 'icon-like']"></span>
+              <span :class="['iconfont', ifLike ? 'icon-like3' : 'collect']"></span>
             </div>
           </a-tooltip>
 

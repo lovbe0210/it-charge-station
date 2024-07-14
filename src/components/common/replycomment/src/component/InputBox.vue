@@ -54,7 +54,7 @@
           title="Enter发送，Shift + Enter换行">
           {{ contentBtn }}
         </Button>
-        <Button v-if="cancelBtn" @click="resetComment">
+        <Button type="text" v-if="cancelBtn" @click="resetComment">
           {{ cancelBtn }}
         </Button>
       </div>

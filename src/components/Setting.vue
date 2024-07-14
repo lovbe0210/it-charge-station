@@ -14,11 +14,11 @@
         </div>
         <div class="user-location-industry">
           <span class="index-module_meta">
-            <span class="iconfont icon-location"></span>
+            <span class="iconfont location"></span>
             <span>四川省成都市成华区水电费水电费胜多负少胜多负少的胜多负少的胜多负少的胜多负少的水电费水电费胜多负少的水电费水电费</span>
           </span>
           <span class="index-module_meta">
-            <span class="iconfont icon-industry"></span>
+            <span class="iconfont industry"></span>
             <span>新时代『农民工』as大师阿斯达</span>
           </span>
         </div>
@@ -37,7 +37,7 @@
             <span class="content">个人信息</span>
           </div>
           <div @click="routeNavigate('account')" class="action-btn">
-            <span class="iconfont icon-account-set"></span>
+            <span class="iconfont account-set"></span>
             <span class="content">账号设置</span>
           </div>
           <div @click="routeNavigate('domain')" class="action-btn">

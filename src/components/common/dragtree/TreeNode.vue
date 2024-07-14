@@ -43,6 +43,7 @@
               }}
             </span>
             <Dropdown placement="bottom-end"
+                      transfer-class-name="dropdown-background dropdown-item-all-hover"
                       trigger="click">
               <span class="article-action">
                 <span class="iconfont operate"/>
@@ -104,7 +105,9 @@
             </span>
           </div>
           <div class="action-more" tabindex="1">
-            <Dropdown placement="bottom-end" trigger="click">
+            <Dropdown placement="bottom-end"
+                      transfer-class-name="dropdown-background dropdown-item-all-hover"
+                      trigger="click">
               <span class="dir-action">
                 <span class="iconfont add"/>
               </span>
@@ -124,6 +127,7 @@
               </DropdownMenu>
             </Dropdown>
             <Dropdown placement="bottom-end"
+                      transfer-class-name="dropdown-background dropdown-item-all-hover"
                       trigger="click">
               <span class="dir-action" style="margin-left: 6px">
                 <span class="iconfont operate"/>

@@ -224,7 +224,7 @@
                       <Dropdown placement="bottom-end" trigger="click">
                         <a href="javascript:void(0)">
                           <div class="menu-btn">
-                            <span class="iconfont icon-nav-menu"></span>
+                            <span class="iconfont operate"></span>
                           </div>
                         </a>
                         <DropdownMenu slot="list">

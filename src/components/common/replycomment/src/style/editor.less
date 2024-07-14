@@ -1,3 +1,4 @@
+@import "../../../../css/common-var";
 .comment-box {
   width: 100%;
   position: relative;
@@ -5,8 +6,8 @@
 
   .u-editor {
     transition: all 0.3s;
-    background: #f2f3f5;
-    border: 1px solid #f7f7f7;
+    border: 1px solid @border-color_normal;
+    background: var(--rj-editor-bg-color);
     border-radius: 4px;
     font-size: 14px;
 
@@ -20,7 +21,6 @@
       width: 100%;
       box-sizing: border-box;
       // 是否可以手动改变大小
-      //resize: both;
       background-position: 120% -10px;
       transition: background 0.3s;
       .mentionUser {
@@ -59,14 +59,13 @@
   }
   .active {
     border-color: #00B96B;
-    background: #ffffff;
   }
 
   .action-box {
     display: flex;
     align-items: center;
     margin-top: 10px;
-    color: #909399;
+    color: @grey-white-font-color;
 
     .emoji-content, .picture-content {
       cursor: pointer;
@@ -96,6 +95,13 @@
         margin-right: 10px;
       }
 
+      .ivu-btn-text {
+        color: var(--title-color);
+        &:hover {
+          background: unset;
+          color: @primary-color;
+        }
+      }
     }
 
     .picture {

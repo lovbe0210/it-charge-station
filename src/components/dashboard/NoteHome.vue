@@ -40,13 +40,14 @@
           <span>
             共选择了{{checkedList.length}}篇笔记
           </span>
-          <Button type="text" @click="cancelCheck">
+          <Button type="text" ghost @click="cancelCheck">
             取消选择
           </Button>
         </div>
         <div class="action">
-          <Button type="text">合并移动到专栏</Button>
-          <Button type="text">批量删除</Button>
+          <Button type="text" ghost>合并移动到专栏</Button>
+          <Button type="text" ghost>批量发布</Button>
+          <Button type="text" ghost>批量删除</Button>
         </div>
       </div>
       <div class="note-list-item" v-for="noteItem in noteList" :key="noteItem.id">
@@ -55,7 +56,7 @@
                       @change="onCheckChange(noteItem.id, $event)">
           </a-checkbox>
         </div>
-        <div class="index-module_noteItem">
+        <div :class="['index-module_noteItem', isCheck(noteItem.id) ? 'checked' : '']">
           <div class="index-module_meta un-select">
             <div class="tag-add-control">
               <template v-for="(tag, index) in noteItem.tags">
@@ -105,10 +106,12 @@
         <div class="index-module_rightToolBar">
           <div class="note-list-toolbar">
             <div class="menu-btn-wrapp">
-              <Dropdown placement="bottom-end" trigger="click">
+              <Dropdown placement="bottom-end"
+                        transfer-class-name="dropdown-background dropdown-item-all-hover"
+                        trigger="click">
                 <a href="javascript:void(0)">
                   <div class="menu-btn">
-                    <span class="iconfont icon-nav-menu"></span>
+                    <span class="iconfont operate"></span>
                   </div>
                 </a>
                 <DropdownMenu slot="list">
@@ -116,6 +119,7 @@
                   <DropdownItem>发布</DropdownItem>
                   <DropdownItem>删除</DropdownItem>
                   <DropdownItem>取消置顶</DropdownItem>
+                  <DropdownItem>文档设置</DropdownItem>
                   <DropdownItem>复制链接</DropdownItem>
                   <DropdownItem>移至专栏</DropdownItem>
                 </DropdownMenu>

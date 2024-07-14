@@ -14,7 +14,7 @@
               </div>
             </DropdownItem>
             <DropdownItem>
-              <span class="iconfont icon-like"/>
+              <span class="iconfont collect" style="font-weight: 600;"/>
               收藏
             </DropdownItem>
             <DropdownItem>
@@ -148,7 +148,7 @@
             </DropdownItem>
             <DropdownItem>
               <div class="editor-set">
-                <span class="editor-icon iconfont icon-history"></span>
+                <span class="editor-icon iconfont history"></span>
                 <span>查看历史版本</span>
               </div>
             </DropdownItem>

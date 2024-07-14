@@ -7,7 +7,7 @@
                @click="routeNavigate(null)">
             <div class="light"></div>
             <div class="item">
-              <span class="iconfont icon-recent-view"></span>
+              <span class="iconfont recent-view"></span>
               最近浏览
             </div>
           </div>
@@ -34,7 +34,7 @@
                @click="routeNavigate('ramblyJot')">
             <div class="light"></div>
             <div class="item">
-              <span class="iconfont icon-mood-calendar"></span>
+              <span class="iconfont mood-calendar"></span>
               随笔
             </div>
           </div>
@@ -45,7 +45,7 @@
                @click="routeNavigate('collection')">
             <div class="light"></div>
             <div class="item">
-              <span class="iconfont icon-like"></span>
+              <span class="iconfont collect" style="font-weight: 600;"></span>
               收藏
             </div>
           </div>
@@ -80,7 +80,7 @@
                @click="routeNavigate('grade')">
             <div class="light"></div>
             <div class="item">
-              <span class="iconfont icon-grade-incentive" style="font-size: 17px;"></span>
+              <span class="iconfont grade-incentive" style="font-size: 17px;"></span>
               等级激励
             </div>
           </div>

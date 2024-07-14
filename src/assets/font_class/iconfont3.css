@@ -25,18 +25,6 @@
   content: "\e759";
 }
 
-.icon-location:before {
-  content: "\e64c";
-}
-
-.icon-industry:before {
-  content: "\e612";
-}
-
-.icon-avatar-upload:before {
-  content: "\e65c";
-}
-
 .icon-theme-btn:before {
   content: "\e608";
 }
@@ -63,15 +51,6 @@
 
 .icon-user-center:before {
   content: "\e639";
-}
-
-
-.icon-account-set:before {
-  content: "\e673";
-}
-
-.icon-grade-incentive:before {
-  content: "\e6ac";
 }
 
 
@@ -117,16 +96,8 @@
   content: "\e6d6";
 }
 
-.icon-mood-calendar:before {
-  content: "\e65a";
-}
-
 .icon-fans:before {
   content: "\e637";
-}
-
-.icon-recent-view:before {
-  content: "\e609";
 }
 
 .icon-paper-plane:before {

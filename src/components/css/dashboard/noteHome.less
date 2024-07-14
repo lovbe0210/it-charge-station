@@ -1,3 +1,4 @@
+@import "../../css/common-var";
 .layout-module_NoteHome {
   width: 100%;
   height: 100%;
@@ -14,7 +15,7 @@
       width: calc(~"10% + 10px");
       line-height: 32px;
       text-align: center;
-      color: #262626;
+      color: var(--font-color);
       font-size: 20px;
       font-weight: 600;
       padding-right: 10px;
@@ -62,11 +63,11 @@
           justify-content: center;
           align-items: center;
           cursor: pointer;
-          border: 1px solid #dbdada;
+          border: 1px solid @border-color_normal;
           border-radius: 5px;
 
           .order {
-            color: #262626;
+            color: @grey-white-font-color;
           }
         }
 
@@ -160,18 +161,20 @@
             .add-tag-btn {
               border-style: dashed;
               background: unset;
+              color: var(--title-color);
+              border-color: @grey-white-font-color;
             }
           }
 
           .note-status-module_text {
             font-size: 12px;
-            color: #8A8F8D;
+            color: @grey-white-font-color;
           }
         }
 
         .index-module_content {
           padding-left: 12px;
-          color: #262626;
+          color: var(--font-color);
 
           .viewer-header {
             margin: 10px 0 0;
@@ -182,7 +185,7 @@
             cursor: pointer;
 
             &:hover {
-              color: #585A5A;
+              color: var(--title-color);
             }
 
             span {
@@ -198,7 +201,7 @@
             font-size: 15px;
             line-height: 20px;
             height: 40px;
-            color: #8a8f8d;
+            color: var(--title-color);
 
             span {
               display: -webkit-box;
@@ -212,6 +215,10 @@
         }
       }
 
+      .checked {
+        background: var(--on-theme-bg-color);
+      }
+
       .index-module_rightToolBar {
         position: absolute;
         right: 10px;
@@ -221,15 +228,16 @@
           transition: 0.5s;
           margin-top: 10px;
 
-          .edit-btn, .menu-btn {
+          .menu-btn {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 30px;
             height: 30px;
             border-radius: 5px;
-            box-shadow: 0 0 1px -1px rgba(0, 0, 0, .3), 0 1px 2px 0 rgba(0, 0, 0, .18), 0 2px 4px 1px rgba(0, 0, 0, .12);
-
+            box-shadow: 0 2px 4px 1px rgba(0, 0, 0, .12);
+            background: var(--dropdown-item-hover);
+            color: var(--title-color);
             .iconfont {
               font-size: 18px;
             }
@@ -247,7 +255,6 @@
 
             /deep/.ivu-dropdown-item {
               padding: 7px 25px;
-              color: #262626;
             }
           }
         }
@@ -261,6 +268,7 @@
 
       .index-module_noteItem {
         box-shadow: 0 1px 4px -2px rgba(0, 0, 0, .13), 0 2px 8px 0 rgba(0, 0, 0, .08), 0 8px 16px 4px rgba(0, 0, 0, .04);
+        background: var(--on-theme-bg-color);
       }
     }
 
@@ -268,19 +276,6 @@
       margin: 15px 0;
       align-items: center;
       transition: 0.5s;
-
-      .ivu-btn-text:hover {
-        color: #00B96B;
-        background-color: unset;
-      }
-
-      .ivu-btn-text {
-        color: #262626;
-      }
-
-      .ivu-btn-text:focus {
-        box-shadow: none;
-      }
 
       .note-item-check {
         display: flex;

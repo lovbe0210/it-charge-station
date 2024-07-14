@@ -3,7 +3,7 @@
     <div :class="['rambly-module_editor', extendCurtains ? 'extend-curtains' : '']">
       <div class="scrollbar-visible">
         <div class="layout-mode-fixed">
-          <div :class="['editor-body',  editorFocus ? 'editor-focus' : '']">
+          <div :class="['editor-body',  editorFocus ? 'editor-focus' : '']" @click="engine.focus()">
             <div class="editor-wrap beauty-scroll" ref="scrollbarContext">
               <div class="editor-wrap-content">
                 <div ref="container"></div>
@@ -24,10 +24,10 @@
           </div>
 
           <div class="rambly-module_button">
-            <button type="button" class="ant-btn" @click="submitRambly"
+            <Button type="primary" ghost @click="submitRambly"
                     :disabled="canSubmit">
               <span>小记一下</span>
-            </button>
+            </Button>
           </div>
         </div>
       </div>

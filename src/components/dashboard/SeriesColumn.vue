@@ -78,10 +78,12 @@
           </div>
           <span class="column-hover-show"
                 :style="columnShowType == 1 ? 'bottom: 48px;' : 'top: 15px;'">
-            <Dropdown placement="bottom-end" trigger="click">
+            <Dropdown placement="bottom-end"
+                      transfer-class-name="dropdown-background dropdown-item-all-hover"
+                      trigger="click">
                 <a href="javascript:void(0)">
                   <div class="menu-btn">
-                    <span class="iconfont icon-nav-menu"></span>
+                    <span class="iconfont operate"></span>
                   </div>
                 </a>
                 <DropdownMenu slot="list">
@@ -98,6 +100,10 @@
                   <DropdownItem name="setting">
                     <span @click="routeNavigate(columnItem,'setting')">
                       <span class="iconfont setting"/> 专栏设置
+                    </span>
+                  </DropdownItem>
+                  <DropdownItem class="line">
+                    <span class="line-block">
                     </span>
                   </DropdownItem>
                   <DropdownItem name="delete">

@@ -30,6 +30,7 @@
       <div class="article-info" v-else>
         <Dropdown trigger="click"
                   placement="bottom"
+                  transfer-class-name="dropdown-background dropdown-item-all-hover"
                   @on-click="selectedName => articleShowInfo = selectedName">
           <div class="menu-icon">
             <span>文档信息：{{ articleShowInfo === 'updateTime' ? '更新时间' : '创建时间' }}</span>

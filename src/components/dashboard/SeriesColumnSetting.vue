@@ -203,7 +203,7 @@
                 <span>
                   共选择了{{ checkedList.length }}篇笔记
                 </span>
-                <Button type="text" @click="cancelCheck">
+                <Button type="text" ghost @click="cancelCheck">
                   取消选择
                 </Button>
               </div>
@@ -214,10 +214,10 @@
                 <div class="update-time">更新时间</div>
               </div>
               <div class="right-action" v-if="checkedList.length > 0 || showCheckToolBar">
-                <Button type="text">批量删除</Button>
-                <Button type="text">批量导出</Button>
-                <Button type="text">移出专栏</Button>
-                <Button type="text">批量发布</Button>
+                <Button type="text" ghost>批量删除</Button>
+                <Button type="text" ghost>批量导出</Button>
+                <Button type="text" ghost>移出专栏</Button>
+                <Button type="text" ghost>批量发布</Button>
               </div>
             </div>
             <div class="article-list-wrapper beauty-scroll">
@@ -250,7 +250,9 @@
                   </div>
                 </div>
                 <div class="right-action">
-                  <Dropdown placement="bottom-end" trigger="click">
+                  <Dropdown placement="bottom-end"
+                            transfer-class-name="dropdown-background dropdown-item-all-hover"
+                            trigger="click">
                     <a href="javascript:void(0)">
                       <div class="menu-btn">
                         <span class="iconfont operate"></span>

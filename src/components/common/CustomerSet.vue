@@ -196,7 +196,10 @@
               titleColor: '#585A5A',
               backgroundImg: 'linear-gradient(45deg, #F4F5F7 0%, #F4F5F7 100%)',
               dropdownBackgroundColor: '#FFFFFF',
-              dropdownItemHover: '#E9E9E9'
+              dropdownItemHover: '#E9E9E9',
+              onThemeBackgroundColor: '#FAFAFA',
+              ramblyJotEditorBackgroundColor: '#F2F3F5',
+              modalBackgroundColor: '#FFFFFF'
             }
             break;
           case 1:
@@ -206,7 +209,10 @@
               titleColor: '#B3B3B3',
               backgroundImg: 'linear-gradient(45deg, #141414 0%, #141414 100%)',
               dropdownBackgroundColor: '#292929',
-              dropdownItemHover: '#393939'
+              dropdownItemHover: '#393939',
+              onThemeBackgroundColor: '#292929',
+              ramblyJotEditorBackgroundColor: '#393939',
+              modalBackgroundColor: '#393939'
             }
             break;
           case 2:
@@ -215,8 +221,11 @@
               fontColor: '#262626',
               titleColor: '#585A5A',
               backgroundImg: 'linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%)',
-              dropdownBackgroundColor: 'rgb(255,248,248,0.98)',
-              dropdownItemHover: '#edeaea'
+              dropdownBackgroundColor: 'rgba(255,248,248,0.98)',
+              dropdownItemHover: '#edeaea',
+              onThemeBackgroundColor: 'rgba(250,251,251,0.98)',
+              ramblyJotEditorBackgroundColor: '#edeaea',
+              modalBackgroundColor: 'rgba(250,251,251,0.98)'
             }
             break;
           case 3:
@@ -226,7 +235,10 @@
               titleColor: '#585A5A',
               backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)',
               dropdownBackgroundColor: 'rgba(255,255,255,0.98)',
-              dropdownItemHover: '#E9E9E9'
+              dropdownItemHover: '#E9E9E9',
+              onThemeBackgroundColor: 'rgba(250,251,251,0.98)',
+              ramblyJotEditorBackgroundColor: '#F2F3F5',
+              modalBackgroundColor: 'rgba(250,251,251,0.98)'
             }
             break;
         }

@@ -101,10 +101,13 @@
           </div>
         </div>
         <div class="readme-module_action">
-          <button type="button" class="readme-module_submitBtn" :disabled="editorValueIsEmpty">
+          <Button type="success" class="readme-module_submitBtn" :disabled="editorValueIsEmpty">
             <span>确定</span>
-          </button>
-          <a class="readme-module_cancel">取消</a></div>
+          </Button>
+          <Button type="text" class="readme-module_cancel" @click="readmeEmpty = true">
+            <span>取消</span>
+          </Button>
+        </div>
       </div>
     </div>
   </div>

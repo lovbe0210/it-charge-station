@@ -61,7 +61,7 @@
                               <div class="title-content" @click="routeNavigate(item.id)">
                                 {{item.title}}
                               </div>
-                              <span class="iconfont icon-nav-menu"></span>
+                              <span class="iconfont operate"></span>
                             </template>
                           </ListItemMeta>
                         </ListItem>

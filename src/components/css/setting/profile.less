@@ -5,7 +5,7 @@
     font-size: 20px;
     line-height: 24px;
     font-weight: 500;
-    color: #262626;
+    color: var(--font-color);
     position: -webkit-sticky;
     position: sticky;
     padding: 48px 0 28px;
@@ -32,14 +32,13 @@
         box-sizing: border-box;
         margin: 0 0 5px 0;
         padding: 0;
-        color: rgba(0, 0, 0, .85);
         font-size: 14px;
         font-variant: tabular-nums;
         line-height: 1.5715;
         list-style: none;
         font-feature-settings: "tnum";
         vertical-align: top;
-        color: #262626;
+        color: var(--font-color);
         row-gap: 0px;
 
         .setting-form-item-label {
@@ -59,7 +58,7 @@
             width: 100%;
             font-size: 14px;
             position: relative;
-            color: #585A5A;
+            color: var(--font-color);
             margin: unset!important;
 
             .form-item-required {
@@ -68,7 +67,7 @@
 
             .textarea-words-count {
               float: right;
-              color: #8A8F8D;
+              color: var(--title-color);
               font-size: 13px;
             }
           }
@@ -107,16 +106,20 @@
                 height: 30px;
                 margin-left: 20px;
                 border-radius: 6px;
-                border: 1px solid #E7E9E8;
+                border: 1px solid @border-color_normal;
+                .iconfont {
+                  margin-right: 5px;
+                }
               }
 
               .avatar-uploader-btn:hover {
+                color: @primary-color;
                 border-color: @primary-color;
               }
             }
 
             .avatar-uploader-tip {
-              color: #8A8F8D;
+              color: var(--title-color);
               line-height: 1.5;
               overflow: hidden;
               margin: 9px 0 0 9px;
@@ -133,11 +136,10 @@
             display: inline-block;
             width: 100%;
             min-width: 0;
-            color: #262626;
             font-size: 14px;
             line-height: 1.5715;
             background: none;
-            border: 1px solid #E7E9E8;
+            border: 1px solid @border-color_normal;
             border-radius: 6px;
             transition: all .3s;
             touch-action: manipulation;

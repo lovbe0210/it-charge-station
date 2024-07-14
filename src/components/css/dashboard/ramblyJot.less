@@ -1,3 +1,4 @@
+@import "../common-var";
 .layout-module_RamblyJot {
   width: 100%;
   height: 100%;
@@ -14,7 +15,7 @@
       width: calc(~"10% + 10px");
       line-height: 32px;
       text-align: center;
-      color: #262626;
+      color: var(--font-color);
       font-size: 20px;
       font-weight: 600;
       padding-right: 10px;
@@ -44,10 +45,10 @@
 
       // 编辑器内容区
       .editor-body {
-        border: 1px solid  #F2F3F5;
+        border: 1px solid var(--rj-editor-bg-color);
         height: calc(~"100%");
         position: relative;
-        background-color: #F2F3F5;
+        background: var(--rj-editor-bg-color);
         border-radius: 4px;
         padding: 20px 0 20px 20px;
 
@@ -63,59 +64,14 @@
             flex: 1;
             min-width: 600px;
 
-            .title-box {
-              position: relative;
-              padding: 0 10px 10px 0px;
-              margin: 0 auto;
-              font-family: Chinese Quote, Segoe UI, Roboto, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji;
-              position: relative;
-
-              .title {
-                color: #262626;
-                font-weight: 600;
-                font-size: 20px;
-                max-height: 350px;
-                min-height: 24px;
-                // 此处表示font-size*1.389得到行高
-                line-height: 1.389;
-                max-width: 100%;
-                width: 100%;
-                resize: none;
-                border: none;
-                outline: none;
-                -webkit-box-shadow: none;
-                box-shadow: none;
-                vertical-align: bottom;
-                transition: all .3s, height 0s;
-                font-variant: tabular-nums;
-                list-style: none;
-                font-feature-settings: "tnum";
-                position: relative;
-                display: inline-block;
-                background-color: unset;
-                border-radius: 4px;
-                overflow-x: hidden;
-                overflow-y: hidden;
-
-                // 设置placeholder字体颜色
-                textarea::-webkit-input-placeholder { /* WebKit browsers */
-                  color: #BFBFBF;
-                }
-
-                textarea::-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-                  color: #BFBFBF;
-                }
-
-                textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
-                  color: #BFBFBF;
-                }
-
-                textarea::-ms-input-placeholder { /* Internet Explorer 10+ */
-                  color: #BFBFBF;
-                }
-              }
+            .am-engine {
+              color: var(--font-color);
             }
           }
+        }
+
+        &:hover {
+          border-color: @primary-color;
         }
       }
 
@@ -175,6 +131,8 @@
               }
 
               .toolbar-button {
+                color: var(--title-color);
+
                 .toolbar-title {
                   font-size: 14px;
                   margin-left: 5px;
@@ -208,7 +166,6 @@
           }
 
           .title-btn {
-            color: #595959;
             display: flex;
             align-items: center;
             margin-left: 5px;
@@ -230,9 +187,9 @@
         display: flex;
         align-items: center;
 
-        .ant-btn:not([disabled]):hover {
-          border-color: #00B96B;
-          color: #00B96B;
+        .ivu-btn[disabled] {
+          color: var(--title-color);
+          background: var(--dropdown-bg-color);
         }
       }
     }
@@ -262,7 +219,7 @@
 
       .post-content {
         p {
-          color: #262626;
+          color: var(--font-color);
           font-size: 15px;
           line-height: 22px;
           margin: 10px 0 0;

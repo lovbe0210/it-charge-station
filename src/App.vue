@@ -1,5 +1,5 @@
 <template>
-  <div id="app" ref="app">
+  <div id="app" ref="app" class="beauty-scroll">
     <router-view></router-view>
   </div>
 </template>
@@ -265,20 +265,7 @@
     background-attachment: fixed;
     // 全局字体颜色
     color: var(--font-color);
+    height: 100%;
+    overflow-y: auto!important;
   }
-
-  // 全局css
-
-/*  .ant-checkbox-checked .ant-checkbox-inner {
-    border-color: @primary-color;
-    background-color: @primary-color;
-  }
-
-  .ant-checkbox-wrapper:hover .ant-checkbox-inner, .ant-checkbox:hover .ant-checkbox-inner, .ant-checkbox-input:focus + .ant-checkbox-inner {
-    border-color: @primary-color;
-  }
-
-  .ant-checkbox-indeterminate .ant-checkbox-inner::after {
-    background-color: @primary-color;
-  }*/
 </style>

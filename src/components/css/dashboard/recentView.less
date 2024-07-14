@@ -1,3 +1,4 @@
+@import "../../css/common-var";
 .layout-module_recentView {
   width: 100%;
   height: 100%;
@@ -11,10 +12,10 @@
 
     .title {
       height: 32px;
+      color: var(--font-color);
       width: calc(~"10% + 10px");
       line-height: 32px;
       text-align: center;
-      color: #262626;
       font-size: 20px;
       font-weight: 600;
       padding-right: 10px;
@@ -38,12 +39,6 @@
           height: 32px;
           background-color: unset;
         }
-
-        /deep/ .ivu-input:hover, /deep/.ivu-input:focus {
-          border-color: #00B96B;
-          outline: 0;
-          box-shadow: none;
-        }
       }
 
       .action {
@@ -51,10 +46,14 @@
         display: flex;
         background-color: transparent;
         align-items: center;
-        color: #8A8F8D;
+        color: @grey-white-font-color;
         font-size: 14px;
         margin-left: 15px;
         cursor: pointer;
+
+        &:hover {
+          color: @primary-color;
+        }
       }
     }
   }
@@ -65,13 +64,13 @@
     .time-line {
       margin: 10px 0 5px;
 
-      .icon-history {
+      .history {
         font-size: 14px;
       }
     }
 
     .view-list-item {
-      border-top: 1px solid #d2d4d3;
+      border-top: 1px solid @grey-white-font-color;
       padding: 15px 0 15px;
 
       .item-header {
@@ -95,16 +94,17 @@
         }
 
         .colum {
-          background-color: #fcebcd;
-          color: #ff6600;
-        }
-
-        .question {
           background-color: #000000;
           color: #FFDF00;
         }
 
+        .rambly-jot {
+          background-color: #fcebcd;
+          color: #ff6600;
+        }
+
         .item-title {
+          color: var(--font-color);
           margin: unset;
           padding-left: 8px;
           line-height: 24px;
@@ -123,7 +123,7 @@
         height: 22px;
         line-height: 22px;
         font-size: 13px;
-        color: #262626;
+        color: var(--title-color);
         font-style: normal;
         font-weight: 400;
         display: -webkit-box;
@@ -148,21 +148,21 @@
           height: 20px;
           font-style: normal;
           font-weight: 400;
-          font-size: 15px;
+          font-size: 14px;
           line-height: 20px;
-          color: #262626;
+          color: @grey-white-font-color;
           margin-right: 8px;
         }
 
         .tag {
-          color: #819a9f;
+          color: @grey-white-font-color;
           margin-right: 8px;
         }
 
         .item-count {
           height: 20px;
           line-height: 20px;
-          color: #819a9f;
+          color:@grey-white-font-color;
           font-size: 12px;
         }
       }

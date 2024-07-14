@@ -11,7 +11,10 @@ export default {
       `--font-color: ${themProperty.fontColor};` +
       `--title-color: ${themProperty.titleColor};` +
       `--dropdown-bg-color: ${themProperty.dropdownBackgroundColor};` +
-      `--dropdown-item-hover: ${themProperty.dropdownItemHover};`
+      `--dropdown-item-hover: ${themProperty.dropdownItemHover};` +
+      `--on-theme-bg-color: ${themProperty.onThemeBackgroundColor};` +
+      `--rj-editor-bg-color: ${themProperty.ramblyJotEditorBackgroundColor};` +
+      `--modal-bg-color: ${themProperty.modalBackgroundColor};`
     document.querySelector(':root').setAttribute('style', styleProperty)
   },
 
