@@ -6,7 +6,9 @@
       <div class="operation">
         <Input class="search" search placeholder="搜索标题关键词"/>
         <div class="action">
-          <Dropdown placement="bottom-end" @on-click="changeCollectType">
+          <Dropdown placement="bottom-end"
+                    transfer-class-name="dropdown-background dropdown-item-all-hover"
+                    @on-click="changeCollectType">
             <a href="javascript:void(0)">
               <div class="icon-box">
                 <span class="iconfont filter"></span>
@@ -23,13 +25,13 @@
                 <div style="min-width: 25px">
                   <span class="iconfont true" v-if="groupType === '1'"></span>
                 </div>
-                文档
+                笔记
               </DropdownItem>
               <DropdownItem name="2">
                 <div style="min-width: 25px">
                   <span class="iconfont true" v-if="groupType === '2'"></span>
                 </div>
-                专题
+                专栏
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>

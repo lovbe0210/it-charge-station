@@ -1,45 +1,52 @@
 <template>
   <div class="user-card">
     <a-popover placement="topLeft"
-               trigger="hover"
+               trigger="click"
                :getPopupContainer="()=>popoverContainer"
                overlayClassName="user-info-card-box">
       <template slot="content">
-        <div class="user-info-card">
-          <div class="user-avatar">
-            <b-avatar :src="userInfo.avatar" variant="light" :to="userInfo.homeLink" size="2.5rem">
+        <div class="user-card-body un-select">
+          <div class="user-card-avatar">
+            <b-avatar :src="userInfo.avatar" variant="light" :to="userInfo.domain" size="2.8rem">
               <span v-if="!userInfo.avatar">{{ userInfo.username }}</span>
             </b-avatar>
           </div>
-          <div class="user-content">
-            <div class="user-info">
-              <b-link class="username" target="_blank">
-                <span class="name" style="max-width: 10em;">{{ userInfo.username }}</span>
-                <span :class="['iconfont',  'icon-level' + userInfo.level]"></span>
-              </b-link>
-            </div>
-            <div class="social-info">
-              <b-link class="attention">
-                <span>{{userInfo.follows}}</span>
-                <span>关注</span>
-              </b-link>
-              <b-link class="follower">
-                <span>{{userInfo.fans}}</span>
-                <span>粉丝</span>
-              </b-link>
-              <b-link class="likes">
-                <span>{{userInfo.likes}}</span>
-                <span>获赞</span>
-              </b-link>
-            </div>
-            <div class="card-btn">
-              <Button type="primary">
-                <span class="">关注</span></Button>
-              <Button>
-                <span class="">发消息</span></Button>
+          <div class="user-card-userInfos">
+            <b-link class="username" target="_blank">
+              <span class="name" style="max-width: 10em;">{{ userInfo.username }}</span>
+              <span :class="['iconfont',  'icon-level' + userInfo.level]"></span>
+            </b-link>
+            <div class="signature">You will never walk alone.</div>
+            <div class="info-list" style="margin-top: 10px;">
+              <div class="info-item">
+                <span class="iconfont location"/>
+                <span class="info-detail">永胜上沙的街角</span>
+              </div>
+              <div class="info-item">
+                <span class="iconfont industry"/>
+                <span class="info-detail">互联网·教育·足球·哲学</span>
+              </div>
             </div>
           </div>
         </div>
+        <div class="user-card-footer un-select">
+            <div class="follow-fans">
+              <div class="footer-item">
+                粉丝<span class="number">55</span>
+              </div>
+              <div class="footer-item">
+                关注<span class="number">6</span>
+              </div>
+            </div>
+            <div class="actions">
+              <Button>
+                <span>关注</span>
+              </Button>
+              <Button>
+                <span>私信</span>
+              </Button>
+            </div>
+          </div>
       </template>
       <!-- 用户卡片信息载体 -->
       <slot>userCard</slot>
@@ -48,17 +55,18 @@
 </template>
 
 <script>
-  export default {
-    name: "UserCard",
-    data() {
-      return {}
-    },
-    props: ['popoverContainer', 'userInfo'],
-    mounted() {
-      this.cardContainer = this.$refs.cardContainer;
-    }
+export default {
+  name: "UserCard",
+  data() {
+    return {}
+  },
+  props: ['popoverContainer', 'userInfo'],
+  mounted() {
+    this.cardContainer = this.$refs.cardContainer;
   }
+}
 </script>
 
 <style scoped lang="less">
+
 </style>

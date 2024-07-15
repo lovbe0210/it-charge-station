@@ -34,6 +34,10 @@
   background: unset;
 }
 
+.ivu-btn {
+  border-radius: 6px;
+}
+
 .ivu-btn-text {
   color: var(--title-color);
 }
@@ -79,59 +83,116 @@
 
 .user-info-card-box {
 
-  .ant-popover-arrow {
-    display: none;
-  }
+  .ant-popover-content {
+    width: 330px;
 
-  .user-info-card {
-    display: flex;
-    margin: 15px 10px;
-    justify-content: space-around;
-
-    .user-avatar {
-      margin-right: 15px;
+    .ant-popover-arrow {
+      display: none;
     }
 
-    .user-content {
-      font-size: 16px;
+    .ant-popover-inner {
+      background: var(--on-theme-bg-color);
+      box-shadow: 0 8px 16px 4px rgba(0, 0, 0, .04);
+      border: 1px solid @border-color_normal;
+      border-radius: 8px;
 
-      a {
-        color: #585A5A;
-      }
+      .ant-popover-inner-content {
+        color: var(--font-color);
+        padding: 0;
 
-      .user-info {
-        margin-bottom: 10px;
+        .user-card-body {
+          display: flex;
+          padding: 20px 18px 20px 24px;
 
-        .name {
-          margin-right: 5px;
+          .user-card-avatar {
+            margin-top: 5px;
+          }
+
+          .user-card-userInfos {
+            margin-left: 20px;
+            width: 220px;
+
+            .username {
+              color: var(--font-color);
+              font-weight: 700;
+              font-size: 16px;
+              line-height: 22px;
+              word-break: break-all;
+              display: inline-flex;
+              align-items: center;
+              flex-wrap: wrap;
+            }
+
+            .signature {
+              display: block;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              color: var(--title-color);
+              margin-top: 8px;
+              word-break: break-all;
+            }
+
+            .info-item {
+              display: flex;
+              margin-bottom: 8px;
+              min-height: 20px;
+              line-height: 20px;
+
+              .iconfont {
+                margin-right: 5px;
+              }
+
+              &:last-child {
+                margin-bottom: 0;
+              }
+            }
+          }
         }
 
-        .iconfont {
-          font-size: 20px;
+        .user-card-footer {
+          display: flex;
+          justify-content: space-between;
+          border-top: 1px solid @border-color_normal;
+          padding: 12px 18px 12px 24px;
+
+          .follow-fans {
+            display: flex;
+
+            .footer-item {
+              margin-right: 24px;
+              color: var(--title-color);
+              margin-top: 6px;
+
+              .number {
+                margin-left: 5px;
+                color: var(--font-color);
+                word-break: break-all;
+              }
+
+              &:last-child {
+                margin-right: 0;
+              }
+            }
+          }
+
+          .actions {
+            .ivu-btn {
+              background: transparent;
+              border-color: @border-color_normal;
+              color: var(--font-color);
+
+              &:hover {
+                color: @primary-color;
+                background: var(--theme-color);
+              }
+
+              &:last-child {
+                margin-left: 10px;
+              }
+            }
+          }
         }
-
-      }
-
-      .social-info {
-        margin-bottom: 15px;
-        font-size: 14px;
-
-        a {
-          color: #8A8F8D;
-        }
-
-        .attention, .follower {
-          margin-right: 8px;
-        }
-
-      }
-
-      .card-btn {
-
-        button:first-child {
-          margin-right: 12px;
-        }
-
       }
     }
   }

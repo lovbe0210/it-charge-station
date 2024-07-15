@@ -347,7 +347,7 @@
         justify-content: space-between;
 
         .title {
-          color: #262626;
+          color: var(--font-color);
           font-size: 17px;
           font-weight: 500;
           margin-bottom: 8px;

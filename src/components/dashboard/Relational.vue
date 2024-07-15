@@ -40,23 +40,23 @@
         <template slot-scope="{ row }" slot="status">
           <div @mouseenter="btnHover(row, relational, true)" @mouseleave="btnHover(row, relational, false)"
                style="width: 90px">
-            <Button @click="changeRelational(row)">
-            <span v-show="hoverRow == null || hoverRow !== row.id">
-              <span v-if="relational === 'follow'">
-                {{ row.iFollow === 1 && row.followMe === 1 ? '互相关注' : row.iFollow === 1 ? '已关注' : '关注' }}
+            <Button @click="changeRelational(row)" class="relation-btn">
+              <span v-show="hoverRow == null || hoverRow !== row.id">
+                <span v-if="relational === 'follow'">
+                  {{ row.iFollow === 1 && row.followMe === 1 ? '互相关注' : row.iFollow === 1 ? '已关注' : '关注' }}
+                </span>
+                <span v-if="relational === 'fans'">
+                  {{ row.iFollow === 1 && row.followMe === 1 ? '互相关注' : '关注' }}
+                </span>
               </span>
-              <span v-if="relational === 'fans'">
-                {{ row.iFollow === 1 && row.followMe === 1 ? '互相关注' : '关注' }}
-              </span>
-            </span>
               <span v-show="hoverRow == row.id">
-              <span v-if="relational === 'follow'">
-                {{ row.iFollow === 1 ? '取消关注' : '关注' }}
+                <span v-if="relational === 'follow'">
+                  {{ row.iFollow === 1 ? '取消关注' : '关注' }}
+                </span>
+                <span v-if="relational === 'fans'">
+                  {{ row.iFollow === 1 ? '取消关注' : '关注' }}
+                </span>
               </span>
-              <span v-if="relational === 'fans'">
-                {{ row.iFollow === 1 ? '取消关注' : '关注' }}
-              </span>
-            </span>
             </Button>
           </div>
         </template>

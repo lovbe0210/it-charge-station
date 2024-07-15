@@ -1,13 +1,13 @@
+@import "../common-var";
 .layout-module_relational {
   width: 100%;
   height: 100%;
   margin-top: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid @border-color_normal;
   border-radius: 6px;
 
   .relational-header {
     padding: 0 16px;
-    color: rgba(0, 0, 0, 0.85);
     font-weight: 500;
     font-size: 16px;
     background: transparent;
@@ -25,7 +25,6 @@
         padding-bottom: 0;
         padding-top: 3px;
         font-size: 16px;
-        color: #262626;
         font-weight: 500;
         line-height: 32px;
 
@@ -39,6 +38,7 @@
 
         .active {
           font-weight: 700;
+          color: @primary-color;
         }
       }
 
@@ -47,7 +47,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          color: #262626;
+          //color: #262626;
         }
       }
     }
@@ -60,14 +60,19 @@
     overflow-x: hidden;
     height: 100%;
 
+    /deep/.ivu-table {
+      background-color: unset;
+    }
+
     /deep/ .ivu-table-header {
       table > thead > tr > th {
-        background-color: #FAFAFA;
+        background-color: var(--on-theme-bg-color);
         height: 60px;
+        border-color: @border-color_normal;
 
         .ivu-table-cell {
           span {
-            color: #262626;
+            color: var(--font-color);
             font-weight: normal;
           }
         }
@@ -81,9 +86,11 @@
         tr {
           td {
             height: 60px;
+            background: unset;
+            border-color: @border-color_normal;
 
             .ivu-table-cell {
-              color: #585A5A;
+              color: var(--title-color);
 
               span {
                 display: block;
@@ -103,6 +110,14 @@
 
               button {
                 width: 90px;
+                background: unset;
+                color: var(--title-color);
+                border-color: @border-color_normal;
+
+                &:hover {
+                  color: @primary-color;
+                  border-color: @primary-color;
+                }
               }
             }
           }
@@ -115,13 +130,13 @@
 
           td:first-child {
             .ivu-table-cell {
-              color: #262626;
+              color: var(--font-color);
             }
           }
         }
 
         .ivu-table-row-hover td {
-          background-color: #FAFAFA;
+          background: var(--dropdown-item-hover);
         }
 
       }
@@ -133,9 +148,10 @@
 
       table > tbody > tr > td {
         border: unset;
+        background: unset;
 
         span {
-          color: #8A8F8D;
+          color: var(--title-color);
         }
       }
     }
