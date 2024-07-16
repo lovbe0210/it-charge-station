@@ -83,16 +83,11 @@
           <p class="warn">
             <span>为了您的账户安全，请先验证身份。</span>
           </p>
-          <a-select class="select-option"
-                    size="large"
-                    :dropdownMatchSelectWidth="true"
-                    :defaultActiveFirstOption="false"
-                    :bordered="false"
-                    style="min-width: 350px"
-                    :default-value="options[0].key"
-                    :options="options"
-                    @select="onSelect">
-          </a-select>
+          <Select v-model="selectOption" class="verify-type-select">
+            <Option v-for="item in options" :value="item.key" :key="item.key">
+              {{ item.title }}
+            </Option>
+          </Select>
           <div v-if="showModal" class="validation">
             <slider-validation @validate="validate"></slider-validation>
           </div>
@@ -102,7 +97,7 @@
                    :placeholder="'6 位' + (selectOption == 0 ? '手机' : selectOption == 1 ? '邮箱' : '') + '验证码'"
                    @on-change="checkCodeChange" v-model="checkCode"
                    type="text" maxlength="6"/>
-            <Button class="check-code-btn" @click="sendCheckCode" :disabled="sendCodeSuccess">
+            <Button ghost class="check-code-btn" @click="sendCheckCode" :disabled="sendCodeSuccess">
               {{btnValue}}
             </Button>
           </div>
@@ -115,7 +110,7 @@
             </p>
           </div>
           <div class="action">
-            <Button class="cancel-btn" @click="showModal = false">
+            <Button ghost class="cancel-btn" @click="showModal = false">
               取消
             </Button>
             <Button class="next-btn" @click="verifyNext">

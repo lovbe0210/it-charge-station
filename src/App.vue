@@ -16,11 +16,11 @@
   import {
     Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload,
     Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane, Time, Table,
-    RadioGroup, Radio, Poptip, Form, FormItem
+    RadioGroup, Radio, Poptip, Form, FormItem, Select, Option
   } from 'view-design'
   import './index.less'
   import {
-    Tooltip, Card, Popover, Tag, Select, Checkbox, Skeleton, Empty
+    Tooltip, Card, Popover, Tag, Checkbox, Skeleton, Empty
   } from 'ant-design-vue'
   import commonUtil from "@/utils/common"
   // 引入弹幕模块
@@ -55,13 +55,13 @@
   Vue.component('RadioGroup', RadioGroup);
   Vue.component('Form', Form);
   Vue.component('FormItem', FormItem);
+  Vue.component('Select', Select);
+  Vue.component('Option', Option);
   Vue.component('a-tooltip', Tooltip);
   Vue.component('a-card', Card);
   Vue.component('a-card-meta', Card.Meta);
   Vue.component('a-popover', Popover);
   Vue.component('a-tag', Tag);
-  Vue.component('a-select', Select);
-  Vue.component('a-select-option', Select.Option);
   Vue.component('a-checkbox', Checkbox);
   Vue.component('a-skeleton', Skeleton);
   Vue.component('a-empty', Empty);

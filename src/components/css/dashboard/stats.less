@@ -3,7 +3,7 @@
   height: 100%;
   margin-top: 10px;
 
-  .data-stats {
+  .data-stats-tip {
     .data-center-title {
       text-align: left;
 
@@ -26,7 +26,6 @@
     .data-center-overview {
       margin-top: 32px;
       background-image: linear-gradient(180deg,rgba(246,252,254,.69),hsla(0,0%,100%,0));
-      border: 1px solid rgba(0,0,0,0.04);
       border-radius: 12px;
       padding: 24px 32px 28px;
 
@@ -37,14 +36,14 @@
 
         h2 {
           font-size: 18px;
-          color: #262626;
+          color: var(--font-color);
           line-height: 24px;
           font-weight: 500;
         }
 
         p {
           font-size: 14px;
-          color: #8A8F8D;
+          color: var(--title-color);
           line-height: 22px;
           font-weight: 400;
           margin-top: 4px;
@@ -66,7 +65,7 @@
         div {
           width: 22%;
           height: 56px;
-          background: #FAFAFA;
+          background: var(--dropdown-item-hover);
           border-radius: 8px;
           padding: 17px 20px 17px 16px;
           display: flex;
@@ -80,14 +79,13 @@
 
         div>:first-child {
           font-size: 14px;
-          color: #8A8F8D;
+          color: var(--title-color);
           line-height: 22px;
           font-weight: 400;
         }
 
         div>:nth-child(2) {
           font-size: 22px;
-          color: #262626;
           font-weight: 600;
         }
       }
@@ -114,7 +112,7 @@
             margin-top: 0;
             margin-bottom: 0;
             font-size: 18px;
-            color: #262626;
+            color: var(--font-color);
             line-height: 24px;
             font-weight: 500;
             margin-right: 5px;
@@ -123,6 +121,8 @@
       }
 
       .detail-myData {
+        background: var(--on-theme-bg-color);
+
         .myData-common-body {
           margin-top: 32px;
           display: flex;
@@ -131,7 +131,7 @@
           div {
             width: 31%;
             height: 66px;
-            background: #FAFAFA;
+            background: var(--dropdown-item-hover);
             border-radius: 6px;
             margin-right: 8px;
             padding: 8px;
@@ -144,14 +144,14 @@
 
           div>:first-child {
             font-size: 22px;
-            color: #262626;
+            //color: var();
             line-height: 30px;
             font-weight: 600;
           }
 
           div>:nth-child(2) {
             font-size: 12px;
-            color: #8A8F8D;
+            color: var(--title-color);
             letter-spacing: .67px;
             line-height: 20px;
             font-weight: 400;
@@ -176,14 +176,13 @@
 
           div>:first-child {
             font-size: 14px;
-            color: #8A8F8D;
+            color: var(--title-color);
             line-height: 22px;
             font-weight: 400;
           }
 
           div>:nth-child(2) {
             font-size: 18px;
-            color: #262626;
             line-height: 24px;
             font-weight: 500;
             margin-top: 8px;
@@ -191,7 +190,7 @@
 
           div>:nth-child(3) {
             font-size: 14px;
-            color: #8A8F8D;
+            color: var(--title-color);
             line-height: 22px;
             font-weight: 400;
             margin-top: 8px;
@@ -200,13 +199,15 @@
       }
 
       .detail-public {
+        background: var(--on-theme-bg-color);
+
         .public-data-title-info {
           display: flex;
           align-items: center;
 
           h2 {
             font-size: 18px;
-            color: #262626;
+            color: var(--font-color);
             line-height: 24px;
             font-weight: 500;
           }
@@ -224,7 +225,7 @@
           div {
             width: 31%;
             height: 66px;
-            background: #FAFAFA;
+            background: var(--dropdown-item-hover);
             border-radius: 6px;
             margin-right: 8px;
             margin-bottom: 8px;
@@ -237,14 +238,13 @@
 
           div>:first-child {
             font-size: 22px;
-            color: #262626;
             line-height: 30px;
             font-weight: 600;
           }
 
           div>:nth-child(2) {
             font-size: 12px;
-            color: #8A8F8D;
+            color: var(--title-color);
             letter-spacing: .67px;
             line-height: 20px;
             font-weight: 400;
@@ -255,10 +255,8 @@
     }
 
     .data-center-hotmap {
-      border: 1px solid rgba(0,0,0,0.04);
-      border-radius: 12px;
+      border-radius: 3px;
       margin-top: 32px;
-      padding: 0 30px 20px;
       overflow-x: hidden;
     }
   }

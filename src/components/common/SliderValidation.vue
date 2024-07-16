@@ -90,11 +90,12 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="less">
+@import "../css/common-var";
+
   .drag-verify {
-    border: 1px solid #e1e1e1;
+    border: 1px solid @border-color_normal;
     height: 40px;
-    background: #E7E9E8;
     border-radius: 4px;
     width: 100%;
   }
@@ -122,7 +123,7 @@
   }
 
   .hight-light {
-    background: -webkit-gradient(linear,left top,right top,color-stop(0,#E7E9E8),color-stop(.4,#E7E9E8),color-stop(.5,#fff),color-stop(.6,#E7E9E8),color-stop(1,#E7E9E8));
+    background: -webkit-gradient(linear,left top,right top,color-stop(0,var(--rj-editor-bg-color)),color-stop(.4,var(--rj-editor-bg-color)),color-stop(.5,#fff),color-stop(.6,var(--rj-editor-bg-color)),color-stop(1,var(--rj-editor-bg-color)));
     -webkit-text-fill-color: transparent;
     -webkit-animation: highlight-animation 8s infinite;
     -webkit-text-size-adjust: none;
@@ -151,8 +152,9 @@
     top: 0;
     right: 0;
     bottom: 0;
-    color: #00B96B;
-    background: #FFFFFF;
+    color: @primary-color;
+    border-radius: 4px;
+    background: var(--dropdown-bg-color);
     font-size: 14px;
     text-align: center;
     position: absolute;
@@ -160,7 +162,8 @@
 
   .succeedBox {
     color: #585A5A;
-    background: #FFFFFF;
+    border-radius: 4px;
+    background: var(--dropdown-bg-color);
     font-size: 16px;
     text-align: center;
     line-height: 38px;
@@ -177,10 +180,10 @@
     width: 40px;
     height: 38px;
     border-radius: 4px;
-    border: 1px solid #e1e1e1;
+    border: 1px solid @border-color_normal;
     border-top: none;
     border-bottom: none;
-    background: #ffffff;
+    background: var(--dropdown-bg-color);
     position: absolute;
     top: 0;
     bottom: 0;

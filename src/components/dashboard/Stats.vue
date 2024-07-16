@@ -1,6 +1,6 @@
 <template>
   <div class="layout-module_stats" ref="tooltipContainer">
-    <div class="data-stats">
+    <div class="data-stats-tip">
       <div class="data-center-title">
         <p class="title-welcome">
           👋 布衣草人，这是你和小站相伴的第 850 天
@@ -16,14 +16,22 @@
             <p>你的每一份成长都被记录</p>
           </div>
           <div class="overview-title-options">
-            <Dropdown placement="bottom-start" trigger="click" @on-click = changeStatsOption>
-                  <span>
-                    {{statsOption == 1 ? '近 1 年' : statsOption == 2 ? '近 30 天' : ''}}
-                  </span>
-              <span class="iconfont icon-drop-down" style="font-size: 14px"></span>
+            <Dropdown placement="bottom"
+                      transfer-class-name="dropdown-background dropdown-item-all-hover"
+                      trigger="click" @on-click = changeStatsOption>
+              <span class="stats-range">
+                {{statsOption == 1 ? '近 1 年' : statsOption == 2 ? '近 30 天' : ''}}
+                <span class="iconfont date-range"></span>
+              </span>
               <DropdownMenu slot="list">
-                <DropdownItem name="1">近 1 年</DropdownItem>
-                <DropdownItem name="2">近 30 天</DropdownItem>
+                <DropdownItem name="1">
+                  近 1 年
+                  <span class="iconfont true" v-if="statsOption === '1'" style="margin-left: 10px"/>
+                </DropdownItem>
+                <DropdownItem name="2">
+                  近 30 天
+                  <span class="iconfont true" v-if="statsOption === '2'" style="margin-left: 8px"/>
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -59,7 +67,7 @@
             </div>
             <div>
               <p>43</p>
-              <p>文档</p>
+              <p>笔记</p>
             </div>
             <div>
               <p>1</p>

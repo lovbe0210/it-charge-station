@@ -328,7 +328,7 @@
                   <p class="setting-tips-content">
                     支持导入Markdown格式的文件，单次导入一个Markdown文件，为单个文档，默认位于专栏根目录下，如需导入多个文件，可将文件压缩为zip包导入，最多支持五层目录。</p>
                 </div>
-                <Button size="small" @click="exportOrImport('1')">
+                <Button ghost size="small" @click="exportOrImport('1')">
                   <span>导入</span>
                 </Button>
               </div>
@@ -338,7 +338,7 @@
                   <p class="setting-tips-content">
                     可将专栏内容按照目录层级导出，当专栏内文档数量较大时，耗时可能增加或失败，如果导出超时，可在文档管理页面进行分批导出。</p>
                 </div>
-                <Button size="small" @click="exportOrImport('2')">
+                <Button ghost size="small" @click="exportOrImport('2')">
                   <span>导出</span>
                 </Button>
               </div>

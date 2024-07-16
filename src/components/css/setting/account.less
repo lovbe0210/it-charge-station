@@ -90,7 +90,6 @@
 
       .control-button:focus, .control-button:hover {
         color: @primary-color;
-        //background: #ffffff;
         border-color: @primary-color;
       }
     }
@@ -151,30 +150,71 @@
 }
 
 .account-set-modal {
+  width: 100%;
+
+  .step-1 {
+    margin: 0 8px;
+  }
 
   .header {
     font-weight: 500;
     font-size: 15px;
     line-height: 22px;
     word-wrap: break-word;
-    margin: 0 8px 4px 8px;
+    margin-bottom: 5px;
   }
 
   .warn {
     color: var(--title-color);
-    margin: 0 8px 35px 8px;
+    margin-bottom: 35px;
   }
 
-  .select-option {
-    margin: 0 8px 10px 8px;
+  .verify-type-select {
+    margin-bottom: 10px;
+    width: 100%;
+    color: var(--font-color);
+
+    /deep/.ivu-select-selection {
+      background-color: unset;
+      height: 35px;
+      border-color: @border-color_normal;
+
+      .ivu-icon {
+        color: var(--title-color);
+      }
+
+      &:hover {
+        border-color: @primary-color;
+      }
+    }
+
+    /deep/ .ivu-select-dropdown {
+      background-color: var(--modal-bg-color);
+
+      .ivu-select-item {
+        color: var(--title-color);
+
+        &:hover {
+          background: var(--on-theme-bg-color);
+        }
+      }
+
+      .ivu-select-item-selected, .ivu-select-item-selected:hover {
+        color: @primary-color;
+      }
+    }
+
+    /deep/ .ivu-select-item-focus {
+      background-color: var(--modal-bg-color);
+    }
   }
 
   .validation {
-    margin: 15px 8px 10px 8px;
+    margin: 15px 0 10px 0;
   }
 
   .check-code {
-    margin: 40px 8px 10px 8px;
+    margin: 40px 0 10px 0;
     display: flex;
     justify-content: space-between;
 
@@ -184,17 +224,16 @@
 
     .check-code-btn {
       height: 37px;
-      width: 35%;
+      width: 31%;
+      color: var(--title-color);
+      background: unset;
+      border-color: @border-color_normal;
+      padding: 0 10px;
     }
 
     .check-code-btn:not([disabled]):hover {
       color: #00B96B;
       border-color: #00B96B;
-      box-shadow: none;
-    }
-
-    .check-code-btn:focus {
-      box-shadow: none;
     }
   }
 
@@ -206,7 +245,7 @@
   }
 
   .check-code-tip {
-    margin: 5px 8px 5px 8px;
+    margin: 5px 0;
     font-size: 14px;
     height: 40px;
 
@@ -218,16 +257,18 @@
   .action {
     display: flex;
     justify-content: right;
-    margin: 0 8px 10px 8px;
+    margin-bottom: 10px;
 
     .cancel-btn {
       margin-right: 10px;
+      color: var(--title-color);
+      background: unset;
+      border-color: @border-color_normal;
     }
 
     .cancel-btn:hover {
       color: #00B96B;
       border-color: #00B96B;
-      box-shadow: none;
     }
 
     .next-btn {
@@ -236,8 +277,6 @@
       font-weight: 500;
       color: #ffffff;
       background: #00B96B;
-      text-shadow: none;
-      box-shadow: none;
       outline: none;
     }
 
@@ -248,7 +287,6 @@
   }
 
   .step-2 {
-    //height: 356px;
 
     .change-item-input {
       padding: 0 8px 10px 8px;
@@ -277,9 +315,9 @@
       font-size: 14px;
       line-height: 1.5715;
       word-wrap: break-word;
-      color: #262626;
 
       .tip {
+        color: @dark-font-color;
         margin: 0;
         font-size: 14px;
         font-variant: tabular-nums;
@@ -299,28 +337,24 @@
       .matters {
         margin-top: 24px;
         list-style: disc inside;
+        color: var(--font-color);
       }
     }
 
     .confirm-btn {
+      background: unset;
       margin-right: 24px;
-    }
-
-    .confirm-btn:hover {
-      color: #FFFFFF;
-      border-color: #DF2A3F;
-      background: #E4495B;
-      box-shadow: none;
-    }
-
-    .confirm-btn {
-      border: 1px solid #E7E9E8;
+      border: 1px solid @border-color_normal;
       font-size: 14px;
       font-weight: 500;
       color: #DF2A3F;
-      text-shadow: none;
-      box-shadow: none;
-      outline: none;
+
+      &:hover {
+        color: #FFFFFF;
+        border-color: #DF2A3F;
+        background: #E4495B;
+        box-shadow: none;
+      }
     }
 
     .domain-suffix {
@@ -338,35 +372,6 @@
     }
   }
 }
-
-/deep/ .ant-select-selection {
-  border-color: @border-color_normal;
-}
-
-/deep/ .ant-select-focused .ant-select-selection, /deep/ .ant-select-selection:focus,
-/deep/ .ant-select-selection:active, /deep/ .ant-select-selection:hover {
-  border-color: #00B96B;
-  border-right-width: 1px !important;
-  outline: 0;
-  box-shadow: none;
-}
-
-/deep/ .ant-select-selection-selected-value {
-  font-size: 14px;
-  color: var(--font-color);
-}
-
-/deep/ .ant-select-dropdown-menu-item-selected {
-  color: var(--title-color);
-  //background: var(--dropdown-bg-color);
-}
-
-/deep/ .ant-select-dropdown {
-  .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled) {
-    //background-color: #F5F5F5;
-  }
-}
-
 /deep/ .ivu-input {
   height: 37px;
 }
@@ -393,7 +398,15 @@
 }
 
 /deep/ .ivu-input-group-prepend {
+  background: unset;
+
   .ivu-input {
     border-radius: 4px 0 0 4px;
+    border-color: @border-color_normal;
+    background: unset;
+
+    &:hover {
+      border-color: @primary-color;
+    }
   }
 }

@@ -2028,7 +2028,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 30px;
     width: 100%;
 
     .hotmap-module_title {
@@ -2042,7 +2041,7 @@
       .hotmap-module_label {
         flex: 1;
         font-size: 16px;
-        color: #262626;
+        color: var(--font-color);
         line-height: 24px;
         font-weight: 500;
       }
@@ -2053,7 +2052,7 @@
 
         .hotmap-module_exhibitionDesc {
           font-size: 14px;
-          color: #585A5A;
+          color: var(--title-color);
         }
 
         .hotmap-module_exhibitionBlock {
@@ -2150,47 +2149,6 @@
         fill: #00663B;
       }
     }
-
-    .hotmap:hover {
-      scrollbar-color: #8A8F8D;
-    }
-
-    /* WebKit 浏览器（Chrome、Safari）*/
-    /* 水平滚动条整体样式 */
-    .hotmap::-webkit-scrollbar {
-      /*width: 20px;*/
-      height: 7px;
-      border-radius: 3px;
-    }
-
-    .hotmap::-webkit-scrollbar-track {
-      background-color: unset;
-      border-radius: 3px;
-    }
-
-    /* 水平滚动条滑块样式 */
-    .hotmap::-webkit-scrollbar-thumb {
-      background-color: #E7E9E8;
-      border-radius: 3px;
-    }
-    /* Firefox 浏览器 */
-    .hotmap {
-      scrollbar-width: thin;
-      scrollbar-color: #8A8F8D #E7E9E8;
-    }
-    /* 水平滚动条滑块样式 */
-    .hotmap::-moz-scrollbar-thumb {
-      background-color: #E7E9E8;
-      border-radius: 3px;
-    }
-
-    .hotmap:hover::-webkit-scrollbar-thumb {
-      background-color: #8A8F8D;
-    }
-    .hotmap:hover::-moz-scrollbar-thumb {
-      background-color: #8A8F8D;
-    }
-
   }
 
   /deep/.personal-center-tooltip {

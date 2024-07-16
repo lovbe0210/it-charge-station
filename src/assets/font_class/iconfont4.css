@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_uf9aigrgrh.woff2?t=1720927436726') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_raefvfcib1.woff2?t=1721146997083') format('woff2');
 }
 
 .iconfont {
@@ -433,4 +433,8 @@
 
 .history:before {
   content: "\e719";
+}
+
+.date-range:before {
+  content: "\e720";
 }
