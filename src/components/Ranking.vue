@@ -43,6 +43,7 @@
     name: 'Ranking',
     data() {
       return {
+        app: null,
         activeMenu: 'articles',
         fixedHeight: 77
       }
@@ -57,18 +58,19 @@
       },
       // 滚动条滚动处理事件：
       handleScroll() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        const scrollTop = this.app.scrollTop
         let computeTop = 77 - scrollTop;
         this.fixedHeight = computeTop < 2 ? 2 : computeTop > 77 ? 77 : computeTop;
       }
     },
     mounted() {
       // 给window添加一个滚动监听事件
-      window.addEventListener('scroll', this.handleScroll)
+      this.app = document.getElementById("app");
+      this.app.addEventListener('scroll', this.handleScroll)
     },
     destroyed() {
       // 释放监听
-      window.removeEventListener('scroll', this.handleScroll)
+      this.app.removeEventListener('scroll', this.handleScroll)
     }
   }
 </script>

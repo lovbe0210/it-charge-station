@@ -450,7 +450,7 @@
         <div v-if="actionType === 'delete'">
           <div class="delete-warn">
             <div class="warn-content un-select">
-              <span class="iconfont warn"></span>
+              <span class="iconfont i-warn"></span>
               <span>
               正在删除专栏
               <span class="column-name">

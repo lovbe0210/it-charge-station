@@ -196,7 +196,7 @@
         </div>
         <div class="delete-warn" v-if="deleteColumn">
           <div class="warn-content un-select">
-            <span class="iconfont warn"></span>
+            <span class="iconfont i-warn"></span>
             <span>
               正在删除专栏
               <span class="column-name">

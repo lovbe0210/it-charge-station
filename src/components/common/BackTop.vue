@@ -35,7 +35,8 @@
     name: 'backTop',
     data() {
       return {
-        scrollTop: '',
+        app: null,
+        scrollTop: 0,
         backTopShow: false,
         title: '点我看看 (๑•̀ㅂ•́)و✧',
         barrageList: []
@@ -87,7 +88,7 @@
     },
     methods: {
       handleScroll() {
-        this.scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        this.scrollTop = this.app.scrollTop || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
         if (this.scrollTop > this.customHeight) {
           this.backTopShow = true
         }
@@ -99,8 +100,7 @@
         timer = requestAnimationFrame(function fn() {
           if (varThis.scrollTop > 0) {
             varThis.scrollTop -= 50;
-            document.body.scrollTop = document.documentElement.scrollTop =
-              varThis.scrollTop;
+            varThis.app.scrollTop = varThis.scrollTop;
             timer = requestAnimationFrame(fn);
           } else {
             cancelAnimationFrame(timer);
@@ -117,10 +117,12 @@
       }
     },
     mounted() {
-      window.addEventListener('scroll', this.handleScroll)
+      let app = document.getElementById("app");
+      this.app = app;
+      app.addEventListener('scroll', this.handleScroll)
     },
     destroyed() {
-      window.removeEventListener('scroll', this.handleScroll)
+      this.app.removeEventListener('scroll', this.handleScroll)
     }
   }
 </script>

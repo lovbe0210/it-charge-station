@@ -153,7 +153,6 @@
 .account-set-modal {
 
   .header {
-    color: rgba(0, 0, 0, 0.85);
     font-weight: 500;
     font-size: 15px;
     line-height: 22px;
@@ -162,7 +161,7 @@
   }
 
   .warn {
-    color: #8A8F8D;
+    color: var(--title-color);
     margin: 0 8px 35px 8px;
   }
 
@@ -340,6 +339,10 @@
   }
 }
 
+/deep/ .ant-select-selection {
+  border-color: @border-color_normal;
+}
+
 /deep/ .ant-select-focused .ant-select-selection, /deep/ .ant-select-selection:focus,
 /deep/ .ant-select-selection:active, /deep/ .ant-select-selection:hover {
   border-color: #00B96B;
@@ -350,17 +353,17 @@
 
 /deep/ .ant-select-selection-selected-value {
   font-size: 14px;
-  color: #262626;
+  color: var(--font-color);
 }
 
 /deep/ .ant-select-dropdown-menu-item-selected {
-  color: #262626;
-  background: #eff0f0;
+  color: var(--title-color);
+  //background: var(--dropdown-bg-color);
 }
 
 /deep/ .ant-select-dropdown {
   .ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled) {
-    background-color: #F5F5F5;
+    //background-color: #F5F5F5;
   }
 }
 
