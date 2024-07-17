@@ -1,3 +1,4 @@
+@import "../common-var";
 .layout-module_grade {
   width: 100%;
   height: 100%;
@@ -9,7 +10,6 @@
     font-weight: 500;
     color: var(--font-color);
     position: sticky;
-    background-color: #ffffff;
     z-index: 100;
     top: 0;
     left: 0;
@@ -39,7 +39,6 @@
       display: inline-block;
       font-size: 18px;
       font-weight: 700;
-      color: #222;
       margin-right: 8px;
       cursor: default;
     }
@@ -109,7 +108,7 @@
           }
 
           .now-num {
-            color: #222;
+            //color: #222;
           }
 
           .num-icon {
@@ -125,7 +124,7 @@
 
       .daily-exp-item {
         display: inline-block;
-        width: 186px;
+        width: 20%;
         box-sizing: border-box;
         //padding: 22px 0 0;
         position: relative;
@@ -225,20 +224,20 @@
         flex-direction: column;
         justify-content: center;
         height: 120px;
-        color: #262626;
+        color: var(--title-color);
 
         .charge-incentive-count {
           line-height: 1.4;
           font-size: 24px;
           display: inline-block;
           margin: 0 8px;
-          color: #262626;
+          color: var(--font-color);
           font-weight: 600;
         }
 
         .charge-incentive-tip {
           margin-top: 12px;
-          color: #8A8F8D;
+          color: var(--title-color);
         }
       }
     }
@@ -265,16 +264,12 @@
           justify-content: space-between;
           align-items: center;
           padding: 0 13px;
-          background-color: #FAFAFA;
+          background: var(--on-theme-bg-color);
           height: 100%;
           border-radius: 8px;
 
-          .acquire-rule-text {
-            color: #262626;
-          }
-
           .acquire-rule-count {
-            color: #8A8F8D;
+            color: var(--title-color);
           }
         }
       }
@@ -285,20 +280,20 @@
     max-width: 668px;
 
     /deep/ .ivu-tabs-ink-bar {
-      background-color: #8A8F8D;
+      background: #8A8F8D;
     }
 
     /deep/ .ivu-tabs-nav .ivu-tabs-tab-active {
-      color: #262626;
+      color: var(--title-color);
     }
 
     /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover {
-      color: #00B96B;
+      color: @primary-color;
     }
 
     /deep/ .ivu-tabs-nav .ivu-tabs-tab {
       font-size: 14px;
-      color: #262626;
+      color: var(--font-color);
     }
 
     .points-history {
@@ -343,7 +338,7 @@
       .history-list-header {
         border-bottom: 1px solid rgba(0, 0, 0, 0.06);
         padding: 12px 20px 12px 0;
-        color: #8A8F8D;
+        color: var(--title-color);
         background: transparent;
         border-top: 0;
       }
@@ -363,8 +358,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid rgba(0,0,0,0.06);
-            color: #585A5A;
+            border-bottom: 1px solid @border-color_normal;
+            color: var(--font-color);
             padding: 12px 20px 12px 0;
 
             .list-module_operate {
@@ -375,17 +370,17 @@
             }
 
             .list-module_content {
-              color: #262626;
 
               .doc-link {
-                color: #262626;
+                color: var(--font-color);
+                font-weight: 600;
 
                 .doc-title {
                   font-size: 14px;
                   line-height: 21px;
                   text-overflow: ellipsis;
-                  color: #585A5A;
-                  font-family: Chinese Quote,Segoe UI,Roboto,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif,Apple Color Emoji;
+                  color: var(--font-color);
+                  font-weight: normal;
                 }
               }
             }
@@ -402,16 +397,21 @@
 
         .pagination-prefix {
           margin-right: 20px;
+          color: var(--title-color);
         }
 
         .pagination-suffix {
           margin-left: 15px;
 
           .ivu-dropdown {
-            border: 1px solid #dee2e6;
+            border: 1px solid @border-color_normal;
             border-radius: 4px;
             .ivu-dropdown-item-selected, .ivu-dropdown-item-selected:hover {
-              background: #f3f3f3;
+              //background: #f3f3f3;
+            }
+
+            .pageSize-select {
+              color: var(--title-color);
             }
           }
 
@@ -445,7 +445,9 @@
               margin: 0 1px;
               text-align: center;
               border-radius: 4px;
-              color: #585A5A;
+              color: var(--title-color);
+              border-color: @border-color_normal;
+              background: unset;
 
               &:focus {
                 outline: 0;

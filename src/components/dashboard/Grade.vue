@@ -187,6 +187,7 @@
             <div class="pagination-suffix">
               <Dropdown placement="top"
                         trigger="click"
+                        transfer-class-name="dropdown-background dropdown-item-all-hover"
                         @on-visible-change="visibleChange"
                         @on-click="changePageSize">
             <span class="pageSize-select">
