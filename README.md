@@ -30,7 +30,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 #### 规划和进度
 1. 一期完成前段页面，由于技术较菜，使用了多个框架，bootstrap-vue，iView、写作中心使用am-editor插件(内部使用ant-design-vue1.x)
-    <br>进度：70%
+    <br>进度：90%
 2. 二期完成后端接口设计
 4. 三期完成前段页面改造，使用vue3.0，框架整合，使用ant-design-vue3.x
 3. 四期完成music接口改造，可以使用登录用户的网易云cookie加载个性化播放列表

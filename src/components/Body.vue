@@ -121,9 +121,15 @@
             <span><a href="">BUG反馈</a></span>
           </div>
           <div class="contact">
-            <span class="iconfont icon-github"/>
-            <span class="iconfont icon-gitee"/>
-            <span class="iconfont icon-qqqun"/>
+            <b-link href="https://github.com/lovbe0210/it-charge-station" target="_blank">
+              <span class="iconfont icon-github"/>
+            </b-link>
+            <b-link href="https://gitee.com/lovbe0210/it-charge-station" target="_blank">
+              <span class="iconfont icon-gitee"/>
+            </b-link>
+            <b-link href="https://qm.qq.com/q/hWb4PzdhxQ" target="_blank">
+              <span class="iconfont icon-qqqun"/>
+            </b-link>
           </div>
         </div>
       </div>
