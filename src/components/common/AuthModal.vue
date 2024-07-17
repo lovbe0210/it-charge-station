@@ -43,7 +43,10 @@
                        maxlength="30"
                        type="password"
                        placeholder="请输入密码">
-                  <Button slot="suffix"  @click="forgotPwd" type="text">忘记密码</Button>
+                  <Button slot="suffix"
+                          ghost
+                          @click="forgotPwd"
+                          type="text">忘记密码</Button>
                 </Input>
                 <div class="error-text"></div>
               </div>
@@ -69,7 +72,9 @@
                        placeholder="请输入验证码">
                   <Button slot="suffix"
                           type="text"
+                          ghost
                           @click="getVerifyCode"
+                          class="verify-code-btn"
                           :disabled="sendCodeSuccess">
                     {{ btnValue }}
                   </Button>
@@ -100,6 +105,7 @@
                        placeholder="请输入验证码">
                   <Button slot="suffix"
                           type="text"
+                          ghost
                           @click="getVerifyCode"
                           :disabled="sendCodeSuccess">
                     {{ btnValue }}
@@ -290,7 +296,7 @@
 
 <style scoped lang="less">
   .auth-body {
-    color: #262626;
+    color: var(--font-color);
     height: 340px;
     max-width: 100%;
     font-size: 14px;
@@ -324,12 +330,12 @@
 
           .t2 {
             margin-left: 30px;
-            color: #585A5A;
+            color: var(--title-color);
           }
 
           .t3 {
             margin-left: 5px;
-            color: #585A5A;
+            color: var(--title-color);
           }
         }
 
