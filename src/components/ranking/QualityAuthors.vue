@@ -178,6 +178,7 @@
 </script>
 
 <style scoped lang="less">
+  @import "../css/common-var";
   .layout-module_feature-note {
     width: 95%;
   }
@@ -186,14 +187,14 @@
     p {
       font-size: 16px;
       font-weight: 600;
-      color: #262626;
+      //color: #262626;
       display: flex;
       align-items: center;
 
       .iconfont {
         margin-left: 5px;
-        color: #9e9d9d;
-        font-size: 18px;
+        color: @grey-white-font-color;
+        font-size: 17px;
       }
     }
   }
@@ -218,7 +219,7 @@
       cursor: pointer;
 
       &:hover {
-        background-color: #FAFAFA;
+        background: var(--on-theme-bg-color);
       }
 
       .author-item-left {
@@ -231,7 +232,7 @@
           font-size: 1.5rem;
           font-weight: 600;
           line-height: 2rem;
-          color: #585A5A;
+          color: @grey-white-font-color;
           margin-right: 1.2rem;
           min-width: 2rem;
           text-align: center;
@@ -254,7 +255,7 @@
             font-size: 15px;
             font-weight: bold;
             line-height: 26px;
-            color: #262626;
+            color: var(--font-color);
             margin-bottom: 8px;
 
             .iconfont {
@@ -263,14 +264,18 @@
             }
 
             &:hover {
-              color: #585A5A;
+              color: @grey-white-font-color;
             }
           }
 
           .author-count {
-            color: #8A8F8D;
+            color: @grey-white-font-color;
             display: flex;
             align-items: center;
+
+            .author-text {
+              color: var(--title-color);
+            }
           }
         }
 

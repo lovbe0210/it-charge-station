@@ -215,6 +215,7 @@
 </script>
 
 <style scoped lang="less">
+  @import "../css/common-var";
   .layout-module_feature-note {
     width: 95%;
   }
@@ -223,14 +224,14 @@
     p {
       font-size: 16px;
       font-weight: 600;
-      color: #262626;
+      //color: #262626;
       display: flex;
       align-items: center;
 
       .iconfont {
         margin-left: 5px;
-        color: #9e9d9d;
-        font-size: 18px;
+        color: @grey-white-font-color;
+        font-size: 17px;
       }
     }
   }
@@ -253,7 +254,7 @@
       cursor: pointer;
 
       &:hover {
-        background-color: #FAFAFA;
+        background: var(--on-theme-bg-color);
       }
 
       .article-item-left {
@@ -266,7 +267,7 @@
           font-size: 1.5rem;
           font-weight: 600;
           line-height: 2rem;
-          color: #585A5A;
+          color: @grey-white-font-color;
           margin-right: 1.2rem;
           min-width: 2rem;
           text-align: center;
@@ -285,7 +286,7 @@
             margin-bottom: 5px;
 
             .column-name {
-              color: #262626;
+              color: var(--font-color);
               font-size: 15px;
               font-weight: bold;
               display: -webkit-box;
@@ -296,7 +297,7 @@
             }
 
             .column-desc {
-              color: #585A5A;
+              color: var(--title-color);
               display: -webkit-box;
               overflow: hidden;
               text-overflow: ellipsis;
@@ -315,7 +316,7 @@
 
             .article-author-name {
               cursor: pointer;
-              color: #8A8F8D;
+              font-weight: 600;
               display: flex;
               align-items: center;
 
@@ -325,11 +326,16 @@
 
               .article-author-name-text {
                 vertical-align: middle;
+                color: var(--title-color);
 
                 &:hover {
-                  color: #1E80FF;
+                  color: @grey-white-font-color;
                 }
               }
+            }
+
+            .author-text {
+              color: var(--title-color);
             }
           }
         }

@@ -246,7 +246,7 @@ const routes = [
             component: () => import('@/components/settings/Domain')
           },
           {
-            // 账户管理
+            // 账号管理
             path: 'account',
             name: 'Account',
             component: () => import('@/components/settings/Account')

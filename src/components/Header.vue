@@ -95,17 +95,17 @@
                     </div>
                   </div>
                 </DropdownItem>
+                <DropdownItem name="personInfo">
+                  <div class="routing-menu quick-start-item">
+                    <span class="iconfont person-info"></span>
+                    <span class="routing-content">个人中心</span>
+                    <span class="iconfont i-more"></span>
+                  </div>
+                </DropdownItem>
                 <DropdownItem name="seriesColumn">
                   <div class="routing-menu quick-start-item">
                     <span class="iconfont series-column"></span>
                     <span class="routing-content">专栏文章</span>
-                    <span class="iconfont i-more"></span>
-                  </div>
-                </DropdownItem>
-                <DropdownItem name="userHome">
-                  <div class="routing-menu quick-start-item">
-                    <span class="iconfont user-domain"></span>
-                    <span class="routing-content">个人主页</span>
                     <span class="iconfont i-more"></span>
                   </div>
                 </DropdownItem>
@@ -336,8 +336,8 @@
           case 'seriesColumn':
             this.$router.push({path: '/dashboard/seriesColumn'})
             break;
-          case 'userHome':
-            this.$router.push({name: 'Domain'})
+          case 'personInfo':
+            this.$router.push({path: '/settings'})
             break;
           case 'creativeSpace':
             this.$router.push({name: 'Stats'})

@@ -1,7 +1,7 @@
 <template>
   <div class="layout-module_account">
-    <h1 class="setting-title">账户管理</h1>
-    <h2 class="setting-subtitle">账户绑定</h2>
+    <h1 class="setting-title">账号管理</h1>
+    <h2 class="setting-subtitle">账号绑定</h2>
     <div class="settings-form">
       <div class="mobile-setting-form form-item">
         <span class="iconfont icon-account-completed"></span>
@@ -26,8 +26,8 @@
       <div class="password-setting-form form-item">
         <span class="iconfont icon-account-completed"></span>
         <div class="form-content">
-          <p>账户密码</p>
-          <p class="tip">已设置，可通过账户密码登录</p>
+          <p>账号密码</p>
+          <p class="tip">已设置，可通过账号密码登录</p>
         </div>
         <button type="button" class="control-button" @click="showChangeModal(3)">
           <span>更改</span>
@@ -44,7 +44,7 @@
         </button>
       </div>
       <div class="thirdAccount-setting-form">
-        <h2 class="setting-subtitle">绑定第三方账户</h2>
+        <h2 class="setting-subtitle">绑定第三方账号</h2>
         <span class="subtitle-tip">绑定后通过第三方应用快速扫码登录</span>
         <div class="third-binding-list">
           <div class="third-binding-item">
@@ -81,7 +81,7 @@
             <span>身份验证</span>
           </div>
           <p class="warn">
-            <span>为了您的账户安全，请先验证身份。</span>
+            <span>为了您的账号安全，请先验证身份。</span>
           </p>
           <Select v-model="selectOption" class="verify-type-select">
             <Option v-for="item in options" :value="item.key" :key="item.key">
@@ -177,7 +177,7 @@
             </div>
             <Input autocomplete="off"
                    :class="['change-item-input', checkConfirmValueResult !== null && !checkConfirmValueResult ? 'error-code-input' : '']"
-                   placeholder="请重新输入新密码" @on-change="checkNewValueChange(confirmValue)" v-model="confirmValue"
+                   placeholder="请再次确认新密码" @on-change="checkNewValueChange(confirmValue)" v-model="confirmValue"
                    type="password"
                    maxlength="512"/>
             <div class="confirm-value-tip">
