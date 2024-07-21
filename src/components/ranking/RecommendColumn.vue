@@ -60,7 +60,7 @@
             </div>
           </div>
           <div class="article-right">
-            <Button class="action-btn">
+            <Button class="action-btn ghost-btn">
               <span>订阅</span>
             </Button>
           </div>
@@ -307,6 +307,7 @@
           }
 
           .article-author {
+            margin-top: 5px;
             font-size: 14px;
             line-height: 26px;
             display: flex;
@@ -322,11 +323,15 @@
 
               .avatar {
                 margin-right: 10px;
+                line-height: 26px;
               }
 
               .article-author-name-text {
                 vertical-align: middle;
                 color: var(--title-color);
+                line-height: 26px;
+                height: 26px;
+                display: flex;
 
                 &:hover {
                   color: @grey-white-font-color;

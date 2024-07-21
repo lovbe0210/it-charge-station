@@ -110,7 +110,7 @@
             </p>
           </div>
           <div class="action">
-            <Button ghost class="cancel-btn" @click="showModal = false">
+            <Button ghost class="cancel-btn ghost-btn" @click="showModal = false">
               取消
             </Button>
             <Button class="next-btn" @click="verifyNext">
@@ -195,7 +195,7 @@
             </p>
           </div>
           <div class="action" v-if="changeItemType <= 3">
-            <Button class="cancel-btn" @click="showModal = false">
+            <Button class="cancel-btn ghost-btn" @click="showModal = false">
               取消
             </Button>
             <Button class="next-btn" @click="confirmChange">

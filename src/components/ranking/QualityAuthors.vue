@@ -53,7 +53,7 @@
             </a>
           </div>
           <div class="author-right">
-            <Button class="action-btn">
+            <Button class="action-btn ghost-btn">
               <span>关注</span>
             </Button>
           </div>

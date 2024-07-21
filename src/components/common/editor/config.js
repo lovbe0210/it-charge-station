@@ -44,7 +44,7 @@ import Lightblock, {LightblockComponent} from "./packages/lightblock/src";
 
 const DOMAIN = "/icharge"
 
-export const HightLightIcon = '<div style="display: flex; align-items: center; justify-content: center; width: 23px; height: 23px; border: 1px solid #e8e8e8;"><span class="iconfont icon-hight-light" style="font-size: 13px;"></span></div>';
+export const HightLightIcon = '<div class="hight-light-icon" style="display: flex; align-items: center; justify-content: center; width: 23px; height: 23px; border: 1px solid #e8e8e8;"><span class="iconfont icon-hight-light" style="font-size: 13px;line-height: 23px;color: #262626;font-weight: bold;"></span></div>';
 
 export const plugins = [
   Redo,

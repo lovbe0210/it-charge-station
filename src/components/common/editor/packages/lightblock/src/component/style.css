@@ -15,8 +15,8 @@
 }
 
 .lightblock-editor-container {
+    color: #262626;
     flex: 1;
-    /*max-width: calc(100% - 36px);*/
 }
 
 .lightblock-icon-theme {

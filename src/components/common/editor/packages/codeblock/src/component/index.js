@@ -179,13 +179,16 @@ class CodeBlcok extends Card {
           node: $("<div />"),
           didMount: node => {
             // 等待编辑插件渲染成功后才能去到mode
+            console.log('select渲染：#modeNameMap)', this.#modeNameMap)
+            console.log('select渲染：codeEditor.mode)', this.codeEditor.mode)
+            console.log('select渲染：#modeNameMap[this.codeEditor.mode])', this.#modeNameMap[this.codeEditor.mode])
             renderSelect(
               node.get(),
-              this.constructor.getModes(),
-              this.#modeNameMap[this.codeEditor.mode] || this.codeEditor.mode || "plain",
+              this.codeEditor.mode || this.#modeNameMap[this.codeEditor.mode] || "plain",
               mode => {
                 setTimeout(() => {
                   this.focusEditor()
+                  debugger
                   this.codeEditor?.update(mode)
                 }, 10)
               }

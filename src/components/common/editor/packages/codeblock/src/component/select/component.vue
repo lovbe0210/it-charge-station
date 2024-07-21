@@ -1,41 +1,72 @@
 <template>
-  <a-select
-    :show-search="true"
-    size="small"
-    :bordered="false"
-    style="min-width: 128px"
-    :default-value="defaultValue"
-    :get-popup-container="getContainer"
-    @select="onSelect"
-    :filter-option="filterOption">
-    <a-select-option
-      v-for="item in modeDatas"
-      :name="item.name"
-      :value="item.value"
-      :key="item.value">
+  <Select v-model="selectValue"
+          @on-select="selectMode"
+          @on-query-change="filterOption"
+          @on-open-change="openChange"
+          filterable
+          style="width:128px"
+          size="small">
+    <Option v-for="item in cModeDatas" :value="item.value" :key="item.value">
       {{item.name}}
-    </a-select-option>
-
-  </a-select>
+    </Option>
+  </Select>
 </template>
 <script>
-  // import {Select} from 'ant-design-vue'
-  // const ASelectOption = Select.Option
+  import modeMap from "../mode";
   export default {
     name: "CodeblockSelect",
-    props: ['modeDatas', 'defaultValue', 'getContainer', 'onSelect'],
-    components: {
-      // 'a-select': Select,
-      // ASelectOption
-    },
-    methods: {
-      filterOption(input, option) {
-        input = input.toLowerCase();
-        const key = option.key || '';
-        let name = option.name || '';
-        name = name.toLowerCase();
-        return key.includes(input) || name.includes(input);
+    data() {
+      return {
+        selectValue: '',
+        cModeDatas: []
       }
+    },
+    props: ['defaultValue', 'onSelect'],
+    methods: {
+      filterOption(input) {
+        input = input?.trim().toLowerCase();
+        this.cModeDatas = modeMap.filter(mode => {
+          const value = (mode.value || '').toLowerCase();
+          let name = (mode.name || '').toLowerCase();
+          return value.includes(input) || name.includes(input);
+        })
+      },
+      openChange (flag) {
+        if (flag) {
+          this.cModeDatas = modeMap;
+        }
+      },
+      selectMode(option) {
+        let selectMode = 'plain';
+        for (let mode of modeMap) {
+          if (option.value === mode.value) {
+            selectMode = mode.value;
+            break;
+          }
+        }
+        this.onSelect(selectMode)
+      }
+    },
+    mounted() {
+      for (let mode of modeMap) {
+        if (mode.value === this.defaultValue || mode.name === this.defaultValue) {
+          this.selectValue = mode.value;
+          this.cModeDatas = modeMap;
+          return;
+        }
+      }
+      this.selectValue = this.defaultValue;
+      this.cModeDatas = modeMap;
     }
   }
 </script>
+
+<style lang="less" scoped>
+  /deep/.ivu-select-input {
+    font-size: 12px;
+  }
+
+  /deep/.ivu-select-item {
+    font-size: 12px !important;
+  }
+</style>

@@ -2,9 +2,11 @@
   <div :class="['editor-center', docStyle.customerTheme ? 'enable-background' : 'normal-background']">
     <b-row class="editor-header">
       <div class="left-dropdown-wrapp">
-        <Dropdown trigger="click" placement="bottom-start">
+        <Dropdown trigger="click"
+                  :transfer-class-name="docStyle.customerTheme ? 'dropdown-background dropdown-item-all-hover' : ''"
+                  placement="bottom-start">
           <div class="menu-icon">
-            <span class="iconfont icon-menu-dots"/>
+            <span class="iconfont menu-dots"/>
           </div>
           <DropdownMenu slot="list">
             <DropdownItem>
@@ -41,28 +43,28 @@
         </b-list-group-item>
       </b-list-group>
       <div class="editor-setting">
-        <b-button class="update-btn" variant="outline-*" size="sm" @click="updateDocConten" id="update-btn">
+        <Button :class="['update-btn',  docStyle.customerTheme ? 'ghost-btn' : '']" ghost @click="updateDocConten" id="update-btn">
           更新
-        </b-button>
+        </Button>
         <Dropdown placement="bottom-end"
-                  transfer-class-name="dropdown-background"
+                  :transfer-class-name="docStyle.customerTheme ? 'dropdown-background dropdown-item-all-hover' : 'normal-dropdown'"
                   trigger="click">
           <div class="setting-icon">
-            <span class="iconfont icon-edit-more"/>
+            <span class="iconfont editor-more"/>
           </div>
           <DropdownMenu slot="list">
             <Dropdown placement="left-start"
-                      transfer-class-name="dropdown-background"
+                      :transfer-class-name="docStyle.customerTheme ? 'dropdown-background dropdown-item-all-hover' : 'normal-dropdown'"
                       class="doc-set-style-wrapp"
                       trigger="click">
               <DropdownItem>
                 <div class="editor-set doc-set-style">
-                  <span class="editor-icon iconfont icon-editor-style"/>
+                  <span class="editor-icon iconfont editor-style"/>
                   <div>
                     <span>文档样式</span>
                     <span class="iconfont i-more"></span>
                     <br>
-                    <span style="color: #8c8c8c; font-size: 12px;">设置正文大小、段间距、超宽…</span>
+                    <span style="color: #8a8f8d; font-size: 12px;">设置正文大小、段间距、超宽…</span>
                   </div>
                 </div>
               </DropdownItem>
@@ -76,25 +78,29 @@
                     <div class="ant-slider ant-slider-with-marks classic">
                       <div class="ant-slider-rail"></div>
                       <div class="ant-slider-step">
-                        <div v-for="(item,index) in docStyle.fontSizeRange" :key="index" @click="changeFontSise(item)"
+                        <div v-for="(item,index) in fontSizeRange" :key="index" @click="changeFontSise(item)"
                              class="slider-dot-wrapp"
-                             :style="'left: '+ index * 100/(docStyle.fontSizeRange.length-1) + '%;'">
-                          <span class="ant-slider-dot"/>
+                             :style="'left: '+ index * 100/(fontSizeRange.length-1) + '%;'">
+                          <span class="slider-dot"/>
                         </div>
                       </div>
                       <div :class="['ant-slider-handle', docStyle.showSelect ? 'show-select-font' : '']"
-                           :style="'left: ' + currentFontIndex * 100/(docStyle.fontSizeRange.length-1) + '%;'">
+                           :style="'left: ' + currentFontIndex * 100/(fontSizeRange.length-1) + '%;'">
                       </div>
                     </div>
                   </div>
                   <div>{{docStyle.docFontSize}}px</div>
                 </div>
                 <div class="style-item segment-space">
-                  <div class="slider-module_slideTitle">段间距</div>
-                  <i-switch v-model="docStyle.segmentSpaceStatus" class="switch-btn" size="small" true-color="#00B96B">
-                    <span slot="true"/>
-                    <span slot="false"/>
-                  </i-switch>
+                  <div class="slider-module_slideTitle">正文段间距</div>
+                  <RadioGroup v-model="docStyle.segmentSpace">
+                    <Radio label="standard">
+                      <span>常规</span>
+                    </Radio>
+                    <Radio label="loose">
+                      <span>宽松</span>
+                    </Radio>
+                  </RadioGroup>
                 </div>
                 <Divider/>
                 <div class="style-item">页面主题</div>
@@ -141,13 +147,13 @@
             </Dropdown>
             <Divider/>
             <DropdownItem>
-              <div class="editor-set">
+              <div class="editor-set" @click="showArticleSetting = true">
                 <span class="editor-icon iconfont setting"></span>
                 <span>文档设置</span>
               </div>
             </DropdownItem>
             <DropdownItem>
-              <div class="editor-set">
+              <div class="editor-set" @click="showArticleSetting = true">
                 <span class="editor-icon iconfont history"></span>
                 <span>查看历史版本</span>
               </div>
@@ -170,6 +176,15 @@
             </div>
           </DropdownMenu>
         </Dropdown>
+        <Drawer title="文档设置"
+                :mask="false"
+                :closable="true"
+                :width="17"
+                v-model="showArticleSetting">
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Drawer>
       </div>
     </b-row>
     <b-row class="editor-root">
@@ -213,13 +228,14 @@
             type: '2'
           }
         ],
+        fontSizeRange: [12, 13, 14, 15, 16, 17, 18, 19],
+        showArticleSetting: false,
         // 全局设置
         docStyle: {
-          fontSizeRange: [12, 13, 14, 15, 16, 17, 18, 19],
           docFontSize: 15,
           showSelect: false,
-          // 统一文章段间距
-          segmentSpaceStatus: false,
+          // 文章段间距  常规、宽松 standard/loose
+          segmentSpace: 'standard',
           // 是否设置当前格式为默认格式（主要就包含正文字体大小和标准段落间距）
           customerTheme: false,
           // 页面大小1=标宽模式，2=超宽模式
@@ -229,7 +245,7 @@
     },
     computed: {
       currentFontIndex() {
-        return this.docStyle.fontSizeRange.findIndex(
+        return this.fontSizeRange.findIndex(
           (item) => item === this.docStyle.docFontSize
         );
       }

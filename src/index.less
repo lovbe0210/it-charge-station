@@ -10,18 +10,20 @@
  * 统一设置各个主题背景色和边框圆角
  */
 .enable-background {
-  background: var(--theme-color);
-  border-radius: 5px;
+  background: var(--theme-color) !important;
+  border-radius: 5px !important;
 }
+
 .dropdown-background {
   color: var(--font-color);
   background: var(--dropdown-bg-color);
-  border: 1px solid rgba(255,255,255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 
   .ivu-dropdown-item {
     color: var(--font-color);
   }
 }
+
 .dropdown-item-all-hover {
   .ivu-dropdown-item:hover {
     background: var(--dropdown-item-hover);
@@ -47,9 +49,20 @@
 }
 
 .ivu-btn[disabled], .ivu-btn[disabled]:hover {
-  color:#c5c8ce;
-  background-color:#f7f7f7;
-  border-color:#dcdee2
+  color: #c5c8ce;
+  background-color: #f7f7f7;
+  border-color: #dcdee2
+}
+
+.ghost-btn {
+  color: var(--font-color) !important;
+  background: unset !important;
+  border-color: @border-color_normal !important;
+
+  &:hover {
+    color: @primary-color !important;
+    border-color: @primary-color !important;
+  }
 }
 
 .ivu-badge {
@@ -200,7 +213,8 @@
 
 .ant-tooltip {
   padding-bottom: 0;
-  .ant-tooltip-content{
+
+  .ant-tooltip-content {
     .ant-tooltip-arrow {
       display: none;
     }
@@ -265,4 +279,70 @@
 .ant-checkbox-disabled .ant-checkbox-inner {
   background-color: #f5f5f5;
   border-color: #d9d9d9 !important;
+}
+
+// editor相关
+// 编辑器
+.am-engine {
+  .data-codeblock-container {
+    border-color: @border-color_normal;
+    border-radius: 2px;
+
+    .data-codeblock-content {
+      .CodeMirror-sizer {
+        .CodeMirror-lines {
+          .CodeMirror-code {
+            .CodeMirror-line {
+              padding: 0 4px 0 8px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+// 工具栏
+.editor-toolbar {
+   display: flex;
+   justify-content: center;
+
+  .editor-toolbar-content {
+    align-items: center;
+    width: auto;
+
+    .colorpicker-button-group:hover, .colorpicker-button-group:hover, .colorpicker-button-group-active {
+      .toolbar-button {
+        border: unset;
+      }
+    }
+
+    .toolbar-button {
+      height: 32px;
+    }
+  }
+
+  .toolbar-dropdown .toolbar-dropdown-list {
+    padding: 12px !important;
+
+    .toolbar-collapse-header {
+      margin-bottom: 5px;
+      padding-bottom: 10px;
+      color: #595959;
+    }
+
+    .toolbar-collapse-item {
+      padding: 6px 16px;
+
+      .toolbar-collapse-item-text {
+        margin-left: 15px;
+      }
+    }
+
+  }
+}
+// 标记符
+.data-card-dnd {
+  width: 24px !important;
+  border-radius: 4px;
+  justify-content: center;
 }

@@ -16,7 +16,7 @@
   import {
     Dropdown, DropdownMenu, DropdownItem, Badge, Drawer, ColorPicker, Switch, Upload,
     Menu, MenuItem, Button, Input, Divider, Tree, List, Modal, Tabs, TabPane, Time, Table,
-    RadioGroup, Radio, Poptip, Form, FormItem, Select, Option
+    RadioGroup, Radio, Poptip, Form, FormItem, Select, Option, Slider
   } from 'view-design'
   import './index.less'
   import {
@@ -57,6 +57,7 @@
   Vue.component('FormItem', FormItem);
   Vue.component('Select', Select);
   Vue.component('Option', Option);
+  Vue.component('Slider', Slider);
   Vue.component('a-tooltip', Tooltip);
   Vue.component('a-card', Card);
   Vue.component('a-card-meta', Card.Meta);

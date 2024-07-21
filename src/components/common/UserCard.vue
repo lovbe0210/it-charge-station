@@ -68,5 +68,8 @@ export default {
 </script>
 
 <style scoped lang="less">
-
+  .user-card {
+    display: flex;
+    align-items: center;
+  }
 </style>

@@ -22,7 +22,7 @@
             <span class="index-module_input">
               <span class="iconfont i-search"></span>
               <input :placeholder="placeholder"
-                     class="search-input enable-background"
+                     class="search-input"
                      maxlength="250"
                      v-model="keywords"
                      @blur="changeBorder(false)"

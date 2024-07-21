@@ -77,7 +77,7 @@
         tocData: [],
         currentTocId: '',
         // 滚动事件的防抖函数
-        debounceScroll: null,
+        debounceScroll: function () {},
         engine: null,
         // 工具栏内容：下拉面板、
         items: [

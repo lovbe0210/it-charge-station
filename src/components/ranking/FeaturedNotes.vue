@@ -57,7 +57,7 @@
             </div>
           </div>
           <div class="article-right">
-            <Button  class="action-btn">
+            <Button ghost class="ghost-btn action-btn">
               <span>收藏</span>
             </Button>
           </div>
@@ -292,6 +292,7 @@
           }
 
           .article-author {
+            margin-top: 5px;
             font-size: 14px;
             line-height: 26px;
             display: flex;
@@ -306,12 +307,16 @@
 
               .avatar {
                 margin-right: 10px;
+                line-height: 26px;
               }
 
               .article-author-name-text {
                 vertical-align: middle;
                 color: var(--title-color);
                 font-weight: 600;
+                line-height: 26px;
+                height: 26px;
+                display: flex;
 
                 &:hover {
                   color: @grey-white-font-color;

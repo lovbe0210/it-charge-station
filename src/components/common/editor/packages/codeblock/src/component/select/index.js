@@ -3,14 +3,12 @@ import Select from "./component.vue"
 
 export { Select }
 
-export default (container, modeDatas, defaultValue, onSelect) => {
+export default (container, defaultValue, onSelect) => {
   const vm = new Vue({
     render: h => {
       return h(Select, {
         props: {
-          modeDatas,
           defaultValue,
-          getContainer: container ? () => container : undefined,
           onSelect
         }
       })

@@ -13,13 +13,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-editor-style:before {
-  content: "\e61b";
-}
-
-.icon-edit-more:before {
-  content: "\e69a";
-}
 
 .icon-cloud:before {
   content: "\e6c2";
