@@ -30,7 +30,8 @@
           </div>
           <div class="editor-sidebar">
             <div class="editor-view">
-              <div class="editor-toc-pin">
+              <div class="editor-toc-pin un-select">
+                <span class="iconfont main-point"></span>
                 <span class="editor-toc-pin-text">大纲</span>
                 <div class="editor-toc-pin-wrap">
                   <div class="ne-icon ne-iconfont" data-name="pin" style="font-size: 16px;">

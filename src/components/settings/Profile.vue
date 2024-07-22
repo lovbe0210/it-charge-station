@@ -122,7 +122,7 @@
                        :style="{ width: '78px' }" v-model="inputValue"
                        @on-blur="handleInputConfirm"
                        @on-enter="handleInputConfirm"/>
-                <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showInput">
+                <a-tag v-else class="empty-to-add"  @click="showInput">
                   <span class="iconfont add" style="font-size: 12px"></span>
                   添加标签
                 </a-tag>
@@ -290,6 +290,7 @@
       // 标签移除
       handleClose(removedTag) {
         this.userInfo.tags = this.userInfo.tags.filter(tag => tag !== removedTag);
+        event.preventDefault();
       },
       // 展示添加新标签
       showInput() {
