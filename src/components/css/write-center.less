@@ -604,6 +604,79 @@
                 }
               }
             }
+
+            .history-version{
+              .new-version-tag {
+                margin-bottom: 10px;
+
+                .ivu-input {
+                  margin-bottom: 5px;
+                  color: @dark-font-color;
+                }
+
+                .ivu-btn-text {
+                  color: @dark-font-color;
+
+                  &:hover {
+                    color: @primary-color;
+                   background: unset;
+                  }
+                }
+              }
+
+              .doc-version {
+                background: @dropdown-item-hover ;
+                padding: 8px 10px;
+                border-radius: 4px;
+                margin-bottom: 10px;
+
+                .doc-version-basic {
+                  color: @dark-font-color;
+                  font-size: 14px;
+                  margin-bottom: 5px;
+
+                  .doc-version-name {
+                    line-height: 1.86;
+                  }
+
+                  .ivu-input {
+                    color: @dark-font-color;
+                  }
+                }
+
+                .doc-version-action {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+
+                  .doc-version-time {
+                    font-size: 12px;
+                    color: @grey-white-font-color;
+                  }
+
+                  .bianji, .delete {
+                    color: @dark-font-color;
+                  }
+
+                  .action-group {
+                    .ivu-btn-text {
+                      padding: 0 5px;
+
+                      &:hover {
+                        .bianji, .delete {
+                          color: @primary-color;
+                        }
+                        background: unset;
+                      }
+                    }
+
+                    .ivu-btn-success {
+                      margin-left: 5px;
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -779,6 +852,42 @@
       background: rgba(255,255,255,0.5);
     }
   }
+}
+
+/deep/ .delete-modal {
+   .ivu-modal-content {
+     color: @dark-font-color;
+     background: @dropdown-background;
+     padding: 32px 32px 24px;
+
+     .ivu-modal-body {
+       margin-bottom: 40px;
+       font-size: 14px;
+       line-height: 1.5715;
+       word-wrap: break-word;
+
+       .delete-tips {
+         .i-warn {
+           color: #ECAA04;
+           font-size: 25px;
+           margin-right: 5px;
+         }
+
+         display: flex;
+         align-items: center;
+       }
+
+       .confirm-btn {
+         float: right;
+         margin-top: 24px;
+         margin-bottom: 20px;
+
+         .ivu-btn-default {
+           margin-right: 10px;
+         }
+       }
+     }
+   }
 }
 
 

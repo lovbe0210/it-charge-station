@@ -51,6 +51,7 @@ export function formatTime(timestamp) {
   let yesterday = new Date(str).getTime() - 1000 * 60 * 60 * 24 //昨天
 
   let time = new Date(timestamp) //实际时间
+  let fullYear = time.getFullYear();
 
   let hours = time.getHours() < 10 ? '0' + time.getHours() : time.getHours();
   let minutes = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes();
@@ -58,8 +59,11 @@ export function formatTime(timestamp) {
     return '今天 ' + hours + ':' + minutes;
   } else if (time.getTime() > yesterday) {
     return '昨天 ' + hours + ':' + minutes;
+  } else if (year === fullYear) {
+    return time.getMonth() + 1 + '月' + time.getDate() + '日 ' +
+      hours + ':' + minutes;
   } else {
-    return time.getFullYear() + '年' + (time.getMonth() + 1) + '月' + time.getDate() + '日 ' +
+    return fullYear + '年' + (time.getMonth() + 1) + '月' + time.getDate() + '日 ' +
           hours + ':' + minutes;
   }
 }

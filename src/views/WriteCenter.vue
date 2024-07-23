@@ -163,11 +163,13 @@
               </div>
             </DropdownItem>
             <DropdownItem>
-              <span class="editor-set for-version">保存为版本</span>
+              <span class="editor-set for-version" @click="newVersionTag">
+                保存为版本
+              </span>
             </DropdownItem>
             <Divider/>
             <DropdownItem>
-              <div class="editor-set">
+              <div class="editor-set" @click="deleteModal">
                 <span class="editor-icon iconfont delete"></span>
                 <span>删除</span>
               </div>
@@ -308,26 +310,71 @@
           </div>
           <div v-if="drawerType === 2">
             <div class="history-version">
-              <div class="doc-version">
+              <div v-if="tmpVersionTag != null" class="new-version-tag">
+                <Input autofocus
+                       ref="versionInput"
+                       type="textarea"
+                       placeholder="请输入版本名称"
+                       v-model="tmpVersionTag"
+                       maxlength="30"
+                       @on-blur="versionInputId = null"
+                       @on-enter="versionInputId = null"/>
+                <div>
+                  <Button type="success"
+                          size="small"
+                          :disabled="tmpVersionTag == null || tmpVersionTag.trim().length === 0"
+                          @click="createNewVersion">
+                    确定
+                  </Button>
+                  <Button type="text" @click="tmpVersionTag = null">
+                    取消
+                  </Button>
+                </div>
+              </div>
+              <div class="doc-version" v-for="item in historyVersion" :key="item.id">
                 <div class="doc-version-basic">
-                  <span class="doc-version-name" title="asdas rtry">asdas rtry</span>
-                  <span class="doc-version-time">昨天 23:57</span>
+                  <span class="doc-version-name" v-show="versionInputId == null || versionInputId !== item.id">
+                    {{ item.versionTag }}
+                  </span>
+                  <Input autofocus
+                         ref="versionInput"
+                         type="textarea"
+                         v-if="versionInputId === item.id"
+                         v-model="item.versionTag"
+                         maxlength="30"
+                         @on-blur="versionInputId = null"
+                         @on-enter="versionInputId = null"/>
                 </div>
                 <div class="doc-version-action">
-                  <Button type="success">恢复此版本</Button>
-                  <div>
-                    <Button size="small" type="text">
+                  <span class="doc-version-time">{{ formatTime(item.createTime) }}</span>
+                  <div class="action-group">
+                    <Button size="small" type="text" @click="editVersionTag(item.id)">
                       <span class="iconfont bianji"></span>
                     </Button>
                     <Button size="small" type="text">
                       <span class="iconfont delete"></span>
                     </Button>
+                    <Button size="small" type="success">恢复此版本</Button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </Drawer>
+        <Modal v-model="showDeleteModal"
+               class-name="delete-modal"
+               :width="416"
+               :transfer="false"
+               :footer-hide="true">
+          <div class="delete-tips">
+            <span class="iconfont i-warn"></span>
+            确认删除 {{docInfo.title}}？
+          </div>
+          <div class="confirm-btn">
+            <Button>取消</Button>
+            <Button type="success">确定</Button>
+          </div>
+        </Modal>
       </div>
     </b-row>
     <b-row class="editor-root">
@@ -346,6 +393,7 @@
 import Editor from '@/components/common/editor/Editor'
 import {VueCropper} from 'vue-cropper'
 import {getRandomColor} from '@/utils/utils'
+import {formatTime} from '@/utils/emoji'
 
 export default {
   name: 'WriteCenter',
@@ -365,6 +413,30 @@ export default {
           {content: '调优', color: 'green'}
         ]
       },
+      historyVersion: [
+        {
+          id: '12sdsdsaaaasad',
+          versionTag: '啊实打实大大阿三大苏打阿萨大苏打阿三大苏打速度阿松大阿松大阿松大阿松大阿',
+          createTime: 1690036023000
+        },
+        {
+          id: '12sdsdasad',
+          versionTag: '啊实打实大大阿三大苏打阿萨大苏打阿三大苏打速度阿松大阿松大阿松大阿松大阿',
+          createTime: 1721658423000
+        },
+        {
+          id: '12sdasaadad',
+          versionTag: '啊实打实大大阿三大苏打阿萨大苏打阿三大苏打速度阿松大阿松大阿松大阿松大阿',
+          createTime: 1708698423000
+        },
+        {
+          id: '12sdddsdad',
+          versionTag: '啊实打实大大阿三大苏打阿萨大苏打阿三大苏打速度阿松大阿松大阿松大阿松大阿',
+          createTime: 1721744831090
+        }
+      ],
+      tmpVersionTag: null,
+      versionInputId: null,
       coverOriginalFile: null,
       quickStart: [
         {
@@ -385,6 +457,7 @@ export default {
       ],
       fontSizeRange: [12, 13, 14, 15, 16, 17, 18, 19],
       showDocSetting: false,
+      showDeleteModal: false,
       // 更多设置内容 1文档设置，2历史版本
       drawerType: 1,
       inputVisible: false,
@@ -578,7 +651,32 @@ export default {
     showDrawer(drawerType) {
       this.drawerType = drawerType;
       this.showDocSetting = true;
-    }
+    },
+    editVersionTag(versionId) {
+      this.versionInputId = versionId;
+      this.$nextTick(() => {
+        this.$refs.versionInput[0].focus({
+          cursor: 'end'
+        });
+      })
+    },
+    newVersionTag() {
+      this.showDrawer(2);
+      this.tmpVersionTag = '';
+    },
+    createNewVersion() {
+      this.historyVersion.unshift({
+        id: '1123sasdasdas',
+        versionTag: this.tmpVersionTag,
+        createTime: Date.now()
+      });
+      this.tmpVersionTag = null;
+    },
+    deleteModal(tagId) {
+      // 默认删除当前文档，tagId为空
+      this.showDeleteModal = true;
+    },
+    formatTime
   },
   components: {
     Editor,
