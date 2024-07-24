@@ -102,10 +102,8 @@ export const defaultData = [
  */
 export default (data, language) => {
   return data.map(({ key, value }) => {
-    const disabled =
-      key !== "default"
-        ? !value.split(",").some(v => isSupportFontFamily(v.trim()))
-        : false
+    const disabled = key !== "default"
+      ? !value.split(",").some(v => isSupportFontFamily(v.trim())) : false;
     return {
       key: value,
       faimlyName: language ? language[key] : key,
@@ -114,8 +112,7 @@ export default (data, language) => {
       }</span>`,
       hotkey: false,
       disabled,
-      title: disabled
-        ? (language && language["notInstalled"]) ||
+      title: disabled ? (language && language.notInstalled) ||
         "The font may not be installed"
         : undefined
     }

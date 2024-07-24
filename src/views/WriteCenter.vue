@@ -11,22 +11,28 @@
           </div>
           <DropdownMenu slot="list">
             <DropdownItem>
-              <div @click="routerPush">
-                <span class="iconfont icon-home"/>
+              <div @click="routerPush('/')" class="quick-menu">
+                <span class="iconfont home"/>
                 首页
               </div>
             </DropdownItem>
             <DropdownItem>
-              <span class="iconfont collect" style="font-weight: 600;"/>
-              收藏
+              <div class="quick-menu" @click="routerPush('/settings')">
+                <span class="iconfont person-info"/>
+                个人中心
+              </div>
             </DropdownItem>
             <DropdownItem>
-              <span class="iconfont icon-new-doc"/>
-              新建
+              <div class="quick-menu" @click="routerPush('/dashboard')">
+                <span class="iconfont creation-center"/>
+                创作空间
+              </div>
             </DropdownItem>
             <DropdownItem>
-              <span class="iconfont collapse"/>
-              专栏
+              <div class="quick-menu" @click="saveAndNewDoc">
+                <span class="iconfont i-add"/>
+                新建笔记
+              </div>
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
@@ -40,7 +46,10 @@
           <span style="color: #d9d9d9;margin: 0 8px 0 8px;">/</span>
           <a href="">从头开始</a>
           <span style="color: #d9d9d9;margin: 0 8px 0 8px;">|</span>
-          <a href="" class="update-time">最后更新于今天 12:23<span class="iconfont icon-cloud"/></a>
+          <span class="update-time un-select">
+            最后更新于今天 12:23
+            <span class="iconfont icon-cloud"/>
+          </span>
         </b-list-group-item>
       </b-list-group>
       <div class="editor-setting">
@@ -224,7 +233,7 @@
                     <Button :class="['cover-upload-btn', docStyle.customerTheme ? 'ghost-btn' : '']">
                       <span v-if="!coverOriginalFile">
                         <span class="iconfont upload"/>上传图片</span>
-                        <span v-else>重新上传</span>
+                      <span v-else>重新上传</span>
                     </Button>
                   </Upload>
                   <div class="clear-cover-btn">
@@ -369,7 +378,7 @@
                :footer-hide="true">
           <div class="delete-tips">
             <span class="iconfont i-warn"></span>
-            确认删除 {{docInfo.title}} ？
+            确认删除 {{ docInfo.title }} ？
           </div>
           <div class="confirm-btn">
             <Button :class="docStyle.customerTheme ? 'ghost-btn' : ''">取消</Button>
@@ -551,8 +560,8 @@ export default {
     changePageSize(value) {
       this.docStyle.pageSize = value;
     },
-    routerPush() {
-      this.$router.push({path: '/'})
+    routerPush(path) {
+      this.$router.push({path: path})
     },
     /**
      * 处理截图框移动事件
@@ -673,9 +682,12 @@ export default {
       });
       this.tmpVersionTag = null;
     },
-    deleteModal(tagId) {
+    deleteModal() {
       // 默认删除当前文档，tagId为空
       this.showDeleteModal = true;
+    },
+    saveAndNewDoc() {
+
     },
     formatTime
   },

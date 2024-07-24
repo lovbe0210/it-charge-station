@@ -45,7 +45,27 @@
       .menu-icon {
         display: flex;
         align-items: center;
-        height: 45px;
+        justify-content: center;
+        padding: 10px;
+      }
+
+      /deep/ .ivu-select-dropdown {
+        .ivu-dropdown-menu {
+          margin: 4px 0;
+
+          .ivu-dropdown-item {
+            padding: unset;
+            color: @dark-font-color;
+
+            .quick-menu {
+              padding: 8px 22px;
+
+              .iconfont {
+                margin-right: 5px;
+              }
+            }
+          }
+        }
       }
     }
 
@@ -66,7 +86,6 @@
       }
 
       .title {
-        cursor: pointer;
         font-weight: 700;
         font-size: 16px;
         display: block;
@@ -690,6 +709,28 @@
   .editor-header {
     border-color: @border-color_normal;
 
+    .left-dropdown-wrapp {
+      /deep/ .ivu-select-dropdown {
+        .ivu-dropdown-menu {
+          .ivu-dropdown-item {
+            color: var(--font-color);
+          }
+        }
+      }
+    }
+
+    .title-info {
+      .author-info {
+        a {
+          color: var(--title-color);
+        }
+
+        .update-time {
+          color: var(--title-color);
+        }
+      }
+    }
+
     .editor-setting {
       /deep/ .ivu-select-dropdown {
         .Select-module_optionActive {
@@ -837,10 +878,6 @@
           }
         }
       }
-    }
-
-    .left-dropdown-wrapp {
-      border-color: @border-color_normal;
     }
 
     .editor-set {

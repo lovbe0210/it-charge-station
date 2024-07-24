@@ -102,17 +102,17 @@
                     <span class="iconfont i-more"></span>
                   </div>
                 </DropdownItem>
-                <DropdownItem name="seriesColumn">
+                <DropdownItem name="creativeSpace">
                   <div class="routing-menu quick-start-item">
-                    <span class="iconfont series-column"></span>
-                    <span class="routing-content">专栏文章</span>
+                    <span class="iconfont creation-center"></span>
+                    <span class="routing-content">创作空间</span>
                     <span class="iconfont i-more"></span>
                   </div>
                 </DropdownItem>
-                <DropdownItem name="creativeSpace" class="create-center">
+                <DropdownItem name="growthTrajector" class="create-center">
                   <div class="routing-menu quick-start-item">
                     <span class="iconfont data-stats"></span>
-                    <span class="routing-content">创作中心</span>
+                    <span class="routing-content">成长轨迹</span>
                     <span class="iconfont i-more"></span>
                   </div>
                 </DropdownItem>
@@ -333,13 +333,13 @@
           case 'concern':
             this.$router.push({path: '/dashboard/relational/concern'})
             break;
-          case 'seriesColumn':
-            this.$router.push({path: '/dashboard/seriesColumn'})
+          case 'creativeSpace':
+            this.$router.push({path: '/dashboard'})
             break;
           case 'personInfo':
             this.$router.push({path: '/settings'})
             break;
-          case 'creativeSpace':
+          case 'growthTrajector':
             this.$router.push({name: 'Stats'})
             break;
           case 'ramblyJot':

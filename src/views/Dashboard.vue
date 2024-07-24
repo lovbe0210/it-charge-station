@@ -73,7 +73,7 @@
             <div class="light"></div>
             <div class="item">
               <span class="iconfont data-stats"></span>
-              创作中心
+              成长轨迹
             </div>
           </div>
           <div :class="['menu-item', activeMenuForEq === 'Grade' ? 'active-menu' : '']"

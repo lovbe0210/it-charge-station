@@ -213,7 +213,7 @@ const routes = [
             component: () => import('@/components/dashboard/Relational')
           },
           {
-            // 数据中心
+            // 成长轨迹
             path: 'stats',
             name: 'Stats',
             component: () => import('@/components/dashboard/Stats')

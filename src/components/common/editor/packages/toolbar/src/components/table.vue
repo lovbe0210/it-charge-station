@@ -24,49 +24,49 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-
-@Component({})
-export default class TableSelector extends Vue {
-  @Prop({ type: Number, default: 10 }) maxRows!: number;
-  @Prop({ type: Number, default: 10 }) maxCols!: number;
-  @Prop({ type: Number, default: 4 }) minRows!: number;
-  @Prop({ type: Number, default: 4 }) minCols!: number;
-  @Prop(Function) onSelect?: (
-    event: MouseEvent,
-    rows: number,
-    cols: number
-  ) => void;
-
-  currentRows = 4;
-  currentCols = 4;
-  selectedRows = 0;
-  selectedCols = 0;
-
-  triggerSelect(event: MouseEvent, rows: number, cols: number) {
-    event.preventDefault();
-    if (this.onSelect) this.onSelect(event, rows + 1, cols + 1);
+<script>
+export default {
+  props: {
+    maxRows: {type: Number, default: 10},
+    maxCols: {type: Number, default: 10},
+    minRows: {type: Number, default: 4},
+    minCols: {type: Number, default: 4},
+    onSelect: Function
+  },
+  data() {
+    return {
+      currentRows: 4,
+      currentCols: 4,
+      selectedRows: 0,
+      selectedCols: 0
+    };
+  },
+  methods: {
+    triggerSelect(event, rows, cols) {
+      event.preventDefault();
+      if (this.onSelect) this.onSelect(event, rows + 1, cols + 1);
+    },
+    triggerHover(rows, cols) {
+      const showRows = Math.max(this.minRows, Math.min(this.maxRows, rows + 2));
+      const showCols = Math.max(this.minCols, Math.min(this.maxCols, cols + 2));
+      this.currentRows = showRows;
+      this.currentCols = showCols;
+      this.selectedRows = rows + 1;
+      this.selectedCols = cols + 1;
+    }
   }
-
-  triggerHover(rows: number, cols: number) {
-    const showRows = Math.max(this.minRows, Math.min(this.maxRows, rows + 2));
-    const showCols = Math.max(this.minCols, Math.min(this.maxCols, cols + 2));
-    this.currentRows = showRows;
-    this.currentCols = showCols;
-    this.selectedRows = rows + 1;
-    this.selectedCols = cols + 1;
-  }
-}
+};
 </script>
+
 <style>
 .data-toolbar-table-selector .data-toolbar-table-selector-tr {
   display: flex;
   flex-wrap: nowrap;
 }
+
 .data-toolbar-table-selector
-  .data-toolbar-table-selector-tr
-  .data-toolbar-table-selector-td {
+.data-toolbar-table-selector-tr
+.data-toolbar-table-selector-td {
   width: 20px;
   height: 16px;
   border: 1px solid #d9d9d9;
@@ -74,11 +74,13 @@ export default class TableSelector extends Vue {
   margin-bottom: -1px;
   cursor: pointer;
 }
+
 .data-toolbar-table-selector
-  .data-toolbar-table-selector-tr
-  .data-toolbar-table-selector-td.actived {
+.data-toolbar-table-selector-tr
+.data-toolbar-table-selector-td.actived {
   background: #ddefff;
 }
+
 .data-toolbar-table-selector .data-toolbar-table-selector-info {
   text-align: center;
 }

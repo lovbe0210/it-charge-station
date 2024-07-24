@@ -346,3 +346,29 @@
   border-radius: 4px;
   justify-content: center;
 }
+// 快捷键 / 相关ui
+.data-toolbar-component-list {
+  .toolbar-dropdown {
+    .toolbar-dropdown-list {
+      .toolbar-collapse-content {
+        .toolbar-collapse-group {
+          .toolbar-collapse-item {
+            & > span {
+              display: flex;
+                & > span {
+                  display: flex;
+                }
+            }
+
+            .toolbar-collapse-item-text {
+              height: 24px;
+              .toolbar-collapse-item-title {
+                height: 24px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
