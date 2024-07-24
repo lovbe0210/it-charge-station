@@ -221,9 +221,10 @@
                           accept="image/*"
                           :show-upload-list="false"
                           :before-upload="fileHandle">
-                    <Button class="cover-upload-btn">
-                      <span v-if="!coverOriginalFile"><span class="iconfont upload"/>上传图片</span>
-                      <span v-else>重新上传</span>
+                    <Button :class="['cover-upload-btn', docStyle.customerTheme ? 'ghost-btn' : '']">
+                      <span v-if="!coverOriginalFile">
+                        <span class="iconfont upload"/>上传图片</span>
+                        <span v-else>重新上传</span>
                     </Button>
                   </Upload>
                   <div class="clear-cover-btn">
@@ -362,16 +363,16 @@
           </div>
         </Drawer>
         <Modal v-model="showDeleteModal"
-               class-name="delete-modal"
+               :class-name="docStyle.customerTheme ? 'delete-modal delete-modal-ct' : 'delete-modal'"
                :width="416"
                :transfer="false"
                :footer-hide="true">
           <div class="delete-tips">
             <span class="iconfont i-warn"></span>
-            确认删除 {{docInfo.title}}？
+            确认删除 {{docInfo.title}} ？
           </div>
           <div class="confirm-btn">
-            <Button>取消</Button>
+            <Button :class="docStyle.customerTheme ? 'ghost-btn' : ''">取消</Button>
             <Button type="success">确定</Button>
           </div>
         </Modal>
