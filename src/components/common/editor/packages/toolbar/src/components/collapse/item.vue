@@ -34,84 +34,89 @@
     </div>
   </a-popover>
 </template>
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { Popover } from "ant-design-vue";
-import { VNode } from "vue";
-import { EngineInterface, Placement } from "@aomao/engine";
-import { Command } from "../../types";
 
-@Component({
-  components: {
-    "a-popover": Popover,
-  },
-})
-export default class CollapseItem extends Vue {
-  @Prop({ type: Object }) engine?: EngineInterface;
-  @Prop({ type: String, required: true }) name!: string;
-  @Prop({ type: String, default: undefined }) icon?: string;
-  @Prop({ type: String }) search?: string;
-  @Prop({ type: [String, Function] }) description?:
-    | string
-    | (() => string)
-    | VNode;
-  @Prop({ type: String }) title?: string;
-  @Prop({ type: String }) placement?: Placement;
-  @Prop({ type: Object }) command?: Command;
-  @Prop({ type: [Boolean, Object], default: undefined }) autoExecute?: boolean;
-  @Prop({ type: String }) className?: string;
-  @Prop({ type: [Boolean, Object], default: undefined }) disabled?: boolean;
-  @Prop({ type: [String, Function, Object] }) prompt?:
-    | string
-    | ((props: any) => string) | ((props: any) => VNode)
-    | VNode;
-  @Prop(Function) onClick?: (event: MouseEvent, name: string, engine?: EngineInterface) => void | boolean;
-  @Prop(Function) onMouseDown?: (event: MouseEvent) => void | boolean;
+<script>
+  import { Popover } from "ant-design-vue";
 
-  iconIsHtml = false;
-  active = false;
-
-  mounted() {
-    this.iconIsHtml = /^<.*>/.test(this.icon ? this.icon.trim() : "");
-  }
-
-  handleMouseDown(event: MouseEvent) {
-    event.preventDefault();
-    if (this.onMouseDown) this.onMouseDown(event);
-  }
-
-  handleClick(event: MouseEvent) {
-    if (this.disabled) return;
-
-    const nodeName = (event.target as Node).nodeName;
-    if (nodeName !== "INPUT" && nodeName !== "TEXTAREA") event.preventDefault();
-
-    if (this.onClick && this.onClick(event, this.name, this.engine) === false) {
-      return;
-    }
-    if (this.autoExecute !== false) {
-      let commandName = this.name;
-      let commandArgs = [];
-      if (this.command) {
-        if (!Array.isArray(this.command)) {
-          commandName = this.command.name;
-          commandArgs = this.command.args;
-        } else {
-          commandArgs = this.command;
+  export default {
+    name: "CollapseItem",
+    components: {
+      "a-popover": Popover
+    },
+    props: {
+      engine: Object,
+      name: {
+        type: String,
+        required: true
+      },
+      icon: String,
+      search: String,
+      description: [String, Function],
+      title: String,
+      placement: String,
+      command: Object,
+      autoExecute: {
+        type: [Boolean, Object],
+        default: undefined
+      },
+      className: String,
+      disabled: {
+        type: [Boolean, Object],
+        default: undefined
+      },
+      prompt: [String, Function],
+      onClick: Function,
+      onMouseDown: Function
+    },
+    data() {
+      return {
+        iconIsHtml: false,
+        active: false
+      };
+    },
+    mounted() {
+      this.iconIsHtml = /^<.*>$/.test(this.icon || "");
+    },
+    methods: {
+      handleMouseDown(event) {
+        event.preventDefault();
+        if (typeof this.onMouseDown === 'function') {
+          this.onMouseDown(event);
         }
+      },
+      handleClick(event) {
+        if (this.disabled) return;
+
+        const nodeName = event.target.nodeName;
+        if (nodeName !== "INPUT" && nodeName !== "TEXTAREA") event.preventDefault();
+
+        if (typeof this.onClick === 'function' && this.onClick(event, this.name, this.engine) === false) {
+          return;
+        }
+        if (this.autoExecute !== false) {
+          let commandName = this.name;
+          let commandArgs = [];
+          if (this.command) {
+            if (!Array.isArray(this.command)) {
+              commandName = this.command.name;
+              commandArgs = this.command.args || [];
+            } else {
+              commandArgs = this.command;
+            }
+          }
+          if (this.engine && typeof this.engine.command.execute === 'function') {
+            this.engine.command.execute(commandName, ...commandArgs);
+          }
+        }
+      },
+      triggerMouseEnter() {
+        this.active = !this.disabled;
+      },
+      triggerMouseLeave() {
+        this.active = false;
       }
-      if (this.engine) this.engine.command.execute(commandName, ...commandArgs);
     }
-  }
-
-  triggerMouseEnter() {
-    this.active = this.disabled ? false : true;
-  }
-
-  triggerMouseLeave() {
-    this.active = false;
-  }
-}
+  };
 </script>
 <style>
 .prompt-popover-hide {

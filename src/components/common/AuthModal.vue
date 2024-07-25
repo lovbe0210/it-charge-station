@@ -1,4 +1,4 @@
-  <template>
+<template>
   <div>
     <!-- 未登录状态载体 -->
     <div @click="showLogin = true">

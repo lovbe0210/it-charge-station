@@ -31,8 +31,8 @@
 <script>
   import {isMobile} from "@aomao/engine";
   // import {CollapseGroupProps} from '../../types';
-  // import AmButton from '../button.vue';
-  // import AmCollapseGroup from './group.vue';
+  import AmButton from '../button.vue';
+  import AmCollapseGroup from './group.vue';
 
   // @Component({
   //     components: {
@@ -48,6 +48,10 @@
         visible: false,
         isRight: false
       }
+    },
+    components: {
+      AmButton,
+      AmCollapseGroup
     },
     props: ['engine', 'header', 'groups', 'disabled', 'className', 'icon', 'content'],
     methods: {

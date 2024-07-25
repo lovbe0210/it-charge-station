@@ -37,113 +37,103 @@
     </button>
   </a-tooltip>
 </template>
-<script lang="ts">
-import { VNode } from "vue";
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { Tooltip } from "ant-design-vue";
-import {
-  EditorInterface,
-  EngineInterface,
-  formatHotkey,
-  isMobile,
-  Placement,
-} from "@aomao/engine";
-import { autoGetHotkey } from "../utils";
-import { Command } from "../types";
 
-@Component({
-  components: {
-    "a-tooltip": Tooltip,
-  },
-})
-export default class Button extends Vue {
-  @Prop({ type: Object }) engine?: EngineInterface;
-  @Prop({ type: String, required: true }) name!: string;
-  @Prop({ type: String }) icon?: string;
-  @Prop({ type: [String, Function] }) content?: string | (() => string) | VNode;
-  @Prop({ type: String }) title?: string;
-  @Prop({ type: String }) placement?: Placement;
-  @Prop({ type: [String, Object] }) hotkey?: boolean | string;
-  @Prop({ type: Object }) command?: Command;
-  @Prop({ type: [Boolean, Object], default: undefined }) autoExecute?: boolean;
-  @Prop({ type: String }) className?: string;
-  @Prop({ type: [Boolean, Object], default: undefined }) active?: boolean;
-  @Prop({ type: [Boolean, Object], default: undefined }) disabled?: boolean;
-  @Prop(Function) onClick?: (
-    event: MouseEvent,
-    engine?: EditorInterface
-  ) => void | boolean;
-  @Prop(Function) onMouseDown?: (
-    event: MouseEvent,
-    engine?: EditorInterface
-  ) => void | boolean;
-  @Prop(Function) onMouseEnter?: (
-    event: MouseEvent,
-    engine?: EditorInterface
-  ) => void | boolean;
-  @Prop(Function) onMouseLevel?: (
-    event: MouseEvent,
-    engine?: EditorInterface
-  ) => void | boolean;
+<script>
+  import { autoGetHotkey } from "../utils";
+  import { formatHotkey, isMobile} from "@aomao/engine";
 
-  visible = false;
-  iconIsHtml = false;
-  isMobile = false;
-  hotkeyText = "";
-
-  mounted() {
-    this.iconIsHtml = /^<.*>/.test(this.icon ? this.icon.trim() : "");
-    let hotkeyText: undefined | string = undefined;
-    //默认获取插件的热键
-    if (this.engine && (this.hotkey === true || this.hotkey === undefined)) {
-      hotkeyText = autoGetHotkey(
-        this.engine,
-        this.command && !Array.isArray(this.command)
-          ? this.command.name
-          : this.name
-      );
-    }
-    if (typeof this.hotkey === "string" && this.hotkey !== "") {
-      hotkeyText = formatHotkey(this.hotkey);
-    }
-    this.isMobile = isMobile;
-    this.hotkeyText = hotkeyText || "";
-  }
-
-  triggerMouseDown(event: MouseEvent) {
-    event.preventDefault();
-    if (this.disabled) return;
-    if (this.onMouseDown) this.onMouseDown(event, this.engine);
-    this.visible = false;
-  }
-  triggerMouseEnter(event: MouseEvent) {
-    if (this.onMouseEnter) this.onMouseEnter(event, this.engine);
-    this.visible = true;
-  }
-  triggerMouseLeave(event: MouseEvent) {
-    if (this.onMouseLevel) this.onMouseLevel(event, this.engine);
-    this.visible = false;
-  }
-  triggerClick(event: MouseEvent) {
-    const nodeName = (event.target as Node).nodeName;
-    if (nodeName !== "INPUT" && nodeName !== "TEXTAREA") event.preventDefault();
-    if (this.disabled) return;
-    if (this.onClick && this.onClick(event, this.engine) === false) return;
-    if (this.autoExecute !== false) {
-      let commandName = this.name;
-      let commandArgs = [];
-      if (this.command) {
-        if (!Array.isArray(this.command)) {
-          commandName = this.command.name;
-          commandArgs = this.command.args;
-        } else {
-          commandArgs = this.command;
+  export default {
+    props: {
+      engine: Object,
+      name: {
+        type: String,
+        required: true
+      },
+      icon: String,
+      content: [String, Function],
+      title: String,
+      placement: String,
+      hotkey: [Boolean, String],
+      command: Object,
+      autoExecute: {
+        type: [Boolean, Object],
+        default: undefined
+      },
+      className: String,
+      active: {
+        type: [Boolean, Object],
+        default: undefined
+      },
+      disabled: {
+        type: [Boolean, Object],
+        default: undefined
+      },
+      onClick: Function,
+      onMouseDown: Function,
+      onMouseEnter: Function,
+      onMouseLevel: Function
+    },
+    data() {
+      return {
+        visible: false,
+        iconIsHtml: false,
+        isMobile: false,
+        hotkeyText: ""
+      };
+    },
+    mounted() {
+      this.iconIsHtml = /^<.*>/.test(this.icon ? this.icon.trim() : "");
+      let hotkeyText;
+      if (this.engine && (this.hotkey === true || this.hotkey === undefined)) {
+        hotkeyText = autoGetHotkey(
+          this.engine,
+          this.command && !Array.isArray(this.command)
+            ? this.command.name
+            : this.name
+        );
+      }
+      if (typeof this.hotkey === "string" && this.hotkey !== "") {
+        hotkeyText = formatHotkey(this.hotkey);
+      }
+      this.isMobile = isMobile;
+      this.hotkeyText = hotkeyText || "";
+    },
+    methods: {
+      triggerMouseDown(event) {
+        event.preventDefault();
+        if (this.disabled) return;
+        if (this.onMouseDown) this.onMouseDown(event, this.engine);
+        this.visible = false;
+      },
+      triggerMouseEnter(event) {
+        if (this.onMouseEnter) this.onMouseEnter(event, this.engine);
+        this.visible = true;
+      },
+      triggerMouseLeave(event) {
+        if (this.onMouseLevel) this.onMouseLevel(event, this.engine);
+        this.visible = false;
+      },
+      triggerClick(event) {
+        const nodeName = event.target.nodeName;
+        if (nodeName !== "INPUT" && nodeName !== "TEXTAREA") event.preventDefault();
+        if (this.disabled) return;
+        if (this.onClick && this.onClick(event, this.engine) === false) return;
+        if (this.autoExecute !== false) {
+          let commandName = this.name;
+          let commandArgs = [];
+          if (this.command) {
+            if (!Array.isArray(this.command)) {
+              commandName = this.command.name;
+              commandArgs = this.command.args;
+            } else {
+              commandArgs = this.command;
+            }
+          }
+          if (this.engine) this.engine.command.execute(commandName, ...commandArgs);
         }
       }
-      if (this.engine) this.engine.command.execute(commandName, ...commandArgs);
     }
-  }
-}
+  };
 </script>
 <style>
 .editor-toolbar .toolbar-button {

@@ -26,8 +26,8 @@
         :disabled="disabled"
         ref="targetRef"
       >
-        <template #default>
-          <slot :item="content">
+        <template #default="{ item }">
+          <slot name="default" :item="item">
             <span
               v-if="buttonContent && buttonContent.icon"
               :class="['data-icon', `data-icon-${buttonContent.icon}`]"
@@ -56,143 +56,164 @@
     />
   </div>
 </template>
-<script lang="ts">
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { EngineInterface, isMobile, Placement } from "@aomao/engine";
-import { DropdownListItem } from "../types";
-import AmDropdownList from "./dropdown-list.vue";
-import AmButton from "./button.vue";
 
-@Component({
-  components: {
-    AmButton,
-    AmDropdownList,
-  },
-})
-export default class Dropdown extends Vue {
-  @Prop({ type: Object }) engine?: EngineInterface;
-  @Prop({ type: String, required: true }) name!: string;
-  @Prop({ type: [String, Array, Number] }) values?: string | number | string[];
-  @Prop({ type: Array, default: [] }) items!: DropdownListItem[];
-  @Prop(String) icon?: string;
-  @Prop({ type: [String, Function] }) content?: string | (() => string);
-  @Prop(String) title?: string;
-  @Prop({ type: [Boolean, Object], default: undefined }) disabled?: boolean;
-  @Prop({ type: [Boolean, Object], default: undefined }) single?: boolean;
-  @Prop(String) className?: string;
-  @Prop(String) direction?: "vertical" | "horizontal";
-  @Prop(Function) onSelect?: (event: MouseEvent, key: string) => void | boolean;
-  @Prop({ type: [Boolean, Object], default: undefined }) hasArrow?: boolean;
-  @Prop({ type: [Boolean, Object], default: undefined }) hasDot?: boolean;
-  @Prop({ type: [String], default: undefined }) placement?: Placement;
-  valuesVar: string | number | string[] = "";
-  buttonContent?:
-    | DropdownListItem
-    | { icon?: string; content?: string }
-    | null = null;
-  isRight = false;
-  visible = false;
+<script>
+  import AmDropdownList from "./dropdown-list.vue";
+  import AmButton from "./button.vue";
+  import {isMobile} from "@aomao/engine";
 
-  mounted() {
-    if (this.$refs.buttonRef && isMobile) {
-      const rect = (this.$refs.buttonRef as Element).getBoundingClientRect();
-      this.isRight = rect.left > window.visualViewport.width / 2;
-    }
-  }
-
-  @Watch("$props.values", { immediate: true, deep: true })
-  update(values?: string | number | string[]) {
-    if (this.single !== false)
-      values = Array.isArray(values) && values.length > 0 ? values[0] : values;
-    const item = this.items.find(
-      (item) =>
-        (typeof values === "string" && item.key === values) ||
-        (Array.isArray(values) && values.indexOf(item.key) > -1)
-    );
-    const defaultItem =
-      this.items.length > 0
-        ? this.items.find((item) => item.isDefault === true) || this.items[0]
-        : null;
-
-    if (item) {
-      if (this.$slots.default) {
-        this.buttonContent = item;
-      } else if (typeof this.content === "function") {
-        this.buttonContent = { icon: this.icon, content: this.content() };
-      } else if (Array.isArray(values) && values.length > 1) {
-        this.buttonContent = { icon: this.icon, content: this.content };
-      } else {
-        this.buttonContent = {
-          icon: item.icon,
-          content:
-            typeof item.content === "function" ? item.content() : item.content,
-        };
-      }
-    } else if (this.icon || this.content) {
-      if (!Array.isArray(values) || values.length < 1) {
-        this.buttonContent = {
-          icon: this.icon,
-          content:
-            typeof this.content === "function" ? this.content() : this.content,
-        };
-      }
-    } else if (defaultItem) {
-      this.buttonContent = {
-        icon: defaultItem.icon,
-        content:
-          typeof defaultItem.content === "function"
-            ? defaultItem.content()
-            : defaultItem.content,
+  export default {
+    name: "Dropdown",
+    components: {
+      AmButton,
+      AmDropdownList
+    },
+    props: {
+      engine: Object,
+      name: {
+        type: String,
+        required: true
+      },
+      values: [String, Array, Number],
+      items: {
+        type: Array,
+        default: () => []
+      },
+      icon: String,
+      content: [String, Function],
+      title: String,
+      disabled: {
+        type: [Boolean, Object],
+        default: undefined
+      },
+      single: {
+        type: [Boolean, Object],
+        default: undefined
+      },
+      className: String,
+      direction: String,
+      onSelect: Function,
+      hasArrow: {
+        type: [Boolean, Object],
+        default: undefined
+      },
+      hasDot: {
+        type: [Boolean, Object],
+        default: undefined
+      },
+      placement: String
+    },
+    data() {
+      return {
+        valuesVar: "",
+        buttonContent: { },
+        isRight: false,
+        visible: false
       };
+    },
+    mounted() {
+      if (this.$refs.buttonRef && isMobile) {
+        const rect = this.$refs.buttonRef.getBoundingClientRect();
+        this.isRight = rect.left > window.visualViewport.width / 2;
+      }
+    },
+    watch: {
+      "$props.values": {
+        immediate: true,
+        deep: true,
+        handler: function(values) {
+          this.update(values);
+        }
+      },
+      "visible": {
+        immediate: true,
+        deep: true,
+        handler: function(value) {
+          this.watch(value);
+        }
+      }
+    },
+    methods: {
+      update(values) {
+        if (this.single !== false) {
+          values = Array.isArray(values) && values.length > 0 ? values[0] : values;
+        }
+        const item = this.items.find(
+          (item) =>
+            (typeof values === "string" && item.key === values) ||
+            (Array.isArray(values) && values.indexOf(item.key) > -1)
+        );
+        const defaultItem =
+          this.items.length > 0
+            ? this.items.find((item) => item.isDefault === true) || this.items[0]
+            : null;
+
+        if (item) {
+          if (this.$slots.default) {
+            this.buttonContent = item;
+          } else if (typeof this.content === "function") {
+            this.buttonContent = { icon: this.icon, content: this.content() };
+          } else if (Array.isArray(values) && values.length > 1) {
+            this.buttonContent = { icon: this.icon, content: this.content };
+          } else {
+            this.buttonContent = {
+              icon: item.icon,
+              content: typeof item.content === "function" ? item.content() : item.content
+            };
+          }
+        } else if (this.icon || this.content) {
+          if (!Array.isArray(values) || values.length < 1) {
+            this.buttonContent = {
+              icon: this.icon,
+              content: typeof this.content === "function" ? this.content() : this.content
+            };
+          }
+        } else if (defaultItem) {
+          this.buttonContent = {
+            icon: defaultItem.icon,
+            content:
+              typeof defaultItem.content === "function"
+                ? defaultItem.content()
+                : defaultItem.content
+          };
+        }
+        this.valuesVar =
+          values ||
+          (this.icon || this.content ? "" : defaultItem ? defaultItem.key : "");
+      },
+      watch(value) {
+        if (value) document.addEventListener("click", this.hide);
+        else document.removeEventListener("click", this.hide);
+      },
+      triggerMouseDown(event) {
+        event.preventDefault();
+      },
+      triggerClick(event) {
+        event.preventDefault();
+        if (this.disabled) {
+          return;
+        }
+        if (this.visible) {
+          this.hide();
+        } else {
+          this.show();
+        }
+      },
+      show() {
+        this.visible = true;
+      },
+      hide(event) {
+        if (event && this.$refs.targetRef && (this.$refs.targetRef).$refs.element.contains(event.target)) {
+          return;
+        }
+        this.visible = false;
+      },
+      triggerSelect(event, key) {
+        this.hide();
+        if (this.onSelect) this.onSelect(event, key);
+      }
     }
-    this.valuesVar =
-      values ||
-      (this.icon || this.content ? "" : defaultItem ? defaultItem.key : "");
-  }
-
-  @Watch("visible", { immediate: true, deep: true })
-  watch(value: boolean) {
-    if (value) document.addEventListener("click", this.hide);
-    else document.removeEventListener("click", this.hide);
-  }
-
-  triggerMouseDown(event: MouseEvent) {
-    event.preventDefault();
-  }
-
-  triggerClick(event: MouseEvent) {
-    event.preventDefault();
-    if (this.disabled) {
-      return;
-    }
-    if (this.visible) {
-      this.hide();
-    } else {
-      this.show();
-    }
-  }
-
-  show() {
-    this.visible = true;
-  }
-
-  hide(event?: MouseEvent) {
-    if (
-      event &&
-      this.$refs.targetRef &&
-      ((this.$refs.targetRef as Vue).$refs.element as Element).contains(
-        event.target as Node
-      )
-    )
-      return;
-    this.visible = false;
-  }
-
-  triggerSelect(event: MouseEvent, key: string) {
-    this.hide();
-    if (this.onSelect) this.onSelect(event, key);
-  }
-}
+  };
 </script>
 <style>
 .toolbar-dropdown {

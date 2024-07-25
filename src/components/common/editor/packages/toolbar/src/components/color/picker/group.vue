@@ -1,28 +1,41 @@
 <template>
     <span class="colorpicker-group">
         <am-color-picker-item v-for="color in colors"
-        :engine="engine"
-        :color="color.value"
-        :active="color.active"
-        :key="color.value"
-        :on-select="onSelect"
-        :set-stroke="setStroke"
+                              :engine="engine"
+                              :color="color.value"
+                              :active="color.active"
+                              :key="color.value"
+                              :on-select="onSelect"
+                              :set-stroke="setStroke"
         />
     </span>
 </template>
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { EngineInterface } from "@aomao/engine";
-import AmColorPickerItem from './item.vue'
-@Component({
+
+<script>
+  import AmColorPickerItem from './item.vue';
+
+  export default {
+    name: "AmColorGroup",
     components: {
-        AmColorPickerItem
+      AmColorPickerItem
+    },
+    props: {
+      engine: {
+        type: Object,
+        required: true
+      },
+      colors: {
+        type: Array,
+        default: () => []
+      },
+      setStroke: {
+        type: [Boolean, Object],
+        default: undefined
+      },
+      onSelect: {
+        type: Function,
+        default: undefined
+      }
     }
-})
-export default class AmColorGroup extends Vue {
-    @Prop({ type: Object, required: true}) engine!: EngineInterface
-    @Prop(Array) colors?: { value: string; active: boolean }[]
-    @Prop({ type: [Boolean, Object], default: undefined}) setStroke?: boolean
-    @Prop(Function) onSelect?: (color: string, event: MouseEvent) => void
-}
+  };
 </script>

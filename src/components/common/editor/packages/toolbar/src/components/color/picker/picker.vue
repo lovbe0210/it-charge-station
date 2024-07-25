@@ -1,90 +1,102 @@
 <template>
-    <div
+  <div
     class="colorpicker-board"
     @mousedown="triggerMouseDown"
+  >
+    <div
+      class="colorpicker-default"
+      @click="triggerSelect(defaultColor,$event)"
     >
-        <div
-        class="colorpicker-default"
-        @click="triggerSelect(defaultColor,$event)"
-        >
-            <am-color-picker-item
-                :engine="engine"
-                :color="defaultColor"
-                :active-colors="[]"
-                :on-select="triggerSelect"
-            />
-            <span class="colorpicker-default-text">
+      <am-color-picker-item
+        :engine="engine"
+        :color="defaultColor"
+        :active-colors="[]"
+        :on-select="triggerSelect"
+      />
+      <span class="colorpicker-default-text">
                 {{text}}
             </span>
-        </div>
-        <am-color-picker-group
-        v-for="(data,index) in colorValues"
-        :engine="engine"
-        :colors="data"
-        :key="index"
-        :on-select="triggerSelect"
-        :set-stroke="setStroke"
-        />
     </div>
+    <am-color-picker-group
+      v-for="(data,index) in colorValues"
+      :engine="engine"
+      :colors="data"
+      :key="index"
+      :on-select="triggerSelect"
+      :set-stroke="setStroke"
+    />
+  </div>
 </template>
-<script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { EngineInterface } from "@aomao/engine";
-import AmColorPickerItem from './item.vue'
-import AmColorPickerGroup from './group.vue'
-import Palette from './palette'
 
-@Component({
-    components: {
-        AmColorPickerItem,
-        AmColorPickerGroup
+<script>
+  import AmColorPickerItem from './item.vue'
+  import AmColorPickerGroup from './group.vue'
+  import Palette from './palette'
+
+  export default {
+    name: "ColorPicker",
+    props: {
+      engine: {
+        type: Object,
+        required: true
+      },
+      colors: {
+        type: Array,
+        default: () => []
+      },
+      defaultColor: {
+        type: String,
+        required: true
+      },
+      defaultActiveColor: {
+        type: String,
+        required: true
+      },
+      setStroke: {
+        type: [Boolean, Object],
+        default: undefined
+      },
+      onSelect: {
+        type: Function,
+        default: undefined
+      }
     },
-})
-export default class ColorPicker extends Vue {
-    @Prop({ type: Object, required: true}) engine!: EngineInterface
-    @Prop(Array) colors?: string[][]
-    @Prop({ type: String, required: true}) defaultColor!: string
-    @Prop({ type: String, required: true}) defaultActiveColor!: string
-    @Prop({ type: [Boolean, Object], default: undefined}) setStroke?: boolean
-    @Prop(Function) onSelect?: (color: string, event: MouseEvent) => void
-    
-
-    activeColors(values:Array<Array<string | {value:string,active:boolean}>>,activeValue:string){
-        return values.map(group => group.map(color => {
+    components: {
+      AmColorPickerItem,
+      AmColorPickerGroup
+    },
+    data() {
+      return {
+        activeColors: function(values, activeValue) {
+          return values.map(group => group.map(color => {
             const value = typeof color === "string" ? color : color.value
-            return { value, active:activeValue === value }
-        }))
-    }
-
-    colorValues: {
-        value: string;
-        active: boolean;
-    }[][] = []
-
-    text = ''
-
-    mounted(){
-        this.colorValues = this.activeColors(this.colors || Palette.getColors(), this.defaultActiveColor)
-        this.text = this.engine.language.get(
-                    'toolbar',
-                    'colorPicker',
-                    this.defaultColor === 'transparent'
-                        ? 'nonFillText'
-                        : 'defaultText',
-                )
-    }
-
-    triggerSelect(color: string, event: MouseEvent){
+            return { value, active: activeValue === value }
+          }))
+        },
+        colorValues: [],
+        text: ''
+      }
+    },
+    mounted() {
+      this.colorValues = this.activeColors(this.colors || Palette.getColors(), this.defaultActiveColor)
+      this.text = this.engine.language.get(
+        'toolbar',
+        'colorPicker',
+        this.defaultColor === 'transparent' ? 'nonFillText' : 'defaultText'
+      )
+    },
+    methods: {
+      triggerSelect(color, event) {
         this.colorValues = this.activeColors(this.colorValues, color)
         if (this.onSelect) this.onSelect(color, event);
-    }
-
-    triggerMouseDown(event:MouseEvent){
-        if ('INPUT' !== (event.target as Element).tagName) {
-            event.preventDefault();
+      },
+      triggerMouseDown(event) {
+        if ((event.target).tagName !== 'INPUT') {
+          event.preventDefault();
         }
+      }
     }
-}
+  }
 </script>
 <style>
 .colorpicker-default {
@@ -101,7 +113,7 @@ export default class ColorPicker extends Vue {
 }
 
 .colorpicker-default-text {
-    margin-left: 8px; 
+    margin-left: 8px;
 }
 
 .colorpicker-group {
