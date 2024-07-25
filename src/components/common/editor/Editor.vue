@@ -39,7 +39,7 @@
                   </div>
                 </div>
               </div>
-              <div class="editor-toc-inner">
+              <div class="editor-toc-inner beauty-scroll">
                 <div class="toc-content">
                   <div class="toc-item" v-for="item in tocData"
                        :class="['toc-depth-'+ item.depth, item.id === currentTocId ? 'toc-selected' : '']"
@@ -66,7 +66,7 @@
   import {$} from '@aomao/engine'
   import Toolbar from 'am-editor-toolbar-vue2'
   import {plugins, cards, pluginConfig, HightLightIcon} from "./config"
-  import {getTocData, getParentNode, belongToc} from "./utils/index"
+  import {getTocData, getParentNode} from "./utils/index"
 
   export default {
     name: 'Editor',
@@ -79,6 +79,8 @@
         currentTocId: '',
         // 滚动事件的防抖函数
         debounceScroll: function () {},
+        // 大纲刷新的防抖函数
+        debounceRefreshToc: function () {},
         engine: null,
         // 工具栏内容：下拉面板、
         items: [
@@ -236,10 +238,13 @@
       },
       /**
        * 渲染标题大纲
-       * @param engine
        */
-      renderTocData(engine) {
-        let tocData = getTocData(engine);
+      renderTocData() {
+        if (this.engine.isEmpty()) {
+          this.tocData = [];
+          return;
+        }
+        let tocData = getTocData(this.engine);
         this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
       }
     },
@@ -262,7 +267,7 @@
       const container = this.$refs.container;
       if (container) {
         //实例化引擎
-        const engine = new Engine(container, {
+        this.engine = new Engine(container, {
           // 启用插件
           plugins,
           // 启用卡片
@@ -271,23 +276,23 @@
           config: pluginConfig,
           autoPrepend: false,
           // 文档提示语
-          placeholder: '输入正文: '
+          placeholder: '输入 / 唤起更多'
         });
         // 设置显示成功消息UI，默认使用 console.log
-        engine.messageSuccess = (msg) => {
+        this.engine.messageSuccess = (msg) => {
           console.log(msg);
         };
         // 设置显示错误消息UI，默认使用 console.error
-        engine.messageError = (error) => {
+        this.engine.messageError = (error) => {
           console.log(error);
         };
         //卡片最大化时设置编辑页面样式
-        engine.on("card:maximize", () => {
+        this.engine.on("card:maximize", () => {
           $(".editor-toolbar").css("z-index", "9999").css("top", "0");
           $(".card-maximize-header").css("height", "60px");
           // $(".editor-toolbar").css("z-index", "9999");
         });
-        engine.on("card:minimize", () => {
+        this.engine.on("card:minimize", () => {
           $(".editor-toolbar").css("z-index", "").css("top", "");
         });
         // 非协同编辑，设置编辑器值，异步渲染后回调
@@ -296,36 +301,42 @@
         // });
 
         // 监听编辑器值改变事件
-        engine.on("change", () => {
-          let range = engine.change.range.get();
+        this.engine.on("change", () => {
+          let range = this.engine.change.range.get();
           let collapsed = range?.collapsed;
           let startNode = collapsed ? range.startNode : range.endNode;
           let parentNode = getParentNode(startNode);
-          // 1. 更新标题(单行节点)
-          let nodeName = parentNode?.name;
-          if (belongToc(nodeName)) {
-            this.renderTocData(engine);
-          } else {
-            // 2. 处理status影响其他文字
-            let children = parentNode?.children("span[data-card-key=\"status\"]");
-            if (children !== undefined && children.length !== 0) {
-              // 给当前节点去掉样式
-              startNode.removeAttributes('style')
-              startNode.allChildren().forEach(child => child?.removeAttributes('style'))
-            }
+          // 1. 处理status影响其他文字
+          let children = parentNode?.children("span[data-card-key=\"status\"]");
+          if (children !== undefined && children.length !== 0) {
+            // 给当前节点去掉样式
+            startNode.removeAttributes('style')
+            startNode.allChildren().forEach(child => child?.removeAttributes('style'))
           }
+          // 使用节流方案
+          // this.timerId = setTimeout(() => this.renderTocData(engine), 1000);
+          // this.debounce(this.renderTocData(engine), 1000);
+            this.debounceRefreshToc();
+          // 1. 更新标题(单行节点)
+
+
+
+          // let nodeName = parentNode?.name;
+          // if (belongToc(nodeName)) {
+          //   this.renderTocData(engine);
+          // } else {
+          //
+          // }
         });
 
         if (this.docInfo.content?.length !== 0) {
-          engine.setJsonValue(JSON.parse(this.docInfo.content))
+          this.engine.setJsonValue(JSON.parse(this.docInfo.content))
           const pattern = /h[1-6]/;
           let match = this.docInfo.content.match(pattern);
           if (match) {
-            this.renderTocData(engine);
+            this.renderTocData();
           }
         }
-
-        this.engine = engine;
       }
 
       // 渲染结束后获取输入框焦点，如果没有标题就先定位到标题，如果已有标题就定位到正文
@@ -341,6 +352,7 @@
 
       // 设置延迟时间，单位为毫秒
       this.debounceScroll = this.debounce(this.handleScrollForToc, 200);
+      this.debounceRefreshToc = this.debounce(this.renderTocData, 500);
     },
     beforeDestroy() {
       window.removeEventListener('keydown', this.saveDoc)

@@ -36,13 +36,8 @@
 </template>
 
 <script>
-  import { Popover } from "ant-design-vue";
-
   export default {
     name: "CollapseItem",
-    components: {
-      "a-popover": Popover
-    },
     props: {
       engine: Object,
       name: {
@@ -75,7 +70,7 @@
       };
     },
     mounted() {
-      this.iconIsHtml = /^<.*>$/.test(this.icon || "");
+      this.iconIsHtml = /^<.*>$/.test(this.icon ? this.icon.trim() : "");
     },
     methods: {
       handleMouseDown(event) {
@@ -85,6 +80,7 @@
         }
       },
       handleClick(event) {
+        debugger
         if (this.disabled) return;
 
         const nodeName = event.target.nodeName;
