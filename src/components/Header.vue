@@ -135,7 +135,7 @@
                 <div class="message-menu-wrapper">
                   <div class="message-menu-body">
                     <div class="c-badge" v-if="1"/>
-                    <span class="iconfont message"></span>
+                    <span class="iconfont i-message"></span>
                   </div>
                 </div>
               </a>
@@ -180,8 +180,15 @@
           <div class="login-register">
             <auth-modal>
               <slot>
-                <Button type="primary" ghost>
-                  <span>登录/注册</span>
+                <Button type="text" class="login">
+                  <span>登陆</span>
+                </Button>
+              </slot>
+            </auth-modal>
+            <auth-modal :quickRegister="true">
+              <slot>
+                <Button type="success" class="register">
+                  <span>快速注册</span>
                 </Button>
               </slot>
             </auth-modal>
@@ -191,14 +198,7 @@
         <!-- 公共部分 -->
         <b-navbar-nav class="ml-auto" :fill="true" align="center">
           <div class="charge">
-            <auth-modal v-if="!loginStatus">
-              <slot>
-                <Button type="primary" ghost>
-                  <span>写笔记</span>
-                </Button>
-              </slot>
-            </auth-modal>
-            <Button type="primary" ghost v-else @click="toWriteCenter">
+            <Button type="success" v-if="loginStatus" @click="toWriteCenter">
               <span>写笔记</span>
             </Button>
           </div>

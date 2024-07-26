@@ -23,7 +23,7 @@
               </div>
               <div class="from">
                 来自🕊
-                <b-link to="/follow"><span>语雀精选</span></b-link>
+                <b-link to="/follow"><span>小鱼干的专栏</span></b-link>
               </div>
             </b-row>
           </b-col>

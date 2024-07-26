@@ -29,7 +29,7 @@
           </div>
           <div class="login-main">
             <h1 class="title" v-if="loginType === 1">账号密码登录</h1>
-            <h1 class="title" v-if="loginType === 2">验证码登录 / 注册</h1>
+            <h1 class="title" v-if="loginType === 2">快速登录 / 注册</h1>
             <h1 class="title" v-if="loginType === 3">重置密码</h1>
             <div class="panel-pwd" v-if="loginType === 1">
               <div class="pwd-input-group">
@@ -190,6 +190,7 @@
         sendCodeInterval: null
       }
     },
+    props: ['quickRegister'],
     components: {
       SliderValidation
     },
@@ -289,6 +290,11 @@
         this.password = null;
         this.verifyCode = null;
         this.sliderValidateResult = false;
+      }
+    },
+    mounted() {
+      if (this.quickRegister) {
+        this.loginType = 2;
       }
     }
   }

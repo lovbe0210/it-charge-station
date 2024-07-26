@@ -29,6 +29,287 @@
       display: flex;
       align-items: center;
     }
+
+    .navbar-toggler {
+      background-color: #FFFFFF;
+      width: 40px;
+      padding: 0;
+    }
+
+    .navbar-collapse {
+      height: 65px;
+
+      .navbar-nav {
+        align-items: center;
+      }
+
+      // 菜单栏
+      .menu {
+        font-size: 15px;
+        margin: 0 20px 0 20px;
+
+        .mr-2 {
+          span {
+            color: var(--font-color);
+          }
+        }
+      }
+
+      // 已登录
+      .user-info {
+        margin-right: 5px;
+
+        .avatar {
+          /deep/ .ivu-select-dropdown {
+            border-radius: 8px;
+
+            .ivu-dropdown-menu {
+              text-align: left;
+              min-width: 250px;
+
+              .ivu-dropdown-item {
+                padding: 2px 16px;
+                margin-bottom: 5px;
+              }
+
+              .create-center {
+                padding-bottom: 8px;
+                border-bottom: 1px solid #eff0f0;
+              }
+
+              .ivu-dropdown-item:hover {
+                background: unset;
+              }
+
+              .quick-start-item {
+                height: 38px;
+                display: flex;
+                align-items: center;
+              }
+
+              .quick-start-item:hover {
+                background: var(--dropdown-item-hover);
+                border-radius: 4px;
+              }
+
+              .nickName {
+                margin-top: 5px;
+                width: auto;
+                font-size: 14px;
+                font-weight: 400;
+                justify-content: center;
+              }
+
+              .nickName:hover, .levelBar:hover, .counter:hover {
+                background: unset;
+              }
+
+              .levelBar {
+                justify-content: center;
+                flex-direction: column;
+                margin-bottom: 10px;
+
+                .level-bar-progress {
+                  display: flex;
+                  align-content: center;
+
+                  .iconfont {
+                    font-size: 25px;
+                  }
+
+                  .progress-wrapp {
+                    margin: auto 2px;
+
+                    .totalProgress{
+                      cursor: pointer;
+                      width: 185px;
+                      height: 2px;
+                      background-color: #c6c6c6;
+                      border-radius: 2px;
+                    }
+
+                    .currentProgress{
+                      width: 0;
+                      height: 2px;
+                      border-radius: 2px;
+                      background-color: #f3cb85;
+                    }
+                  }
+                }
+
+                .level-bar-text {
+                  color: var(--title-color);
+                  font-size: 12px;
+                }
+              }
+
+              .counter {
+                justify-content: space-between;
+                padding: 0 10px;
+                margin-bottom: 5px;
+
+                .single-count-item {
+                  display: flex;
+                  align-items: center;
+                  flex-direction: column;
+                  justify-content: space-between;
+                  transition: color .2s;
+
+                  .count-num {
+                    font-weight: 600;
+                  }
+
+                  .count-text {
+                    color: var(--title-color);
+                    font-weight: 400;
+                    font-size: 12px;
+                    transition: color .2s;
+                  }
+                }
+              }
+
+              .routing-menu {
+                .routing-content {
+                  margin-left: 6px;
+                }
+
+                .creation-center,.person-info,.data-stats,.login-out {
+                  font-size: 17px;
+                  margin-left: 10px;
+                  margin-right: 5px;
+                }
+
+                .i-more {
+                  font-size: 13px;
+                  margin-left: 125px;
+                }
+              }
+            }
+          }
+        }
+
+        .msg {
+          .nav-link {
+            text-decoration:none;
+            :hover {
+              text-decoration:none;
+            }
+            :visited {
+              text-decoration:none;
+            }
+            :focus {
+              text-decoration:none;
+            }
+
+          }
+
+          .message-menu-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            margin-right: 7px;
+
+            .message-menu-body {
+              .c-badge {
+                background: @badge_color;
+                border: 3px solid @badge_color;
+                border-radius: 100%;
+                position: absolute;
+                right: 15px;
+                top: 9px;
+              }
+
+              .iconfont {
+                color: var(--font-color);
+                display: inline-block;
+                font-size: 20px;
+              }
+
+              &:hover {
+                .iconfont{
+                  animation: bounce 0.6s ease; /* 使用 bounce 动画，但不设置 infinite */
+                  z-index: 268;
+                }
+
+                .c-badge {
+                  animation: bounce 0.6s ease; /* 使用 bounce 动画，但不设置 infinite */
+                  z-index: 269;
+                }
+              }
+
+              @keyframes bounce {
+                0%, 100% {
+                  transform: translateY(0);
+                }
+                25% {
+                  transform: translateY(-8px); /* 只在动画的开始阶段跳动一次 */
+                }
+              }
+            }
+          }
+
+          /deep/ .ivu-select-dropdown {
+            border-radius: 8px;
+
+            .ivu-dropdown-menu {
+              text-align: left;
+              min-width: 160px;
+              padding: 5px 0;
+
+              .ivu-dropdown-item {
+                position: relative;
+                display: flex;
+                align-items: center;
+                padding: 10px 0 10px 24px;
+                text-align: left;
+                font-size: 14px;
+                transition: background-color .3s;
+              }
+
+
+              .quick-start-item {
+                font-size: 14px;
+                color: var(--title-color);
+                display: flex;
+                align-items: center;
+
+                .msg-item-badge {
+                  position: absolute;
+                  right: 24px;
+                }
+              }
+
+            }
+          }
+        }
+      }
+
+      // 登陆注册
+      .login-register {
+        padding-left: 20px;
+        margin: 0 10px 0 26px;
+        display: flex;
+
+        .login {
+          margin-right: 10px;
+          color: var(--font-color);
+
+          &:hover {
+            color: @primary-color;
+            background: var(--dropdown-item-hover);
+          }
+        }
+      }
+
+      // 公用部分
+      .charge {
+        .ivu-btn {
+          padding: 0 15px;
+        }
+      }
+    }
   }
 
   // 当点击搜索框时的ui效果，绿色边框加输入框向右扩展
@@ -92,276 +373,6 @@
       text-overflow: ellipsis;
     }
   }
-
-  .navbar-toggler {
-    background-color: #FFFFFF;
-    width: 40px;
-    padding: 0;
-  }
-
-  .navbar-collapse {
-    height: 65px;
-  }
-
-  // 菜单栏
-  .menu {
-    font-size: 15px;
-    margin: 0 20px 0 20px;
-
-    .mr-2 {
-      span {
-        color: var(--font-color);
-      }
-    }
-  }
-
-  // 已登录
-  .user-info {
-    margin-right: 5px;
-
-    .avatar {
-      /deep/ .ivu-select-dropdown {
-        border-radius: 8px;
-
-        .ivu-dropdown-menu {
-          text-align: left;
-          min-width: 250px;
-
-          .ivu-dropdown-item {
-            padding: 2px 16px;
-            margin-bottom: 5px;
-          }
-
-          .create-center {
-            padding-bottom: 8px;
-            border-bottom: 1px solid #eff0f0;
-          }
-
-          .ivu-dropdown-item:hover {
-            background: unset;
-          }
-
-          .quick-start-item {
-            height: 38px;
-            display: flex;
-            align-items: center;
-          }
-
-          .quick-start-item:hover {
-            background: var(--dropdown-item-hover);
-            border-radius: 4px;
-          }
-
-          .nickName {
-            margin-top: 5px;
-            width: auto;
-            font-size: 14px;
-            font-weight: 400;
-            justify-content: center;
-          }
-
-          .nickName:hover, .levelBar:hover, .counter:hover {
-            background: unset;
-          }
-
-          .levelBar {
-            justify-content: center;
-            flex-direction: column;
-            margin-bottom: 10px;
-
-            .level-bar-progress {
-              display: flex;
-              align-content: center;
-
-              .iconfont {
-                font-size: 25px;
-              }
-
-              .progress-wrapp {
-                margin: auto 2px;
-
-                .totalProgress{
-                  cursor: pointer;
-                  width: 185px;
-                  height: 2px;
-                  background-color: #c6c6c6;
-                  border-radius: 2px;
-                }
-
-                .currentProgress{
-                  width: 0;
-                  height: 2px;
-                  border-radius: 2px;
-                  background-color: #f3cb85;
-                }
-              }
-            }
-
-            .level-bar-text {
-              color: var(--title-color);
-              font-size: 12px;
-            }
-          }
-
-          .counter {
-            justify-content: space-between;
-            padding: 0 10px;
-            margin-bottom: 5px;
-
-            .single-count-item {
-              display: flex;
-              align-items: center;
-              flex-direction: column;
-              justify-content: space-between;
-              transition: color .2s;
-
-              .count-num {
-                font-weight: 600;
-              }
-
-              .count-text {
-                color: var(--title-color);
-                font-weight: 400;
-                font-size: 12px;
-                transition: color .2s;
-              }
-            }
-          }
-
-          .routing-menu {
-            .routing-content {
-              margin-left: 6px;
-            }
-
-            .creation-center,.person-info,.data-stats,.login-out {
-              font-size: 17px;
-              margin-left: 10px;
-              margin-right: 5px;
-            }
-
-            .i-more {
-              font-size: 13px;
-              margin-left: 125px;
-            }
-          }
-        }
-      }
-    }
-
-    .msg {
-      .nav-link {
-        text-decoration:none;
-        :hover {
-          text-decoration:none;
-        }
-        :visited {
-          text-decoration:none;
-        }
-        :focus {
-          text-decoration:none;
-        }
-
-      }
-
-      .message-menu-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        margin-right: 7px;
-
-        .message-menu-body {
-          .c-badge {
-            background: @badge_color;
-            border: 3px solid @badge_color;
-            border-radius: 100%;
-            position: absolute;
-            right: 15px;
-            top: 9px;
-          }
-
-          .iconfont {
-            color: var(--font-color);
-            display: inline-block;
-            font-size: 20px;
-          }
-
-          &:hover {
-            .iconfont{
-              animation: bounce 0.6s ease; /* 使用 bounce 动画，但不设置 infinite */
-              z-index: 268;
-            }
-
-            .c-badge {
-              animation: bounce 0.6s ease; /* 使用 bounce 动画，但不设置 infinite */
-              z-index: 269;
-            }
-          }
-
-          @keyframes bounce {
-            0%, 100% {
-              transform: translateY(0);
-            }
-            25% {
-              transform: translateY(-8px); /* 只在动画的开始阶段跳动一次 */
-            }
-          }
-        }
-      }
-
-      /deep/ .ivu-select-dropdown {
-        border-radius: 8px;
-
-        .ivu-dropdown-menu {
-          text-align: left;
-          min-width: 160px;
-          padding: 5px 0;
-
-          .ivu-dropdown-item {
-            position: relative;
-            display: flex;
-            align-items: center;
-            padding: 10px 0 10px 24px;
-            text-align: left;
-            font-size: 14px;
-            transition: background-color .3s;
-          }
-
-
-          .quick-start-item {
-            font-size: 14px;
-            color: var(--title-color);
-            display: flex;
-            align-items: center;
-
-            .msg-item-badge {
-              position: absolute;
-              right: 24px;
-            }
-          }
-
-        }
-      }
-    }
-  }
-
-  // 登陆注册
-  .login-register {
-    padding: 0 10px 0 20px;
-    margin-right: 10px;
-  }
-
-  // 公用部分
-  .charge {
-    .ivu-btn {
-      padding: 0 15px;
-    }
-  }
-}
-
-.navbar-nav {
- align-items: center;
 }
 
 /deep/.message-box {

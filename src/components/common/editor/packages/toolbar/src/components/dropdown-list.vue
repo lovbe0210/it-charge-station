@@ -58,8 +58,8 @@
 </template>
 
 <script>
-  import { isMobile } from "@aomao/engine";
-  import { autoGetHotkey, formatHotkey } from "../utils";
+  import { isMobile, formatHotkey } from "@aomao/engine";
+  import { autoGetHotkey } from "../utils";
 
   export default {
     name: "DropdownList",
