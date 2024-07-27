@@ -32,7 +32,11 @@ import {merge, omit} from "lodash";
 import {isMobile, removeUnit} from "@aomao/engine";
 import AmGroup from "./group.vue";
 import locales from "../locales";
-import {getToolbarDefaultConfig, fontFamilyDefaultData, fontfamily} from "../config";
+import {
+  getToolbarDefaultConfig,
+  fontFamilyDefaultData,
+  fontfamily
+} from "../config";
 
 export default {
   components: {
@@ -52,7 +56,7 @@ export default {
       updateTimer: null,
       scrollTimer: null,
       mobileView: {top: 0}
-    };
+    }
   },
   mounted() {
     this.engine.language.add(locales);
@@ -60,7 +64,6 @@ export default {
     this.engine.on("change", this.updateByTimeout);
     this.engine.on("blur", this.updateByTimeout);
     this.engine.on("focus", this.updateByTimeout);
-
     if (isMobile) {
       if (!this.engine.isFocus()) this.hideMobileToolbar();
       this.engine.on("readonly", this.handleReadonly);
@@ -80,7 +83,6 @@ export default {
     this.engine.off("readonly", this.updateByTimeout);
     this.engine.off("blur", this.updateByTimeout);
     this.engine.off("focus", this.updateByTimeout);
-
     if (isMobile) {
       this.engine.off("readonly", this.handleReadonly);
       this.engine.off("blur", this.hideMobileToolbar);
@@ -112,6 +114,8 @@ export default {
         this.update();
       }, 100);
     },
+
+    //计算移动浏览器的视图变化
     calcuMobileView() {
       if (!this.engine.isFocus() || this.engine.readonly) return;
 
@@ -120,11 +124,13 @@ export default {
         const element = this.$refs.toolbarRef;
         const rect = element.getBoundingClientRect();
         const borderTop = removeUnit(getComputedStyle(element).borderTopWidth);
-        const borderBottom = removeUnit(getComputedStyle(element).borderBottomWidth);
+        const borderBottom = removeUnit(
+          getComputedStyle(element).borderBottomWidth
+        );
         const height = rect.height || 0;
 
         this.mobileView.top =
-          Math.max(
+          global.Math.max(
             document.body.scrollTop,
             document.documentElement.scrollTop
           ) +
@@ -144,6 +150,7 @@ export default {
         if (!Array.isArray(group)) {
           dataGroup.icon = group.icon;
           dataGroup.content = group.content;
+
           group = group.items;
         }
         group.forEach((item) => {
@@ -161,7 +168,7 @@ export default {
                 ? config.type === item.type
                 : config.type !== "collapse" && config.name === item.name
             );
-
+            // 解析collapse item 为字符串时
             if (item.type === "collapse") {
               const customCollapse = {
                 ...merge(
@@ -174,7 +181,7 @@ export default {
                 const items = [];
                 group.items.forEach((cItem) => {
                   let targetItem;
-                  (defaultItem.groups).some((g) =>
+                  defaultItem.groups.some((g) =>
                     g.items.some((i) => {
                       const isEqual =
                         i.name ===
@@ -215,16 +222,12 @@ export default {
                 customItem.active = this.engine.command.queryState(customItem.name);
               }
             } else if (customItem.type === "dropdown") {
-              if (customItem.onActive) {
-                customItem.values = customItem.onActive(customItem.items);
-              } else {
-                customItem.values = this.engine.command.queryState(customItem.name);
-              }
+              if (customItem.onActive) customItem.values = customItem.onActive(customItem.items);
+              else customItem.values = this.engine.command.queryState(customItem.name);
             }
             if (customItem.type !== "collapse") {
               customItem.disabled = customItem.onDisabled
-                ? customItem.onDisabled()
-                : !this.engine.command.queryEnabled(customItem.name);
+                ? customItem.onDisabled() : !this.engine.command.queryEnabled(customItem.name);
             } else {
               customItem.groups.forEach((group) =>
                 group.items.forEach((item) => {
@@ -244,6 +247,7 @@ export default {
       });
       this.groupValue = data;
     },
+
     preventDefault(event) {
       event.preventDefault();
     },

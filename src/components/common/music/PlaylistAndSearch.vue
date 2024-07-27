@@ -82,7 +82,6 @@
           this.searchResult = [];
           this.topMusicScroll = 0;
           let playList = document.querySelector(".music-list");
-          // debugger
           playList.scrollTo({
             behavior: "instant",
             top: this.topMusicScroll
@@ -149,7 +148,6 @@
 
       },
       handleScrollWheel(event) {
-        // debugger
         // 如果list大于4时才进行滚动
         if (this.playList == null || this.playList.length <= 4) {
           return;
@@ -171,7 +169,6 @@
           }
           if (event.wheelDelta < 0 || event.detail > 0) {
             // up
-            // debugger
             let scrollDistance = this.topMusicScroll + itemHeight;
             if (scrollDistance <= totalHeight) {
               this.topMusicScroll += itemHeight;

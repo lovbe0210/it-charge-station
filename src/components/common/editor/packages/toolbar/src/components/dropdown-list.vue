@@ -48,9 +48,9 @@
           "
           class="data-icon data-icon-dot"
         ></span>
-        <slot name="icon">
-          <span v-if="icon" :class="['data-icon', `data-icon-${icon}`]" />
-        </slot>
+        <slot name="icon"
+        ><span v-if="icon" :class="['data-icon', `data-icon-${icon}`]"
+        /></slot>
         <div v-html="typeof content === 'function' ? content() : content"></div>
       </a>
     </a-tooltip>
@@ -108,7 +108,7 @@
       getHotkey(item) {
         const { command, key } = item;
         let { hotkey } = item;
-        // 默认获取插件的热键
+        //默认获取插件的热键
         if (this.engine && (hotkey === true || hotkey === undefined)) {
           hotkey = autoGetHotkey(
             this.engine,

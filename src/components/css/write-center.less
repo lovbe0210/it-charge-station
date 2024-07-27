@@ -135,7 +135,7 @@
         }
       }
 
-      .normal-dropdown {
+      /deep/.normal-dropdown {
         border: 1px solid rgba(255, 255, 255, 0.2);
       }
 
@@ -919,15 +919,14 @@
   }
 
   /deep/ .editor-toolbar {
-
     .editor-toolbar-content {
       .toolbar-dropdown-trigger-arrow {
         .data-icon-arrow {
-          top: calc(~"100% / 2 - 2px");
-          background-image: unset;
-          border-left: 4px solid transparent;
-          border-right: 4px solid transparent;
-          border-top: 5px solid var(--font-color);
+          //top: calc(~"100% / 2 - 2px");
+          //background-image: unset;
+          //border-left: 4px solid transparent;
+          //border-right: 4px solid transparent;
+          //border-top: 5px solid var(--font-color);
         }
       }
 
@@ -944,51 +943,46 @@
         background-color: var(--dropdown-item-hover);
       }
     }
+  }
 
-    .toolbar-dropdown .toolbar-dropdown-list {
-      margin-top: 5px;
-      background: var(--dropdown-bg-color);
-      border-color: @border-color_normal;
+  /deep/ .toolbar-dropdown .toolbar-dropdown-list {
+    background: var(--dropdown-bg-color);
+    border-color: @border-color_normal;
 
-      .toolbar-collapse-header {
-        color: var(--font-color);
-      }
+    .toolbar-collapse-header {
+      color: var(--font-color);
+    }
 
-      .toolbar-collapse-item {
-        .hight-light-icon {
-          background: #e8e8e8;
-        }
-
-        .toolbar-collapse-item-text {
-          .toolbar-collapse-item-title {
-            color: var(--font-color);
-          }
+    .toolbar-collapse-item {
+      .toolbar-collapse-item-text {
+        .toolbar-collapse-item-title {
+          color: var(--font-color);
         }
       }
+    }
 
-      .toolbar-dropdown-list-item {
-        color: var(--font-color);
+    .toolbar-dropdown-list-item {
+      color: var(--font-color);
 
-        &:hover {
-          background: var(--dropdown-item-hover);
-        }
-
-        .data-icon-dot {
-          background-image: unset;
-
-          &::after {
-            content: "✓";
-            font-size: 14px;
-            color: var(--font-color);
-            position: absolute;
-            margin-top: -7px;
-          }
-        }
-      }
-
-      .toolbar-collapse-item-active {
+      &:hover {
         background: var(--dropdown-item-hover);
       }
+
+      .data-icon-dot {
+        background-image: unset;
+
+        &::after {
+          content: "✓";
+          font-size: 14px;
+          color: var(--font-color);
+          position: absolute;
+          margin-top: -7px;
+        }
+      }
+    }
+
+    .toolbar-collapse-item-active {
+      background: var(--dropdown-item-hover);
     }
   }
 

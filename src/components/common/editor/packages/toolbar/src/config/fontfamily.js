@@ -2,99 +2,98 @@ import { isSupportFontFamily } from "../utils"
 
 export const defaultData = [
   {
-    key: "default",
-    value: ""
+    key: 'default',
+    value: ''
   },
   {
-    key: "arial",
-    value: "Arial"
+    key: 'arial',
+    value: 'Arial'
   },
   {
-    key: "comicSansMS",
+    key: 'comicSansMS',
     value: '"Comic Sans MS"'
   },
   {
-    key: "courierNew",
+    key: 'courierNew',
     value: '"Courier New"'
   },
   {
-    key: "georgia",
-    value: "Georgia"
+    key: 'georgia',
+    value: 'Georgia'
   },
   {
-    key: "helvetica",
-    value: "Helvetica"
+    key: 'helvetica',
+    value: 'Helvetica'
   },
   {
-    key: "impact",
-    value: "Impact"
+    key: 'impact',
+    value: 'Impact'
   },
   {
-    key: "timesNewRoman",
+    key: 'timesNewRoman',
     value: '"Times New Roman"'
   },
   {
-    key: "trebuchetMS",
+    key: 'trebuchetMS',
     value: '"Trebuchet MS"'
   },
   {
-    key: "verdana",
-    value: "Verdana"
+    key: 'verdana',
+    value: 'Verdana'
   },
   {
-    key: "fangSong",
-    value: "FangSong, 仿宋, FZFangSong-Z02S, STFangsong, fangsong"
+    key: 'fangSong',
+    value: 'FangSong, 仿宋, FZFangSong-Z02S, STFangsong, fangsong'
   },
   {
-    key: "stFangsong",
-    value: "STFangsong, 华文仿宋, FangSong, FZFangSong-Z02S, fangsong"
+    key: 'stFangsong',
+    value: 'STFangsong, 华文仿宋, FangSong, FZFangSong-Z02S, fangsong'
   },
   {
-    key: "stSong",
+    key: 'stSong',
     value: 'STSong, 华文宋体, SimSun, "Songti SC", NSimSun, serif'
   },
   {
-    key: "stKaiti",
+    key: 'stKaiti',
     value: 'STKaiti, 华文楷体, KaiTi, "Kaiti SC", cursive'
   },
   {
-    key: "simSun",
+    key: 'simSun',
     value: 'SimSun, 宋体, "Songti SC", NSimSun, STSong, serif'
   },
   {
-    key: "microsoftYaHei",
-    value:
-      '"Microsoft YaHei", 微软雅黑, "PingFang SC", SimHei, STHeiti, sans-serif'
+    key: 'microsoftYaHei',
+    value: '"Microsoft YaHei", 微软雅黑, "PingFang SC", SimHei, STHeiti, sans-serif'
   },
   {
-    key: "kaiTi",
+    key: 'kaiTi',
     value: 'KaiTi, 楷体, STKaiti, "Kaiti SC", cursive'
   },
   {
-    key: "kaitiSC",
+    key: 'kaitiSC',
     value: '"Kaiti SC"'
   },
   {
-    key: "simHei",
+    key: 'simHei',
     value: 'SimHei, 黑体, "Microsoft YaHei", "PingFang SC", STHeiti, sans-serif'
   },
   {
-    key: "heitiSC",
+    key: 'heitiSC',
     value: '"Heiti SC"'
   },
   {
-    key: "fzHei",
-    value: "FZHei-B01S"
+    key: 'fzHei',
+    value: 'FZHei-B01S'
   },
   {
-    key: "fzKai",
-    value: "FZKai-Z03S"
+    key: 'fzKai',
+    value: 'FZKai-Z03S'
   },
   {
-    key: "fzFangSong",
-    value: "FZFangSong-Z02S"
+    key: 'fzFangSong',
+    value: 'FZFangSong-Z02S'
   }
-]
+];
 /**
  * 生成字体下拉列表项
  * @param data key-value 键值对数据，key 名称，如果有传语言则是语言键值对的key否则就直接显示
@@ -102,8 +101,10 @@ export const defaultData = [
  */
 export default (data, language) => {
   return data.map(({ key, value }) => {
-    const disabled = key !== "default"
-      ? !value.split(",").some(v => isSupportFontFamily(v.trim())) : false;
+    const disabled =
+      key !== 'default'
+        ? !value.split(',').some((v) => isSupportFontFamily(v.trim()))
+        : false;
     return {
       key: value,
       faimlyName: language ? language[key] : key,
@@ -112,9 +113,10 @@ export default (data, language) => {
       }</span>`,
       hotkey: false,
       disabled,
-      title: disabled ? (language && language.notInstalled) ||
-        "The font may not be installed"
+      title: disabled
+        ? (language && language.notInstalled) ||
+        'The font may not be installed'
         : undefined
-    }
-  })
-}
+    };
+  });
+};

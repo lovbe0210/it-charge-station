@@ -56,10 +56,7 @@
         type: [Boolean, Object],
         default: undefined
       },
-      onSelect: {
-        type: Function,
-        default: undefined
-      }
+      onSelect: Function
     },
     components: {
       AmColorPickerItem,
@@ -67,31 +64,31 @@
     },
     data() {
       return {
-        activeColors: function(values, activeValue) {
-          return values.map(group => group.map(color => {
-            const value = typeof color === "string" ? color : color.value
-            return { value, active: activeValue === value }
-          }))
-        },
         colorValues: [],
         text: ''
       }
     },
     mounted() {
       this.colorValues = this.activeColors(this.colors || Palette.getColors(), this.defaultActiveColor)
-      this.text = this.engine.language.get(
-        'toolbar',
-        'colorPicker',
-        this.defaultColor === 'transparent' ? 'nonFillText' : 'defaultText'
-      )
+      this.text = this.engine.language.get('toolbar', 'colorPicker',
+        this.defaultColor === 'transparent' ? 'nonFillText' : 'defaultText')
     },
     methods: {
+      activeColors(values, activeValue) {
+        return values.map(group =>
+          group.map(color => {
+            const value = typeof color === "string" ? color : color.value;
+            return { value, active: activeValue === value }
+          }
+        ));
+      },
       triggerSelect(color, event) {
         this.colorValues = this.activeColors(this.colorValues, color)
         if (this.onSelect) this.onSelect(color, event);
       },
+
       triggerMouseDown(event) {
-        if ((event.target).tagName !== 'INPUT') {
+        if (event.target.tagName !== 'INPUT') {
           event.preventDefault();
         }
       }

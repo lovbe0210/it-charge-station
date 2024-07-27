@@ -25,37 +25,37 @@
 </template>
 
 <script>
-export default {
-  props: {
-    maxRows: {type: Number, default: 10},
-    maxCols: {type: Number, default: 10},
-    minRows: {type: Number, default: 4},
-    minCols: {type: Number, default: 4},
-    onSelect: Function
-  },
-  data() {
-    return {
-      currentRows: 4,
-      currentCols: 4,
-      selectedRows: 0,
-      selectedCols: 0
-    };
-  },
-  methods: {
-    triggerSelect(event, rows, cols) {
-      event.preventDefault();
-      if (this.onSelect) this.onSelect(event, rows + 1, cols + 1);
+  export default {
+    props: {
+      maxRows: {type: Number, default: 10},
+      maxCols: {type: Number, default: 10},
+      minRows: {type: Number, default: 4},
+      minCols: {type: Number, default: 4},
+      onSelect: Function
     },
-    triggerHover(rows, cols) {
-      const showRows = Math.max(this.minRows, Math.min(this.maxRows, rows + 2));
-      const showCols = Math.max(this.minCols, Math.min(this.maxCols, cols + 2));
-      this.currentRows = showRows;
-      this.currentCols = showCols;
-      this.selectedRows = rows + 1;
-      this.selectedCols = cols + 1;
+    data() {
+      return {
+        currentRows: 4,
+        currentCols: 4,
+        selectedRows: 0,
+        selectedCols: 0
+      };
+    },
+    methods: {
+      triggerSelect(event, rows, cols) {
+        event.preventDefault();
+        if (this.onSelect) this.onSelect(event, rows + 1, cols + 1);
+      },
+      triggerHover(rows, cols) {
+        const showRows = Math.max(this.minRows, Math.min(this.maxRows, rows + 2));
+        const showCols = Math.max(this.minCols, Math.min(this.maxCols, cols + 2));
+        this.currentRows = showRows;
+        this.currentCols = showCols;
+        this.selectedRows = rows + 1;
+        this.selectedCols = cols + 1;
+      }
     }
-  }
-};
+  };
 </script>
 
 <style>

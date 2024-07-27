@@ -30,16 +30,9 @@
 </template>
 <script>
   import {isMobile} from "@aomao/engine";
-  // import {CollapseGroupProps} from '../../types';
   import AmButton from '../button.vue';
   import AmCollapseGroup from './group.vue';
 
-  // @Component({
-  //     components: {
-  //         AmButton,
-  //         AmCollapseGroup
-  //     },
-  // })
   export default {
     name: "AmCollapse",
     data() {
@@ -53,7 +46,35 @@
       AmButton,
       AmCollapseGroup
     },
-    props: ['engine', 'header', 'groups', 'disabled', 'className', 'icon', 'content'],
+    props: {
+      engine: {
+        type: Object
+      },
+      header: {
+        type: String
+      },
+      groups: {
+        type: Array
+      },
+      disabled: {
+        type: [Boolean, Object],
+        default: undefined
+      },
+      className: {
+        type: String
+      },
+      icon: {
+        type: String,
+        default: undefined
+      },
+      content: {
+        type: [String, Function],
+        default: undefined
+      },
+      onSelect: {
+        type: Function
+      }
+    },
     methods: {
       triggerClick() {
         if (this.visible) {
@@ -108,12 +129,11 @@
 <style scoped lang="less">
   .toolbar-collapse-header {
     color: #8c8c8c;
-    margin: 4px 16px 0;
+    margin: 4px 0 8px;
     font-size: 12px;
     line-height: 20px;
     text-align: left;
-    padding-bottom: 8px;
-    margin-bottom: 6px;
+    padding: 0 12px 12px;
     border-bottom: 1px solid #e8e8e8;
   }
 
@@ -137,12 +157,6 @@
     line-height: 24px;
   }
 
-  .toolbar-collapse-item {
-    display: flex;
-    cursor: pointer;
-    padding: 4px 16px 0;
-  }
-
   .toolbar-collapse-item-active {
     background-color: #f4f4f4;
   }
@@ -159,7 +173,7 @@
   .toolbar-collapse-item .toolbar-collapse-item-text {
     display: block;
     text-align: left;
-    margin-left: 8px;
+    margin-left: 20px;
   }
 
   .toolbar-collapse-item .toolbar-collapse-item-title {

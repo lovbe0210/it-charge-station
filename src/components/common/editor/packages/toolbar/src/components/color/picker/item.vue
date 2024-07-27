@@ -18,7 +18,7 @@
 
 <script>
   import tinycolor2 from 'tinycolor2';
-  import Palette from './palette';
+  import Palette from './palette'
 
   export default {
     name: "AmColorItem",
@@ -45,17 +45,38 @@
       return {
         title: '',
         special: false,
-        state: undefined,
+        state: {
+          hsl: null,
+          hex: '',
+          rgb: null,
+          hsv: null,
+          oldHue: null,
+          source: null
+        },
         needBorder: false,
-        styles: undefined
-      };
+        styles: {
+          check: {
+            fill: '',
+            display: ''
+          },
+          block: {
+            backgroundColor: '',
+            border: null
+          }
+        }
+      }
+    },
+    computed: {
+      refreshStyles() {
+        return this.getStyles();
+      }
     },
     mounted() {
       this.special = this.color === 'transparent';
-      this.title = this.engine.language.get('toolbar', 'colorPicker', this.color.toUpperCase());
-      this.state = this.toState(this.color || '#FFFFFF');
+      this.title = this.engine.language.get('toolbar', 'colorPicker', this.color.toUpperCase())
+      this.state = this.toState(this.color || '#FFFFFF')
       this.needBorder = ['#ffffff', '#fafafa', 'transparent'].indexOf(this.state.hex) >= 0;
-      this.styles = this.getStyles(this.state);
+      this.styles = this.getStyles(this.state)
     },
     methods: {
       triggerSelect(event) {
@@ -63,23 +84,17 @@
         event.stopPropagation();
         if (this.onSelect) this.onSelect(this.color, event);
       },
-      get refreshStyles() {
-        return this.getStyles();
-      },
       getContrastingColor(color) {
-        if (!color) return '';
+        if (!color) return ''
         if (color.hex === 'transparent') {
           return 'rgba(0,0,0,0.4)';
         }
-
         const yiq =
           (color.rgb.r * 299 + color.rgb.g * 587 + color.rgb.b * 114) / 1000;
         return yiq >= 210 ? '#8C8C8C' : '#FFFFFF';
       },
       toState(color, oldHue) {
-        const tinyColor = (color.hex)
-          ? tinycolor2(color.hex)
-          : tinycolor2(color);
+        const tinyColor = color.hex ? tinycolor2((color).hex) : tinycolor2(color);
         const hsl = tinyColor.toHsl();
         const hsv = tinyColor.toHsv();
         const rgb = tinyColor.toRgb();
@@ -96,8 +111,8 @@
           hex: transparent ? 'transparent' : '#'.concat(hex),
           rgb: rgb,
           hsv: hsv,
-          oldHue: color.h || oldHue || hsl.h,
-          source: color.source
+          oldHue: (color).h || oldHue || hsl.h,
+          source: (color).source
         };
       },
       getStyles(state) {

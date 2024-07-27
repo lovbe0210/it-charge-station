@@ -134,7 +134,6 @@
     watch: {
       // 当vuex中的歌曲id发生变化时,需要重新获取评论和歌词
       "$store.state.musicInfo.musicId"(musicId) {
-        // debugger
         if (musicId === null) {
           this.lyric = [[0, "无限音乐，无限可能"]];
           this.lyricsIndex = 0;

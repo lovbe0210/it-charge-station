@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import AmColorPickerItem from './item.vue';
+  import AmColorPickerItem from './item.vue'
 
   export default {
     name: "AmColorGroup",

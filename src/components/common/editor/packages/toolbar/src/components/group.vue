@@ -8,49 +8,20 @@
       v-if="!!icon || !!content"
     >
       <template #content>
-        <div
-          :class="[
-            'editor-toolbar',
-            { 'editor-toolbar-mobile': isMobile && !popup, 'editor-toolbar-popup': popup },
-          ]"
-          data-element="ui"
-        >
-          <template v-for="(item, index) in items">
-            <am-button
-              v-if="item.type === 'button'"
-              :key="index"
-              v-bind="item"
-              placement="top"
-              :engine="engine"
-            />
-            <am-dropdown
-              v-if="item.type === 'dropdown'"
-              :key="index"
-              v-bind="item"
-              placement="top"
-              :engine="engine"
-            />
-            <am-color
-              v-if="item.type === 'color'"
-              :key="index"
-              v-bind="item"
-              placement="top"
-              :engine="engine"
-            />
-            <am-collapse
-              v-if="item.type === 'collapse'"
-              :key="index"
-              v-bind="item"
-              placement="top"
-              :engine="engine"
-            />
+        <div :class="['editor-toolbar', {'editor-toolbar-mobile': isMobile && !popup,
+                            'editor-toolbar-popup': popup,}]" data-element="ui">
+          <template v-for="(item , index) in items">
+            <am-button v-if="item.type === 'button'" :key="index" v-bind="item" placement="top" :engine="engine" />
+            <am-dropdown v-if="item.type === 'dropdown'" :key="index" v-bind="item" placement="top" :engine="engine" />
+            <am-color v-if="item.type === 'color'" :key="index" v-bind="item" placement="top" :engine="engine" />
+            <am-collapse v-if="item.type === 'collapse'" :key="index" v-bind="item" placement="top" :engine="engine" />
           </template>
         </div>
       </template>
       <am-button name="group-popover" :icon="icon" :content="content" />
     </a-popover>
     <template v-if="!icon && !content">
-      <template v-for="(item, index) in items">
+      <template v-for="(item , index) in items">
         <am-button v-if="item.type === 'button'" :key="index" v-bind="item" :engine="engine" />
         <am-dropdown v-if="item.type === 'dropdown'" :key="index" v-bind="item" :engine="engine" />
         <am-color v-if="item.type === 'color'" :key="index" v-bind="item" :engine="engine" />
@@ -61,12 +32,12 @@
 </template>
 
 <script>
-  import { isMobile } from "@aomao/engine";
-  import { Popover } from "ant-design-vue";
-  import AmButton from "./button.vue";
-  import AmDropdown from "./dropdown.vue";
-  import AmColor from "./color/color.vue";
-  import AmCollapse from "./collapse/collapse.vue";
+import {isMobile } from '@aomao/engine'
+import { Popover } from 'ant-design-vue'
+import AmButton from './button.vue'
+import AmDropdown from './dropdown.vue'
+import AmColor from './color/color.vue'
+import AmCollapse from './collapse/collapse.vue'
 
   export default {
     components: {
@@ -96,11 +67,8 @@
     },
     methods: {
       getPopupContainer() {
-        return (
-          document.querySelector(".data-toolbar-popup-wrapper") ||
-          document.querySelector(".editor-toolbar") ||
-          document.body
-        );
+        return document.querySelector('.data-toolbar-popup-wrapper') ||
+          document.querySelector('.editor-toolbar') || document.body
       }
     }
   };

@@ -153,7 +153,7 @@
            :width="300"
            :styles="{top: '28%'}">
       <div class="slider-verify-box" style="height: 200px;">
-        <span class="content">请先完成滑块验证</span>
+        <span class="content un-select">请先完成滑块验证</span>
         <div v-if="showSliderValidate" class="validation">
           <slider-validation @validate="validate"></slider-validation>
         </div>

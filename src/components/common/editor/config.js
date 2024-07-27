@@ -31,15 +31,13 @@ import Math, {MathComponent} from "@aomao/plugin-math"
 import Fontfamily from "@aomao/plugin-fontfamily"
 import Status, {StatusComponent} from "@aomao/plugin-status"
 import LineHeight from "@aomao/plugin-line-height"
-import Mention, {MentionComponent} from "@aomao/plugin-mention"
+// import Mention, {MentionComponent} from "@aomao/plugin-mention"
 // import {fontFamilyDefaultData, ToolbarPlugin, ToolbarComponent} from "am-editor-toolbar-vue2"
 import {fontFamilyDefaultData, ToolbarPlugin, ToolbarComponent} from "./packages/toolbar/src"
 import Link from "am-editor-link-vue2"
 // import CodeBlock, {CodeBlockComponent} from "am-editor-codeblock-vue2"
 import CodeBlock, {CodeBlockComponent} from "./packages/codeblock/src"
-import MentionHover from "./MentionHover.vue"
-import {creatComponent} from "./utils"
-import AmLoading from "./Loading.vue"
+// import mulit_codeblock from '@aomao/plugin-mulit-codeblock';
 
 import Lightblock, {LightblockComponent} from "./packages/lightblock/src";
 
@@ -82,7 +80,6 @@ export const plugins = [
   Fontfamily,
   Status,
   LineHeight,
-  Mention,
   Link,
   CodeBlock,
   ToolbarPlugin,
@@ -110,7 +107,6 @@ export const cards = [
   VideoComponent,
   MathComponent,
   StatusComponent,
-  MentionComponent,
   CodeBlockComponent,
   ToolbarComponent,
   LightblockComponent
@@ -161,21 +157,6 @@ export const pluginConfig = {
     parse: res => {
       if (res.success) return {result: true, data: res.svg}
       return {result: false}
-    }
-  },
-  [Mention.pluginName]: {
-    // action: `${DOMAIN}/user/search`,
-    onLoading: root => {
-      creatComponent(AmLoading, root.get())
-    },
-    onEmpty: root => {
-      // creatComponent(Empty, root.get<HTMLElement>()!);
-    },
-    onClick: (root, {key, name}) => {
-      console.log("mention click:", key, "-", name)
-    },
-    onMouseEnter: (layout, {name}) => {
-      creatComponent(MentionHover, layout.get(), {name})
     }
   },
   [Fontsize.pluginName]: {

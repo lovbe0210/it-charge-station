@@ -80,7 +80,6 @@
         }
       },
       handleClick(event) {
-        debugger
         if (this.disabled) return;
 
         const nodeName = event.target.nodeName;
@@ -114,8 +113,37 @@
     }
   };
 </script>
-<style>
+<style lang="less">
+@import "../../../../../../../css/common-var";
 .prompt-popover-hide {
   display: none;
+}
+
+.toolbar-collapse-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 2px;
+
+  & > span {
+    height: 20px;
+    width: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    border: 1px solid @border-color_normal;
+    background: #fafafa;
+    margin-right: 15px;
+  }
+
+  .iconfont {
+    line-height: 20px;
+  }
+
+  &:hover {
+    background: #e6e6e6;
+  }
 }
 </style>

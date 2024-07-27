@@ -33,9 +33,9 @@
         ref="targetRef"
       >
         <template #icon>
-          <span class="colorpicker-button-dropdown-empty"/>
+          <span class="colorpicker-button-dropdown-empty" />
         </template>
-        <span class="data-icon data-icon-arrow"/>
+        <span class="data-icon data-icon-arrow" />
       </am-button>
     </div>
     <div
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-  import {isMobile} from "@aomao/engine";
+  import { isMobile } from "@aomao/engine";
   import AmButton from "../button.vue";
   import AmColorPicker from "./picker/picker.vue";
   import Palette from "./picker/palette";
@@ -121,12 +121,12 @@
     },
     mounted() {
       if (this.$refs.buttonRef && isMobile) {
-        const rect = this.$refs.buttonRef.getBoundingClientRect();
+        const rect = (this.$refs.buttonRef).getBoundingClientRect();
         this.isRight = rect.left > window.visualViewport.width / 2;
       }
       this.currentColor = this.defaultActiveColor;
     },
-    beforeDestroy() {
+    unmounted() {
       document.removeEventListener("click", this.hideDropdown);
     },
     watch: {
@@ -147,7 +147,7 @@
         handler(value) {
           if (value) {
             document.addEventListener("click", this.hideDropdown);
-            this.$nextTick(() => {
+            setTimeout(() => {
               const current = this.$refs.elementRef;
               if (!current || !this.engine || !this.engine.scrollNode) return;
               const scrollElement = this.engine.scrollNode.get();
@@ -156,7 +156,7 @@
               const scrollRect = scrollElement.getBoundingClientRect();
               if (rect.top < scrollRect.top) this.listPlacement = "bottom";
               if (rect.bottom > scrollRect.bottom) this.listPlacement = "top";
-            });
+            }, 0);
           } else {
             document.removeEventListener("click", this.hideDropdown);
           }
@@ -169,9 +169,9 @@
           typeof this.content === "string"
             ? this.content
             : this.content(
-            this.currentColor,
-            Palette.getStroke(this.currentColor),
-            this.disabled
+              this.currentColor,
+              Palette.getStroke(this.currentColor),
+              this.disabled
             );
       },
       toggleDropdown(event) {
@@ -182,15 +182,16 @@
           this.showDropdown();
         }
       },
+
       showDropdown() {
         this.visible = true;
       },
+
       hideDropdown(event) {
-        if (
-          event &&
-          this.$refs.targetRef &&
-          this.$refs.targetRef.$refs.element.contains(event.target)
-        ) return;
+        if (event && this.$refs.targetRef &&
+          ((this.$refs.targetRef).$refs.element).contains(event.target)) {
+          return;
+        }
         this.visible = false;
       },
       triggerClick(event) {

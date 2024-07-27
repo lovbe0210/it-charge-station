@@ -309,7 +309,6 @@
         }
       },
       addText(val, isPop) {
-        // debugger
         let selection = window.getSelection()
         if (selection) {
           selection.removeAllRanges()

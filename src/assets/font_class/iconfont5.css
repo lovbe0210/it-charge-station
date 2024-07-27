@@ -1,7 +1,7 @@
 @font-face {
   font-family: "iconfont";
   src:
-      url('//at.alicdn.com/t/c/font_4499563_8dnjwyv413d.woff2?t=1720712155157') format('woff2');
+      url('//at.alicdn.com/t/c/font_4499563_rpsafrtrwug.woff2?t=1722093645183') format('woff2');
 }
 
 .iconfont {
@@ -42,6 +42,38 @@
 
 .like-yes:before {
   content: "\e507";
+}
+
+.status:before {
+  content: "\e508";
+}
+
+.high-light:before {
+  content: "\e509";
+}
+
+.i-table:before {
+  content: "\e510";
+}
+
+.media:before {
+  content: "\e511";
+}
+
+.attachment:before {
+  content: "\e512";
+}
+
+.code-block:before {
+  content: "\e513";
+}
+
+.upload-image:before {
+  content: "\e514";
+}
+
+.formula:before {
+  content: "\e515";
 }
 
 

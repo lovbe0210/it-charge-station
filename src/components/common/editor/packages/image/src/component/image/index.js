@@ -43,7 +43,6 @@ class Image {
   }
 
   renderTemplate(message) {
-    console.log("renderTemplate...")
     const { link, percent, className, onBeforeRender } = this.options
 
     if (this.status === "error") {
@@ -123,7 +122,6 @@ class Image {
   }
 
   imageLoadCallback() {
-    console.log("imageLoadCallback...")
     const editor = this.editor
     const root = editor.card.closest(this.root)
     if (!root || this.status === "uploading") {
@@ -363,7 +361,6 @@ class Image {
   }
 
   renderEditor() {
-    console.log("renderEditor...")
     const img = this.image.get()
     if (!img) return
     const { clientWidth, clientHeight } = img
@@ -429,7 +426,6 @@ class Image {
   }
 
   render(loadingBg) {
-    console.log("render...")
     // 阅读模式不展示错误
     const { container, display, enableResizer } = this.options
     if (display === CardType.BLOCK) {

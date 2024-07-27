@@ -1,25 +1,24 @@
 export const autoGetHotkey = (engine, name, itemKey) => {
   const plugin = engine?.plugin.components[name]
   if (plugin && plugin.hotkey) {
-    let key = plugin.hotkey()
+    let key = plugin.hotkey();
     if (key) {
       if (Array.isArray(key)) {
         if (itemKey) {
           const index = key.findIndex(
             k => typeof k === "object" && k.args === itemKey
-          )
+          );
           key = key[index > -1 ? index : 0]
         } else {
           key = key[0]
         }
       }
       if (typeof key === "object") {
-        key = key.key
+        key = key.key;
       }
-      return key
+      return key;
     }
   }
-  return
 }
 
 /**
@@ -30,13 +29,13 @@ export const autoGetHotkey = (engine, name, itemKey) => {
 export const isSupportFontFamily = font => {
   if (typeof font !== "string") {
     console.log("Font name is not legal !")
-    return false
+    return false;
   }
 
-  let width
-  const body = document.body
+  let width;
+  const body = document.body;
 
-  const container = document.createElement("span")
+  const container = document.createElement("span");
   container.innerHTML = Array(10).join("wi")
   container.style.cssText = [
     "position:absolute",
@@ -46,12 +45,12 @@ export const isSupportFontFamily = font => {
   ].join(" !important;")
 
   const getWidth = fontFamily => {
-    container.style.fontFamily = fontFamily
-    body.appendChild(container)
-    width = container.clientWidth
-    body.removeChild(container)
+    container.style.fontFamily = fontFamily;
+    body.appendChild(container);
+    width = container.clientWidth;
+    body.removeChild(container);
 
-    return width
+    return width;
   }
 
   const monoWidth = getWidth("monospace")

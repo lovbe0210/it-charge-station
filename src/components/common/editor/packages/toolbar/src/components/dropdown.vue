@@ -26,8 +26,8 @@
         :disabled="disabled"
         ref="targetRef"
       >
-        <template #default="{ item }">
-          <slot name="default" :item="item">
+        <template #default>
+          <slot :item="content">
             <span
               v-if="buttonContent && buttonContent.icon"
               :class="['data-icon', `data-icon-${buttonContent.icon}`]"
@@ -40,7 +40,7 @@
               v-html="buttonContent.content"
             ></span>
           </slot>
-          <span v-if="hasArrow !== false" class="data-icon data-icon-arrow" />
+          <span v-if="hasArrow !== false" class="iconfont collapse-bottom" />
         </template>
       </am-button>
     </div>
@@ -74,7 +74,9 @@
         type: String,
         required: true
       },
-      values: [String, Array, Number],
+      values: {
+        type: [String, Array, Number]
+      },
       items: {
         type: Array,
         default: () => []
@@ -113,12 +115,12 @@
     },
     mounted() {
       if (this.$refs.buttonRef && isMobile) {
-        const rect = this.$refs.buttonRef.getBoundingClientRect();
+        const rect = (this.$refs.buttonRef).getBoundingClientRect();
         this.isRight = rect.left > window.visualViewport.width / 2;
       }
     },
     watch: {
-      "$props.values": {
+      "values": {
         immediate: true,
         deep: true,
         handler: function(values) {
@@ -135,9 +137,7 @@
     },
     methods: {
       update(values) {
-        if (this.single !== false) {
-          values = Array.isArray(values) && values.length > 0 ? values[0] : values;
-        }
+        if (this.single !== false) values = Array.isArray(values) && values.length > 0 ? values[0] : values;
         const item = this.items.find(
           (item) =>
             (typeof values === "string" && item.key === values) ||
@@ -165,7 +165,8 @@
           if (!Array.isArray(values) || values.length < 1) {
             this.buttonContent = {
               icon: this.icon,
-              content: typeof this.content === "function" ? this.content() : this.content
+              content:
+                typeof this.content === "function" ? this.content() : this.content
             };
           }
         } else if (defaultItem) {
@@ -177,8 +178,7 @@
                 : defaultItem.content
           };
         }
-        this.valuesVar =
-          values ||
+        this.valuesVar = values ||
           (this.icon || this.content ? "" : defaultItem ? defaultItem.key : "");
       },
       watch(value) {
@@ -188,6 +188,7 @@
       triggerMouseDown(event) {
         event.preventDefault();
       },
+
       triggerClick(event) {
         event.preventDefault();
         if (this.disabled) {
@@ -199,15 +200,17 @@
           this.show();
         }
       },
+
       show() {
         this.visible = true;
       },
+
       hide(event) {
-        if (event && this.$refs.targetRef && (this.$refs.targetRef).$refs.element.contains(event.target)) {
-          return;
-        }
+        if (event && this.$refs.targetRef &&
+          ((this.$refs.targetRef).$refs.element).contains(event.target)) return;
         this.visible = false;
       },
+
       triggerSelect(event, key) {
         this.hide();
         if (this.onSelect) this.onSelect(event, key);
@@ -243,22 +246,23 @@
     position: absolute;
     right: 6px;
     top: calc(100% / 2 - 2px);
-    width: 8px;
-    height: 8px;
-    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgd2lkdGg9IjhweCIgaGVpZ2h0PSI1cHgiIHZpZXdCb3g9IjAgMCA4IDUiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+DQogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA1Mi41ICg2NzQ2OSkgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+DQogICAgPHRpdGxlPkdyb3VwIENvcHkgNjwvdGl0bGU+DQogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+DQogICAgPGcgaWQ9IlN5bWJvbHMiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIG9wYWNpdHk9IjAuNDUiPg0KICAgICAgICA8ZyBpZD0idG9vbGJhciIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMyOC4wMDAwMDAsIC0xOC4wMDAwMDApIj4NCiAgICAgICAgICAgIDxnIGlkPSJwYXJhZ3JhcGgtc3R5bGUiPg0KICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIyNi4wMDAwMDAsIDQuMDAwMDAwKSI+DQogICAgICAgICAgICAgICAgICAgIDxnIGlkPSJHcm91cC1Db3B5LTYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwMi4wMDAwMDAsIDEyLjAwMDAwMCkiPg0KICAgICAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZSIgeD0iMCIgeT0iMCIgd2lkdGg9IjgiIGhlaWdodD0iOCI+PC9yZWN0Pg0KICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTAuNTk2MDkzNzUsMi41NTcwMzEyNSBMMy43NDUzMTI1LDYuMzc4MTI1IEMzLjg3NzM0Mzc1LDYuNTI1NzgxMjUgNC4xMDg1OTM3NSw2LjUyNTc4MTI1IDQuMjQwNjI1LDYuMzc4MTI1IEw3LjQwNTQ2ODc1LDIuNTU3MDMxMjUgQzcuNTk2MDkzNzUsMi4zNDI5Njg3NSA3LjQ0NDUzMTI1LDIuMDAzOTA2MjUgNy4xNTc4MTI1LDIuMDAzOTA2MjUgTDAuODQ0NTMxMjUsMi4wMDM5MDYyNSBDMC41NTcwMzEyNSwyLjAwMzkwNjI1IDAuNDA0Njg3NSwyLjM0Mjk2ODc1IDAuNTk2MDkzNzUsMi41NTcwMzEyNSBaIiBpZD0iU2hhcGUiIGZpbGw9IiMwMDAwMDAiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPg0KICAgICAgICAgICAgICAgICAgICA8L2c+DQogICAgICAgICAgICAgICAgPC9nPg0KICAgICAgICAgICAgPC9nPg0KICAgICAgICA8L2c+DQogICAgPC9nPg0KPC9zdmc+);
-    background-repeat: no-repeat;
+    //width: 8px;
+    //height: 8px;
+    //background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgd2lkdGg9IjhweCIgaGVpZ2h0PSI1cHgiIHZpZXdCb3g9IjAgMCA4IDUiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+DQogICAgPCEtLSBHZW5lcmF0b3I6IFNrZXRjaCA1Mi41ICg2NzQ2OSkgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+DQogICAgPHRpdGxlPkdyb3VwIENvcHkgNjwvdGl0bGU+DQogICAgPGRlc2M+Q3JlYXRlZCB3aXRoIFNrZXRjaC48L2Rlc2M+DQogICAgPGcgaWQ9IlN5bWJvbHMiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIG9wYWNpdHk9IjAuNDUiPg0KICAgICAgICA8ZyBpZD0idG9vbGJhciIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMyOC4wMDAwMDAsIC0xOC4wMDAwMDApIj4NCiAgICAgICAgICAgIDxnIGlkPSJwYXJhZ3JhcGgtc3R5bGUiPg0KICAgICAgICAgICAgICAgIDxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIyNi4wMDAwMDAsIDQuMDAwMDAwKSI+DQogICAgICAgICAgICAgICAgICAgIDxnIGlkPSJHcm91cC1Db3B5LTYiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEwMi4wMDAwMDAsIDEyLjAwMDAwMCkiPg0KICAgICAgICAgICAgICAgICAgICAgICAgPHJlY3QgaWQ9IlJlY3RhbmdsZSIgeD0iMCIgeT0iMCIgd2lkdGg9IjgiIGhlaWdodD0iOCI+PC9yZWN0Pg0KICAgICAgICAgICAgICAgICAgICAgICAgPHBhdGggZD0iTTAuNTk2MDkzNzUsMi41NTcwMzEyNSBMMy43NDUzMTI1LDYuMzc4MTI1IEMzLjg3NzM0Mzc1LDYuNTI1NzgxMjUgNC4xMDg1OTM3NSw2LjUyNTc4MTI1IDQuMjQwNjI1LDYuMzc4MTI1IEw3LjQwNTQ2ODc1LDIuNTU3MDMxMjUgQzcuNTk2MDkzNzUsMi4zNDI5Njg3NSA3LjQ0NDUzMTI1LDIuMDAzOTA2MjUgNy4xNTc4MTI1LDIuMDAzOTA2MjUgTDAuODQ0NTMxMjUsMi4wMDM5MDYyNSBDMC41NTcwMzEyNSwyLjAwMzkwNjI1IDAuNDA0Njg3NSwyLjM0Mjk2ODc1IDAuNTk2MDkzNzUsMi41NTcwMzEyNSBaIiBpZD0iU2hhcGUiIGZpbGw9IiMwMDAwMDAiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPg0KICAgICAgICAgICAgICAgICAgICA8L2c+DQogICAgICAgICAgICAgICAgPC9nPg0KICAgICAgICAgICAgPC9nPg0KICAgICAgICA8L2c+DQogICAgPC9nPg0KPC9zdmc+);
+    //background-repeat: no-repeat;
     transition: all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1);
 }
 
-.toolbar-dropdown .toolbar-dropdown-list {
+.toolbar-dropdown-list {
+    margin-top: 6px;
     position: absolute;
     top: 32px;
     font-size: 12px;
     background: #ffffff;
     border: 1px solid #e8e8e8;
-    border-radius: 3px 3px;
+    border-radius: 6px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
-    padding: 5px 0;
+    padding: 12px;
     height: auto;
     transition: all 0.25s cubic-bezier(0.3, 1.2, 0.2, 1);
     z-index: 999;

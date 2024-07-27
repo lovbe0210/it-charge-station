@@ -44,3 +44,13 @@
     }
   };
 </script>
+
+<style lang="less">
+  @import "../../../../../../../css/common-var";
+
+  .toolbar-collapse-group-title {
+    padding: 5px 0 10px 12px;
+    border-bottom: 1px solid @border-color_normal;
+    margin-bottom: 10px;
+  }
+</style>

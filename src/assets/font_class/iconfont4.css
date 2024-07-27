@@ -458,13 +458,3 @@
 .creation-center:before {
   content: "\e725";
 }
-
-.code-block:before {
-  content: "\e726";
-}
-
-.table:before {
-  content: "\e722";
-}
-
-

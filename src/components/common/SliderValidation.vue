@@ -98,6 +98,7 @@
     height: 40px;
     border-radius: 4px;
     width: 100%;
+    background: var(--dropdown-item-hover);
   }
 
   .spout {
@@ -123,7 +124,7 @@
   }
 
   .hight-light {
-    background: -webkit-gradient(linear,left top,right top,color-stop(0,var(--rj-editor-bg-color)),color-stop(.4,var(--rj-editor-bg-color)),color-stop(.5,#fff),color-stop(.6,var(--rj-editor-bg-color)),color-stop(1,var(--rj-editor-bg-color)));
+    background: -webkit-gradient(linear,left top,right top,color-stop(0,var(--dropdown-item-hover)),color-stop(.4,var(--dropdown-item-hover)),color-stop(.5,#fff),color-stop(.6,var(--dropdown-item-hover)),color-stop(1,var(--dropdown-item-hover)));
     -webkit-text-fill-color: transparent;
     -webkit-animation: highlight-animation 8s infinite;
     -webkit-text-size-adjust: none;

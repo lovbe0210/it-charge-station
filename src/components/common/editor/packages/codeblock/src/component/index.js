@@ -185,7 +185,6 @@ class CodeBlcok extends Card {
               mode => {
                 setTimeout(() => {
                   this.focusEditor()
-                  debugger
                   this.codeEditor?.update(mode)
                 }, 10)
               }

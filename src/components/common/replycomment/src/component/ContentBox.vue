@@ -246,7 +246,6 @@
         // TODO commentReply.id action：like or cancelLike --> to server
       },
       previewImage(event) {
-        // debugger
         if (this.pswp === null) {
           this.pswp = new Pswp(null);
         }

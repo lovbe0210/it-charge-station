@@ -39,8 +39,8 @@
 </template>
 
 <script>
+  import { formatHotkey, isMobile } from "@aomao/engine";
   import { autoGetHotkey } from "../utils";
-  import { formatHotkey, isMobile} from "@aomao/engine";
 
   export default {
     props: {
@@ -59,7 +59,9 @@
         type: [Boolean, Object],
         default: undefined
       },
-      className: String,
+      className: {
+        type: String
+      },
       active: {
         type: [Boolean, Object],
         default: undefined
@@ -84,6 +86,7 @@
     mounted() {
       this.iconIsHtml = /^<.*>/.test(this.icon ? this.icon.trim() : "");
       let hotkeyText;
+      //默认获取插件的热键
       if (this.engine && (this.hotkey === true || this.hotkey === undefined)) {
         hotkeyText = autoGetHotkey(
           this.engine,
@@ -114,7 +117,7 @@
         this.visible = false;
       },
       triggerClick(event) {
-        const nodeName = event.target.nodeName;
+        const nodeName = (event.target).nodeName;
         if (nodeName !== "INPUT" && nodeName !== "TEXTAREA") event.preventDefault();
         if (this.disabled) return;
         if (this.onClick && this.onClick(event, this.engine) === false) return;

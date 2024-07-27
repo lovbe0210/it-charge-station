@@ -2,7 +2,7 @@
   <b-container fluid class="editor">
     <div class="scrollbar-visible">
       <div class="layout-mode-fixed">
-        <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
+        <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar"/>
         <div class="editor-body">
           <div class="editor-wrap beauty-scroll" ref="scrollbarContext" @wheel="debounceScroll">
             <div class="editor-wrap-content">
@@ -64,8 +64,9 @@
 <script>
   import Engine from '@aomao/engine'
   import {$} from '@aomao/engine'
-  import Toolbar from 'am-editor-toolbar-vue2'
-  import {plugins, cards, pluginConfig, HightLightIcon} from "./config"
+  // import Toolbar from 'am-editor-toolbar-vue2'
+  import Toolbar from "./packages/toolbar/src"
+  import {plugins, cards, pluginConfig} from "./config"
   import {getTocData, getParentNode} from "./utils/index"
 
   export default {
@@ -91,24 +92,46 @@
               groups: [
                 {
                   items: [
-                    'image-uploader',
-                    'codeblock',
-                    'table',
-                    'file-uploader',
-                    'video-uploader',
-                    'math',
-                    'status',
+                    {
+                      name: 'image-uploader',
+                      icon: '<span class="iconfont upload-image"></span>',
+                      title: '图片上传'
+                    },
+                    {
+                      name: 'codeblock',
+                      icon: '<span class="iconfont code-block"></span>',
+                      title: '代码块'
+                    },
+                    {
+                      name: 'table',
+                      icon: '<span class="iconfont i-table"></span>',
+                      title: '表格'
+                    },
+                    {
+                      name: 'status',
+                      icon: '<span class="iconfont status"></span>',
+                      title: '状态'
+                    },
                     {
                       name: 'lightblock',
-                      icon: HightLightIcon,
+                      icon: '<span class="iconfont high-light"></span>',
                       title: '高亮块'
+                    },
+                    {
+                      name: 'file-uploader',
+                      icon: '<span class="iconfont attachment"></span>',
+                      title: '附件'
+                    },
+                    {
+                      name: 'video-uploader',
+                      icon: '<span class="iconfont media"></span>',
+                      title: '音视频'
+                    },
+                    {
+                      name: 'math',
+                      icon: '<span class="iconfont formula"></span>',
+                      title: '公式'
                     }
-                    /*{
-                      name: "audio-uploader",
-                      icon: '<span style="width:23px;height:23px;display: inline-block;border:1px solid #E8E8E8;"><svg style="top: 2px;position: relative;" t="1636128560405" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="28042" width="16" height="16"><path d="M877.854 269.225l-56.805-56.806-121.726-123.079c-24.345-21.64-41.928-27.050-68.978-27.050h-451.737c-31.108 0-55.453 24.345-55.453 55.453v789.865c0 29.755 24.345 54.1 55.453 54.1h666.787c31.108 0 55.453-24.345 55.453-54.1v-584.284c0-24.345-8.115-35.165-22.993-54.1v0zM830.516 289.513h-156.891v-156.891l156.891 156.891zM856.213 907.609c0 5.409-4.057 10.821-10.821 10.821h-666.787c-6.762 0-12.172-5.409-12.172-10.821v-789.865c0-6.762 5.409-12.172 12.172-12.172 0 0 451.737 0 451.737 0v205.582c0 12.173 9.468 21.64 21.64 21.64h204.229v574.816zM723.668 413.943c-117.668-1.353-246.157 22.993-363.825 59.511-9.468 4.058-10.821 5.409-10.821 14.877v210.991c-12.172-5.409-27.050-6.762-41.927-5.409-45.985 1.353-82.503 29.755-82.503 60.862 0 31.108 36.517 55.453 82.503 52.748 45.985-2.706 82.503-29.755 82.503-60.863v-193.409c109.553-25.698 209.638-43.28 312.429-51.395v150.128c-12.173-5.409-25.698-6.762-40.576-6.762-45.985 2.706-82.503 29.755-82.503 62.215 0 31.108 36.517 55.453 82.503 52.748 44.632-2.706 82.503-29.755 82.503-60.863v-267.797c0-13.525-6.762-16.23-20.287-17.583z" p-id="28043"></path></svg><span>',
-                      title: "音频",
-                      search: "音频,audio"
-                    }*/
                   ]
                 }
               ]
@@ -122,6 +145,9 @@
           ['link', 'quote', 'hr']
         ]
       }
+    },
+    components: {
+      Toolbar
     },
     props: ['docInfo', 'docStyle'],
     methods: {
@@ -148,7 +174,7 @@
         event.preventDefault();
         this.$refs.container.focus()
       },
-      toolbarUI() {
+      /*toolbarUI() {
         // 选色器
         let colorPicker
         setTimeout(() => {
@@ -177,7 +203,7 @@
             })
           })
         }, 100)
-      },
+      },*/
 
       /**
        * 防抖函数
@@ -247,9 +273,6 @@
         let tocData = getTocData(this.engine);
         this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
       }
-    },
-    components: {
-      Toolbar
     },
     watch: {
       'doc.title'(newValue, oldValue) {

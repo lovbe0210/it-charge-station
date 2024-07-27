@@ -10,10 +10,11 @@ const defaultConfig = editor => {
         "image-uploader",
         "codeblock",
         "table",
+        "status",
+        "lightblock",
         "file-uploader",
         "video-uploader",
-        "math",
-        "status"
+        "math"
       ]
     }
   ]
@@ -57,12 +58,7 @@ class ToolbarPlugin extends Plugin {
       block.empty()
     }
 
-    if (
-      "" === text ||
-      ("/" === text && isSafari) ||
-      event.ctrlKey ||
-      event.metaKey
-    ) {
+    if (text === "" || (text === "/" && isSafari) || event.ctrlKey || event.metaKey) {
       range = change.range.get()
       if (range.collapsed) {
         event.preventDefault()
