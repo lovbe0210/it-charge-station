@@ -186,4 +186,8 @@
   opacity: 0.25;
   cursor: not-allowed;
 }
+
+.toolbar-tooltip-title {
+  font-size: 12px;
+}
 </style>

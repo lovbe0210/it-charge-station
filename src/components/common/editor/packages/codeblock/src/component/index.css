@@ -643,8 +643,7 @@
 
 }
 
-.am-engine .CodeMirror-focused div.CodeMirror-cursors,
-.am-engine-view .CodeMirror-focused div.CodeMirror-cursors {
+.am-engine .CodeMirror-focused div.CodeMirror-cursors {
     visibility: visible;
 
 }

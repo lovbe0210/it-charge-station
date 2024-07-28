@@ -69,4 +69,10 @@
   /deep/.ivu-select-item {
     font-size: 12px !important;
   }
+
+  /deep/.ivu-select-dropdown {
+    .ivu-select-dropdown-list {
+      margin-bottom: 0;
+    }
+  }
 </style>

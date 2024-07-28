@@ -41,8 +41,7 @@
         required: true
       },
       colors: {
-        type: Array,
-        default: () => []
+        type: Array
       },
       defaultColor: {
         type: String,
@@ -95,7 +94,8 @@
     }
   }
 </script>
-<style>
+<style lang="less">
+@import "../../../../../../../../css/common-var";
 .colorpicker-default {
     display: flex;
     align-items: center;
@@ -106,11 +106,16 @@
 }
 
 .colorpicker-default:hover {
-    background-color: #f5f5f5;
+  .colorpicker-group-item {
+    border-color: @border-color_normal;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  }
+
 }
 
 .colorpicker-default-text {
     margin-left: 8px;
+    color: @grey-white-font-color;
 }
 
 .colorpicker-group {
@@ -138,7 +143,6 @@
     border: 1px solid transparent;
     flex: 0 0 auto;
     cursor: pointer;
-    background-color: #fff;
 }
 .colorpicker-group-item > span {
     position: relative;

@@ -5,11 +5,12 @@
       overlay-class-name="editor-toolbar-popover"
       :arrow-point-at-center="true"
       :placement="isMobile ? 'topRight' : undefined"
-      v-if="!!icon || !!content"
-    >
+      v-if="!!icon || !!content">
       <template #content>
-        <div :class="['editor-toolbar', {'editor-toolbar-mobile': isMobile && !popup,
-                            'editor-toolbar-popup': popup,}]" data-element="ui">
+        <div :class="['editor-toolbar',
+                      {'editor-toolbar-mobile': isMobile && !popup,
+                      'editor-toolbar-popup': popup,}]"
+             data-element="ui">
           <template v-for="(item , index) in items">
             <am-button v-if="item.type === 'button'" :key="index" v-bind="item" placement="top" :engine="engine" />
             <am-dropdown v-if="item.type === 'dropdown'" :key="index" v-bind="item" placement="top" :engine="engine" />

@@ -1,26 +1,18 @@
 <template>
-  <div
-    :class="[
+  <div :class="[
       'toolbar-dropdown',
       'colorpicker-button',
-      { 'toolbar-dropdown-right': isRight },
-    ]"
-    ref="buttonRef"
-  >
-    <div
-      :class="[
-        'toolbar-dropdown-trigger colorpicker-button-group',
-        { 'colorpicker-button-group-active': visible },
-      ]"
-    >
+      { 'toolbar-dropdown-right': isRight }]"
+      ref="buttonRef">
+    <div :class="['toolbar-dropdown-trigger colorpicker-button-group',
+         { 'colorpicker-button-group-active': visible }]">
       <am-button
         class="colorpicker-button-text"
         :name="name"
         :title="buttonTitle"
         :on-click="triggerClick"
         :placement="placement"
-        :disabled="disabled"
-      >
+        :disabled="disabled">
         <span v-html="buttonContent"></span>
       </am-button>
       <am-button
@@ -33,9 +25,9 @@
         ref="targetRef"
       >
         <template #icon>
-          <span class="colorpicker-button-dropdown-empty" />
+          <span class="colorpicker-button-dropdown-empty"/>
         </template>
-        <span class="data-icon data-icon-arrow" />
+        <span class="iconfont dir-open"/>
       </am-button>
     </div>
     <div
@@ -60,234 +52,236 @@
 </template>
 
 <script>
-  import { isMobile } from "@aomao/engine";
-  import AmButton from "../button.vue";
-  import AmColorPicker from "./picker/picker.vue";
-  import Palette from "./picker/palette";
+import {isMobile} from "@aomao/engine";
+import AmButton from "../button.vue";
+import AmColorPicker from "./picker/picker.vue";
+import Palette from "./picker/palette";
 
-  export default {
-    components: {
-      AmButton,
-      AmColorPicker
+export default {
+  components: {
+    AmButton,
+    AmColorPicker
+  },
+  props: {
+    engine: Object,
+    name: {
+      type: String,
+      required: true
     },
-    props: {
-      engine: Object,
-      name: {
-        type: String,
-        required: true
-      },
-      content: {
-        type: [String, Function],
-        required: true
-      },
-      buttonTitle: String,
-      dropdownTitle: String,
-      command: Object,
-      autoExecute: {
-        type: [Boolean, Object],
-        default: undefined
-      },
-      disabled: {
-        type: [Boolean, Object],
-        default: undefined
-      },
-      colors: Array,
-      defaultColor: {
-        type: String,
-        required: true
-      },
-      defaultActiveColor: {
-        type: String,
-        required: true
-      },
-      setStroke: {
-        type: [Boolean, Object],
-        default: undefined
-      },
-      onSelect: Function,
-      placement: {
-        type: String,
-        default: undefined
+    content: {
+      type: [String, Function],
+      required: true
+    },
+    buttonTitle: String,
+    dropdownTitle: String,
+    command: Object,
+    autoExecute: {
+      type: [Boolean, Object],
+      default: undefined
+    },
+    disabled: {
+      type: [Boolean, Object],
+      default: undefined
+    },
+    colors: Array,
+    defaultColor: {
+      type: String,
+      required: true
+    },
+    defaultActiveColor: {
+      type: String,
+      required: true
+    },
+    setStroke: {
+      type: [Boolean, Object],
+      default: undefined
+    },
+    onSelect: Function,
+    placement: {
+      type: String,
+      default: undefined
+    }
+  },
+  data() {
+    return {
+      visible: false,
+      isRight: false,
+      currentColor: "",
+      buttonContent: "",
+      listPlacement: ""
+    };
+  },
+  mounted() {
+    if (this.$refs.buttonRef && isMobile) {
+      const rect = (this.$refs.buttonRef).getBoundingClientRect();
+      this.isRight = rect.left > window.visualViewport.width / 2;
+    }
+    this.currentColor = this.defaultActiveColor;
+  },
+  unmounted() {
+    document.removeEventListener("click", this.hideDropdown);
+  },
+  watch: {
+    currentColor: {
+      immediate: true,
+      deep: true,
+      handler() {
+        this.getContent();
       }
     },
-    data() {
-      return {
-        visible: false,
-        isRight: false,
-        currentColor: "",
-        buttonContent: "",
-        listPlacement: ""
-      };
-    },
-    mounted() {
-      if (this.$refs.buttonRef && isMobile) {
-        const rect = (this.$refs.buttonRef).getBoundingClientRect();
-        this.isRight = rect.left > window.visualViewport.width / 2;
-      }
-      this.currentColor = this.defaultActiveColor;
-    },
-    unmounted() {
-      document.removeEventListener("click", this.hideDropdown);
-    },
-    watch: {
-      currentColor: {
-        immediate: true,
-        handler() {
-          this.getContent();
-        }
-      },
-      disabled: {
-        immediate: true,
-        handler() {
-          this.getContent();
-        }
-      },
-      visible: {
-        immediate: true,
-        handler(value) {
-          if (value) {
-            document.addEventListener("click", this.hideDropdown);
-            setTimeout(() => {
-              const current = this.$refs.elementRef;
-              if (!current || !this.engine || !this.engine.scrollNode) return;
-              const scrollElement = this.engine.scrollNode.get();
-              if (!scrollElement) return;
-              const rect = current.getBoundingClientRect();
-              const scrollRect = scrollElement.getBoundingClientRect();
-              if (rect.top < scrollRect.top) this.listPlacement = "bottom";
-              if (rect.bottom > scrollRect.bottom) this.listPlacement = "top";
-            }, 0);
-          } else {
-            document.removeEventListener("click", this.hideDropdown);
-          }
-        }
+    disabled: {
+      immediate: true,
+      deep: true,
+      handler() {
+        this.getContent();
       }
     },
-    methods: {
-      getContent() {
-        this.buttonContent =
-          typeof this.content === "string"
-            ? this.content
-            : this.content(
-              this.currentColor,
-              Palette.getStroke(this.currentColor),
-              this.disabled
-            );
-      },
-      toggleDropdown(event) {
-        event.preventDefault();
-        if (this.visible) {
-          this.hideDropdown();
+    visible: {
+      immediate: true,
+      deep: true,
+      handler(value) {
+        if (value) {
+          document.addEventListener("click", this.hideDropdown);
+          setTimeout(() => {
+            const current = this.$refs.elementRef;
+            if (!current || !this.engine || !this.engine.scrollNode) return;
+            const scrollElement = this.engine.scrollNode.get();
+            if (!scrollElement) return;
+            const rect = (current).getBoundingClientRect();
+            const scrollRect = scrollElement.getBoundingClientRect();
+            if (rect.top < scrollRect.top) this.listPlacement = "bottom";
+            if (rect.bottom > scrollRect.bottom) this.listPlacement = "top";
+          }, 0);
         } else {
-          this.showDropdown();
+          document.removeEventListener("click", this.hideDropdown);
         }
-      },
-
-      showDropdown() {
-        this.visible = true;
-      },
-
-      hideDropdown(event) {
-        if (event && this.$refs.targetRef &&
-          ((this.$refs.targetRef).$refs.element).contains(event.target)) {
-          return;
-        }
-        this.visible = false;
-      },
-      triggerClick(event) {
-        this.triggerSelect(this.currentColor, event);
-      },
-      triggerSelect(color, event) {
-        this.hideDropdown();
-        this.currentColor = color;
-        this.buttonContent =
-          typeof this.content === "string"
-            ? this.content
-            : this.content(color, Palette.getStroke(color), this.disabled);
-
-        if (this.autoExecute !== false) {
-          let commandName = this.name;
-          let commandArgs = [color, this.defaultColor];
-          if (this.command) {
-            if (!Array.isArray(this.command)) {
-              commandName = this.command.name;
-              commandArgs = this.command.args;
-            } else {
-              commandArgs = this.command;
-            }
-          }
-          if (this.engine) this.engine.command.execute(commandName, ...commandArgs);
-        }
-        if (this.onSelect) this.onSelect(color, event);
       }
     }
-  };
+  },
+  methods: {
+    getContent() {
+      this.buttonContent = typeof this.content === "string" ? this.content
+          : this.content(this.currentColor, Palette.getStroke(this.currentColor), this.disabled);
+    },
+    toggleDropdown(event) {
+      event.preventDefault();
+      if (this.visible) {
+        this.hideDropdown();
+      } else {
+        this.showDropdown();
+      }
+    },
+
+    showDropdown() {
+      this.visible = true;
+    },
+
+    hideDropdown(event) {
+      if (event && this.$refs.targetRef &&
+          ((this.$refs.targetRef).$refs.element).contains(event.target)) {
+        return;
+      }
+      this.visible = false;
+    },
+
+    triggerClick(event) {
+      this.triggerSelect(this.currentColor, event);
+    },
+
+    triggerSelect(color, event) {
+      this.hideDropdown();
+      this.currentColor = color;
+      this.buttonContent = typeof this.content === "string" ? this.content
+          : this.content(color, Palette.getStroke(color), this.disabled);
+
+      if (this.autoExecute !== false) {
+        let commandName = this.name;
+        let commandArgs = [color, this.defaultColor];
+        if (this.command) {
+          if (!Array.isArray(this.command)) {
+            commandName = this.command.name;
+            commandArgs = this.command.args;
+          } else {
+            commandArgs = this.command;
+          }
+        }
+        if (this.engine) this.engine.command.execute(commandName, ...commandArgs);
+      }
+      if (this.onSelect) this.onSelect(color, event);
+    }
+  }
+}
 </script>
 
 <style>
-  .editor-toolbar .colorpicker-button .colorpicker-button-group {
-    padding: 0 2px;
-  }
+.editor-toolbar .colorpicker-button .colorpicker-button-group {
+  padding: 0 2px;
+}
 
-  .colorpicker-button-group .toolbar-button {
-    padding: 0;
-  }
+.colorpicker-button-group .toolbar-button {
+  padding: 0;
+}
 
-  .colorpicker-button-group .colorpicker-button-text {
-    margin-right: 0;
-    min-width: 26px;
-    border-radius: 3px 0 0 3px;
-    display: block;
-  }
+.colorpicker-button-group .colorpicker-button-text {
+  margin-right: 0;
+  min-width: 26px;
+  border-radius: 3px 0 0 3px;
+  display: flex;
+  padding: 0 3px 0 4px !important;
 
-  .editor-toolbar.editor-toolbar-popup
-  .colorpicker-button-group
-  .colorpicker-button-text {
-    margin: 0;
-    border-radius: 3px 0 0 3px;
+  &>span {
+    display: flex;
   }
+}
 
-  .colorpicker-button-group .colorpicker-button-text:active {
-    background-color: #e8e8e8;
-  }
+.editor-toolbar.editor-toolbar-popup
+.colorpicker-button-group
+.colorpicker-button-text {
+  margin: 0;
+  border-radius: 3px 0 0 3px;
+}
 
-  .colorpicker-button-group .colorpicker-button-dropdown {
-    margin-left: -1px;
-    min-width: 17px;
-    text-align: center;
-    padding: 0 0;
-    border-radius: 0 3px 3px 0;
-    display: block;
-  }
+.colorpicker-button-group .colorpicker-button-text:active {
+  background-color: #e8e8e8;
+}
 
-  .editor-toolbar.editor-toolbar-popup
-  .colorpicker-button-group
-  .colorpicker-button-dropdown {
-    line-height: 24px;
-    min-width: 17px;
-    padding: 0 4px;
-    margin: 0;
-    margin-left: -1px;
-    border-radius: 0 3px 3px 0;
-  }
+.colorpicker-button-group .colorpicker-button-dropdown {
+  margin-left: -1px;
+  min-width: 17px;
+  text-align: center;
+  padding: 0 4px 0 0 !important;
+  border-radius: 0 3px 3px 0;
+  display: flex;
+}
 
-  .colorpicker-button-group .colorpicker-button-dropdown:hover,
-  .colorpicker-button-group .colorpicker-button-dropdown:active {
-    background-color: #e8e8e8;
-  }
+.editor-toolbar.editor-toolbar-popup
+.colorpicker-button-group
+.colorpicker-button-dropdown {
+  line-height: 24px;
+  min-width: 17px;
+  padding: 0 4px;
+  margin: 0;
+  margin-left: -1px;
+  border-radius: 0 3px 3px 0;
+}
 
-  .colorpicker-button-group
-  .colorpicker-button-dropdown
-  .colorpicker-button-dropdown-empty {
-    display: inline-block;
-  }
+.colorpicker-button-group .colorpicker-button-dropdown:hover,
+.colorpicker-button-group .colorpicker-button-dropdown:active {
+  background-color: #e8e8e8;
+}
 
-  .colorpicker-button-group:hover .toolbar-button {
-    border: 1px solid #e8e8e8;
-  }
+.colorpicker-button-group
+.colorpicker-button-dropdown
+.colorpicker-button-dropdown-empty {
+  display: inline-block;
+}
 
-  .colorpicker-button-group-active .toolbar-button,
-  .colorpicker-button-group-active:hover .toolbar-button {
-    border: 1px solid #e8e8e8;
-  }
+/*.colorpicker-button-group:hover .toolbar-button {
+  border: 1px solid #e8e8e8;
+}*/
+
+.colorpicker-button-group-active .toolbar-button,
+.colorpicker-button-group-active:hover .toolbar-button {
+  //border: 1px solid #e8e8e8;
+}
 </style>

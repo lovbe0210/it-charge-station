@@ -54,6 +54,40 @@
   border-color: #dcdee2
 }
 
+.ivu-select-visible .ivu-select-selection {
+  border-color: @primary-color;
+  outline: 0;
+  box-shadow: unset;
+}
+
+.ivu-select {
+  .ivu-select-dropdown {
+    overflow-y: hidden;
+
+    &:hover {
+      overflow-y: auto;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: unset;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    &:hover::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+      background-color: #8B8B8B;
+      border-radius: 4px;
+    }
+  }
+}
+
 .ghost-btn {
   color: var(--font-color) !important;
   background: unset !important;
@@ -312,7 +346,7 @@
 
     .colorpicker-button-group:hover, .colorpicker-button-group:hover, .colorpicker-button-group-active {
       .toolbar-button {
-        border: unset;
+        //border: unset;
       }
     }
 
@@ -321,9 +355,29 @@
     }
   }
 }
-// 标记符
+// 可拖拽标识符
 .data-card-dnd {
   width: 24px !important;
   border-radius: 4px;
   justify-content: center;
 }
+
+// 代码块工具栏
+.data-card-toolbar {
+
+  .data-toolbar-group {
+    box-shadow: 0 0 4px 0 rgba(225, 225, 225, 0.5);
+
+    .data-toolbar-switch {
+      .switch-btn {
+        display: flex;
+      }
+
+      .switch-btn.switch-checked {
+        background-color: @primary-color;
+      }
+    }
+  }
+}
+
+

@@ -898,6 +898,10 @@
 
         .CodeMirror-sizer {
           .CodeMirror-lines {
+            .CodeMirror-cursor {
+              border-color: var(--font-color);
+            }
+
             .CodeMirror-code {
               .CodeMirror-line {
                 color: var(--font-color);
@@ -920,18 +924,11 @@
 
   /deep/ .editor-toolbar {
     .editor-toolbar-content {
-      .toolbar-dropdown-trigger-arrow {
-        .data-icon-arrow {
-          //top: calc(~"100% / 2 - 2px");
-          //background-image: unset;
-          //border-left: 4px solid transparent;
-          //border-right: 4px solid transparent;
-          //border-top: 5px solid var(--font-color);
-        }
-      }
-
       .toolbar-button {
         color: var(--font-color);
+        #fontcolor-icon, #backcolor-icon {
+          fill: var(--font-color);
+        }
 
         &:hover {
           background: var(--dropdown-item-hover);
@@ -984,11 +981,53 @@
     .toolbar-collapse-item-active {
       background: var(--dropdown-item-hover);
     }
+
+    .colorpicker-default-text {
+      color: var(--title-color);
+    }
   }
 
-  // 标记符
+  // 可拖拽组件
   /deep/.data-card-dnd {
     background: var(--dropdown-item-hover);
+  }
+  // 代码块工具栏
+  /deep/ .data-card-toolbar {
+
+    .data-toolbar-group {
+      background: var(--dropdown-bg-color);
+      border-color: @border-color_normal;
+
+      .data-toolbar-item:not(.data-toolbar-item-input):hover, .data-toolbar-item.active:not(.data-toolbar-item-input) {
+        background-color: var(--dropdown-item-hover);
+        border-radius: 4px;
+      }
+
+      .data-toolbar-btn {
+        color: var(--title-color);
+      }
+
+      .ivu-select-selection {
+        background: var(--dropdown-bg-color);
+        border-color: @border-color_normal;
+
+        .ivu-select-input {
+          color: var(--font-color);
+        }
+      }
+
+      .ivu-select-dropdown {
+        background: var(--dropdown-bg-color);
+
+        .ivu-select-item:hover, .ivu-select-item-focus {
+          background: var(--dropdown-item-hover);
+        }
+      }
+
+      .data-toolbar-switch:hover {
+        background: var(--dropdown-item-hover);
+      }
+    }
   }
 }
 
