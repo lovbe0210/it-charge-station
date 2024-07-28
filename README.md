@@ -12,7 +12,7 @@
 
 #### 规划和进度
 1. 一期完成前段页面，由于技术较菜，使用了多个框架，bootstrap-vue，iView、写作中心使用am-editor插件(内部使用ant-design-vue1.x)
-    <br>进度：90%
+    <br>进度：95%
 2. 二期完成后端接口设计
     <br>进度：10%
 4. 三期完成前端页面改造，使用vue3.0，框架整合，使用View Design的vue3.x版本
