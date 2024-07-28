@@ -1,5 +1,5 @@
 <template>
-  <div class="personal-center" ref="tooltipContainer">
+  <div class="personal-center enable-background" ref="tooltipContainer">
     <header class="layout-module_head">
       <div class="layout-header-left">
         <a href="/" target="_blank">
@@ -97,7 +97,7 @@
             <div class="personalBooks-module_pbContainer">
               <div class="bookStack-module_stack">
                 <div class="bookStack-module_header">
-                  <span class="homepage-header">知识库</span>
+                  <span class="homepage-header">专栏</span>
                 </div>
               </div>
               <div class="personalBooks-module_pbContent">
@@ -118,7 +118,7 @@
               </div>
             </div>
             <hot-map></hot-map>
-            <p class="homepage-header" style="margin-bottom: 20px; margin-top: 96px;">更新</p>
+            <p class="homepage-header" style="margin-bottom: 20px; margin-top: 50px;">更新</p>
             <div class="leastUpdate-module_cardList">
               <div class="leastUpdate-module_cardItem" v-for="item in leastUpdateList" :key="item.articleId">
                 <div class="timeline-module_container">

@@ -1,6 +1,5 @@
 .personal-center {
   position: relative;
-  background: #FFFFFF;
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
@@ -11,7 +10,6 @@
     justify-content: space-between;
     padding: 0 24px;
     width: 100%;
-    background-color: #FFFFFF;
     height: 60px;
     position: relative;
     z-index: 2;
@@ -38,7 +36,6 @@
   .layout-main_wrapper {
     flex: 1 0;
     width: 100%;
-    background-color: #FFFFFF;
     min-height: 680px;
 
     .layout-module_MainContent {
@@ -99,7 +96,7 @@
 
                 .userInfo-module_nickname {
                   font-size: 24px;
-                  color: #262626;
+                  color: var(--font-color);
                   line-height: 32px;
                   font-weight: 600;
                   margin-top: 12px;
@@ -182,7 +179,6 @@
 
               .userInfo-module_description {
                 font-size: 14px;
-                color: #585A5A;
                 line-height: 22px;
                 font-weight: 400;
                 margin-top: 12px;
@@ -244,9 +240,9 @@
           }
 
           .personalBooks-module_pbContainer {
-            margin-top: 42px;
+            //margin-top: 42px;
             width: 1018px;
-            margin-bottom: -16px;
+            margin-bottom: 10px;
 
             .bookStack-module_stack {
               position: relative;
@@ -262,7 +258,6 @@
                 width: 992px;
 
                 .homepage-header {
-                  color: #262626;
                   font-size: 16px;
                   line-height: 24px;
                   font-weight: 500;
@@ -308,14 +303,14 @@
                   .personalBooks-module_pbContentItemBot {
                     width: 320px;
                     height: 146px;
-                    background-color: #FFFFFF;
+                    background-color: var(--dropdown-bg-color);
                     padding-left: 28px;
                     padding-right: 28px;
-                    padding-top: 32px;
+                    padding-top: 20px;
 
                     .personalBooks-module_pbContentItemBotTitle {
+                      margin-bottom: 10px;
                       font-size: 18px;
-                      color: #262626;
                       letter-spacing: 0;
                       text-align: left;
                       line-height: 26px;
@@ -328,7 +323,7 @@
 
                     .personalBooks-module_pbContentItemBotDesc {
                       font-size: 14px;
-                      color: #8A8F8D;
+                      color: var(--title-color);
                       letter-spacing: 0;
                       text-align: left;
                       font-weight: 400;
@@ -342,12 +337,12 @@
                     .personalBooks-module_pbContentItemBotViewCount {
                       color: #8A8F8D;
                       font-size: 12px;
-                      margin-top: 26px;
+                      margin-top: 15px;
 
                       span {
                         font-size: 12px;
                         margin-top: 26px;
-                        color: #585A5A;
+                        color: var(--font-color);
                         font-weight: 500;
                       }
                     }
@@ -383,7 +378,7 @@
 
                 .line-module_times {
                   display: inline-block;
-                  color: #8A8F8D;
+                  color: var(--title-color);
                   padding-left: 6px;
                   font-size: 14px;
                   line-height: 22px;
@@ -431,7 +426,7 @@
                       .doc-updated-title {
                         font-size: 16px;
                         font-weight: 500;
-                        color: #262626;
+                        color: var(--font-color);
                         display: block;
                         overflow: hidden;
                         text-overflow: ellipsis;
@@ -441,7 +436,7 @@
                       .doc-updated-desc {
                         margin-top: 6px;
                         font-size: 14px;
-                        color: #585A5A;
+                        color: var(--title-color);
                         display: -webkit-box;
                         max-height: 44px;
                         -webkit-line-clamp: 2;

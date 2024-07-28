@@ -51,8 +51,19 @@ export default new Vuex.Store({
       ramblyJotEditorBackgroundColor: '#F2F3F5',
       modalBackgroundColor: '#FFFFFF'
     },
+    docStyle: {
+      // 是否同步自定义主题
+      writeCustomerTheme: true,
+      readCustomerTheme: true,
+      // 正文字体大小(读页面)
+      docFontSize: 15,
+      // 文章段间距  常规、宽松 standard/loose (写页面)
+      segmentSpace: 'standard',
+      // 页面大小1=标宽模式，2=超宽模式
+      writePageSize: 1,
+      readPageSize: 1
+    },
     // 显示自定义主题开关background-color: #4158D0;
-    // background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
     showCustomer: false,
     // 音乐播放相关
     musicInfo: {
@@ -243,7 +254,6 @@ export default new Vuex.Store({
   },
 
   actions: {
-
   },
 
   // 同步操作state中的数据(commit)
@@ -322,6 +332,15 @@ export default new Vuex.Store({
      */
     customerSet(state, value) {
       state.customerSet = Object.assign(state.customerSet, value);
+    },
+
+    /**
+     * 更新写作中心风格
+     * @param state
+     * @param value
+     */
+    updateDocStyle(state, value) {
+      state.docStyle = Object.assign(state.docStyle, value);
     },
     /**
      * 是否显示自定义主题插件

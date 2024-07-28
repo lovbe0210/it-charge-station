@@ -1,7 +1,10 @@
 <template>
   <b-container fluid>
     <div class="header-row">
-      <Dropdown trigger="click" placement="bottom-end" @on-click="sortBy">
+      <Dropdown trigger="click"
+                placement="bottom-end"
+                transfer-class-name="dropdown-background dropdown-item-all-hover"
+                @on-click="sortBy">
         <a href="javascript:void(0)">
           {{sortedValue.at(curSort).name}}
           <span class="iconfont expand" style="font-size: 14px;"/>

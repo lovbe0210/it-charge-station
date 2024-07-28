@@ -10,19 +10,6 @@
       color: var(--font-color);
       font-size: 14px;
     }
-
-    .ivu-select-dropdown {
-      .ivu-dropdown-menu {
-        .selected {
-          background: #F3F3F3;
-        }
-
-        .ivu-dropdown-item {
-          text-align: center;
-          color: @dark-font-color;
-        }
-      }
-    }
   }
 
   .topic-row {
@@ -73,7 +60,7 @@
 
             .topic-title {
               font-size: 15px;
-              color: #262626;
+              color: var(--font-color);
               letter-spacing: 0;
               text-align: left;
               line-height: 26px;
@@ -82,11 +69,12 @@
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
+              margin-bottom: 5px;
             }
 
             .topic-description {
               font-size: 14px;
-              color: #8A8F8D;
+              color: var(--title-color);
               letter-spacing: 0;
               text-align: left;
               font-weight: 400;
@@ -94,15 +82,16 @@
               text-overflow: ellipsis;
               overflow: hidden;
               height: 22px;
+              margin-bottom: 5px;
             }
 
             .topic-viewCount {
-              color: #8A8F8D;
+              color: var(--title-color);
               font-size: 12px;
-              margin-top: 15px;
+              margin-top: 10px;
 
               span {
-                color: #585A5A;
+                color: var(--font-color);
                 font-weight: 500;
               }
             }

@@ -84,8 +84,8 @@
                   <div class="slider-module_slideTitle">
                     <span>正文大小</span>
                   </div>
-                  <div class="slider-module_slideContainer un-select" @mouseenter="docStyle.showSelect = true"
-                       @mouseleave="docStyle.showSelect = false">
+                  <div class="slider-module_slideContainer un-select" @mouseenter="fontSizeShowSelect = true"
+                       @mouseleave="fontSizeShowSelect = false">
                     <div class="ant-slider ant-slider-with-marks classic">
                       <div class="ant-slider-rail"></div>
                       <div class="ant-slider-step">
@@ -95,7 +95,7 @@
                           <span class="slider-dot"/>
                         </div>
                       </div>
-                      <div :class="['ant-slider-handle', docStyle.showSelect ? 'show-select-font' : '']"
+                      <div :class="['ant-slider-handle', fontSizeShowSelect ? 'show-select-font' : '']"
                            :style="'left: ' + currentFontIndex * 100/(fontSizeRange.length-1) + '%;'">
                       </div>
                     </div>
@@ -472,10 +472,10 @@ export default {
       drawerType: 1,
       inputVisible: false,
       inputValue: '',
+      fontSizeShowSelect: false,
       // 全局设置
       docStyle: {
         docFontSize: 15,
-        showSelect: false,
         // 文章段间距  常规、宽松 standard/loose
         segmentSpace: 'standard',
         // 是否设置当前格式为默认格式（主要就包含正文字体大小和标准段落间距）

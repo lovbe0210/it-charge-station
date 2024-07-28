@@ -25,9 +25,13 @@
 }
 
 .dropdown-item-all-hover {
-  .ivu-dropdown-item:hover {
+  .ivu-dropdown-item:hover, .selected {
     background: var(--dropdown-item-hover);
   }
+}
+
+.ivu-dropdown-menu {
+  margin-bottom: 0;
 }
 
 .ivu-input {
@@ -266,6 +270,18 @@
   color: @like-color;
 }
 
+/deep/ .read-nav-tooltip {
+  padding-bottom: 0 !important;
+}
+
+/deep/ .read-header-tooltip {
+  padding-top: 0 !important;
+}
+
+/deep/ .ant-tooltip-inner {
+  font-size: 12px;
+}
+
 // 滚动条全局美化
 .beauty-scroll {
   overflow-y: hidden;
@@ -293,10 +309,6 @@
   }
 }
 
-.i-more {
-  color: var(--title-color);
-}
-
 .ant-checkbox-indeterminate .ant-checkbox-inner::after {
   background: @primary-color;
 }
@@ -317,7 +329,7 @@
 
 // editor相关
 // 编辑器
-.am-engine {
+.am-engine, .am-engine-view {
   .data-codeblock-container {
     border-color: @border-color_normal;
     border-radius: 2px;
@@ -335,6 +347,12 @@
     }
   }
 }
+.am-engine {
+  .data-list-task [data-card-key="checkbox"] {
+    margin-left: 0 !important;
+  }
+}
+
 // 工具栏
 .editor-toolbar {
    display: flex;
@@ -380,4 +398,34 @@
   }
 }
 
+/deep/ .am-engine-view > :not(p) {
+  margin: 15px 0;
+}
 
+/deep/ .am-engine-view > p {
+  margin: 8px 0;
+}
+
+/deep/ .am-engine-view > h2 {
+  margin: 13px 0;
+}
+
+/deep/ .am-engine-view > h3 {
+  margin: 11px 0;
+}
+
+/deep/ .am-engine-view > h4 {
+  margin: 9px 0;
+}
+
+/deep/ .am-engine-view > h5 {
+  margin: 8px 0;
+}
+
+/deep/ .am-engine-view > h6 {
+  margin: 8px 0;
+}
+
+.am-engine ol, .am-engine-view ol, .am-engine ul, .am-engine-view ul {
+  margin: 0 !important;
+}

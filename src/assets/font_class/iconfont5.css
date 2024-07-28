@@ -1,7 +1,7 @@
 @font-face {
   font-family: "iconfont";
   src:
-      url('//at.alicdn.com/t/c/font_4499563_rpsafrtrwug.woff2?t=1722093645183') format('woff2');
+      url('//at.alicdn.com/t/c/font_4499563_jb7w2qusg6f.woff2?t=1722162960153') format('woff2');
 }
 
 .iconfont {
@@ -74,6 +74,14 @@
 
 .formula:before {
   content: "\e515";
+}
+
+.collected:before {
+  content: "\e516";
+}
+
+.custome-theme:before {
+  content: "\e517";
 }
 
 

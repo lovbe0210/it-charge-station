@@ -1,6 +1,6 @@
 <template>
   <div class="reader-route-view" ref="tooltipContainer">
-    <div class="layout-module_contentWrapper" id="contentWrapper" ref="scrollbarContext">
+    <div class="layout-module_contentWrapper" id="contentWrapper">
       <div id="header" class="layout-module_headerWrapper" :style="{ width: headerWidth}">
         <div class="header-crumb">
           <span class="header_title" title="Seata—分布式事务解决方案">Seata—分布式事务解决方案</span>
@@ -8,7 +8,7 @@
             <template slot="title">
               {{isPublic ? '互联网所有人可以访问' : '仅关注可见'}}
             </template>
-            <div class="header-status-icon" @click="docStyle.pageSize = docStyle.pageSize === 1 ? 2 : 1">
+            <div class="header-status-icon">
               <span class="iconfont public"/>
             </div>
           </a-tooltip>
@@ -19,26 +19,43 @@
               {{ifLike ? '取消收藏' : '收藏'}}
             </template>
             <div class="header-module_likeButton action-icon" @click="ifLike = !ifLike">
-              <span :class="['iconfont', ifLike ? 'icon-like3' : 'collect']"></span>
+              <span :class="['iconfont', ifLike ? 'collected' : 'collect']"></span>
             </div>
           </a-tooltip>
 
           <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
             <template slot="title">
-              演示
+              演示模式
             </template>
             <div class="header-module_presentButton action-icon" @click="presentShow()">
               <span class="iconfont icon-present-show"></span>
             </div>
           </a-tooltip>
-          <div class="collabUsersContainer action-icon">
-            <span class="iconfont icon-layout"></span>
-          </div>
+
+          <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+            <template slot="title">
+              {{docStyle.readPageSize === 1 ? '超宽模式' : '标宽模式'}}
+            </template>
+            <div class="collabUsersContainer action-icon"
+                 @click="updateDocStyle({readPageSize: docStyle.readPageSize === 1 ? 2 : 1})">
+              <span class="iconfont layout"></span>
+            </div>
+          </a-tooltip>
+
+          <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+            <template slot="title">
+              主题偏好
+            </template>
+            <div class="collabUsersContainer action-icon"
+                 @click="updateDocStyle({readCustomerTheme: !docStyle.readCustomerTheme})">
+              <span class="iconfont custome-theme"></span>
+            </div>
+          </a-tooltip>
         </div>
       </div>
-      <div class="layout-module_bookContentWrapper">
+      <div class="layout-module_bookContentWrapper beauty-scroll" ref="scrollbarContext">
         <div class="bookReader-module_docContainer">
-          <div :class="['doc_header', docStyle.pageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
+          <div :class="['doc_header', docStyle.readPageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
             <div class="doc_header_wrapper">
               <h1 id="article-title" class="doc-article-title">
                 Seata—分布式事务解决方案
@@ -47,7 +64,7 @@
           </div>
           <!-- 内容显示部分 -->
           <div ref="view"
-               :class="['doc-reader','am-engine-view', docStyle.pageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
+               :class="['doc-reader','am-engine-view', docStyle.readPageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
           </div>
           <div class="doc-footer">
             <article-footer :ifLike="ifLike" @like="ifLike = !ifLike"/>
@@ -63,12 +80,10 @@
       <!-- 右侧大纲展示 -->
       <div class="reader-view">
         <div class="reader-toc-pin">
-          <span class="reader-toc-pin-text">大纲</span>
-          <div class="reader-toc-pin-wrap">
-            <div class="ne-icon ne-iconfont" data-name="pin" style="font-size: 16px;">
-              <span class="lake-icon lake-icon-pin" style="font-size: 16px;"></span>
-            </div>
-          </div>
+          <span class="reader-toc-pin-text">
+            <span class="iconfont main-point"></span>
+            <span>大纲</span>
+          </span>
         </div>
         <div class="reader-toc-inner">
           <div class="toc-content">
@@ -110,18 +125,6 @@
         },
         tocData: [],
         currentTocId: '',
-        // 全局字体大小
-        docStyle: {
-          fontSizeRange: [12, 13, 14, 15, 16, 17, 18, 19],
-          docFontSize: 15,
-          showSelect: false,
-          // 统一文章段间距
-          segmentSpaceStatus: false,
-          // 是否设置当前格式为默认格式（主要就包含正文字体大小和标准段落间距）
-          SetDefault: true,
-          // 页面大小1=标宽模式，2=超宽模式
-          pageSize: 1
-        },
         isPublic: true,
         ifLike: false,
         view: null
@@ -130,8 +133,10 @@
     props: ['sidebarWidth'],
     computed: {
       headerWidth() {
-        return 'calc(100vw - ' + ((this.fullScreen ? 0 : this.sidebarWidth) +
-          (this.scrollBarWidth !== undefined && this.scrollBarWidth !== 0 ? (this.scrollBarWidth - 2) : 0)) + 'px)'
+        return 'calc(100vw - ' + ((this.fullScreen ? 0 : this.sidebarWidth) + 'px');
+      },
+      docStyle() {
+        return this.$store.state.docStyle;
       }
     },
     components: {
@@ -172,7 +177,6 @@
             element.msRequestFullscreen();
           }
         }
-        // this.fullScreen = !this.fullScreen;
       },
       checkFullscreen() {
         const isFullscreen = (
@@ -215,6 +219,9 @@
             }
           }
         }
+      },
+      updateDocStyle(docStyle) {
+        this.$store.commit('updateDocStyle', docStyle);
       }
     },
     mounted() {

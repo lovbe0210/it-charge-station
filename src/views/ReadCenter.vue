@@ -1,5 +1,6 @@
 <template>
-  <div class="read-center" ref="tooltipContainer">
+  <div :class="[docStyle.readCustomerTheme ? 'enable-background' : 'normal-background', 'read-center']"
+       ref="tooltipContainer">
     <div class="layout-module_wrapper">
       <div class="layout-module_directoryWrapper" :style="{ width: sidebarWidth + 'px' }">
         <div class="layout-module_dragbar" @mousedown="startDrag"></div>
@@ -88,7 +89,7 @@
         </div>
       </div>
       <div :style="{ width: adaptiveContentWidth}">
-        <router-view :sidebarWidth="sidebarWidth"></router-view>
+        <router-view :sidebarWidth="sidebarWidth" :docStyle="docStyle"></router-view>
       </div>
       <Modal v-model="modalSearch"
              width="750"
@@ -434,6 +435,9 @@
       },
       isColumnView() {
         return this.columnId !== undefined && this.columnId !== null;
+      },
+      docStyle() {
+        return this.$store.state.docStyle;
       }
     },
     watch: {
