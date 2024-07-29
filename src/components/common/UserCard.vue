@@ -1,7 +1,7 @@
 <template>
   <div class="user-card">
     <a-popover placement="topLeft"
-               trigger="click"
+               trigger="hover"
                :getPopupContainer="()=>popoverContainer"
                overlayClassName="user-info-card-box">
       <template slot="content">

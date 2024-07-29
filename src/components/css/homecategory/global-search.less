@@ -2,7 +2,7 @@
   .search-result-title {
     margin: 20px 0 8px;
     font-size: 14px;
-    color: @light-font-color;
+    color: var(--font-color);
     line-height: 20px;
 
     .return-all {
@@ -12,7 +12,7 @@
       margin: 20px 0 0 10px;
 
       &:hover {
-        color: @dark-font-color;
+        color: var(--title-color);
       }
 
       span {
@@ -21,11 +21,12 @@
     }
 
     .search-result-extend {
+      color: var(--title-color);
       float: right;
       cursor: pointer;
 
       &:hover {
-        color: @dark-font-color;
+        color: @grey-white-font-color;
       }
 
       span {
@@ -42,15 +43,18 @@
     .suggestions-item-user {
       width: 32%;
       display: flex;
-      color: @grey-white-font-color;
       border: 1px solid @border-004;
-      border-radius: 8px;
+      border-radius: 4px;
       padding: 20px 20px;
       word-break: break-word;
 
       .item-avatar {
         margin-right: 15px;
-        margin-top: 5px;
+        margin-top: 7px;
+      }
+
+      .user-card {
+        align-items: unset;
       }
 
       .item-userInfo {
@@ -59,7 +63,7 @@
 
         .item-userName {
           font-size: 16px;
-          color: @dark-font-color;
+          color: var(--font-color);
         }
 
         .item-social {
@@ -67,9 +71,13 @@
           flex-direction: column;
           margin-top: 2px;
 
-          .iconfont {
-            margin-right: 5px;
-            font-size: 14px;
+          .index-module_meta {
+            color: var(--title-color);
+
+            .iconfont {
+              margin-right: 5px;
+              font-size: 14px;
+            }
           }
         }
       }
@@ -78,9 +86,8 @@
     .suggestions-item-column {
       width: 32%;
       display: flex;
-      color: @grey-white-font-color;
       border: 1px solid @border-004;
-      border-radius: 8px;
+      border-radius: 4px;
       padding: 20px 20px;
       word-break: break-word;
 
@@ -88,7 +95,6 @@
         font-size: 22px;
         margin-right: 10px;
         margin-top: -3px;
-        color: @dark-font-color;
       }
 
       .item-columnInfo {
@@ -103,19 +109,17 @@
           line-height: 22px;
 
           a {
-            color: @dark-font-color;
+            color: var(--font-color);
             display: block;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
 
-            &:hover {
-              color: @light-font-color;
-            }
           }
         }
 
         .item-abstract {
+          color: var(--title-color);
           display: -webkit-box;
           max-height: 36px;
           -webkit-line-clamp: 2;
@@ -131,6 +135,7 @@
 
         .item-belong {
           color: @grey-white-font-color;
+          cursor: pointer;
         }
       }
     }
@@ -153,18 +158,17 @@
         display: flex;
         align-content: space-between;
         padding: 20px 20px;
-        border-bottom: 1px solid #eff0f0;
+        border-bottom: 1px solid @border-color_normal;
         margin-bottom: 10px;
 
         a {
-          color: @dark-font-color;
+          color: var(--font-color);
         }
 
         .article {
           font-size: 22px;
           margin-right: 10px;
           margin-top: -3px;
-          color: @dark-font-color;
         }
 
         .article-item-info {
@@ -177,6 +181,7 @@
           }
 
           .article-item-abstract {
+            color: var(--title-color);
             display: -webkit-box;
             max-height: 36px;
             -webkit-line-clamp: 2;
@@ -191,9 +196,14 @@
           .article-item-belongInfo {
             line-height: 18px;
             font-size: 14px;
+            display: flex;
+
+            .belong-info-author {
+              margin-right: 5px;
+            }
 
             a, .article-item-date {
-              color: #8a8f8d;
+              color: @grey-white-font-color;
             }
 
             .article-item-date {
@@ -220,10 +230,15 @@
       margin-left: 15px;
 
       .ivu-dropdown {
-        border: 1px solid #dee2e6;
+        border: 1px solid @border-color_normal;
         border-radius: 4px;
         .ivu-dropdown-item-selected, .ivu-dropdown-item-selected:hover {
-          background: #f3f3f3;
+          color: @primary-color;
+        }
+
+        .ivu-dropdown-item:hover {
+          background: #e1faeb;
+          color: @primary-color;
         }
       }
 
@@ -245,7 +260,6 @@
     }
 
     /deep/.pagination {
-      margin: 0;
 
       .page-item {
         border-radius: 4px;
@@ -258,7 +272,9 @@
           margin: 0 1px;
           text-align: center;
           border-radius: 4px;
-          color: #585A5A;
+          color: var(--title-color);
+          border-color: @border-color_normal;
+          background: unset;
 
           &:focus {
             outline: 0;

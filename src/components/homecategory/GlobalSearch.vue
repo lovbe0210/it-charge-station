@@ -77,9 +77,15 @@
               </a>
             </h3>
             <p class="item-abstract">{{item.describe}}</p>
-            <b-link :to="'/' + item.userInfo.domain" class="item-belong">
-              {{item.userInfo.username}}
-            </b-link>
+            <user-card class="item-avatar"
+                       :userInfo="item.userInfo"
+                       :popoverContainer="popoverContainer">
+              <slot>
+                <a class="item-belong" :href="'/' + item.domain" target="_blank">
+                  <span>{{item.userInfo.username}}</span>
+                </a>
+              </slot>
+            </user-card>
           </div>
         </div>
       </div>
@@ -99,9 +105,15 @@
               </h3>
               <p class="article-item-abstract" v-html="item.abstract"></p>
               <p class="article-item-belongInfo">
-                <b-link :to="('/' + item.domain)">
-                  <span>{{item.username}}</span>
-                </b-link>
+                <user-card class="item-avatar"
+                           :userInfo="item"
+                           :popoverContainer="popoverContainer">
+                  <slot>
+                    <b-link :to="('/' + item.domain)" class="belong-info-author">
+                      <span>{{item.username}}</span>
+                    </b-link>
+                  </slot>
+                </user-card>
                 <b-link v-if="item.columnId" :to="'/column/' + item.columnId">
                   <span>{{' / ' + item.columnName}}</span>
                 </b-link>
@@ -136,6 +148,7 @@
       <div class="pagination-suffix">
         <Dropdown placement="top"
                   trigger="click"
+                  transfer-class-name="dropdown-background dropdown-item-all-hover"
                   @on-visible-change="visibleChange"
                   @on-click="changePageSize">
             <span class="pageSize-select">
@@ -202,6 +215,7 @@
             userInfo: {
               userId: 112,
               domain: 'lovesdfsd',
+              avatar: require('@/assets/avatar/14.jpg'),
               username: '闪魔亮晶晶'
             }
           },
@@ -212,6 +226,7 @@
             describe: "该知识库用于收藏平常遇到过的一些关于技术的文章（涵盖前端与后端）",
             userInfo: {
               userId: 113,
+              avatar: require('@/assets/avatar/15.jpg'),
               domain: 'lovesdfsd',
               username: 'whalexplorer'
             }
@@ -222,6 +237,7 @@
             describe: "讲解 Linux 系统部署 Java 项目需要的环境",
             userInfo: {
               userId: 114,
+              avatar: require('@/assets/avatar/16.png'),
               domain: 'lovesdfsd',
               username: 'whalexplorer'
             }
