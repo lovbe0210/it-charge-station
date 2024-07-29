@@ -281,7 +281,8 @@
       },
       // 滚动条滚动处理事件：
       handleScroll() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+        let app = document.getElementById("app");
+        const scrollTop = app.pageYOffset || app.scrollTop || app.scrollTop
         // 视窗固定
         if (scrollTop > this.fixedHeight) {
           this.needFixed = true
@@ -306,11 +307,12 @@
     },
     mounted() {
       this.needFixed = false;
+      // 从store中获取今日flag并赋值给flagContent
+      this.flagContent = this.$store.state.flagContent.content
       if (!this.$store.state.isPhone) {
         // 给window添加一个滚动监听事件
-        window.addEventListener('scroll', this.handleScroll)
-        // 从store中获取今日flag并赋值给flagContent
-        this.flagContent = this.$store.state.flagContent.content
+        let app = document.getElementById("app");
+        app.addEventListener('scroll', this.handleScroll)
         // 获取元素高度
         this.$nextTick(() => {
           if (this.fixedHeight !== null) {
@@ -331,7 +333,8 @@
     },
     destroyed() {
       // 释放监听
-      window.removeEventListener('scroll', this.handleScroll)
+      let app = document.getElementById("app");
+      app.removeEventListener('scroll', this.handleScroll)
     }
   }
 </script>

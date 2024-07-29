@@ -1,7 +1,11 @@
 <template>
   <div class="customer-set">
     <div class="title">
-      🎨 个人偏好
+      <span class="iconfont custome-theme">
+      </span>
+      <span>
+        个人偏好
+      </span>
     </div>
     <div class="theme-color settings">
       <div class="context">
@@ -98,20 +102,33 @@
       uploading() {
         this.uploadStatus = 1;
         console.log('uploading...')
+        let tmp = Math.ceil(Math.random() * 4);
+        let baccObj;
+        switch (tmp) {
+          case 1:
+            baccObj = {backgroundImg: 'url(' + require('@/assets/img/bacc/bacc1.jpeg') + ')'}
+            break;
+          case 2:
+            baccObj = {backgroundImg: 'url(' + require('@/assets/img/bacc/bacc2.jpg') + ')'}
+            break;
+          case 3:
+            baccObj = {backgroundImg: 'url(' + require('@/assets/img/bacc/bacc3.jpeg') + ')'}
+            break;
+          case 4:
+            baccObj = {backgroundImg: 'url(' + require('@/assets/img/bacc/bacc4.jpeg') + ')'}
+            break;
+        }
+        this.$store.commit('customerSet', baccObj)
       },
       handleMaxSize() {
         this.uploadIcon = 'md-close-circle';
         this.uploadStatus = 2;
-        this.$Notice.warning({
-          title: '文件大小不得超过10MB！'
-        });
+        this.$Message.warning('文件大小不得超过10MB！');
       },
       handleFormatError() {
         this.uploadIcon = 'md-close-circle';
         this.uploadStatus = 2;
-        this.$Notice.warning({
-          title: '文件格式错误，请上传正确的图片'
-        });
+        this.$Message.warning('文件格式错误，请上传正确的图片');
       },
       handleServerSuccess(response) {
         if (response.result) {
@@ -121,46 +138,11 @@
           }
           this.$store.commit('customerSet', baccObj)
         }
-        /*let tmp = Math.ceil(Math.random() * 10);
-        console.log(tmp)
-        let baccObj;
-        switch (tmp) {
-          case 1:
-            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/23451916UME.jpg)'}
-            break;
-          case 2:
-            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'}
-            break;
-          case 3:
-            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/%E6%97%A0%E6%A0%87%E9%A2%98.png)'}
-            break;
-          case 4:
-            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/b9eb713f63.jpg)'}
-            break;
-          case 5:
-            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/23451916UME.jpg)'}
-            break;
-          case 6:
-            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)'}
-            break;
-          case 7:
-            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/%E6%97%A0%E6%A0%87%E9%A2%98.png)'}
-            break;
-          case 8:
-            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/b9eb713f63.jpg)'}
-            break;
-          case 9:
-            baccObj = {backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/t01948ff2341a5d1ac3.jpg)'}
-            break;
-        }*/
-
       },
       handleServerError() {
         this.uploadIcon = 'md-close-circle';
         this.uploadStatus = 2;
-        this.$Notice.warning({
-          title: '网络错误，请稍后重试！'
-        });
+        this.$Message.warning('网络错误，请稍后重试！');
       },
       /**
        * -----------------------------------------------
