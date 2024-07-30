@@ -99,7 +99,7 @@ module.exports = {
         }
       },
       '/icharge': {
-        target: 'http://localhost:10211',
+        target: 'http://localhost:10298',
         changeOrigin: true
       }
     }

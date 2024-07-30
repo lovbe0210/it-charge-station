@@ -102,7 +102,7 @@
       uploading() {
         this.uploadStatus = 1;
         console.log('uploading...')
-        let tmp = Math.ceil(Math.random() * 4);
+      /*  let tmp = Math.ceil(Math.random() * 4);
         let baccObj;
         switch (tmp) {
           case 1:
@@ -118,7 +118,7 @@
             baccObj = {backgroundImg: 'url(' + require('@/assets/img/bacc/bacc4.jpeg') + ')'}
             break;
         }
-        this.$store.commit('customerSet', baccObj)
+        this.$store.commit('customerSet', baccObj)*/
       },
       handleMaxSize() {
         this.uploadIcon = 'md-close-circle';
