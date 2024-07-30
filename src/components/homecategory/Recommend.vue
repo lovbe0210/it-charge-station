@@ -84,14 +84,14 @@
             id: '004',
             title: '写作｜《认知觉醒》',
             description: '如果让我用一句话来总结自己快速成长的“秘诀”，那就是：盯着改变去学习。这的确是我这些年快速蜕变的心法，也是我回答很多读者的答案。因为他们常问：你书中提到的那些书，其实很多我都读过，但为什么我读过之后就仅仅是读过，而你不仅能在这么短的时间里发生蜕变，还能写出这样两本书呢',
-            preview: require('@/assets/img/4.jpg'),
+            preview: require('@/assets/img/04.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
           {
             id: '005',
             title: '结构性思维——解构问题的基础',
             description: '表达一个态度：思维只是一种思考角度或工具，不要过度解读和神话，一切是为了找到遇到问题更优的解法',
-            preview: require('@/assets/img/5.jpg'),
+            preview: require('@/assets/img/05.jpg'),
             content: 'This is the content, this is the content, this is the content, this is the content.'
           },
           {

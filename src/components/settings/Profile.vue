@@ -218,7 +218,7 @@
     data() {
       return {
         userInfo: {
-          avatar: require('@/assets/avatar/01.jpg'),
+          avatar: 'https://pic.netbian.com/uploads/allimg/240618/195433-1718711673bf15.jpg',
           nickname: 'HappyDragon1994',
           tags: [
             {content: '自我驱动', color: 'blue'},

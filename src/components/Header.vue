@@ -51,7 +51,7 @@
               <a href="javascript:void(0)">
                 <div class="avatar-wrapper">
                   <b-avatar size="40px"
-                            src="https://i3.wp.com/tvax2.sinaimg.cn/large/006BNqYCly1hosevzvlfvj31401e0tdc.jpg"
+                            src="https://pic.netbian.com/uploads/allimg/240618/195433-1718711673bf15.jpg"
                             href="javascript:void(0)">
                     <span v-if="0" class="iconfont icon-avatar-man" style="font-size:1.8rem;"></span>
                   </b-avatar>

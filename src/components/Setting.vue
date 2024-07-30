@@ -65,7 +65,7 @@
         fixedHeight: 77,
         userInfo: {
           nickname: '布衣草人',
-          avatar: require('@/assets/img/1.jpg'),
+          avatar: 'https://pic.netbian.com/uploads/allimg/240618/195433-1718711673bf15.jpg',
           domain: 'lovbe0210sw1f56',
           follow: true
         }

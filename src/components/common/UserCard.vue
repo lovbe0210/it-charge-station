@@ -70,6 +70,5 @@ export default {
 <style scoped lang="less">
   .user-card {
     display: flex;
-    align-items: center;
   }
 </style>

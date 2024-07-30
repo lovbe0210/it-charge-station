@@ -92,7 +92,7 @@
                 id: '001',
                 title: '臻默：整理100+语雀小技巧之后，我们开始了知识管理的大航海大巷哈',
                 description: 'https://juejin.cn/post/7343441462644195362 缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了缘起：开始整理语雀小技巧的动机，是因为雀友群很多朋友会提出语雀日常使用的困惑：实际上，贴心的语雀官方已经提供了帮助手册和语雀小技巧卡片，不过卡片了',
-                preview: require('@/assets/img/1.jpg'),
+                preview: require('@/assets/img/01.jpg'),
                 content: 'This is the content, this is the content, this is the content, this is the content.'
               },
               {
@@ -113,14 +113,14 @@
                 id: '004',
                 title: '写作｜《认知觉醒》',
                 description: '如果让我用一句话来总结自己快速成长的“秘诀”，那就是：盯着改变去学习。这的确是我这些年快速蜕变的心法，也是我回答很多读者的答案。因为他们常问：你书中提到的那些书，其实很多我都读过，但为什么我读过之后就仅仅是读过，而你不仅能在这么短的时间里发生蜕变，还能写出这样两本书呢',
-                preview: require('@/assets/img/4.jpg'),
+                preview: require('@/assets/img/04.jpg'),
                 content: 'This is the content, this is the content, this is the content, this is the content.'
               },
               {
                 id: '005',
                 title: '结构性思维——解构问题的基础',
                 description: '表达一个态度：思维只是一种思考角度或工具，不要过度解读和神话，一切是为了找到遇到问题更优的解法',
-                preview: require('@/assets/img/5.jpg'),
+                preview: require('@/assets/img/05.jpg'),
                 content: 'This is the content, this is the content, this is the content, this is the content.'
               },
               {

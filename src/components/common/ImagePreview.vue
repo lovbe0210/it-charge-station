@@ -72,7 +72,7 @@
   };
 </script>
 
-<style scoped>
+<style>
   /* 样式 */
   .image-preview {
     position: fixed;
@@ -84,7 +84,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+
     cursor: zoom-out;
   }
   .image-preview img {
@@ -92,4 +92,5 @@
     max-height: 100%;
     transition: transform 0.3s ease;
   }
+
 </style>

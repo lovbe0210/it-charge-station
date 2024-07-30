@@ -181,7 +181,7 @@
             userId: 112,
             usernameShow: '闪魔亮<span style="color: red;">晶晶</span>',
             username: '闪魔亮晶晶',
-            avatar: require('@/assets/avatar/16.png'),
+            avatar: require('@/assets/avatar/16.jpg'),
             domain: 'lovbe0210',
             location: '四川成都',
             industry: '新时代农民工'
@@ -237,7 +237,7 @@
             describe: "讲解 Linux 系统部署 Java 项目需要的环境",
             userInfo: {
               userId: 114,
-              avatar: require('@/assets/avatar/16.png'),
+              avatar: require('@/assets/avatar/16.jpg'),
               domain: 'lovesdfsd',
               username: 'whalexplorer'
             }

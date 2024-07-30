@@ -59,7 +59,7 @@
             },
             {
               url: '/',
-              src: require('@/assets/img/4.jpg'),
+              src: require('@/assets/img/04.jpg'),
               title: 'title2'
             },
             {

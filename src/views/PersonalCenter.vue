@@ -19,7 +19,7 @@
               <div class="userInfo-module_avatarWrapper">
                 <div class="ant-image">
                   <img alt="小黑bu惑" class="userInfo-module_avatar"
-                       src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png">
+                       src="https://pic.netbian.com/uploads/allimg/240626/003312-17193331924638.jpg">
                 </div>
               </div>
               <div class="userInfo-module_info">

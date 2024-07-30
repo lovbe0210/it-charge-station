@@ -137,7 +137,7 @@
             userInfo: {
               userId: 1,
               username: '闪魔亮晶晶',
-              avatar: require('@/assets/avatar/16.png')
+              avatar: require('@/assets/avatar/16.jpg')
             }
           },
           {
@@ -152,8 +152,8 @@
             articleId: 'ssasdas',
             ramblyId: 'asd32442sdf',
             picList: [
-              require('@/assets/img/5.jpg'),
-              require('@/assets/avatar/04.jpg'),
+              require('@/assets/img/05.jpg'),
+              'https://pic.netbian.com/uploads/allimg/240715/001632-1720973792179d.jpg',
               require('@/assets/img/19.jpg')
             ],
             pubTime: 1707833424000,
@@ -169,7 +169,7 @@
             PublicTitle: 'MySQL索引初见闻',
             PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
             picList: [
-              require('@/assets/img/5.jpg')
+              require('@/assets/img/05.jpg')
             ],
             pubTime: 1715602224000,
             comments: 10,
@@ -237,16 +237,6 @@
           }
           this.pswp.open(imgItems, currentIndex)
         }
-
-
-        /* let img = event.target;
-         let items = [{
-           src: img.src,
-           msrc: img.src,
-           w: img.naturalWidth,
-           h: img.naturalHeight
-         }]
-         this.pswp.open(items, 0)*/
       },
       needFormatDate,
       getRouterPath(trendItem) {

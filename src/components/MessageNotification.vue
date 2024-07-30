@@ -3,7 +3,7 @@
     <div class="msg-notify-menu">
       <div class="fixed-anchor-point">
         <div class="item">
-          <span class="iconfont icon-hy-message"></span>
+          <span class="iconfont i-message"></span>
           消息中心
         </div>
       </div>
@@ -236,7 +236,7 @@
                     </div>
                   </div>
                   <div class="message-list beauty-scroll" ref="messageScroll">
-                    <div class="message-list-content">
+                    <div class="message-list-content" id="messageListContent">
                       <div class="msg-more">
                         <span class="loading" style="display: none;">
                           <div data-v-2fe28aba="" class="lds-spinner">
@@ -265,6 +265,7 @@
                           <div v-if="msg.msg_type === 2" class="message-content is-img">
                             <img class="im-msg-item-img" title="[图片] 点击查看大图" alt="[图片] 点击查看大图"
                                  :src="msg.content.imageUrl"
+                                 @click="previewImage(msg.content.imageUrl)"
                                  style="max-width:112px;">
                           </div>
                         </div>
@@ -374,11 +375,14 @@
 <script>
   import {formatTime} from '@/utils/emoji';
   import InputBox from "@/components/common/replycomment/src/component/InputBox";
+  import Pswp from "@/components/common/imagepreview/index"
 
   export default {
     name: "MessageNotification",
     data() {
       return {
+        // 图片预览
+        pswp: null,
         // 评论回复
         commentReplyList: [],
         // 点赞
@@ -433,7 +437,7 @@
               {
                 id: 121112,
                 username: '安沐夕',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1ho0pjdv722j30m80hs771.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240626/003312-17193331924638.jpg',
                 domain: 'asd34dsff',
                 type: 1,
                 action: 1,
@@ -444,7 +448,7 @@
               {
                 id: 2235663,
                 username: 'HappyDragon1994',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax1.sinaimg.cn/large/006BNqYCly1ho5g0vpdj3j30nq0tn0v3.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240626/001611-17193321719b99.jpg',
                 domain: 'asd34dsasdff',
                 type: 1,
                 action: 2,
@@ -455,7 +459,7 @@
               {
                 id: 11553436,
                 username: 'bravo1988',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1ho5g0tzacqj30nq0tojub.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240624/002118-1719159678b8ea.jpg',
                 domain: '23dfsssgg55',
                 type: 2,
                 action: 2,
@@ -466,7 +470,7 @@
               {
                 id: 33442222,
                 username: '咔咔',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1ho0pjnvgwdj30m80rsdj1.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/231228/004217-1703695337659d.jpg',
                 domain: 'sasdasdas',
                 type: 2,
                 action: 1,
@@ -477,7 +481,7 @@
               {
                 id: 1214424,
                 username: '白白bai',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1ho0pjp45pmj30jz0qndkw.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg',
                 domain: 'sasdasdas',
                 type: 2,
                 action: 2,
@@ -488,7 +492,7 @@
               {
                 id: 75434234445353,
                 username: 'IT\'S ME!',
-                avatar: 'https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hln4xfe6glj30u011in2q.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240618/201921-17187131610458.jpg',
                 domain: 'ssds2323',
                 type: 1,
                 action: 2,
@@ -499,7 +503,7 @@
               {
                 id: 12345511666,
                 username: '在下查尔斯',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax1.sinaimg.cn/large/006BNqYCly1ho2yc13on8j31401aojxy.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240617/000154-17185537148d4b.jpg',
                 domain: 'ssds2323',
                 type: 1,
                 action: 1,
@@ -510,7 +514,7 @@
               {
                 id: 754345353,
                 username: '小小哥的 Blog',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1ho5g0wvoxoj30nq0to3zr.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240614/003252-17182963729660.jpg',
                 domain: 'ssds2323',
                 type: 2,
                 action: 2,
@@ -526,7 +530,7 @@
               {
                 id: 121112,
                 username: '安沐夕',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1ho0pjdv722j30m80hs771.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240614/003252-17182963729660.jpg',
                 domain: 'asd34dsff',
                 type: 1,
                 read: 0,
@@ -536,7 +540,7 @@
               {
                 id: 2235663,
                 username: 'HappyDragon1994',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax1.sinaimg.cn/large/006BNqYCly1ho5g0vpdj3j30nq0tn0v3.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240617/000154-17185537148d4b.jpg',
                 domain: 'asd34dsasdff',
                 type: 2,
                 read: 1,
@@ -546,7 +550,7 @@
               {
                 id: 11553436,
                 username: 'bravo1988',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1ho5g0tzacqj30nq0tojub.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240618/201921-17187131610458.jpg',
                 domain: '23dfsssgg55',
                 type: 3,
                 read: 0,
@@ -556,7 +560,7 @@
               {
                 id: 33442222,
                 username: '咔咔',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1ho0pjnvgwdj30m80rsdj1.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg',
                 domain: 'sasdasdas',
                 type: 3,
                 read: 1,
@@ -566,7 +570,7 @@
               {
                 id: 1214424,
                 username: '白白bai',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1ho0pjp45pmj30jz0qndkw.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/231228/004217-1703695337659d.jpg',
                 domain: 'sasdasdas',
                 type: 2,
                 read: 1,
@@ -576,7 +580,7 @@
               {
                 id: 75434234445353,
                 username: 'IT\'S ME!',
-                avatar: 'https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hln4xfe6glj30u011in2q.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg',
                 domain: 'ssds2323',
                 type: 1,
                 read: 1,
@@ -586,7 +590,7 @@
               {
                 id: 12345511666,
                 username: '在下查尔斯',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax1.sinaimg.cn/large/006BNqYCly1ho2yc13on8j31401aojxy.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg',
                 domain: 'ssds2323',
                 type: 3,
                 read: 1,
@@ -596,7 +600,7 @@
               {
                 id: 754345353,
                 username: '小小哥的 Blog',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1ho5g0wvoxoj30nq0to3zr.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240618/201921-17187131610458.jpg',
                 domain: 'ssds2323',
                 type: 2,
                 read: 0,
@@ -610,28 +614,28 @@
               {
                 id: 121112,
                 username: '安沐夕',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1ho0pjdv722j30m80hs771.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/231228/004217-1703695337659d.jpg',
                 domain: 'asd34dsff',
                 read: 0
               },
               {
                 id: 2235663,
                 username: 'HappyDragon1994',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax1.sinaimg.cn/large/006BNqYCly1ho5g0vpdj3j30nq0tn0v3.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg',
                 domain: 'asd34dsasdff',
                 read: 1
               },
               {
                 id: 11553436,
                 username: 'bravo1988',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1ho5g0tzacqj30nq0tojub.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg',
                 domain: '23dfsssgg55',
                 read: 1
               },
               {
                 id: 33442222,
                 username: '咔咔',
-                avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1ho0pjnvgwdj30m80rsdj1.jpg',
+                avatar: 'https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg',
                 domain: 'sasdasdas',
                 read: 0
               }
@@ -682,7 +686,7 @@
                 "session_id": 1,
                 "session_user_id": 123123123,
                 "session_user_name": "股市-目标1000万股桃哥",
-                "session_user_avatar": "https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hmv3du2z1zj30k00qowme.jpg",
+                "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg",
                 "is_follow": 1,
                 "session_ts": 1710826535376070,
                 "unread_count": 0,
@@ -703,7 +707,7 @@
                 "session_id": 2,
                 "session_user_id": 123122123123,
                 "session_user_name": "Music郑在看",
-                "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1m6vedbj30is0qaabq.jpg",
+                "session_user_avatar": "https://pic.netbian.com/uploads/allimg/231228/004217-1703695337659d.jpg",
                 "is_follow": 0,
                 "session_ts": 1700109866222339,
                 "unread_count": 1,
@@ -724,7 +728,7 @@
                 "session_id": 3,
                 "session_user_id": 12312443123,
                 "session_user_name": "鹏城杰森",
-                "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1maldlsj30m71fnn29.jpg",
+                "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg",
                 "is_follow": 0,
                 "session_ts": 1698548656929697,
                 "unread_count": 1,
@@ -745,7 +749,7 @@
                 "session_id": 4,
                 "session_user_id": 12367123123,
                 "session_user_name": "保彪",
-                "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1mjb0hdj30vp1bj45k.jpg",
+                "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240614/003252-17182963729660.jpg",
                 "is_follow": 0,
                 "session_ts": 1694423942225948,
                 "unread_count": 1,
@@ -768,7 +772,7 @@
                 "session_id": 5,
                 "session_user_id": 12387123123,
                 "session_user_name": "江东刀郎",
-                "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1n13ni4j316o1kwgt1.jpg",
+                "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg",
                 "is_follow": 1,
                 "session_ts": 1693372352970827,
                 "unread_count": 1,
@@ -784,7 +788,7 @@
                     "imageType": "png",
                     "original": 0,
                     "size": "173",
-                    "url": "https://i0.hdslb.com/bfs/im_new/aa7c4f07f8552bce791565469ab48e7a96081167.jpg",
+                    "url": "https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg",
                     "width": 795
                   },
                   "timestamp": 1693372352,
@@ -797,7 +801,7 @@
                 "session_id": 6,
                 "session_user_id": 12319823123,
                 "session_user_name": "福利吧搬运工",
-                "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1n1w2m7j335s2dcx14.jpg",
+                "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240617/000154-17185537148d4b.jpg",
                 "is_follow": 1,
                 "session_ts": 1672072267119796,
                 "unread_count": 1,
@@ -820,7 +824,7 @@
                 "session_id": 7,
                 "session_user_id": 1231113423123,
                 "session_user_name": "私募小日常",
-                "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hm7wguih2rj316o1kwk8h.jpg",
+                "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240617/000154-17185537148d4b.jpg",
                 "is_follow": 1,
                 "session_ts": 1672072267119796,
                 "unread_count": 1,
@@ -841,7 +845,7 @@
                 "session_id": 8,
                 "session_user_id": 12083123123,
                 "session_user_name": "依旧smile",
-                "session_user_avatar": "https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hmcl0nlc5sj335s23v7j6.jpg",
+                "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240624/002118-1719159678b8ea.jpg",
                 "is_follow": 1,
                 "session_ts": 1672072267119796,
                 "unread_count": 1,
@@ -862,7 +866,7 @@
                 "session_id": 9,
                 "session_user_id": 115723123123,
                 "session_user_name": "深夜港湾",
-                "session_user_avatar": "https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hmet8wel4mj327x2yo4qp.jpg",
+                "session_user_avatar": "https://image.baidu.com/search/down?url=https://tv…img.cn/large/006BNqYCly1hmv3du2z1zj30k00qowme.jpg",
                 "is_follow": 1,
                 "session_ts": 1672072267119796,
                 "unread_count": 1,
@@ -982,6 +986,31 @@
       },
       msgNotifyChange() {
         this.$Message.success('设置成功');
+      },
+      previewImage(currentUrl) {
+        if (this.pswp === null) {
+          this.pswp = new Pswp(null);
+        }
+        let msgWrapp = document.getElementById('messageListContent');
+        // 获取该元素下的所有img元素
+        const imgElements = msgWrapp.getElementsByClassName('im-msg-item-img');
+        // 将结果转换为数组（可选）
+        const imgArray = Array.from(imgElements);
+        let imgItems = [];
+        let currentIndex = 0;
+        for (let i = 0; i < imgArray.length; i++) {
+          let img = imgArray[i];
+          if (currentUrl === img.src) {
+            currentIndex = i;
+          }
+          imgItems.push({
+            src: img.src,
+            msrc: img.src,
+            w: img.naturalWidth,
+            h: img.naturalHeight
+          })
+        }
+        this.pswp.open(imgItems, currentIndex)
       }
     },
     watch: {
@@ -1053,13 +1082,33 @@
               "msg_status": 0
             },
             {
+              "sender_uid": 271221082,
+              "receiver_type": 1,
+              "receiver_id": 271221082,
+              "msg_type": 1,
+              "content": {"content": "再发两次就不发了"},
+              "timestamp": 1711730115671,
+              "msg_key": 55,
+              "msg_status": 0
+            },
+            {
+              "sender_uid": 271221082,
+              "receiver_type": 1,
+              "receiver_id": 271221082,
+              "msg_type": 1,
+              "content": {"content": "z最后一次，不发了"},
+              "timestamp": 1711730115671,
+              "msg_key": 66,
+              "msg_status": 0
+            },
+            {
               "sender_uid": 123123123,
               "receiver_type": 1,
               "receiver_id": 271221082,
               "msg_type": 1,
               "content": {"content": "再发我就不干了"},
               "timestamp": 1711730115671,
-              "msg_key": 55,
+              "msg_key": 77,
               "msg_status": 0
             },
             {
@@ -1069,18 +1118,20 @@
               "msg_type": 2,
               "content": {
                 "content": "图片",
-                'imageUrl': 'https://image.baidu.com/search/down?url=https://tva1.sinaimg.cn/large/006BNqYCly1hlu1m6vedbj30is0qaabq.jpg'
+                'imageUrl': 'https://pic.netbian.com/uploads/allimg/240610/002738-171795045835b6.jpg'
               },
               "timestamp": 1711730115671,
-              "msg_key": 66,
+              "msg_key": 88,
               "msg_status": 0
             }
           ];
+          debugger
           let messageScroll = this.$refs.messageScroll;
           if (messageScroll) {
             // 使用 setTimeout 来确保在 DOM 更新之后再进行滚动
             this.$nextTick(() => {
               // 将滚动位置设置为容器的滚动高度
+              debugger
               messageScroll.scrollTop = messageScroll.scrollHeight;
             });
           }

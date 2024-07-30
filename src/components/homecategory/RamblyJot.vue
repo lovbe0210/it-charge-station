@@ -188,7 +188,7 @@
             userInfo: {
               userId: 112,
               username: '闪魔亮晶晶',
-              avatar: require('@/assets/avatar/16.png')
+              avatar: require('@/assets/avatar/16.jpg')
             }
           },
           {
@@ -201,7 +201,7 @@
             userInfo: {
               userId: 112,
               username: '山野寻雾灯',
-              avatar: require('@/assets/avatar/15.jpg')
+              avatar: 'https://pic.netbian.com/uploads/allimg/240710/231655-17206246159e99.jpg'
             }
           },
           {
@@ -211,13 +211,13 @@
             content: '一、引言 在Liunx系统CentOS7.9的中部署项目遇到了Glibc版本过低的问题，使用yum安装最高只能安装Glibc2.17并不能满足要求，本文介绍了如何用源码编译的方法升级Glibc的版本。',
             createTime: 1713005659000,
             picList: [
-              require('@/assets/img/4.jpg'),
-              require('@/assets/img/5.jpg')
+              require('@/assets/img/04.jpg'),
+              require('@/assets/img/05.jpg')
             ],
             userInfo: {
               userId: 112,
               username: 'AbnerPei',
-              avatar: require('@/assets/avatar/14.jpg')
+              avatar: 'https://pic.netbian.com/uploads/allimg/240712/235820-17207999003ddd.jpg'
             }
           },
           {
@@ -227,14 +227,14 @@
             content: '遇到的问题：设置 backdrop-filter，Safari 浏览器首次加载没效果，通过ajax请求数据翻页之后，会出现部分高斯模糊效果无效，但是windows正常。',
             createTime: 1713164059000,
             picList: [
-              require('@/assets/img/1.jpg'),
+              require('@/assets/img/01.jpg'),
               require('@/assets/img/2.jpg'),
               require('@/assets/img/3.jpg')
             ],
             userInfo: {
               userId: 112,
               username: 'AbnerPei',
-              avatar: require('@/assets/avatar/13.jpg')
+              avatar: 'https://pic.netbian.com/uploads/allimg/240710/231848-1720624728d425.jpg'
             }
           },
           {
@@ -244,14 +244,14 @@
             content: '遇到的问题：设置 backdrop-filter，Safari 浏览器首次加载没效果，通过ajax请求数据翻页之后，会出现部分高斯模糊效果无效，但是windows正常。',
             createTime: 1713164059000,
             picList: [
-              require('@/assets/img/1.jpg'),
+              require('@/assets/img/01.jpg'),
               require('@/assets/img/2.jpg'),
               require('@/assets/img/3.jpg')
             ],
             userInfo: {
               userId: 112,
               username: 'AbnerPei',
-              avatar: require('@/assets/avatar/12.jpg')
+              avatar: 'https://pic.netbian.com/uploads/allimg/240710/224812-17206228929b43.jpg'
             }
           },
           {
@@ -262,8 +262,8 @@
             createTime: 1713164059000,
             picList: [
               require('@/assets/avatar/01.jpg'),
-              require('@/assets/avatar/04.jpg'),
-              require('@/assets/avatar/05.jpg')
+              require('@/assets/img/04.jpg'),
+              require('@/assets/img/05.jpg')
             ],
             userInfo: {
               userId: 112,

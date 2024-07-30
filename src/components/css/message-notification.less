@@ -1,8 +1,9 @@
+@import "common-var";
 .layout-message-notification {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: #262626;
+  color: var(--font-color);
   font-size: 14px;
   font-variant: tabular-nums;
   line-height: 1.5715;
@@ -23,7 +24,6 @@
     min-width: 50px;
 
     .fixed-anchor-point {
-      //color: #262626;
       font-size: 14px;
       font-weight: 700;
       margin-bottom: 10px;
@@ -71,7 +71,7 @@
       }
 
       .item:hover, .active-menu {
-        background: #eff0f0;
+        background: var(--on-theme-bg-color);
         border-radius: 6px;
       }
     }
@@ -99,7 +99,7 @@
 
   .msg-notify-body {
     margin-left: -1px;
-    border-left: 1px solid rgba(0, 0, 0, 0.06);
+    border-left: 1px solid @border-color_normal;
     flex: auto;
     min-width: 0;
     min-height: 0;
@@ -117,26 +117,26 @@
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        color: #262626;
+        color: var(--font-color);
         font-size: 14px;
         font-variant: tabular-nums;
         line-height: 1.5715;
         list-style: none;
         font-feature-settings: "tnum", "tnum";
         position: relative;
-        background: #ffffff;
+        //background: #ffffff;
         border-radius: 6px;
 
         .tabs-tabpane-head {
           min-height: 52px;
-          color: rgba(0, 0, 0, 0.85);
+          color: var(--font-color);
           font-weight: 500;
           background: transparent;
           border-radius: 6px 6px 0 0;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+          border-bottom: 1px solid @border-color_normal;
           font-size: 14px;
 
           .active-tab {
@@ -146,13 +146,13 @@
           .all-read-action {
             float: right;
             margin-right: 46px;
-            color: #585A5A;
+            color: var(--title-color);
             font-weight: 400;
             cursor: pointer;
           }
 
           .all-read-action:hover {
-            color: #262626;
+            color: @grey-white-font-color;
           }
         }
 
@@ -181,7 +181,6 @@
 
               .notification-item {
                 display: flex;
-                background-color: #ffffff;
                 transition: background-color .3s ease;
                 word-break: break-word;
                 position: relative;
@@ -192,7 +191,7 @@
                 }
 
                 .item-content {
-                  color: #8A8F8D;
+                  color: var(--title-color);
                   margin-left: 12px;
                   font-size: 14px;
                   word-wrap: break-word;
@@ -205,12 +204,12 @@
 
                     .context-actor {
                       font-weight: 600;
-                      color: #262626;
+                      color: var(--font-color);
                     }
 
                     .context-subject {
                       font-weight: 400;
-                      color: #262626;
+                      color: var(--font-color);
                     }
 
                     .sys-msg-label {
@@ -218,7 +217,7 @@
                     }
 
                     .context-actor:hover, .context-subject:hover {
-                      color: #585A5A;
+                      color: var(--title-color);
                     }
 
                     .ivu-badge > .ivu-badge-dot {
@@ -234,7 +233,7 @@
               }
 
               .notification-item:hover {
-                background-color: #FAFAFA;
+                background-color: var(--rj-editor-bg-color);
               }
             }
           }
@@ -250,7 +249,6 @@
           overflow: hidden !important;
 
           .lovbe-im {
-            background-color: #fff;
             -webkit-box-shadow: 0 2px 4px 0 rgba(121, 146, 185, 0.54);
             box-shadow: 0 2px 4px 0 rgba(121, 146, 185, 0.54);
             border-radius: 4px;
@@ -354,11 +352,11 @@
                     -webkit-transition: 300ms;
                     transition: 300ms;
                     font-size: 12px;
-                    color: #999;
+                    color: @grey-white-font-color;
                   }
 
                   &:hover {
-                    background-color: #e4e5e6;
+                    background-color: var(--dropdown-bg-color);
 
                     .close {
                       -webkit-transform: translateX(0);
@@ -369,7 +367,7 @@
                 }
 
                 .active {
-                  background-color: #e4e5e6;
+                  background-color: var(--dropdown-bg-color);
                 }
               }
             }
@@ -405,10 +403,10 @@
                   -webkit-box-align: center;
                   -ms-flex-align: center;
                   align-items: center;
-                  border-bottom: 1px solid #e9eaec;
+                  border-bottom: 1px solid @border-color_normal;
                   position: relative;
                   text-align: center;
-                  color: #333;
+                  color: var(--font-color);
 
                   .is-black {
                     position: absolute;
@@ -428,6 +426,10 @@
                     position: absolute;
                     right: 10px;
                     z-index: 2;
+
+                    .menu-btn {
+                      color: @grey-white-font-color;
+                    }
                   }
                 }
 
@@ -437,7 +439,7 @@
                   flex: 1;
                   position: relative;
                   overflow-x: hidden;
-                  background-color: #f4f5f7;
+                  //background-color: #f4f5f7;
 
                   .message-list-content {
                     max-width: 555px;
@@ -450,16 +452,17 @@
                       font-size: 12px;
 
                       .error {
-                        color: #8A8F8D;
+                        color: @grey-white-font-color;
 
                         .reload {
-                          color: #00b96b;
+                          color: @primary-color;
                           cursor: pointer;
                         }
                       }
                     }
 
                     .msg-time {
+                      color: var(--title-color);
                       padding: 16px 0 16px;
                       text-align: center;
                     }
@@ -489,7 +492,7 @@
                           word-break: break-word;
                           border-radius: 0 16px 16px 16px;
                           overflow: hidden;
-                          background: #fff;
+                          background: var(--dropdown-bg-color);
                         }
 
                         .message-content:not(.is-img) {
@@ -524,9 +527,9 @@
 
                 .send-box {
                   height: 162px;
-                  border-top: 1px solid #d8d8d8;
+                  border-top: 1px solid @grey-white-font-color;
                   border-bottom-right-radius: 4px;
-                  background-color: #f4f5f7;
+                  //background-color: #f4f5f7;
                   -ms-flex-negative: 0;
                   flex-shrink: 0;
                   padding: 0 16px;
@@ -619,7 +622,7 @@
             margin: 0 12px;
 
             .setting-subtitle {
-              margin: 0px 0px 10px;
+              margin: 0 0 10px;
               color: var(--font-color);
               line-height: 24px;
               font-weight: 500;
@@ -642,7 +645,7 @@
                 font-size: 14px;
                 line-height: 22px;
                 font-weight: 400;
-                color: #262626;
+                color: var(--font-color);
                 margin-bottom: 0;
                 margin-top: 0;
               }

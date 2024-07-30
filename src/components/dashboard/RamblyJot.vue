@@ -176,8 +176,8 @@
             content: '一、引言 在Liunx系统CentOS7.9的中部署项目遇到了Glibc版本过低的问题，使用yum安装最高只能安装Glibc2.17并不能满足要求，本文介绍了如何用源码编译的方法升级Glibc的版本。',
             createTime: '2024-01-31 19:02:18',
             picList: [
-              require('@/assets/img/4.jpg'),
-              require('@/assets/img/5.jpg')
+              require('@/assets/img/04.jpg'),
+              require('@/assets/img/05.jpg')
             ]
           },
           {
@@ -188,7 +188,7 @@
             content: '遇到的问题：设置 backdrop-filter，Safari 浏览器首次加载没效果，通过ajax请求数据翻页之后，会出现部分高斯模糊效果无效，但是windows正常。',
             createTime: '2024-01-31 19:02:18',
             picList: [
-              require('@/assets/img/1.jpg'),
+              require('@/assets/img/01.jpg'),
               require('@/assets/img/2.jpg'),
               require('@/assets/img/3.jpg')
             ]

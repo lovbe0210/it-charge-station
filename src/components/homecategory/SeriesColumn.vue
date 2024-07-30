@@ -70,18 +70,18 @@
             uid: "001",
             personalDomain: "lovbe0210",
             title: "Java开发技术手册",
-            coverUrl: require('@/assets/img/1.jpg'),
+            coverUrl: 'https://pic.netbian.com/uploads/allimg/240727/150142-172206370296d1.jpg',
             describe: "个人学习、工作常用知识或工作遇到问题的小记",
             viewCount: 1002,
-            avatar: 'https://tvax1.sinaimg.cn/large/718153f4gy1gy47gm06y9j20m80rsq8t.jpg'
+            avatar: 'https://pic.netbian.com/uploads/allimg/240626/203002-1719405002f79c.jpg'
           }, {
             uid: "002",
             personalDomain: "lzy8684",
             title: "开发精品文章",
-            coverUrl: require('@/assets/img/2.jpg'),
+            coverUrl: 'https://pic.netbian.com/uploads/allimg/240727/141653-1722061013ab7a.jpg',
             describe: "该知识库用于收藏平常遇到过的一些关于技术的文章（涵盖前端与后端）",
             viewCount: 4202,
-            avatar: 'https://tvax3.sinaimg.cn/large/718153f4gy1gy1ob6nxj1j20lo0ot41b.jpg'
+            avatar: 'https://pic.netbian.com/uploads/allimg/240709/175343-17205188236911.jpg'
           }, {
             uid: "003",
             personalDomain: "wuyiwa",
@@ -89,21 +89,21 @@
             coverUrl: require('@/assets/img/3.jpg'),
             describe: "讲解 Linux 系统部署 Java 项目需要的环境",
             viewCount: 502,
-            avatar: 'https://tvax1.sinaimg.cn/large/718153f4gy1gxzk3fro87j20nc0ncq3z.jpg'
+            avatar: 'https://pic.netbian.com/uploads/allimg/240519/205724-17161234447284.jpg'
           }, {
             uid: "004",
             personalDomain: "whalexplorer",
             title: "我是第4个",
-            coverUrl: require('@/assets/img/4.jpg'),
-            avatar: 'https://tvax2.sinaimg.cn/large/718153f4gy1gy47gj6p22j20xc0p0n1v.jpg',
+            coverUrl: require('@/assets/img/04.jpg'),
+            avatar: 'https://pic.netbian.com/uploads/allimg/240424/003411-1713890051411d.jpg',
             viewCount: 308,
             describe: "水电费师傅是"
           }, {
             uid: "005",
             personalDomain: "jiaowovitamin",
             title: "我是第5个",
-            coverUrl: require('@/assets/img/5.jpg'),
-            avatar: 'https://image.baidu.com/search/down?url=https://tvax1.sinaimg.cn/large/006BNqYCly1hnp2j1mz4yj30k00tzdli.jpg',
+            coverUrl: require('@/assets/img/05.jpg'),
+            avatar: '\thttps://pic.netbian.com/uploads/allimg/240727/161014-172206781404ef.jpg',
             viewCount: 100,
             describe: "水电费师傅是"
           }

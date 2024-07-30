@@ -170,7 +170,7 @@
           },
           {
             url: '/',
-            src: require('@/assets/img/4.jpg'),
+            src: require('@/assets/img/04.jpg'),
             title: 'title2'
           },
           {
@@ -189,7 +189,7 @@
           },
           {
             id: '002',
-            avatar: 'https://tvax4.sinaimg.cn/large/718153f4gy1gxuwa18v4jj20m80rsqa3.jpg',
+            avatar: 'https://pic.netbian.com/uploads/allimg/240709/163712-1720514232a9ee.jpg',
             level: '0',
             nickName: 'lovbe0210',
             tag: ['创新', '原创']
