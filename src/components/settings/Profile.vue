@@ -86,12 +86,12 @@
             <div class="nickname-editor-control">
               <span class="nickname-editor-control-content">
                 <input autocomplete="off"
-                       :class="['control-input', 'nickName-module_input','item-border',userInfo.nickname && userInfo.nickname.length > 16 ? 'error-editor-control' : '']"
+                       :class="['control-input', 'nickName-module_input','item-border',userInfo.nickname && userInfo.nickname.length >= 16 ? 'error-editor-control' : '']"
                        type="text" placeholder="必填" v-model="userInfo.nickname" id="nickName" maxlength="50">
               </span>
             </div>
             <div class="setting-legacy-form-explain">
-              <span v-show="userInfo.nickname && userInfo.nickname.length > 16">最多可输入 16 个字符</span>
+              <span v-show="userInfo.nickname && userInfo.nickname.length >= 16">最多可输入 15 个字符</span>
             </div>
           </div>
         </div>

@@ -14,30 +14,32 @@
           </a-tooltip>
         </div>
         <div class="header-action">
+          <Button type="success">编辑</Button>
           <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
             <template slot="title">
               {{ifLike ? '取消收藏' : '收藏'}}
             </template>
-            <div class="header-module_likeButton action-icon" @click="ifLike = !ifLike">
+            <div class="action-icon" @click="ifLike = !ifLike">
               <span :class="['iconfont', ifLike ? 'collected' : 'collect']"></span>
             </div>
           </a-tooltip>
-
           <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
             <template slot="title">
               演示模式
             </template>
-            <div class="header-module_presentButton action-icon" @click="presentShow()">
-              <span class="iconfont icon-present-show"></span>
+            <div class="action-icon" @click="presentShow()">
+              <span class="iconfont lecture"></span>
             </div>
           </a-tooltip>
-
-          <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+          <div class="setting-icon action-icon" id="settingIcon" @click="showDocSetting = true">
+            <span class="iconfont layout"/>
+          </div>
+<!--          <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
             <template slot="title">
-              {{docStyle.readPageSize === 1 ? '超宽模式' : '标宽模式'}}
+              {{docStyle.pageSize === 1 ? '超宽模式' : '标宽模式'}}
             </template>
             <div class="collabUsersContainer action-icon"
-                 @click="updateDocStyle({readPageSize: docStyle.readPageSize === 1 ? 2 : 1})">
+                 @click="updateDocStyle({pageSize: docStyle.pageSize === 1 ? 2 : 1})">
               <span class="iconfont layout"></span>
             </div>
           </a-tooltip>
@@ -47,15 +49,15 @@
               主题偏好
             </template>
             <div class="collabUsersContainer action-icon"
-                 @click="updateDocStyle({readCustomerTheme: !docStyle.readCustomerTheme})">
+                 @click="updateDocStyle({customerTheme: !docStyle.customerTheme})">
               <span class="iconfont custome-theme"></span>
             </div>
-          </a-tooltip>
+          </a-tooltip>-->
         </div>
       </div>
       <div class="layout-module_bookContentWrapper beauty-scroll" ref="scrollbarContext">
         <div class="bookReader-module_docContainer">
-          <div :class="['doc_header', docStyle.readPageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
+          <div :class="['doc_header', docStyle.pageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
             <div class="doc_header_wrapper">
               <h1 id="article-title" class="doc-article-title">
                 Seata—分布式事务解决方案
@@ -64,7 +66,7 @@
           </div>
           <!-- 内容显示部分 -->
           <div ref="view"
-               :class="['doc-reader','am-engine-view', docStyle.readPageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
+               :class="['doc-reader','am-engine-view', docStyle.pageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
           </div>
           <div class="doc-footer">
             <article-footer :ifLike="ifLike" @like="ifLike = !ifLike"/>
@@ -101,6 +103,17 @@
         </div>
       </div>
     </div>
+    <Drawer title="文档设置"
+            :mask="false"
+            :closable="true"
+            :transfer="false"
+            :width="17"
+            v-model="showDocSetting">
+      <div slot="header" @click="returnDocSetting">
+        <span class="iconfont return"/>
+        <span>{{ drawerType === 1 ? '文档设置' : '历史版本' }}</span>
+      </div>
+    </Drawer>
   </div>
 </template>
 
@@ -125,6 +138,10 @@
         },
         tocData: [],
         currentTocId: '',
+        // 更多设置内容 1文档设置，2历史版本
+        drawerType: 1,
+        showDocSetting: false,
+        showDeleteModal: false,
         isPublic: true,
         ifLike: false,
         view: null
@@ -222,6 +239,25 @@
       },
       updateDocStyle(docStyle) {
         this.$store.commit('updateDocStyle', docStyle);
+      },
+      newVersionTag() {
+        this.showDrawer(2);
+        this.tmpVersionTag = '';
+      },
+      deleteModal() {
+        // 默认删除当前文档，tagId为空
+        this.showDeleteModal = true;
+      },
+      returnDocSetting() {
+        this.showDocSetting = false;
+        setTimeout(() => {
+          document.getElementById("settingIcon").click()
+        }, 300)
+        event.preventDefault();
+      },
+      showDrawer(drawerType) {
+        this.drawerType = drawerType;
+        this.showDocSetting = true;
       }
     },
     mounted() {

@@ -4,7 +4,7 @@
       border-radius: 6px;
       padding:10px 0 15px 0;
       display: flex;
-      flex-direction: column;
+      //flex-direction: column;
 
       &:first-child {
         padding-top: 0;
@@ -12,30 +12,58 @@
 
       .trend-info {
         display: flex;
+        flex-direction: column;
+        margin-left: 20px;
 
-        .item-right {
+        .post-info {
           display: flex;
-          margin-left: 20px;
-          margin-top: -1px;
+          align-items: center;
+          margin: 3px 0 15px 0;
 
           /deep/.post-user {
             font-size: 14px;
             font-weight: 600;
-            line-height: 30px;
+
+            &:hover {
+              color: var(--title-color);
+            }
           }
 
           .post-time, .post-type {
             font-size: 12px;
             color: var(--title-color);
-            line-height: 30px;
             margin-left: 5px;
             letter-spacing: .02rem;
+
+            .item-type {
+              display: inline-block;
+              text-align: center;
+              font-size: 12px;
+              width: auto;
+              padding: 0 5px;
+              margin-left: 3px;
+              border-radius: 4px;
+            }
+
+            .doc {
+              background-color: #eaf2ff;
+              color: #1e80ff;
+            }
+
+            .colum {
+              background-color: #000000;
+              color: #FFDF00;
+            }
+
+            .rambly-jot {
+              background-color: #fcebcd;
+              color: #ff6600;
+            }
           }
         }
       }
 
       .trend-content {
-        margin-left: 60px;
         margin-top: -3px;
         display: flex;
         justify-content: space-between;
@@ -88,13 +116,14 @@
             flex-wrap: wrap;
 
             .rambly-img {
-              max-width: 24%;
+              max-width: 32%;
               margin-left: 10px;
               img {
                 flex: none;
                 border: 1px solid rgba(0,0,0,0.04);
                 border-radius: 5px;
                 cursor: zoom-in;
+                max-width: 95%;
               }
 
               &:first-child {

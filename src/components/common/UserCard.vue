@@ -7,13 +7,16 @@
       <template slot="content">
         <div class="user-card-body un-select">
           <div class="user-card-avatar">
-            <b-avatar :src="userInfo.avatar" variant="light" :to="userInfo.domain" size="2.8rem">
+            <b-avatar :src="userInfo.avatar"
+                      variant="light"
+                      :to="'/' + userInfo.domain"
+                      size="2.8rem">
               <span v-if="!userInfo.avatar">{{ userInfo.username }}</span>
             </b-avatar>
           </div>
           <div class="user-card-userInfos">
-            <b-link class="username" target="_blank">
-              <span class="name" style="max-width: 10em;">{{ userInfo.username }}</span>
+            <b-link class="username" :to="'/' + userInfo.domain">
+              <span class="name" :title="userInfo.username">{{ userInfo.username }}</span>
               <span :class="['iconfont',  'icon-level' + userInfo.level]"></span>
             </b-link>
             <div class="signature">You will never walk alone.</div>

@@ -72,6 +72,10 @@
   .ivu-select-dropdown {
     overflow-y: hidden;
 
+    .ivu-select-dropdown-list {
+      margin-bottom: 0;
+    }
+
     &:hover {
       overflow-y: auto;
     }
@@ -170,12 +174,23 @@
             .username {
               color: var(--font-color);
               font-weight: 700;
-              font-size: 16px;
+              font-size: 15px;
               line-height: 22px;
-              word-break: break-all;
-              display: inline-flex;
               align-items: center;
-              flex-wrap: wrap;
+              display: flex;
+
+              .name {
+                display: inline-block;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                max-width: 90%;
+              }
+
+              .iconfont {
+                font-size: 20px;
+                margin-bottom: 5px;
+              }
             }
 
             .signature {

@@ -1,5 +1,5 @@
 <template>
-  <div :class="[docStyle.readCustomerTheme ? 'enable-background' : 'normal-background', 'read-center']"
+  <div :class="[docStyle.customerTheme ? 'enable-background' : 'normal-background', 'read-center']"
        ref="tooltipContainer">
     <div class="layout-module_wrapper">
       <div class="layout-module_directoryWrapper" :style="{ width: sidebarWidth + 'px' }">
@@ -8,7 +8,7 @@
           <div class="directory-header">
             <div class="book-info">
               <div class="crumb">
-                <a href="/" class="website-logo">
+                <a href="/" class="website-logo" target="_blank">
                   <span class="iconfont logo"></span>
                 </a>
                 <span class="iconfont to-right"></span>
@@ -238,7 +238,7 @@
             expand: false,
             children: [
               {
-                id: '2322342342',
+                id: '23223142342',
                 type: 2,
                 title: '达啊实打实多爱文章文章文章文章文章文章文章文章文章文章',
                 expand: false,
@@ -249,25 +249,25 @@
                     title: '单独文章'
                   },
                   {
-                    id: '2322342342',
+                    id: '23223242342',
                     type: 2,
                     title: '测试空目录该怎么展示',
                     expand: true,
                     children: []
                   },
                   {
-                    id: '2322342342',
+                    id: '23223442342',
                     type: 2,
                     title: 'parent 1-2',
                     expand: true,
                     children: [
                       {
-                        id: '2322342342',
+                        id: '23227342342',
                         type: 1,
                         title: 'leaf 1-2-1'
                       },
                       {
-                        id: '2322342342',
+                        id: '23223942342',
                         type: 1,
                         title: 'leaf 1-2-1'
                       }
@@ -287,36 +287,36 @@
                     title: '单独文章'
                   },
                   {
-                    id: '2322342342',
+                    id: '23223422342',
                     type: 2,
                     title: '目录文章收到撒阿萨',
                     expand: false,
                     children: [
                       {
-                        id: '2322342342',
+                        id: '23223425342',
                         type: 1,
                         title: 'leaf 1-1-1'
                       },
                       {
-                        id: '2322342342',
+                        id: '23223242342',
                         type: 1,
                         title: 'leaf 1-1-2'
                       }
                     ]
                   },
                   {
-                    id: '2322342342',
+                    id: '23223425342',
                     type: 2,
                     title: 'parent 1-2',
                     expand: true,
                     children: [
                       {
-                        id: '2322342342',
+                        id: '23223492342',
                         type: 1,
                         title: 'leaf 1-2-1'
                       },
                       {
-                        id: '2322342342',
+                        id: '23223402342',
                         type: 1,
                         title: 'leaf 1-2-1'
                       }
@@ -333,47 +333,47 @@
             expand: true,
             children: [
               {
-                id: 'asd23131',
+                id: 'asd2s3131',
                 type: 2,
                 title: 'parent 11文章文章文章文章文章文章文章文章文章文章',
                 expand: true,
                 children: [
                   {
-                    id: 'asd23131',
+                    id: 'asd23a131',
                     type: 1,
                     title: '单独文章'
                   },
                   {
-                    id: 'asd23131',
+                    id: 'asd231d31',
                     type: 2,
                     title: '目录文章',
                     expand: true,
                     children: [
                       {
-                        id: 'asd23131',
+                        id: 'asqd23131',
                         type: 1,
                         title: 'leaf 1-1-1录文录文录文录文录文录文录文录文录文录文录文录文录文录文录文'
                       },
                       {
-                        id: 'asd23131',
+                        id: 'asd231r31',
                         type: 1,
                         title: 'leaf 1-1-2'
                       }
                     ]
                   },
                   {
-                    id: 'asd23131',
+                    id: 'asd23y131',
                     type: 2,
                     title: 'parent 1-2',
                     expand: true,
                     children: [
                       {
-                        id: 'asd23131',
+                        id: 'asd2g3131',
                         type: 1,
                         title: 'leaf 1-2-1'
                       },
                       {
-                        id: 'asd23131',
+                        id: 'asd273131',
                         type: 1,
                         title: 'leaf 1-2-1'
                       }

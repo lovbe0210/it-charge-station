@@ -247,7 +247,7 @@
             </div>
             <div class="summary">
               <div class="label">
-                <div class="label-text">iconfont i-message</div>
+                <div class="label-text">摘要</div>
                 <div>{{ docInfo.summary?.length ? docInfo.summary?.length : 0 }}/150</div>
               </div>
               <Input type="textarea"

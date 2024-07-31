@@ -27,17 +27,19 @@
             <b-avatar :src="item.avatar" variant="light" :to="'/' + item.personalDomain" class="topic-avatar">
               <span v-if="!item.avatar" class="iconfont icon-all-flush" style="font-size:2.5rem;"></span>
             </b-avatar>
-            <div class="card-content-item">
-              <p class="topic-title" :title="item.title">
-                {{item.title}}
-              </p>
-              <p class="topic-description" :title="item.describe">
-                {{item.describe}}
-              </p>
-              <p class="topic-viewCount">
-                <span>{{item.viewCount}}</span>次看过
-              </p>
-            </div>
+            <a :href="'/column/' + item.columnId" target="_blank">
+              <div class="card-content-item">
+                <p class="topic-title" :title="item.title">
+                  {{item.title}}
+                </p>
+                <p class="topic-description" :title="item.describe">
+                  {{item.describe}}
+                </p>
+                <p class="topic-viewCount">
+                  <span>{{item.viewCount}}</span>次看过
+                </p>
+              </div>
+            </a>
           </template>
         </a-card-meta>
       </a-card>
@@ -73,6 +75,7 @@
             coverUrl: 'https://pic.netbian.com/uploads/allimg/240727/150142-172206370296d1.jpg',
             describe: "个人学习、工作常用知识或工作遇到问题的小记",
             viewCount: 1002,
+            columnId: 12444343,
             avatar: 'https://pic.netbian.com/uploads/allimg/240626/203002-1719405002f79c.jpg'
           }, {
             uid: "002",
@@ -81,6 +84,7 @@
             coverUrl: 'https://pic.netbian.com/uploads/allimg/240727/141653-1722061013ab7a.jpg',
             describe: "该知识库用于收藏平常遇到过的一些关于技术的文章（涵盖前端与后端）",
             viewCount: 4202,
+            columnId: 12444343,
             avatar: 'https://pic.netbian.com/uploads/allimg/240709/175343-17205188236911.jpg'
           }, {
             uid: "003",
@@ -89,6 +93,7 @@
             coverUrl: require('@/assets/img/3.jpg'),
             describe: "讲解 Linux 系统部署 Java 项目需要的环境",
             viewCount: 502,
+            columnId: 12444343,
             avatar: 'https://pic.netbian.com/uploads/allimg/240519/205724-17161234447284.jpg'
           }, {
             uid: "004",
@@ -97,14 +102,16 @@
             coverUrl: require('@/assets/img/04.jpg'),
             avatar: 'https://pic.netbian.com/uploads/allimg/240424/003411-1713890051411d.jpg',
             viewCount: 308,
+            columnId: 12444343,
             describe: "水电费师傅是"
           }, {
             uid: "005",
             personalDomain: "jiaowovitamin",
             title: "我是第5个",
             coverUrl: require('@/assets/img/05.jpg'),
-            avatar: '\thttps://pic.netbian.com/uploads/allimg/240727/161014-172206781404ef.jpg',
+            avatar: 'https://pic.netbian.com/uploads/allimg/240727/161014-172206781404ef.jpg',
             viewCount: 100,
+            columnId: 12444343,
             describe: "水电费师傅是"
           }
         ]

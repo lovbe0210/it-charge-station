@@ -70,7 +70,7 @@
       .item-addition-info {
         margin: 0;
         font-size: 13px;
-        color: var(--font-color);
+        color: var(--title-color);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -78,16 +78,53 @@
         .author-info {
           display: flex;
           align-items: center;
-        }
+          width: 50%;
 
-        .acticle-tags {
-          max-width: 50%;
-          .ant-tag {
+          .user-card {
+            display: inline-block;
+            max-width: 50%;
             overflow: hidden;
-            max-width: 20%;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            a {
+              color: var(--title-color);
+              font-size: 12px;
+              font-weight: 600;
+
+              &:hover {
+                color: var(--font-color);
+              }
+            }
+          }
+
+          .no-use {
+            margin: 0 5px;
+            width: 1px;
+            height: 16px;
+            background: @border-color_normal;
           }
         }
 
+        .acticle-tags {
+          width: 50%;
+          max-width: 50%;
+          display: flex;
+          justify-content: flex-end;
+
+          .ant-tag {
+            font-size: 11px;
+            max-width: 33%;
+            padding: 0 4px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+        }
       }
     }
   }

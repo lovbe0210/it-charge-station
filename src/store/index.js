@@ -53,15 +53,13 @@ export default new Vuex.Store({
     },
     docStyle: {
       // 是否同步自定义主题
-      writeCustomerTheme: true,
-      readCustomerTheme: true,
+      customerTheme: true,
       // 正文字体大小(读页面)
       docFontSize: 15,
       // 文章段间距  常规、宽松 standard/loose (写页面)
       segmentSpace: 'standard',
       // 页面大小1=标宽模式，2=超宽模式
-      writePageSize: 1,
-      readPageSize: 1
+      pageSize: 1
     },
     // 显示自定义主题开关background-color: #4158D0;
     showCustomer: false,

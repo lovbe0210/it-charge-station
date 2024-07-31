@@ -2,7 +2,7 @@
   <div class="personal-center enable-background" ref="tooltipContainer">
     <header class="layout-module_head">
       <div class="layout-header-left">
-        <a href="/" target="_blank">
+        <a href="/">
           <div class="charge-station-logo">
             <span class="iconfont icon-logo"></span>
           </div>

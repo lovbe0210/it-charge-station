@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_3kc7xbl8qxw.woff2?t=1722413810600') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_kn3e38o3oos.woff2?t=1722444749471') format('woff2');
 }
 
 .iconfont {
@@ -465,4 +465,8 @@
 
 .i-view:before {
   content: "\e727";
+}
+
+.lecture:before {
+  content: "\e728";
 }

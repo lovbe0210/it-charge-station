@@ -59,6 +59,10 @@
         height: 100%;
         color: #262626;
 
+        .ivu-btn {
+          margin-right: 10px;
+        }
+
         .action-icon {
           width: 40px;
           height: 32px;
@@ -69,8 +73,13 @@
           .iconfont {
             font-size: 20px;
           }
+        }
+
+        .setting-icon {
 
         }
+
+
       }
     }
 
@@ -254,6 +263,109 @@
           top: 0;
           left: 0;
           z-index: -1;
+        }
+      }
+    }
+  }
+
+  /deep/.ivu-drawer {
+    color: @dark-font-color;
+    min-width: 320px;
+
+    .ivu-drawer-content {
+      height: calc(~"100vh - 52px");
+      top: unset;
+
+      .ivu-drawer-header {
+        font-size: 14px;
+        font-weight: bold;
+        border: unset;
+        padding: 20px 20px 5px 20px;
+        cursor: pointer;
+
+        .return {
+          font-size: 13px;
+          margin-right: 4px;
+        }
+
+        &:hover {
+          color: @light-font-color;
+        }
+      }
+
+      .ivu-drawer-body {
+        padding: 16px 20px;
+        .history-version{
+          .new-version-tag {
+            margin-bottom: 10px;
+
+            .ivu-input {
+              margin-bottom: 5px;
+              color: @dark-font-color;
+            }
+
+            .ivu-btn-text {
+              color: @dark-font-color;
+
+              &:hover {
+                color: @primary-color;
+                background: unset;
+              }
+            }
+          }
+
+          .doc-version {
+            background: @dropdown-item-hover ;
+            padding: 8px 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+
+            .doc-version-basic {
+              color: @dark-font-color;
+              font-size: 14px;
+              margin-bottom: 5px;
+
+              .doc-version-name {
+                line-height: 1.86;
+              }
+
+              .ivu-input {
+                color: @dark-font-color;
+              }
+            }
+
+            .doc-version-action {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+
+              .doc-version-time {
+                font-size: 12px;
+                color: @grey-white-font-color;
+              }
+
+              .bianji, .delete {
+                color: @dark-font-color;
+              }
+
+              .action-group {
+                .ivu-btn-text {
+                  padding: 0 5px;
+
+                  &:hover {
+                    .bianji, .delete {
+                      color: @primary-color;
+                    }
+                    background: unset;
+                  }
+                }
+
+                .ivu-btn-success {
+                  margin-left: 5px;
+                }
+              }
+            }
+          }
         }
       }
     }

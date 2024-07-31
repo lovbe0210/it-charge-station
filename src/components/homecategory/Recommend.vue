@@ -25,8 +25,8 @@
                     </b-link>
                   </slot>
                 </user-card>
+                <span class="no-use"></span>
                 <span class="count-info">
-                  <span>|</span>
                   <span>
                     <span class="iconfont i-view"/> 777
                   </span>
@@ -38,6 +38,7 @@
               <span class="acticle-tags">
                 <span :class="'ant-tag ant-tag-' + tag.color"
                       v-for="(tag,index) in item.tags"
+                      :title="tag.content"
                       :key="index">{{tag.content}}</span>
               </span>
             </b-row>
@@ -84,13 +85,13 @@
             content: 'This is the content, this is the content, this is the content, this is the content.',
             userInfo: {
               userId: 1,
-              username: '闪魔亮晶晶',
-              avatar: require('@/assets/avatar/16.jpg')
+              username: '闪魔亮晶晶闪魔亮晶晶闪魔亮晶晶',
+              avatar: require('@/assets/avatar/16.jpg'),
+              level: 5
             },
             tags: [
               {content: 'JAVA', color: 'blue'},
               {content: 'Springboot', color: 'red'},
-              {content: 'SpringCloud', color: 'orange'},
               {content: '微服务', color: 'green'}
             ]
           },
@@ -108,7 +109,6 @@
             tags: [
               {content: 'JAVA', color: 'blue'},
               {content: 'Springboot', color: 'red'},
-              {content: 'SpringCloud', color: 'orange'},
               {content: '微服务', color: 'green'}
             ]
           },
@@ -125,7 +125,6 @@
             },
             tags: [
               {content: '最多可以输入几个汉字我试试地方', color: 'blue'},
-              {content: '最多可以输入几个汉字我试试阿萨', color: 'red'},
               {content: '最多可以输入几个汉字我试试地方', color: 'orange'},
               {content: '微服最多可以输入几个汉字我试试', color: 'green'}
             ]
@@ -143,7 +142,6 @@
               username: 'whalexplorer'
             },
             tags: [
-              {content: 'JAVA', color: 'blue'},
               {content: 'Springboot', color: 'red'},
               {content: 'SpringCloud', color: 'orange'},
               {content: '微服务', color: 'green'}
@@ -163,8 +161,7 @@
             tags: [
               {content: 'JAVA', color: 'blue'},
               {content: 'Springboot', color: 'red'},
-              {content: 'SpringCloud', color: 'orange'},
-              {content: '微服务', color: 'green'}
+              {content: 'SpringCloud', color: 'orange'}
             ]
           },
           {
@@ -180,7 +177,6 @@
             },
             tags: [
               {content: 'JAVA', color: 'blue'},
-              {content: 'Springboot', color: 'red'},
               {content: 'SpringCloud', color: 'orange'},
               {content: '微服务', color: 'green'}
             ]
@@ -220,7 +216,6 @@
               tags: [
                 {content: 'JAVA', color: 'blue'},
                 {content: 'Springboot', color: 'red'},
-                {content: 'SpringCloud', color: 'orange'},
                 {content: '微服务', color: 'green'}
               ]
             }

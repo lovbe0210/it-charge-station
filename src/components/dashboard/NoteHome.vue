@@ -73,7 +73,7 @@
                   </a-tag>
                 </a-tooltip>
               </template>
-              <span v-if="!noteItem.tags || noteItem.tags.length < 4">
+              <span v-if="!noteItem.tags || noteItem.tags.length < 3">
                 <Input class="tag-input"
                        v-if="inputVisibleId === noteItem.id"
                        :ref="'input' + noteItem.id"
@@ -151,8 +151,7 @@
             tags: [
               {content: '大前段', color: 'blue'},
               {content: 'Vue', color: 'red'},
-              {content: 'React', color: 'orange'},
-              {content: '前端框架', color: 'green'}
+              {content: 'React', color: 'orange'}
             ]
           },
           {
@@ -173,7 +172,6 @@
             sort: 0,
             tags: [
               {content: '后端', color: 'blue'},
-              {content: 'JAVA', color: 'red'},
               {content: 'Springboot', color: 'orange'},
               {content: '分布式', color: 'green'}
             ]
@@ -188,7 +186,6 @@
             tags: [
               {content: '运维', color: 'blue'},
               {content: 'linux', color: 'red'},
-              {content: 'docker', color: 'orange'},
               {content: 'k8s', color: 'green'}
             ]
           },
