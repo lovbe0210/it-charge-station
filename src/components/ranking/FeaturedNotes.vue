@@ -2,7 +2,7 @@
   <div class="layout-module_feature-note" ref="popoverContainer">
     <div class="hot-header">
       <p>
-        精选笔记
+        精选文章
         <a-tooltip overlayClassName="feature-note-tooltip"
                    :getPopupContainer="()=>this.$refs.popoverContainer">
           <template slot="title">

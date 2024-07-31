@@ -12,7 +12,7 @@
           <div class="menu-item" @click="routeNavigate('articles')">
             <div :class="['item', activeMenu === 'articles' ? 'active-menu' : '']">
               <span class="iconfont article"></span>
-              <span>精选笔记榜</span>
+              <span>精选文章榜</span>
             </div>
           </div>
           <div class="menu-item" @click="routeNavigate('column')">

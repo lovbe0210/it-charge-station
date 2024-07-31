@@ -36,7 +36,7 @@
       <div class="domain-setting-form form-item">
         <span class="iconfont icon-account-completed"></span>
         <div class="form-content">
-          <p>个人路径</p>
+          <p>个人主页路径</p>
           <p class="tip">https://www.yuque.com/lovbe0210</p>
         </div>
         <button type="button" class="control-button" @click="showChangeModal(4.1)">
@@ -205,13 +205,13 @@
           <div v-if="changeItemType == 4.1 || changeItemType == 4.2">
             <div v-if="changeItemType == 4.1">
               <div class="header">
-                <span>更改个人路径</span>
+                <span>更改个人主页路径</span>
               </div>
               <div class="warning-prompt">
-                <span class="tip">更改个人路径后会发生以下事情，请知晓。</span>
+                <span class="tip">更改个人主页路径后会发生以下事情，请知晓。</span>
                 <ul class="matters">
-                  <li>更改个人路径以后，原个人路径将不归属于你。</li>
-                  <li>原个人路径链接将无法访问，且不会进行跳转到新的个人路径。</li>
+                  <li>更改个人主页路径以后，原个人主页路径将不归属于你。</li>
+                  <li>原个人主页路径将无法访问，且不会进行跳转到新的个人主页路径。</li>
                 </ul>
               </div>
               <div class="action">

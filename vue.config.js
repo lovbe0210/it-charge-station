@@ -18,8 +18,8 @@ module.exports = {
     }
   },
   configureWebpack: {
-    devtool: "source map",
-    plugins: [
+    devtool: "source map"
+    /*plugins: [
       new FileManagerPlugin({
         events: {
           onEnd: {
@@ -28,7 +28,7 @@ module.exports = {
           }
         }
       })
-    ]
+    ]*/
   },
   devServer: {
     // ipv6支持

@@ -120,7 +120,7 @@
         creatorTrend: [
           {
             id: '001',
-            // 动态类型 1笔记 2随笔 3专栏
+            // 动态类型 1文章 2随笔 3专栏
             pubType: '1',
             PublicTitle: '运算符🔣Family',
             PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索得懂，我这句话主要说了什么？你要不尝试说一下引初见闻MySQL索引初见闻',

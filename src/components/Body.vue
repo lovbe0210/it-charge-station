@@ -13,7 +13,7 @@
       <div class="enable-background">
         <div class="featured-notes">
           <div class="text">
-            精选笔记
+            精选文章
             <b-link class="more" to="/hot/articles">
               <span class="content">更多</span>
               <span class="iconfont i-more"></span>

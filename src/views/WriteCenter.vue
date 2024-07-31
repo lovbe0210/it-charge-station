@@ -31,7 +31,7 @@
             <DropdownItem>
               <div class="quick-menu" @click="saveAndNewDoc">
                 <span class="iconfont i-add"/>
-                新建笔记
+                新建文章
               </div>
             </DropdownItem>
           </DropdownMenu>
@@ -247,7 +247,7 @@
             </div>
             <div class="summary">
               <div class="label">
-                <div class="label-text">摘要</div>
+                <div class="label-text">iconfont i-message</div>
                 <div>{{ docInfo.summary?.length ? docInfo.summary?.length : 0 }}/150</div>
               </div>
               <Input type="textarea"

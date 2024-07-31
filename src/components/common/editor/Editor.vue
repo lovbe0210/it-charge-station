@@ -109,7 +109,7 @@
                     },
                     {
                       name: 'status',
-                      icon: '<span class="iconfont status"></span>',
+                      icon: '<span class="iconfont i-status"></span>',
                       title: '状态'
                     },
                     {

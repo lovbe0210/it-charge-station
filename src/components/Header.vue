@@ -83,7 +83,7 @@
                   <div class="counter quick-start-item">
                     <div class="single-count-item" @click="routeNavigate('noteHome')">
                       <div class="count-num">55</div>
-                      <div class="count-text">笔记</div>
+                      <div class="count-text">文章</div>
                     </div>
                     <div class="single-count-item" @click="routeNavigate('concern')">
                       <div class="count-num">32</div>
@@ -199,7 +199,7 @@
         <b-navbar-nav class="ml-auto" :fill="true" align="center">
           <div class="charge">
             <Button type="success" v-if="loginStatus" @click="toWriteCenter">
-              <span>写笔记</span>
+              <span>写文章</span>
             </Button>
           </div>
         </b-navbar-nav>

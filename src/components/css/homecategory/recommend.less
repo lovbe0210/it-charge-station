@@ -67,29 +67,25 @@
         }
       }
 
-      .item-icons {
+      .item-addition-info {
         margin: 0;
         font-size: 13px;
         color: var(--font-color);
         display: flex;
         align-items: center;
+        justify-content: space-between;
 
-        .from {
-          position: absolute;
-          right:0;
-          padding-top: 2px;
-          padding-right: 17px;
-          :hover {
-            color: var(--font-color);
-          }
-          span {
-            color: var(--font-color);
-            font-size: 13px;
-          }
+        .author-info {
+          display: flex;
+          align-items: center;
         }
 
-        div {
-          margin-right: 8px;
+        .acticle-tags {
+          max-width: 50%;
+          .ant-tag {
+            overflow: hidden;
+            max-width: 20%;
+          }
         }
 
       }

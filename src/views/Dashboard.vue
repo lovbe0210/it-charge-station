@@ -19,7 +19,7 @@
             <div class="light"></div>
             <div class="item">
               <span class="iconfont article"></span>
-              笔记
+              文章
             </div>
           </div>
           <div :class="['menu-item', activeMenuForEq === 'SeriesColumn' ? 'active-menu' : '']"

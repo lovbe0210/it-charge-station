@@ -25,7 +25,7 @@
                 <div style="min-width: 25px">
                   <span class="iconfont true" v-if="groupType === '1'"></span>
                 </div>
-                笔记
+                文章
               </DropdownItem>
               <DropdownItem name="2">
                 <div style="min-width: 25px">

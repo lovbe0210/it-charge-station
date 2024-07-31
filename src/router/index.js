@@ -134,7 +134,7 @@ const routes = [
         component: () => import('@/components/Ranking'),
         children: [
           {
-            // 精选笔记榜
+            // 精选文章榜
             path: 'articles',
             name: 'FeaturedNotes',
             // 此方式为路由懒加载
@@ -168,7 +168,7 @@ const routes = [
             component: () => import('@/components/dashboard/RecentView')
           },
           {
-            // 笔记
+            // 文章
             path: 'noteHome',
             name: 'NoteHome',
             component: () => import('@/components/dashboard/NoteHome')
@@ -303,8 +303,8 @@ const routes = [
     // 个人首页
     path: '/:domain',
     props: true,
-    name: 'PersonalCenter',
-    component: () => import('@/views/PersonalCenter')
+    name: 'PersonalHome',
+    component: () => import('@/views/PersonalHome')
   }
 ]
 

@@ -20,7 +20,7 @@
         <div class="view-list-item" v-for="viewItem in item.viewList" :key="viewItem.id">
           <b-link class="item-header" :to="'/article/' + viewItem.id">
             <span :class="['item-type', viewItem.type == 1 ? 'doc' : viewItem.type == 2 ? 'colum' : 'rambly-jot']">
-              {{viewItem.type == 1 ? '笔记' : viewItem.type == 2 ? '专栏' : '随笔'}}
+              {{viewItem.type == 1 ? '文章' : viewItem.type == 2 ? '专栏' : '随笔'}}
             </span>
             <h2 class="item-title">{{viewItem.title}}</h2>
           </b-link>

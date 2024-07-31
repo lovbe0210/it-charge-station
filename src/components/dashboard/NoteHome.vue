@@ -1,7 +1,7 @@
 <template>
   <div class="layout-module_NoteHome" ref="TooltipContainer">
     <div class="note-home-header">
-      <h2 class="title">创作笔记</h2>
+      <h2 class="title">创作文章</h2>
       <hr class="separator-line">
       <div class="operation">
         <Input class="search" search placeholder="搜索标题关键词"/>
@@ -38,7 +38,7 @@
         </div>
         <div class="note-item-check">
           <span>
-            共选择了{{checkedList.length}}篇笔记
+            共选择了{{checkedList.length}}篇文章
           </span>
           <Button type="text" ghost @click="cancelCheck">
             取消选择

@@ -54,7 +54,7 @@ export const getToolbarDefaultConfig = (engine) => {
             },
             {
               name: "status",
-              icon: `<span class="iconfont status"></span>`,
+              icon: `<span class="iconfont i-status"></span>`,
               title: language.status.title,
               search: "status,label,状态"
             },
