@@ -301,6 +301,12 @@
   font-size: 12px;
 }
 
+.article-drawer {
+  .ivu-drawer-mask {
+    background: unset;
+  }
+}
+
 // 滚动条全局美化
 .beauty-scroll {
   overflow-y: hidden;
@@ -345,6 +351,35 @@
   background-color: #f5f5f5;
   border-color: #d9d9d9 !important;
 }
+
+// 标签相关
+.tag-color-tooltip {
+  .ant-tooltip-inner {
+    font-size: 12px;
+    background-color: rgba(165, 38, 38, 0.75);
+    min-width: unset;
+    min-height: unset;
+    padding: 0;
+    cursor: pointer;
+
+    .tag-color-btn {
+      width: 32px;
+      height: 26px;
+      border-radius: 3px;
+
+      .hazy {
+        width: 32px;
+        height: 26px;
+        border-radius: 3px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255,255,255,0.5);
+      }
+    }
+  }
+}
+
 
 // editor相关
 // 编辑器
@@ -417,34 +452,53 @@
   }
 }
 
-/deep/ .am-engine-view > :not(p) {
-  margin: 15px 0;
-}
+.am-engine,  .am-engine-view{
+  & > :not(p) {
+    margin: 15px 0 !important;
+  }
 
-/deep/ .am-engine-view > p {
-  margin: 8px 0;
-}
+  & > p {
+    margin: 8px 0 !important;
+  }
 
-/deep/ .am-engine-view > h2 {
-  margin: 13px 0;
-}
+  & > ol {
+    margin: 8px 0 !important;
+    li {
+      margin: 8px 0 8px 25px !important;
+    }
+  }
 
-/deep/ .am-engine-view > h3 {
-  margin: 11px 0;
-}
+  & > ul {
+    margin: 8px 0 !important;
+    li {
+      margin: 8px 0 !important;
+    }
+    li:not(.data-list-item) {
+      margin: 8px 0  8px 15px !important;
+    }
+  }
 
-/deep/ .am-engine-view > h4 {
-  margin: 9px 0;
-}
+  & > h2 {
+    margin: 13px 0 !important;
+  }
 
-/deep/ .am-engine-view > h5 {
-  margin: 8px 0;
-}
+  & > h3 {
+    margin: 11px 0 !important;
+  }
 
-/deep/ .am-engine-view > h6 {
-  margin: 8px 0;
-}
+  & > h4 {
+    margin: 9px 0 !important;
+  }
 
-.am-engine ol, .am-engine-view ol, .am-engine ul, .am-engine-view ul {
-  margin: 0 !important;
+  & > h5 {
+    margin: 8px 0 !important;
+  }
+
+  & > h6 {
+    margin: 8px 0 !important;
+  }
+
+  .data-list-task [data-card-key="checkbox"]{
+    margin-left: 0 !important;
+  }
 }

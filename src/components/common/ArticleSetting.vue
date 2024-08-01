@@ -1,5 +1,5 @@
 <template>
-  <div class="article-setting" ref="TooltipContainer">
+  <div ref="TooltipContainer">
     <div class="cover">
       <div class="label">
         <span class="label-text">封面</span>
@@ -194,6 +194,11 @@ export default {
     }
   },
   props: ['articleId'],
+  computed: {
+    docStyle() {
+      return this.$store.state.docStyle;
+    }
+  },
   methods: {
     /**
      * 为子组件定义的事件方法
@@ -297,6 +302,8 @@ export default {
 }
 </script>
 <style scoped lang="less">
+  @import "../css/common-var";
+
   .cover {
     .label {
       margin-bottom: 10px;

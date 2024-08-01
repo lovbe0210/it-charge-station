@@ -157,6 +157,7 @@
       font-family: 'Chinese Quote', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
       .reader-toc-pin {
+        color: @dark-font-color;
         margin-bottom: 12px;
         padding-top: 8px;
         padding-left: 28px;
@@ -247,6 +248,7 @@
             align-items: center;
 
             .toc-item-text {
+              color: @dark-font-color;
               overflow: hidden;
               text-overflow: ellipsis;
               display: block;
@@ -273,99 +275,108 @@
     min-width: 320px;
 
     .ivu-drawer-content {
-      height: calc(~"100vh - 52px");
-      top: unset;
-
       .ivu-drawer-header {
-        font-size: 14px;
-        font-weight: bold;
-        border: unset;
-        padding: 20px 20px 5px 20px;
+        padding: 18px 16px;
         cursor: pointer;
 
-        .return {
-          font-size: 13px;
-          margin-right: 4px;
+        .iconfont {
+          font-size: 12px;
+          margin-right: 5px;
         }
 
         &:hover {
-          color: @light-font-color;
+          color: @grey-white-font-color;
         }
       }
 
       .ivu-drawer-body {
         padding: 16px 20px;
-        .history-version{
-          .new-version-tag {
-            margin-bottom: 10px;
 
-            .ivu-input {
-              margin-bottom: 5px;
-              color: @dark-font-color;
-            }
+        .drawer-setting-item {
+          display: flex;
+          background-color: #FAFAFA;
+          border-radius: 6px;
+          margin-bottom: 15px;
+          font-size: 12px;
+          padding: 16px;
 
-            .ivu-btn-text {
-              color: @dark-font-color;
-
-              &:hover {
-                color: @primary-color;
-                background: unset;
-              }
-            }
+          .label {
+            font-size: 14px;
+            margin-bottom: 5px;
           }
 
-          .doc-version {
-            background: @dropdown-item-hover ;
-            padding: 8px 10px;
-            border-radius: 4px;
-            margin-bottom: 10px;
+          .label_desc {
+            color: @grey-white-font-color;
+          }
 
-            .doc-version-basic {
-              color: @dark-font-color;
-              font-size: 14px;
-              margin-bottom: 5px;
+          .article-time{
+            display: flex;
+            flex-direction: column;
 
-              .doc-version-name {
-                line-height: 1.86;
-              }
-
-              .ivu-input {
-                color: @dark-font-color;
-              }
+            span {
+              margin: 3px 0;
             }
+          }
+        }
 
-            .doc-version-action {
+        .time-info, .more-setting {
+          flex-direction: column;
+
+          .ivu-divider {
+            margin: 12px 0;
+            color: @border-color_normal;
+          }
+        }
+
+        .page-size, .theme-sync {
+          height: 70px;
+          align-items: center;
+          justify-content: space-between;
+
+          .label-wrapper {
+            display: flex;
+            align-items: center;
+
+            .icon-wrapper {
+              margin-right: 8px;
               display: flex;
-              justify-content: space-between;
-              align-items: center;
-
-              .doc-version-time {
-                font-size: 12px;
-                color: @grey-white-font-color;
-              }
-
-              .bianji, .delete {
-                color: @dark-font-color;
-              }
-
-              .action-group {
-                .ivu-btn-text {
-                  padding: 0 5px;
-
-                  &:hover {
-                    .bianji, .delete {
-                      color: @primary-color;
-                    }
-                    background: unset;
-                  }
-                }
-
-                .ivu-btn-success {
-                  margin-left: 5px;
-                }
+              .iconfont {
+                font-size: 23px;
               }
             }
           }
+        }
+
+        .doc-setting-btn {
+          display: flex;
+          align-items: center;
+          line-height: 25px;
+          font-size: 14px;
+          border-radius: 4px;
+          cursor: pointer;
+          padding: 5px 3px;
+
+          &:first-child {
+            margin-top: 5px;
+          }
+
+          &:hover {
+            background: #E7E9E8;
+          }
+
+          .iconfont {
+            margin-right: 8px;
+          }
+        }
+
+        .save-version {
+          .tab-content-text {
+            margin-left: 24px;
+          }
+        }
+
+        .delete-btn {
+          color: @delete-red;
         }
       }
     }

@@ -4,7 +4,7 @@
       <div class="layout-mode-fixed">
         <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar"/>
         <div class="editor-body">
-          <div class="editor-wrap beauty-scroll" ref="scrollbarContext" @wheel="debounceScroll">
+          <div class="editor-wrap beauty-scroll" ref="scrollbarContext">
             <div class="editor-wrap-content">
               <div class="editor-outer-wrap-box">
                 <div class="editor-wrap-box">
@@ -78,8 +78,6 @@
         },
         tocData: [],
         currentTocId: '',
-        // 滚动事件的防抖函数
-        debounceScroll: function () {},
         // 大纲刷新的防抖函数
         debounceRefreshToc: function () {},
         engine: null,
@@ -174,36 +172,6 @@
         event.preventDefault();
         this.$refs.container.focus()
       },
-      /*toolbarUI() {
-        // 选色器
-        let colorPicker
-        setTimeout(() => {
-          new Promise(function (resolve, reject) {
-            let interval = setInterval(() => {
-              colorPicker = document.getElementById('toolbar').children[0].childNodes[4]
-              if (colorPicker !== null && colorPicker !== undefined) {
-                clearInterval(interval)
-                resolve()
-              }
-            }, 10)
-          }).then(() => {
-            colorPicker.childNodes.forEach(s => {
-              s.childNodes.forEach(ss => {
-                ss.childNodes.forEach(sss => {
-                  if (sss.hasChildNodes()) {
-                    sss.childNodes.forEach(ssss => {
-                      if (ssss.hasChildNodes()) {
-                        ssss.children[0].setAttribute('width', '20px');
-                        ssss.children[0].setAttribute('height', '20px');
-                      }
-                    })
-                  }
-                })
-              })
-            })
-          })
-        }, 100)
-      },*/
 
       /**
        * 防抖函数
@@ -337,19 +305,7 @@
             startNode.allChildren().forEach(child => child?.removeAttributes('style'))
           }
           // 使用节流方案
-          // this.timerId = setTimeout(() => this.renderTocData(engine), 1000);
-          // this.debounce(this.renderTocData(engine), 1000);
             this.debounceRefreshToc();
-          // 1. 更新标题(单行节点)
-
-
-
-          // let nodeName = parentNode?.name;
-          // if (belongToc(nodeName)) {
-          //   this.renderTocData(engine);
-          // } else {
-          //
-          // }
         });
 
         if (this.docInfo.content?.length !== 0) {
@@ -374,11 +330,15 @@
       window.addEventListener('keydown', this.saveDoc)
 
       // 设置延迟时间，单位为毫秒
-      this.debounceScroll = this.debounce(this.handleScrollForToc, 200);
       this.debounceRefreshToc = this.debounce(this.renderTocData, 500);
+
+      const scrollContainer = this.$refs.scrollbarContext;
+      scrollContainer?.addEventListener('scroll', this.handleScrollForToc);
     },
     beforeDestroy() {
       window.removeEventListener('keydown', this.saveDoc)
+      const scrollContainer = this.$refs.scrollbarContext;
+      scrollContainer?.removeEventListener('scroll', this.handleScrollForToc);
     }
   }
 </script>
