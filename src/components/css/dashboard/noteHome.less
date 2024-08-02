@@ -81,7 +81,6 @@
           .ivu-dropdown-item {
             display: flex;
 
-            color: #262626;
             font-size: 14px !important;
 
             .iconfont {
@@ -254,7 +253,12 @@
             }
 
             /deep/.ivu-dropdown-item {
-              padding: 7px 25px;
+              padding: 0;
+
+              span {
+                display: block;
+                padding: 7px 32px;
+              }
             }
           }
         }
@@ -280,6 +284,73 @@
       .note-item-check {
         display: flex;
         align-items: center;
+      }
+    }
+  }
+
+  /deep/.operate-modal {
+    .ivu-modal-wrap {
+      overflow: hidden !important;
+    }
+
+    .ivu-modal-content {
+      color: var(--font-color);
+      padding: 32px 32px 24px;
+
+      .ivu-modal-body {
+        font-size: 14px;
+        line-height: 1.5715;
+        word-wrap: break-word;
+
+        .modal-delete-item {
+          margin-bottom: 5px;
+          .delete-tips {
+            .i-warn {
+              color: #ECAA04;
+              font-size: 25px;
+              margin-right: 8px;
+              margin-bottom: 2px;
+            }
+
+            display: flex;
+            align-items: center;
+          }
+
+          .confirm-btn {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+
+            .ivu-btn-ghost{
+              margin-right: 15px;
+            }
+
+            .ivu-btn-default {
+              margin-right: 10px;
+            }
+          }
+        }
+
+        .modal-setting-item {
+          width: 95%;
+          padding-left: 2%;
+
+          .title, .cover, .summary, .tags, .category {
+            margin-bottom: 13px;
+          }
+
+          .cover, .title {
+            max-width: 300px;
+          }
+
+          .tag-add-control {
+            flex-direction: unset;
+          }
+
+          .category-group {
+            justify-content: space-between;
+          }
+        }
       }
     }
   }

@@ -383,8 +383,8 @@
                   display: flex;
 
                   .slider-module_slideContainer {
-                    width: 90%;
-                    display: block;
+                    display: flex;
+                    justify-content: center;
                     position: relative;
                     flex: 1;
                     line-height: 44px;
@@ -400,7 +400,7 @@
                     .ant-slider-with-marks {
                       position: relative;
                       height: 12px;
-                      width: 95%;
+                      width: 100%;
                       line-height: 1.5715;
                       margin-top: 5px;
                       padding: 4px 0;
@@ -426,7 +426,7 @@
 
                       .ant-slider-step {
                         position: absolute;
-                        width: 100%;
+                        width: 95%;
                         height: 4px;
                         background: transparent;
                         display: flex;
@@ -467,7 +467,7 @@
                         border: 1px solid @border-color_normal;
                         box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.13), 0 2px 8px 0 rgba(0, 0, 0, 0.08), 0 8px 16px 4px rgba(0, 0, 0, 0.04);
                         transition: none;
-                        margin: -6px 0 0 5px;
+                        margin-top: -6px;
                       }
 
                       .show-select-font {
@@ -929,7 +929,8 @@
          .i-warn {
            color: #ECAA04;
            font-size: 25px;
-           margin-right: 5px;
+           margin-right: 8px;
+           margin-bottom: 2px;
          }
 
          display: flex;

@@ -88,14 +88,19 @@
                     <div class="ant-slider ant-slider-with-marks classic">
                       <div class="ant-slider-rail"></div>
                       <div class="ant-slider-step">
-                        <div v-for="(item,index) in fontSizeRange" :key="index" @click="changeFontSise(item)"
+                        <div v-for="(item,index) in fontSizeRange"
+                             :key="index"
+                             @click="changeFontSise(item)"
+                             :sdsd="index"
                              class="slider-dot-wrapp"
                              :style="'left: '+ index * 100/(fontSizeRange.length-1) + '%;'">
                           <span class="slider-dot"/>
                         </div>
                       </div>
                       <div :class="['ant-slider-handle', fontSizeShowSelect ? 'show-select-font' : '']"
-                           :style="'left: ' + currentFontIndex * 100/(fontSizeRange.length-1) + '%;'">
+                           :style="'left: ' +
+                            (currentFontIndex === 0 ? '3.5' : currentFontIndex === (fontSizeRange.length -1) ? '97' : (currentFontIndex * 100/(fontSizeRange.length-1))) +
+                           '%;'">
                       </div>
                     </div>
                   </div>
@@ -157,7 +162,7 @@
                 <div class="tab-content-text">保存为版本</div>
               </div>
               <Divider/>
-              <div class="doc-setting-btn delete-btn">
+              <div class="doc-setting-btn delete-btn" @click="showDeleteModal = true">
                 <span class="iconfont delete"></span>
                 <div class="tab-content-text">删除</div>
               </div>

@@ -6,7 +6,9 @@
       <div class="operation">
         <Input class="search" search placeholder="搜索标题关键词"/>
         <div class="action">
-          <Dropdown placement="bottom-end" @on-click="updateNoteOrderType">
+          <Dropdown placement="bottom-end"
+                    transfer-class-name="dropdown-background dropdown-item-all-hover"
+                    @on-click="updateNoteOrderType">
             <a href="javascript:void(0)">
               <div class="icon-box">
                 <span class="iconfont order"></span>
@@ -95,7 +97,7 @@
             </div>
           </div>
           <div class="index-module_content">
-            <div class="viewer-header" @click="routeNavigate('read', noteItem.id)">
+            <div class="viewer-header" @click="routeNavigate('read', noteItem)">
               <span class="viewer-content">{{noteItem.title}}</span>
             </div>
             <div class="viewer-body">
@@ -115,13 +117,27 @@
                   </div>
                 </a>
                 <DropdownMenu slot="list">
-                  <DropdownItem>编辑</DropdownItem>
-                  <DropdownItem>发布</DropdownItem>
-                  <DropdownItem>删除</DropdownItem>
-                  <DropdownItem>取消置顶</DropdownItem>
-                  <DropdownItem>文档设置</DropdownItem>
-                  <DropdownItem>复制链接</DropdownItem>
-                  <DropdownItem>移至专栏</DropdownItem>
+                  <DropdownItem>
+                    <span @click="routeNavigate('edit', noteItem)">编辑</span>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <span>发布</span>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <span @click="routeNavigate('delete', noteItem)">删除</span>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <span>取消置顶</span>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <span @click="routeNavigate('setting', noteItem)">文档设置</span>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <span @click="routeNavigate('column', noteItem)">移至专栏</span>
+                  </DropdownItem>
+                  <DropdownItem>
+                    <span>复制链接</span>
+                  </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>
@@ -129,11 +145,51 @@
         </div>
       </div>
     </div>
+    <Modal v-model="showModal"
+           :width="modalContentType === 2 ? 520 : 416"
+           class="operate-modal"
+           :transfer="false"
+           :footer-hide="true">
+      <div class="modal-delete-item" v-if="modalContentType === 1">
+        <div class="delete-tips">
+          <span class="iconfont i-warn"></span>
+          <span>确认删除 {{ currentOperateArticle?.title }} ？</span>
+        </div>
+        <div class="confirm-btn">
+          <Button type="text" ghost @click="showModal = false">取消</Button>
+          <Button type="success">确定</Button>
+        </div>
+      </div>
+      <div class="modal-setting-item" v-if="modalContentType === 2">
+        <article-setting :articleId="currentOperateArticle?.uid" :editTitle="true"/>
+      </div>
+      <div class="modal-column-item" v-if="modalContentType === 3">
+        <div class="remove-tips">
+          请选择要移至的专栏
+        </div>
+        <div class="select-columns">
+          <Select v-model="currentOperateArticle.columnId"
+                  placeholder="下拉选择专栏"
+                  class="first-level">
+            <Option v-for="item in columnList"
+                    :value="item.uid"
+                    :key="item.uid">
+              {{ item.columnName }}
+            </Option>
+          </Select>
+        </div>
+        <div class="confirm-btn">
+          <Button type="text" ghost @click="showModal=false">取消</Button>
+          <Button type="success">确定移动</Button>
+        </div>
+      </div>
+    </Modal>
   </div>
 </template>
 
 <script>
   import {getRandomColor} from '@/utils/utils'
+  import ArticleSetting from "@/components/common/ArticleSetting"
 
   export default {
     name: 'NoteHome',
@@ -235,11 +291,37 @@
             tags: []
           }
         ],
+        columnList: [
+          {
+            uid: 121212,
+            columnName: '这是一个专栏'
+          },
+          {
+            uid: 243434,
+            columnName: '这是第二个专栏'
+          },
+          {
+            uid: 11255,
+            columnName: '这是Java笔记专栏'
+          },
+          {
+            uid: 35676767,
+            columnName: '这是一我自己创建的专栏'
+          }
+        ],
         checkedList: [],
         showCheckToolBar: false,
         inputVisibleId: '',
-        inputValue: ''
+        inputValue: '',
+        showModal: false,
+        // 1删除 2文档设置 3移至专栏
+        modalContentType: 1,
+        // 当前操作的文章
+        currentOperateArticle: null
       }
+    },
+    components: {
+      ArticleSetting
     },
     computed: {
       checkAll() {
@@ -275,13 +357,28 @@
       /**
        * @param itemName 路由跳转标志
        */
-      routeNavigate(routePath, routeParam) {
+      routeNavigate(routePath, articleItem) {
         switch (routePath) {
           case 'edit':
-            this.$router.push({path: '/editor/' + routeParam});
+            this.$router.push({path: '/editor/' + articleItem.id});
             break;
           case 'read':
-            this.$router.push({path: '/article/' + routeParam});
+            this.$router.push({path: '/article/' + articleItem.id});
+            break;
+          case 'delete':
+            this.currentOperateArticle = articleItem;
+            this.modalContentType = 1;
+            this.showModal = true;
+            break;
+          case 'setting':
+            this.currentOperateArticle = articleItem;
+            this.modalContentType = 2;
+            this.showModal = true;
+            break;
+          case 'column':
+            this.currentOperateArticle = articleItem;
+            this.modalContentType = 3;
+            this.showModal = true;
             break;
           case 'history':
             this.$Message.warning("敬请期待，感谢支持！")
@@ -317,7 +414,15 @@
         return this.$refs.TooltipContainer
       }
     },
-    mounted() {
+    watch: {
+      "showModal"(status) {
+        if (!status) {
+          setTimeout(() => {
+            this.currentOperateArticle = null;
+            this.modalContentType = 1;
+          }, 500)
+        }
+      }
     }
   }
 </script>
