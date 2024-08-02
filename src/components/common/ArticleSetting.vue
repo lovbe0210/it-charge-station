@@ -1,5 +1,15 @@
 <template>
   <div ref="TooltipContainer">
+    <div class="title" v-if="editTitle">
+      <div class="label">
+        <div class="label-text">标题</div>
+      </div>
+      <Input type="text"
+             class="desc-input form-input"
+             maxlength="15"
+             placeholder="文档标题"
+             v-model="docInfo.title"/>
+    </div>
     <div class="cover">
       <div class="label">
         <span class="label-text">封面</span>
@@ -116,7 +126,7 @@
       </div>
     </div>
     <Button type="success"
-            :disabled="!(docInfo.coverPreview || docInfo.summary || (docInfo.firstLevel && docInfo.secondLevel) || docInfo.tags?.length > 0)"
+            :disabled="(editTitle && docInfo.title.length === 0) || !(docInfo.coverPreview || docInfo.summary || (docInfo.firstLevel && docInfo.secondLevel) || docInfo.tags?.length > 0)"
             @click="submitDocSetting">
       <span>&nbsp;确定&nbsp;</span>
     </Button>
@@ -193,7 +203,7 @@ export default {
       ]
     }
   },
-  props: ['articleId'],
+  props: ['articleId', 'editTitle'],
   computed: {
     docStyle() {
       return this.$store.state.docStyle;
@@ -303,6 +313,20 @@ export default {
 </script>
 <style scoped lang="less">
   @import "../css/common-var";
+
+  .title {
+    margin-bottom: 20px;
+
+    .label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .ivu-input {
+      color: @dark-font-color;
+    }
+  }
 
   .cover {
     .label {
