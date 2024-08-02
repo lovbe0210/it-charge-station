@@ -4,7 +4,6 @@
       border-radius: 6px;
       padding:10px 0 15px 0;
       display: flex;
-      //flex-direction: column;
 
       &:first-child {
         padding-top: 0;
@@ -14,6 +13,7 @@
         display: flex;
         flex-direction: column;
         margin-left: 20px;
+        width: 100%;
 
         .post-info {
           display: flex;
@@ -61,59 +61,74 @@
             }
           }
         }
-      }
 
-      .trend-content {
-        margin-top: -3px;
-        display: flex;
-        justify-content: space-between;
+        .trend-content {
+          margin-top: -3px;
+          display: flex;
+          justify-content: space-between;
 
-        .post-desc {
-          width: 76%;
+          .post-desc {
+            width: 73%;
 
-          .post-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--font-color);
-            line-height: 24px;
-            margin-bottom: 5px;
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            .post-title {
+              font-size: 16px;
+              font-weight: 700;
+              color: var(--font-color);
+              line-height: 24px;
+              margin-bottom: 5px;
+              display: block;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
 
-            &:hover {
-              color: @grey-white-font-color;
+              &:hover {
+                color: @grey-white-font-color;
+              }
+            }
+
+            .post-content {
+              font-size: 14px;
+              line-height: 24px;
+              display: -webkit-box;
+              max-height: 48px;
+              margin-bottom: 3px;
+              color: var(--title-color);
+              -webkit-box-orient: vertical;    /* 使盒子垂直排列子元素 */
+              -webkit-line-clamp: 2;           /* 限制显示两行 */
+              overflow: hidden;                /* 隐藏超出内容 */
+              text-overflow: ellipsis;         /* 添加省略号 */
+              white-space: normal;
             }
           }
 
-          .post-content {
-            font-size: 14px;
-            line-height: 24px;
-            display: -webkit-box;
-            max-height: 48px;
-            margin-bottom: 5px;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: var(--title-color);
+          .post-image {
+            width: 26%;
+
+            .as-img {
+              width: 100%;
+            }
           }
         }
       }
+
+
 
       .rambly {
         flex-direction: column;
 
         .post-desc {
-          width: 100%;
+          width: 100% !important;
+
+          .post-content {
+            margin-bottom: 5px !important;
+          }
         }
 
         .post-image {
-
+          width: 100% !important;
           .rambly-img-box {
+            width: 100%;
             display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
 
             .rambly-img {
               max-width: 32%;
@@ -134,7 +149,7 @@
         }
 
         .action {
-          margin-top: 5px;
+          margin-top: 8px;
         }
       }
 

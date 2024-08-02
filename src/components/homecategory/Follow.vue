@@ -31,7 +31,7 @@
             </div>
             <div :class="['trend-content', item.pubType === 2 ? 'rambly' : '']">
               <div class="post-desc">
-                <b-link :to="getRouterPath(item)">
+                <b-link :href="'' + getRouterPath(item)">
                   <p class="post-title" v-if="item.pubType !== 2">{{ item.PublicTitle }}</p>
                   <p class="post-content">{{ item.PublicContent }}</p>
                 </b-link>
@@ -50,6 +50,7 @@
                 <b-link v-if="item.pubType !== 2" to="/column/sadasd">
                   <b-img-lazy v-for="(pic, index) in item.picList" height="100%" rounded
                               :key="index"
+                              class="as-img"
                               :src="pic">
                   </b-img-lazy>
                 </b-link>
@@ -249,17 +250,17 @@
       getRouterPath(trendItem) {
         let routerPath = "/";
         switch (trendItem.pubType) {
-          case "1":
+          case 1:
             if (trendItem.columnId) {
               routerPath += ("column/" + trendItem.columnId + "/" + trendItem.articleId);
             } else {
               routerPath += ("article/" + trendItem.articleId);
             }
             break;
-          case "2":
+          case 2:
             routerPath += ("ramblyJot/" + trendItem.ramblyId);
             break;
-          case "3":
+          case 3:
             routerPath += ("column/" + trendItem.columnId)
             break
         }
