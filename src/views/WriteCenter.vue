@@ -17,7 +17,7 @@
               </div>
             </DropdownItem>
             <DropdownItem>
-              <div class="quick-menu" @click="routerPush('/settings')">
+              <div class="quick-menu" @click="routerPush('/user')">
                 <span class="iconfont person-info"/>
                 个人中心
               </div>
@@ -53,10 +53,15 @@
         </b-list-group-item>
       </b-list-group>
       <div class="editor-setting">
-        <Button :class="['update-btn',  docStyle.customerTheme ? 'ghost-btn' : '']" ghost @click="updateDocConten"
-                id="update-btn">
-          更新
-        </Button>
+        <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.TooltipContainer">
+          <template slot="title">
+            <span>已开启自动发布，内容将自动更新至阅读页面，亦可手动点击更新</span>
+          </template>
+          <Button class="update-btn" type="success" @click="updateDocConten">
+            发布
+          </Button>
+        </a-tooltip>
+
         <div class="setting-icon action-icon" @click="showDocSetting = true">
           <span class="iconfont layout"/>
         </div>
@@ -178,7 +183,7 @@
             </div>
           </div>
           <div v-if="drawerType === 1">
-            <article-setting :articleId="docInfo.uid"/>
+            <article-setting :articleId="docInfo.uid" :changePermission="true"/>
           </div>
           <div v-if="drawerType === 2">
             <article-version :articleId="docInfo.uid" :addNewVersion="newVersion"/>
@@ -203,17 +208,11 @@
     <b-row class="editor-root">
       <editor @updateTitle="updateTitle" :docInfo="docInfo" :docStyle="docStyle" ref="editorContainer"></editor>
     </b-row>
-    <b-tooltip target="update-btn" placement="bottom" delay="250" triggers="hover" variant="dark"
-               container="update-btn">
-      <div style="width: 120px; color: #FFFFFF; font-size: 12px;">
-        已开启自动发布，内容将自动更新至阅读页面，亦可手动点击更新
-      </div>
-    </b-tooltip>
   </div>
 </template>
 
 <script>
-import Editor from '@/components/common/editor/Editor'
+import Editor from '@/components/Editor'
 import {formatTime} from '@/utils/emoji'
 import ArticleSetting from "@/components/common/ArticleSetting"
 import ArticleVersion from "@/components/common/ArticleVersion"

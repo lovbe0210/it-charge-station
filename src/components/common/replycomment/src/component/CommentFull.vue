@@ -6,7 +6,7 @@
       </div>
       <div class="content">
         <div class="avatar-box">
-          <b-avatar :src="userInfo.avatar" variant="light" to="/settings" size="2.5rem">
+          <b-avatar :src="userInfo.avatar" variant="light" to="/user" size="2.5rem">
             <span v-if="!userInfo.avatar">{{ userInfo.username }}</span>
           </b-avatar>
         </div>

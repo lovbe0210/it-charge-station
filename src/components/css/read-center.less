@@ -147,7 +147,7 @@
               line-height: 32px;
               border-bottom: 1px solid transparent;
 
-              .tab-title {
+              .tab-title, .tab-list {
                 display: flex;
                 align-items: center;
                 border-right: 6px;
@@ -157,6 +157,10 @@
                 .iconfont {
                   margin-right: 12px;
                 }
+              }
+
+              .tab-list {
+                cursor: unset;
               }
 
               .tab-title:hover, actions-cont:hover {
@@ -318,7 +322,7 @@
                       display: flex;
 
                       .title-content {
-                        width: calc(~"100% - 22px");
+                        //width: calc(~"100% - 22px");
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
@@ -480,6 +484,7 @@
       align-items: center;
 
       input {
+        background: unset;
         min-width: 95%;
         border: none;
         outline: none;
@@ -763,6 +768,10 @@
   }
 
   /deep/ .layout-module_asideWrapper {
+    .reader-toc-pin, .toc-item-text {
+      color: var(--font-color) !important;
+    }
+
     .toc-selected {
       color: var(--font-color) !important;
     }

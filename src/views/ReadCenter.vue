@@ -36,9 +36,14 @@
             <div class="nav-tabs">
               <div class="tabs-bar">
                 <span class="tab-title popover-trigger"
+                      v-if="columnId !== undefined"
                       @click="navShowType = isColumnView ? (navShowType === 'tree' ? 'list' : 'tree') : navShowType">
                   <span :class="['iconfont', navShowType === 'tree' ? 'nav-tree' : 'list']"></span>
                   <span>目录</span>
+                </span>
+                <span class="tab-list" v-else>
+                  <span class="iconfont list"></span>
+                  <span>文章列表</span>
                 </span>
                 <div class="actions-cont" v-show="isColumnView && navShowType === 'tree'">
                   <a-tooltip overlayClassName="read-nav-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
@@ -62,7 +67,6 @@
                               <div class="title-content" @click="routeNavigate(item.id)">
                                 {{item.title}}
                               </div>
-                              <span class="iconfont operate"></span>
                             </template>
                           </ListItemMeta>
                         </ListItem>
@@ -478,12 +482,6 @@
        */
       updateTitle(titleValue) {
         this.docInfo.title = titleValue;
-      },
-      changeFontSise(value) {
-        this.docStyle.docFontSize = value;
-      },
-      changePageSize(value) {
-        this.docStyle.pageSize = value;
       },
 
       onSelect(selectedKeys, info) {

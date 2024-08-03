@@ -2,19 +2,57 @@
   <div ref="TooltipContainer">
     <div class="title" v-if="editTitle">
       <div class="label">
-        <div class="label-text">标题</div>
+        <div class="label-text"><span style="color: red">* </span>标题</div>
       </div>
       <Input type="text"
-             class="desc-input form-input"
-             maxlength="15"
-             placeholder="文档标题"
+             :class="['desc-input form-input', docInfo.title?.length > 0 ? '' : 'error']"
+             maxlength="30"
+             placeholder="请输入文档标题"
              v-model="docInfo.title"/>
+    </div>
+    <div class="permission" v-if="changePermission">
+      <div class="label">
+        <span class="required">* </span>
+        <span class="label-text">权限</span>
+      </div>
+      <div class="permission-input">
+        <Poptip class="un-select"
+                confirm
+                placement="right-start"
+                :width="editTitle ? 300 : 190"
+                @on-ok="docInfo.isPublic = 1"
+                @on-cancel="docInfo.isPublic = 0">
+          <div class="public-radio">
+            <input type="radio"
+                   value="1"
+                   :class="docInfo.isPublic ? 'checked' : ''"
+                   @click="readPublicPermission"/>
+            <span class="permission-label un-select">互联网可访问</span>
+          </div>
+          <div slot="title">
+            <span>
+              开启后，互联网所有获得链接的人皆可访问文档内容。你需对其合法合规性负责，遵守相关法律法规及it充电站
+            </span>
+            <a class="color: #43C8EC" href="/">服务协议</a>
+            <span>
+              约定，违规内容可能无法被查看。
+            </span>
+          </div>
+        </Poptip>
+        <div class="private-radio" @click="docInfo.isPublic = 0">
+          <input type="radio"
+                 id="initPrivate"
+                 value="0"
+                 :class="docInfo.isPublic ? '' : 'checked'"/>
+          <span class="permission-label un-select" for="initPrivate">仅作者可访问</span>
+        </div>
+      </div>
     </div>
     <div class="cover">
       <div class="label">
         <span class="label-text">封面</span>
       </div>
-      <div class="cover-input">
+      <div :class="['cover-input', editTitle ? 'show-preview' : '']">
         <vueCropper
           :class="['crop-box', coverOriginalFile ? '' : 'cover-placeholder']"
           ref="cropper"
@@ -31,24 +69,28 @@
           @cropMoving="cropMoving"
           @imgLoad="imgLoadOver">
         </vueCropper>
-        <div class="cover-upload-select">
-          <Upload action="/"
-                  :format="['jpg','jpeg','png']"
-                  :max-size="5120"
-                  accept="image/*"
-                  :show-upload-list="false"
-                  :before-upload="fileHandle">
-            <Button :class="['cover-upload-btn', docStyle.customerTheme ? 'ghost-btn' : '']">
-                      <span v-if="!coverOriginalFile">
-                        <span class="iconfont upload"/>上传图片</span>
-              <span v-else>重新上传</span>
-            </Button>
-          </Upload>
-          <div class="clear-cover-btn">
-            <span v-show="docInfo.coverPreview" class="un-select" @click="clearCoverPreview">
-              <span class="iconfont delete"></span>
-              清除
-            </span>
+        <div class="preview-operate">
+          <img v-if="editTitle && docInfo.coverPreview" :src="docInfo.coverPreview" class="img" alt="预览">
+          <div class="space" v-if="editTitle"></div>
+          <div class="cover-upload-select">
+            <Upload action="/"
+                    :format="['jpg','jpeg','png']"
+                    :max-size="5120"
+                    accept="image/*"
+                    :show-upload-list="false"
+                    :before-upload="fileHandle">
+              <Button :class="['cover-upload-btn', docStyle.customerTheme ? 'ghost-btn' : '']">
+                <span v-if="!coverOriginalFile">上传图片</span>
+                <span v-else>重新上传</span>
+              </Button>
+            </Upload>
+            <div class="clear-cover-btn">
+              <span :style="{visibility: docInfo.coverPreview ? 'visible' : 'hidden'}" class="un-select"
+                    @click="clearCoverPreview">
+                <span class="iconfont delete"></span>
+                清除
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -144,6 +186,7 @@ export default {
       docInfo: {
         title: 'lovbe0210',
         coverPreview: null,
+        isPublic: 1,
         summary: '',
         firstLevel: null,
         secondLevel: null,
@@ -152,6 +195,11 @@ export default {
           {content: 'JAVA', color: 'red'},
           {content: '调优', color: 'green'}
         ]
+      },
+      cropInfo: {
+        height: 0,
+        width: 0,
+        flushPreview: null
       },
       coverOriginalFile: null,
       inputVisible: false,
@@ -203,7 +251,7 @@ export default {
       ]
     }
   },
-  props: ['articleId', 'editTitle'],
+  props: ['articleId', 'editTitle', 'changePermission'],
   computed: {
     docStyle() {
       return this.$store.state.docStyle;
@@ -238,7 +286,7 @@ export default {
           this.cropInfo.height = this.$refs.cropper.cropH;
           this.cropInfo.width = this.$refs.cropper.cropW;
           this.cropInfo.flushPreview = setInterval(() => {
-            if (!this.baseInfo.coverOriginalFile) {
+            if (!this.coverOriginalFile) {
               clearInterval(this.cropInfo.flushPreview);
               this.cropInfo.flushPreview = null;
               return;
@@ -304,193 +352,329 @@ export default {
     submitDocSetting() {
       this.$Message.success("保存成功！")
     },
+    readPublicPermission(event) {
+      event.preventDefault();
+    },
     formatTime
   },
   components: {
     VueCropper
+  },
+  destroyed() {
+    if (this.cropInfo.flushPreview) {
+      clearInterval(this.cropInfo.flushPreview);
+      this.cropInfo.flushPreview = null;
+    }
   }
 }
 </script>
 <style scoped lang="less">
-  @import "../css/common-var";
+@import "../css/common-var";
 
-  .title {
-    margin-bottom: 20px;
+.title {
+  margin-bottom: 20px;
 
-    .label {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
+  .label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .ivu-input {
+    color: var(--font-color);
+  }
+
+  .error {
+    /deep/ .ivu-input {
+      border-color: red;
     }
+  }
+}
 
-    .ivu-input {
-      color: @dark-font-color;
+.permission {
+  .label {
+    margin-bottom: 10px;
+
+    .required {
+      color: red;
     }
   }
 
-  .cover {
-    .label {
-      margin-bottom: 10px;
+  .permission-input {
+    display: flex;
+    flex-direction: column;
+    margin-left: 2px;
+
+    .public-radio {
+      //margin-right: 20px;
     }
 
-    .cover-input {
-      .crop-box {
-        width: 100%;
-        min-width: 100%;
-        height: 175px;
-        border-radius: 4px;
-        overflow: hidden;
-      }
+    .private-radio, .public-radio {
+      display: flex;
+      margin-bottom: 13px;
 
-      .cover-upload-select {
-        margin-top: 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      input {
+        margin-right: 8px;
+        cursor: pointer;
 
-        .cover-upload-btn {
-          font-weight: 500;
-          color: @dark-font-color;
-          border-color: @border-color_normal;
-          padding: 0 13px;
-
-          &:hover {
-            color: @primary-color;
-            border-color: @primary-color;
-          }
-        }
-
-        .clear-cover-btn {
-          cursor: pointer;
-
-          &:hover {
-            color: @primary-color;
-          }
-        }
-
-      }
-
-      .cover-placeholder {
         &::before {
-          width: 300px;
-          display: flex;
-          justify-content: center;
-          content: '推荐尺寸360px*180px';
-          color: #8a8f8d;
-          position: absolute;
-          z-index: 9;
-          bottom: 25px;
-        }
-
-        &::after {
-          content: '';
-          z-index: 8;
           position: relative;
-          display: flex;
-          width: 300px;
-          height: 240px;
-          background: url("../../assets/column-placeholder-cover.png");
+          content: "";
+          top: 3px;
+          left: -1px;
+          width: 16px;
+          height: 16px;
+          display: block;
+          border-radius: 50%;
+          background-color: #FFFFFF;
+          border: 1px solid #00b96b;
+          z-index: 5;
         }
+      }
+
+      .checked::after {
+        position: relative;
+        content: "";
+        bottom: 9px;
+        left: 3px;
+        width: 8px;
+        height: 8px;
+        display: block;
+        border-radius: 50%;
+        visibility: visible;
+        background-color: #00b96b;
+        z-index: 6;
+      }
+
+      .permission-label {
+        margin: 0;
+        cursor: pointer;
+      }
+
+      .public-radio {
+        margin-bottom: 10px;
       }
     }
   }
 
-  .summary {
-    margin: 20px 0;
-
-    .label {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .ivu-input {
-      color: @dark-font-color;
-    }
+  /deep/.ivu-poptip-arrow {
+    display: none;
   }
 
-  .category {
-    margin: 20px 0;
+  /deep/.ivu-poptip-inner {
+    border: 1px solid @border-color_normal;
+    background: var(--modal-bg-color);
 
-    .label {
+    .ivu-btn-text {
+      background: unset;
+    }
+  }
+}
+
+.cover {
+  .label {
+    margin-bottom: 10px;
+  }
+
+  .cover-input {
+    .crop-box {
+      width: 100%;
+      min-width: 100%;
+      height: 175px;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .cover-upload-select {
+      margin-top: 15px;
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
 
-      .label-tip {
-        font-size: 12px;
-        margin-left: 6px;
-        color: @grey-white-font-color;
-      }
-    }
-
-    .category-group {
-      display: flex;
-
-      .first-level, .second-level {
-        width: 45%;
-      }
-
-      .second-level {
-        margin-left: 15px;
-      }
-    }
-  }
-
-  .tags {
-    margin: 20px 0;
-
-    .label {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-
-      .label-tip {
-        font-size: 12px;
-        margin-left: 6px;
-        color: @grey-white-font-color;
-      }
-    }
-
-    .tag-add-control {
-      position: relative;
-      display: flex;
-      align-items: flex-start;
-      justify-content: left;
-      flex-direction: column;
-      padding-bottom: 5px;
-
-      .tag-wrap {
-        margin-bottom: 7px;
-
-        .ant-tag {
-          display: flex;
-          line-height: 24.5px;
-          align-items: center;
-          justify-content: center;
-        }
-      }
-
-      .ivu-input {
+      .cover-upload-btn {
+        font-weight: 500;
         color: @dark-font-color;
-
-        &:focus {
-          border-color: @primary-color;
-          outline: 0;
-          box-shadow: none;
-        }
+        border-color: @border-color_normal;
+        padding: 0 13px;
       }
 
-      .empty-to-add {
-        background: @dropdown-background;
-        border: 1px dashed @border-color_normal;
-        color: @dark-font-color;
+      .clear-cover-btn {
+        cursor: pointer;
+        margin-left: 20px;
 
         &:hover {
-          background: #fdfdfd;
-          border-color: @primary-color;
+          color: @primary-color;
         }
+      }
+
+    }
+
+    .cover-placeholder {
+      &::before {
+        width: 300px;
+        display: flex;
+        justify-content: center;
+        content: '推荐尺寸360px*180px';
+        color: #8a8f8d;
+        position: absolute;
+        z-index: 9;
+        bottom: 20px;
+      }
+
+      &::after {
+        content: '';
+        z-index: 8;
+        position: relative;
+        display: flex;
+        width: 300px;
+        height: 240px;
+        background-size: cover !important;
+        background: url("../../assets/column-placeholder-cover.png");
       }
     }
   }
+}
+
+.show-preview {
+  display: flex;
+  justify-content: space-between;
+
+  .crop-box {
+    width: 238px !important;
+    min-width: 238px !important;
+    height: 146px !important;
+    min-height: 146px !important;
+  }
+
+  .cover-placeholder::before {
+    width: 238px !important;
+    bottom: 18px !important;
+  }
+
+  .cover-placeholder::after {
+    width: 238px !important;
+    height: 146px !important;
+  }
+
+  .preview-operate {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 146px;
+
+    .space {
+      flex-grow: 1;
+    }
+
+    img {
+      width: 153px;
+      min-width: 153px;
+      height: 95px;
+      min-height: 95px;
+      border-radius: 3px;
+    }
+
+    .cover-upload-select {
+      min-width: 153px;
+    }
+  }
+}
+
+.summary {
+  margin: 20px 0;
+
+  .label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .ivu-input {
+    color: @dark-font-color;
+  }
+}
+
+.category {
+  margin: 20px 0;
+
+  .label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .label-tip {
+      font-size: 12px;
+      margin-left: 6px;
+      color: @grey-white-font-color;
+    }
+  }
+
+  .category-group {
+    display: flex;
+
+    .first-level, .second-level {
+      width: 45%;
+    }
+
+    .second-level {
+      margin-left: 15px;
+    }
+  }
+}
+
+.tags {
+  margin: 20px 0;
+
+  .label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .label-tip {
+      font-size: 12px;
+      margin-left: 6px;
+      color: @grey-white-font-color;
+    }
+  }
+
+  .tag-add-control {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: left;
+    flex-direction: column;
+    padding-bottom: 5px;
+
+    .tag-wrap {
+      margin-bottom: 7px;
+
+      .ant-tag {
+        display: flex;
+        line-height: 24.5px;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .ivu-input {
+      color: @dark-font-color;
+
+      &:focus {
+        border-color: @primary-color;
+        outline: 0;
+        box-shadow: none;
+      }
+    }
+
+    .empty-to-add {
+      background: @dropdown-background;
+      border: 1px dashed @border-color_normal;
+      color: @dark-font-color;
+
+      &:hover {
+        background: #fdfdfd;
+        border-color: @primary-color;
+      }
+    }
+  }
+}
 </style>

@@ -12,6 +12,18 @@
 .enable-background {
   background: var(--theme-color) !important;
   border-radius: 5px !important;
+
+  // btn系列
+  .ivu-btn-default {
+    background: var(--dropdown-bg-color)!important;
+    color: var(--font-color)!important;
+
+    &:hover {
+      background: var(--on-theme-bg-color)!important;
+      color: @primary-color!important;
+      border-color: @primary-color!important;
+    }
+  }
 }
 
 .dropdown-background {

@@ -95,13 +95,6 @@
                     </div>
                   </div>
                 </DropdownItem>
-                <DropdownItem name="personInfo">
-                  <div class="routing-menu quick-start-item">
-                    <span class="iconfont person-info"></span>
-                    <span class="routing-content">个人中心</span>
-                    <span class="iconfont i-more"></span>
-                  </div>
-                </DropdownItem>
                 <DropdownItem name="creativeSpace">
                   <div class="routing-menu quick-start-item">
                     <span class="iconfont creation-center"></span>
@@ -109,7 +102,14 @@
                     <span class="iconfont i-more"></span>
                   </div>
                 </DropdownItem>
-                <DropdownItem name="growthTrajector" class="create-center">
+                <DropdownItem name="personInfo">
+                  <div class="routing-menu quick-start-item">
+                    <span class="iconfont person-info"></span>
+                    <span class="routing-content">个人中心</span>
+                    <span class="iconfont i-more"></span>
+                  </div>
+                </DropdownItem>
+                <DropdownItem name="growthTrajector" class="growth-trajector">
                   <div class="routing-menu quick-start-item">
                     <span class="iconfont data-stats"></span>
                     <span class="routing-content">成长轨迹</span>
@@ -334,10 +334,10 @@
             this.$router.push({path: '/dashboard/relational/concern'})
             break;
           case 'creativeSpace':
-            this.$router.push({path: '/dashboard'})
+            this.$router.push({path: '/creative'})
             break;
           case 'personInfo':
-            this.$router.push({path: '/settings'})
+            this.$router.push({path: '/user'})
             break;
           case 'growthTrajector':
             this.$router.push({name: 'Stats'})

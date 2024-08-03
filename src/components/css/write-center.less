@@ -24,7 +24,6 @@
   -ms-flex-direction: column;
   flex-direction: column;
 
-
   .editor-header {
     border-bottom: 1px solid @border-color_normal;
     position: relative;
@@ -126,13 +125,6 @@
         width: 60px;
         height: 30px;
         margin-right: 30px;
-        color: @dark-font-color;
-        border-color: rgba(103, 102, 102, 0.4);
-
-        &:hover {
-          color: @primary-color;
-          border-color: @primary-color;
-        }
       }
 
       /deep/.normal-dropdown {
@@ -562,6 +554,11 @@
         }
       }
     }
+  }
+
+  /deep/.ant-tooltip {
+    font-size: 12px;
+    max-width: 200px;
   }
 }
 

@@ -1125,14 +1125,12 @@
               "msg_status": 0
             }
           ];
-          debugger
           let messageScroll = this.$refs.messageScroll;
           if (messageScroll) {
             // 使用 setTimeout 来确保在 DOM 更新之后再进行滚动
             this.$nextTick(() => {
               // 将滚动位置设置为容器的滚动高度
-              debugger
-              messageScroll.scrollTop = messageScroll.scrollHeight;
+              messageScroll.scrollTop = messageScroll.scrollHeight + 150;
             });
           }
         }, 500)
