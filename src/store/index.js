@@ -15,8 +15,12 @@ export default new Vuex.Store({
       username: '布衣草人',
       domain: 'lovbe0210',
       level: 6,
-      avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hndj43fdrsj30s010vgtz.jpg',
-      token: '06ba1e5d8dcd4bf7b27ed10c6a202766'
+      avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hndj43fdrsj30s010vgtz.jpg'
+    },
+    tmpDoc: {
+      uid: 1213324,
+      title: null,
+      content: null
     },
     // 是否有后台播放音乐的页面
     backgroundPlay: false,
@@ -52,13 +56,13 @@ export default new Vuex.Store({
       modalBackgroundColor: '#FFFFFF'
     },
     docStyle: {
-      // 是否同步自定义主题
-      customerTheme: true,
-      // 正文字体大小(读页面)
+      // 是否同步自定义主题 0否1是
+      asyncTheme: 1,
+      // 正文字体大小(写页面，保存到内容格式中)
       docFontSize: 15,
       // 文章段间距  常规、宽松 standard/loose (写页面)
       segmentSpace: 'standard',
-      // 页面大小1=标宽模式，2=超宽模式
+      // 页面大小0=标宽模式，1=超宽模式
       pageSize: 1
     },
     // 显示自定义主题开关background-color: #4158D0;
@@ -129,60 +133,6 @@ export default new Vuex.Store({
           "rtype": 0,
           "publishTime": 0,
           "alg": "ugc_payrec_101792810058_TG"
-        },
-        {
-          "name": "吻得太逼真",
-          "id": "5249178",
-          "pst": 0,
-          "t": 0,
-          "ar": [{"id": 6462, "name": "张敬轩", "tns": [], "alias": []}],
-          "alia": [],
-          "pop": 100,
-          "st": 0,
-          "rt": "",
-          "fee": 1,
-          "v": 678,
-          "crbt": null,
-          "cf": "",
-          "al": {
-            "id": 511713,
-            "name": "我们的主打歌 3",
-            "picUrl": "http://p3.music.126.net/hCkKHm7J1hDNlmC9vmAV4Q==/109951163368468453.jpg",
-            "tns": [],
-            "pic_str": "109951163368468453",
-            "pic": 109951163368468450
-          },
-          "dt": "03:53",
-          "h": {"br": 320000, "fid": 0, "size": 9333072, "vd": -51917, "sr": 44100},
-          "m": {"br": 192000, "fid": 0, "size": 5599861, "vd": -49424, "sr": 44100},
-          "l": {"br": 128000, "fid": 0, "size": 3733255, "vd": -48004, "sr": 44100},
-          "sq": {"br": 1638743, "fid": 0, "size": 47783018, "vd": -51896, "sr": 44100},
-          "hr": null,
-          "a": null,
-          "cd": "1",
-          "no": 15,
-          "rtUrl": null,
-          "ftype": 0,
-          "rtUrls": [],
-          "djId": 0,
-          "copyright": 1,
-          "s_id": 0,
-          "mark": 8192,
-          "originCoverType": 1,
-          "originSongSimpleData": null,
-          "tagPicList": null,
-          "resourceState": true,
-          "version": 678,
-          "songJumpInfo": null,
-          "entertainmentTags": null,
-          "single": 0,
-          "noCopyrightRcmd": null,
-          "rurl": null,
-          "mst": 9,
-          "cp": 7003,
-          "mv": 0,
-          "rtype": 0,
-          "publishTime": 1226592000000
         },
         {
           "name": "风雨无阻",

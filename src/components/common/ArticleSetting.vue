@@ -79,7 +79,7 @@
                     accept="image/*"
                     :show-upload-list="false"
                     :before-upload="fileHandle">
-              <Button :class="['cover-upload-btn', docStyle.customerTheme ? 'ghost-btn' : '']">
+              <Button :class="['cover-upload-btn', docStyle.asyncTheme ? 'ghost-btn' : '']">
                 <span v-if="!coverOriginalFile">上传图片</span>
                 <span v-else>重新上传</span>
               </Button>

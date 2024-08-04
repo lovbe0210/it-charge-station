@@ -14,14 +14,14 @@
     </div>
     <Divider class="divider"/>
     <div class="hot-list">
-      <a href="/post/7353484906532995135" class="article-item-link" target="_blank" v-for="(item,index) in noteList" :key="item.noteId">
+      <a href="/article/7353484906532995135" class="article-item-link" target="_blank" v-for="(item,index) in noteList" :key="item.uid">
         <div class="article-item-wrap">
           <div class="article-item-left">
             <span :class="['iconfont', 'rank-' + (index+1), 'article-number']" v-if="index <= 2"></span>
             <span class="article-number" v-else>{{index}}</span>
             <div class="article-detail">
-              <div :title="item.noteTitle" class="article-title">
-                {{item.noteTitle}}
+              <div :title="item.articleTitle" class="article-title">
+                {{item.articleTitle}}
               </div>
               <div class="article-author">
                 <a href="/user/3468339576581548" class="article-author-name" target="_blank">
@@ -77,8 +77,8 @@
         popoverContainer: null,
         noteList: [
           {
-            noteId: 123,
-            noteTitle: '我早就看现在的工作流不爽了！- 前端使用 Jenkins',
+            uid: 123,
+            articleTitle: '我早就看现在的工作流不爽了！- 前端使用 Jenkins',
             userInfo: {
               username: 'bald3r',
               avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hojglubq5nj311y1kwx4c.jpg',
@@ -90,8 +90,8 @@
             likeCount: 203
           },
           {
-            noteId: 1231,
-            noteTitle: '你不知道的Vue最新功能：Vue Macros',
+            uid: 1231,
+            articleTitle: '你不知道的Vue最新功能：Vue Macros',
             userInfo: {
               username: '水煮鱼写前端',
               avatar: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hojgm70ztnj316p1kxqln.jpg',
@@ -103,8 +103,8 @@
             likeCount: 203
           },
           {
-            noteId: 1232,
-            noteTitle: '面试官：如何一次性渲染十万条数据',
+            uid: 1232,
+            articleTitle: '面试官：如何一次性渲染十万条数据',
             userInfo: {
               username: 'Dolphin_海豚',
               avatar: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hog855y6lpj30sg0zkdk1.jpg',
@@ -116,8 +116,8 @@
             likeCount: 203
           },
           {
-            noteId: 1233,
-            noteTitle: 'Flutter 即将放弃 Html renderer ，你是否支持这个提议？',
+            uid: 1233,
+            articleTitle: 'Flutter 即将放弃 Html renderer ，你是否支持这个提议？',
             userInfo: {
               username: '恋猫de小郭',
               avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog854ty1oj30u011hwij.jpg',
@@ -129,8 +129,8 @@
             likeCount: 203
           },
           {
-            noteId: 1234,
-            noteTitle: '秒杀 ：这些问题帮你弄清楚分布式锁应该如何设计',
+            uid: 1234,
+            articleTitle: '秒杀 ：这些问题帮你弄清楚分布式锁应该如何设计',
             userInfo: {
               username: '志字辈小蚂蚁',
               avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hog858wjnhj30u011haf3.jpg',
@@ -142,8 +142,8 @@
             likeCount: 203
           },
           {
-            noteId: 1235,
-            noteTitle: '陌生Java项目历险记 2 ——搜索与回溯',
+            uid: 1235,
+            articleTitle: '陌生Java项目历险记 2 ——搜索与回溯',
             userInfo: {
               username: ' 摸鱼总工',
               avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog859i4f5j30l40qego7.jpg',
@@ -155,8 +155,8 @@
             likeCount: 203
           },
           {
-            noteId: 1236,
-            noteTitle: 'Spring Cloud Gateway实战',
+            uid: 1236,
+            articleTitle: 'Spring Cloud Gateway实战',
             userInfo: {
               username: '徐年',
               avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog6fy2jvxj316o1kwk96.jpg',
@@ -168,8 +168,8 @@
             likeCount: 203
           },
           {
-            noteId: 1237,
-            noteTitle: '写出好的Join语句，前提你得懂这些！',
+            uid: 1237,
+            articleTitle: '写出好的Join语句，前提你得懂这些！',
             userInfo: {
               username: '程序员清风',
               avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hog6g0y71xj311y1kw7eb.jpg',
@@ -181,8 +181,8 @@
             likeCount: 203
           },
           {
-            noteId: 1238,
-            noteTitle: '经历定时任务事故，我学到了什么？一个案例的全面回顾',
+            uid: 1238,
+            articleTitle: '经历定时任务事故，我学到了什么？一个案例的全面回顾',
             userInfo: {
               username: '小白858',
               avatar: 'https://p9-passport.byteacctimg.com/img/user-avatar/1231993a9352e0b6c0dd8102c8be5cd1~100x100.awebp',

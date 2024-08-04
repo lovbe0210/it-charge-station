@@ -507,6 +507,7 @@ export default class extends Plugin {
   }
 
   insertRemote(src, alt) {
+    debugger
     const editor = this.editor
     const imagePlugin = editor.plugin.findPlugin("image")
     const value = {

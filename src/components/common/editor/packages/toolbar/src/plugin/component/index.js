@@ -69,7 +69,6 @@ class ToolbarComponent extends Card {
       collapseItems.push(...group.items);
     });
     const value = this.getValue();
-    console.log("#data", this.#data);
     (this.#data || (value ? value.data : []) || []).forEach((group) => {
       const title = group.title;
       const items = [];

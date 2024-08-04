@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div class="modal-lock" v-if="!userInfo || userInfo.uid == null">
+      <div class="modal-lock" v-if="!userInfo || !userInfo.token || userInfo.token.length !== 32">
         <span class="lock-tip">
           <auth-modal>
             <slot>

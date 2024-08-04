@@ -130,7 +130,7 @@ export const pluginConfig = {
       headers: {Authorization: 213434}
     },
     remote: {
-      action: `${DOMAIN}/upload/image` //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
+      action: `${DOMAIN}/common/upload/url` //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
     },
     isRemote: src => src.indexOf(DOMAIN) < 0,
     parse: response => {
@@ -161,6 +161,7 @@ export const pluginConfig = {
   },
   [Fontsize.pluginName]: {
     //配置粘贴后需要过滤的字体大小
+    defaultSize: '15px',
     filter: fontSize => {
       return (
         [

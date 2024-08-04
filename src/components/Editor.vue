@@ -8,18 +8,18 @@
             <div class="editor-wrap-content">
               <div class="editor-outer-wrap-box">
                 <div class="editor-wrap-box">
-                  <div :class="['title-box', docStyle.pageSize === 1 ? 'title-standard-wide' : 'title-ultra-wide']">
+                  <div :class="['title-box', docStyle.pageSize ? 'title-ultra-wide' : 'title-standard-wide']">
                     <div class="title-editor">
                       <textarea class="title" v-model="doc.title" placeholder="请输入标题"
                                 maxlength="130" tabindex="1" rows="1" ref="titleTextarea"
-                                @blur="updateTitle" @keydown.enter="completeTitle">
+                                @blur="updateDocInfo" @keydown.enter="completeTitle">
                       </textarea>
                     </div>
                   </div>
                   <div class="content-box">
                     <div class="engine-box">
                       <div class="engine">
-                        <div :class="['doc-editor','am-engine','am-engine-placeholder', docStyle.pageSize === 1 ? 'editor-standard-wide' : 'editor-ultra-wide']"
+                        <div :class="['doc-editor','am-engine','am-engine-placeholder', docStyle.pageSize ? 'editor-ultra-wide' : 'editor-standard-wide']"
                              ref="container"></div>
                       </div>
                     </div>
@@ -74,7 +74,8 @@
     data() {
       return {
         doc: {
-          title: this.docInfo.title
+          title: this.docInfo.title,
+          wordsNum: 0
         },
         tocData: [],
         currentTocId: '',
@@ -147,9 +148,17 @@
     components: {
       Toolbar
     },
-    props: ['docInfo', 'docStyle'],
+    computed: {
+      docStyle() {
+        return this.$store.state.docStyle;
+      },
+      tmpDoc() {
+        return this.$store.state.tmpDoc;
+      }
+    },
+    props: ['docInfo'],
     methods: {
-      changeHeight() {
+      changeTitleHeight() {
         let _this = this
         this.$nextTick(() => {
           let textArea = _this.$refs.titleTextarea
@@ -163,16 +172,15 @@
           }
         })
       },
-      updateTitle() {
+      updateDocInfo() {
         // TODO 先更新数据库然后在进行页面渲染
-        this.$emit('updateTitle', this.doc.title)
+        this.$emit('updateDocInfo', this.doc)
       },
       completeTitle(event) {
         // 阻止换行然后切换光标
         event.preventDefault();
         this.$refs.container.focus()
       },
-
       /**
        * 防抖函数
        */
@@ -185,7 +193,6 @@
           }, delay);
         };
       },
-
       /**
        * 保存
        */
@@ -195,6 +202,15 @@
           event.preventDefault()
           // 执行save方法
           console.log("save...")
+          let jsonValue = this.engine.getJsonValue();
+          console.log(jsonValue)
+          this.tmpDoc.title = this.doc.title;
+          this.tmpDoc.content = jsonValue;
+
+          // let value = this.engine.model.toValue();
+          // let value1 = this.engine.model.toHTML();
+          // console.log(JSON.stringify(value))
+          // console.log(JSON.stringify(value1))
         }
       },
       /**
@@ -233,11 +249,21 @@
       /**
        * 渲染标题大纲
        */
-      renderTocData() {
+      renderEditorData() {
         if (this.engine.isEmpty()) {
           this.tocData = [];
           return;
         }
+        let text = this.engine?.model?.toText();
+        if (text) {
+          text = text.replace(/\r\n/g, "");
+          text = text.replace(/\n/g, "");
+          text = text.replace(" ", "");
+          this.doc.wordsNum = text.length;
+          this.updateDocInfo();
+          console.log('字数更新了：', this.doc.wordsNum)
+        }
+
         let tocData = getTocData(this.engine);
         this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
       }
@@ -248,9 +274,13 @@
           return
         }
         // 改变标题框的高度
-        this.changeHeight()
+        this.changeTitleHeight()
       },
-      'docStyle.docFontSize'(newValue) {
+      'docStyle.pageSize'() {
+        this.$nextTick(() => {
+          this.engine?.trigger("editor:resize");
+          this.changeTitleHeight()
+        })
         // TODO 改变非标题字体大小
       }
     },
@@ -313,13 +343,13 @@
           const pattern = /h[1-6]/;
           let match = this.docInfo.content.match(pattern);
           if (match) {
-            this.renderTocData();
+            this.renderEditorData();
           }
         }
       }
 
       // 渲染结束后获取输入框焦点，如果没有标题就先定位到标题，如果已有标题就定位到正文
-      this.changeHeight();
+      this.changeTitleHeight();
       if (this.title == null || this.title.length === 0) {
         this.$refs.titleTextarea.focus()
       } else {
@@ -330,7 +360,7 @@
       window.addEventListener('keydown', this.saveDoc)
 
       // 设置延迟时间，单位为毫秒
-      this.debounceRefreshToc = this.debounce(this.renderTocData, 500);
+      this.debounceRefreshToc = this.debounce(this.renderEditorData, 500);
       //
       // const scrollContainer = this.$refs.scrollbarContext;
       // scrollContainer?.addEventListener('scroll', this.handleScrollForToc);

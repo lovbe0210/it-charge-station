@@ -1,5 +1,5 @@
 <template>
-  <div :class="[docStyle.customerTheme ? 'enable-background' : 'normal-background', 'read-center']"
+  <div :class="[docStyle.asyncTheme ? 'enable-background' : 'normal-background', 'read-center']"
        ref="tooltipContainer">
     <div class="layout-module_wrapper">
       <div class="layout-module_directoryWrapper" :style="{ width: sidebarWidth + 'px' }">
