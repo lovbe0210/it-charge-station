@@ -33,7 +33,7 @@ class CodeBlcok extends Card {
   }
 
   static get lazyRender() {
-    return true
+    return false
   }
 
   resize = () => {

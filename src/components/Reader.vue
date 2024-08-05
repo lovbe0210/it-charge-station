@@ -116,7 +116,10 @@
               <div class="label_desc">文档宽度适应屏幕大小</div>
             </div>
           </div>
-          <i-switch v-model="docStyle.pageSize" class="switch-btn" size="small">
+          <i-switch v-model="docStyle.pageSize"
+                    :true-value="1"
+                    class="switch-btn"
+                    size="small">
             <span slot="1"/>
             <span slot="0"/>
           </i-switch>
@@ -327,7 +330,7 @@ export default {
         config: pluginConfig,
         readonly: true,
         // 滚动条节点
-        scrollNode: this.$refs.view
+        scrollNode: this.$refs.scrollbarContext.Node
       });
 
       if (this.docInfo.content?.length !== 0) {
