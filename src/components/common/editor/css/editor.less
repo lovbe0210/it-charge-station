@@ -200,17 +200,14 @@
 
       // 右边的大纲
       .editor-sidebar {
-        display: flex;
-        justify-content: flex-end;
-        align-items: flex-start;
-        position: absolute;
-        right: 15px;
-        width: 40px;
-        top: 0;
-        bottom: 0;
-        backdrop-filter: blur(30px);
-        will-change: bottom;
-        z-index: 1;
+        position: fixed;
+        z-index: 998;
+        right: 10px;
+        top: 75px;
+        width: 16%;
+        height: calc(76vh);
+        overflow-y: auto;
+        overflow-x: hidden;
 
         .editor-view {
           position: relative;
@@ -221,7 +218,6 @@
           flex-direction: column;
           margin-top: 35px;
           overflow: hidden;
-          width: 305px;
           font-family: 'Chinese Quote', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
           .editor-toc-pin {

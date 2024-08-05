@@ -169,7 +169,6 @@ class Image {
   }
 
   onWindowResize = () => {
-    debugger
     if (!isEngine(this.editor)) return
     this.maxWidth = this.getMaxWidth()
     this.resetSize()

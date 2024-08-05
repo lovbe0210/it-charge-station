@@ -202,10 +202,10 @@
           event.preventDefault()
           // 执行save方法
           console.log("save...")
-          let jsonValue = this.engine.getJsonValue();
-          console.log(jsonValue)
+          let editorValue = this.engine.model.toValue();
+          console.log(editorValue)
           this.tmpDoc.title = this.doc.title;
-          this.tmpDoc.content = jsonValue;
+          this.tmpDoc.content = editorValue;
 
           // let value = this.engine.model.toValue();
           // let value1 = this.engine.model.toHTML();
@@ -320,6 +320,18 @@
         // engine.setValue(value, () => {
         //   this.loading = false;
         // });
+
+        this.engine.on("paste:each", (echoNode) => {
+          let element = echoNode[0];
+          if (!element || !element.id) {
+            return;
+          }
+          let nodeName = "";
+          if (echoNode.name) {
+            nodeName = echoNode.name.replace("#", "");
+          }
+          element.id = nodeName + "-" + element.id;
+        })
 
         // 监听编辑器值改变事件
         this.engine.on("change", () => {

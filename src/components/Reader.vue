@@ -68,7 +68,7 @@
             <span>大纲</span>
           </span>
         </div>
-        <div class="reader-toc-inner">
+        <div class="reader-toc-inner beauty-scroll">
           <div class="toc-content">
             <div class="toc-item" v-for="item in tocData"
                  :class="['toc-depth-'+ item.depth, item.id === currentTocId ? 'toc-selected' : '']"
@@ -176,7 +176,7 @@
 </template>
 
 <script>
-  import Engine, {$} from '@aomao/engine'
+  import {View, $} from '@aomao/engine'
   import {plugins, cards, pluginConfig} from "@/components/common/editor/config"
   import {getTocData} from "@/components/common/editor/utils";
   import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
@@ -200,7 +200,7 @@ export default {
       showDeleteModal: false,
       isPublic: true,
       ifLike: false,
-      engine: null
+      view: null
     }
   },
   props: ['sidebarWidth'],
@@ -318,26 +318,28 @@ export default {
     const container = this.$refs.view;
     if (container) {
       //实例化引擎
-      const engine = new Engine(container, {
+      const view = new View(container, {
         // 启用插件
         plugins,
         // 启用卡片
         cards,
         // 所有的插件配置
         config: pluginConfig,
-        readonly: true
+        readonly: true,
+        // 滚动条节点
+        scrollNode: this.$refs.view
       });
 
       if (this.docInfo.content?.length !== 0) {
-        engine.setJsonValue(this.docInfo.content)
+        view.render(this.docInfo.content)
         const pattern = /h[1-6]/;
         let match = this.docInfo.content.match(pattern);
         if (match) {
-          this.renderTocData(engine);
+          this.renderTocData(view);
         }
       }
 
-      this.engine = engine;
+      this.view = view;
     }
     window.addEventListener('resize', this.checkFullscreen);
     // const scrollContainer = this.$refs.scrollbarContext;
