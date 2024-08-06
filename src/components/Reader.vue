@@ -134,7 +134,10 @@
               <div class="label_desc">阅读页面同步显示自定义主题</div>
             </div>
           </div>
-          <i-switch v-model="docStyle.asyncTheme" class="switch-btn" size="small">
+          <i-switch v-model="docStyle.asyncTheme"
+                    :true-value="1"
+                    class="switch-btn"
+                    size="small">
             <span slot="1"/>
             <span slot="0"/>
           </i-switch>
@@ -187,176 +190,176 @@
   import ArticleSetting from "@/components/common/ArticleSetting"
   import ArticleVersion from "@/components/common/ArticleVersion"
 
-const event = document.createEvent('KeyboardEvent');
-event.initKeyboardEvent('keydown', true, true, window, false, false, false, false, 122, 0);
-export default {
-  name: "ArticleRead",
-  data() {
-    return {
-      fullScreen: false, // 全屏演示模式
-      tocData: [],
-      currentTocId: '',
-      // 更多设置内容 1文档设置，2历史版本
-      drawerType: 0,
-      newVersion: false,
-      showDocSetting: false,
-      showDeleteModal: false,
-      isPublic: true,
-      ifLike: false,
-      view: null
-    }
-  },
-  props: ['sidebarWidth'],
-  computed: {
-    headerWidth() {
-      return 'calc(100vw - ' + ((this.fullScreen ? 0 : this.sidebarWidth) + 'px');
-    },
-    docStyle() {
-      return this.$store.state.docStyle;
-    },
-    docInfo() {
-      return this.$store.state.tmpDoc;
-    }
-  },
-  components: {
-    ReplyComment,
-    ArticleFooter,
-    ArticleSetting,
-    ArticleVersion
-  },
-  methods: {
-    /**
-     * 渲染标题大纲
-     * @param engine
-     */
-    renderTocData(view) {
-      let tocData = getTocData(view);
-      this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
-    },
-    // 进入演示模式相关方法
-    presentShow() {
-      let element = document.getElementById("contentWrapper");
-      // 浏览器兼容
-      if (this.fullScreen) {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitCancelFullScreen) {
-          document.webkitCancelFullScreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        }
-      } else {
-        if (element.requestFullscreen) {
-          element.requestFullscreen();
-        } else if (element.webkitRequestFullScreen) {
-          element.webkitRequestFullScreen();
-        } else if (element.mozRequestFullScreen) {
-          element.mozRequestFullScreen();
-        } else if (element.msRequestFullscreen) {
-          element.msRequestFullscreen();
-        }
+  const event = document.createEvent('KeyboardEvent');
+  event.initKeyboardEvent('keydown', true, true, window, false, false, false, false, 122, 0);
+  export default {
+    name: "ArticleRead",
+    data() {
+      return {
+        fullScreen: false, // 全屏演示模式
+        tocData: [],
+        currentTocId: '',
+        // 更多设置内容 1文档设置，2历史版本
+        drawerType: 0,
+        newVersion: false,
+        showDocSetting: false,
+        showDeleteModal: false,
+        isPublic: true,
+        ifLike: false,
+        view: null
       }
     },
-    checkFullscreen() {
-      const isFullscreen = (
-        document.fullscreenElement ||
-        document.webkitFullscreenElement ||
-        document.mozFullScreenElement ||
-        document.msFullscreenElement
-      );
-      this.fullScreen = Boolean(isFullscreen);
+    props: ['sidebarWidth'],
+    computed: {
+      headerWidth() {
+        return 'calc(100vw - ' + ((this.fullScreen ? 0 : this.sidebarWidth) + 'px');
+      },
+      docStyle() {
+        return this.$store.state.docStyle;
+      },
+      docInfo() {
+        return this.$store.state.tmpDoc;
+      }
     },
+    components: {
+      ReplyComment,
+      ArticleFooter,
+      ArticleSetting,
+      ArticleVersion
+    },
+    methods: {
+      /**
+       * 渲染标题大纲
+       * @param engine
+       */
+      renderTocData(view) {
+        let tocData = getTocData(view);
+        this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
+      },
+      // 进入演示模式相关方法
+      presentShow() {
+        let element = document.getElementById("contentWrapper");
+        // 浏览器兼容
+        if (this.fullScreen) {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullScreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          }
+        } else {
+          if (element.requestFullscreen) {
+            element.requestFullscreen();
+          } else if (element.webkitRequestFullScreen) {
+            element.webkitRequestFullScreen();
+          } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+          } else if (element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+          }
+        }
+      },
+      checkFullscreen() {
+        const isFullscreen = (
+          document.fullscreenElement ||
+          document.webkitFullscreenElement ||
+          document.mozFullScreenElement ||
+          document.msFullscreenElement
+        );
+        this.fullScreen = Boolean(isFullscreen);
+      },
 
-    /**
-     * 点击跳转
-     * @param titleId
-     */
-    jump(titleId) {
-      this.currentTocId = titleId;
-      let scrollbarContext = this.$refs.scrollbarContext;
-      let title = $('#' + titleId).get().offsetTop;
-      scrollbarContext.scrollTo({
-        behavior: "smooth",
-        top: title + 20
-      });
-    },
-    /**
-     * 处理滚动条滚动事件
-     */
-    handleScrollForToc(event) {
-      if (this.tocData.length > 0) {
-        let scrollbarRect = this.$refs.scrollbarContext?.getBoundingClientRect();
-        if (scrollbarRect) {
-          let containerTop = scrollbarRect.top + 52;
-          let containerBottom = scrollbarRect.bottom;
-          for (let i = 0; i < this.tocData.length; i++) {
-            let rect = $('#' + this.tocData[i].id).get().getBoundingClientRect();
-            if (rect.top >= containerTop && rect.top <= containerBottom) {
-              this.currentTocId = this.tocData[i].id;
-              return;
+      /**
+       * 点击跳转
+       * @param titleId
+       */
+      jump(titleId) {
+        this.currentTocId = titleId;
+        let scrollbarContext = this.$refs.scrollbarContext;
+        let title = $('#' + titleId).get().offsetTop;
+        scrollbarContext.scrollTo({
+          behavior: "smooth",
+          top: title + 20
+        });
+      },
+      /**
+       * 处理滚动条滚动事件
+       */
+      handleScrollForToc(event) {
+        if (this.tocData.length > 0) {
+          let scrollbarRect = this.$refs.scrollbarContext?.getBoundingClientRect();
+          if (scrollbarRect) {
+            let containerTop = scrollbarRect.top + 52;
+            let containerBottom = scrollbarRect.bottom;
+            for (let i = 0; i < this.tocData.length; i++) {
+              let rect = $('#' + this.tocData[i].id).get().getBoundingClientRect();
+              if (rect.top >= containerTop && rect.top <= containerBottom) {
+                this.currentTocId = this.tocData[i].id;
+                return;
+              }
             }
           }
         }
-      }
-    },
-    returnDocSetting() {
-      if (this.drawerType) {
-        this.drawerType = 0;
-        this.newVersion = false;
-      } else {
-        this.showDocSetting = false;
-      }
-    },
-    addNewVersion () {
-      this.newVersion = true;
-      this.drawerType = 2;
-    },
-    routeNavigate(articleItem) {
-      this.$router.push({path: '/editor/' + articleItem.uid})
-    }
-  },
-  mounted() {
-    const container = this.$refs.view;
-    if (container) {
-      //实例化引擎
-      const view = new View(container, {
-        // 启用插件
-        plugins,
-        // 启用卡片
-        cards,
-        // 所有的插件配置
-        config: pluginConfig,
-        readonly: true,
-        // 滚动条节点
-        scrollNode: this.$refs.scrollbarContext.Node
-      });
-
-      if (this.docInfo.content?.length !== 0) {
-        view.render(this.docInfo.content)
-        const pattern = /h[1-6]/;
-        let match = this.docInfo.content.match(pattern);
-        if (match) {
-          this.renderTocData(view);
+      },
+      returnDocSetting() {
+        if (this.drawerType) {
+          this.drawerType = 0;
+          this.newVersion = false;
+        } else {
+          this.showDocSetting = false;
         }
+      },
+      addNewVersion () {
+        this.newVersion = true;
+        this.drawerType = 2;
+      },
+      routeNavigate(articleItem) {
+        this.$router.push({path: '/editor/' + articleItem.uid})
       }
+    },
+    mounted() {
+      const container = this.$refs.view;
+      if (container) {
+        //实例化引擎
+        const view = new View(container, {
+          // 启用插件
+          plugins,
+          // 启用卡片
+          cards,
+          // 所有的插件配置
+          config: pluginConfig,
+          readonly: false,
+          // 滚动条节点
+          scrollNode: this.$refs.scrollbarContext.Node
+        });
 
-      this.view = view;
+        if (this.docInfo.content?.length !== 0) {
+          view.render(this.docInfo.content)
+          const pattern = /h[1-6]/;
+          let match = this.docInfo.content.match(pattern);
+          if (match) {
+            this.renderTocData(view);
+          }
+        }
+
+        this.view = view;
+      }
+      window.addEventListener('resize', this.checkFullscreen);
+      // const scrollContainer = this.$refs.scrollbarContext;
+      // scrollContainer?.addEventListener('scroll', this.handleScrollForToc);
+      this.handleScrollForToc();
+    },
+    beforeDestroy() {
+      window.removeEventListener('resize', this.checkFullscreen);
+      // const scrollContainer = this.$refs.scrollbarContext;
+      // scrollContainer?.removeEventListener('scroll', this.handleScrollForToc);
     }
-    window.addEventListener('resize', this.checkFullscreen);
-    // const scrollContainer = this.$refs.scrollbarContext;
-    // scrollContainer?.addEventListener('scroll', this.handleScrollForToc);
-    this.handleScrollForToc();
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.checkFullscreen);
-    // const scrollContainer = this.$refs.scrollbarContext;
-    // scrollContainer?.removeEventListener('scroll', this.handleScrollForToc);
   }
-}
 </script>
 
 <style scoped lang="less">
-@import 'css/article-reader.less';
+  @import 'css/article-reader.less';
 </style>

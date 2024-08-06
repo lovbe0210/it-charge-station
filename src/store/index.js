@@ -20,7 +20,7 @@ export default new Vuex.Store({
     tmpDoc: {
       uid: 1213324,
       title: null,
-      content: null
+      content: '<h1 style=\\"line-height: 1.5;\\" data-id=\\"hf2fwtl74-20ncvfo96tsw0\\" id=\\"hf2fwtl74-20ncvfo96tsw0\\">1. 引言</h1><h2 style=\\"line-height: 1.5;\\" data-id=\\"hf2fwtl74-eyv3l6o7sf40\\" id=\\"hf2fwtl74-eyv3l6o7sf40\\">1.1 什么是LangChain？</h2><p data-id=\\"p1dr9j7ls-13tdumj39y1s0\\"><a href="javascript:console.log(123);">正式开始前</a>，还是有必要从定义（<strong>What</strong>）开始。LangChain是2022年10月底，由哈佛大学的Harrison Chase发起的基于开源大语言模型的AI工程开发框架。当然也可以问一下AI：</p><p data-id=\\"p1dr9j7ls-tsfnkakg0lc0\\"><br /></p>'
     },
     // 是否有后台播放音乐的页面
     backgroundPlay: false,

@@ -1,104 +1,38 @@
 <template>
   <div class="comment" :class="{ 'reply-from-comment': commentReply?.parentId }" ref="tooltipContainer">
     <div class="comment-sub">
+      <user-card :userInfo="userInfo" :popoverContainer="this.$refs.tooltipContainer" class="user-info-card-box">
+        <slot>
+          <b-avatar :src="commentReply.user.avatar" variant="light" size="2.5rem">
+            <span v-if="!commentReply.user.avatar">{{ commentReply.user.username }}</span>
+          </b-avatar>
+        </slot>
+      </user-card>
       <a-popover placement="topLeft"
                  trigger="hover"
                  :getPopupContainer="()=>this.$refs.tooltipContainer"
                  overlayClassName="user-info-card-box">
         <template slot="content">
-          <div class="user-info-card">
-            <div class="user-avatar">
-              <b-avatar :src="commentReply.user.avatar" variant="light" :to="commentReply.user.homeLink" size="2.5rem">
-                <span v-if="!commentReply.user.avatar">{{ commentReply.user.username }}</span>
-              </b-avatar>
-            </div>
-            <div class="user-content">
-              <div class="user-info">
-                <b-link class="username" target="_blank">
-                  <span class="name" style="max-width: 10em;">{{ data.user.username }}</span>
-                  <span :class="['iconfont',  'icon-level' + data.user.level]"></span>
-                </b-link>
-              </div>
-              <div class="social-info">
-                <b-link class="attention">
-                  <span>15</span>
-                  <span>关注</span>
-                </b-link>
-                <b-link class="follower">
-                  <span>6878</span>
-                  <span>粉丝</span>
-                </b-link>
-                <b-link class="likes">
-                  <span>36011</span>
-                  <span>获赞</span>
-                </b-link>
-              </div>
-              <div class="card-btn">
-                <Button type="primary">
-                  <span class="">关注</span></Button>
-                <Button>
-                  <span class="">发消息</span></Button>
-              </div>
-            </div>
-          </div>
+
         </template>
         <!-- :to="data.user.homeLink" -->
-        <b-avatar :src="commentReply.user.avatar" variant="light" size="2.5rem">
-          <span v-if="!commentReply.user.avatar">{{ commentReply.user.username }}</span>
-        </b-avatar>
+
       </a-popover>
     </div>
     <div class="comment-primary">
       <div class="comment-main">
         <div class="user-info">
-          <a-popover placement="topLeft"
-                     :getPopupContainer="()=>this.$refs.tooltipContainer"
-                     overlayClassName="user-info-card-box">
-            <template slot="content">
-              <div class="user-info-card">
-                <div class="user-avatar">
-                  <b-avatar :src="data.user.avatar" variant="light" :to="data.user.homeLink" size="2.5rem">
-                    <span v-if="!data.user.avatar">{{ data.user.username }}</span>
-                  </b-avatar>
-                </div>
-                <div class="user-content">
-                  <div class="user-info">
-                    <b-link class="username" target="_blank">
-                      <span class="name" style="max-width: 10em;">{{ data.user.username }}</span>
-                      <span :class="['iconfont',  'icon-level' + data.user.level]"></span>
-                    </b-link>
-                  </div>
-                  <div class="social-info">
-                    <b-link class="attention">
-                      <span>15</span>
-                      <span>关注</span>
-                    </b-link>
-                    <b-link class="follower">
-                      <span>6878</span>
-                      <span>粉丝</span>
-                    </b-link>
-                    <b-link class="likes">
-                      <span>36011</span>
-                      <span>获赞</span>
-                    </b-link>
-                  </div>
-                  <div class="card-btn">
-                    <Button type="primary">
-                      <span class="">关注</span></Button>
-                    <Button>
-                      <span class="">发消息</span></Button>
-                  </div>
-                </div>
-              </div>
-            </template>
-            <div class="username">
-              <span class="name" style="max-width: 10em">{{ commentReply.user.username }}</span>
-              <!-- level -->
-              <span blank="true" class="rank">
+          <user-card :userInfo="userInfo" :popoverContainer="this.$refs.tooltipContainer">
+            <slot>
+              <div class="username">
+                <span class="name" style="max-width: 10em">{{ commentReply.user.username }}</span>
+                <!-- level -->
+                <span blank="true" class="rank">
                   <span :class="['iconfont',  'icon-level' + commentReply.user.level]"></span>
               </span>
-            </div>
-          </a-popover>
+              </div>
+            </slot>
+          </user-card>
           <Time class="time" :time="commentReply.createTime" v-if="needFormatDate(commentReply.createTime)"/>
           <Time class="time" :time="commentReply.createTime" v-else type="datetime"/>
         </div>
@@ -109,10 +43,8 @@
                 <div v-html="this.data.content"></div>
                 <div class="imgbox" v-if="commentReply.contentImg" style="display: flex;">
                   <b-img :src="commentReply.contentImg" @click="previewImage"
-                         style="height: 72px; margin: 8px 4px; border-radius: 2px;"
+                         style="height: 72px; margin: 8px 4px; border-radius: 2px; cursor: pointer"
                          lazy/>
-<!--                  <image-preview :src="commentReply.contentImg" :isPreviewOpen="imgPreview"-->
-<!--                                 @toggleFullScreen="imgPreview = false"/>-->
                 </div>
               </div>
             </div>
@@ -172,6 +104,7 @@
   import { cloneDeep, needFormatDate } from '@/utils/emoji';
   import InputBox from './InputBox';
   import Pswp from "@/components/common/imagepreview/index"
+  import UserCard from "@/components/common/UserCard.vue";
 
   export default {
     name: 'ContentBox',
@@ -212,8 +145,8 @@
       }
     },
     components: {
-      InputBox
-      // ImagePreview
+      InputBox,
+      UserCard
     },
     methods: {
       //点击回复按钮打开输入框

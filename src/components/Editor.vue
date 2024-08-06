@@ -62,9 +62,7 @@
 </template>
 
 <script>
-  import Engine from '@aomao/engine'
-  import {$} from '@aomao/engine'
-  // import Toolbar from 'am-editor-toolbar-vue2'
+  import Engine, {$} from '@aomao/engine'
   import Toolbar from "./common/editor/packages/toolbar/src"
   import {plugins, cards, pluginConfig} from "./common/editor/config"
   import {getTocData, getParentNode} from "./common/editor/utils"
@@ -201,16 +199,12 @@
           // 阻止默认事件
           event.preventDefault()
           // 执行save方法
-          console.log("save...")
+          // TODO 传递到服务器的值需要使用json
+          // let editorValue = this.engine.getJsonValue();
           let editorValue = this.engine.model.toValue();
           console.log(editorValue)
           this.tmpDoc.title = this.doc.title;
           this.tmpDoc.content = editorValue;
-
-          // let value = this.engine.model.toValue();
-          // let value1 = this.engine.model.toHTML();
-          // console.log(JSON.stringify(value))
-          // console.log(JSON.stringify(value1))
         }
       },
       /**
