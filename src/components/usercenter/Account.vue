@@ -341,7 +341,7 @@
         } else if (this.step === 2) {
           // 校验手机和邮箱是否正确
           if (this.changeItemType === 1) {
-            let verifyResult = verifyTelLawful(this.countryCode, this.newValue);
+            let verifyResult = verifyTelLawful(this.countryCode + this.newValue);
             if (!verifyResult) {
               this.checkNewValueResult = false;
               this.newValueTipString = '请输入正确的手机号码';

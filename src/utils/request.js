@@ -29,20 +29,21 @@ http.interceptors.response.use(
   response => {
     let result = response.data;
     if (result.code !== 200) {
-      // 401 未授权
-      if (result.code === 302) {
-        // 本地登出操作
+      // 401 actoken过期
+      if (result.code === 401) {
+        // 使用rftoken去刷新 TODO
+
+
+      } else if (result.code === 402) {
+        // 如果rftoken也过期，那就直接重新登录了
         Vue.$Message.error({
           content: '登陆信息已过期，请重新登陆！'
         });
+        // 本地登出操作
         setTimeout(() => {
           vuex.dispatch('clearUserInfo');
           Vue.$router.push('/login');
         })
-      } else if (result.code === 400) {
-        Vue.$Message.error({
-          content: result.msg
-        });
       } else {
         return Promise.reject(result);
       }

@@ -36,22 +36,23 @@
                 <Input v-model="account"
                        class="account"
                        placeholder="请输入邮箱/手机号（国际号码加区号如+86）"
-                       @on-change="checkALegitimacy(1)"
+                       @on-change="checkALegitimacy(3)"
                        maxlength="20"/>
                 <div class="error-text account-error">{{accountError ? '请输入正确的手机号或邮箱' : ''}}</div>
                 <Input v-model="password"
                        maxlength="30"
                        type="password"
+                       @on-change="checkALegitimacy(1)"
                        placeholder="请输入密码">
                   <Button slot="suffix"
                           ghost
                           @click="forgotPwd"
                           type="text">忘记密码</Button>
                 </Input>
-                <div class="error-text"></div>
+                <div class="error-text">{{ pwdErrorMsg }}</div>
               </div>
               <div class="button-group">
-                <Button type="primary" size="large">
+                <Button type="primary" size="large" @click="login">
                   登录
                 </Button>
                 <Button size="large" @click="changeLoginType">
@@ -64,7 +65,7 @@
                 <Input v-model="account"
                        placeholder="请输入邮箱/手机号（国际号码加区号如+86）"
                        maxlength="20"
-                       @blur="checkALegitimacy(1)">
+                       @blur="checkALegitimacy(3)">
                 </Input>
                 <div class="error-text account-error">{{accountError ? '请输入正确的手机号或邮箱' : ''}}</div>
                 <Input v-model="verifyCode"
@@ -90,7 +91,7 @@
                 <Input v-model="account"
                        placeholder="请输入邮箱/手机号（国际号码加区号如+86）"
                        maxlength="20"
-                       @on-change="checkALegitimacy(1)">
+                       @on-change="checkALegitimacy(3)">
                 </Input>
                 <div class="error-text account-error">{{accountError ? '请输入正确的手机号或邮箱' : ''}}</div>
                 <Input v-model="password"
@@ -164,7 +165,8 @@
 
 <script>
   import SliderValidation from "@/components/common/SliderValidation";
-  import {emailRegex} from "@/utils/utils.js"
+  import {emailRegex, verifyTelLawful} from "@/utils/utils.js"
+  import AuthApi from "@/api/AuthApi";
 
   export default {
     name: "AuthModal",
@@ -228,6 +230,18 @@
 
       },
       login() {
+        debugger
+        let checkResult = this.checkALegitimacy(1) & this.checkALegitimacy(3);
+        if (!checkResult) {
+          return;
+        }
+        AuthApi.payloadLogin(this).then(data => {
+          console.log(data)
+        })
+
+
+
+
         this.$Message.success('登陆成功!')
         // 保存token到store中
         let userInfo = {
@@ -243,40 +257,60 @@
         }, 1000)
       },
       checkALegitimacy(checkType) {
-        // 校验为邮箱和国际手机号码/密码
+        // 1. 密码简单校验
+        if (checkType === 1) {
+          let simplePwd = this.password !== null && this.password.length >= 8;
+          if (!simplePwd) {
+            this.pwdErrorMsg = '请输入密码';
+            return false;
+          }
+          this.pwdErrorMsg = '';
+        }
+
+        // 2. 密码格式校验
         if (checkType === 2) {
-          // 密码校验
-          if (this.password && this.password.length < 8) {
+          if (this.password === null || this.password.length === 0) {
+            this.pwdErrorMsg = '请输入密码';
+            return false;
+          } else if (this.password && this.password.length < 8) {
             this.pwdErrorMsg = '密码长度不能小于8位';
-            return;
+            return false;
           } else if (this.password && this.password.length >= 8) {
             this.pwdErrorMsg = '';
           }
-          if (this.password) {
-            let set = new Set();
-            for (let char of this.password) {
-              set.add(char);
-            }
-            if (set.size <= 2) {
-              this.pwdErrorMsg = '密码过于简单，不得使用重复数字或字母';
-              return;
+          let set = new Set();
+          let allNumber = 0;
+          for (let char of this.password) {
+            set.add(char);
+            if (char >= 48 && char <= 57) {
+              ++allNumber;
             }
           }
+          if (set.size <= 2 || allNumber === this.password.length) {
+            this.pwdErrorMsg = '密码过于简单，必须包含数字和字母';
+            return false;
+          }
+          this.pwdErrorMsg = '';
         }
 
-        if (checkType === 1) {
+        // 3. 校验邮箱和手机号码
+        if (checkType === 3) {
           if (!this.account) {
-            return;
+            this.accountError = true;
+            return false;
           }
 
           let indexOf = this.account.indexOf("@");
-          if (indexOf !== -1 && !emailRegex.test(this.account)) {
+          if ((indexOf !== -1 && !emailRegex.test(this.account)) || (indexOf === -1 && !verifyTelLawful(this.account))) {
             // 邮箱校验
-            this.accountError = true
+            this.accountError = true;
+            return false;
           }
+          this.accountError = false;
         }
-
+        return true;
       },
+
       returnLogin() {
         this.loginType = 1;
       }

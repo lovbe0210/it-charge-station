@@ -38,12 +38,10 @@ module.exports = {
     proxy: {
       '/api': {
         // target: 'https://www.codeman.store',
-        target: 'http://www.codeman.ink:3000',
+        // target: 'http://www.codeman.ink:3000',
+        target: 'http://localhost:10210',
         changeOrigin: true,
-        ws: true,
-        pathRewrite: {
-          '^/api': ''
-        }
+        ws: true
       },
       'm7': {
         target: 'http://m7.music.126.net',

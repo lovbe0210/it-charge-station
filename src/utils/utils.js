@@ -298,33 +298,35 @@ const prefixSorted = [
 // 国内手机号码
 const chinaPhoneReg = /^1[3456789]\d{9}$/;
 // 国际手机号码
-const otherPhoneReg = /^1[3456789]\d{9}$/;
+const otherPhoneReg = /^[0-9]+(-[0-9]+)*$/;
 // 邮箱验证
 export const emailRegex = /^([a-z0-9A-Z]+[-|.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?.)+[a-zA-Z]{2,}$/;
 // 个人主页路径验证
 export const domainRegex = /^[a-z0-9-_.]{4,}$/;
 
-export function verifyTelLawful(prefix, telephone) {
-  if (prefix == null || prefix.length === 0 || telephone == null || telephone.length === 0) {
+export function verifyTelLawful(telephone) {
+  if (telephone == null || telephone.length === 0) {
     return false;
   }
-  let replace = parseInt(prefix.replace('+', ''));
+  let prefix = telephone.indexOf("+");
+  if (prefix === -1) {
+    // 国内手机号
+    return chinaPhoneReg.test(telephone);
+  }
+  let replace = telephone.replace('+', '');
   let filter = prefixSorted.filter(pre => {
-    return parseInt(pre.prefix) === replace;
+    return replace.startWith(pre.prefix);
   });
   if (filter == null || filter.length === 0) {
     return false;
   }
-  if (replace !== 86) {
-    return otherPhoneReg.test(telephone);
+  let filterPrefix = filter[0].prefix;
+  replace = replace.replace(filterPrefix, '');
+  if (filterPrefix === '86') {
+    // 校验国内手机号码格式
+    return chinaPhoneReg.test(replace);
   } else {
-    // 只校验国内手机号码格式
-    // 手机号码正则表达式
-    if (telephone.length !== 11 || !chinaPhoneReg.test(telephone)) {
-      return false;
-    } else {
-      return true;
-    }
+    return otherPhoneReg.test(replace);
   }
 
 }
