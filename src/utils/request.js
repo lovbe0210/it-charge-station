@@ -27,15 +27,22 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   // http接口成功回调
   response => {
-    let result = response.data;
-    if (result.code !== 200) {
+    let status = response.status;
+    let data = response.data;
+    if (status === 200 && data !== null) {
+      // http请求成功，获取server返回的数据
+      if (data.result) {
+        return Promise.resolve(data);
+      }
       // 401 actoken过期
-      if (result.code === 401) {
+      if (data.code === 401) {
         // 使用rftoken去刷新 TODO
+        console.log("actoken过期了。。。")
 
 
-      } else if (result.code === 402) {
+      } else if (data.code === 402) {
         // 如果rftoken也过期，那就直接重新登录了
+        console.log("rftoken过期了。。。")
         Vue.$Message.error({
           content: '登陆信息已过期，请重新登陆！'
         });
@@ -45,10 +52,12 @@ http.interceptors.response.use(
           Vue.$router.push('/login');
         })
       } else {
-        return Promise.reject(result);
+        // 业务系统错误
+        return Promise.reject(data);
       }
     } else {
-      return result;
+      // http请求错误或服务器返回空
+      return Promise.reject(response);
     }
   },
   // http接口失败回调

@@ -230,37 +230,40 @@
 
       },
       login() {
-        debugger
         let checkResult = this.checkALegitimacy(1) & this.checkALegitimacy(3);
         if (!checkResult) {
           return;
         }
         AuthApi.payloadLogin(this).then(data => {
-          console.log(data)
+          this.$Message.success('登陆成功!')
+          // 保存token到store中
+          let userInfo = {
+            token: 'FKDMDK34D34DFGDFG45DE32DGH4G61AS',
+            uid: 9527,
+            username: '张三'
+          }
+          // 延时关闭登录窗口
+          setTimeout(() => {
+            this.showLogin = false;
+            this.$store.commit('login', userInfo)
+          }, 1000);
+        }).catch(error => {
+          // 判断是业务错误还是网络错误
+          let result = error.result;
+          let message = '系统错误，请稍后再试';
+          if (result !== undefined) {
+            let serverError = error.message;
+            message = serverError !== null && serverError.length > 0 ? serverError : message;
+          }
+          this.$Message.error(message);
         })
 
 
-
-
-        this.$Message.success('登陆成功!')
-        // 保存token到store中
-        let userInfo = {
-          token: 'FKDMDK34D34DFGDFG45DE32DGH4G61AS',
-          uid: 9527,
-          username: '张三'
-        }
-
-        // 延时关闭登录窗口
-        setTimeout(() => {
-          this.showLogin = false;
-          this.$store.commit('login', userInfo)
-        }, 1000)
       },
       checkALegitimacy(checkType) {
         // 1. 密码简单校验
         if (checkType === 1) {
-          let simplePwd = this.password !== null && this.password.length >= 8;
-          if (!simplePwd) {
+          if (this.password == null || this.password.length === 0) {
             this.pwdErrorMsg = '请输入密码';
             return false;
           }

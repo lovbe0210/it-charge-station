@@ -20,15 +20,14 @@ export default {
       data: jsonData,
       version: 1.0
     }
-    let data = await _this.$request({
+    return await _this.$request({
       url: "/auth/mobile/login",
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       data: JSON.stringify(requestBody)
-    })
-    return data;
+    });
   }
 }
 
