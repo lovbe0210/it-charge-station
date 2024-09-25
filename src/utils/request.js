@@ -17,6 +17,18 @@ http.interceptors.request.use(
     if (token) {
       config.headers.token = "7a1421007337453da5df9fb348fb605f";
     }
+
+    if (config.method.toUpperCase() !== 'POST') {
+      return config;
+    }
+    config.headers['Content-Type'] = 'application/json';
+    let requestData = config.data;
+    if (requestData) {
+      config.data = {
+        data: requestData,
+        version: "1.0"
+      }
+    }
     return config;
   },
   (err) => {

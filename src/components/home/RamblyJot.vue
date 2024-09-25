@@ -130,7 +130,8 @@
 <script>
   import Engine from '@aomao/engine'
   import {$} from '@aomao/engine'
-  import Toolbar from 'am-editor-toolbar-vue2'
+  // import Toolbar from 'am-editor-toolbar-vue2'
+  import Toolbar from "@/components/common/editor/packages/toolbar/src"
   import {ramblyPlugins, cards, pluginConfig} from "@/components/common/editor/config"
   import UserCard from "@/components/common/UserCard.vue";
   import {needFormatDate} from '@/utils/emoji';

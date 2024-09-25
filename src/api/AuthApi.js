@@ -1,8 +1,8 @@
+import { v4 as uuid } from 'uuid';
 export default {
   /**
    * 手机号+密码登录
    * @param _this
-   * @param id
    * @returns {Promise<[]>}
    */
   async payloadLogin(_this) {
@@ -16,18 +16,35 @@ export default {
       jsonData.email = _this.account;
     }
 
-    let requestBody = {
-      data: jsonData,
-      version: 1.0
-    }
     return await _this.$request({
       url: "/auth/mobile/login",
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      data: JSON.stringify(requestBody)
+      data: jsonData
+    });
+  },
+
+  /**
+   * 获取验证码cookie
+   * @param _this
+   * @param id
+   * @returns {Promise<[]>}
+   */
+  async getSvCookie(_this) {
+    let jsonData = {
+      sign: _this.password,
+      xa: uuid(),
+      xt: uuid(),
+      efy: Date.now()
+    };
+
+    return await _this.$request({
+      url: "/auth/svcookie",
+      method: 'POST',
+      data: jsonData
     });
   }
 }
+
+
+
 

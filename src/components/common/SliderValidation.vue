@@ -82,6 +82,7 @@
     mounted() {
       document.addEventListener("mousemove", this.handleMouseMove);
       document.addEventListener("mouseup", this.handleMouseUp);
+      // 请求svcookie
     },
     beforeDestroy() {
       document.removeEventListener("mousemove", this.handleMouseMove);
