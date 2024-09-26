@@ -25,6 +25,8 @@
   import commonUtil from "@/utils/common"
   // 引入弹幕模块
   import {vueBaberrage} from 'vue-baberrage'
+  // uuid
+  import { v4 as uuid } from 'uuid';
 
   // 安装bootstrap和图标库
   Vue.use(BootstrapVue).use(infiniteScroll).use(vueBaberrage);
@@ -99,6 +101,11 @@
 
         // 页面状态初始化
         // storeData.pageState = "init";
+
+        // 判断是否有唯一标识
+        if (storeData.uniqueId === null || storeData.uniqueId === undefined || storeData.uniqueId.length === 0) {
+          storeData.uniqueId = uuid();
+        }
 
         this.$store.replaceState(
           Object.assign(
