@@ -174,8 +174,7 @@
       return {
         showLogin: false,
         showSliderValidate: false,
-        sliderValidateKey: Date.now(),
-        // 登录类型：1 密码登录， 2 验证码登录
+        // 登录类型：1 密码登录， 2 验证码登录 3 重置密码
         loginType: 1,
         // 行为类型 1注册 2登录
         actionType: 1,
@@ -204,30 +203,51 @@
         this.loginType = this.loginType === 1 ? 2 : 1;
       },
       validate() {
-        this.sliderValidateResult = true;
         this.showSliderValidate = false;
-        // TODO 发送验证码
-        this.sendCodeSuccess = true;
-        let tmp = this.account && this.account.indexOf('@') !== -1 ? '邮箱' : '手机';
-        this.sendCodeString = '已发送短信验证码到指定' + tmp;
-        let time = 60;
-        this.btnValue = '重新获取(' + time + ')';
-        this.sendCodeInterval = setInterval(() => {
-          if (time > 0) {
-            time = time - 1;
-            this.btnValue = '重新获取(' + time + ')';
-          } else {
-            this.btnValue = '获取验证码';
-            this.sendCodeSuccess = false;
-            clearInterval(this.sendCodeInterval);
-            this.sendCodeInterval = null;
+        let svScene = 1;
+        if (this.loginType < 3) {
+          svScene = this.account.indexOf('@') === -1 ? 1 : 2;
+        } else {
+          svScene = this.account.indexOf('@') === -1 ? 9 : 10;
+        }
+        AuthApi.getSvCookie(this, svScene).then(data => {
+          this.sliderValidateResult = true;
+          let svToken = data.data.tn;
+          if (!svToken) {
+            return;
           }
-        }, 1000)
+          AuthApi.sendPayloadCode(this, svScene, svToken).then(result => {
+            // 短信发送成功
+            this.sendCodeSuccess = true;
+            let tmp = this.account && this.account.indexOf('@') !== -1 ? '邮箱' : '手机';
+            this.sendCodeString = '已发送短信验证码到指定' + tmp;
+            let time = 60;
+            this.btnValue = '重新获取(' + time + ')';
+            this.sendCodeInterval = setInterval(() => {
+              if (time > 0) {
+                time = time - 1;
+                this.btnValue = '重新获取(' + time + ')';
+              } else {
+                this.btnValue = '获取验证码';
+                this.sendCodeSuccess = false;
+                clearInterval(this.sendCodeInterval);
+                this.sendCodeInterval = null;
+              }
+            }, 1000)
+          }).catch(error => {
+            this.$Message.error(error.message)
+            // console.log(error)
+            // console.error(this)
+          })
+        }).catch(error => {
+          this.$Message.error(error.msg)
+        })
       },
       getVerifyCode() {
-        this.sliderValidateKey = Date.now();
-        this.showSliderValidate = true;
-
+        let check = this.checkALegitimacy(3);
+        if (check) {
+          this.showSliderValidate = true;
+        }
       },
       login() {
         let checkResult = this.checkALegitimacy(1) & this.checkALegitimacy(3);

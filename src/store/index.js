@@ -9,6 +9,7 @@ export default new Vuex.Store({
     // 页面创建：init，页面最小化、非当前窗口、被其他应用覆盖等使用：hidden，页面最大化、切回当前table，其他应用最小化：show，
     // 页面刷新：flush，页面关闭：close
     pageState: "init",
+    uniqueId: null,
     // TODO 这里还是无法解决先切换到别的页面然后后台播放然后backplay = true，然后再刷新导致不能播放的问题
     userInfo: {
       uid: 9527,
@@ -305,6 +306,14 @@ export default new Vuex.Store({
      */
     updateMusicInfo(state, musicInfo) {
       state.musicInfo = Object.assign(state.musicInfo, musicInfo);
+    },
+    /**
+     * music信息修改
+     * @param state
+     * @param musicInfo
+     */
+    setUniqueId(state, uniqueId) {
+      state.uniqueId = uniqueId;
     }
   }
 })

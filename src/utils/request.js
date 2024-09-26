@@ -52,7 +52,7 @@ http.interceptors.response.use(
         console.log("actoken过期了。。。")
 
 
-      } else if (data.code === 402) {
+      } else if (data.code === 403) {
         // 如果rftoken也过期，那就直接重新登录了
         console.log("rftoken过期了。。。")
         Vue.$Message.error({

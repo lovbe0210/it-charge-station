@@ -18,7 +18,6 @@
 </template>
 
 <script>
-  import AuthApi from "@/api/AuthApi";
   export default {
     name: "SliderValidation",
     data() {
@@ -83,10 +82,6 @@
     mounted() {
       document.addEventListener("mousemove", this.handleMouseMove);
       document.addEventListener("mouseup", this.handleMouseUp);
-      // 请求svcookie
-      AuthApi.getSvCookie(this).then((res) => {
-        console.log(res);
-      })
     },
     beforeDestroy() {
       document.removeEventListener("mousemove", this.handleMouseMove);
