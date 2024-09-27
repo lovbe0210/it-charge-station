@@ -65,12 +65,13 @@
                 <Input v-model="account"
                        placeholder="请输入邮箱/手机号（国际号码加区号如+86）"
                        maxlength="20"
-                       @blur="checkALegitimacy(3)">
+                       @on-change="checkALegitimacy(3)">
                 </Input>
                 <div class="error-text account-error">{{accountError ? '请输入正确的手机号或邮箱' : ''}}</div>
                 <Input v-model="verifyCode"
                        maxlength="6"
-                       placeholder="请输入验证码">
+                       placeholder="请输入验证码"
+                       @on-change="checkALegitimacy(4)">
                   <Button slot="suffix"
                           type="text"
                           ghost
@@ -82,7 +83,7 @@
                 </Input>
                 <div class="error-text">{{verifyCodeError ? '请输入正确的验证码' : ''}}</div>
               </div>
-              <Button size="large" type="primary" @click="login">
+              <Button size="large" type="primary" @click="quickLogin">
                 登录 / 注册
               </Button>
             </div>
@@ -250,11 +251,49 @@
         }
       },
       login() {
-        let checkResult = this.checkALegitimacy(1) & this.checkALegitimacy(3);
+        let checkResult = true;
+        if (this.loginType === 1) {
+          checkResult = this.checkALegitimacy(1) & this.checkALegitimacy(3);
+        } else if (this.loginType === 2) {
+          checkResult = this.checkALegitimacy(4) & this.checkALegitimacy(3);
+        }
         if (!checkResult) {
           return;
         }
+
         AuthApi.payloadLogin(this).then(data => {
+          this.$Message.success('登陆成功!')
+          // 保存token到store中
+          let userInfo = {
+            token: 'FKDMDK34D34DFGDFG45DE32DGH4G61AS',
+            uid: 9527,
+            username: '张三'
+          }
+          // 延时关闭登录窗口
+          setTimeout(() => {
+            this.showLogin = false;
+            this.$store.commit('login', userInfo)
+          }, 1000);
+        }).catch(error => {
+          // 判断是业务错误还是网络错误
+          let result = error.result;
+          let message = '系统错误，请稍后再试';
+          if (result !== undefined) {
+            let serverError = error.message;
+            message = serverError !== null && serverError.length > 0 ? serverError : message;
+          }
+          this.$Message.error(message);
+        })
+
+
+      },
+      quickLogin() {
+        let checkResult = this.checkALegitimacy(4) & this.checkALegitimacy(3);
+        if (!checkResult) {
+          return;
+        }
+
+        AuthApi.verifyCodeLogin(this).then(data => {
           this.$Message.success('登陆成功!')
           // 保存token到store中
           let userInfo = {
@@ -330,6 +369,15 @@
             return false;
           }
           this.accountError = false;
+        }
+
+        // 4. 验证码校验
+        if (checkType === 4) {
+          debugger
+          if (!this.verifyCode || this.verifyCode.length !== 6) {
+            this.verifyCodeError = true;
+            return false;
+          }
         }
         return true;
       },

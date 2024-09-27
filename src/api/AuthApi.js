@@ -24,6 +24,28 @@ export default {
       data: jsonData
     });
   },
+  /**
+   * 手机号/邮箱+验证码
+   * @param _this
+   * @returns {Promise<[]>}
+   */
+  async verifyCodeLogin(_this) {
+    let payloadType = _this.account.indexOf("@");
+    let jsonData = {
+      code: _this.verifyCode
+    };
+    if (payloadType === -1) {
+      jsonData.mobile = _this.account;
+    } else {
+      jsonData.email = _this.account;
+    }
+
+    return await _this.$request({
+      url: "/auth/sms/login",
+      method: 'POST',
+      data: jsonData
+    });
+  },
 
   /**
    * 获取验证码cookie
@@ -58,7 +80,7 @@ export default {
   },
 
   /**
-   * 获取验证码cookie
+   * 发送短信/邮箱验证码
    * @param _this
    * @param id
    * @returns {Promise<[]>}
