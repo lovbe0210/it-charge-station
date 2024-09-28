@@ -140,6 +140,36 @@ export default {
   },
 
   /**
+   * 忘记密码/密码重置
+   * @param _this
+   * @returns {Promise<[]>}
+   */
+  async resetPassword(_this) {
+    let jsonData = {
+      password: this.encodeSign(_this.password),
+      verifyCode: _this.verifyCode
+    }
+    if (_this.account.indexOf("@") !== -1) {
+      jsonData.email = _this.account;
+      jsonData.scene = 1;
+    } else {
+      jsonData.mobile = _this.account;
+      jsonData.scene = 1;
+    }
+
+    let requestUri = "/user/reset/password";
+    return await _this.$request({
+      url: requestUri,
+      method: 'POST',
+      data: jsonData
+    });
+  },
+
+
+
+
+
+  /**
    * 判断字符为字母或数字
    * @param code
    * @returns {boolean}

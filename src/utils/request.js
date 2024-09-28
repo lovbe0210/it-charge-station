@@ -13,10 +13,10 @@ const http = axios.create({
 // axios拦截器
 http.interceptors.request.use(
   (config) => {
-    let token = vuex.state.userInfo.token;
-    if (token) {
-      config.headers.token = "7a1421007337453da5df9fb348fb605f";
-    }
+    // let token = vuex.state.userInfo.token;
+    // if (token) {
+    //   config.headers.token = "7a1421007337453da5df9fb348fb605f";
+    // }
 
     if (config.method.toUpperCase() !== 'POST') {
       return config;

@@ -117,7 +117,7 @@
                 <div class="error-text">{{ verifyCodeError ? '请输入正确的验证码' : '' }}</div>
               </div>
               <div class="reset-action-group">
-                <Button size="large" type="primary" @click="login">
+                <Button size="large" type="primary" @click="resetPassword">
                   修改
                 </Button>
                 <span class="return-login" @click="returnLogin">返回登录</span>
@@ -248,6 +248,9 @@ export default {
     },
     getVerifyCode() {
       let check = this.checkALegitimacy(3);
+      if (this.loginType === 3) {
+        check = this.checkALegitimacy(2);
+      }
       if (check) {
         this.showSliderValidate = true;
       }
@@ -259,17 +262,16 @@ export default {
       }
       AuthApi.payloadLogin(this).then(data => {
         this.$Message.success('登陆成功!')
+        let loginData = data.data;
         // 保存token到store中
         let userInfo = {
-          token: 'FKDMDK34D34DFGDFG45DE32DGH4G61AS',
-          uid: 9527,
-          username: '张三'
+          token: loginData.acToken,
+          uid: loginData.userId,
+          rfToken: loginData.rfToken
         }
-        // 延时关闭登录窗口
-        setTimeout(() => {
-          this.showLogin = false;
-          this.$store.commit('login', userInfo)
-        }, 1000);
+        this.showLogin = false;
+        this.$store.commit('login', userInfo)
+        this.$router.go(0);
       }).catch(error => {
         // 判断是业务错误还是网络错误
         let result = error.result;
@@ -280,8 +282,6 @@ export default {
         }
         this.$Message.error(message);
       })
-
-
     },
     quickLogin() {
       let checkResult = this.checkALegitimacy(4) & this.checkALegitimacy(3);
@@ -299,8 +299,26 @@ export default {
         }
         this.showLogin = false;
         this.$store.commit('login', userInfo)
-        console.log(this.$route.path);
         this.$router.go(0);
+      }).catch(error => {
+        // 判断是业务错误还是网络错误
+        let result = error.result;
+        let message = '系统错误，请稍后再试';
+        if (result !== undefined) {
+          let serverError = error.message;
+          message = serverError !== null && serverError.length > 0 ? serverError : message;
+        }
+        this.$Message.error(message);
+      })
+    },
+    resetPassword() {
+      let checkResult = this.checkALegitimacy(2) & this.checkALegitimacy(3) & this.checkALegitimacy(4);
+      if (!checkResult) {
+        return;
+      }
+      AuthApi.resetPassword(this).then(data => {
+        this.$Message.success('密码重置成功!')
+        this.loginType = 1;
       }).catch(error => {
         // 判断是业务错误还是网络错误
         let result = error.result;

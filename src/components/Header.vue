@@ -293,7 +293,6 @@
 
       // 请求登出，删除服务器token信息
       logout() {
-        debugger
         let userInfo = this.$store.state.userInfo
         if (userInfo.token) {
           AuthApi.logout(this).then(data => {
