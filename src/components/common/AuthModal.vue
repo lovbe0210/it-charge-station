@@ -38,7 +38,7 @@
                        placeholder="请输入邮箱/手机号（国际号码加区号如+86）"
                        @on-change="checkALegitimacy(3)"
                        maxlength="20"/>
-                <div class="error-text account-error">{{accountError ? '请输入正确的手机号或邮箱' : ''}}</div>
+                <div class="error-text account-error">{{ accountError ? '请输入正确的手机号或邮箱' : '' }}</div>
                 <Input v-model="password"
                        maxlength="30"
                        type="password"
@@ -47,12 +47,13 @@
                   <Button slot="suffix"
                           ghost
                           @click="forgotPwd"
-                          type="text">忘记密码</Button>
+                          type="text">忘记密码
+                  </Button>
                 </Input>
                 <div class="error-text">{{ pwdErrorMsg }}</div>
               </div>
               <div class="button-group">
-                <Button type="primary" size="large" @click="login">
+                <Button type="primary" size="large" @click="payloadLogin">
                   登录
                 </Button>
                 <Button size="large" @click="changeLoginType">
@@ -67,7 +68,7 @@
                        maxlength="20"
                        @on-change="checkALegitimacy(3)">
                 </Input>
-                <div class="error-text account-error">{{accountError ? '请输入正确的手机号或邮箱' : ''}}</div>
+                <div class="error-text account-error">{{ accountError ? '请输入正确的手机号或邮箱' : '' }}</div>
                 <Input v-model="verifyCode"
                        maxlength="6"
                        placeholder="请输入验证码"
@@ -81,7 +82,7 @@
                     {{ btnValue }}
                   </Button>
                 </Input>
-                <div class="error-text">{{verifyCodeError ? '请输入正确的验证码' : ''}}</div>
+                <div class="error-text">{{ verifyCodeError ? '请输入正确的验证码' : '' }}</div>
               </div>
               <Button size="large" type="primary" @click="quickLogin">
                 登录 / 注册
@@ -94,7 +95,7 @@
                        maxlength="20"
                        @on-change="checkALegitimacy(3)">
                 </Input>
-                <div class="error-text account-error">{{accountError ? '请输入正确的手机号或邮箱' : ''}}</div>
+                <div class="error-text account-error">{{ accountError ? '请输入正确的手机号或邮箱' : '' }}</div>
                 <Input v-model="password"
                        placeholder="请输入新密码"
                        maxlength="30"
@@ -113,7 +114,7 @@
                     {{ btnValue }}
                   </Button>
                 </Input>
-                <div class="error-text">{{verifyCodeError ? '请输入正确的验证码' : ''}}</div>
+                <div class="error-text">{{ verifyCodeError ? '请输入正确的验证码' : '' }}</div>
               </div>
               <div class="reset-action-group">
                 <Button size="large" type="primary" @click="login">
@@ -165,454 +166,446 @@
 </template>
 
 <script>
-  import SliderValidation from "@/components/common/SliderValidation";
-  import {emailRegex, verifyTelLawful} from "@/utils/utils.js"
-  import AuthApi from "@/api/AuthApi";
+import SliderValidation from "@/components/common/SliderValidation";
+import {emailRegex, verifyTelLawful} from "@/utils/utils.js"
+import AuthApi from "@/api/AuthApi";
 
-  export default {
-    name: "AuthModal",
-    data() {
-      return {
-        showLogin: false,
-        showSliderValidate: false,
-        // 登录类型：1 密码登录， 2 验证码登录 3 重置密码
-        loginType: 1,
-        // 行为类型 1注册 2登录
-        actionType: 1,
-        accountError: false,
-        pwdErrorMsg: '',
-        verifyCodeError: false,
-        // 国家区号
-        account: null,
-        password: null,
-        verifyCode: null,
-        sliderValidateResult: false,
-        sendCodeSuccess: false,
-        btnValue: '获取验证码',
-        sendCodeInterval: null
+export default {
+  name: "AuthModal",
+  data() {
+    return {
+      showLogin: false,
+      showSliderValidate: false,
+      // 登录类型：1 密码登录， 2 验证码登录 3 重置密码
+      loginType: 1,
+      // 行为类型 1注册 2登录
+      actionType: 1,
+      accountError: false,
+      pwdErrorMsg: '',
+      verifyCodeError: false,
+      // 国家区号
+      account: null,
+      password: null,
+      verifyCode: null,
+      sliderValidateResult: false,
+      sendCodeSuccess: false,
+      btnValue: '获取验证码',
+      sendCodeInterval: null
+    }
+  },
+  props: ['quickRegister'],
+  components: {
+    SliderValidation
+  },
+  methods: {
+    forgotPwd() {
+      this.loginType = 3;
+    },
+    changeLoginType() {
+      this.loginType = this.loginType === 1 ? 2 : 1;
+    },
+    validate() {
+      this.showSliderValidate = false;
+      let svScene = 1;
+      if (this.loginType < 3) {
+        svScene = this.account.indexOf('@') === -1 ? 1 : 2;
+      } else {
+        svScene = this.account.indexOf('@') === -1 ? 9 : 10;
       }
-    },
-    props: ['quickRegister'],
-    components: {
-      SliderValidation
-    },
-    methods: {
-      forgotPwd() {
-        this.loginType = 3;
-      },
-      changeLoginType() {
-        this.loginType = this.loginType === 1 ? 2 : 1;
-      },
-      validate() {
-        this.showSliderValidate = false;
-        let svScene = 1;
-        if (this.loginType < 3) {
-          svScene = this.account.indexOf('@') === -1 ? 1 : 2;
-        } else {
-          svScene = this.account.indexOf('@') === -1 ? 9 : 10;
-        }
-        AuthApi.getSvCookie(this, svScene).then(data => {
-          this.sliderValidateResult = true;
-          let svToken = data.data.tn;
-          if (!svToken) {
-            return;
-          }
-          AuthApi.sendPayloadCode(this, svScene, svToken).then(result => {
-            // 短信发送成功
-            this.sendCodeSuccess = true;
-            let tmp = this.account && this.account.indexOf('@') !== -1 ? '邮箱' : '手机';
-            this.sendCodeString = '已发送短信验证码到指定' + tmp;
-            let time = 60;
-            this.btnValue = '重新获取(' + time + ')';
-            this.sendCodeInterval = setInterval(() => {
-              if (time > 0) {
-                time = time - 1;
-                this.btnValue = '重新获取(' + time + ')';
-              } else {
-                this.btnValue = '获取验证码';
-                this.sendCodeSuccess = false;
-                clearInterval(this.sendCodeInterval);
-                this.sendCodeInterval = null;
-              }
-            }, 1000)
-          }).catch(error => {
-            this.$Message.error(error.message)
-            // console.log(error)
-            // console.error(this)
-          })
-        }).catch(error => {
-          this.$Message.error(error.msg)
-        })
-      },
-      getVerifyCode() {
-        let check = this.checkALegitimacy(3);
-        if (check) {
-          this.showSliderValidate = true;
-        }
-      },
-      login() {
-        let checkResult = true;
-        if (this.loginType === 1) {
-          checkResult = this.checkALegitimacy(1) & this.checkALegitimacy(3);
-        } else if (this.loginType === 2) {
-          checkResult = this.checkALegitimacy(4) & this.checkALegitimacy(3);
-        }
-        if (!checkResult) {
+      AuthApi.getSvCookie(this, svScene).then(data => {
+        this.sliderValidateResult = true;
+        let svToken = data.data.tn;
+        if (!svToken) {
           return;
         }
-
-        AuthApi.payloadLogin(this).then(data => {
-          this.$Message.success('登陆成功!')
-          // 保存token到store中
-          let userInfo = {
-            token: 'FKDMDK34D34DFGDFG45DE32DGH4G61AS',
-            uid: 9527,
-            username: '张三'
-          }
-          // 延时关闭登录窗口
-          setTimeout(() => {
-            this.showLogin = false;
-            this.$store.commit('login', userInfo)
-          }, 1000);
-        }).catch(error => {
-          // 判断是业务错误还是网络错误
-          let result = error.result;
-          let message = '系统错误，请稍后再试';
-          if (result !== undefined) {
-            let serverError = error.message;
-            message = serverError !== null && serverError.length > 0 ? serverError : message;
-          }
-          this.$Message.error(message);
-        })
-
-
-      },
-      quickLogin() {
-        let checkResult = this.checkALegitimacy(4) & this.checkALegitimacy(3);
-        if (!checkResult) {
-          return;
-        }
-
-        AuthApi.verifyCodeLogin(this).then(data => {
-          this.$Message.success('登陆成功!')
-          // 保存token到store中
-          let userInfo = {
-            token: 'FKDMDK34D34DFGDFG45DE32DGH4G61AS',
-            uid: 9527,
-            username: '张三'
-          }
-          // 延时关闭登录窗口
-          setTimeout(() => {
-            this.showLogin = false;
-            this.$store.commit('login', userInfo)
-          }, 1000);
-        }).catch(error => {
-          // 判断是业务错误还是网络错误
-          let result = error.result;
-          let message = '系统错误，请稍后再试';
-          if (result !== undefined) {
-            let serverError = error.message;
-            message = serverError !== null && serverError.length > 0 ? serverError : message;
-          }
-          this.$Message.error(message);
-        })
-
-
-      },
-      checkALegitimacy(checkType) {
-        // 1. 密码简单校验
-        if (checkType === 1) {
-          if (this.password == null || this.password.length === 0) {
-            this.pwdErrorMsg = '请输入密码';
-            return false;
-          }
-          this.pwdErrorMsg = '';
-        }
-
-        // 2. 密码格式校验
-        if (checkType === 2) {
-          if (this.password === null || this.password.length === 0) {
-            this.pwdErrorMsg = '请输入密码';
-            return false;
-          } else if (this.password && this.password.length < 8) {
-            this.pwdErrorMsg = '密码长度不能小于8位';
-            return false;
-          } else if (this.password && this.password.length >= 8) {
-            this.pwdErrorMsg = '';
-          }
-          let set = new Set();
-          let allNumber = 0;
-          for (let char of this.password) {
-            set.add(char);
-            if (char >= 48 && char <= 57) {
-              ++allNumber;
+        AuthApi.sendPayloadCode(this, svScene, svToken).then(result => {
+          // 短信发送成功
+          let tmp = this.account && this.account.indexOf('@') !== -1 ? '邮箱' : '手机';
+          tmp = '已发送短信验证码到指定' + tmp;
+          this.$Message.success(tmp);
+          this.sendCodeSuccess = true;
+          let time = 60;
+          this.btnValue = '重新获取(' + time + ')';
+          this.sendCodeInterval = setInterval(() => {
+            if (time > 0) {
+              time = time - 1;
+              this.btnValue = '重新获取(' + time + ')';
+            } else {
+              this.btnValue = '获取验证码';
+              this.sendCodeSuccess = false;
+              clearInterval(this.sendCodeInterval);
+              this.sendCodeInterval = null;
             }
-          }
-          if (set.size <= 2 || allNumber === this.password.length) {
-            this.pwdErrorMsg = '密码过于简单，必须包含数字和字母';
-            return false;
-          }
+          }, 1000)
+        }).catch(error => {
+          this.$Message.error(error.message)
+          // console.log(error)
+          // console.error(this)
+        })
+      }).catch(error => {
+        this.$Message.error(error.msg)
+      })
+    },
+    getVerifyCode() {
+      let check = this.checkALegitimacy(3);
+      if (check) {
+        this.showSliderValidate = true;
+      }
+    },
+    payloadLogin() {
+      let checkResult = this.checkALegitimacy(1) & this.checkALegitimacy(3);
+      if (!checkResult) {
+        return;
+      }
+      AuthApi.payloadLogin(this).then(data => {
+        this.$Message.success('登陆成功!')
+        // 保存token到store中
+        let userInfo = {
+          token: 'FKDMDK34D34DFGDFG45DE32DGH4G61AS',
+          uid: 9527,
+          username: '张三'
+        }
+        // 延时关闭登录窗口
+        setTimeout(() => {
+          this.showLogin = false;
+          this.$store.commit('login', userInfo)
+        }, 1000);
+      }).catch(error => {
+        // 判断是业务错误还是网络错误
+        let result = error.result;
+        let message = '系统错误，请稍后再试';
+        if (result !== undefined) {
+          let serverError = error.message;
+          message = serverError !== null && serverError.length > 0 ? serverError : message;
+        }
+        this.$Message.error(message);
+      })
+
+
+    },
+    quickLogin() {
+      let checkResult = this.checkALegitimacy(4) & this.checkALegitimacy(3);
+      if (!checkResult) {
+        return;
+      }
+      AuthApi.verifyCodeLogin(this).then(data => {
+        this.$Message.success('登陆成功!')
+        let loginData = data.data;
+        // 保存token到store中
+        let userInfo = {
+          token: loginData.acToken,
+          uid: loginData.userId,
+          rfToken: loginData.rfToken
+        }
+        this.showLogin = false;
+        this.$store.commit('login', userInfo)
+        console.log(this.$route.path);
+        this.$router.go(0);
+      }).catch(error => {
+        // 判断是业务错误还是网络错误
+        let result = error.result;
+        let message = '系统错误，请稍后再试';
+        if (result !== undefined) {
+          let serverError = error.message;
+          message = serverError !== null && serverError.length > 0 ? serverError : message;
+        }
+        this.$Message.error(message);
+      })
+    },
+    checkALegitimacy(checkType) {
+      // 1. 密码简单校验
+      if (checkType === 1) {
+        if (this.password == null || this.password.length === 0) {
+          this.pwdErrorMsg = '请输入密码';
+          return false;
+        }
+        this.pwdErrorMsg = '';
+      }
+
+      // 2. 密码格式校验
+      if (checkType === 2) {
+        if (this.password === null || this.password.length === 0) {
+          this.pwdErrorMsg = '请输入密码';
+          return false;
+        } else if (this.password && this.password.length < 8) {
+          this.pwdErrorMsg = '密码长度不能小于8位';
+          return false;
+        } else if (this.password && this.password.length >= 8) {
           this.pwdErrorMsg = '';
         }
-
-        // 3. 校验邮箱和手机号码
-        if (checkType === 3) {
-          if (!this.account) {
-            this.accountError = true;
-            return false;
-          }
-
-          let indexOf = this.account.indexOf("@");
-          if ((indexOf !== -1 && !emailRegex.test(this.account)) || (indexOf === -1 && !verifyTelLawful(this.account))) {
-            // 邮箱校验
-            this.accountError = true;
-            return false;
-          }
-          this.accountError = false;
-        }
-
-        // 4. 验证码校验
-        if (checkType === 4) {
-          debugger
-          if (!this.verifyCode || this.verifyCode.length !== 6) {
-            this.verifyCodeError = true;
-            return false;
+        let set = new Set();
+        let allNumber = 0;
+        for (let char of this.password) {
+          set.add(char);
+          if (char >= 48 && char <= 57) {
+            ++allNumber;
           }
         }
-        return true;
-      },
-
-      returnLogin() {
-        this.loginType = 1;
-      }
-    },
-    watch: {
-      "loginType"() {
-        this.accountError = false;
+        if (set.size <= 2 || allNumber === this.password.length) {
+          this.pwdErrorMsg = '密码过于简单，必须包含数字和字母';
+          return false;
+        }
         this.pwdErrorMsg = '';
-        this.verifyCodeError = false;
-        this.account = null;
-        this.password = null;
-        this.verifyCode = null;
-        this.sliderValidateResult = false;
       }
+
+      // 3. 校验邮箱和手机号码
+      if (checkType === 3) {
+        if (!this.account) {
+          this.accountError = true;
+          return false;
+        }
+
+        let indexOf = this.account.indexOf("@");
+        if ((indexOf !== -1 && !emailRegex.test(this.account)) || (indexOf === -1 && !verifyTelLawful(this.account))) {
+          // 邮箱校验
+          this.accountError = true;
+          return false;
+        }
+        this.accountError = false;
+      }
+
+      // 4. 验证码校验
+      if (checkType === 4) {
+        if (!this.verifyCode || this.verifyCode.length !== 6) {
+          this.verifyCodeError = true;
+          return false;
+        } else {
+          this.verifyCodeError = false;
+        }
+      }
+      return true;
     },
-    mounted() {
-      if (this.quickRegister) {
-        this.loginType = 2;
-      }
+    returnLogin() {
+      this.loginType = 1;
+    }
+  },
+  watch: {
+    "loginType"() {
+      this.accountError = false;
+      this.pwdErrorMsg = '';
+      this.verifyCodeError = false;
+      this.account = null;
+      this.password = null;
+      this.verifyCode = null;
+      this.sliderValidateResult = false;
+    }
+  },
+  mounted() {
+    if (this.quickRegister) {
+      this.loginType = 2;
     }
   }
+}
 </script>
 
 <style scoped lang="less">
-  .auth-body {
-    color: var(--font-color);
-    height: 340px;
-    max-width: 100%;
-    font-size: 14px;
-    padding: 0 15px;
-    margin: 5px 0;
-    box-sizing: border-box;
+.auth-body {
+  color: var(--font-color);
+  height: 340px;
+  max-width: 100%;
+  font-size: 14px;
+  padding: 0 15px;
+  margin: 5px 0;
+  box-sizing: border-box;
 
-    .login-body {
+  .login-body {
+    display: flex;
+    flex-direction: row;
+
+    .site-flag {
+      width: 40%;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
 
-      .site-flag {
-        width: 40%;
+      .site-tips {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
+        position: relative;
+        margin-bottom: 10px;
 
-        .site-tips {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          position: relative;
+        .t1 {
+          font-weight: 600;
+          font-size: 18px;
           margin-bottom: 10px;
-
-          .t1 {
-            font-weight: 600;
-            font-size: 18px;
-            margin-bottom: 10px;
-          }
-
-          .t2 {
-            margin-left: 30px;
-            color: var(--title-color);
-          }
-
-          .t3 {
-            margin-left: 5px;
-            color: var(--title-color);
-          }
         }
 
-        img {
-          max-width: 100%;
-          border-radius: 6px;
+        .t2 {
+          margin-left: 30px;
+          color: var(--title-color);
+        }
+
+        .t3 {
+          margin-left: 5px;
+          color: var(--title-color);
         }
       }
 
-      .login-main {
-        width: 60%;
-        padding: 5px 10px 0 40px;
+      img {
+        max-width: 100%;
+        border-radius: 6px;
+      }
+    }
+
+    .login-main {
+      width: 60%;
+      padding: 5px 10px 0 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .title {
+        color: var(--font-color);
+        font-size: 17px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      /deep/ .ivu-input {
+        height: 40px;
+      }
+
+
+      .panel-pwd, .panel-verify, .panel-reset-pwd {
         display: flex;
         flex-direction: column;
+        justify-content: space-around;
+      }
+
+      .pwd-input-group, .verify-input-group {
+
+        .ivu-input-wrapper {
+          margin-bottom: 5px;
+        }
+
+        /deep/ .ivu-input-suffix {
+          width: unset;
+          display: flex;
+          align-items: center;
+          padding-right: 1px;
+        }
+
+        .error-text {
+          color: #F44336;
+          font-size: 12px;
+          line-height: 20px;
+          min-height: 20px;
+          margin-bottom: 10px;
+          text-align: left;
+          padding: 0 10px;
+        }
+      }
+
+      .reset-input-group {
+        /deep/ .ivu-input-suffix {
+          width: unset;
+          display: flex;
+          align-items: center;
+          padding-right: 1px;
+        }
+
+        .ivu-input-wrapper {
+          margin-bottom: 3px;
+        }
+
+        .error-text {
+          color: #F44336;
+          font-size: 12px;
+          line-height: 20px;
+          min-height: 20px;
+          margin-bottom: 8px;
+          text-align: left;
+          padding: 0 10px;
+        }
+      }
+
+      .reset-action-group {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 5px;
+
+        button {
+          width: 45%;
+        }
+
+        .return-login {
+          margin-right: 10px;
+          cursor: pointer;
+        }
+      }
+
+      .button-group {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        button {
+          width: 45%;
+        }
+
+        button:first-child {
+          margin-right: 10%;
+        }
+      }
+
+      .other-login-box {
+        width: 100%;
+        margin-top: 5px;
+        display: flex;
+        line-height: 30px;
+        flex-direction: row;
+        align-items: center;
         justify-content: space-between;
 
-        .title {
-          color: var(--font-color);
-          font-size: 17px;
-          font-weight: 500;
-          margin-bottom: 8px;
+        .oauth-box {
           display: flex;
           flex-direction: row;
           align-items: center;
-          justify-content: space-between;
-        }
 
-        /deep/ .ivu-input {
-          height: 40px;
-        }
-
-
-        .panel-pwd, .panel-verify, .panel-reset-pwd {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-        }
-
-        .pwd-input-group, .verify-input-group {
-
-          .ivu-input-wrapper {
-            margin-bottom: 5px;
-          }
-
-          /deep/ .ivu-input-suffix {
-            width: unset;
+          .oauth-bg {
             display: flex;
             align-items: center;
-            padding-right: 1px;
-          }
 
-          .error-text {
-            color: #F44336;
-            font-size: 12px;
-            line-height: 20px;
-            min-height: 20px;
-            margin-bottom: 10px;
-            text-align: left;
-            padding: 0 10px;
-          }
-        }
-
-        .reset-input-group {
-          /deep/ .ivu-input-suffix {
-            width: unset;
-            display: flex;
-            align-items: center;
-            padding-right: 1px;
-          }
-
-          .ivu-input-wrapper {
-            margin-bottom: 3px;
-          }
-
-          .error-text {
-            color: #F44336;
-            font-size: 12px;
-            line-height: 20px;
-            min-height: 20px;
-            margin-bottom: 8px;
-            text-align: left;
-            padding: 0 10px;
-          }
-        }
-
-        .reset-action-group {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 5px;
-
-          button {
-            width: 45%;
-          }
-
-          .return-login {
-            margin-right: 10px;
-            cursor: pointer;
-          }
-        }
-
-        .button-group {
-          width: 100%;
-          display: flex;
-          flex-direction: row;
-
-          button {
-            width: 45%;
-          }
-
-          button:first-child {
-            margin-right: 10%;
-          }
-        }
-
-        .other-login-box {
-          width: 100%;
-          margin-top: 5px;
-          display: flex;
-          line-height: 30px;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-
-          .oauth-box {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-
-            .oauth-bg {
-              display: flex;
-              align-items: center;
-
-              .iconfont {
-                font-size: 22px;
-                line-height: 22px;
-                margin-right: 5px;
-              }
+            .iconfont {
+              font-size: 22px;
+              line-height: 22px;
+              margin-right: 5px;
             }
           }
+        }
 
-          .clickable {
-            cursor: pointer;
-          }
+        .clickable {
+          cursor: pointer;
         }
       }
     }
-
-    .agreement-box {
-      text-align: center;
-      margin-top: 15px;
-    }
   }
 
-  .slider-verify-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    .content {
-      margin-bottom: 30px;
-    }
-
-    .validation {
-      width: 100%;
-    }
+  .agreement-box {
+    text-align: center;
+    margin-top: 15px;
   }
+}
+
+.slider-verify-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .content {
+    margin-bottom: 30px;
+  }
+
+  .validation {
+    width: 100%;
+  }
+}
 </style>

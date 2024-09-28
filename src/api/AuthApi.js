@@ -10,7 +10,7 @@ export default {
   async payloadLogin(_this) {
     let payloadType = _this.account.indexOf("@");
     let jsonData = {
-      password: _this.password
+      password: this.encodeSign(_this.password)
     };
     if (payloadType === -1) {
       jsonData.mobile = _this.account;
@@ -65,7 +65,8 @@ export default {
       unique_id: uniqueId,
       timestamp: Date.now()
     }
-    let sign = this.encodeSign(requestObj);
+    let requestStr = JSON.stringify(requestObj);
+    let sign = this.encodeSign(requestStr);
     let jsonData = {
       sign: sign,
       xt: uuid(),
@@ -96,7 +97,8 @@ export default {
       unique_id: uniqueId,
       tn: svToken
     }
-    let sign = this.encodeSign(signObj);
+    let signStr = JSON.stringify(signObj);
+    let sign = this.encodeSign(signStr);
     let jsonData = {
       sign: sign,
       scene: svScene
@@ -118,6 +120,24 @@ export default {
     });
   },
 
+  /**
+   * 退出登录状态
+   * @param _this
+   * @returns {Promise<[]>}
+   */
+  async logout(_this) {
+    let userInfo = _this.$store.state.userInfo;
+
+    let jsonData = {
+      rfToken: userInfo.rfToken
+    }
+    let requestUri = "/auth/logout";
+    return await _this.$request({
+      url: requestUri,
+      method: 'POST',
+      data: jsonData
+    });
+  },
 
   /**
    * 判断字符为字母或数字
@@ -133,8 +153,7 @@ export default {
    * @param requestObj
    * @returns {string}
    */
-  encodeSign(requestObj) {
-    let requestStr = JSON.stringify(requestObj);
+  encodeSign(requestStr) {
     let encodeStr = base64.encode(requestStr);
     let charArr = Array.from(encodeStr);
     // 简单转码

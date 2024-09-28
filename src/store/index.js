@@ -213,7 +213,8 @@ export default new Vuex.Store({
      * @param value
      */
     clearUserInfo(state, value) {
-      state.userInfo = {}
+      state.userInfo = {};
+      localStorage.setItem('store', JSON.stringify(state));
     },
     updatePageState(state, value) {
       state.pageState = value;
@@ -272,7 +273,8 @@ export default new Vuex.Store({
      * @param value
      */
     login(state, value) {
-      state.userInfo = value
+      state.userInfo = value;
+      localStorage.setItem('store', JSON.stringify(state));
     },
     /**
      * 自定义主题，注意这里的传参必须是一个对象

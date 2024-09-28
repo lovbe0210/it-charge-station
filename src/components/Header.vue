@@ -220,6 +220,7 @@
 <script>
   import MessageNotification from "./MessageNotification";
   import AuthModal from "@/components/common/AuthModal.vue";
+  import AuthApi from "@/api/AuthApi";
   export default {
     name: 'Header',
     data() {
@@ -292,13 +293,24 @@
 
       // 请求登出，删除服务器token信息
       logout() {
-        setTimeout(() => {
-          this.$store.commit('clearUserInfo')
-          this.$Message.success({
-            content: '已成功退出当前用户，记得回来看看哦'
-          });
-          console.log(this.loginStatus);
-        }, 1000)
+        debugger
+        let userInfo = this.$store.state.userInfo
+        if (userInfo.token) {
+          AuthApi.logout(this).then(data => {
+            this.$store.commit('clearUserInfo')
+            this.$Message.success({
+              content: '已成功退出当前用户，记得回来看看哦'
+            });
+            this.$router.go(0);
+          })
+        } else {
+          setTimeout(() => {
+            this.$store.commit('clearUserInfo')
+            this.$Message.success({
+              content: '已成功退出当前用户，记得回来看看哦'
+            });
+          }, 500)
+        }
       },
       toWriteCenter() {
         let routeUrl = this.$router.resolve({
