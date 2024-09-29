@@ -271,7 +271,9 @@ export default {
         }
         this.showLogin = false;
         this.$store.commit('login', userInfo)
-        this.$router.go(0);
+        setTimeout(() => {
+          this.$router.go(0);
+        }, 500)
       }).catch(error => {
         // 判断是业务错误还是网络错误
         let result = error.result;
@@ -299,7 +301,9 @@ export default {
         }
         this.showLogin = false;
         this.$store.commit('login', userInfo)
-        this.$router.go(0);
+        setTimeout(() => {
+          this.$router.go(0);
+        }, 500)
       }).catch(error => {
         // 判断是业务错误还是网络错误
         let result = error.result;

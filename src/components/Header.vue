@@ -300,7 +300,9 @@
             this.$Message.success({
               content: '已成功退出当前用户，记得回来看看哦'
             });
-            this.$router.go(0);
+            setTimeout(() => {
+              this.$router.go(0);
+            }, 500)
           })
         } else {
           setTimeout(() => {

@@ -9,17 +9,19 @@ export default {
    */
   async payloadLogin(_this) {
     let payloadType = _this.account.indexOf("@");
-    let jsonData = {
+    let requestUri = "/auth/mobile/login";
+      let jsonData = {
       password: this.encodeSign(_this.password)
     };
     if (payloadType === -1) {
       jsonData.mobile = _this.account;
     } else {
+      requestUri = "/auth/email/login";
       jsonData.email = _this.account;
     }
 
     return await _this.$request({
-      url: "/auth/mobile/login",
+      url: requestUri,
       method: 'POST',
       data: jsonData
     });
@@ -34,14 +36,16 @@ export default {
     let jsonData = {
       code: _this.verifyCode
     };
+    let requestUri = "/auth/sms/login";
     if (payloadType === -1) {
       jsonData.mobile = _this.account;
     } else {
+      requestUri = "/auth/emailCode/login";
       jsonData.email = _this.account;
     }
 
     return await _this.$request({
-      url: "/auth/sms/login",
+      url: requestUri,
       method: 'POST',
       data: jsonData
     });
@@ -151,10 +155,10 @@ export default {
     }
     if (_this.account.indexOf("@") !== -1) {
       jsonData.email = _this.account;
-      jsonData.scene = 1;
+      jsonData.scene = 10;
     } else {
       jsonData.mobile = _this.account;
-      jsonData.scene = 1;
+      jsonData.scene = 9;
     }
 
     let requestUri = "/user/reset/password";
