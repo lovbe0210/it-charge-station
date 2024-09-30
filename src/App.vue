@@ -91,7 +91,7 @@
         let storeData = JSON.parse(localStorage.getItem('store'));
         Object.keys(storeData).forEach(item => {
           if (storeData[item] === '' || storeData[item] === undefined || storeData[item] === null) {
-            storeData.delete(storeData[item])
+            delete storeData[item];
           }
           return storeData;
         })
