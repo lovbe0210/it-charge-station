@@ -11,10 +11,11 @@
           </div>
           <div class="setting-legacy-form-item-control-wrapper">
             <div class="avatar-uploader-control">
-              <b-avatar :src="userInfo.avatar"
+              <b-avatar :src="userInfo.avatarUrl"
                         variant="light"
                         href="javascript:void(0)"
                         class="avatar-uploader-show">
+                <span v-if="!userInfo.avatarUrl">{{userInfo.username}}</span>
               </b-avatar>
               <div class="avatar-uploader-btn-wrapper">
                 <Upload action="/"
@@ -86,12 +87,12 @@
             <div class="nickname-editor-control">
               <span class="nickname-editor-control-content">
                 <input autocomplete="off"
-                       :class="['control-input', 'nickName-module_input','item-border',userInfo.nickname && userInfo.nickname.length >= 16 ? 'error-editor-control' : '']"
-                       type="text" placeholder="必填" v-model="userInfo.nickname" id="nickName" maxlength="50">
+                       :class="['control-input', 'nickName-module_input','item-border',userInfo.username && userInfo.username.length >= 16 ? 'error-editor-control' : '']"
+                       type="text" placeholder="必填" v-model="userInfo.username" id="nickName" maxlength="50">
               </span>
             </div>
             <div class="setting-legacy-form-explain">
-              <span v-show="userInfo.nickname && userInfo.nickname.length >= 16">最多可输入 15 个字符</span>
+              <span v-show="userInfo.username && userInfo.username.length >= 16">最多可输入 15 个字符</span>
             </div>
           </div>
         </div>
@@ -118,8 +119,8 @@
                 </a-tooltip>
               </template>
               <span v-if="userInfo.tags && userInfo.tags.length < 4">
-                <Input class="tag-input" v-if="inputVisible" ref="input" type="text" size="small" maxlength="4"
-                       :style="{ width: '78px' }" v-model="inputValue"
+                <Input class="tag-input" v-if="inputVisible" ref="input" type="text" size="small" maxlength="10"
+                       :style="{ width: '100px' }" v-model="inputValue"
                        @on-blur="handleInputConfirm"
                        @on-enter="handleInputConfirm"/>
                 <a-tag v-else class="empty-to-add"  @click="showInput">
@@ -134,20 +135,20 @@
           <div class="setting-form-item-label">
             <label for="biography">
               <span>简介</span>
-              <span class="textarea-words-count">{{(userInfo.profile ? userInfo.profile.length : 0) + '/200'}}</span>
+              <span class="textarea-words-count">{{(userInfo.introduction ? userInfo.introduction.length : 0) + '/200'}}</span>
             </label>
           </div>
           <div class="setting-legacy-form-item-control-wrapper">
             <div class="biography-editor-control">
               <span class="biography-editor-control-content">
                 <textarea id="biography" placeholder="简单介绍一下你自己" autocomplete="off" maxlength="210"
-                          :class="['control-input','biography-module_textarea','item-border',userInfo.profile && userInfo.profile.length > 200 ? 'error-editor-control' : '']"
-                          v-model="userInfo.profile">
+                          :class="['control-input','biography-module_textarea','item-border',userInfo.introduction && userInfo.introduction.length > 200 ? 'error-editor-control' : '']"
+                          v-model="userInfo.introduction">
                 </textarea>
               </span>
             </div>
             <div class="setting-legacy-form-explain">
-              <span v-show="userInfo.profile && userInfo.profile.length > 200">最多可输入 200 个字符</span>
+              <span v-show="userInfo.introduction && userInfo.introduction.length > 200">最多可输入 200 个字符</span>
             </div>
           </div>
         </div>
@@ -183,12 +184,12 @@
               <div class="profession-editor-control">
                 <span class="profession-editor-control-content">
                   <input id="profession" autocomplete="false" type="text" placeholder="你所在的行业" maxlength="30"
-                         :class="['control-input','item-border',userInfo.profession && userInfo.profession.length > 15 ? 'error-editor-control' : '']"
-                         v-model="userInfo.profession">
+                         :class="['control-input','item-border',userInfo.industry && userInfo.industry.length > 15 ? 'error-editor-control' : '']"
+                         v-model="userInfo.industry">
                 </span>
               </div>
               <div class="setting-legacy-form-explain">
-                <span v-show="userInfo.profession && userInfo.profession.length > 15">最多可输入 15 个字符</span>
+                <span v-show="userInfo.industry && userInfo.industry.length > 15">最多可输入 15 个字符</span>
               </div>
             </div>
           </div>
@@ -212,12 +213,13 @@
 <script>
   import {VueCropper} from 'vue-cropper'
   import {getRandomColor} from '@/utils/utils'
+  import { cloneDeep } from '@/utils/emoji';
 
   export default {
     name: 'Profile',
     data() {
       return {
-        userInfo: {
+       /* userInfo: {
           avatar: 'https://pic.netbian.com/uploads/allimg/240618/195433-1718711673bf15.jpg',
           nickname: 'HappyDragon1994',
           tags: [
@@ -229,7 +231,8 @@
           profile: '我生来就是高山而非溪流，我欲于群峰之巅俯视平庸的沟壑',
           location: '四川省成都市成华区',
           profession: '新时代『农民工』'
-        },
+        },*/
+        userInfo: {},
         showAvatarCropper: false,
         avatarOriginalFile: null,
         avatarPreview: null,
@@ -237,6 +240,11 @@
         inputValue: '',
         tagColor: 'red'
       }
+    },
+    computed: {
+      // userInfo() {
+      //   return this.$store.state.userInfo;
+      // }
     },
     components: {
       VueCropper
@@ -316,7 +324,9 @@
         tag.color = getRandomColor();
       }
     },
-    mounted() {
+    created() {
+      let tmp = this.$store.state.userInfo;
+      this.userInfo = cloneDeep(tmp);
     }
   }
 </script>

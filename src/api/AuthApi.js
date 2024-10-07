@@ -131,15 +131,13 @@ export default {
    */
   async logout(_this) {
     let userInfo = _this.$store.state.userInfo;
-
-    let jsonData = {
-      rfToken: userInfo.rfToken
-    }
     let requestUri = "/auth/logout";
     return await _this.$request({
       url: requestUri,
       method: 'POST',
-      data: jsonData
+      headers: {
+        "icharge-rt": userInfo.rfToken
+      }
     });
   },
 
@@ -160,7 +158,6 @@ export default {
       jsonData.mobile = _this.account;
       jsonData.scene = 9;
     }
-
     let requestUri = "/user/reset/password";
     return await _this.$request({
       url: requestUri,
@@ -169,8 +166,38 @@ export default {
     });
   },
 
+  /**
+   * 获取用户信息
+   * @param _this
+   * @param userId
+   * @returns {Promise<void>}
+   */
+  async getUserInfo(_this, userId) {
+    let jsonData = {
+      userId: userId
+    }
+    return await _this.$request({
+      url: "/user/getUserInfo",
+      method: 'POST',
+      data: jsonData
+    });
+  },
 
-
+  /**
+   * 刷新token
+   * @param Vue
+   * @param rfToken
+   * @returns {Promise<void>}
+   */
+  async refreshToken(_this, rfToken) {
+    return await _this.$request({
+      url: "/auth/t/refresh",
+      method: "POST",
+      headers: {
+        "icharge-rt": rfToken
+      }
+    });
+  },
 
 
   /**

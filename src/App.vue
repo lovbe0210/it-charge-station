@@ -27,6 +27,8 @@
   import {vueBaberrage} from 'vue-baberrage'
   // uuid
   import { v4 as uuid } from 'uuid';
+  import AuthApi from "@/api/AuthApi";
+
 
   // 安装bootstrap和图标库
   Vue.use(BootstrapVue).use(infiniteScroll).use(vueBaberrage);
@@ -125,6 +127,19 @@
       } else {
         // pc页面
         this.$store.commit('isPhone', false)
+      }
+
+      // 判断用户登录状态是否有效
+      let userInfo = this.$store.state.userInfo;
+      if (userInfo && userInfo.uid) {
+        AuthApi.getUserInfo(this, userInfo.uid).then(data => {
+          let loginUser = data;
+          userInfo = {...userInfo, ...loginUser};
+          // 保存userInfo到store中
+          this.$store.commit('login', userInfo);
+        }).catch(error => {
+          console.log(error)
+        })
       }
 
     },

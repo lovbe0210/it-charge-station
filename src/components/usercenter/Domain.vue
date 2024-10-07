@@ -130,10 +130,10 @@
           level: 6,
           follow: true,
           tags: [
-            {content: '自我驱动', color: 'blue'},
-            {content: '坚持不懈', color: 'red'},
-            {content: '目标大厂', color: 'orange'},
-            {content: '年薪百万', color: 'green'}
+            {content: '自我驱动的大好人', color: 'blue'},
+            {content: '坚持不懈的不知道啊的', color: 'red'},
+            {content: '目标大厂阿三酱豆腐动', color: 'orange'},
+            {content: '年薪百万时尚大方地方', color: 'green'}
           ]
         },
         engine: null,

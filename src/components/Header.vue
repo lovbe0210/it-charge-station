@@ -35,7 +35,7 @@
         <b-navbar-nav class="menu" :fill="true" align="center">
           <b-nav-item v-for="item in quickLink" class="mr-2" :key="item.uid">
             <div @click="routeNavigate(item.code)">
-              <span>{{item.menuName}}</span>
+              <span>{{ item.menuName }}</span>
             </div>
           </b-nav-item>
         </b-navbar-nav>
@@ -51,31 +51,31 @@
               <a href="javascript:void(0)">
                 <div class="avatar-wrapper">
                   <b-avatar size="40px"
-                            src="https://pic.netbian.com/uploads/allimg/240618/195433-1718711673bf15.jpg"
+                            :src="userInfo.avatarUrl"
                             href="javascript:void(0)">
-                    <span v-if="0" class="iconfont icon-avatar-man" style="font-size:1.8rem;"></span>
+                    <span v-if="!userInfo.avatarUrl">{{userInfo.username}}</span>
                   </b-avatar>
                 </div>
               </a>
               <DropdownMenu slot="list">
                 <DropdownItem name="nickName">
                   <div class="nickName quick-start-item">
-                    <span class="nick-name">限制长度10个字服了</span>
+                    <span class="nick-name">{{userInfo.username}}</span>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="levelBar">
                   <div class="levelBar quick-start-item">
                     <div class="level-bar-progress">
-                      <span :class="`iconfont icon-level`+5"/>
+                      <span :class="`iconfont icon-level`+ userInfo.level"/>
                       <div class="progress-wrapp">
                         <div class="totalProgress">
                           <div class="currentProgress" style="width: 40%"/>
                         </div>
                       </div>
-                      <span :class="`iconfont icon-level`+6"/>
+                      <span :class="`iconfont icon-level`+ (userInfo.level + 1)"/>
                     </div>
                     <div class="level-bar-text">
-                      当前成长15977，距离升级Lv.6 还需要12823
+                      当前成长{{ userInfo.growthValue }}，距离升级Lv.{{ userInfo.level + 1 }} 还需要12823
                     </div>
                   </div>
                 </DropdownItem>
@@ -218,184 +218,185 @@
 </template>
 
 <script>
-  import MessageNotification from "./MessageNotification";
-  import AuthModal from "@/components/common/AuthModal.vue";
-  import AuthApi from "@/api/AuthApi";
-  export default {
-    name: 'Header',
-    data() {
-      return {
-        keywords: '',
-        placeholder: '请输入搜索关键字...',
-        changeBorderColor: false,
-        messageMenu: [],
-        searchKey: '',
-        quickLink: [
-          {
-            uid: 'sdfsf55',
-            code: 'computenetwork',
-            menuName: '计算机与网络'
-          },
-          {
-            uid: 'asdas34213',
-            menuName: '编程语言',
-            code: 'language'
-          },
-          {
-            uid: 'sdfs453',
-            code: 'database',
-            menuName: '数据库'
-          },
-          {
-            uid: 'dfg345g',
-            code: 'middleware',
-            menuName: '中间件'
-          },
-          {
-            uid: 'sgfg566',
-            code: 'arithmetic',
-            menuName: '算法'
-          },
-          {
-            uid: '4564gdgd',
-            code: 'ramblyJot',
-            menuName: '随笔'
-          }
-        ],
-        flag: false,
-        maxWidth: null,
-        showMessage: false,
-        msgNotifyTypeActive: null
-      }
-    },
-    components: {
-      MessageNotification,
-      AuthModal
-    },
-    computed: {
-      loginStatus() {
-        let userInfo = this.$store.state.userInfo
-        return userInfo !== null && userInfo.token?.length === 32
-      }
-    },
-    methods: {
-      // ui交互，改变输入框的大小和颜色
-      changeBorder(flag) {
-        this.changeBorderColor = flag
-      },
-      disableNav(flag) {
-        this.$store.commit('changeShowContext', flag)
-      },
-      // 选择消息类型并跳转到对应类型详情页面
-      chooseMessage(item) {
-        this.$router.push({name: item.menuKey})
-      },
+import MessageNotification from "./MessageNotification";
+import AuthModal from "@/components/common/AuthModal.vue";
+import AuthApi from "@/api/AuthApi";
 
-      // 请求登出，删除服务器token信息
-      logout() {
-        let userInfo = this.$store.state.userInfo
-        if (userInfo.token) {
-          AuthApi.logout(this).then(data => {
-            this.$store.commit('clearUserInfo')
-            this.$Message.success({
-              content: '已成功退出当前用户，记得回来看看哦'
-            });
-            setTimeout(() => {
-              this.$router.go(0);
-            }, 500)
-          })
-        } else {
-          setTimeout(() => {
-            this.$store.commit('clearUserInfo')
-            this.$Message.success({
-              content: '已成功退出当前用户，记得回来看看哦'
-            });
-          }, 500)
+export default {
+  name: 'Header',
+  data() {
+    return {
+      keywords: '',
+      placeholder: '请输入搜索关键字...',
+      changeBorderColor: false,
+      messageMenu: [],
+      searchKey: '',
+      quickLink: [
+        {
+          uid: 'sdfsf55',
+          code: 'computenetwork',
+          menuName: '计算机与网络'
+        },
+        {
+          uid: 'asdas34213',
+          menuName: '编程语言',
+          code: 'language'
+        },
+        {
+          uid: 'sdfs453',
+          code: 'database',
+          menuName: '数据库'
+        },
+        {
+          uid: 'dfg345g',
+          code: 'middleware',
+          menuName: '中间件'
+        },
+        {
+          uid: 'sgfg566',
+          code: 'arithmetic',
+          menuName: '算法'
+        },
+        {
+          uid: '4564gdgd',
+          code: 'ramblyJot',
+          menuName: '随笔'
         }
-      },
-      toWriteCenter() {
-        let routeUrl = this.$router.resolve({
-          path: '/editor/54334ssdsds521'
+      ],
+      flag: false,
+      maxWidth: null,
+      showMessage: false,
+      msgNotifyTypeActive: null
+    }
+  },
+  components: {
+    MessageNotification,
+    AuthModal
+  },
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo;
+    },
+    loginStatus() {
+      let userInfo = this.$store.state.userInfo
+      return userInfo !== null && userInfo.token?.length === 32
+    }
+  },
+  methods: {
+    // ui交互，改变输入框的大小和颜色
+    changeBorder(flag) {
+      this.changeBorderColor = flag
+    },
+    disableNav(flag) {
+      this.$store.commit('changeShowContext', flag)
+    },
+    // 选择消息类型并跳转到对应类型详情页面
+    chooseMessage(item) {
+      this.$router.push({name: item.menuKey})
+    },
+
+    // 请求登出，删除服务器token信息
+    logout() {
+      let userInfo = this.$store.state.userInfo
+      if (userInfo.token) {
+        AuthApi.logout(this).then(data => {
+          this.$store.commit('clearUserInfo')
+          this.$Message.success({
+            content: '已成功退出当前用户，记得回来看看哦'
+          });
         })
-        window.open(routeUrl.href, '_blank')
-      },
-
-      /**
-       * @param itemName 路由跳转标志
-       */
-      routeNavigate(itemName) {
-        if (itemName === undefined) {
-          return;
-        }
-        switch (itemName) {
-          case 'logout':
-            this.logout();
-            break;
-          case 'nickName':
-            this.$router.push({name: 'Profile'})
-            break;
-          case 'levelBar':
-            this.$router.push({name: 'Grade'})
-            break;
-          case 'noteHome':
-            this.$router.push({name: 'NoteHome'})
-            break;
-          case 'fans':
-            this.$router.push({path: '/dashboard/relational/fans'})
-            break;
-          case 'concern':
-            this.$router.push({path: '/dashboard/relational/concern'})
-            break;
-          case 'creativeSpace':
-            this.$router.push({path: '/creative'})
-            break;
-          case 'personInfo':
-            this.$router.push({path: '/user'})
-            break;
-          case 'growthTrajector':
-            this.$router.push({name: 'Stats'})
-            break;
-          case 'ramblyJot':
-            this.$router.push({path: '/ramblyJot'})
-            break;
-          case 'arithmetic':
-            this.$router.push({path: '/arithmetic'})
-            break;
-          case 'middleware':
-            this.$router.push({path: '/middleware'})
-            break;
-          case 'database':
-            this.$router.push({path: '/database'})
-            break;
-          case 'language':
-            this.$router.push({path: '/language'})
-            break;
-          case 'computenetwork':
-            this.$router.push({path: '/computenetwork'})
-            break;
-          default:
-            this.$router.push({path: '/cate/' + itemName})
-            break
-        }
-      },
-      readMessage(itemName) {
-        this.showMessage = true;
-        this.msgNotifyTypeActive = itemName;
-      },
-      search() {
-        let path = '/search?k=' + (this.keywords ? this.keywords : this.placeholder);
-        this.$router.push({path: path})
+      } else {
+        setTimeout(() => {
+          this.$store.commit('clearUserInfo')
+          this.$Message.success({
+            content: '已成功退出当前用户，记得回来看看哦'
+          });
+        }, 500)
       }
     },
-    mounted() {
-      if (this.$store.state.isPhone) {
-        this.maxWidth = document.documentElement.clientWidth
+    toWriteCenter() {
+      let routeUrl = this.$router.resolve({
+        path: '/editor/54334ssdsds521'
+      })
+      window.open(routeUrl.href, '_blank')
+    },
+
+    /**
+     * @param itemName 路由跳转标志
+     */
+    routeNavigate(itemName) {
+      if (itemName === undefined) {
+        return;
       }
+      switch (itemName) {
+        case 'logout':
+          this.logout();
+          break;
+        case 'nickName':
+          this.$router.push({name: 'Profile'})
+          break;
+        case 'levelBar':
+          this.$router.push({name: 'Grade'})
+          break;
+        case 'noteHome':
+          this.$router.push({name: 'NoteHome'})
+          break;
+        case 'fans':
+          this.$router.push({path: '/dashboard/relational/fans'})
+          break;
+        case 'concern':
+          this.$router.push({path: '/dashboard/relational/concern'})
+          break;
+        case 'creativeSpace':
+          this.$router.push({path: '/creative'})
+          break;
+        case 'personInfo':
+          this.$router.push({path: '/user'})
+          break;
+        case 'growthTrajector':
+          this.$router.push({name: 'Stats'})
+          break;
+        case 'ramblyJot':
+          this.$router.push({path: '/ramblyJot'})
+          break;
+        case 'arithmetic':
+          this.$router.push({path: '/arithmetic'})
+          break;
+        case 'middleware':
+          this.$router.push({path: '/middleware'})
+          break;
+        case 'database':
+          this.$router.push({path: '/database'})
+          break;
+        case 'language':
+          this.$router.push({path: '/language'})
+          break;
+        case 'computenetwork':
+          this.$router.push({path: '/computenetwork'})
+          break;
+        default:
+          this.$router.push({path: '/cate/' + itemName})
+          break
+      }
+    },
+    readMessage(itemName) {
+      this.showMessage = true;
+      this.msgNotifyTypeActive = itemName;
+    },
+    search() {
+      let path = '/search?k=' + (this.keywords ? this.keywords : this.placeholder);
+      this.$router.push({path: path})
+    }
+  },
+  mounted() {
+    if (this.$store.state.isPhone) {
+      this.maxWidth = document.documentElement.clientWidth
     }
   }
+}
 </script>
 
 <style lang="less" scoped>
-  @import './css/common-var.less';
-  @import "./css/header.less";
+@import './css/common-var.less';
+@import "./css/header.less";
 </style>

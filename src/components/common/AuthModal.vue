@@ -214,7 +214,7 @@ export default {
       }
       AuthApi.getSvCookie(this, svScene).then(data => {
         this.sliderValidateResult = true;
-        let svToken = data.data.tn;
+        let svToken = data.tn;
         if (!svToken) {
           return;
         }
@@ -237,13 +237,7 @@ export default {
               this.sendCodeInterval = null;
             }
           }, 1000)
-        }).catch(error => {
-          this.$Message.error(error.message)
-          // console.log(error)
-          // console.error(this)
         })
-      }).catch(error => {
-        this.$Message.error(error.msg)
       })
     },
     getVerifyCode() {
@@ -262,27 +256,17 @@ export default {
       }
       AuthApi.payloadLogin(this).then(data => {
         this.$Message.success('登陆成功!')
-        let loginData = data.data;
-        // 保存token到store中
+        this.showLogin = false;
+        let loginData = data;
         let userInfo = {
           token: loginData.acToken,
           uid: loginData.userId,
           rfToken: loginData.rfToken
         }
-        this.showLogin = false;
+        // 保存token到store中
         this.$store.commit('login', userInfo)
-        setTimeout(() => {
-          this.$router.go(0);
-        }, 500)
-      }).catch(error => {
-        // 判断是业务错误还是网络错误
-        let result = error.result;
-        let message = '系统错误，请稍后再试';
-        if (result !== undefined) {
-          let serverError = error.message;
-          message = serverError !== null && serverError.length > 0 ? serverError : message;
-        }
-        this.$Message.error(message);
+        // 获取用户信息
+        this.reqUserInfo(userInfo);
       })
     },
     quickLogin() {
@@ -292,27 +276,17 @@ export default {
       }
       AuthApi.verifyCodeLogin(this).then(data => {
         this.$Message.success('登陆成功!')
-        let loginData = data.data;
-        // 保存token到store中
+        this.showLogin = false;
+        let loginData = data;
         let userInfo = {
           token: loginData.acToken,
           uid: loginData.userId,
           rfToken: loginData.rfToken
         }
-        this.showLogin = false;
+        // 保存token到store中
         this.$store.commit('login', userInfo)
-        setTimeout(() => {
-          this.$router.go(0);
-        }, 500)
-      }).catch(error => {
-        // 判断是业务错误还是网络错误
-        let result = error.result;
-        let message = '系统错误，请稍后再试';
-        if (result !== undefined) {
-          let serverError = error.message;
-          message = serverError !== null && serverError.length > 0 ? serverError : message;
-        }
-        this.$Message.error(message);
+        // 获取用户信息
+        this.reqUserInfo(userInfo);
       })
     },
     resetPassword() {
@@ -323,15 +297,6 @@ export default {
       AuthApi.resetPassword(this).then(data => {
         this.$Message.success('密码重置成功!')
         this.loginType = 1;
-      }).catch(error => {
-        // 判断是业务错误还是网络错误
-        let result = error.result;
-        let message = '系统错误，请稍后再试';
-        if (result !== undefined) {
-          let serverError = error.message;
-          message = serverError !== null && serverError.length > 0 ? serverError : message;
-        }
-        this.$Message.error(message);
       })
     },
     checkALegitimacy(checkType) {
@@ -399,6 +364,18 @@ export default {
     },
     returnLogin() {
       this.loginType = 1;
+    },
+    reqUserInfo(userInfo) {
+      // 请求用户信息
+      AuthApi.getUserInfo(this, userInfo.uid).then(data => {
+        let loginUser = data;
+        userInfo = {...userInfo, ...loginUser};
+        // 保存userInfo到store中
+        this.$store.commit('login', userInfo)
+        setTimeout(() => {
+          this.$router.go(0);
+        }, 500)
+      })
     }
   },
   watch: {

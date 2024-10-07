@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import axios from 'axios';
 import vuex from '@/store/index';
+import router from '@/router'
+import AuthApi from "@/api/AuthApi";
+import {Message} from 'view-design'
 
 // 创建axios实例
 const http = axios.create({
@@ -44,37 +47,37 @@ http.interceptors.response.use(
     if (status === 200 && data !== null) {
       // http请求成功，获取server返回的数据
       if (data.result) {
-        return Promise.resolve(data);
+        return Promise.resolve(data.data);
       }
       // 401 actoken过期
       if (data.code === 401) {
-        // 使用rftoken去刷新 TODO
-        console.log("actoken过期了。。。")
-
-
+        // 使用rftoken去刷新
+        let userInfo = vuex.state.userInfo;
+        if (!userInfo || !userInfo.rfToken) {
+          Message.error('登陆信息已过期，请重新登陆！');
+        }
+        AuthApi.refreshToken(new Vue(), userInfo.rfToken);
       } else if (data.code === 403) {
         // 如果rftoken也过期，那就直接重新登录了
-        console.log("rftoken过期了。。。")
-        Vue.$Message.error({
-          content: '登陆信息已过期，请重新登陆！'
-        });
+        Message.error('登陆信息已过期，请重新登陆！');
         // 本地登出操作
         setTimeout(() => {
-          vuex.dispatch('clearUserInfo');
-          Vue.$router.push('/login');
+          vuex.commit('clearUserInfo');
+          router.replace('/');
         })
       } else {
         // 业务系统错误
-        return Promise.reject(data);
+        Message.error(data.message);
       }
     } else {
       // http请求错误或服务器返回空
-      return Promise.reject(response);
+      Message.error('系统错误，请稍后再试');
     }
   },
   // http接口失败回调
-  error => {
-    return Promise.reject(error);
+  () => {
+    // return Promise.reject(error);
+    Message.error('网络连接错误，请稍后再试');
   }
 );
 
