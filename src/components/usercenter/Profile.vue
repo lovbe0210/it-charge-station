@@ -88,7 +88,7 @@
               <span class="nickname-editor-control-content">
                 <input autocomplete="off"
                        :class="['control-input', 'nickName-module_input','item-border',userInfo.username && userInfo.username.length >= 16 ? 'error-editor-control' : '']"
-                       type="text" placeholder="必填" v-model="userInfo.username" id="nickName" maxlength="50">
+                       type="text" placeholder="必填" v-model="userInfo.username" id="nickName" maxlength="20">
               </span>
             </div>
             <div class="setting-legacy-form-explain">
@@ -198,7 +198,7 @@
           <div class="setting-legacy-form-item-control-wrapper">
             <div class="update-editor-control">
               <span class="update-editor-control-content">
-                <Button type="success">
+                <Button type="success" @click="updateUserInfo">
                   <span>更新信息</span>
                 </Button>
               </span>
@@ -214,6 +214,7 @@
   import {VueCropper} from 'vue-cropper'
   import {getRandomColor} from '@/utils/utils'
   import userApi from "@/api/UserApi";
+  import {dataURLtoFile} from "@/utils/utils"
 
   export default {
     name: 'Profile',
@@ -245,9 +246,26 @@
       VueCropper
     },
     methods: {
+      /**
+       * 更新用户信息
+       */
+      updateUserInfo() {
+        let userInfo = new FormData();
+        userInfo.append('avatarFile', dataURLtoFile(this.avatarPreview, "preview.jpg"));
+        userInfo.append('username', this.userInfo.username);
+        userInfo.append('tagArray', JSON.stringify(this.userInfo.tags));
+        userInfo.append('introduction', this.userInfo.introduction);
+        userInfo.append('location', this.userInfo.location);
+        userInfo.append('industry', this.userInfo.industry);
+        userApi.updateUserInfo(this, userInfo).then(data => {
+          if (data) {
+            this.$Message.success("更新成功");
+          }
+        })
+      },
       fileHandle(file) {
-        if (file?.size > 5120 * 1024) {
-          this.$Message.error('文件大小不得超过5M')
+        if (file?.size > 10 * 1024 * 1024) {
+          this.$Message.error('文件大小不得超过10M')
           return false;
         }
         let _this = this;
@@ -288,7 +306,7 @@
         });
       },
       confirmAvatarCrop() {
-        this.userInfo.avatar = this.avatarPreview;
+        this.userInfo.avatarUrl = this.avatarPreview;
       },
       // 标签移除
       handleClose(removedTag) {

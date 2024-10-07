@@ -300,17 +300,18 @@ export default {
       let userInfo = this.$store.state.userInfo
       if (userInfo.token) {
         AuthApi.logout(this).then(data => {
+          if (!data) {
+            return;
+          }
           this.$store.commit('clearUserInfo')
-          this.$Message.success({
-            content: '已成功退出当前用户，记得回来看看哦'
-          });
+          this.$Message.success('已成功退出当前用户，记得回来看看哦');
+          this.$router.replace("/")
         })
       } else {
         setTimeout(() => {
           this.$store.commit('clearUserInfo')
-          this.$Message.success({
-            content: '已成功退出当前用户，记得回来看看哦'
-          });
+          this.$Message.success('已成功退出当前用户，记得回来看看哦');
+          this.$router.replace("/")
         }, 500)
       }
     },

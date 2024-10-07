@@ -330,3 +330,23 @@ export function verifyTelLawful(telephone) {
   }
 
 }
+
+/**
+ * 将base64转换为blob
+ * @param dataurl
+ * @returns {module:buffer.Blob}
+ */
+export function dataURLtoFile(dataurl, fileName) {
+  let arr = dataurl.split(',');
+  let mime = arr[0].match(/:(.*?);/)[1];
+  let bstr = atob(arr[1]);
+  let n = bstr.length;
+  let u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  let blob = new Blob([u8arr], {type: mime});
+  blob.lastModifiedDate = new Date();
+  blob.name = fileName;
+  return blob;
+}

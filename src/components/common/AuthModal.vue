@@ -214,12 +214,18 @@ export default {
         svScene = this.account.indexOf('@') === -1 ? 9 : 10;
       }
       authApi.getSvCookie(this, svScene).then(data => {
+        if (!data) {
+          return;
+        }
         this.sliderValidateResult = true;
         let svToken = data.tn;
         if (!svToken) {
           return;
         }
         authApi.sendPayloadCode(this, svScene, svToken).then(result => {
+          if (!result) {
+            return;
+          }
           // 短信发送成功
           let tmp = this.account && this.account.indexOf('@') !== -1 ? '邮箱' : '手机';
           tmp = '已发送短信验证码到指定' + tmp;
@@ -256,6 +262,9 @@ export default {
         return;
       }
       authApi.payloadLogin(this).then(data => {
+        if (!data) {
+          return;
+        }
         this.$Message.success('登陆成功!')
         this.showLogin = false;
         let loginData = data;
@@ -276,6 +285,9 @@ export default {
         return;
       }
       authApi.verifyCodeLogin(this).then(data => {
+        if (!data) {
+          return;
+        }
         this.$Message.success('登陆成功!')
         this.showLogin = false;
         let loginData = data;
@@ -296,6 +308,9 @@ export default {
         return;
       }
       authApi.resetPassword(this).then(data => {
+        if (!data) {
+          return;
+        }
         this.$Message.success('密码重置成功!')
         this.loginType = 1;
       })
@@ -369,6 +384,9 @@ export default {
     reqUserInfo(userInfo) {
       // 请求用户信息
       userApi.getUserInfo(this, userInfo.uid).then(data => {
+        if (!data) {
+          return;
+        }
         let loginUser = data;
         userInfo = {...userInfo, ...loginUser};
         // 保存userInfo到store中
