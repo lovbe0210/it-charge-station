@@ -168,7 +168,8 @@
 <script>
 import SliderValidation from "@/components/common/SliderValidation";
 import {emailRegex, verifyTelLawful} from "@/utils/utils.js"
-import AuthApi from "@/api/AuthApi";
+import authApi from "@/api/AuthApi";
+import userApi from "@/api/UserApi";
 
 export default {
   name: "AuthModal",
@@ -212,13 +213,13 @@ export default {
       } else {
         svScene = this.account.indexOf('@') === -1 ? 9 : 10;
       }
-      AuthApi.getSvCookie(this, svScene).then(data => {
+      authApi.getSvCookie(this, svScene).then(data => {
         this.sliderValidateResult = true;
         let svToken = data.tn;
         if (!svToken) {
           return;
         }
-        AuthApi.sendPayloadCode(this, svScene, svToken).then(result => {
+        authApi.sendPayloadCode(this, svScene, svToken).then(result => {
           // 短信发送成功
           let tmp = this.account && this.account.indexOf('@') !== -1 ? '邮箱' : '手机';
           tmp = '已发送短信验证码到指定' + tmp;
@@ -254,7 +255,7 @@ export default {
       if (!checkResult) {
         return;
       }
-      AuthApi.payloadLogin(this).then(data => {
+      authApi.payloadLogin(this).then(data => {
         this.$Message.success('登陆成功!')
         this.showLogin = false;
         let loginData = data;
@@ -274,7 +275,7 @@ export default {
       if (!checkResult) {
         return;
       }
-      AuthApi.verifyCodeLogin(this).then(data => {
+      authApi.verifyCodeLogin(this).then(data => {
         this.$Message.success('登陆成功!')
         this.showLogin = false;
         let loginData = data;
@@ -294,7 +295,7 @@ export default {
       if (!checkResult) {
         return;
       }
-      AuthApi.resetPassword(this).then(data => {
+      authApi.resetPassword(this).then(data => {
         this.$Message.success('密码重置成功!')
         this.loginType = 1;
       })
@@ -367,7 +368,7 @@ export default {
     },
     reqUserInfo(userInfo) {
       // 请求用户信息
-      AuthApi.getUserInfo(this, userInfo.uid).then(data => {
+      userApi.getUserInfo(this, userInfo.uid).then(data => {
         let loginUser = data;
         userInfo = {...userInfo, ...loginUser};
         // 保存userInfo到store中

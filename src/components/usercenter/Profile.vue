@@ -213,7 +213,7 @@
 <script>
   import {VueCropper} from 'vue-cropper'
   import {getRandomColor} from '@/utils/utils'
-  import { cloneDeep } from '@/utils/emoji';
+  import userApi from "@/api/UserApi";
 
   export default {
     name: 'Profile',
@@ -240,11 +240,6 @@
         inputValue: '',
         tagColor: 'red'
       }
-    },
-    computed: {
-      // userInfo() {
-      //   return this.$store.state.userInfo;
-      // }
     },
     components: {
       VueCropper
@@ -326,7 +321,11 @@
     },
     created() {
       let tmp = this.$store.state.userInfo;
-      this.userInfo = cloneDeep(tmp);
+      userApi.getUserInfo(this, tmp.uid).then(data => {
+        this.userInfo = data;
+        let newUserInfo = {...tmp, ...data};
+        this.$store.commit("login", newUserInfo);
+      })
     }
   }
 </script>

@@ -27,7 +27,7 @@
   import {vueBaberrage} from 'vue-baberrage'
   // uuid
   import { v4 as uuid } from 'uuid';
-  import AuthApi from "@/api/AuthApi";
+  import UserApi from "@/api/UserApi";
 
 
   // 安装bootstrap和图标库
@@ -132,7 +132,7 @@
       // 判断用户登录状态是否有效
       let userInfo = this.$store.state.userInfo;
       if (userInfo && userInfo.uid) {
-        AuthApi.getUserInfo(this, userInfo.uid).then(data => {
+        UserApi.getUserInfo(this, userInfo.uid).then(data => {
           let loginUser = data;
           userInfo = {...userInfo, ...loginUser};
           // 保存userInfo到store中
