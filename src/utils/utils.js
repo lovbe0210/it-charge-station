@@ -337,16 +337,22 @@ export function verifyTelLawful(telephone) {
  * @returns {module:buffer.Blob}
  */
 export function dataURLtoFile(dataurl, fileName) {
-  let arr = dataurl.split(',');
-  let mime = arr[0].match(/:(.*?);/)[1];
-  let bstr = atob(arr[1]);
+  // 将base64的数据部分提取出来
+  const arr = dataurl.split(',');
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
   let n = bstr.length;
-  let u8arr = new Uint8Array(n);
+  const u8arr = new Uint8Array(n);
+
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
-  let blob = new Blob([u8arr], {type: mime});
-  blob.lastModifiedDate = new Date();
-  blob.name = fileName;
-  return blob;
+
+  // 将Uint8Array转换为Blob对象
+  const blob = new Blob([u8arr], { type: mime });
+
+  // 创建File对象
+  const file = new File([blob], fileName, { type: mime });
+
+  return file;
 }

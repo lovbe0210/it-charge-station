@@ -39,8 +39,16 @@ module.exports = {
       '/api': {
         // target: 'https://www.codeman.store',
         // target: 'http://www.codeman.ink:3000',
-        target: 'http://10.2.2.17:10210',
-        // target: 'http://localhost:10210',
+        // target: 'http://10.2.2.17:10210',
+        target: 'http://localhost:10210',
+        changeOrigin: true,
+        ws: true
+      },
+      '/icharge': {
+        // target: 'https://www.codeman.store',
+        // target: 'http://www.codeman.ink:3000',
+        // target: 'http://10.2.2.17:10210',
+        target: 'http://[2409:8a62:4f5:6f91:20c:29ff:fe29:775f]:9000',
         changeOrigin: true,
         ws: true
       },

@@ -257,10 +257,8 @@
         userInfo.append('introduction', this.userInfo.introduction);
         userInfo.append('location', this.userInfo.location);
         userInfo.append('industry', this.userInfo.industry);
-        userApi.updateUserInfo(this, userInfo).then(data => {
-          if (data) {
-            this.$Message.success("更新成功");
-          }
+        userApi.updateUserInfo(this, userInfo).then(() => {
+          this.$Message.success("更新成功");
         })
       },
       fileHandle(file) {
