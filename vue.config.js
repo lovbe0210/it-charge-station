@@ -3,8 +3,9 @@
  * 作为一个可选配置，配置vue脚手架中的一些公共配置
  * 配置项地址见：https://cli.vuejs.org/zh/config/#pages
  */
-const FileManagerPlugin = require('filemanager-webpack-plugin') //引入插件
+// const FileManagerPlugin = require('filemanager-webpack-plugin') //引入插件
 module.exports = {
+  fileService: 'http://10.2.2.15:9000',
   // 根路径  @ is an alias to /src
   publicPath: '/',
   // 是否打包.map文件，在运行报错时可输出代码定位
@@ -37,18 +38,8 @@ module.exports = {
     port: 80,
     proxy: {
       '/api': {
-        // target: 'https://www.codeman.store',
-        // target: 'http://www.codeman.ink:3000',
-        // target: 'http://10.2.2.17:10210',
-        target: 'http://localhost:10210',
-        changeOrigin: true,
-        ws: true
-      },
-      '/icharge': {
-        // target: 'https://www.codeman.store',
-        // target: 'http://www.codeman.ink:3000',
-        // target: 'http://10.2.2.17:10210',
-        target: 'http://[2409:8a62:4f5:6f91:20c:29ff:fe29:775f]:9000',
+        target: 'http://10.2.2.17:10210',
+        // target: 'http://localhost:10210',
         changeOrigin: true,
         ws: true
       },

@@ -51,7 +51,7 @@
               <a href="javascript:void(0)">
                 <div class="avatar-wrapper">
                   <b-avatar size="40px"
-                            :src="userInfo.avatarUrl"
+                            :src="this.fileService + userInfo.avatarUrl"
                             href="javascript:void(0)">
                     <span v-if="!userInfo.avatarUrl">{{userInfo.username}}</span>
                   </b-avatar>

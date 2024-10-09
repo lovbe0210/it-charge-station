@@ -11,7 +11,7 @@
           </div>
           <div class="setting-legacy-form-item-control-wrapper">
             <div class="avatar-uploader-control">
-              <b-avatar :src="userInfo.avatarUrl"
+              <b-avatar :src="userInfo.avatarUrl && userInfo.avatarUrl.startsWith('/') ? this.fileService + userInfo.avatarUrl : userInfo.avatarUrl"
                         variant="light"
                         href="javascript:void(0)"
                         class="avatar-uploader-show">
@@ -36,7 +36,8 @@
                 v-model="showAvatarCropper"
                 title="编辑头像"
                 :mask-closable="false"
-                @on-ok="confirmAvatarCrop">
+                @on-ok="confirmAvatarCrop"
+                @on-cancel="clearAvatarCrop">
                 <div class="avatar-cropper">
                   <vueCropper
                     class="crop-box"
@@ -220,19 +221,6 @@
     name: 'Profile',
     data() {
       return {
-       /* userInfo: {
-          avatar: 'https://pic.netbian.com/uploads/allimg/240618/195433-1718711673bf15.jpg',
-          nickname: 'HappyDragon1994',
-          tags: [
-            {content: '自我驱动', color: 'blue'},
-            {content: '坚持不懈', color: 'red'},
-            {content: '目标大厂', color: 'orange'},
-            {content: '年薪百万', color: 'green'}
-          ],
-          profile: '我生来就是高山而非溪流，我欲于群峰之巅俯视平庸的沟壑',
-          location: '四川省成都市成华区',
-          profession: '新时代『农民工』'
-        },*/
         userInfo: {},
         showAvatarCropper: false,
         avatarOriginalFile: null,
@@ -251,14 +239,35 @@
        */
       updateUserInfo() {
         let userInfo = new FormData();
-        userInfo.append('avatarFile', dataURLtoFile(this.avatarPreview, "preview.jpg"));
-        userInfo.append('username', this.userInfo.username);
-        userInfo.append('tagArray', JSON.stringify(this.userInfo.tags));
-        userInfo.append('introduction', this.userInfo.introduction);
-        userInfo.append('location', this.userInfo.location);
-        userInfo.append('industry', this.userInfo.industry);
+        if (this.avatarPreview) {
+          userInfo.append('avatarFile', dataURLtoFile(this.avatarPreview, "preview.jpg"));
+        }
+        if (this.userInfo.username) {
+          userInfo.append('username', this.userInfo.username);
+        }
+        if (this.userInfo.tags) {
+          userInfo.append('tagArray', JSON.stringify(this.userInfo.tags));
+        }
+        if (this.userInfo.introduction) {
+          userInfo.append('introduction', this.userInfo.introduction);
+        }
+        if (this.userInfo.location) {
+          userInfo.append('location', this.userInfo.location);
+        }
+        if (this.userInfo.industry) {
+          userInfo.append('industry', this.userInfo.industry);
+        }
         userApi.updateUserInfo(this, userInfo).then(() => {
           this.$Message.success("更新成功");
+          this.echoUpdateInfo();
+        })
+      },
+      echoUpdateInfo() {
+        let tmp = this.$store.state.userInfo;
+        userApi.getUserInfo(this, tmp.uid).then(data => {
+          this.userInfo = data;
+          let newUserInfo = {...tmp, ...data};
+          this.$store.commit("login", newUserInfo);
         })
       },
       fileHandle(file) {
@@ -306,6 +315,10 @@
       confirmAvatarCrop() {
         this.userInfo.avatarUrl = this.avatarPreview;
       },
+      clearAvatarCrop() {
+        this.avatarOriginalFile = null;
+        this.avatarPreview = null;
+      },
       // 标签移除
       handleClose(removedTag) {
         this.userInfo.tags = this.userInfo.tags.filter(tag => tag !== removedTag);
@@ -336,12 +349,7 @@
       }
     },
     created() {
-      let tmp = this.$store.state.userInfo;
-      userApi.getUserInfo(this, tmp.uid).then(data => {
-        this.userInfo = data;
-        let newUserInfo = {...tmp, ...data};
-        this.$store.commit("login", newUserInfo);
-      })
+      this.echoUpdateInfo();
     }
   }
 </script>
