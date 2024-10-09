@@ -313,6 +313,8 @@ export default {
       }
     },
     toWriteCenter() {
+      // 创建空白文档
+
       let routeUrl = this.$router.resolve({
         path: '/editor/54334ssdsds521'
       })

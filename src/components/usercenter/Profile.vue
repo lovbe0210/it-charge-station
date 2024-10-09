@@ -11,7 +11,7 @@
           </div>
           <div class="setting-legacy-form-item-control-wrapper">
             <div class="avatar-uploader-control">
-              <b-avatar :src="userInfo.avatarUrl && userInfo.avatarUrl.startsWith('/') ? this.fileService + userInfo.avatarUrl : userInfo.avatarUrl"
+              <b-avatar :src="avatar"
                         variant="light"
                         href="javascript:void(0)"
                         class="avatar-uploader-show">
@@ -228,6 +228,12 @@
         inputVisible: false,
         inputValue: '',
         tagColor: 'red'
+      }
+    },
+    computed: {
+      avatar() {
+        return this.userInfo.avatarUrl && this.userInfo.avatarUrl.startsWith('/') ? this.fileService + this.userInfo.avatarUrl
+          : this.userInfo.avatarUrl
       }
     },
     components: {
