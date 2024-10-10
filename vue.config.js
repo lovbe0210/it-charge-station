@@ -5,7 +5,6 @@
  */
 // const FileManagerPlugin = require('filemanager-webpack-plugin') //引入插件
 module.exports = {
-  fileService: 'http://10.2.2.15:9000',
   // 根路径  @ is an alias to /src
   publicPath: '/',
   // 是否打包.map文件，在运行报错时可输出代码定位

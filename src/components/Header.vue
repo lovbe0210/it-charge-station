@@ -53,14 +53,14 @@
                   <b-avatar size="40px"
                             :src="this.fileService + userInfo.avatarUrl"
                             href="javascript:void(0)">
-                    <span v-if="!userInfo.avatarUrl">{{userInfo.username}}</span>
+                    <span v-if="!userInfo.avatarUrl">{{ userInfo.username }}</span>
                   </b-avatar>
                 </div>
               </a>
               <DropdownMenu slot="list">
                 <DropdownItem name="nickName">
                   <div class="nickName quick-start-item">
-                    <span class="nick-name">{{userInfo.username}}</span>
+                    <span class="nick-name">{{ userInfo.username }}</span>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="levelBar">
@@ -221,6 +221,7 @@
 import MessageNotification from "./MessageNotification";
 import AuthModal from "@/components/common/AuthModal.vue";
 import AuthApi from "@/api/AuthApi";
+import WriteCenterApi from "../api/WriteCenterApi";
 
 export default {
   name: 'Header',
@@ -314,11 +315,14 @@ export default {
     },
     toWriteCenter() {
       // 创建空白文档
-
-      let routeUrl = this.$router.resolve({
-        path: '/editor/54334ssdsds521'
+      WriteCenterApi.createBlankDoc(this).then(data => {
+        let articleId = data.uid;
+        let routeUrl = this.$router.resolve({
+          path: '/editor/' + articleId
+        })
+        window.open(routeUrl.href, '_blank')
       })
-      window.open(routeUrl.href, '_blank')
+
     },
 
     /**

@@ -7,9 +7,8 @@ export default {
    */
   async createBlankDoc(_this) {
     return await _this.$request({
-      url: "/user/getUserInfo",
-      method: 'POST',
-      data: jsonData
+      url: "/contentProd/createBlankDoc",
+      method: 'POST'
     });
   }
 }

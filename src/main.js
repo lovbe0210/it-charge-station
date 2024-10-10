@@ -4,7 +4,6 @@ import router from './router'
 import store from './store'
 import request from './utils/request'
 import {Message} from 'view-design'
-import config from '../vue.config.js';
 
 Message.config({
   top: 80
@@ -13,7 +12,8 @@ Message.config({
 Vue.config.productionTip = false
 Vue.prototype.$request = request
 Vue.prototype.$Message = Message
-Vue.prototype.fileService = config.fileService
+let fileService = 'http://10.2.2.15:9000'
+Vue.prototype.fileService = fileService;
 
 
 new Vue({
