@@ -12,7 +12,7 @@
                     <div class="title-editor">
                       <textarea class="title" v-model="doc.title" placeholder="请输入标题"
                                 maxlength="130" tabindex="1" rows="1" ref="titleTextarea"
-                                @blur="updateDocInfo" @keydown.enter="completeTitle">
+                                @blur="updateArticleInfo" @keydown.enter="completeTitle">
                       </textarea>
                     </div>
                   </div>
@@ -72,7 +72,7 @@
     data() {
       return {
         doc: {
-          title: this.docInfo.title,
+          title: "",
           wordsNum: 0
         },
         tocData: [],
@@ -154,7 +154,7 @@
         return this.$store.state.tmpDoc;
       }
     },
-    props: ['docInfo'],
+    props: ['articleInfo'],
     methods: {
       changeTitleHeight() {
         let _this = this
@@ -170,9 +170,9 @@
           }
         })
       },
-      updateDocInfo() {
+      updateArticleInfo() {
         // TODO 先更新数据库然后在进行页面渲染
-        this.$emit('updateDocInfo', this.doc)
+        this.$emit('updateArticleInfo', this.doc)
       },
       completeTitle(event) {
         // 阻止换行然后切换光标
@@ -254,7 +254,7 @@
           text = text.replace(/\n/g, "");
           text = text.replace(" ", "");
           this.doc.wordsNum = text.length;
-          this.updateDocInfo();
+          this.updateArticleInfo();
           console.log('字数更新了：', this.doc.wordsNum)
         }
 
@@ -279,6 +279,10 @@
       }
     },
     mounted() {
+      this.article = {
+        title: this.articleInfo.title,
+        wordsNum: this.articleInfo.wordsNum
+      }
       const container = this.$refs.container;
       if (container) {
         //实例化引擎
@@ -344,10 +348,11 @@
             this.debounceRefreshToc();
         });
 
-        if (this.docInfo.content?.length !== 0) {
-          this.engine.setJsonValue(JSON.parse(this.docInfo.content))
+        debugger
+        if (this.articleInfo.latestContent?.length !== 0) {
+          this.engine.setJsonValue(JSON.parse(this.articleInfo.latestContent))
           const pattern = /h[1-6]/;
-          let match = this.docInfo.content.match(pattern);
+          let match = this.articleInfo.content.match(pattern);
           if (match) {
             this.renderEditorData();
           }

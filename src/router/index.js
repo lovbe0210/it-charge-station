@@ -270,7 +270,7 @@ const routes = [
   },
   {
     // 写作中心
-    path: '/editor/:docId',
+    path: '/editor/:articleId',
     name: 'WriteCenter',
     props: true,
     component: () => import('@/views/WriteCenter')

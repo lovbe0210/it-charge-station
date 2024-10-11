@@ -11,13 +11,7 @@ export default new Vuex.Store({
     pageState: "init",
     uniqueId: null,
     // TODO 这里还是无法解决先切换到别的页面然后后台播放然后backplay = true，然后再刷新导致不能播放的问题
-  /*  userInfo: {
-      uid: 9527,
-      username: '布衣草人',
-      domain: 'lovbe0210',
-      level: 6,
-      avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hndj43fdrsj30s010vgtz.jpg'
-    },*/
+    userInfo: {},
     tmpDoc: {
       uid: 1213324,
       title: null,

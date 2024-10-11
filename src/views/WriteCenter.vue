@@ -39,15 +39,17 @@
       </div>
       <b-list-group class="title-info" flush>
         <b-list-group-item class="title">
-          {{ docInfo.title === null || docInfo.title.length === 0 ? '无标题文档' : docInfo.title }}
+          {{ articleInfo.title === null || articleInfo.title.length === 0 ? '无标题文档' : articleInfo.title }}
         </b-list-group-item>
         <b-list-group-item class="author-info">
-          <a href="/">@福</a>
-          <span style="color: #d9d9d9;margin: 0 8px 0 8px;">/</span>
-          <a href="">从头开始</a>
+          <a href="/">{{ userInfo.username }}</a>
+          <span v-if="articleInfo.columnId">
+            <span style="color: #d9d9d9;margin: 0 8px 0 8px;">/</span>
+            <a href="">{{ articleInfo.columnName }}</a>
+          </span>
           <span style="color: #d9d9d9;margin: 0 8px 0 8px;">|</span>
           <span class="update-time un-select">
-            最后更新于今天 12:23
+            最后更新于 {{ formatTime(articleInfo.updateTime) }}
             <span class="iconfont icon-cloud"/>
           </span>
         </b-list-group-item>
@@ -182,17 +184,17 @@
             <div class="drawer-setting-item time-info">
               <div class="label">文档信息</div>
               <div class="article-time">
-                <span>字数统计：{{ docInfo.wordsNum }}</span>
+                <span>字数统计：{{ articleInfo.wordsNum }}</span>
                 <span>创建于：2023-08-08 14:09</span>
                 <span>更新于：2023-08-08 14:09</span>
               </div>
             </div>
           </div>
           <div v-if="drawerType === 1">
-            <article-setting :articleId="docInfo.uid" :changePermission="true"/>
+            <article-setting :articleId="articleInfo.uid" :changePermission="true"/>
           </div>
           <div v-if="drawerType === 2">
-            <article-version :articleId="docInfo.uid" :addNewVersion="newVersion"/>
+            <article-version :articleId="articleInfo.uid" :addNewVersion="newVersion"/>
           </div>
         </Drawer>
         <Modal v-model="showDeleteModal"
@@ -202,7 +204,7 @@
                :footer-hide="true">
           <div class="delete-tips">
             <span class="iconfont i-warn"></span>
-            确认删除 {{ docInfo.title }} ？
+            确认删除 {{ articleInfo.title }} ？
           </div>
           <div class="confirm-btn">
             <Button :class="docStyle.asyncTheme ? 'ghost-btn' : ''">取消</Button>
@@ -212,8 +214,8 @@
       </div>
     </b-row>
     <b-row class="editor-root">
-      <editor @updateDocInfo="updateDocInfo"
-              :docInfo="docInfo"
+      <editor @updateArticleInfo="updateArticleInfo"
+              :articleInfo="articleInfo"
               ref="editorContainer"></editor>
     </b-row>
   </div>
@@ -224,16 +226,17 @@ import Editor from '@/components/Editor'
 import {formatTime} from '@/utils/emoji'
 import ArticleSetting from "@/components/common/ArticleSetting"
 import ArticleVersion from "@/components/common/ArticleVersion"
+import WriteCenterApi from "@/api/WriteCenterApi";
 
 export default {
   name: 'WriteCenter',
   data() {
     return {
-      docInfo: {
-        uid: 1212121,
-        title: '从API到Agent：万字长文洞悉LangChain工程化设计',
+      articleInfo: {
+        uid: null,
+        title: null,
         wordsNum: 0,
-        content: ""
+        content: null
       },
       newVersion: false,
       fontSizeRange: [12, 13, 14, 15, 16, 17, 18, 19],
@@ -244,7 +247,11 @@ export default {
       fontSizeShowSelect: false
     }
   },
+  props: ['articleId'],
   computed: {
+    userInfo() {
+      return this.$store.state.userInfo;
+    },
     currentFontIndex() {
       return this.fontSizeRange.findIndex(
         (item) => item === this.docStyle.docFontSize
@@ -268,8 +275,8 @@ export default {
     /**
      * 为子组件定义的事件方法
      */
-    updateDocInfo(docInfo) {
-      this.docInfo = {...this.docInfo, ...docInfo};
+    updateArticleInfo(articleInfo) {
+      this.articleInfo = {...this.articleInfo, ...articleInfo};
     },
     changeFontSize(value) {
       this.docStyle.docFontSize = value;
@@ -297,10 +304,16 @@ export default {
     Editor,
     ArticleSetting,
     ArticleVersion
+  },
+  created() {
+    // 根据articleId获取文章信息
+    WriteCenterApi.getArticleForEdit(this, this.articleId).then(data => {
+      this.articleInfo = data
+    })
   }
 }
 </script>
 
 <style scoped lang="less">
-@import '../components/css/write-center.less';
+  @import '../components/css/write-center.less';
 </style>
