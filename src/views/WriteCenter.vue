@@ -214,9 +214,11 @@
       </div>
     </b-row>
     <b-row class="editor-root">
-      <editor @updateArticleInfo="updateArticleInfo"
+      <editor v-if="articleInfo.uid"
+              @updateArticleInfo="updateArticleInfo"
               :articleInfo="articleInfo"
-              ref="editorContainer"></editor>
+              ref="editorContainer">
+      </editor>
     </b-row>
   </div>
 </template>
@@ -230,6 +232,17 @@ import WriteCenterApi from "@/api/WriteCenterApi";
 
 export default {
   name: 'WriteCenter',
+  beforeRouteEnter(to, from, next) {
+    next(vc => {
+      // 通过 `vc` 访问组件实例
+      WriteCenterApi.getArticleForEdit(vc, vc.articleId).then(data => {
+        vc.articleInfo = data
+        console.log("--------------------接口请求数据-------------------------")
+        console.log(vc.articleInfo)
+        next();
+      })
+    })
+  },
   data() {
     return {
       articleInfo: {
@@ -277,6 +290,9 @@ export default {
      */
     updateArticleInfo(articleInfo) {
       this.articleInfo = {...this.articleInfo, ...articleInfo};
+      console.log("-----------------文档内容更新--------------------")
+      console.log(this.articleInfo);
+      console.log(articleInfo);
     },
     changeFontSize(value) {
       this.docStyle.docFontSize = value;
@@ -304,13 +320,14 @@ export default {
     Editor,
     ArticleSetting,
     ArticleVersion
-  },
-  created() {
-    // 根据articleId获取文章信息
-    WriteCenterApi.getArticleForEdit(this, this.articleId).then(data => {
-      this.articleInfo = data
-    })
   }
+  // ,
+  // create() {
+  //   // 根据articleId获取文章信息
+  //   WriteCenterApi.getArticleForEdit(this, this.articleId).then(data => {
+  //     this.articleInfo = data
+  //   })
+  // }
 }
 </script>
 
