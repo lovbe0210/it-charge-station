@@ -12,7 +12,7 @@
                     <div class="title-editor">
                       <textarea class="title" v-model="article.title" placeholder="请输入标题"
                                 maxlength="130" tabindex="1" rows="1" ref="titleTextarea"
-                                @blur="updateArticleInfo" @keydown.enter="completeTitle">
+                                @blur="updateArticleTitle" @keydown.enter="completeTitle">
                       </textarea>
                     </div>
                   </div>
@@ -67,6 +67,7 @@ import Engine, {$} from '@aomao/engine'
 import Toolbar from "./common/editor/packages/toolbar/src"
 import {plugins, cards, pluginConfig} from "./common/editor/config"
 import {getTocData, getParentNode} from "./common/editor/utils"
+import WriteCenterApi from "@/api/WriteCenterApi";
 
 export default {
   name: 'Editor',
@@ -74,8 +75,11 @@ export default {
     return {
       article: {
         title: null,
+        contentId: null,
         content: null,
-        wordsNum: 0
+        wordsNum: 0,
+        // 更新状态 1更新中，0更新完成，-1更新失败
+        status: 0
       },
       tocData: [],
       currentTocId: '',
@@ -152,9 +156,6 @@ export default {
   computed: {
     docStyle() {
       return this.$store.state.docStyle;
-    },
-    tmpDoc() {
-      return this.$store.state.tmpDoc;
     }
   },
   props: ['articleInfo'],
@@ -173,9 +174,18 @@ export default {
         }
       })
     },
-    updateArticleInfo() {
-      // TODO 先更新数据库然后在进行页面渲染
-      this.$emit('updateArticleInfo', this.article)
+    updateArticleTitle() {
+      if (this.articleInfo.title === this.article.title) {
+        return;
+      }
+      let articleInfo = {
+        title: this.article.title,
+        uid: this.articleInfo.uid
+      }
+      WriteCenterApi.updateArticleInfo(this, articleInfo).then(() => {
+        console.log("---------------编辑器更新文档标题----------------");
+        this.$emit('updateArticleInfo', this.article)
+      })
     },
     completeTitle(event) {
       // 阻止换行然后切换光标
@@ -206,8 +216,7 @@ export default {
         // let editorValue = this.engine.getJsonValue();
         let editorValue = this.engine.model.toValue();
         console.log(editorValue)
-        this.tmpDoc.title = this.article.title;
-        this.tmpDoc.content = editorValue;
+        this.article.content = editorValue;
       }
     },
     /**
@@ -247,31 +256,51 @@ export default {
      * 编辑器内容变化
      */
     renderEditorData() {
+      // 文档内容解析
       if (this.engine.isEmpty()) {
         this.tocData = [];
         this.article.wordsNum = 0;
         this.article.content = null;
-        this.updateArticleInfo();
+      } else {
+        this.article.content = this.engine.getJsonValue();
+        let text = this.engine?.model?.toText();
+        if (text) {
+          text = text.replace(/\r\n/g, "");
+          text = text.replace(/\n/g, "");
+          text = text.replace(" ", "");
+          this.article.wordsNum = text.length;
+        } else {
+          this.article.wordsNum = 0;
+          this.article.content = null
+        }
+        // 渲染大纲
+        let tocData = getTocData(this.engine);
+        this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
+      }
+
+      if (this.articleInfo.wordsNum === 0 && this.article.wordsNum === 0) {
         return;
       }
-      this.article.content = this.engine.getJsonValue();
-      let text = this.engine?.model?.toText();
-      if (text) {
-        text = text.replace(/\r\n/g, "");
-        text = text.replace(/\n/g, "");
-        text = text.replace(" ", "");
-        this.article.wordsNum = text.length;
-      } else {
-        this.article.wordsNum = 0;
-        this.article.content = null
+      // 文档内容更新
+      let contentDto = {
+        uid: this.article.contentId,
+        content: this.article.content,
+        wordsNum: this.article.wordsNum,
+        articleId: this.articleInfo.uid
       }
-      // 渲染大纲
-      let tocData = getTocData(this.engine);
-      this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
-
-      // 更新数据
-      this.updateArticleInfo();
-      console.log('字数更新了：', this.doc.wordsNum)
+      this.article.status = 1;
+      this.$emit('updateArticleInfo', this.article);
+      WriteCenterApi.updateArticleContent(this, contentDto).then(result => {
+        console.log("---------------编辑器更新文档内容----------------");
+        if (result) {
+          this.article.contentId = result.contentId;
+          this.article.updateTime = result.updateTime;
+          this.article.status = 0;
+        } else {
+          this.article.status = -1;
+        }
+        this.$emit('updateArticleInfo', this.article);
+      })
     }
   },
   watch: {
@@ -291,12 +320,11 @@ export default {
     }
   },
   created() {
-    console.log("----------------editor------------------")
-    console.log(this.articleInfo)
     this.article = {
       title: this.articleInfo.title,
-      wordsNum: this.articleInfo.wordsNum,
-      content: this.articleInfo.latestContent
+      contentId: this.articleInfo.latestContentId,
+      content: this.articleInfo.latestContent,
+      wordsNum: this.articleInfo.wordsNum
     }
   },
   mounted() {
@@ -365,11 +393,11 @@ export default {
         this.debounceRefreshToc();
       });
 
-      let latestContent = this.articleInfo.latestContent;
+      let latestContent = this.article.content;
       if (latestContent && latestContent.length !== 0) {
         this.engine.setJsonValue(JSON.parse(latestContent))
         const pattern = /h[1-6]/;
-        let match = this.articleInfo.content.match(pattern);
+        let match = this.article.content.match(pattern);
         if (match) {
           this.renderEditorData();
         }
@@ -388,7 +416,7 @@ export default {
     window.addEventListener('keydown', this.saveArticle)
 
     // 设置延迟时间，单位为毫秒
-    this.debounceRefreshToc = this.debounce(this.renderEditorData, 500);
+    this.debounceRefreshToc = this.debounce(this.renderEditorData, 1000);
     //
     // const scrollContainer = this.$refs.scrollbarContext;
     // scrollContainer?.addEventListener('scroll', this.handleScrollForToc);

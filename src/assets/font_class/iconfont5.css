@@ -1,7 +1,7 @@
 @font-face {
   font-family: "iconfont";
   src:
-      url('//at.alicdn.com/t/c/font_4499563_jb7w2qusg6f.woff2?t=1722162960153') format('woff2');
+      url('//at.alicdn.com/t/c/font_4499563_x22nw66u52.woff2?t=1729438562727') format('woff2');
 }
 
 .iconfont {
@@ -82,6 +82,10 @@
 
 .custome-theme:before {
   content: "\e517";
+}
+
+.cloud-fail:before {
+  content: "\e518";
 }
 
 

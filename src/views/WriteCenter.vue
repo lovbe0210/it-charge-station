@@ -50,7 +50,9 @@
           <span style="color: #d9d9d9;margin: 0 8px 0 8px;">|</span>
           <span class="update-time un-select">
             最后更新于 {{ formatTime(articleInfo.updateTime) }}
-            <span class="iconfont icon-cloud"/>
+            <span class="iconfont cloud" v-if="articleUpdateStatus === 0"/>
+            <span class="iconfont update-ing" v-if="articleUpdateStatus === 1"/>
+            <span class="iconfont cloud-fail" v-if="articleUpdateStatus === -1"/>
           </span>
         </b-list-group-item>
       </b-list-group>
@@ -237,8 +239,6 @@ export default {
       // 通过 `vc` 访问组件实例
       WriteCenterApi.getArticleForEdit(vc, vc.articleId).then(data => {
         vc.articleInfo = data
-        console.log("--------------------接口请求数据-------------------------")
-        console.log(vc.articleInfo)
         next();
       })
     })
@@ -251,6 +251,8 @@ export default {
         wordsNum: 0,
         content: null
       },
+      // 1更新中，0更新完成，-1更新失败
+      articleUpdateStatus: 0,
       newVersion: false,
       fontSizeRange: [12, 13, 14, 15, 16, 17, 18, 19],
       showDocSetting: false,
@@ -289,10 +291,16 @@ export default {
      * 为子组件定义的事件方法
      */
     updateArticleInfo(articleInfo) {
-      this.articleInfo = {...this.articleInfo, ...articleInfo};
-      console.log("-----------------文档内容更新--------------------")
-      console.log(this.articleInfo);
-      console.log(articleInfo);
+      this.articleInfo.title = articleInfo.title;
+      this.articleInfo.latestContentId = articleInfo.contentId;
+      this.articleInfo.latestContent = articleInfo.content;
+      this.articleInfo.wordsNum = articleInfo.wordsNum;
+      this.articleUpdateStatus = articleInfo.status;
+      if (articleInfo.status === 0) {
+        this.articleInfo.updateTime = articleInfo.updateTime;
+      }
+      // this.articleInfo
+      console.log("---------------父组件更新-------------------")
     },
     changeFontSize(value) {
       this.docStyle.docFontSize = value;
@@ -321,13 +329,6 @@ export default {
     ArticleSetting,
     ArticleVersion
   }
-  // ,
-  // create() {
-  //   // 根据articleId获取文章信息
-  //   WriteCenterApi.getArticleForEdit(this, this.articleId).then(data => {
-  //     this.articleInfo = data
-  //   })
-  // }
 }
 </script>
 

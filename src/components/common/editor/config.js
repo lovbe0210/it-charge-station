@@ -41,7 +41,9 @@ import CodeBlock, {CodeBlockComponent} from "./packages/codeblock/src"
 
 import Lightblock, {LightblockComponent} from "./packages/lightblock/src";
 
-const DOMAIN = "/icharge"
+const FILE_SERVICE = "http://10.2.2.15:9000";
+
+const DOMAIN = "/api/storage";
 
 export const HightLightIcon = '<div class="hight-light-icon" style="display: flex; align-items: center; justify-content: center; width: 23px; height: 23px; border: 1px solid #e8e8e8;"><span class="iconfont icon-hight-light" style="font-size: 13px;line-height: 23px;color: #262626;font-weight: bold;"></span></div>';
 
@@ -126,8 +128,9 @@ export const pluginConfig = {
   },
   [ImageUploader.pluginName]: {
     file: {
-      action: `${DOMAIN}/common/upload`, //图片上传
-      headers: {Authorization: 213434}
+      action: `${DOMAIN}/upload`, //图片上传
+      data: {pathPrefix: "article"}
+      // headers: {Authorization: 213434}
     },
     remote: {
       action: `${DOMAIN}/common/upload/url` //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
@@ -136,7 +139,7 @@ export const pluginConfig = {
     parse: response => {
       return {
         result: response.result,
-        data: response.data
+        data: FILE_SERVICE + response.data
       }
     }
   },

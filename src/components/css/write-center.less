@@ -80,8 +80,12 @@
       }
 
       .iconfont {
-        font-size: 14px;
         margin-left: 5px;
+        line-height: 16px;
+      }
+
+      .update-ing {
+        animation: spin 2s linear infinite;
       }
 
       .title {
@@ -94,7 +98,8 @@
       }
 
       .author-info {
-        display: block;
+        display: flex;
+        align-items: center;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -106,6 +111,8 @@
 
         .update-time {
           color: @grey-white-font-color;
+          display: flex;
+          align-items: center;
         }
       }
 
@@ -949,6 +956,16 @@
   .ivu-modal-content {
     color: var(--font-color);
     background: var(--modal-bg-color);
+  }
+}
+
+/* 定义旋转动画 */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 

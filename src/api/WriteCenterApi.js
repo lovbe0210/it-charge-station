@@ -20,8 +20,36 @@ export default {
    */
   async getArticleForEdit(_this, articleId) {
     return await _this.$request({
-      url: "/contentProd/articleInfo/" + articleId,
+      url: "/contentProd/article/" + articleId,
       method: 'POST'
+    });
+  },
+
+  /**
+   * 文档信息更新
+   * @param _this
+   * @param articleInfo
+   * @returns {Promise<void>}
+   */
+  async updateArticleInfo(_this, articleInfo) {
+    return await _this.$request({
+      url: "/contentProd/article/update",
+      method: 'POST',
+      data: articleInfo
+    });
+  },
+
+  /**
+   * 文档信息更新
+   * @param _this
+   * @param articleInfo
+   * @returns {Promise<void>}
+   */
+  async updateArticleContent(_this, contentInfo) {
+    return await _this.$request({
+      url: "/contentProd/article/content",
+      method: 'POST',
+      data: contentInfo
     });
   }
 }
