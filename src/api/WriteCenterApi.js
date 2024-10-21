@@ -26,7 +26,7 @@ export default {
   },
 
   /**
-   * 文档信息更新
+   * 文档信息更新（不含封面图片）
    * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
@@ -40,6 +40,16 @@ export default {
   },
 
   /**
+   * 文档信息更新（包含封面图片）
+   * @param _this
+   * @param articleInfo
+   * @returns {Promise<void>}
+   */
+  async updateArticleCover(_this, formData) {
+    return await _this.$request.put("/contentProd/article/update", formData);
+  },
+
+  /**
    * 文档信息更新
    * @param _this
    * @param articleInfo
@@ -50,6 +60,20 @@ export default {
       url: "/contentProd/article/content",
       method: 'POST',
       data: contentInfo
+    });
+  },
+
+  /**
+   * 文档信息更新
+   * @param _this
+   * @param articleInfo
+   * @returns {Promise<void>}
+   */
+  async getMyArticleList(_this, requestEntity) {
+    return await _this.$request({
+      url: "/contentProd/articleList",
+      method: 'POST',
+      data: requestEntity
     });
   }
 }

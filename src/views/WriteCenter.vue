@@ -193,7 +193,7 @@
             </div>
           </div>
           <div v-if="drawerType === 1">
-            <article-setting :articleId="articleInfo.uid" :changePermission="true"/>
+            <article-setting :currentArticle="articleInfo" :changePermission="true"/>
           </div>
           <div v-if="drawerType === 2">
             <article-version :articleId="articleInfo.uid" :addNewVersion="newVersion"/>
@@ -299,8 +299,6 @@ export default {
       if (articleInfo.status === 0) {
         this.articleInfo.updateTime = articleInfo.updateTime;
       }
-      // this.articleInfo
-      console.log("---------------父组件更新-------------------")
     },
     changeFontSize(value) {
       this.docStyle.docFontSize = value;

@@ -68,6 +68,7 @@ import Toolbar from "./common/editor/packages/toolbar/src"
 import {plugins, cards, pluginConfig} from "./common/editor/config"
 import {getTocData, getParentNode} from "./common/editor/utils"
 import WriteCenterApi from "@/api/WriteCenterApi";
+import { debounce } from '@/utils/emoji'
 
 export default {
   name: 'Editor',
@@ -193,18 +194,6 @@ export default {
       this.$refs.container.focus()
     },
     /**
-     * 防抖函数
-     */
-    debounce(func, delay) {
-      let timer;
-      return function (...args) {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          func.apply(this, args);
-        }, delay);
-      };
-    },
-    /**
      * 保存
      */
     saveArticle(event) {
@@ -320,6 +309,8 @@ export default {
     }
   },
   created() {
+    // 设置延迟时间，单位为毫秒
+    this.debounceRefreshToc = debounce(this.renderEditorData, 1000);
     this.article = {
       title: this.articleInfo.title,
       contentId: this.articleInfo.latestContentId,
@@ -415,9 +406,6 @@ export default {
     // 监听Ctrl+s组合按键
     window.addEventListener('keydown', this.saveArticle)
 
-    // 设置延迟时间，单位为毫秒
-    this.debounceRefreshToc = this.debounce(this.renderEditorData, 1000);
-    //
     // const scrollContainer = this.$refs.scrollbarContext;
     // scrollContainer?.addEventListener('scroll', this.handleScrollForToc);
   },

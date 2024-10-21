@@ -5,10 +5,10 @@
         <div class="label-text"><span style="color: red">* </span>标题</div>
       </div>
       <Input type="text"
-             :class="['desc-input form-input', docInfo.title?.length > 0 ? '' : 'error']"
+             :class="['desc-input form-input', articleInfo.title?.length > 0 ? '' : 'error']"
              maxlength="30"
              placeholder="请输入文档标题"
-             v-model="docInfo.title"/>
+             v-model="articleInfo.title"/>
     </div>
     <div class="permission" v-if="changePermission">
       <div class="label">
@@ -20,12 +20,12 @@
                 confirm
                 placement="right-start"
                 :width="editTitle ? 300 : 190"
-                @on-ok="docInfo.isPublic = 1"
-                @on-cancel="docInfo.isPublic = 0">
+                @on-ok="articleInfo.isPublic = 1"
+                @on-cancel="articleInfo.isPublic = 0">
           <div class="public-radio">
             <input type="radio"
                    value="1"
-                   :class="docInfo.isPublic ? 'checked' : ''"
+                   :class="articleInfo.isPublic ? 'checked' : ''"
                    @click="readPublicPermission"/>
             <span class="permission-label un-select">互联网可访问</span>
           </div>
@@ -39,11 +39,11 @@
             </span>
           </div>
         </Poptip>
-        <div class="private-radio" @click="docInfo.isPublic = 0">
+        <div class="private-radio" @click="articleInfo.isPublic = 0">
           <input type="radio"
                  id="initPrivate"
                  value="0"
-                 :class="docInfo.isPublic ? '' : 'checked'"/>
+                 :class="articleInfo.isPublic ? '' : 'checked'"/>
           <span class="permission-label un-select" for="initPrivate">仅作者可访问</span>
         </div>
       </div>
@@ -70,7 +70,7 @@
           @imgLoad="imgLoadOver">
         </vueCropper>
         <div class="preview-operate">
-          <img v-if="editTitle && docInfo.coverPreview" :src="docInfo.coverPreview" class="img" alt="预览">
+          <img v-if="editTitle && articleInfo.coverPreview" :src="articleInfo.coverPreview" class="img" alt="预览">
           <div class="space" v-if="editTitle"></div>
           <div class="cover-upload-select">
             <Upload action="/"
@@ -85,7 +85,7 @@
               </Button>
             </Upload>
             <div class="clear-cover-btn">
-              <span :style="{visibility: docInfo.coverPreview ? 'visible' : 'hidden'}" class="un-select"
+              <span :style="{visibility: articleInfo.coverPreview ? 'visible' : 'hidden'}" class="un-select"
                     @click="clearCoverPreview">
                 <span class="iconfont delete"></span>
                 清除
@@ -98,14 +98,14 @@
     <div class="summary">
       <div class="label">
         <div class="label-text">摘要</div>
-        <div>{{ docInfo.summary?.length ? docInfo.summary?.length : 0 }}/150</div>
+        <div>{{ articleInfo.summary?.length ? articleInfo.summary?.length : 0 }}/150</div>
       </div>
       <Input type="textarea"
              class="desc-input form-input"
              :rows="4"
              maxlength="150"
              placeholder="文档摘要"
-             v-model="docInfo.summary"/>
+             v-model="articleInfo.summary"/>
     </div>
     <div class="category">
       <div class="label">
@@ -113,7 +113,7 @@
         <div class="label-tip">合理分类，搜索更快捷</div>
       </div>
       <div class="category-group">
-        <Select v-model="docInfo.firstLevel"
+        <Select v-model="articleInfo.firstLevel"
                 placeholder="选择一级分类"
                 class="first-level">
           <Option v-for="item in firstLevelList"
@@ -122,8 +122,8 @@
             {{ item.menuName }}
           </Option>
         </Select>
-        <Select v-model="docInfo.secondLevel"
-                :disabled="!docInfo.firstLevel"
+        <Select v-model="articleInfo.secondLevel"
+                :disabled="!articleInfo.firstLevel"
                 placeholder="选择二级分类"
                 class="second-level">
           <Option v-for="item in secondLevelList"
@@ -140,7 +140,7 @@
         <div class="label-tip">添加标签，搜索更精确</div>
       </div>
       <div class="tag-add-control">
-        <div v-for="(tag, index) in docInfo.tags" :key="index" class="tag-wrap">
+        <div v-for="(tag, index) in articleInfo.tags" :key="index" class="tag-wrap">
           <a-tooltip overlayClassName="tag-color-tooltip"
                      :getPopupContainer="getTooltipContainer">
             <template slot="title">
@@ -155,7 +155,7 @@
             </a-tag>
           </a-tooltip>
         </div>
-        <span v-if="docInfo.tags && docInfo.tags.length < 3">
+        <span v-if="articleInfo.tags && articleInfo.tags.length < 3">
                 <Input class="tag-input" v-if="inputVisible" ref="input" type="text" size="small" maxlength="10"
                        :style="{ width: '180px' }" v-model="inputValue"
                        @on-blur="handleInputConfirm"
@@ -168,23 +168,24 @@
       </div>
     </div>
     <Button type="success"
-            :disabled="(editTitle && docInfo.title.length === 0) || !(docInfo.coverPreview || docInfo.summary || (docInfo.firstLevel && docInfo.secondLevel) || docInfo.tags?.length > 0)"
-            @click="submitDocSetting">
+            :disabled="(editTitle && articleInfo.title.length === 0) || !(articleInfo.coverPreview || articleInfo.summary || (articleInfo.firstLevel && articleInfo.secondLevel) || articleInfo.tags?.length > 0)"
+            @click="submitUpdate">
       <span>&nbsp;确定&nbsp;</span>
     </Button>
   </div>
 </template>
 <script>
-import {VueCropper} from 'vue-cropper'
-import {formatTime} from '@/utils/emoji'
-import {getRandomColor} from '@/utils/utils'
+import { VueCropper } from 'vue-cropper'
+import { formatTime, cloneDeep } from '@/utils/emoji'
+import { getRandomColor, dataURLtoFile } from '@/utils/utils'
+import WriteCenterApi from "@/api/WriteCenterApi";
 
 export default {
   name: 'ArticleSetting',
   data() {
     return {
-      docInfo: {
-        title: 'lovbe0210',
+      articleInfo: {
+        /*title: 'lovbe0210',
         coverPreview: null,
         isPublic: 1,
         summary: '',
@@ -194,7 +195,7 @@ export default {
           {content: 'SpringBoot', color: 'blue'},
           {content: 'JAVA', color: 'red'},
           {content: '调优', color: 'green'}
-        ]
+        ]*/
       },
       cropInfo: {
         height: 0,
@@ -251,7 +252,7 @@ export default {
       ]
     }
   },
-  props: ['articleId', 'editTitle', 'changePermission'],
+  props: ['currentArticle', 'editTitle', 'changePermission'],
   computed: {
     docStyle() {
       return this.$store.state.docStyle;
@@ -262,7 +263,7 @@ export default {
      * 为子组件定义的事件方法
      */
     updateTitle(titleValue) {
-      this.docInfo.title = titleValue;
+      this.articleInfo.title = titleValue;
     },
     /**
      * 处理截图框移动事件
@@ -276,7 +277,7 @@ export default {
     },
     getNewCropImage() {
       this.$refs.cropper.getCropData(data => {
-        this.docInfo.coverPreview = data;
+        this.articleInfo.coverPreview = data;
       })
     },
     imgLoadOver(data) {
@@ -303,7 +304,7 @@ export default {
       }
     },
     clearCoverPreview() {
-      this.docInfo.coverPreview = null;
+      this.articleInfo.coverPreview = null;
       this.coverOriginalFile = null;
     },
     fileHandle(file) {
@@ -327,7 +328,7 @@ export default {
     },
     // 标签移除
     handleClose(removedTag) {
-      this.docInfo.tags = this.docInfo.tags.filter(tag => tag !== removedTag);
+      this.articleInfo.tags = this.articleInfo.tags.filter(tag => tag !== removedTag);
       // ant的这个关闭方法其实会将tag设置为display=none，而不是删除，所以需要阻止他的这个操作
       event.preventDefault();
     },
@@ -341,21 +342,46 @@ export default {
     // 标签添加完成
     handleInputConfirm() {
       const tag = {content: this.inputValue, color: getRandomColor()};
-      let tags = this.docInfo.tags;
+      let tags = this.articleInfo.tags;
       if (tag.content && tags.indexOf(tag) === -1) {
-        this.docInfo.tags = [...tags, tag];
+        this.articleInfo.tags = [...tags, tag];
       }
       this.inputVisible = false;
       this.inputValue = '';
     },
     // 提交文档设置
-    submitDocSetting() {
-      this.$Message.success("保存成功！")
+    submitUpdate() {
+      let userInfo = new FormData();
+      if (this.avatarPreview) {
+        userInfo.append('coverFile', dataURLtoFile(this.avatarPreview, "preview.jpg"));
+      }
+      if (this.userInfo.username) {
+        userInfo.append('username', this.userInfo.username);
+      }
+      if (this.userInfo.tags) {
+        userInfo.append('tagArray', JSON.stringify(this.userInfo.tags));
+      }
+      if (this.userInfo.introduction) {
+        userInfo.append('introduction', this.userInfo.introduction);
+      }
+      if (this.userInfo.location) {
+        userInfo.append('location', this.userInfo.location);
+      }
+      if (this.userInfo.industry) {
+        userInfo.append('industry', this.userInfo.industry);
+      }
+      WriteCenterApi.updateArticleCover(this, userInfo).then(() => {
+        this.$Message.success("保存成功！");
+        this.$emit("updateArticle", this.articleInfo);
+      })
     },
     readPublicPermission(event) {
       event.preventDefault();
     },
     formatTime
+  },
+  created() {
+    this.articleInfo = cloneDeep(this.currentArticle);
   },
   components: {
     VueCropper
