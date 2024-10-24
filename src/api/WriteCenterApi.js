@@ -69,11 +69,36 @@ export default {
    * @param articleInfo
    * @returns {Promise<void>}
    */
+  async getArticleContent(_this, articleId) {
+    return await _this.$request({
+      url: "/contentProd/content/" + articleId,
+      method: 'POST'
+    });
+  },
+
+  /**
+   * 文档信息更新
+   * @param _this
+   * @param articleInfo
+   * @returns {Promise<void>}
+   */
   async getMyArticleList(_this, requestEntity) {
     return await _this.$request({
       url: "/contentProd/articleList",
       method: 'POST',
       data: requestEntity
+    });
+  },
+
+  /**
+   * 文档信息更新
+   * @param _this
+   * @returns {Promise<void>}
+   */
+  async getMenuList(_this) {
+    return await _this.$request({
+      url: "/contentProd/menu",
+      method: 'POST'
     });
   }
 }

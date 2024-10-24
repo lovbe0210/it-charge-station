@@ -11,7 +11,7 @@
                   <div :class="['title-box', docStyle.pageSize ? 'title-ultra-wide' : 'title-standard-wide']">
                     <div class="title-editor">
                       <textarea class="title" v-model="article.title" placeholder="请输入标题"
-                                maxlength="130" tabindex="1" rows="1" ref="titleTextarea"
+                                maxlength="50" tabindex="1" rows="1" ref="titleTextarea"
                                 @blur="updateArticleTitle" @keydown.enter="completeTitle">
                       </textarea>
                     </div>
@@ -79,6 +79,8 @@ export default {
         contentId: null,
         content: null,
         wordsNum: 0,
+        summary: null,
+        coverUrl: null,
         // 更新状态 1更新中，0更新完成，-1更新失败
         status: 0
       },
@@ -258,10 +260,34 @@ export default {
           text = text.replace(/\n/g, "");
           text = text.replace(" ", "");
           this.article.wordsNum = text.length;
+          // 判断是否需要提取摘要
+          if (this.articleInfo.autoSummary === 1) {
+            let summary = text.substr(0, 145);
+            if (text.length > 100) {
+              summary += "...";
+            }
+            this.article.summary = summary;
+          }
         } else {
           this.article.wordsNum = 0;
           this.article.content = null
         }
+        // 判断是否需要提取封面
+        if (!this.articleInfo.coverUrl) {
+          let nodeArray = this.engine.container
+            .find('[data-card-key="image"]')
+            .toArray()
+            .filter(image => {
+              return image.find("img").length > 0
+            });
+          if (nodeArray.length > 0) {
+            let card = this.engine.card.find(nodeArray[0]);
+            let value = card?.getValue();
+            let avatarUrl = value?.src.replace(this.fileService, '');
+            this.article.coverUrl = avatarUrl;
+          }
+        }
+
         // 渲染大纲
         let tocData = getTocData(this.engine);
         this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
@@ -275,6 +301,8 @@ export default {
         uid: this.article.contentId,
         content: this.article.content,
         wordsNum: this.article.wordsNum,
+        summary: this.article.summary,
+        coverUrl: this.article.coverUrl,
         articleId: this.articleInfo.uid
       }
       this.article.status = 1;
@@ -314,7 +342,7 @@ export default {
     this.article = {
       title: this.articleInfo.title,
       contentId: this.articleInfo.latestContentId,
-      content: this.articleInfo.latestContent,
+      // content: this.articleInfo.latestContent,
       wordsNum: this.articleInfo.wordsNum
     }
   },
@@ -380,19 +408,27 @@ export default {
           startNode.removeAttributes('style')
           startNode.allChildren().forEach(child => child?.removeAttributes('style'))
         }
-        // 使用节流方案
+        // 刷新标题/更新内容
         this.debounceRefreshToc();
       });
 
-      let latestContent = this.article.content;
-      if (latestContent && latestContent.length !== 0) {
-        this.engine.setJsonValue(JSON.parse(latestContent))
-        const pattern = /h[1-6]/;
-        let match = this.article.content.match(pattern);
-        if (match) {
-          this.renderEditorData();
+      // 获取内容
+      WriteCenterApi.getArticleContent(this, this.articleInfo.uid).then(data => {
+        if (data != null) {
+          this.article.contentId = data.uid;
+          this.article.content = data.content;
+          if (data.content && data.content.length !== 0) {
+            this.engine.setJsonValue(JSON.parse(data.content))
+            const pattern = /h[1-6]/;
+            let match = data.content.match(pattern);
+            if (match) {
+              // 渲染大纲
+              let tocData = getTocData(this.engine);
+              this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
+            }
+          }
         }
-      }
+      })
     }
 
     // 渲染结束后获取输入框焦点，如果没有标题就先定位到标题，如果已有标题就定位到正文

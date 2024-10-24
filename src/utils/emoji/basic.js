@@ -46,13 +46,10 @@ export function formatTime(timestamp) {
   let month = now.getMonth() + 1
   let date = now.getDate()
   let str = `${year}/${month}/${date}` //获取今天的日期
-
   let today = new Date(str).getTime() //今天
   let yesterday = new Date(str).getTime() - 1000 * 60 * 60 * 24 //昨天
-
   let time = new Date(timestamp) //实际时间
   let fullYear = time.getFullYear();
-
   let hours = time.getHours() < 10 ? '0' + time.getHours() : time.getHours();
   let minutes = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes();
   if (time.getTime() > today) {

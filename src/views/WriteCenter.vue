@@ -187,8 +187,8 @@
               <div class="label">文档信息</div>
               <div class="article-time">
                 <span>字数统计：{{ articleInfo.wordsNum }}</span>
-                <span>创建于：2023-08-08 14:09</span>
-                <span>更新于：2023-08-08 14:09</span>
+                <span>创建于：{{ formatTime(articleInfo.createTime) }}</span>
+                <span>更新于：{{ formatTime(articleInfo.updateTime) }}</span>
               </div>
             </div>
           </div>
@@ -249,7 +249,7 @@ export default {
         uid: null,
         title: null,
         wordsNum: 0,
-        content: null
+        summary: null
       },
       // 1更新中，0更新完成，-1更新失败
       articleUpdateStatus: 0,
@@ -292,9 +292,8 @@ export default {
      */
     updateArticleInfo(articleInfo) {
       this.articleInfo.title = articleInfo.title;
-      this.articleInfo.latestContentId = articleInfo.contentId;
-      this.articleInfo.latestContent = articleInfo.content;
       this.articleInfo.wordsNum = articleInfo.wordsNum;
+      this.articleInfo.summary = articleInfo.summary;
       this.articleUpdateStatus = articleInfo.status;
       if (articleInfo.status === 0) {
         this.articleInfo.updateTime = articleInfo.updateTime;

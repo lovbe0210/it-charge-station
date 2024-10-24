@@ -113,21 +113,21 @@
         <div class="label-tip">合理分类，搜索更快捷</div>
       </div>
       <div class="category-group">
-        <Select v-model="articleInfo.firstLevel"
+        <Select v-model="articleInfo.firstCategory"
                 placeholder="选择一级分类"
                 class="first-level">
-          <Option v-for="item in firstLevelList"
-                  :value="item.code"
+          <Option v-for="item in firstMenuList"
+                  :value="item.menuCode"
                   :key="item.uid">
             {{ item.menuName }}
           </Option>
         </Select>
-        <Select v-model="articleInfo.secondLevel"
-                :disabled="!articleInfo.firstLevel"
+        <Select v-model="articleInfo.secondCategory"
+                :disabled="!articleInfo.firstCategory"
                 placeholder="选择二级分类"
                 class="second-level">
-          <Option v-for="item in secondLevelList"
-                  :value="item.code"
+          <Option v-for="item in secondMenuList"
+                  :value="item.menuCode"
                   :key="item.uid">
             {{ item.menuName }}
           </Option>
@@ -205,57 +205,19 @@ export default {
       coverOriginalFile: null,
       inputVisible: false,
       inputValue: '',
+      allMenuList: [],
       // 一级分类
-      firstLevelList: [
-        {
-          uid: 'sdfsf55',
-          code: 'computenetwork',
-          menuName: '计算机与网络'
-        },
-        {
-          uid: 'asdas34213',
-          menuName: '编程语言',
-          code: 'language'
-        },
-        {
-          uid: 'sdfs453',
-          code: 'database',
-          menuName: '数据库'
-        },
-        {
-          uid: 'dfg345g',
-          code: 'middleware',
-          menuName: '中间件'
-        },
-        {
-          uid: 'sgfg566',
-          code: 'arithmetic',
-          menuName: '算法'
-        }
-      ],
-      secondLevelList: [
-        {
-          uid: 122,
-          menuName: '计算机基础',
-          code: 2
-        },
-        {
-          uid: 123,
-          menuName: '操作系统',
-          code: 3
-        },
-        {
-          uid: 126,
-          menuName: '网络安全',
-          code: 4
-        }
-      ]
+      firstMenuList: []
     }
   },
   props: ['currentArticle', 'editTitle', 'changePermission'],
   computed: {
     docStyle() {
       return this.$store.state.docStyle;
+    },
+    // 二级分类
+    secondMenuList() {
+      return this.allMenuList.filter(menu => menu.parentCode === this.articleInfo.firstCategory)
     }
   },
   methods: {
@@ -382,6 +344,15 @@ export default {
   },
   created() {
     this.articleInfo = cloneDeep(this.currentArticle);
+    this.coverOriginalFile = this.fileService + this.articleInfo.coverUrl;
+    // 获取菜单分类
+    WriteCenterApi.getMenuList(this).then(data => {
+      if (data == null || data.length === 0) {
+        return;
+      }
+      this.allMenuList = data;
+      this.firstMenuList = data.filter(menu => menu.type === 1)
+    })
   },
   components: {
     VueCropper
