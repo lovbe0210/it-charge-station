@@ -214,16 +214,16 @@ export default {
         svScene = this.account.indexOf('@') === -1 ? 9 : 10;
       }
       authApi.getSvCookie(this, svScene).then(data => {
-        if (!data) {
+        if (!data?.result) {
           return;
         }
         this.sliderValidateResult = true;
-        let svToken = data.tn;
+        let svToken = data.data.tn;
         if (!svToken) {
           return;
         }
         authApi.sendPayloadCode(this, svScene, svToken).then(result => {
-          if (!result) {
+          if (!result?.result) {
             return;
           }
           // 短信发送成功
@@ -262,12 +262,12 @@ export default {
         return;
       }
       authApi.payloadLogin(this).then(data => {
-        if (!data) {
+        if (!data?.result) {
           return;
         }
         this.$Message.success('登陆成功!')
         this.showLogin = false;
-        let loginData = data;
+        let loginData = data.data;
         let userInfo = {
           token: loginData.acToken,
           uid: loginData.userId,
@@ -285,12 +285,12 @@ export default {
         return;
       }
       authApi.verifyCodeLogin(this).then(data => {
-        if (!data) {
+        if (!data?.result) {
           return;
         }
         this.$Message.success('登陆成功!')
         this.showLogin = false;
-        let loginData = data;
+        let loginData = data.data;
         let userInfo = {
           token: loginData.acToken,
           uid: loginData.userId,
@@ -308,7 +308,7 @@ export default {
         return;
       }
       authApi.resetPassword(this).then(data => {
-        if (!data) {
+        if (!data?.result) {
           return;
         }
         this.$Message.success('密码重置成功!')
@@ -384,10 +384,10 @@ export default {
     reqUserInfo(userInfo) {
       // 请求用户信息
       userApi.getUserInfo(this, userInfo.uid).then(data => {
-        if (!data) {
+        if (!data?.result) {
           return;
         }
-        let loginUser = data;
+        let loginUser = data.data();
         userInfo = {...userInfo, ...loginUser};
         // 保存userInfo到store中
         this.$store.commit('login', userInfo)

@@ -185,9 +185,11 @@ export default {
         title: this.article.title,
         uid: this.articleInfo.uid
       }
-      WriteCenterApi.updateArticleInfo(this, articleInfo).then(() => {
-        console.log("---------------编辑器更新文档标题----------------");
-        this.$emit('updateArticleInfo', this.article)
+      WriteCenterApi.updateArticleInfo(this, articleInfo).then((data) => {
+        if (data?.result) {
+          console.log("---------------编辑器更新文档标题----------------");
+          this.$emit('updateArticleInfo', this.article)
+        }
       })
     },
     completeTitle(event) {
@@ -301,22 +303,24 @@ export default {
         uid: this.article.contentId,
         content: this.article.content,
         wordsNum: this.article.wordsNum,
-        summary: this.article.summary,
         coverUrl: this.article.coverUrl,
         articleId: this.articleInfo.uid
       }
+      if (this.articleInfo.autoSummary === 1) {
+        contentDto.summary = this.article.summary;
+      }
       this.article.status = 1;
-      this.$emit('updateArticleInfo', this.article);
-      WriteCenterApi.updateArticleContent(this, contentDto).then(result => {
+      this.$emit('updateArticle', this.article);
+      WriteCenterApi.updateArticleContent(this, contentDto).then(data => {
         console.log("---------------编辑器更新文档内容----------------");
-        if (result) {
-          this.article.contentId = result.contentId;
-          this.article.updateTime = result.updateTime;
+        if (data?.result) {
+          this.article.contentId = data.data.contentId;
+          this.article.updateTime = data.data.updateTime;
           this.article.status = 0;
         } else {
           this.article.status = -1;
         }
-        this.$emit('updateArticleInfo', this.article);
+        this.$emit('updateArticle', this.article);
       })
     }
   },
@@ -414,17 +418,20 @@ export default {
 
       // 获取内容
       WriteCenterApi.getArticleContent(this, this.articleInfo.uid).then(data => {
-        if (data != null) {
-          this.article.contentId = data.uid;
-          this.article.content = data.content;
-          if (data.content && data.content.length !== 0) {
-            this.engine.setJsonValue(JSON.parse(data.content))
-            const pattern = /h[1-6]/;
-            let match = data.content.match(pattern);
-            if (match) {
-              // 渲染大纲
-              let tocData = getTocData(this.engine);
-              this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
+        if (data?.result) {
+          let _data = data.data;
+          if (_data != null) {
+            this.article.contentId = _data.uid;
+            this.article.content = _data.content;
+            if (_data.content && _data.content.length !== 0) {
+              this.engine.setJsonValue(JSON.parse(_data.content))
+              const pattern = /h[1-6]/;
+              let match = _data.content.match(pattern);
+              if (match) {
+                // 渲染大纲
+                let tocData = getTocData(this.engine);
+                this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
+              }
             }
           }
         }

@@ -64,18 +64,17 @@
           :fixedNumber="[1.61, 1]"
           :canMove="false"
           :canScale="false"
-          :maxImgSize="400"
           :info="true"
           @cropMoving="cropMoving"
           @imgLoad="imgLoadOver">
         </vueCropper>
         <div class="preview-operate">
-          <img v-if="editTitle && articleInfo.coverPreview" :src="articleInfo.coverPreview" class="img" alt="预览">
+          <img v-if="editTitle && coverPreview" :src="coverPreview" class="img" alt="预览">
           <div class="space" v-if="editTitle"></div>
           <div class="cover-upload-select">
             <Upload action="/"
                     :format="['jpg','jpeg','png']"
-                    :max-size="5120"
+                    :max-size="10240"
                     accept="image/*"
                     :show-upload-list="false"
                     :before-upload="fileHandle">
@@ -85,7 +84,7 @@
               </Button>
             </Upload>
             <div class="clear-cover-btn">
-              <span :style="{visibility: articleInfo.coverPreview ? 'visible' : 'hidden'}" class="un-select"
+              <span :style="{visibility: coverPreview ? 'visible' : 'hidden'}" class="un-select"
                     @click="clearCoverPreview">
                 <span class="iconfont delete"></span>
                 清除
@@ -168,7 +167,7 @@
       </div>
     </div>
     <Button type="success"
-            :disabled="(editTitle && articleInfo.title.length === 0) || !(articleInfo.coverPreview || articleInfo.summary || (articleInfo.firstLevel && articleInfo.secondLevel) || articleInfo.tags?.length > 0)"
+            :disabled="(editTitle && articleInfo.title.length === 0) || !(coverPreview || articleInfo.summary || (articleInfo.firstLevel && articleInfo.secondLevel) || articleInfo.tags?.length > 0)"
             @click="submitUpdate">
       <span>&nbsp;确定&nbsp;</span>
     </Button>
@@ -186,7 +185,7 @@ export default {
     return {
       articleInfo: {
         /*title: 'lovbe0210',
-        coverPreview: null,
+        coverFile: null,
         isPublic: 1,
         summary: '',
         firstLevel: null,
@@ -203,6 +202,7 @@ export default {
         flushPreview: null
       },
       coverOriginalFile: null,
+      coverPreview: null,
       inputVisible: false,
       inputValue: '',
       allMenuList: [],
@@ -239,7 +239,9 @@ export default {
     },
     getNewCropImage() {
       this.$refs.cropper.getCropData(data => {
-        this.articleInfo.coverPreview = data;
+        if (!this.articleInfo.coverUrl) {
+          this.coverPreview = data;
+        }
       })
     },
     imgLoadOver(data) {
@@ -266,18 +268,19 @@ export default {
       }
     },
     clearCoverPreview() {
-      this.articleInfo.coverPreview = null;
+      this.coverPreview = null;
       this.coverOriginalFile = null;
     },
     fileHandle(file) {
-      if (file?.size > 5120 * 1024) {
-        this.$Message.error('文件大小不得超过5M')
+      if (file?.size > 10240 * 1024) {
+        this.$Message.error('文件大小不得超过10M')
         return false;
       }
       let _this = this;
       let reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function () {
+        _this.articleInfo.coverUrl = null;
         _this.coverOriginalFile = this.result;
       }
       return false;
@@ -313,28 +316,25 @@ export default {
     },
     // 提交文档设置
     submitUpdate() {
-      let userInfo = new FormData();
-      if (this.avatarPreview) {
-        userInfo.append('coverFile', dataURLtoFile(this.avatarPreview, "preview.jpg"));
+      let articleInfo = new FormData();
+      articleInfo.append('uid', this.articleInfo.uid);
+      articleInfo.append('title', this.articleInfo.title);
+      if (this.coverPreview) {
+        articleInfo.append('coverFile', dataURLtoFile(this.coverPreview, "cover.jpg"));
+      } else if (this.articleInfo.coverUrl) {
+        articleInfo.append('coverUrl', this.articleInfo.coverUrl);
       }
-      if (this.userInfo.username) {
-        userInfo.append('username', this.userInfo.username);
-      }
-      if (this.userInfo.tags) {
-        userInfo.append('tagArray', JSON.stringify(this.userInfo.tags));
-      }
-      if (this.userInfo.introduction) {
-        userInfo.append('introduction', this.userInfo.introduction);
-      }
-      if (this.userInfo.location) {
-        userInfo.append('location', this.userInfo.location);
-      }
-      if (this.userInfo.industry) {
-        userInfo.append('industry', this.userInfo.industry);
-      }
-      WriteCenterApi.updateArticleCover(this, userInfo).then(() => {
-        this.$Message.success("保存成功！");
-        this.$emit("updateArticle", this.articleInfo);
+      articleInfo.append('isPublic', this.articleInfo.isPublic);
+      articleInfo.append('tagArray', JSON.stringify(this.articleInfo.tags));
+      articleInfo.append('firstCategory', this.articleInfo.firstCategory);
+      articleInfo.append('secondCategory', this.articleInfo.secondCategory);
+      articleInfo.append('summary', this.articleInfo.summary);
+      articleInfo.append('autoSummary', 0);
+      WriteCenterApi.updateArticleCover(this, articleInfo).then((data) => {
+        if (data?.result) {
+          this.$Message.success("保存成功！");
+          this.$emit("updateArticle", this.articleInfo);
+        }
       })
     },
     readPublicPermission(event) {
@@ -347,11 +347,14 @@ export default {
     this.coverOriginalFile = this.fileService + this.articleInfo.coverUrl;
     // 获取菜单分类
     WriteCenterApi.getMenuList(this).then(data => {
-      if (data == null || data.length === 0) {
-        return;
+      if (data?.result) {
+        let _data = data.data;
+        if (_data == null || _data.length === 0) {
+          return;
+        }
+        this.allMenuList = _data;
+        this.firstMenuList = _data.filter(menu => menu.type === 1)
       }
-      this.allMenuList = data;
-      this.firstMenuList = data.filter(menu => menu.type === 1)
     })
   },
   components: {
@@ -642,7 +645,7 @@ export default {
     padding-bottom: 5px;
 
     .tag-wrap {
-      margin-bottom: 7px;
+      margin-bottom: 10px;
 
       .ant-tag {
         display: flex;
@@ -650,22 +653,21 @@ export default {
         align-items: center;
         justify-content: center;
       }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
 
-    .ivu-input {
-      color: @dark-font-color;
-
-      &:focus {
-        border-color: @primary-color;
-        outline: 0;
-        box-shadow: none;
-      }
+    /deep/.ivu-input-small {
+      height: 27px;
     }
 
     .empty-to-add {
       background: @dropdown-background;
       border: 1px dashed @border-color_normal;
       color: @dark-font-color;
+      line-height: 24px;
 
       &:hover {
         background: #fdfdfd;

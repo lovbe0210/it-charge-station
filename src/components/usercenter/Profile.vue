@@ -263,17 +263,21 @@
         if (this.userInfo.industry) {
           userInfo.append('industry', this.userInfo.industry);
         }
-        userApi.updateUserInfo(this, userInfo).then(() => {
-          this.$Message.success("更新成功");
-          this.echoUpdateInfo();
+        userApi.updateUserInfo(this, userInfo).then((data) => {
+          if (data?.result) {
+            this.$Message.success("更新成功");
+            this.echoUpdateInfo();
+          }
         })
       },
       echoUpdateInfo() {
         let tmp = this.$store.state.userInfo;
         userApi.getUserInfo(this, tmp.uid).then(data => {
-          this.userInfo = data;
-          let newUserInfo = {...tmp, ...data};
-          this.$store.commit("login", newUserInfo);
+          if (data?.result) {
+            this.userInfo = data.data;
+            let newUserInfo = {...tmp, ...data.data};
+            this.$store.commit("login", newUserInfo);
+          }
         })
       },
       fileHandle(file) {

@@ -193,7 +193,7 @@
             </div>
           </div>
           <div v-if="drawerType === 1">
-            <article-setting :currentArticle="articleInfo" :changePermission="true"/>
+            <article-setting :currentArticle="articleInfo" :changePermission="true" @updateArticle="updateArticleForSetting"/>
           </div>
           <div v-if="drawerType === 2">
             <article-version :articleId="articleInfo.uid" :addNewVersion="newVersion"/>
@@ -217,7 +217,7 @@
     </b-row>
     <b-row class="editor-root">
       <editor v-if="articleInfo.uid"
-              @updateArticleInfo="updateArticleInfo"
+              @updateArticle="updateArticleForEditor"
               :articleInfo="articleInfo"
               ref="editorContainer">
       </editor>
@@ -238,8 +238,10 @@ export default {
     next(vc => {
       // 通过 `vc` 访问组件实例
       WriteCenterApi.getArticleForEdit(vc, vc.articleId).then(data => {
-        vc.articleInfo = data
-        next();
+        if (data?.result) {
+          vc.articleInfo = data.data
+          next();
+        }
       })
     })
   },
@@ -290,14 +292,23 @@ export default {
     /**
      * 为子组件定义的事件方法
      */
-    updateArticleInfo(articleInfo) {
+    updateArticleForEditor(articleInfo) {
       this.articleInfo.title = articleInfo.title;
       this.articleInfo.wordsNum = articleInfo.wordsNum;
-      this.articleInfo.summary = articleInfo.summary;
       this.articleUpdateStatus = articleInfo.status;
       if (articleInfo.status === 0) {
         this.articleInfo.updateTime = articleInfo.updateTime;
       }
+      if (articleInfo.autoSummary === 1) {
+        this.articleInfo.summary = articleInfo.summary;
+      }
+    },
+    /**
+     * 子组件上报更新信息
+     */
+    updateArticleForSetting(articleInfo) {
+      this.articleInfo = {...this.articleInfo, ...articleInfo}
+      this.returnDocSetting();
     },
     changeFontSize(value) {
       this.docStyle.docFontSize = value;

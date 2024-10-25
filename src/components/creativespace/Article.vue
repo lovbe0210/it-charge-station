@@ -364,7 +364,9 @@
           sort: this.orderType
         };
         WriteCenterApi.getMyArticleList(this, requestEntity).then(data => {
-          this.articleList = data;
+          if (data?.result) {
+            this.articleList = data;
+          }
         })
       }
     },

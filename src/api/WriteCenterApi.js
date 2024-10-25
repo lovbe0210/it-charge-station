@@ -33,7 +33,7 @@ export default {
    */
   async updateArticleInfo(_this, articleInfo) {
     return await _this.$request({
-      url: "/contentProd/article/update",
+      url: "/contentProd/article/simpleUpdate",
       method: 'POST',
       data: articleInfo
     });

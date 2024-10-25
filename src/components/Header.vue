@@ -316,11 +316,13 @@ export default {
     toWriteCenter() {
       // 创建空白文档
       WriteCenterApi.createBlankDoc(this).then(data => {
-        let articleId = data.uid;
-        let routeUrl = this.$router.resolve({
-          path: '/editor/' + articleId
-        })
-        window.open(routeUrl.href, '_blank')
+        if (data?.result) {
+          let articleId = data.data.uid;
+          let routeUrl = this.$router.resolve({
+            path: '/editor/' + articleId
+          })
+          window.open(routeUrl.href, '_blank')
+        }
       })
 
     },

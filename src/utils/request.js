@@ -42,7 +42,7 @@ http.interceptors.response.use(
     if (status === 200 && data !== null) {
       // http请求成功，获取server返回的数据
       if (data.result) {
-        return Promise.resolve(data.data);
+        return Promise.resolve(data);
       }
       // 401 actoken过期
       if (data.code === 401) {

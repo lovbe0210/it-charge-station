@@ -133,15 +133,14 @@
       let userInfo = this.$store.state.userInfo;
       if (userInfo && userInfo.uid) {
         UserApi.getUserInfo(this, userInfo.uid).then(data => {
-          let loginUser = data;
-          userInfo = {...userInfo, ...loginUser};
-          // 保存userInfo到store中
-          this.$store.commit('login', userInfo);
-        }).catch(error => {
-          console.log(error)
+          if (data?.result) {
+            let loginUser = data.data;
+            userInfo = {...userInfo, ...loginUser};
+            // 保存userInfo到store中
+            this.$store.commit('login', userInfo);
+          }
         })
       }
-
     },
     watch: {
       // 开启深度监视，然后实时刷新自定义主题
