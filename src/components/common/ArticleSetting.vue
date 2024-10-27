@@ -6,7 +6,7 @@
       </div>
       <Input type="text"
              :class="['desc-input form-input', articleInfo.title?.length > 0 ? '' : 'error']"
-             maxlength="30"
+             maxlength="50"
              placeholder="请输入文档标题"
              v-model="articleInfo.title"/>
     </div>
@@ -250,8 +250,11 @@ export default {
           this.getNewCropImage();
           this.cropInfo.height = this.$refs.cropper.cropH;
           this.cropInfo.width = this.$refs.cropper.cropW;
+          if (this.cropInfo.flushPreview) {
+            clearInterval(this.cropInfo.flushPreview);
+          }
           this.cropInfo.flushPreview = setInterval(() => {
-            if (!this.coverOriginalFile) {
+            if (!this.coverOriginalFile || !this.$refs.cropper) {
               clearInterval(this.cropInfo.flushPreview);
               this.cropInfo.flushPreview = null;
               return;
@@ -325,7 +328,7 @@ export default {
         articleInfo.append('coverUrl', this.articleInfo.coverUrl);
       }
       articleInfo.append('isPublic', this.articleInfo.isPublic);
-      articleInfo.append('tagArray', JSON.stringify(this.articleInfo.tags));
+      articleInfo.append('tagsArray', JSON.stringify(this.articleInfo.tags));
       articleInfo.append('firstCategory', this.articleInfo.firstCategory);
       articleInfo.append('secondCategory', this.articleInfo.secondCategory);
       articleInfo.append('summary', this.articleInfo.summary);
@@ -660,7 +663,7 @@ export default {
     }
 
     /deep/.ivu-input-small {
-      height: 27px;
+      height: 26.5px;
     }
 
     .empty-to-add {

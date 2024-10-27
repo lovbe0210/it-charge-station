@@ -50,7 +50,7 @@ export default {
   },
 
   /**
-   * 文档信息更新
+   * 文档内容更新
    * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
@@ -64,7 +64,7 @@ export default {
   },
 
   /**
-   * 文档信息更新
+   * 获取文档正文
    * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
@@ -77,7 +77,7 @@ export default {
   },
 
   /**
-   * 文档信息更新
+   * 获取文档列表
    * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
@@ -91,7 +91,7 @@ export default {
   },
 
   /**
-   * 文档信息更新
+   * 获取菜单列表
    * @param _this
    * @returns {Promise<void>}
    */
@@ -99,6 +99,19 @@ export default {
     return await _this.$request({
       url: "/contentProd/menu",
       method: 'POST'
+    });
+  },
+
+  /**
+   * 文章置顶/取消置顶
+   * @param _this
+   * @returns {Promise<void>}
+   */
+  async updateArticleTop(_this, articleInfo) {
+    return await _this.$request({
+      url: "/contentProd/article/setTop",
+      method: 'POST',
+      data: articleInfo
     });
   }
 }

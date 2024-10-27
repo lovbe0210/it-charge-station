@@ -53,6 +53,9 @@
         </div>
       </div>
       <div class="note-list-item" v-for="noteItem in articleList" :key="noteItem.uid">
+        <div class="index-module_topIcon" v-if="noteItem.sort">
+          <span class="iconfont set-top"/>
+        </div>
         <div class="index-module_leftToolBar">
           <a-checkbox :class="showCheckToolBar ? '' : 'check-show'" :checked="isCheck(noteItem.id)"
                       @change="onCheckChange(noteItem.uid, $event)">
@@ -94,11 +97,14 @@
             <div class="order-time">
               <span class="note-status-module_text un-select" v-if="orderType == 1">更新于 {{formatTime(noteItem.updateTime)}}</span>
               <span class="note-status-module_text un-select" v-if="orderType == 2">创建于 {{formatTime(noteItem.createTime)}}</span>
+              <span :class="['iconfont', noteItem.isPublic ? 'public' : 'lock']"/>
+              <span v-if="noteItem.isPublic && noteItem.publishStatus !== 3"
+                :class="['iconfont', noteItem.publishStatus === 0 ? 'wait-publish' : noteItem.publishStatus === 1 ? 'publish-ing' : 'publish-fail']"/>
             </div>
           </div>
           <div class="index-module_content">
-            <div class="viewer-header" @click="routeNavigate('read', noteItem)">
-              <span class="viewer-content">{{noteItem.title}}</span>
+            <div class="viewer-header">
+              <span class="viewer-content" @click="routeNavigate('read', noteItem)">{{noteItem.title}}</span>
             </div>
             <div class="viewer-body">
               <span class="viewer-content">{{noteItem.summary}}</span>
@@ -127,7 +133,9 @@
                     <span @click="routeNavigate('delete', noteItem)">删除</span>
                   </DropdownItem>
                   <DropdownItem>
-                    <span>取消置顶</span>
+                    <span @click="routeNavigate('setTop', noteItem)">
+                      {{ noteItem.sort !== null ? '取消置顶' : '置顶' }}
+                    </span>
                   </DropdownItem>
                   <DropdownItem>
                     <span @click="routeNavigate('setting', noteItem)">文档设置</span>
@@ -283,6 +291,10 @@
           case 'read':
             this.$router.push({path: '/article/' + articleItem.uid});
             break;
+          case 'setTop':
+            WriteCenterApi.updateArticleTop(this, {uid: articleItem.uid});
+            this.initArticleList();
+            break;
           case 'delete':
             this.currentOperateArticle = articleItem;
             this.modalContentType = 1;
@@ -306,7 +318,6 @@
         tag.color = getRandomColor();
         let articleInfo = {
           uid: noteItem.uid,
-          title: noteItem.title,
           tagsArray: JSON.stringify(noteItem.tags)
         }
         WriteCenterApi.updateArticleInfo(this, articleInfo);
@@ -318,7 +329,6 @@
         event.preventDefault();
         let articleInfo = {
           uid: noteItem.uid,
-          title: noteItem.title,
           tagsArray: JSON.stringify(noteItem.tags)
         }
         WriteCenterApi.updateArticleInfo(this, articleInfo);
@@ -340,7 +350,6 @@
           noteItem.tags = [...tags, tag];
           let articleInfo = {
             uid: noteItem.uid,
-            title: noteItem.title,
             tagsArray: JSON.stringify(noteItem.tags)
           }
           WriteCenterApi.updateArticleInfo(this, articleInfo);
@@ -354,8 +363,8 @@
       /**
        * 子组件上报更新信息
        */
-      updateArticle(articleInfo) {
-        this.currentOperateArticle = {...this.currentOperateArticle, ...articleInfo}
+      updateArticle() {
+        this.initArticleList();
         this.showModal = false;
       },
       initArticleList() {
@@ -365,7 +374,7 @@
         };
         WriteCenterApi.getMyArticleList(this, requestEntity).then(data => {
           if (data?.result) {
-            this.articleList = data;
+            this.articleList = data.data;
           }
         })
       }

@@ -101,6 +101,25 @@
       justify-content: space-between;
       position: relative;
 
+      .index-module_topIcon {
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        border-radius: 8px;
+        overflow: hidden;
+        right: 0;
+        top: 0;
+        z-index: 1;
+
+        .set-top {
+          font-size: 20px;
+          position: absolute;
+          right: 0;
+          top: -4px;
+          color: #00B96B;
+        }
+      }
+
       .index-module_leftToolBar {
         position: absolute;
         left: -25px;
@@ -119,6 +138,7 @@
         border-radius: 8px;
         margin-bottom: 12px;
         transition: box-shadow .2s ease-in-out;
+        border: 1px solid rgba(0, 0, 0, .06);
 
         .index-module_meta {
           font-size: 12px;
@@ -151,12 +171,10 @@
                 display: flex;
                 align-items: center;
               }
+            }
 
-              .ivu-input:focus {
-                border-color: #0BD07D;
-                outline: 0;
-                box-shadow: none;
-              }
+            /deep/.ivu-input-small {
+              height: 26.5px;
             }
 
             .add-tag-btn {
@@ -171,6 +189,11 @@
             font-size: 12px;
             color: @grey-white-font-color;
           }
+
+          .iconfont {
+            margin-left: 5px;
+            font-size: 13px;
+          }
         }
 
         .index-module_content {
@@ -178,12 +201,10 @@
           color: var(--font-color);
 
           .viewer-header {
-            //margin: 10px 0 0;
             line-height: 28px;
             letter-spacing: 0.008em;
             font-size: 18px;
             font-weight: bold;
-            cursor: pointer;
 
             &:hover {
               color: var(--title-color);
@@ -191,7 +212,8 @@
 
             span {
               display: inline-block;
-              width: 100%;
+              max-width: 100%;
+              cursor: pointer;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
@@ -262,6 +284,10 @@
                 padding: 7px 32px;
               }
             }
+          }
+
+          &:focus-within {
+            opacity: 1;
           }
         }
       }
