@@ -6,7 +6,8 @@ import request from './utils/request'
 import {Message} from 'view-design'
 
 Message.config({
-  top: 80
+  top: 80,
+  duration: 1.8
 })
 
 Vue.config.productionTip = false

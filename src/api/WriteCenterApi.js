@@ -113,6 +113,30 @@ export default {
       method: 'POST',
       data: articleInfo
     });
+  },
+
+  /**
+   * 文章发布
+   * @param _this
+   * @returns {Promise<void>}
+   */
+  async publishArticle(_this, articleId) {
+    return await _this.$request({
+      url: "/contentProd/article/publish/" + articleId,
+      method: 'POST'
+    });
+  },
+
+  /**
+   * 文章删除
+   * @param _this
+   * @returns {Promise<void>}
+   */
+  async deleteArticle(_this, articleId) {
+    return await _this.$request({
+      url: "/contentProd/article/delete/" + articleId,
+      method: 'POST'
+    });
   }
 }
 

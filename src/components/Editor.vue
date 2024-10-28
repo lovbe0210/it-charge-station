@@ -187,8 +187,7 @@ export default {
       }
       WriteCenterApi.updateArticleInfo(this, articleInfo).then((data) => {
         if (data?.result) {
-          console.log("---------------编辑器更新文档标题----------------");
-          this.$emit('updateArticleInfo', this.article)
+          this.$emit('updateArticle', this.article)
         }
       })
     },

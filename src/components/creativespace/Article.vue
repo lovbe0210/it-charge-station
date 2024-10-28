@@ -97,9 +97,20 @@
             <div class="order-time">
               <span class="note-status-module_text un-select" v-if="orderType == 1">更新于 {{formatTime(noteItem.updateTime)}}</span>
               <span class="note-status-module_text un-select" v-if="orderType == 2">创建于 {{formatTime(noteItem.createTime)}}</span>
-              <span :class="['iconfont', noteItem.isPublic ? 'public' : 'lock']"/>
-              <span v-if="noteItem.isPublic && noteItem.publishStatus !== 3"
-                :class="['iconfont', noteItem.publishStatus === 0 ? 'wait-publish' : noteItem.publishStatus === 1 ? 'publish-ing' : 'publish-fail']"/>
+              <a-tooltip placement="top" overlayClassName="normal-tooltip" :getPopupContainer="getTooltipContainer">
+                <template slot="title">
+                  {{ noteItem.isPublic ? '互联网可访问' : '仅作者可访问' }}
+                </template>
+                <span :class="['iconfont', noteItem.isPublic ? 'public' : 'lock']"/>
+              </a-tooltip>
+              <a-tooltip placement="top" overlayClassName="normal-tooltip" :getPopupContainer="getTooltipContainer">
+                <template slot="title">
+                  {{ noteItem.publishStatus === 0 ? '新内容待发布' : noteItem.publishStatus === 1 ? '已发布审核中' : '发布内容审核失败' }}
+                </template>
+                <span v-if="noteItem.isPublic && noteItem.publishStatus !== 3"
+                      :class="['iconfont', noteItem.publishStatus === 0 ? 'wait-publish' : noteItem.publishStatus === 1 ? 'publish-ing' : 'publish-fail']"/>
+              </a-tooltip>
+
             </div>
           </div>
           <div class="index-module_content">
@@ -127,7 +138,7 @@
                     <span @click="routeNavigate('edit', noteItem)">编辑</span>
                   </DropdownItem>
                   <DropdownItem>
-                    <span>发布</span>
+                    <span @click="routeNavigate('publish', noteItem)">发布</span>
                   </DropdownItem>
                   <DropdownItem>
                     <span @click="routeNavigate('delete', noteItem)">删除</span>
@@ -164,9 +175,14 @@
           <span class="iconfont i-warn"></span>
           <span>确认删除 {{ currentOperateArticle?.title }} ？</span>
         </div>
+        <div>
+          <span>
+            删除操作不可逆，删除后和文章相关的评论回复也将一并删除
+          </span>
+        </div>
         <div class="confirm-btn">
           <Button type="text" ghost @click="showModal = false">取消</Button>
-          <Button type="success">确定</Button>
+          <Button type="success" @click="deleteArticle">确定</Button>
         </div>
       </div>
       <div class="modal-setting-item" v-if="modalContentType === 2">
@@ -286,10 +302,29 @@
       routeNavigate(routePath, articleItem) {
         switch (routePath) {
           case 'edit':
-            this.$router.push({path: '/editor/' + articleItem.uid});
+            let editUrl = this.$router.resolve({
+              path: '/editor/' + articleItem.uid
+            })
+            window.open(editUrl.href, '_blank')
             break;
           case 'read':
-            this.$router.push({path: '/article/' + articleItem.uid});
+            let readUrl = this.$router.resolve({
+              path: '/article/' + articleItem.uid
+            })
+            window.open(readUrl.href, '_blank')
+            break;
+          case 'publish':
+            // 判断状态如果为仅作者可读则不可发布
+            if (!articleItem.isPublic) {
+              this.$Message.warning('请先将阅读权限设置为互联网可访问再进行发布');
+              break;
+            }
+            WriteCenterApi.publishArticle(this, articleItem.uid).then(data => {
+              if (data?.result) {
+                articleItem.publishStatus = 1;
+                this.$Message.success('发布成功，审核通过后可访问最新内容');
+              }
+            })
             break;
           case 'setTop':
             WriteCenterApi.updateArticleTop(this, {uid: articleItem.uid});
@@ -359,6 +394,15 @@
       },
       getTooltipContainer() {
         return this.$refs.TooltipContainer
+      },
+      deleteArticle() {
+        WriteCenterApi.deleteArticle(this, this.currentOperateArticle.uid).then(data => {
+          if (data?.result) {
+            this.$Message.success('删除成功');
+            this.articleList = this.articleList.filter(item => item.uid !== this.currentOperateArticle.uid);
+            this.showModal = false;
+          }
+        })
       },
       /**
        * 子组件上报更新信息

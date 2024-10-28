@@ -185,14 +185,25 @@
             }
           }
 
-          .note-status-module_text {
-            font-size: 12px;
-            color: @grey-white-font-color;
-          }
+          .order-time {
+            display: flex;
+            align-items: center;
 
-          .iconfont {
-            margin-left: 5px;
-            font-size: 13px;
+            .note-status-module_text {
+              font-size: 12px;
+              color: @grey-white-font-color;
+            }
+
+            .iconfont {
+              margin-left: 5px;
+            }
+
+            .public {
+              font-size: 15px;
+            }
+            .lock {
+              font-size: 14px;
+            }
           }
         }
 
@@ -435,33 +446,38 @@
 
 /deep/ .tag-color-tooltip {
   padding-top: 0 !important;
+  .ant-tooltip-inner {
+    font-size: 12px;
+    background-color: rgba(0, 0, 0, 0.75);
+    min-width: unset;
+    min-height: unset;
+    padding: 0;
+
+    .tag-color-btn {
+      width: 32px;
+      height: 26px;
+      border-radius: 3px;
+
+      .hazy {
+        width: 32px;
+        height: 26px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(255,255,255,0.5);
+      }
+    }
+  }
+}
+
+/deep/ .normal-tooltip {
+  .ant-tooltip-inner {
+    font-size: 12px;
+  }
 }
 
 /deep/ .ant-tooltip-placement-top {
   padding-bottom: 0 !important;
-}
-
-/deep/.ant-tooltip-inner {
-  font-size: 12px;
-  background-color: rgba(0, 0, 0, 0.75);
-  min-width: unset;
-  min-height: unset;
-  padding: 0;
-
-  .tag-color-btn {
-    width: 32px;
-    height: 26px;
-    border-radius: 3px;
-
-    .hazy {
-      width: 32px;
-      height: 26px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(255,255,255,0.5);
-    }
-  }
 }
 
 /deep/ .ant-tooltip-arrow {
