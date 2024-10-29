@@ -183,19 +183,7 @@ export default {
   name: 'ArticleSetting',
   data() {
     return {
-      articleInfo: {
-        /*title: 'lovbe0210',
-        coverFile: null,
-        isPublic: 1,
-        summary: '',
-        firstLevel: null,
-        secondLevel: null,
-        tags: [
-          {content: 'SpringBoot', color: 'blue'},
-          {content: 'JAVA', color: 'red'},
-          {content: '调优', color: 'green'}
-        ]*/
-      },
+      articleInfo: {},
       cropInfo: {
         height: 0,
         width: 0,

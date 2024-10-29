@@ -13,7 +13,7 @@ export default {
   },
 
   /**
-   * 创建空白文档
+   * 获取文档用于编辑
    * @param _this
    * @param userId
    * @returns {Promise<void>}
@@ -137,6 +137,47 @@ export default {
       url: "/contentProd/article/delete/" + articleId,
       method: 'POST'
     });
+  },
+
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  //                                      专栏
+  // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+  /**
+   * 新建专栏
+   * @param _this
+   * @param columnInfo
+   * @returns {Promise<void>}
+   */
+  async createColumn(_this, columnInfo) {
+    return await _this.$request({
+      url: "/contentProd/column/create",
+      method: 'POST',
+      data: columnInfo
+    });
+  },
+
+  /**
+   * 获取专栏信息
+   * @param _this
+   * @param columnInfo
+   * @returns {Promise<void>}
+   */
+  async getColumnInfo(_this, columnId) {
+    return await _this.$request({
+      url: "/contentProd/column/" + columnId,
+      method: 'POST'
+    });
+  },
+
+  /**
+   * 文档信息更新（包含封面图片）
+   * @param _this
+   * @param articleInfo
+   * @returns {Promise<void>}
+   */
+  async updateColumnInfo(_this, formData) {
+    return await _this.$request.put("/contentProd/column/update", formData);
   }
 }
 

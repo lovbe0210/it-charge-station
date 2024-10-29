@@ -42,21 +42,21 @@
                      :class="['name-input', 'form-input', showColumnNameError ? 'empty-input' : '']"
                      maxlength="30"
                      placeholder="专栏名称"
-                     @on-change="showColumnNameError = baseInfo.columnName?.length === 0"
-                     v-model="baseInfo.columnName"/>
+                     @on-change="showColumnNameError = baseInfo.title?.length === 0"
+                     v-model="baseInfo.title"/>
               <span v-if="showColumnNameError" class="error-tip">请输入专栏名称</span>
             </div>
             <div class="desc form-item">
               <div class="label">
                 <div class="label-text">简介</div>
-                <div>{{ baseInfo.desc?.length ? baseInfo.desc?.length : 0 }} / 255</div>
+                <div>{{ baseInfo.synopsis?.length ? baseInfo.synopsis?.length : 0 }} / 255</div>
               </div>
               <Input type="textarea"
                      class="desc-input form-input"
                      :rows="4"
                      maxlength="255"
                      placeholder="专栏简介（选填）"
-                     v-model="baseInfo.desc"/>
+                     v-model="baseInfo.synopsis"/>
             </div>
             <div class="permission form-item">
               <div class="label">
@@ -101,9 +101,9 @@
               </div>
               <div class="cover-input form-input">
                 <vueCropper
-                  :class="['crop-box', baseInfo.coverOriginalFile ? '' : 'cover-placeholder']"
+                  :class="['crop-box', coverOriginalFile ? '' : 'cover-placeholder']"
                   ref="cropper"
-                  :img="baseInfo.coverOriginalFile"
+                  :img="coverOriginalFile"
                   :autoCrop="true"
                   :fixedBox="false"
                   :centerBox="true"
@@ -118,7 +118,7 @@
                 </vueCropper>
                 <div class="cover-preview">
                   <div>
-                    <img v-if="baseInfo.coverPreview" :src="baseInfo.coverPreview" class="img" alt="预览">
+                    <img v-if="coverPreview" :src="coverPreview" class="img" alt="预览">
                     <div class="cover-upload-select">
                       <Upload action="/"
                               :format="['jpg','jpeg','png']"
@@ -127,12 +127,12 @@
                               :show-upload-list="false"
                               :before-upload="fileHandle">
                         <Button class="cover-upload-btn">
-                          <span v-if="!baseInfo.coverOriginalFile"><span class="iconfont upload"/>上传图片</span>
+                          <span v-if="!coverOriginalFile"><span class="iconfont upload"/>上传图片</span>
                           <span v-else>重新上传</span>
                         </Button>
                       </Upload>
                       <div class="clear-cover-btn">
-                      <span v-show="baseInfo.coverPreview" class="un-select" @click="clearCoverPreview">
+                      <span v-show="coverPreview" class="un-select" @click="clearCoverPreview">
                         <span class="iconfont delete"></span>
                         清除
                       </span>
@@ -396,7 +396,7 @@
             </div>
             <div>
               <Button type="error" class="warn-btn" @click="columnDelete">
-                <span class="column-name">确定删除 {{ baseInfo.columnName }}</span>
+                <span class="column-name">确定删除 {{ baseInfo.title }}</span>
               </Button>
             </div>
           </div>
@@ -407,25 +407,21 @@
 </template>
 
 <script>
-import {VueCropper} from 'vue-cropper'
-import {formatTime} from '@/utils/emoji';
+import { VueCropper } from 'vue-cropper'
+import { formatTime } from '@/utils/emoji';
 import DragTree from "@/components/common/dragtree/DragTree";
 import ArticleSetting from "@/components/common/ArticleSetting"
+import WriteCenterApi from "@/api/WriteCenterApi";
+import { dataURLtoFile } from "@/utils/utils";
 
 export default {
   name: 'SeriesColumnSetting',
   data() {
     return {
       activeItem: 'base',
-      baseInfo: {
-        columnName: 'what?',
-        isPublic: 0,
-        desc: '',
-        enableComment: 0,
-        autoPublish: 0,
-        coverOriginalFile: null,
-        coverPreview: null
-      },
+      baseInfo: {},
+      coverOriginalFile: null,
+      coverPreview: null,
       currentOperateArticle: null,
       showColumnNameError: false,
       cropInfo: {
@@ -576,11 +572,25 @@ export default {
       event.preventDefault();
     },
     updateColumnInfo() {
-      if (this.baseInfo?.columnName?.length === 0) {
+      if (this.baseInfo?.title?.length === 0) {
         this.showColumnNameError = true;
         return;
       }
-      this.$Message.success('更新成功')
+      let columnInfo = new FormData();
+      columnInfo.append('uid', this.baseInfo.uid);
+      columnInfo.append('title', this.baseInfo.title);
+      if (this.coverPreview) {
+        columnInfo.append('coverFile', dataURLtoFile(this.coverPreview, "cover.jpg"));
+      } else if (this.articleInfo.coverUrl) {
+        columnInfo.append('coverUrl', this.baseInfo.coverUrl);
+      }
+      columnInfo.append('isPublic', this.baseInfo.isPublic);
+      columnInfo.append('synopsis', this.baseInfo.synopsis);
+      WriteCenterApi.updateColumnInfo(this, columnInfo).then(data => {
+        if (data?.result) {
+          this.$Message.success('更新成功');
+        }
+      })
     },
     fileHandle(file) {
       if (file?.size > 5120 * 1024) {
@@ -591,7 +601,7 @@ export default {
       let reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function () {
-        _this.baseInfo.coverOriginalFile = this.result;
+        _this.coverOriginalFile = this.result;
       }
       return false;
     },
@@ -607,7 +617,7 @@ export default {
     },
     getNewCropImage() {
       this.$refs.cropper.getCropData(data => {
-        this.baseInfo.coverPreview = data;
+        this.coverPreview = data;
       })
     },
     imgLoadOver(data) {
@@ -616,8 +626,11 @@ export default {
           this.getNewCropImage();
           this.cropInfo.height = this.$refs.cropper.cropH;
           this.cropInfo.width = this.$refs.cropper.cropW;
+          if (this.cropInfo.flushPreview != null) {
+            clearInterval(this.cropInfo.flushPreview);
+          }
           this.cropInfo.flushPreview = setInterval(() => {
-            if (!this.baseInfo.coverOriginalFile) {
+            if (!this.coverOriginalFile) {
               clearInterval(this.cropInfo.flushPreview);
               this.cropInfo.flushPreview = null;
               return;
@@ -634,8 +647,8 @@ export default {
       }
     },
     clearCoverPreview() {
-      this.baseInfo.coverPreview = null;
-      this.baseInfo.coverOriginalFile = null;
+      this.coverPreview = null;
+      this.coverOriginalFile = null;
     },
     articleAction(row, action) {
       switch (action) {
@@ -710,14 +723,21 @@ export default {
     "showModal"(val) {
       if (!val) {
         this.actionType = '';
-        this.baseInfo.columnName = '';
-        this.baseInfo.desc = '';
+        this.baseInfo.title = '';
+        this.baseInfo.synopsis = '';
         this.tmpValue = '';
         this.cannotDelete = false;
         this.currentOperateArticle = null;
         this.clearCoverPreview();
       }
     }
+  },
+  created() {
+    WriteCenterApi.getColumnInfo(this, this.columnId).then(data => {
+      if (data?.result) {
+        this.baseInfo = data.data;
+      }
+    })
   },
   destroyed() {
     if (this.cropInfo.flushPreview) {

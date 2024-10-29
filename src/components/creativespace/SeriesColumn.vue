@@ -54,7 +54,7 @@
             <div class="card-meta-title">
               <span class="book-name" v-show="columnRenameId !== columnItem.id">
                 <a href="/column/pb2d66" class="book-link" target="_self">
-                  <span class="book-name-text" :title="columnItem.columnName">{{columnItem.columnName}}</span>
+                  <span class="book-name-text" :title="columnItem.title">{{columnItem.title}}</span>
                 </a>
                 <span class="book-name-scope">
                   <span :class="['iconfont', columnItem.isPublic ? 'public' : 'lock']"
@@ -64,11 +64,11 @@
               <div v-if="columnRenameId === columnItem.id" class="book-rename">
                 <Input type="text"
                        ref="renameInput"
-                       v-model="columnItem.columnName"
-                       :placeholder="columnItem.columnName"
+                       v-model="columnItem.title"
+                       :placeholder="columnItem.title"
                        maxlength="30"
-                       @on-enter="columnNameRename"
-                       @on-blur="columnNameRename"
+                       @on-enter="titleRename"
+                       @on-blur="titleRename"
                        />
               </div>
             </div>
@@ -200,7 +200,7 @@
             <span>
               正在删除专栏
               <span class="column-name">
-                {{currentColumn.columnName}}
+                {{currentColumn.title}}
               </span>
               ，该操作不可逆，一旦操作成功，专栏下的所有内容将会删除。请输入下面内容再次确认操作。
             </span>
@@ -216,7 +216,7 @@
           </div>
           <div>
             <Button type="error" class="warn-btn" @click="columnDelete">
-              <span class="column-name">确定删除 {{currentColumn.columnName}}</span>
+              <span class="column-name">确定删除 {{currentColumn.title}}</span>
             </Button>
           </div>
         </div>
@@ -227,13 +227,13 @@
                    class="column-name"
                    maxlength="30"
                    placeholder="专栏名称"
-                   v-model="currentColumn.columnName"/>
+                   v-model="currentColumn.title"/>
             <Input type="textarea"
                    class="desc"
                    :rows="4"
                    maxlength="255"
                    placeholder="专栏简介（选填）"
-                   v-model="currentColumn.desc"/>
+                   v-model="currentColumn.synopsis"/>
           </div>
           <span class="label">访问权限</span>
           <div class="permission-radio">
@@ -267,7 +267,7 @@
                 </div>
               </Poptip>
             </div>
-          <Button type="success" class="create-btn" :disabled="!currentColumn?.columnName">
+          <Button type="success" class="create-btn" :disabled="!currentColumn?.title" @click="createColumn">
             <span>新建</span>
           </Button>
         </div>
@@ -277,6 +277,7 @@
 </template>
 
 <script>
+  import WriteCenterApi from "@/api/WriteCenterApi";
   export default {
     name: 'SeriesColumn',
     data() {
@@ -293,9 +294,9 @@
         deleteColumn: false,
         createNewColumn: false,
         currentColumn: {
-          columnName: '',
+          title: '',
           isPublic: 0,
-          desc: ''
+          synopsis: ''
         },
         seriesColumnList: [
           {
@@ -424,6 +425,16 @@
       getTooltipContainer() {
         return this.$refs.TooltipContainer
       },
+      createColumn() {
+        WriteCenterApi.createColumn(this, this.currentColumn).then(data => {
+          if (data?.result) {
+            // 携带专栏信息跳转到设置页面
+            this.$router.push({
+              path: '/creative/column/setting/' + data.data.uid
+            })
+          }
+        })
+      },
       routeNavigate(columnItem, itemName) {
         this.currentColumn = columnItem;
         switch (itemName) {
@@ -474,27 +485,27 @@
           this.cannotDelete = false;
           this.tmpValue = '';
           this.currentColumn = {
-            columnName: '',
+            title: '',
             isPublic: 0,
-            desc: ''
+            synopsis: ''
           };
         }
       },
       "changePermission"(val) {
         if (!val) {
           this.currentColumn = {
-            columnName: '',
+            title: '',
             isPublic: 0,
-            desc: ''
+            synopsis: ''
           };
         }
       },
       "createNewColumn"(val) {
         if (!val) {
           this.currentColumn = {
-            columnName: '',
+            title: '',
             isPublic: 0,
-            desc: ''
+            synopsis: ''
           };
         }
       }
