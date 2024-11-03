@@ -33,11 +33,11 @@
       </div>
     </div>
     <div class="column-home-list">
-      <div class="column-list-item" v-for="columnItem in seriesColumnList" :key="columnItem.id">
+      <div class="column-list-item" v-for="columnItem in seriesColumnList" :key="columnItem.uid">
         <div class="column-cover" v-if="columnShowType == 1">
           <a class="cover-box" href="/lovbe0210/nhagpt">
-            <img :src="columnItem.coverImg"
-                 alt="啊实打实">
+            <img :src="fileUrl(columnItem.coverUrl)"
+                 :alt="columnItem.title">
           </a>
           <a-tooltip :getPopupContainer="getTooltipContainer">
             <template slot="title">
@@ -52,7 +52,7 @@
              :style="columnShowType == 1 ? 'border-radius: 0 0 8px 8px;border-top: 0;' : 'border-radius: 8px;'">
           <div class="column-meta">
             <div class="card-meta-title">
-              <span class="book-name" v-show="columnRenameId !== columnItem.id">
+              <span class="book-name" v-show="columnRenameId !== columnItem.uid">
                 <a href="/column/pb2d66" class="book-link" target="_self">
                   <span class="book-name-text" :title="columnItem.title">{{columnItem.title}}</span>
                 </a>
@@ -61,19 +61,19 @@
                         :title="columnItem.isPublic ? '互联网可访问' : '仅作者自己访问'"/>
                 </span>
               </span>
-              <div v-if="columnRenameId === columnItem.id" class="book-rename">
+              <div v-if="columnRenameId === columnItem.uid" class="book-rename">
                 <Input type="text"
                        ref="renameInput"
                        v-model="columnItem.title"
                        :placeholder="columnItem.title"
                        maxlength="30"
-                       @on-enter="titleRename"
-                       @on-blur="titleRename"
+                       @on-enter="columnTitleRename"
+                       @on-blur="columnTitleRename"
                        />
               </div>
             </div>
             <div class="card-meta-description">
-              <span class="columns-module_description">forever study a little everyday</span>
+              <span class="columns-module_description">{{columnItem.synopsis}}</span>
             </div>
           </div>
           <span class="column-hover-show"
@@ -121,30 +121,12 @@
           </div>
           <div v-else>
             <ul class="column-article" v-if="columnShowType == 2">
-              <li>
-                <a target="_blank" href="/column/pb2d66/vv91fhpithr0t7sl" title="it充电站系统架构图"
+              <li v-for="article in columnItem.articleList" :key="article.uid">
+                <a target="_blank" href="/column/pb2d66/vv91fhpithr0t7sl" :title="article.title"
                    class="column-summary-item">
-                  <span class="column-summary-itemText">it充电站系统架构图a架构图啊真的是吗</span>
+                  <span class="column-summary-itemText">{{ article.title }}</span>
                   <span class="column-summary-itemTime">
-                  <span>08-14 14:10</span>
-                </span>
-                </a>
-              </li>
-              <li>
-                <a target="_blank" href="/column/pb2d66/vv91fhpithr0t7sl" title="决策指挥大屏系统V4.30数据同步"
-                   class="column-summary-item">
-                  <span class="column-summary-itemText">决策指挥大屏系统V4.30数据同步</span>
-                  <span class="column-summary-itemTime">
-                    <span>08-08 14:09</span>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a target="_blank" href="/column/pb2d66/vv91fhpithr0t7sl" title="初识Vue"
-                   class="column-summary-item">
-                  <span class="column-summary-itemText">初识Vue</span>
-                  <span class="column-summary-itemTime">
-                  <span>06-27 16:17</span>
+                  <span>{{formatTime(article.updateTime)}}</span>
                 </span>
                 </a>
               </li>
@@ -278,6 +260,9 @@
 
 <script>
   import WriteCenterApi from "@/api/WriteCenterApi";
+  import { formatTime } from '@/utils/emoji'
+  import article from "./Article.vue";
+
   export default {
     name: 'SeriesColumn',
     data() {
@@ -325,91 +310,14 @@
             ],
             updateTime: '2023-12-23 22:09:11',
             sort: 1
-          },
-          {
-            id: '233424dfgdgd',
-            columnName: '是个标题啊是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试给刷卡机较大饭卡手机班米啊试',
-            columnHome: '/lovbe0210/sd45454',
-            isPublic: 1,
-            coverImg: require('@/assets/cover/cover2.png'),
-            desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大啊沙发啦班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大咔咔好卡手打发撒公司控股见大好',
-            updateTime: '2023-12-23 22:09:11',
-            sort: 0
-          },
-          {
-            id: '76558fghfghfccbc',
-            columnName: '是个标题啊',
-            columnHome: '/lovbe0210/sd45454',
-            isPublic: 1,
-            coverImg: require('@/assets/cover/cover3.png'),
-            desc: null,
-            updateTime: '2023-12-23 22:09:11',
-            sort: 0
-          },
-          {
-            id: 'ddfgdfgd23424242',
-            columnName: '是个标题啊',
-            columnHome: '/lovbe0210/sd45454',
-            isPublic: 0,
-            coverImg: require('@/assets/cover/cover2.png'),
-            desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
-            updateTime: '2023-12-23 22:09:11',
-            sort: 1
-          },
-          {
-            id: '5657656585fghfghf',
-            columnName: '是个标题啊是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试给刷卡机较大饭卡手机班米啊试',
-            columnHome: '/lovbe0210/sd45454',
-            isPublic: 0,
-            coverImg: 'https://fc.sinaimg.cn/large/006BNqYCly1hk88v14absj32yo1o0x6p.jpg',
-            desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大啊沙发啦班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大咔咔好卡手打发撒公司控股见大好',
-            updateTime: '2023-12-23 22:09:11',
-            sort: 0
-          },
-          {
-            id: 'sdadsa2323',
-            columnName: '是个标题啊',
-            columnHome: '/lovbe0210/sd45454',
-            isPublic: 1,
-            coverImg: require('@/assets/cover/cover2.png'),
-            desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
-            updateTime: '2023-12-23 22:09:11',
-            sort: 0
-          },
-          {
-            id: '333323243234234234',
-            columnName: '是个标题啊',
-            columnHome: '/lovbe0210/sd45454',
-            isPublic: 1,
-            coverImg: require('@/assets/cover/cover3.png'),
-            desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
-            updateTime: '2023-12-23 22:09:11',
-            sort: 1
-          },
-          {
-            id: '66767dfgdfgdfgd',
-            coverImg: require('@/assets/cover/cover1.png'),
-            columnName: '是个标题啊是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试给刷卡机较大饭卡手机班米啊试',
-            isPublic: 1,
-            columnHome: '/lovbe0210/sd45454',
-            desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大啊沙发啦班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大咔咔好卡手打发撒公司控股见大好',
-            updateTime: '2023-12-23 22:09:11',
-            sort: 0
-          },
-          {
-            id: '1112121212',
-            columnName: '是个标题啊',
-            isPublic: 1,
-            columnHome: '/lovbe0210/sd45454',
-            coverImg: require('@/assets/cover/cover2.png'),
-            desc: '我就是已很难过航班米啊试试阿萨德哈师大旷达科技登记卡送达给刷卡机较大饭卡手机啊沙发啦咔咔好卡手打发撒公司控股见大好',
-            updateTime: '2023-12-23 22:09:11',
-            sort: 0
           }
         ]
       }
     },
     computed: {
+      article() {
+        return article
+      },
       showModal: {
         get() {
           return this.createNewColumn || this.changePermission || this.deleteColumn;
@@ -428,6 +336,8 @@
       createColumn() {
         WriteCenterApi.createColumn(this, this.currentColumn).then(data => {
           if (data?.result) {
+            // 将最新创建的专栏放入顶部
+            this.seriesColumnList.unshift(data.data);
             // 携带专栏信息跳转到设置页面
             this.$router.push({
               path: '/creative/column/setting/' + data.data.uid
@@ -471,13 +381,17 @@
       readPublicPermission(event) {
         event.preventDefault();
       },
-      columnNameRename() {
+      columnTitleRename() {
         if (this.columnRenameId === '' || !this.columnRenameId) {
           return;
         }
         this.columnRenameId = '';
         this.$Message.success('修改成功')
-      }
+      },
+      fileUrl(path) {
+        return this.fileService + path;
+      },
+      formatTime
     },
     watch: {
       "deleteColumn"(val) {
@@ -509,6 +423,13 @@
           };
         }
       }
+    },
+    created() {
+      WriteCenterApi.getColumnList(this).then(data => {
+        if (data?.result) {
+          this.seriesColumnList = data.data;
+        }
+      })
     }
   }
 </script>

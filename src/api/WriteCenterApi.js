@@ -144,6 +144,19 @@ export default {
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   /**
+   * 获取专栏列表
+   * @param _this
+   * @param columnInfo
+   * @returns {Promise<void>}
+   */
+  async getColumnList(_this) {
+    return await _this.$request({
+      url: "/contentProd/columnList",
+      method: 'POST'
+    });
+  },
+
+  /**
    * 新建专栏
    * @param _this
    * @param columnInfo
