@@ -171,6 +171,20 @@ export default {
   },
 
   /**
+   * 删除专栏
+   * @param _this
+   * @param columnInfo
+   * @returns {Promise<void>}
+   */
+  async deleteColumn(_this, columnInfo) {
+    return await _this.$request({
+      url: "/contentProd/column/delete",
+      method: 'POST',
+      data: columnInfo
+    });
+  },
+
+  /**
    * 获取专栏信息
    * @param _this
    * @param columnInfo

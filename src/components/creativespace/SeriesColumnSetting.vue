@@ -437,119 +437,7 @@ export default {
       actionType: 'setting',
       cannotDelete: false,
       tmpValue: '',
-      articleList: [
-        {
-          id: 'asda221313',
-          columnId: 'asd3443',
-          articleName: '什么是零样本学习',
-          isPublish: 1,
-          createTime: 1708754002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: 'swe23233',
-          columnId: '',
-          isPublish: 0,
-          articleName: '广义零样本学习 (GSZL)',
-          createTime: 1711271490000,
-          updateTime: 1719204802000
-        },
-        {
-          id: '3345dffdf',
-          columnId: null,
-          isPublish: 1,
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '3345df09fdf',
-          columnId: 'asd344223',
-          isPublish: 1,
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '3345d99ffdf',
-          isPublish: 0,
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '3345df86fdf',
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '3345dff67df',
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '3345df8fdf',
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '3345df67fdf',
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '3345dffd6f',
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '334545dffdf',
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '3345dff4df',
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '3345df21fdf',
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '3345df3fdf',
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '3345dff2df',
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '3345dffd12f',
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        },
-        {
-          id: '3345dffdf1',
-          articleName: '基于属性的方法和基于嵌入的方法有什么区别为什么显示不全',
-          createTime: 1719158002000,
-          updateTime: 1711271490000
-        }
-      ],
+      articleList: [],
       treeParamBox: null
     }
   },
@@ -572,7 +460,8 @@ export default {
       event.preventDefault();
     },
     updateColumnInfo() {
-      if (this.baseInfo?.title?.length === 0) {
+      debugger
+      if (this.baseInfo.title?.length === 0) {
         this.showColumnNameError = true;
         return;
       }
@@ -581,7 +470,7 @@ export default {
       columnInfo.append('title', this.baseInfo.title);
       if (this.coverPreview) {
         columnInfo.append('coverFile', dataURLtoFile(this.coverPreview, "cover.jpg"));
-      } else if (this.articleInfo.coverUrl) {
+      } else if (this.baseInfo.coverUrl) {
         columnInfo.append('coverUrl', this.baseInfo.coverUrl);
       }
       columnInfo.append('isPublic', this.baseInfo.isPublic);
@@ -736,6 +625,9 @@ export default {
     WriteCenterApi.getColumnInfo(this, this.columnId).then(data => {
       if (data?.result) {
         this.baseInfo = data.data;
+        if (data.data.coverUrl) {
+          this.coverOriginalFile = this.fileService + data.data.coverUrl;
+        }
       }
     })
   },
