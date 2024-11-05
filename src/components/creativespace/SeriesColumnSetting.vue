@@ -222,16 +222,16 @@
               </div>
             </div>
             <div class="article-list-wrapper beauty-scroll">
-              <div class="note-list-item" v-for="noteItem in articleList" :key="noteItem.id">
+              <div class="note-list-item" v-for="noteItem in baseInfo.articleList" :key="noteItem.uid">
                 <div class="left-checkbox">
-                  <a-checkbox :class="showCheckToolBar ? '' : 'check-show'" :checked="isCheck(noteItem.id)"
-                              @change="onCheckChange(noteItem.id, $event)">
+                  <a-checkbox :class="showCheckToolBar ? '' : 'check-show'" :checked="isCheck(noteItem.uid)"
+                              @change="onCheckChange(noteItem.uid, $event)">
                   </a-checkbox>
                 </div>
                 <div class="center-table-view">
-                  <div class="article-name" :title="noteItem.articleName" @click="articleAction(noteItem,'read')">
+                  <div class="article-name" :title="noteItem.title" @click="articleAction(noteItem,'read')">
                     <span>
-                      {{ noteItem.articleName }}
+                      {{ noteItem.title }}
                     </span>
                   </div>
                   <div class="status">
@@ -380,13 +380,13 @@
               <span>
               正在删除专栏
               <span class="column-name">
-                {{ columnId }}
+                {{ baseInfo.uri }}
               </span>
               ，该操作不可逆，一旦操作成功，专栏下的所有内容将会删除。请输入下面内容再次确认操作。
             </span>
             </div>
             <div class="warn-confirm">
-              <span>请在下方输入框中输入 “{{ columnId }}” 以确认操作</span>
+              <span>请在下方输入框中输入 “{{ baseInfo.uri }}” 以确认操作</span>
               <Input type="text"
                      :class="['confirm-input', cannotDelete ? 'cannot-delete' : '']"
                      @on-change="cannotDelete = false"
@@ -444,10 +444,10 @@ export default {
   props: ['columnId'],
   computed: {
     checkAll() {
-      return this.checkedList.length > 0 && this.checkedList.length === this.articleList.length;
+      return this.checkedList.length > 0 && this.checkedList.length === this.baseInfo.articleList?.length;
     },
     indeterminate() {
-      return this.checkedList.length > 0 && this.checkedList.length !== this.articleList.length
+      return this.checkedList.length > 0 && this.checkedList.length !== this.baseInfo.articleList?.length
     }
   },
   components: {
@@ -460,11 +460,13 @@ export default {
       event.preventDefault();
     },
     updateColumnInfo() {
-      debugger
       if (this.baseInfo.title?.length === 0) {
         this.showColumnNameError = true;
         return;
       }
+      this.callbackUpdate();
+    },
+    callbackUpdate() {
       let columnInfo = new FormData();
       columnInfo.append('uid', this.baseInfo.uid);
       columnInfo.append('title', this.baseInfo.title);
@@ -475,6 +477,8 @@ export default {
       }
       columnInfo.append('isPublic', this.baseInfo.isPublic);
       columnInfo.append('synopsis', this.baseInfo.synopsis);
+      columnInfo.append('enableComment', this.baseInfo.enableComment ? 1 : 0);
+      columnInfo.append('autoPublish', this.baseInfo.autoPublish ? 1 : 0);
       WriteCenterApi.updateColumnInfo(this, columnInfo).then(data => {
         if (data?.result) {
           this.$Message.success('更新成功');
@@ -524,8 +528,13 @@ export default {
               this.cropInfo.flushPreview = null;
               return;
             }
-            let cropH = this.$refs.cropper.cropH;
-            let cropW = this.$refs.cropper.cropW;
+            let cropH = this.$refs.cropper?.cropH;
+            let cropW = this.$refs.cropper?.cropW;
+            if (cropH === undefined || cropW === undefined) {
+              clearInterval(this.cropInfo.flushPreview);
+              this.cropInfo.flushPreview = null;
+              return;
+            }
             if (this.cropInfo.height !== cropH || this.cropInfo.width !== cropW) {
               this.cropInfo.height = cropH;
               this.cropInfo.width = cropW;
@@ -538,18 +547,19 @@ export default {
     clearCoverPreview() {
       this.coverPreview = null;
       this.coverOriginalFile = null;
+      this.baseInfo.coverUrl = null;
     },
     articleAction(row, action) {
       switch (action) {
         case 'edit':
           let editUrl = this.$router.resolve({
-            path: '/editor/' + row.id
+            path: '/editor/' + row.uid
           })
           window.open(editUrl.href, '_blank')
           break;
         case 'read':
           let readUrl = this.$router.resolve({
-            path: (row.columnId ? ('/column/' + row.columnId + '/') : ('/article/')) + row.id
+            path: (row.columnId ? ('/column/' + row.columnId + '/') : ('/article/')) + row.uid
           })
           window.open(readUrl.href, '_blank')
           break;
@@ -571,7 +581,7 @@ export default {
     },
     onCheckAllChange(e) {
       this.showCheckToolBar = true;
-      this.checkedList = e.target.checked ? this.articleList.map(note => note.id) : [];
+      this.checkedList = e.target.checked ? this.baseInfo.articleList?.map(note => note.uid) : [];
     },
     cancelCheck() {
       this.showCheckToolBar = false;
@@ -592,11 +602,16 @@ export default {
       this.$Message.warning('暂未开放，敬请期待！')
     },
     columnDelete() {
-      if (this.tmpValue !== this.columnId) {
+      if (this.tmpValue !== this.baseInfo.uri) {
         this.cannotDelete = true;
       } else {
-        this.showModal = false;
-        this.$Message.success('删除成功')
+        WriteCenterApi.deleteColumn(this, { uid: this.columnId }).then(data => {
+          if (data?.result) {
+            this.showModal = false;
+            this.$Message.success('删除成功');
+            this.$router.push({path: "/creative/seriesColumn"})
+          }
+        })
       }
     },
     confirmDelete() {
@@ -619,11 +634,25 @@ export default {
         this.currentOperateArticle = null;
         this.clearCoverPreview();
       }
+    },
+    "baseInfo.enableComment"(newVal, oldVal) {
+      if (oldVal === undefined) {
+        return;
+      }
+      this.callbackUpdate();
+    },
+    "baseInfo.autoPublish"(newVal, oldVal) {
+      if (oldVal === undefined) {
+        return;
+      }
+      this.callbackUpdate();
     }
   },
   created() {
     WriteCenterApi.getColumnInfo(this, this.columnId).then(data => {
       if (data?.result) {
+        data.data.enableComment = !!data.data.enableComment;
+        data.data.autoPublish = !!data.data.autoPublish;
         this.baseInfo = data.data;
         if (data.data.coverUrl) {
           this.coverOriginalFile = this.fileService + data.data.coverUrl;

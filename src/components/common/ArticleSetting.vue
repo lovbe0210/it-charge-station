@@ -25,7 +25,7 @@
           <div class="public-radio">
             <input type="radio"
                    value="1"
-                   :class="articleInfo.isPublic ? 'checked' : ''"
+                   :class="articleInfo?.isPublic ? 'checked' : ''"
                    @click="readPublicPermission"/>
             <span class="permission-label un-select">互联网可访问</span>
           </div>
@@ -43,7 +43,7 @@
           <input type="radio"
                  id="initPrivate"
                  value="0"
-                 :class="articleInfo.isPublic ? '' : 'checked'"/>
+                 :class="articleInfo?.isPublic ? '' : 'checked'"/>
           <span class="permission-label un-select" for="initPrivate">仅作者可访问</span>
         </div>
       </div>
@@ -154,7 +154,7 @@
             </a-tag>
           </a-tooltip>
         </div>
-        <span v-if="articleInfo.tags && articleInfo.tags.length < 3">
+        <span v-if="articleInfo.tags && articleInfo.tags?.length < 3">
                 <Input class="tag-input" v-if="inputVisible" ref="input" type="text" size="small" maxlength="10"
                        :style="{ width: '180px' }" v-model="inputValue"
                        @on-blur="handleInputConfirm"
@@ -167,7 +167,7 @@
       </div>
     </div>
     <Button type="success"
-            :disabled="(editTitle && articleInfo.title.length === 0) || !(coverPreview || articleInfo.summary || (articleInfo.firstLevel && articleInfo.secondLevel) || articleInfo.tags?.length > 0)"
+            :disabled="(editTitle && articleInfo.title?.length === 0) || !(coverPreview || articleInfo.summary || (articleInfo.firstLevel && articleInfo.secondLevel) || articleInfo.tags?.length > 0)"
             @click="submitUpdate">
       <span>&nbsp;确定&nbsp;</span>
     </Button>
@@ -334,8 +334,8 @@ export default {
     formatTime
   },
   created() {
-    this.articleInfo = cloneDeep(this.currentArticle);
-    this.coverOriginalFile = this.fileService + this.articleInfo.coverUrl;
+    this.articleInfo = this.currentArticle ? cloneDeep(this.currentArticle) : {};
+    this.coverOriginalFile = this.fileService + this.articleInfo?.coverUrl;
     // 获取菜单分类
     WriteCenterApi.getMenuList(this).then(data => {
       if (data?.result) {
