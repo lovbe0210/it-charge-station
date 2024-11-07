@@ -61,6 +61,8 @@
           :fixedBox="false"
           :centerBox="true"
           :fixed="true"
+          :autoCropWidth="215"
+          :autoCropHeight="134"
           :fixedNumber="[1.61, 1]"
           :canMove="false"
           :canScale="false"
@@ -69,7 +71,7 @@
           @imgLoad="imgLoadOver">
         </vueCropper>
         <div class="preview-operate">
-          <img v-if="editTitle && coverPreview" :src="coverPreview" class="img" alt="预览">
+          <img v-if="editTitle && (coverPreview || coverOriginalFile)" :src="coverPreview || coverOriginalFile" class="img" alt="预览">
           <div class="space" v-if="editTitle"></div>
           <div class="cover-upload-select">
             <Upload action="/"
@@ -191,6 +193,7 @@ export default {
       },
       coverOriginalFile: null,
       coverPreview: null,
+      coverInitialize: false,
       inputVisible: false,
       inputValue: '',
       allMenuList: [],
@@ -227,9 +230,11 @@ export default {
     },
     getNewCropImage() {
       this.$refs.cropper.getCropData(data => {
-        if (!this.articleInfo.coverUrl) {
-          this.coverPreview = data;
+        if (this.articleInfo.coverUrl && !this.coverInitialize) {
+          this.coverInitialize = true;
+          return;
         }
+        this.coverPreview = data;
       })
     },
     imgLoadOver(data) {
@@ -261,6 +266,7 @@ export default {
     clearCoverPreview() {
       this.coverPreview = null;
       this.coverOriginalFile = null;
+      this.articleInfo.coverUrl = "";
     },
     fileHandle(file) {
       if (file?.size > 10240 * 1024) {
@@ -312,7 +318,7 @@ export default {
       articleInfo.append('title', this.articleInfo.title);
       if (this.coverPreview) {
         articleInfo.append('coverFile', dataURLtoFile(this.coverPreview, "cover.jpg"));
-      } else if (this.articleInfo.coverUrl) {
+      } else if (this.articleInfo.coverUrl != null) {
         articleInfo.append('coverUrl', this.articleInfo.coverUrl);
       }
       articleInfo.append('isPublic', this.articleInfo.isPublic);
@@ -335,7 +341,9 @@ export default {
   },
   created() {
     this.articleInfo = this.currentArticle ? cloneDeep(this.currentArticle) : {};
-    this.coverOriginalFile = this.fileService + this.articleInfo?.coverUrl;
+    if (this.articleInfo?.coverUrl) {
+      this.coverOriginalFile = this.fileService + this.articleInfo.coverUrl;
+    }
     // 获取菜单分类
     WriteCenterApi.getMenuList(this).then(data => {
       if (data?.result) {

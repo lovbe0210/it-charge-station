@@ -108,6 +108,8 @@
                   :fixedBox="false"
                   :centerBox="true"
                   :fixed="true"
+                  :autoCropWidth="300"
+                  :autoCropHeight="150"
                   :fixedNumber="[2, 1]"
                   :canMove="false"
                   :canScale="false"
@@ -118,7 +120,7 @@
                 </vueCropper>
                 <div class="cover-preview">
                   <div>
-                    <img v-if="coverPreview" :src="coverPreview" class="img" alt="预览">
+                    <img v-if="coverPreview || coverOriginalFile" :src="coverPreview || coverOriginalFile" class="img" alt="预览">
                     <div class="cover-upload-select">
                       <Upload action="/"
                               :format="['jpg','jpeg','png']"
@@ -177,8 +179,9 @@
               </Dropdown>
             </div>
           </div>
-          <drag-tree :columnId="columnId"
+          <drag-tree :columnInfo="baseInfo"
                      :filterKeywords="searchKeywords"
+                     @updateDirContentId="updateDirContentId"
                      @reportParamBox="reportParamBox"/>
         </div>
         <div v-if="activeItem === 'article'">
@@ -422,6 +425,7 @@ export default {
       baseInfo: {},
       coverOriginalFile: null,
       coverPreview: null,
+      coverInitialize: false,
       currentOperateArticle: null,
       showColumnNameError: false,
       cropInfo: {
@@ -472,7 +476,7 @@ export default {
       columnInfo.append('title', this.baseInfo.title);
       if (this.coverPreview) {
         columnInfo.append('coverFile', dataURLtoFile(this.coverPreview, "cover.jpg"));
-      } else if (this.baseInfo.coverUrl) {
+      } else if (this.baseInfo.coverUrl != null) {
         columnInfo.append('coverUrl', this.baseInfo.coverUrl);
       }
       columnInfo.append('isPublic', this.baseInfo.isPublic);
@@ -510,6 +514,10 @@ export default {
     },
     getNewCropImage() {
       this.$refs.cropper.getCropData(data => {
+        if (this.baseInfo.coverUrl && !this.coverInitialize) {
+          this.coverInitialize = true;
+          return;
+        }
         this.coverPreview = data;
       })
     },
@@ -547,7 +555,7 @@ export default {
     clearCoverPreview() {
       this.coverPreview = null;
       this.coverOriginalFile = null;
-      this.baseInfo.coverUrl = null;
+      this.baseInfo.coverUrl = "";
     },
     articleAction(row, action) {
       switch (action) {
@@ -617,6 +625,9 @@ export default {
     confirmDelete() {
       this.actionType = 'delete';
       this.showModal = true;
+    },
+    updateDirContentId(dirContentId) {
+      this.baseInfo.dirContentId = dirContentId;
     },
     formatTime,
     reportParamBox(treeParamBox) {

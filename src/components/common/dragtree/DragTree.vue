@@ -86,6 +86,7 @@
 <script>
 import TreeNode from './TreeNode.vue';
 import {formatTime} from '@/utils/emoji';
+import WriteCenterApi from "@/api/WriteCenterApi";
 
 export default {
   name: "DragTree",
@@ -180,7 +181,7 @@ export default {
   components: {
     TreeNode
   },
-  props: ['columnId', 'filterKeywords'],
+  props: ['columnInfo', 'filterKeywords'],
   computed: {
     treeParamBox() {
       return {
@@ -421,6 +422,36 @@ export default {
       }
       this.actionType = '';
       this.delCheckNodes = {};
+    }
+  },
+  created() {
+    if (this.columnInfo?.dirContentId) {
+      WriteCenterApi.getColumnDir(this, this.columnInfo.uid).then(data => {
+        if (data?.result) {
+          this.dirData = data.data;
+        }
+      })
+    } else if (this.columnInfo?.articleList?.length > 0) {
+      let articleList = this.columnInfo.articleList;
+      articleList.forEach(article => {
+        let dirNode = {
+          id: article.uid,
+          type: 1,
+          title: article.title,
+          createTime: article.createTime,
+          updateTime: article.updateTime
+        }
+        this.dirData.unshift(dirNode);
+      })
+      this.totalDirNode = this.columnInfo.articleList.length;
+      let dirInfo = new FormData();
+      dirInfo.append("uid", this.columnInfo.uid);
+      dirInfo.append("dirContent", JSON.stringify(this.dirData));
+      WriteCenterApi.updateColumnDir(this, dirInfo).then(data => {
+        if (data?.result) {
+          this.$emit("updateDirContentId", data.data);
+        }
+      })
     }
   },
   mounted() {

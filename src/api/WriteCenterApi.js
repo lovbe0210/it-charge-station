@@ -57,7 +57,7 @@ export default {
    */
   async updateArticleContent(_this, contentInfo) {
     return await _this.$request({
-      url: "/contentProd/article/content",
+      url: "/contentProd/article/updateContent",
       method: 'POST',
       data: contentInfo
     });
@@ -71,7 +71,7 @@ export default {
    */
   async getArticleContent(_this, articleId) {
     return await _this.$request({
-      url: "/contentProd/content/" + articleId,
+      url: "/contentProd/article/content/" + articleId,
       method: 'POST'
     });
   },
@@ -198,13 +198,36 @@ export default {
   },
 
   /**
-   * 文档信息更新（包含封面图片）
+   * 专栏信息更新（包含封面图片）
    * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
   async updateColumnInfo(_this, formData) {
     return await _this.$request.put("/contentProd/column/update", formData);
+  },
+
+  /**
+   * 专栏目录更新
+   * @param _this
+   * @param articleInfo
+   * @returns {Promise<void>}
+   */
+  async updateColumnDir(_this, dirInfo) {
+    return await _this.$request.put("/contentProd/column/updateDir", dirInfo);
+  },
+
+  /**
+   * 获取专栏目录
+   * @param _this
+   * @param articleInfo
+   * @returns {Promise<void>}
+   */
+  async getColumnDir(_this, columnId) {
+    return await _this.$request({
+      url: "/contentProd/column/dir/" + columnId,
+      method: 'POST'
+    });
   }
 }
 
