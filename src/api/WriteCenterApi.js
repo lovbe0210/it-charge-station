@@ -139,6 +139,19 @@ export default {
     });
   },
 
+  /**
+   * 文章批量操作
+   * @param _this
+   * @returns {Promise<void>}
+   */
+  async articleBatchOperate(_this, operateInfo) {
+    return await _this.$request({
+      url: "/contentProd/article/batchOperate",
+      method: 'POST',
+      data: operateInfo
+    });
+  },
+
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   //                                      专栏
   // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -171,6 +184,20 @@ export default {
   },
 
   /**
+   * 专栏-创建文章
+   * @param _this
+   * @param articleInfo
+   * @returns {Promise<void>}
+   */
+  async createArticle(_this, columnId) {
+    return await _this.$request({
+      url: "/contentProd/column/createArticle",
+      method: 'POST',
+      data: {uid: columnId}
+    });
+  },
+
+  /**
    * 删除专栏
    * @param _this
    * @param columnInfo
@@ -193,7 +220,7 @@ export default {
   async getColumnInfo(_this, columnId) {
     return await _this.$request({
       url: "/contentProd/column/" + columnId,
-      method: 'POST'
+      method: 'GET'
     });
   },
 
@@ -214,7 +241,11 @@ export default {
    * @returns {Promise<void>}
    */
   async updateColumnDir(_this, dirInfo) {
-    return await _this.$request.put("/contentProd/column/updateDir", dirInfo);
+    return await _this.$request({
+      url: "/contentProd/column/dir/update",
+      method: 'POST',
+      data: dirInfo
+    });
   },
 
   /**
@@ -226,7 +257,21 @@ export default {
   async getColumnDir(_this, columnId) {
     return await _this.$request({
       url: "/contentProd/column/dir/" + columnId,
-      method: 'POST'
+      method: 'GET'
+    });
+  },
+
+  /**
+   * 专栏内容批量操作
+   * @param _this
+   * @param articleInfo
+   * @returns {Promise<void>}
+   */
+  async columnBatchOperate(_this, operateInfo) {
+    return await _this.$request({
+      url: "/contentProd/column/batchOperate",
+      method: 'POST',
+      data: operateInfo
     });
   }
 }

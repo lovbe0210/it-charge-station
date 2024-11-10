@@ -47,9 +47,9 @@
           </Button>
         </div>
         <div class="action">
-          <Button type="text" ghost>合并移动到专栏</Button>
-          <Button type="text" ghost>批量发布</Button>
-          <Button type="text" ghost>批量删除</Button>
+          <Button type="text" ghost @click="batchOperate(3)">合并移动到专栏</Button>
+          <Button type="text" ghost @click="batchOperate(1)">批量发布</Button>
+          <Button type="text" ghost @click="batchOperate(5)">批量删除</Button>
         </div>
       </div>
       <div class="note-list-item" v-for="noteItem in articleList" :key="noteItem.uid">
@@ -57,7 +57,7 @@
           <span class="iconfont set-top"/>
         </div>
         <div class="index-module_leftToolBar">
-          <a-checkbox :class="showCheckToolBar ? '' : 'check-show'" :checked="isCheck(noteItem.id)"
+          <a-checkbox :class="showCheckToolBar ? '' : 'check-show'" :checked="isCheck(noteItem.uid)"
                       @change="onCheckChange(noteItem.uid, $event)">
           </a-checkbox>
         </div>
@@ -170,7 +170,7 @@
            :transfer="false"
            :footer-hide="true"
            :styles="{top: '5%'}">
-      <div class="modal-delete-item" v-if="modalContentType === 1">
+      <div class="modal-delete-item" v-if="modalContentType === 5">
         <div class="delete-tips">
           <span class="iconfont i-warn"></span>
           <span>确认删除 {{ currentOperateArticle?.title }} ？</span>
@@ -182,7 +182,7 @@
         </div>
         <div class="confirm-btn">
           <Button type="text" ghost @click="showModal = false">取消</Button>
-          <Button type="success" @click="deleteArticle">确定</Button>
+          <Button type="success" @click="batchOperate(5)">确定</Button>
         </div>
       </div>
       <div class="modal-setting-item" v-if="modalContentType === 2">
@@ -194,21 +194,21 @@
       <div class="modal-column-item" v-if="modalContentType === 3">
         <div class="remove-tips">
           <span class="tip-title">移动至专栏</span>
-          <span class="tip-desc">文章会保存到专栏目录下，并继承专栏的所有设置，原先的访问路径会失效，将会生成新的访问路径。</span>
+          <span class="tip-desc">文章会保存到专栏目录下，并继承专栏的所有设置，文章的访问入口将会移至 <span style="font-weight: 600">专栏-设置-文章管理</span>。</span>
         </div>
         <div class="select-columns">
-          <Select v-model="currentOperateArticle.columnId"
+          <Select v-model="tmpSelectColumnId"
                   placeholder="下拉选择专栏"
                   class="first-level">
             <Option v-for="item in columnList"
                     :value="item.uid"
                     :key="item.uid">
-              {{ item.columnName }}
+              {{ item.title }}
             </Option>
           </Select>
         </div>
         <div class="confirm-btn">
-          <Button type="success">确定移动</Button>
+          <Button type="success" @click="moveArticleToColumn" :disabled="!tmpSelectColumnId">确定移动</Button>
           <Button type="text" ghost @click="showModal=false">取消</Button>
         </div>
       </div>
@@ -230,31 +230,16 @@
         orderType: 1,
         keywords: '',
         articleList: [],
-        columnList: [
-          {
-            uid: 121212,
-            columnName: '这是一个专栏'
-          },
-          {
-            uid: 243434,
-            columnName: '这是第二个专栏'
-          },
-          {
-            uid: 11255,
-            columnName: '这是Java笔记专栏'
-          },
-          {
-            uid: 35676767,
-            columnName: '这是一我自己创建的专栏'
-          }
-        ],
+        columnList: [],
         checkedList: [],
         showCheckToolBar: false,
         inputVisibleId: '',
         inputValue: '',
         showModal: false,
-        // 1删除 2文档设置 3移至专栏
+        // 1发布 2设置 3移至专栏 4导出 5删除
         modalContentType: 1,
+        // 移动至专栏id
+        tmpSelectColumnId: null,
         // 当前操作的文章
         currentOperateArticle: null,
         debounceRequestArticleList: function () {},
@@ -279,7 +264,7 @@
       },
       onCheckAllChange(e) {
         this.showCheckToolBar = true;
-        this.checkedList = e.target.checked ? this.articleList.map(note => note.id) : [];
+        this.checkedList = e.target.checked ? this.articleList.map(note => note.uid) : [];
       },
       onCheckChange(noteId, e) {
         this.showCheckToolBar = true;
@@ -316,7 +301,7 @@
           case 'publish':
             // 判断状态如果为仅作者可读则不可发布
             if (!articleItem.isPublic) {
-              this.$Message.warning('请先将阅读权限设置为互联网可访问再进行发布');
+              this.$Message.error('请先将阅读权限设置为互联网可访问再进行发布');
               break;
             }
             WriteCenterApi.publishArticle(this, articleItem.uid).then(data => {
@@ -331,8 +316,8 @@
             this.initArticleList();
             break;
           case 'delete':
-            this.currentOperateArticle = articleItem;
-            this.modalContentType = 1;
+            this.checkedList = [articleItem.uid];
+            this.modalContentType = 5;
             this.showModal = true;
             break;
           case 'setting':
@@ -341,7 +326,16 @@
             this.showModal = true;
             break;
           case 'column':
-            this.currentOperateArticle = articleItem;
+            // 判断专栏列表是否为空
+            if (this.columnList?.length === 0) {
+              WriteCenterApi.getColumnList(this).then(data => {
+                if (data?.result) {
+                  this.columnList = data.data;
+                }
+              })
+            }
+            this.checkedList = [articleItem.uid];
+            this.showCheckToolBar = true;
             this.modalContentType = 3;
             this.showModal = true;
             break;
@@ -411,6 +405,44 @@
         this.initArticleList();
         this.showModal = false;
       },
+      batchOperate(operateType) {
+        if (this.checkedList?.length === 0) {
+          return;
+        }
+        // 1发布 3移至专栏 4导出 5删除
+        if (operateType === 1) {
+          let operateInfo = {
+            operateType: 1,
+            articleList: this.checkedList
+          }
+          WriteCenterApi.articleBatchOperate(this, operateInfo).then(data => {
+            if (data?.result) {
+              this.$Message.success("发布成功")
+            }
+          })
+          return;
+        }
+        this.modalContentType = operateType;
+        this.showModal = true;
+      },
+      moveArticleToColumn() {
+        if (!this.tmpSelectColumnId) {
+          this.$Message.warn("请先选择要移至的专栏");
+          return;
+        }
+        let operateInfo = {
+          operateType: 3,
+          columnId: this.tmpSelectColumnId,
+          articleList: this.checkedList
+        }
+        WriteCenterApi.articleBatchOperate(this, operateInfo).then(data => {
+          if (data?.result) {
+            this.$Message.success("操作成功")
+            this.showModal = false;
+            this.initArticleList();
+          }
+        })
+      },
       initArticleList() {
         let requestEntity = {
           keywords: this.keywords,
@@ -419,6 +451,7 @@
         WriteCenterApi.getMyArticleList(this, requestEntity).then(data => {
           if (data?.result) {
             this.articleList = data.data;
+            this.checkedList = [];
           }
         })
       }
@@ -433,7 +466,8 @@
         }
       },
       keywords() {
-        this.debounceRequestArticleList()
+        this.checkedList = [];
+        this.debounceRequestArticleList();
       }
     },
     created() {

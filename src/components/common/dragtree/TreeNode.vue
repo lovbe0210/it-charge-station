@@ -6,25 +6,25 @@
       class="drag-tree-wrapper"
       @change="treeParamBox.onTreeChange"
       v-model="dragTree">
-      <div class="node-item-container" :key="treeNode.id" v-for="treeNode in treeList">
+      <div class="node-item-container" :key="treeNode.uid" v-for="treeNode in treeList">
         <div class="node-item-content" v-if="treeNode.type === 1">
           <div class="node-label node">
             <div @click="treeNode.expand = !treeNode.expand">
               <span class="iconfont dir-open" v-if="treeNode.expand"/>
               <span class="iconfont dir-collapse" v-else/>
             </div>
-            <a-checkbox :checked="!!treeParamBox.checkedNodes[treeNode.id]"
+            <a-checkbox :checked="!!treeParamBox.checkedNodes[treeNode.uid]"
                         @change="treeParamBox.checkChange(treeNode)"
                         :disabled="!!(treeNode.parentId && treeParamBox.checkedNodes[treeNode.parentId])">
             </a-checkbox>
-            <div :class="['node-title', showInput && treeNode.id === currentNode?.id ? 'editing' : '']">
+            <div :class="['node-title', showInput && treeNode.uid === currentNode?.uid ? 'editing' : '']">
               <span class="title-content">
                 <span class="content">
                   {{ treeNode.title }}
                 </span>
                 <input type="text"
-                       :ref="treeNode.id"
-                       v-if="showInput && treeNode.id === currentNode?.id"
+                       :ref="treeNode.uid"
+                       v-if="showInput && treeNode.uid === currentNode?.uid"
                        @blur="updateNodeTitle"
                        @keyup="updateNodeTitle"
                        maxlength="30"
@@ -87,17 +87,17 @@
               <span class="iconfont dir-open" v-if="treeNode.expand"/>
               <span class="iconfont dir-collapse" v-else/>
             </span>
-            <a-checkbox :checked="!!treeParamBox.checkedNodes[treeNode.id]"
+            <a-checkbox :checked="!!treeParamBox.checkedNodes[treeNode.uid]"
                         @change="treeParamBox.checkChange(treeNode)"
                         :disabled="!!(treeNode.parentId && treeParamBox.checkedNodes[treeNode.parentId])">
             </a-checkbox>
-            <span :class="['node-title', showInput && treeNode.id === currentNode?.id ? 'editing' : '']">
+            <span :class="['node-title', showInput && treeNode.uid === currentNode?.uid ? 'editing' : '']">
               <span class="content" @click="treeNode.expand = !treeNode.expand">
                 {{ treeNode.title }}
               </span>
               <input type="text"
-                     :ref="treeNode.id"
-                     v-if="showInput && treeNode.id === currentNode?.id"
+                     :ref="treeNode.uid"
+                     v-if="showInput && treeNode.uid === currentNode?.uid"
                      @blur="updateNodeTitle"
                      @ended="updateNodeTitle"
                      maxlength="30"
@@ -225,12 +225,12 @@ export default {
           this.showInput = true;
           this.tmpName = treeNode.title;
           this.$nextTick(function () {
-            this.$refs[treeNode.id][0].focus();
+            this.$refs[treeNode.uid][0].focus();
           });
           break
         case "copy":
           let copyNode = {};
-          this.$set(copyNode, treeNode.id, treeNode);
+          this.$set(copyNode, treeNode.uid, treeNode);
           this.treeParamBox.copyNode(copyNode);
           break;
         case "newNode":
@@ -241,7 +241,7 @@ export default {
         case "remove1":
         case "remove2":
           let checkNode = {};
-          this.$set(checkNode, treeNode.id, treeNode);
+          this.$set(checkNode, treeNode.uid, treeNode);
           this.treeParamBox.confirmAction(checkNode, actionType);
           break;
       }

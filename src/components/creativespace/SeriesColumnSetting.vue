@@ -18,7 +18,7 @@
         </div>
         <div :class="['setting-item', activeItem === 'article' ? 'active' : '']">
           <span class="setting-label" @click="activeItem = 'article'">
-            <span class="iconfont article"/>文档管理
+            <span class="iconfont article"/>文章管理
           </span>
         </div>
         <div :class="['setting-item', activeItem === 'more' ? 'active' : '']">
@@ -120,7 +120,8 @@
                 </vueCropper>
                 <div class="cover-preview">
                   <div>
-                    <img v-if="coverPreview || coverOriginalFile" :src="coverPreview || coverOriginalFile" class="img" alt="预览">
+                    <img v-if="coverPreview || coverOriginalFile" :src="coverPreview || coverOriginalFile" class="img"
+                         alt="预览">
                     <div class="cover-upload-select">
                       <Upload action="/"
                               :format="['jpg','jpeg','png']"
@@ -218,14 +219,14 @@
                 <div class="update-time">更新时间</div>
               </div>
               <div class="right-action" v-if="checkedList.length > 0 || showCheckToolBar">
-                <Button type="text" ghost>批量删除</Button>
-                <Button type="text" ghost>批量导出</Button>
-                <Button type="text" ghost>移出专栏</Button>
-                <Button type="text" ghost>批量发布</Button>
+                <Button type="text" ghost @click="batchOperate('4')">批量删除</Button>
+                <Button type="text" ghost @click="batchOperate('3')">批量导出</Button>
+                <Button type="text" ghost @click="batchOperate('2')">移出专栏</Button>
+                <Button type="text" ghost @click="batchOperate('1')">批量发布</Button>
               </div>
             </div>
             <div class="article-list-wrapper beauty-scroll">
-              <div class="note-list-item" v-for="noteItem in baseInfo.articleList" :key="noteItem.uid">
+              <div class="note-list-item" v-for="noteItem in searchArticleList" :key="noteItem.uid">
                 <div class="left-checkbox">
                   <a-checkbox :class="showCheckToolBar ? '' : 'check-show'" :checked="isCheck(noteItem.uid)"
                               @change="onCheckChange(noteItem.uid, $event)">
@@ -239,7 +240,9 @@
                   </div>
                   <div class="status">
                     <span>
-                      {{ noteItem.isPublish ? '已发布' : '未发布' }}
+                      {{ noteItem.publishStatus === 0 ? '未发布' :
+                         noteItem.publishStatus === 1 ? '审核中' :
+                         noteItem.publishStatus === 2 ? '审核失败' : '已发布' }}
                     </span>
                   </div>
                   <div class="create-time">
@@ -410,12 +413,12 @@
 </template>
 
 <script>
-import { VueCropper } from 'vue-cropper'
-import { formatTime } from '@/utils/emoji';
+import {VueCropper} from 'vue-cropper'
+import {formatTime} from '@/utils/emoji';
 import DragTree from "@/components/common/dragtree/DragTree";
 import ArticleSetting from "@/components/common/ArticleSetting"
 import WriteCenterApi from "@/api/WriteCenterApi";
-import { dataURLtoFile } from "@/utils/utils";
+import {dataURLtoFile} from "@/utils/utils";
 
 export default {
   name: 'SeriesColumnSetting',
@@ -441,7 +444,6 @@ export default {
       actionType: 'setting',
       cannotDelete: false,
       tmpValue: '',
-      articleList: [],
       treeParamBox: null
     }
   },
@@ -452,6 +454,11 @@ export default {
     },
     indeterminate() {
       return this.checkedList.length > 0 && this.checkedList.length !== this.baseInfo.articleList?.length
+    },
+    searchArticleList() {
+      return this.searchKeywords?.trim()
+        ? this.baseInfo.articleList.filter(article => article.title.indexOf(this.searchKeywords.trim()) !== -1)
+        : this.baseInfo.articleList;
     }
   },
   components: {
@@ -588,8 +595,11 @@ export default {
       }
     },
     onCheckAllChange(e) {
+      if (this.searchArticleList.length === 0) {
+        return;
+      }
       this.showCheckToolBar = true;
-      this.checkedList = e.target.checked ? this.baseInfo.articleList?.map(note => note.uid) : [];
+      this.checkedList = e.target.checked ? this.searchArticleList.map(note => note.uid) : [];
     },
     cancelCheck() {
       this.showCheckToolBar = false;
@@ -613,7 +623,7 @@ export default {
       if (this.tmpValue !== this.baseInfo.uri) {
         this.cannotDelete = true;
       } else {
-        WriteCenterApi.deleteColumn(this, { uid: this.columnId }).then(data => {
+        WriteCenterApi.deleteColumn(this, {uid: this.columnId}).then(data => {
           if (data?.result) {
             this.showModal = false;
             this.$Message.success('删除成功');
@@ -628,6 +638,42 @@ export default {
     },
     updateDirContentId(dirContentId) {
       this.baseInfo.dirContentId = dirContentId;
+    },
+    batchOperate(operate) {
+      if (this.checkedList.length === 0) {
+        return;
+      }
+      if (operate === '3') {
+        this.$Message.info("敬请期待");
+        return;
+      }
+      let operateInfo = {
+        columnId: this.baseInfo.uid,
+        operateType: operate,
+        articleList: this.checkedList
+      }
+      WriteCenterApi.columnBatchOperate(this, operateInfo).then(data => {
+        if (data?.result) {
+          this.$Message.success(operate === '1' ? "发布成功" : operate === '2' ? "操作成功" : "删除成功");
+        } else {
+          return;
+        }
+        switch (operate) {
+          case "1":
+            this.baseInfo.articleList.forEach(article => {
+              if (article.publishStatus !== 3 && this.checkedList.includes(article.uid)) {
+                article.publishStatus = 1;
+              }
+            })
+            break;
+          case "2":
+          case "4":
+            let articleList = this.baseInfo.articleList?.filter(article => !this.checkedList.includes(article.uid));
+            this.baseInfo.articleList = articleList || [];
+            this.checkedList = [];
+            break;
+        }
+      })
     },
     formatTime,
     reportParamBox(treeParamBox) {

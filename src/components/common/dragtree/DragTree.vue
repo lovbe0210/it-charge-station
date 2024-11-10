@@ -93,80 +93,7 @@ export default {
   data() {
     return {
       // type 1文章 2文件夹
-      dirData: [
-        {
-          id: 1,
-          type: 1,
-          title: '文章1',
-          createTime: 1706504807000,
-          updateTime: 1719540407000
-        },
-        {
-          id: 2,
-          type: 2,
-          title: '目录1',
-          expand: true,
-          children: [
-            {
-              id: 21,
-              type: 2,
-              title: '子目录11',
-              expand: false,
-              parentId: 2,
-              children: [
-                {
-                  id: 2111,
-                  type: 1,
-                  title: '文章2111',
-                  createTime: 1706504807000,
-                  updateTime: 1719637607000,
-                  parentId: 21
-                },
-                {
-                  id: 2112,
-                  type: 2,
-                  title: '空目录2112',
-                  expand: true,
-                  parentId: 21,
-                  children: []
-                },
-                {
-                  id: 2113,
-                  type: 2,
-                  title: '子目录2113',
-                  expand: true,
-                  parentId: 21,
-                  children: [
-                    {
-                      id: 21131,
-                      type: 1,
-                      title: '深层文章21131',
-                      createTime: 1706504807000,
-                      updateTime: 1719626807000,
-                      parentId: 2113
-                    },
-                    {
-                      id: 21132,
-                      type: 1,
-                      title: '深层文章21132',
-                      createTime: 1706504807000,
-                      updateTime: 1719626807000,
-                      parentId: 2113
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 5,
-          type: 1,
-          title: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1',
-          createTime: 1706504807000,
-          updateTime: 1716948407000
-        }
-      ],
+      dirData: [],
       totalDirNode: 5,
       openAllTree: false,
       articleShowInfo: 'updateTime',
@@ -218,7 +145,7 @@ export default {
     treeUpdate(data) {
       this.dirData = data;
     },
-    onTreeChange() {
+    onTreeChange(init) {
       this.totalDirNode = 0;
       this.tmpAllNodeMap = {};
       if (this.dirData && this.dirData.length > 0) {
@@ -231,20 +158,28 @@ export default {
       } else {
         this.checkedNodes = {}
       }
+      if (typeof init === "boolean" && init) {
+        return;
+      }
+      let dirInfo = {
+        uid: this.columnInfo.uid,
+        dirContent: JSON.stringify(this.dirData)
+      }
+      WriteCenterApi.updateColumnDir(this, dirInfo)
     },
     getDirTotal(node) {
-      this.$set(this.tmpAllNodeMap, node.id, node);
+      this.$set(this.tmpAllNodeMap, node.uid, node);
       if (node?.type === 1) {
         return 1;
       }
       let total = 1;
       if (node?.type === 2 && node.children?.length > 0) {
         node.children.forEach(child => {
-          child.parentId = node.id;
-          if (this.checkedNodes[node.id]) {
-            this.$set(this.checkedNodes, child.id, child);
+          child.parentId = node.uid;
+          if (this.checkedNodes[node.uid]) {
+            this.$set(this.checkedNodes, child.uid, child);
           } else {
-            this.$delete(this.checkedNodes, child.id);
+            this.$delete(this.checkedNodes, child.uid);
           }
           total += this.getDirTotal(child);
         })
@@ -268,7 +203,7 @@ export default {
       Object.values(nodeList).forEach(node => {
         // 本级节点构造
         let newNode = {
-          id: node.id + Math.floor(Math.random() * 1000),
+          uid: node.uid + Math.floor(Math.random() * 1000),
           type: node.type,
           title: node.title + ' 副本',
           createTime: Date.now(),
@@ -297,31 +232,57 @@ export default {
       this.onTreeChange();
     },
     createNode(currentNode, newNodeType) {
-      // 本级节点构造
-      let newNode = {
-        id: Math.floor(Math.random() * 1000),
-        type: newNodeType,
-        title: newNodeType === 1 ? '无标题文档' : newNodeType === 2 ? '新分组' : '请输入标题',
-        createTime: Date.now(),
-        updateTime: Date.now(),
-        parentId: currentNode?.id
-      };
-      if (newNodeType === 2) {
-        newNode.expand = false;
-        newNode.children = [];
-      }
-      if (!currentNode) {
-        this.dirData.unshift(newNode);
+      if (newNodeType === 1) {
+        // 新建文章
+        WriteCenterApi.createArticle(this, this.columnInfo.uid).then(data => {
+          if (data?.result) {
+            // 本级节点构造
+            let newNode = {
+              uid: data.data?.uid,
+              type: newNodeType,
+              title: data.data?.title,
+              createTime: data.data?.createTime,
+              updateTime: data.data?.updateTime,
+              parentId: currentNode?.uid
+            };
+            if (!currentNode) {
+              this.dirData.unshift(newNode);
+              this.onTreeChange();
+              return;
+            }
+            currentNode.expand = true;
+            if (currentNode.children) {
+              currentNode.children.unshift(newNode);
+            } else {
+              currentNode.children = [newNode];
+            }
+            this.onTreeChange();
+          }
+        })
+      } else if (newNodeType === 2) {
+        let newNode = {
+          uid: Math.floor(Math.random() * 1000),
+          type: newNodeType,
+          title: '新分组',
+          createTime: Date.now(),
+          updateTime: Date.now(),
+          parentId: currentNode?.uid,
+          expand: false,
+          children: []
+        };
+        if (!currentNode) {
+          this.dirData.unshift(newNode);
+          this.onTreeChange();
+          return;
+        }
+        currentNode.expand = true;
+        if (currentNode.children) {
+          currentNode.children.unshift(newNode);
+        } else {
+          currentNode.children = [newNode];
+        }
         this.onTreeChange();
-        return;
       }
-      currentNode.expand = true;
-      if (currentNode.children) {
-        currentNode.children.unshift(newNode);
-      } else {
-        currentNode.children = [newNode];
-      }
-      this.onTreeChange();
     },
     deleteNode() {
       let keys = Object.keys(this.delCheckNodes);
@@ -340,18 +301,18 @@ export default {
       nodeList.forEach(node => {
         // 如果是节点直接删除
         let directDel = parentDel && (node.type === 1 || (node.type === 2 && node.children?.length === 0));
-        directDel = directDel || (checkNodes[node.id] && (node.type === 1 || (node.type === 2 && node.children?.length === 0)));
+        directDel = directDel || (checkNodes[node.uid] && (node.type === 1 || (node.type === 2 && node.children?.length === 0)));
         if (directDel) {
-          this.$delete(this.checkedNodes, node.id);
+          this.$delete(this.checkedNodes, node.uid);
           delNodeList.push(node);
           return;
         }
         // 如果是分组则继续递归
         if (node.type === 2 && node.children) {
-          node.children = this.recursiveDeleteNode(checkNodes, parentDel ? true : !!checkNodes[node.id], node.children, delNodeList);
+          node.children = this.recursiveDeleteNode(checkNodes, parentDel ? true : !!checkNodes[node.uid], node.children, delNodeList);
           // 处理完下级后判断分组是否需要删除
-          if (parentDel || !!checkNodes[node.id]) {
-            this.$delete(this.checkedNodes, node.id);
+          if (parentDel || !!checkNodes[node.uid]) {
+            this.$delete(this.checkedNodes, node.uid);
             delNodeList.push(node);
             return;
           }
@@ -387,11 +348,11 @@ export default {
     },
     checkChange(treeNode) {
       // 本级
-      let currentNodeStatus = !!this.checkedNodes[treeNode.id];
+      let currentNodeStatus = !!this.checkedNodes[treeNode.uid];
       if (currentNodeStatus) {
-        this.$delete(this.checkedNodes, treeNode.id);
+        this.$delete(this.checkedNodes, treeNode.uid);
       } else {
-        this.$set(this.checkedNodes, treeNode.id, treeNode);
+        this.$set(this.checkedNodes, treeNode.uid, treeNode);
       }
       // 如果时目录，则需要联动下级，无需关注上级
       if (treeNode.type === 2 && treeNode.children && treeNode.children.length > 0) {
@@ -400,9 +361,9 @@ export default {
     },
     recursiveChecked(treeNode, parentNodeStatus) {
       if (parentNodeStatus) {
-        this.$set(this.checkedNodes, treeNode.id, treeNode);
+        this.$set(this.checkedNodes, treeNode.uid, treeNode);
       } else {
-        this.$delete(this.checkedNodes, treeNode.id);
+        this.$delete(this.checkedNodes, treeNode.uid);
       }
       if (treeNode.type === 1 || !treeNode.children) {
         return;
@@ -429,13 +390,14 @@ export default {
       WriteCenterApi.getColumnDir(this, this.columnInfo.uid).then(data => {
         if (data?.result) {
           this.dirData = data.data;
+          this.onTreeChange(true);
         }
       })
     } else if (this.columnInfo?.articleList?.length > 0) {
       let articleList = this.columnInfo.articleList;
       articleList.forEach(article => {
         let dirNode = {
-          id: article.uid,
+          uid: article.uid,
           type: 1,
           title: article.title,
           createTime: article.createTime,
@@ -443,6 +405,7 @@ export default {
         }
         this.dirData.unshift(dirNode);
       })
+      this.onTreeChange(true);
       this.totalDirNode = this.columnInfo.articleList.length;
       let dirInfo = new FormData();
       dirInfo.append("uid", this.columnInfo.uid);
@@ -456,7 +419,6 @@ export default {
   },
   mounted() {
     this.$emit('reportParamBox', this.treeParamBox)
-    this.onTreeChange();
   }
 }
 </script>
