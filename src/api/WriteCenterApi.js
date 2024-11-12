@@ -262,6 +262,19 @@ export default {
   },
 
   /**
+   * 获取专栏文章
+   * @param _this
+   * @param articleInfo
+   * @returns {Promise<void>}
+   */
+  async getColumnArticle(_this, columnId) {
+    return await _this.$request({
+      url: "/contentProd/column/article/" + columnId,
+      method: 'GET'
+    });
+  },
+
+  /**
    * 专栏内容批量操作
    * @param _this
    * @param articleInfo

@@ -703,6 +703,15 @@ export default {
         return;
       }
       this.callbackUpdate();
+    },
+    activeItem(newVal, oldVal) {
+      if (oldVal === 'dir' && newVal === 'article') {
+        WriteCenterApi.getColumnArticle(this, this.baseInfo.uid).then(data => {
+          if (data?.result) {
+            this.baseInfo.articleList = data.data;
+          }
+        })
+      }
     }
   },
   created() {

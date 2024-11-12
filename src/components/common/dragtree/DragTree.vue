@@ -145,7 +145,7 @@ export default {
     treeUpdate(data) {
       this.dirData = data;
     },
-    onTreeChange(init) {
+    onTreeChange(event, init) {
       this.totalDirNode = 0;
       this.tmpAllNodeMap = {};
       if (this.dirData && this.dirData.length > 0) {
@@ -158,7 +158,15 @@ export default {
       } else {
         this.checkedNodes = {}
       }
-      if (typeof init === "boolean" && init) {
+      let removed = event?.removed;
+      let element = removed?.element;
+      if (element && element?.parentId) {
+        let parentNode = this.tmpAllNodeMap[element?.parentId];
+        if (parentNode && parentNode.type === 2) {
+          parentNode.expand = true;
+        }
+      }
+      if ((typeof init === "boolean" && init) || event?.removed) {
         return;
       }
       let dirInfo = {
@@ -200,6 +208,8 @@ export default {
       if (!nodeList || Object.keys(nodeList).length === 0) {
         return;
       }
+      // 先过滤出
+
       Object.values(nodeList).forEach(node => {
         // 本级节点构造
         let newNode = {
@@ -211,7 +221,7 @@ export default {
           parentId: null
         };
         if (node.type === 2) {
-          newNode.expand = false;
+          newNode.expand = true;
           newNode.children = [];
         }
         if (!node.parentId) {
@@ -267,7 +277,7 @@ export default {
           createTime: Date.now(),
           updateTime: Date.now(),
           parentId: currentNode?.uid,
-          expand: false,
+          expand: true,
           children: []
         };
         if (!currentNode) {
@@ -292,7 +302,6 @@ export default {
       let delNodeList = [];
       this.dirData = this.recursiveDeleteNode(this.delCheckNodes, false, this.dirData, delNodeList);
       this.$Message.success(this.actionType.indexOf('remove') !== -1 ? '移出专栏' : '删除')
-      console.log(delNodeList)
       // 可能会存在一部分数据有直接删掉了父节点导致子节点的check状态未被清除
       this.onTreeChange();
     },
@@ -390,7 +399,7 @@ export default {
       WriteCenterApi.getColumnDir(this, this.columnInfo.uid).then(data => {
         if (data?.result) {
           this.dirData = data.data;
-          this.onTreeChange(true);
+          this.onTreeChange(undefined, true);
         }
       })
     } else if (this.columnInfo?.articleList?.length > 0) {

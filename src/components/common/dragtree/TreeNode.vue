@@ -7,7 +7,7 @@
       @change="treeParamBox.onTreeChange"
       v-model="dragTree">
       <div class="node-item-container" :key="treeNode.uid" v-for="treeNode in treeList">
-        <div class="node-item-content" v-if="treeNode.type === 1">
+        <div class="node-item-content" v-if="showChildren && treeNode.type === 1">
           <div class="node-label node">
             <div @click="treeNode.expand = !treeNode.expand">
               <span class="iconfont dir-open" v-if="treeNode.expand"/>
@@ -81,7 +81,7 @@
             </Dropdown>
           </div>
         </div>
-        <div class="node-item-content" v-else>
+        <div class="node-item-content" v-if="showChildren && treeNode.type === 2">
           <div class="node-label dir">
             <span @click="treeNode.expand = !treeNode.expand">
               <span class="iconfont dir-open" v-if="treeNode.expand"/>
@@ -99,7 +99,7 @@
                      :ref="treeNode.uid"
                      v-if="showInput && treeNode.uid === currentNode?.uid"
                      @blur="updateNodeTitle"
-                     @ended="updateNodeTitle"
+                     @keyup="updateNodeTitle"
                      maxlength="30"
                      v-model="tmpName"/>
             </span>
@@ -161,8 +161,8 @@
             </Dropdown>
           </div>
         </div>
-        <div class="node-item-children" v-if="treeNode.type === 2">
-          <tree-node v-show="treeNode.expand"
+        <div class="node-item-children" v-if="showChildren && treeNode.type === 2">
+          <tree-node :showChildren="treeNode.expand"
                      :treeList="treeNode.children"
                      :treeParamBox="treeParamBox"
                      @treeUpdate="node => treeNode.children = node"/>
@@ -174,6 +174,7 @@
 
 <script>
 import draggable from 'vuedraggable';
+import WriteCenterApi from "../../../api/WriteCenterApi";
 
 export default {
   name: "TreeNode",
@@ -195,6 +196,10 @@ export default {
     treeParamBox: {
       type: Object,
       required: true
+    },
+    showChildren: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -248,10 +253,27 @@ export default {
     },
     updateNodeTitle(event) {
       if ((event instanceof KeyboardEvent && event.key === 'Enter') || event instanceof FocusEvent) {
-        if (this.tmpName?.trim().length > 0) {
-          this.currentNode.title = this.tmpName.trim();
+        if (this.tmpName?.trim().length > 0 && this.currentNode.title !== this.tmpName.trim()) {
+          // 如果为文章节点还需要同步更新数据库
+          if (this.currentNode.type === 1) {
+            let articleInfo = {
+              uid: this.currentNode.uid,
+              title: this.tmpName.trim()
+            }
+            WriteCenterApi.updateArticleInfo(this, articleInfo).then(data => {
+              if (data?.result) {
+                this.currentNode.title = articleInfo.title;
+                this.treeParamBox.onTreeChange();
+                this.showInput = false;
+              }
+            })
+          } else {
+            this.currentNode.title = this.tmpName.trim();
+            this.treeParamBox.onTreeChange();
+            this.showInput = false;
+          }
         }
-        this.showInput = false;
+
       }
     }
   },
