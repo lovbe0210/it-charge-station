@@ -198,6 +198,23 @@ export default {
   },
 
   /**
+   * 专栏-复制文章
+   * @param _this
+   * @param articleInfo
+   * @returns {Promise<void>}
+   */
+  async copyArticle(_this, columnId, articleList) {
+    return await _this.$request({
+      url: "/contentProd/column/copyArticle",
+      method: 'POST',
+      data: {
+        columnId: columnId,
+        articleList: articleList
+      }
+    });
+  },
+
+  /**
    * 删除专栏
    * @param _this
    * @param columnInfo
@@ -269,7 +286,7 @@ export default {
    */
   async getColumnArticle(_this, columnId) {
     return await _this.$request({
-      url: "/contentProd/column/article/" + columnId,
+      url: "/contentProd/column/articleList/" + columnId,
       method: 'GET'
     });
   },

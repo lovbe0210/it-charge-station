@@ -208,38 +208,92 @@ export default {
       if (!nodeList || Object.keys(nodeList).length === 0) {
         return;
       }
-      // 先过滤出
-
+      // 先过滤出需要复制的文章id然后统一提交服务器
+      let copyArticleList = [];
       Object.values(nodeList).forEach(node => {
-        // 本级节点构造
-        let newNode = {
-          uid: node.uid + Math.floor(Math.random() * 1000),
-          type: node.type,
-          title: node.title + ' 副本',
-          createTime: Date.now(),
-          updateTime: Date.now(),
-          parentId: null
-        };
-        if (node.type === 2) {
-          newNode.expand = true;
-          newNode.children = [];
+        if (node.type === 1) {
+          copyArticleList.push(node.uid);
         }
-        if (!node.parentId) {
-          this.dirData.unshift(newNode);
-          return;
-        }
-        let parentNode = this.tmpAllNodeMap[node.parentId];
-        if (!parentNode && parentNode.type !== 2) {
-          return;
-        }
-        newNode.parentId = node.parentId;
-        if (parentNode.children) {
-          parentNode.children.unshift(newNode);
-        } else {
-          parentNode.children = [newNode];
-        }
-      })
-      this.onTreeChange();
+      });
+      if (copyArticleList.length > 0) {
+        WriteCenterApi.copyArticle(this, this.columnInfo.uid, copyArticleList).then(data => {
+          if (data?.result) {
+            let copyArticleMap = data.data;
+            Object.values(nodeList).forEach(node => {
+              // 本级节点构造
+              let newNode = {};
+              if (node.type === 1 && copyArticleMap[node.uid]) {
+                newNode = {
+                  uid: copyArticleMap[node.uid].uid,
+                  type: node.type,
+                  title: copyArticleMap[node.uid].title,
+                  createTime: copyArticleMap[node.uid].createTime,
+                  updateTime: copyArticleMap[node.uid].updateTime,
+                  parentId: null
+                };
+              } else if (node.type === 2) {
+                newNode = {
+                  uid: node.uid + Math.floor(Math.random() * 1000),
+                  type: node.type,
+                  title: node.title + ' 副本',
+                  createTime: Date.now(),
+                  updateTime: Date.now(),
+                  parentId: null,
+                  expand: false,
+                  children: []
+                };
+              }
+              if (!node.parentId) {
+                this.dirData.unshift(newNode);
+                return;
+              }
+              let parentNode = this.tmpAllNodeMap[node.parentId];
+              if (!parentNode && parentNode.type !== 2) {
+                return;
+              }
+              newNode.parentId = node.parentId;
+              if (parentNode.children) {
+                parentNode.children.unshift(newNode);
+              } else {
+                parentNode.children = [newNode];
+              }
+            })
+            this.onTreeChange();
+          }
+        })
+      } else {
+        Object.values(nodeList).forEach(node => {
+          // 本级节点构造
+          let newNode = {
+            uid: node.uid + Math.floor(Math.random() * 1000),
+            type: node.type,
+            title: node.title + ' 副本',
+            createTime: Date.now(),
+            updateTime: Date.now(),
+            parentId: null
+          };
+          if (node.type === 2) {
+            newNode.expand = true;
+            newNode.children = [];
+          }
+          if (!node.parentId) {
+            this.dirData.unshift(newNode);
+            return;
+          }
+          let parentNode = this.tmpAllNodeMap[node.parentId];
+          if (!parentNode && parentNode.type !== 2) {
+            return;
+          }
+          newNode.parentId = node.parentId;
+          if (parentNode.children) {
+            parentNode.children.unshift(newNode);
+          } else {
+            parentNode.children = [newNode];
+          }
+        })
+        this.onTreeChange();
+      }
+
     },
     createNode(currentNode, newNodeType) {
       if (newNodeType === 1) {
@@ -277,7 +331,7 @@ export default {
           createTime: Date.now(),
           updateTime: Date.now(),
           parentId: currentNode?.uid,
-          expand: true,
+          expand: false,
           children: []
         };
         if (!currentNode) {
