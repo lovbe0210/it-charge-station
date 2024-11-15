@@ -9,8 +9,8 @@
       <div class="node-item-container" :key="treeNode.uid" v-for="treeNode in treeList">
         <div class="node-item-content" v-if="showChildren && treeNode.type === 1">
           <div class="node-label node">
-            <div @click="treeNode.expand = !treeNode.expand">
-              <span class="iconfont dir-open" v-if="treeNode.expand"/>
+            <div>
+              <span class="iconfont dir-open" v-if="treeNode.type === 1 && treeNode.expand"/>
               <span class="iconfont dir-collapse" v-else/>
             </div>
             <a-checkbox :checked="!!treeParamBox.checkedNodes[treeNode.uid]"

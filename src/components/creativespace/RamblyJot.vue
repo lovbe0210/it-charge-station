@@ -7,7 +7,7 @@
     <div :class="['rambly-module_editor', extendCurtains ? 'extend-curtains' : '']">
       <div class="scrollbar-visible">
         <div class="layout-mode-fixed">
-          <div :class="['editor-body',  editorFocus ? 'editor-focus' : '']" @click="engine.focus()">
+          <div :class="['editor-body',  editorFocus ? 'editor-focus' : '']" >
             <div class="editor-wrap beauty-scroll" ref="scrollbarContext">
               <div class="editor-wrap-content">
                 <div ref="container"></div>
@@ -24,7 +24,7 @@
       <div class="rambly-module_action">
         <div class="toolbar-ui">
           <div class="toolbar-wrap">
-            <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
+            <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar"/>
           </div>
 
           <div class="rambly-module_button">
@@ -104,10 +104,8 @@
 
 <script>
   import Engine from '@aomao/engine'
-  import {$} from '@aomao/engine'
-  // import Toolbar from 'am-editor-toolbar-vue2'
   import Toolbar from "@/components/common/editor/packages/toolbar/src"
-  import {ramblyPlugins, cards, pluginConfig} from "@/components/common/editor/config"
+  import {ramblyPlugins, ramblyCards, pluginConfig} from "@/components/common/editor/config"
 
   export default {
     name: 'RamblyJot',
@@ -207,8 +205,6 @@
       }
     },
     methods: {
-      toolbarUI() {
-      },
       submitRambly() {
         let htmlValue = this.engine.model?.toValue();
         // 通过this.engine.model?.toText();获取纯文本
@@ -219,6 +215,14 @@
           title = this.rambly.title.length > 0 ? this.rambly.title : null;
         }
         this.rambly = {...this.rambly, title, htmlValue};
+      },
+      focusEditor() {
+        if (this.editorValueIsEmpty) {
+          const container = this.$refs.container;
+          container.focus();
+        } else {
+          this.engine.focus();
+        }
       }
     },
     components: {
@@ -235,7 +239,7 @@
           // 启用插件
           plugins: ramblyPlugins,
           // 启用卡片
-          cards,
+          cards: ramblyCards,
           // 所有的插件配置
           config: pluginConfig,
           autoPrepend: false,
@@ -251,15 +255,6 @@
         engine.messageError = (error) => {
           console.log(error);
         };
-        //卡片最大化时设置编辑页面样式
-        engine.on("card:maximize", () => {
-          $(".editor-toolbar").css("z-index", "9999").css("top", "0");
-          $(".card-maximize-header").css("height", "60px");
-          // $(".editor-toolbar").css("z-index", "9999");
-        });
-        engine.on("card:minimize", () => {
-          $(".editor-toolbar").css("z-index", "").css("top", "");
-        });
 
         // 监听编辑器值改变事件
         engine.on("change", () => {
@@ -272,6 +267,12 @@
         engine.on("blur", () => {
           this.editorFocus = false;
         });
+        /*engine.on("afterCommandExecute", (name, ...args) => {
+          if (name === 'link') {
+
+          }
+          console.log(name, args)
+        })*/
 
         this.engine = engine;
       }

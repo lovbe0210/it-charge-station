@@ -34,7 +34,8 @@ import LineHeight from "@aomao/plugin-line-height"
 // import Mention, {MentionComponent} from "@aomao/plugin-mention"
 // import {fontFamilyDefaultData, ToolbarPlugin, ToolbarComponent} from "am-editor-toolbar-vue2"
 import {fontFamilyDefaultData, ToolbarPlugin, ToolbarComponent} from "./packages/toolbar/src"
-import Link from "am-editor-link-vue2"
+// import Link from "am-editor-link-vue2"
+import Link from "./packages/link/index"
 // import CodeBlock, {CodeBlockComponent} from "am-editor-codeblock-vue2"
 import CodeBlock, {CodeBlockComponent} from "./packages/codeblock/src"
 // import mulit_codeblock from '@aomao/plugin-mulit-codeblock';
@@ -95,10 +96,22 @@ export const ramblyPlugins = [
   File,
   FileUploader,
   Link,
-  Tasklist,
-  ToolbarPlugin
+  Tasklist
 ]
 
+export const ramblyCards = [
+  HrComponent,
+  CheckboxComponent,
+  ImageComponent,
+  TableComponent,
+  FileComponent,
+  VideoComponent,
+  MathComponent,
+  StatusComponent,
+  CodeBlockComponent,
+  ToolbarComponent,
+  LightblockComponent
+]
 
 export const cards = [
   HrComponent,

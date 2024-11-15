@@ -355,9 +355,24 @@ export default {
       }
       let delNodeList = [];
       this.dirData = this.recursiveDeleteNode(this.delCheckNodes, false, this.dirData, delNodeList);
-      this.$Message.success(this.actionType.indexOf('remove') !== -1 ? '移出专栏' : '删除')
-      // 可能会存在一部分数据有直接删掉了父节点导致子节点的check状态未被清除
-      this.onTreeChange();
+      // 判断是否有需要更新的文章
+      delNodeList = delNodeList.filter(delNode => delNode.type === 1).map(delNode => delNode.uid);
+      if (delNodeList.length === 0) {
+        this.$Message.success('操作成功')
+        this.onTreeChange();
+      } else {
+        let operateInfo = {
+          columnId: this.columnInfo.uid,
+          operateType: this.actionType.indexOf('remove') !== -1 ? 2 : this.actionType.indexOf('delete') !== -1 ? 5 : 0,
+          articleList: delNodeList
+        }
+        WriteCenterApi.columnBatchOperate(this, operateInfo).then(data => {
+          if (data?.result) {
+            this.$Message.success('操作成功')
+            this.onTreeChange();
+          }
+        })
+      }
     },
     recursiveDeleteNode(checkNodes, parentDel, nodeList, delNodeList) {
       let newDir = [];

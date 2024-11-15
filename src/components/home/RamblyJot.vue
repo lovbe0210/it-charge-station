@@ -3,7 +3,7 @@
     <div :class="['rambly-module_editor', extendCurtains ? 'extend-curtains' : '']">
       <div class="scrollbar-visible">
         <div class="layout-mode-fixed">
-          <div :class="['editor-body',  editorFocus ? 'editor-focus' : '']" @click="engine.focus()">
+          <div :class="['editor-body',  editorFocus ? 'editor-focus' : '']"  @click="focusEditor()">
             <div class="editor-wrap beauty-scroll" ref="scrollbarContext">
               <div class="editor-wrap-content">
                 <div ref="container"></div>
@@ -301,6 +301,14 @@
           title = this.rambly.title.length > 0 ? this.rambly.title : null;
         }
         this.rambly = {...this.rambly, title, htmlValue};
+      },
+      focusEditor() {
+        if (this.editorValueIsEmpty) {
+          const container = this.$refs.container;
+          container.focus();
+        } else {
+          this.engine.focus();
+        }
       },
       needFormatDate
     },

@@ -421,6 +421,14 @@
             }
           })
           return;
+        } else if (operateType === 3) {
+          if (this.columnList?.length === 0) {
+            WriteCenterApi.getColumnList(this).then(data => {
+              if (data?.result) {
+                this.columnList = data.data;
+              }
+            })
+          }
         }
         this.modalContentType = operateType;
         this.showModal = true;

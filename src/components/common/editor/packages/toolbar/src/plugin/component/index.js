@@ -194,15 +194,14 @@ class ToolbarComponent extends Card {
     this.root.attributes("data-transient", "true");
     this.root.attributes("contenteditable", "false");
     // 编辑模式
-    const
-      container = $(
+    const container = $(
         `<span class="data-toolbar-component-keyword" contenteditable="true">
                     /
                  </span>
                  <span class="data-toolbar-component-placeholder">
                     ${language.placeholder}
                  </span>`
-      );
+    );
     const center = this.getCenter();
     center.empty().append(container);
     this.keyword = center.find(".data-toolbar-component-keyword");
@@ -233,7 +232,7 @@ class ToolbarComponent extends Card {
       }, 10);
     });
     if (!this.#collapseData) this.#collapseData = this.getData();
-// 显示下拉列表
+    // 显示下拉列表
     this.component?.render(editor.root, this.root, this.#collapseData);
   }
 }
