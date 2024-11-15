@@ -100,17 +100,11 @@ export const ramblyPlugins = [
 ]
 
 export const ramblyCards = [
-  HrComponent,
   CheckboxComponent,
   ImageComponent,
-  TableComponent,
   FileComponent,
-  VideoComponent,
-  MathComponent,
   StatusComponent,
-  CodeBlockComponent,
-  ToolbarComponent,
-  LightblockComponent
+  ToolbarComponent
 ]
 
 export const cards = [

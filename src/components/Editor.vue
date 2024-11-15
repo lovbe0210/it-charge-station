@@ -263,8 +263,8 @@ export default {
           this.article.wordsNum = text.length;
           // 判断是否需要提取摘要
           if (this.articleInfo.autoSummary === 1) {
-            let summary = text.substr(0, 145);
-            if (text.length > 100) {
+            let summary = text.substr(0, 147);
+            if (text.length > 147) {
               summary += "...";
             }
             this.article.summary = summary;

@@ -49,12 +49,12 @@
             <div class="desc form-item">
               <div class="label">
                 <div class="label-text">简介</div>
-                <div>{{ baseInfo.synopsis?.length ? baseInfo.synopsis?.length : 0 }} / 255</div>
+                <div>{{ baseInfo.synopsis?.length ? baseInfo.synopsis?.length : 0 }} / 150</div>
               </div>
               <Input type="textarea"
                      class="desc-input form-input"
-                     :rows="4"
-                     maxlength="255"
+                     :rows="5"
+                     maxlength="150"
                      placeholder="专栏简介（选填）"
                      v-model="baseInfo.synopsis"/>
             </div>
