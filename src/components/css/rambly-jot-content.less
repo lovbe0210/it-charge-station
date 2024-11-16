@@ -1,0 +1,246 @@
+.layout-module_RamblyJot-container {
+
+  .rambly-header {
+    width: 60px;
+    height: 32px;
+    line-height: 16px;
+    font-size: 15px;
+    cursor: pointer;
+
+    .iconfont {
+      font-size: 15px;
+      margin-right: 1px;
+    }
+  }
+
+  .rambly-info {
+    margin-top: 10px;
+    padding-bottom: 10px;
+    position: relative;
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .iconfont {
+      cursor: pointer;
+    }
+
+    .content-title {
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .operate-box {
+      border: 1px solid var(--dropdown-bg-color);
+      background: var(--rj-editor-bg-color);
+      height: 20px;
+      width: 28px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      &:hover {
+        background: var(--dropdown-item-hover);
+        border-color: var(--dropdown-item-hover);
+      }
+    }
+  }
+
+  .reward-module_like {
+    text-align: center;
+    box-sizing: border-box;
+
+    .like-btn {
+      position: relative;
+      margin: 10px auto;
+      width: 40px;
+      height: 50px;
+      text-align: center;
+      cursor: pointer;
+      overflow: hidden;
+
+      .like-btn-icon {
+        position: absolute;
+        left: -18px;
+        bottom: -2px;
+        z-index: 1;
+        display: inline-block;
+        margin: -1px 0;
+        width: 80px;
+        height: 80px;
+        background: url(https://gw.alipayobjects.com/mdn/prod_resource/afts/img/A*eDsBTKcm1IcAAAAAAAAAAAAAARQnAQ) no-repeat 0 0;
+        background-size: auto 80px;
+      }
+
+      .will-like {
+        overflow: hidden;
+        animation-duration: 0s;
+      }
+
+      .liked {
+        animation-name: liked_shake;
+        animation-duration: .9s;
+        animation-iteration-count: 1;
+        animation-timing-function: steps(27);
+        animation-fill-mode: forwards;
+      }
+
+    }
+
+    .like-btn:hover {
+
+      .will-like {
+        animation-name: like_shake;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-out;
+        transform-origin: 25px 67px;
+      }
+
+    }
+
+    .like-count {
+      font-size: 14px;
+      color: #8A8F8D;
+    }
+
+    .like-user-list {
+      margin: 22px 0 0 -8px;
+      padding: 0;
+      list-style: none;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+
+      li {
+        margin-left: 8px;
+        margin-bottom: 8px;
+        list-style: none !important;
+
+        .like-user-popover {
+          display: inline-block;
+        }
+
+      }
+    }
+  }
+
+  .rambly-content {
+    margin-top: 10px;
+    color: var(--font-color);
+
+    /deep/ .data-list {
+      color: var(--font-color);
+    }
+  }
+
+  .operate-wrap {
+    display: flex;
+    align-items: center;
+    line-height: 22.5px;
+    padding-left: 5px;
+
+    .delete-text, .public--range-text {
+      margin: 0 5px;
+      cursor: pointer;
+      color: #d1d3d1;
+
+      &:hover {
+        color: #f7f7f7;
+      }
+    }
+
+    .separation {
+      margin: 0 5px;
+    }
+
+    /deep/.ivu-select-dropdown {
+      margin-top: 10px;
+    }
+  }
+}
+
+// 第三方插件样式覆盖
+
+/deep/ .am-engine-view > :not(p) {
+  margin: 11px 0;
+}
+
+/deep/ .am-engine-view > p {
+  margin: 4px 0;
+}
+
+/deep/ .am-engine-view > ul > li {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.ant-tooltip-placement-left {
+  padding-right: 0;
+}
+
+/deep/ .ivu-dropdown-menu {
+  .ivu-dropdown-item {
+    display: flex;
+  }
+}
+
+/deep/.more-like-list {
+  .ivu-modal-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .like-count {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+    .like-user-list {
+      margin: 10px 0;
+      list-style: none;
+      justify-content: center;
+      align-items: center;
+      max-height: 25Vh;
+      overflow-y: auto;
+
+      li {
+        margin-left: 8px;
+        margin-bottom: 8px;
+        list-style: none !important;
+
+        .like-user-popover {
+          display: flex;
+          align-items: center;
+
+          .user-name {
+            margin-left: 10px;
+          }
+        }
+
+      }
+    }
+  }
+}
+
+@keyframes like_shake {
+  25% {
+    transform: rotate(6deg);
+  }
+  75% {
+    transform: rotate(-6deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes liked_shake {
+  100% {
+    background-position: -2160px 0;
+    overflow: hidden;
+  }
+}

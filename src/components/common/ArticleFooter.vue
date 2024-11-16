@@ -16,7 +16,7 @@
         </li>
         <!-- 超出13时只展示13个，然后显示更多 -->
         <li v-if="likeUserList?.length > 13" class="show-more-like-list" @click="moreLikeUser = true">
-          <a-tooltip placement="top" :getPopupContainer="()=>this.$refs.console.logpContainer">
+          <a-tooltip placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer">
             <template slot="title">
               查看所有点赞用户
             </template>
@@ -274,6 +274,27 @@
       font-size: 14px;
       color: #8A8F8D;
     }
+
+    .like-user-list {
+      margin: 22px 0 0 -8px;
+      padding: 0;
+      list-style: none;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+
+      li {
+        margin-left: 8px;
+        margin-bottom: 8px;
+        list-style: none !important;
+
+        .like-user-popover {
+          display: inline-block;
+        }
+
+      }
+    }
   }
 
   .article-module_info {
@@ -380,27 +401,6 @@
     background-size: auto 80px;
   }
 
-  .like-user-list {
-    margin: 22px 0 0 -8px;
-    padding: 0;
-    list-style: none;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-
-    li {
-      margin-left: 8px;
-      margin-bottom: 8px;
-      list-style: none !important;
-
-      .like-user-popover {
-        display: inline-block;
-      }
-
-    }
-  }
-
   /deep/.more-like-list {
     .ivu-modal-body {
       padding: 0 40px 40px 40px;
@@ -408,6 +408,27 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
+    }
+
+    .like-user-list {
+      margin: 22px 0 0 -8px;
+      padding: 0;
+      list-style: none;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+
+      li {
+        margin-left: 8px;
+        margin-bottom: 8px;
+        list-style: none !important;
+
+        .like-user-popover {
+          display: inline-block;
+        }
+
+      }
     }
   }
 

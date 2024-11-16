@@ -21,7 +21,7 @@ export default {
   async getArticleForEdit(_this, articleId) {
     return await _this.$request({
       url: "/contentProd/article/" + articleId,
-      method: 'POST'
+      method: 'GET'
     });
   },
 
@@ -84,7 +84,7 @@ export default {
    */
   async getMyArticleList(_this, requestEntity) {
     return await _this.$request({
-      url: "/contentProd/articleList",
+      url: "/contentProd/article/list",
       method: 'POST',
       data: requestEntity
     });

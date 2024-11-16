@@ -15,14 +15,18 @@
 
   // btn系列
   .ivu-btn-default:not([disabled]) {
-    background: var(--dropdown-bg-color)!important;
-    color: var(--font-color)!important;
+    background: var(--dropdown-bg-color) !important;
+    color: var(--font-color) !important;
 
     &:hover {
-      background: var(--on-theme-bg-color)!important;
-      color: @primary-color!important;
-      border-color: @primary-color!important;
+      background: var(--on-theme-bg-color) !important;
+      color: @primary-color !important;
+      border-color: @primary-color !important;
     }
+  }
+
+  .reply-header {
+    color: var(--font-color) !important;
   }
 }
 
@@ -46,6 +50,50 @@
   margin-bottom: 0;
 }
 
+.ivu-poptip-popper[x-placement^="top"] {
+  .ivu-poptip-arrow {
+    border-top-color: var(--dropdown-bg-color) !important;
+    &:after {
+      border-top-color: var(--dropdown-bg-color) !important;
+    }
+  }
+}
+
+.ivu-poptip-popper[x-placement^="left"] {
+  .ivu-poptip-arrow {
+    border-left-color: var(--dropdown-bg-color) !important;
+    &:after {
+      border-left-color: var(--dropdown-bg-color) !important;
+    }
+  }
+}
+
+.ivu-poptip-popper[x-placement^="right"] {
+  .ivu-poptip-arrow {
+    border-right-color: var(--dropdown-bg-color) !important;
+    &:after {
+      border-right-color: var(--dropdown-bg-color) !important;
+    }
+  }
+}
+
+.ivu-poptip-popper[x-placement^="bottom"] {
+  .ivu-poptip-arrow {
+    border-bottom-color: var(--dropdown-bg-color) !important;
+    &:after {
+      border-bottom-color: var(--dropdown-bg-color) !important;
+    }
+  }
+}
+
+.ivu-poptip-popper {
+  .ivu-poptip-inner {
+    background: var(--dropdown-bg-color);
+    color: var(--font-color);
+    font-weight: normal;
+  }
+}
+
 .ivu-input {
   border-color: @border-color_normal;
   color: var(--font-color);
@@ -62,6 +110,10 @@
 
 .ivu-btn-text {
   color: var(--title-color);
+
+  &:hover {
+    background-color: var(--dropdown-bg-color);
+  }
 }
 
 .ivu-btn:focus, .ivu-input:focus, .ivu-btn-text:focus {
@@ -340,7 +392,7 @@
   }
 }
 
-.ant-checkbox-wrapper .ant-checkbox-inner{
+.ant-checkbox-wrapper .ant-checkbox-inner {
   background: var(--dropdown-bg-color);
 }
 
@@ -384,7 +436,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background: rgba(255,255,255,0.5);
+        background: rgba(255, 255, 255, 0.5);
       }
     }
   }
@@ -411,6 +463,7 @@
     }
   }
 }
+
 .am-engine {
   .data-list-task [data-card-key="checkbox"] {
     margin-left: 0 !important;
@@ -419,8 +472,8 @@
 
 // 工具栏
 .editor-toolbar {
-   display: flex;
-   justify-content: center;
+  display: flex;
+  justify-content: center;
 
   .editor-toolbar-content {
     align-items: center;
@@ -437,6 +490,7 @@
     }
   }
 }
+
 // 可拖拽标识符
 .data-card-dnd {
   width: 24px !important;
@@ -462,7 +516,7 @@
   }
 }
 
-.am-engine,  .am-engine-view{
+.am-engine, .am-engine-view {
   & > :not(p) {
     margin: 15px 0 !important;
   }
@@ -473,6 +527,7 @@
 
   & > ol {
     margin: 8px 0 !important;
+
     li {
       margin: 8px 0 8px 25px !important;
     }
@@ -480,11 +535,13 @@
 
   & > ul {
     margin: 8px 0 !important;
+
     li {
       margin: 8px 0 !important;
     }
+
     li:not(.data-list-item) {
-      margin: 8px 0  8px 15px !important;
+      margin: 8px 0 8px 15px !important;
     }
   }
 
@@ -508,7 +565,7 @@
     margin: 8px 0 !important;
   }
 
-  .data-list-task [data-card-key="checkbox"]{
+  .data-list-task [data-card-key="checkbox"] {
     margin-left: 0 !important;
   }
 }

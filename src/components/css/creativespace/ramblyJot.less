@@ -1,4 +1,5 @@
 @import "../common-var";
+
 .layout-module_RamblyJot {
   width: 100%;
   height: 100%;
@@ -92,6 +93,7 @@
         float: right;
         bottom: 30px;
         right: -2px;
+
         .iconfont {
           font-weight: bold;
           font-size: 17px;
@@ -213,10 +215,78 @@
         color: #191919;
       }
 
-      .index-menos, .menos-item, .post-time {
+      .post-time {
         color: @grey-white-font-color;
         font-size: 13px;
         font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .iconfont {
+          cursor: pointer;
+        }
+
+        .delete {
+          color: #687A9F;
+          margin-left: 5px;
+          font-size: 14px;
+          margin-top: 2px;
+
+          &:hover {
+            color: #576B95;
+          }
+        }
+
+        .operate-box {
+          border: 1px solid var(--dropdown-bg-color);
+          background: var(--rj-editor-bg-color);
+          height: 18px;
+          width: 26px;
+          border-radius: 3px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &:hover {
+            background: var(--dropdown-item-hover);
+            border-color: var(--dropdown-item-hover);
+          }
+
+          .expand {
+            color: #576B95;
+            font-size: 10px;
+          }
+        }
+
+
+        /deep/ .ivu-poptip-body {
+          padding: 16px 26px 8px;
+        }
+
+        /deep/ .ivu-poptip-footer {
+          padding: 8px 26px 15px;
+        }
+
+        /deep/ .ivu-select-dropdown {
+          font-weight: normal;
+          margin: 0 3px 5px 0;
+
+          .ivu-dropdown-item {
+            padding: 0;
+
+            .operate-item {
+              display: flex;
+              font-size: 13px !important;
+              padding: 7px 16px;
+
+              .true {
+                font-size: 14px;
+              }
+            }
+          }
+
+        }
       }
 
       .post-content {
@@ -246,6 +316,7 @@
               overflow: hidden;
               position: relative;
               border-radius: 5px;
+              cursor: zoom-in;
 
               .blur {
                 backdrop-filter: blur(25px);
@@ -286,7 +357,9 @@
             z-index: 2;
 
             img {
-              max-width: 80% !important;
+              max-height: 240px !important;
+              min-width: 20% !important;
+              object-fit: cover;
               display: block;
               margin: 0 auto;
             }
@@ -319,6 +392,8 @@
 
               img {
                 max-width: 80% !important;
+                height: auto !important;
+                object-fit: cover;
                 display: block;
                 margin: 0 auto;
               }
@@ -329,6 +404,7 @@
                 float: right;
               }
             }
+
             .cover-item-box:last-child {
               img {
                 float: left;
@@ -343,16 +419,26 @@
             flex-wrap: wrap;
             justify-content: space-between;
 
-            .photo {
-              height: 270px;
-              width: 32%;
-              background-position: 50%;
-              background-size: cover;
-              border-radius: 5px;
-            }
+            .cover-item-box {
+              min-width: 32%;
+              max-width: 32%;
+              min-height: 100%;
 
-            .photo:nth-last-child(-n+3) {
-              margin: 0;
+              .cover-url-item {
+                width: 100%;
+                height: 100%;
+                //height: auto;
+                object-fit: cover;
+                cursor: zoom-in;
+                /*
+                object-fit 属性有以下几个值：
+                  fill：图片会缩放以完全填充容器，可能会变形。
+                  contain：图片会缩放以适应容器，保持宽高比，不留白。
+                  cover：图片会缩放以覆盖容器，保持宽高比，可能会被裁剪。
+                  none：图片不会缩放，保持原始尺寸。
+                  scale-down：图片会缩放到其尺寸小于或等于容器尺寸的最大尺寸。
+                */
+              }
             }
           }
         }
@@ -363,17 +449,17 @@
   }
 }
 
-/deep/.am-engine {
+/deep/ .am-engine {
   background-color: unset;
   letter-spacing: .06em;
   padding-right: 12px;
 
-  &>p {
+  & > p {
     line-height: 1.5;
     margin: 4px 0;
   }
 
-  &>:not(p) {
+  & > :not(p) {
     margin: 12px 0;
   }
 }

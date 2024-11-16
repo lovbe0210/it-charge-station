@@ -6,7 +6,7 @@
       <div class="settings-form-item">
         <div class="setting-item-label">
           <h4>配置更新规则</h4>
-          <p>当云端配置和本地配置冲突时配置更新原则（包括自定义主题、音乐播放列表和文档专栏等配置项）</p>
+          <p>当云端配置项和本地配置项冲突时配置更新原则（包括自定义主题、音乐播放列表和文档专栏等配置项）</p>
         </div>
         <div class="setting-item-switch">
           <Select v-model="userConfigs.configFrom" @on-change="updateUserConfig">
@@ -19,7 +19,7 @@
       <div class="settings-form-item">
         <div class="setting-item-label">
           <h4>访问权限</h4>
-          <p>默认互联网可访问，新创建的文档和专栏默认生效，仍然可以在文档或专栏设置中修改访问权限。</p>
+          <p>默认互联网可访问，新创建的文档、专栏和随笔默认生效，仍然可以在文档、专栏和随笔页面修改访问权限。</p>
         </div>
         <div class="setting-item-switch">
           <div class="permission-input">

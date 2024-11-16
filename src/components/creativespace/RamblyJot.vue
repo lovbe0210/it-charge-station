@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-module_RamblyJot">
+  <div class="layout-module_RamblyJot" ref="tooltipContainer">
     <div class="rambly-jot-header">
       <h2 class="title">随笔小记</h2>
       <hr class="separator-line">
@@ -38,63 +38,111 @@
     </div>
     <div class="rambly-module_list">
       <div class="rambly-jot-wrap">
-        <div class="rambly-item" v-for="item in ramblyList" :key="item.id">
-          <a class="">
-            <b-link to="/creative/ramblyJot/sadasd">
-              <div class="post-time">
-              <span>
-                发布于 {{ item.postDate }}
-                <span> · 赞 {{ item.likes }}</span>
-                <span>· 评论 {{ item.comments }}</span>
+        <div class="rambly-item" v-for="item in ramblyList" :key="item.uid">
+          <div class="post-time un-select">
+            <span>
+              发布于 {{ formatTime(item.createTime) }}
+              <Poptip confirm title="确认删除随笔?"
+                      placement="right-end"
+                      @on-ok="deleteRamblyJot(item.uid)">
+                  <span class="iconfont delete"/>
+              </Poptip>
+            </span>
+            <Dropdown placement="left-start"
+                      trigger="click"
+                      transfer-class-name="dropdown-background dropdown-item-all-hover">
+              <a href="javascript:void(0)">
+              <span class="operate-box">
+                <span class="iconfont expand"/>
               </span>
-              </div>
+              </a>
+              <DropdownMenu slot="list">
+                <DropdownItem name="1">
+                  <div class="operate-item" @click="updatePublicStatus(1, item)">
+                    <div style="min-width: 20px">
+                      <span class="iconfont true" v-if="item.isPublic === 1"></span>
+                    </div>
+                    互联网可见
+                  </div>
+                </DropdownItem>
+                <DropdownItem name="0">
+                  <div class="operate-item" @click="updatePublicStatus(0, item)">
+                    <div style="min-width: 20px">
+                      <span class="iconfont true" v-if="item.isPublic === 0"></span>
+                    </div>
+                    仅自己可见
+                  </div>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </div>
+          <div class="post-content">
+            <b-link :to="'/creative/ramblyJot/' + item.uid">
+              <p>{{ item.previewContent }}</p>
             </b-link>
-
-            <div class="post-content">
-              <b-link to="/creative/ramblyJot/sadasd">
-                <p>{{ item.content }}</p>
-              </b-link>
-              <div class="photo-content p1" v-if="item.picList?.length === 1">
-                <div>
-                  <div class="cover-url">
-                    <div class="cover-url-item">
-                      <div class="bottom-mask">
-                        <img :src="item.picList[0]" :alt="'灵感时刻-' + item.createTime" class="bottom-img">
-                      </div>
-                      <div class="blur"></div>
-                      <div class="cover-item">
-                        <img :src="item.picList[0]" :alt="'灵感时刻-' + item.createTime" class="cover-url-item">
+            <div class="photo-content p1" v-if="item.previewImg?.length === 1">
+              <div>
+                <div class="cover-url">
+                  <div class="cover-url-item">
+                    <div class="bottom-mask">
+                      <img :src="fileUrl(item.previewImg[0])"
+                           :alt="item.title"
+                           class="bottom-img">
+                    </div>
+                    <div class="blur"></div>
+                    <div class="cover-item" :id="item.uid">
+                      <div @click="previewImage(item.uid, item.previewImg, 0)">
+                        <b-img-lazy :src="fileUrl(item.previewImg[0])"
+                                    class="cover-url-item" rounded
+                                    :alt="item.title">
+                        </b-img-lazy>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="photo-content p2" v-if="item.picList?.length === 2">
-                <div>
-                  <div class="cover-url">
-                    <div class="cover-url-item">
-                      <div class="bottom-mask">
-                        <img v-for="pic in item.picList" :key="pic" :src="pic" :alt="'灵感时刻-' + item.createTime"
-                             class="bottom-img">
-                      </div>
-                      <div class="blur"></div>
-                      <div class="cover-item">
-                        <div v-for="pic in item.picList" :key="pic" class="cover-item-box">
-                          <img :src="pic" :alt="'灵感时刻-' + item.createTime" class="cover-url-item">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="photo-content p3" v-if="item.picList?.length === 3">
-                <div class="more-images">
-                  <div v-for="pic in item.picList" :key="pic" class="photo" :alt="'灵感时刻-' + item.createTime"
-                       :style="'background-image: url(' + pic + ');'"></div>
                 </div>
               </div>
             </div>
-          </a>
+            <div class="photo-content p2" v-if="item.previewImg?.length === 2">
+              <div>
+                <div class="cover-url">
+                  <div class="cover-url-item">
+                    <div class="bottom-mask">
+                      <img v-for="pic in item.previewImg"
+                           :key="pic"
+                           :src="fileUrl(pic)"
+                           :alt="item.title"
+                           class="bottom-img">
+                    </div>
+                    <div class="blur"></div>
+                    <div class="cover-item" :id="item.uid">
+                      <div v-for="(pic, index) in item.previewImg"
+                           :key="index"
+                           @click="previewImage(item.uid, item.previewImg, index)"
+                           class="cover-item-box">
+                        <b-img-lazy :src="fileUrl(pic)"
+                                    class="cover-url-item" rounded
+                                    :alt="item.title">
+                        </b-img-lazy>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="photo-content p3" v-if="item.previewImg?.length === 3">
+              <div class="more-images" :id="item.uid">
+                <div v-for="(pic, index) in item.previewImg"
+                     :key="index"
+                     class="cover-item-box"
+                     @click="previewImage(item.uid, item.previewImg, index)">
+                  <b-img-lazy :src="fileUrl(pic)"
+                              class="cover-url-item" rounded
+                              :alt="item.title">
+                  </b-img-lazy>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -105,13 +153,17 @@
 import Engine from '@aomao/engine'
 import Toolbar from "@/components/common/editor/packages/toolbar/src"
 import {ramblyPlugins, ramblyCards, pluginConfig} from "@/components/common/editor/config"
+import Pswp from "@/components/common/imagepreview/index"
 import RamblyJotApi from "@/api/RamblyJotApi";
+import {formatTime} from "@/utils/emoji"
 
 export default {
   name: 'RamblyJot',
   data() {
     return {
       engine: null,
+      // 图片预览
+      pswp: null,
       editorFocus: false,
       // 工具栏内容：下拉面板、
       items: [
@@ -141,53 +193,7 @@ export default {
       editorValueIsEmpty: true,
       readmeEmpty: true,
       extendCurtains: false,
-      ramblyList: [
-        {
-          id: 1256668656461,
-          postDate: '1天前',
-          likes: 201,
-          comments: 3,
-          content: '今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。',
-          createTime: '2024-01-31 19:02:18',
-          picList: [
-            require('@/assets/img/6.jpg')
-          ]
-        },
-        {
-          id: 1256668656465,
-          postDate: '1天前',
-          likes: 201,
-          comments: 3,
-          content: '今天，带来一篇 Linux 命令总结的非常全的文章，也是我们平时工作中使用率非常高的操作命令，命令有点多，建议小伙伴们可以先收藏后阅读。',
-          createTime: '2024-01-31 19:02:18',
-          picList: null
-        },
-        {
-          id: 1256668656462,
-          postDate: '2小时前',
-          likes: 201,
-          comments: 3,
-          content: '一、引言 在Liunx系统CentOS7.9的中部署项目遇到了Glibc版本过低的问题，使用yum安装最高只能安装Glibc2.17并不能满足要求，本文介绍了如何用源码编译的方法升级Glibc的版本。',
-          createTime: '2024-01-31 19:02:18',
-          picList: [
-            require('@/assets/img/04.jpg'),
-            require('@/assets/img/05.jpg')
-          ]
-        },
-        {
-          id: 1256668656463,
-          postDate: '2024-01-11 11:32:18',
-          likes: 201,
-          comments: 3,
-          content: '遇到的问题：设置 backdrop-filter，Safari 浏览器首次加载没效果，通过ajax请求数据翻页之后，会出现部分高斯模糊效果无效，但是windows正常。',
-          createTime: '2024-01-31 19:02:18',
-          picList: [
-            require('@/assets/img/01.jpg'),
-            require('@/assets/img/2.jpg'),
-            require('@/assets/img/3.jpg')
-          ]
-        }
-      ]
+      ramblyList: []
     }
   },
   methods: {
@@ -195,6 +201,15 @@ export default {
       pluginConfig.link = {hotkey: {key: ""}};
       pluginConfig.tasklist = {hotkey: {key: ""}};
       pluginConfig.heading = {hotkey: {key: ""}};
+      pluginConfig.image = {
+        hotkey: {key: ""},
+        maxHeight: 150,
+        onBeforeRender: (status, url) => {
+          if (url.startsWith("data:image/")) return url
+          return url
+        }
+      }
+
       const container = this.$refs.container;
       if (container) {
         //实例化引擎
@@ -237,9 +252,6 @@ export default {
         return;
       }
 
-      // 获取正文对象
-      let htmlValue = this.engine.model?.toValue();
-
       // 获取预览内容
       let text = this.engine?.model?.toText();
       let previewContent = '';
@@ -248,10 +260,17 @@ export default {
         text = text.replace(/\n/g, "");
         text = text.replace(" ", "");
         // 判断是否需要提取摘要
-        previewContent = text.substr(0, 147);
-        if (text.length > 147) {
+        if (text.length > 297) {
+          previewContent = text.substr(0, 297);
           previewContent += "...";
+        } else {
+          previewContent = text;
         }
+      }
+
+      if (!previewContent && previewContent === '') {
+        this.editorValueIsEmpty = true;
+        return;
       }
 
       // 获取图片文件
@@ -261,13 +280,17 @@ export default {
         .filter(image => {
           return image.find("img").length > 0
         });
-      debugger
       let previewImg = nodeArray.slice(0, 3).map(node => {
         let card = this.engine.card.find(node);
         let value = card?.getValue();
         let imgUrl = value?.src.replace(this.fileService, '');
         return imgUrl;
       })
+
+      // 获取正文对象
+      let htmlValue = this.engine.model?.toValue();
+
+      // 发送请求
       let ramblyInfo = {
         content: htmlValue,
         previewContent,
@@ -276,18 +299,71 @@ export default {
       RamblyJotApi.saveRamblyJot(this, ramblyInfo).then(data => {
         if (data?.result) {
           this.$Message.success("发表成功")
+          this.editorValueIsEmpty = true;
+          this.extendCurtains = false;
           this.ramblyList.unshift(data.data);
           this.engine.destroy();
           this.initEngine();
         }
       })
-    }
+    },
+    fileUrl(path) {
+      return this.fileService + path;
+    },
+    deleteRamblyJot(essayId) {
+      RamblyJotApi.deleteRamblyJot(this, essayId).then(data => {
+        if (data?.result) {
+          this.ramblyList = this.ramblyList.filter(ramblyJot => ramblyJot.uid !== essayId);
+          this.$Message.success('删除成功')
+        }
+      })
+    },
+    updatePublicStatus(status, ramblyJot) {
+      let ramblyJotInfo = {
+        uid: ramblyJot.uid,
+        isPublic: status
+      }
+      RamblyJotApi.updateRamblyJot(this, ramblyJotInfo).then(data => {
+        if (data?.result) {
+          this.$Message.success("修改成功");
+          ramblyJot.isPublic = status;
+        }
+      })
+    },
+    previewImage(trendId, imgArray, currentIndex) {
+      if (this.pswp === null) {
+        this.pswp = new Pswp(null);
+      }
+      let imgWrapp = document.getElementById(trendId);
+      let imgBoxList = imgWrapp?.children;
+      if (imgBoxList) {
+        let imgItems = [];
+        for (let imgBox of imgBoxList) {
+          let img = imgBox.firstChild;
+          imgItems.push({
+            src: img.src,
+            msrc: img.src,
+            w: img.naturalWidth,
+            h: img.naturalHeight
+          })
+        }
+        this.pswp.open(imgItems, currentIndex)
+      }
+    },
+    formatTime
   },
   components: {
     Toolbar
   },
   mounted() {
     this.initEngine()
+  },
+  created() {
+    RamblyJotApi.getMyRamblyJotList(this).then(data => {
+      if (data?.result) {
+        this.ramblyList = data.data
+      }
+    })
   }
 }
 </script>
