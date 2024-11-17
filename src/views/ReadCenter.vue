@@ -93,7 +93,10 @@
         </div>
       </div>
       <div :style="{ width: adaptiveContentWidth}">
-        <router-view :sidebarWidth="sidebarWidth" :docStyle="docStyle"></router-view>
+        <router-view :sidebarWidth="sidebarWidth"
+                     :articleId="articleId"
+                     :columnId="columnId"
+                     :docStyle="docStyle"></router-view>
       </div>
       <Modal v-model="modalSearch"
              width="750"

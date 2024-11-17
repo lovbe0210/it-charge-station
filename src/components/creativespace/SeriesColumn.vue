@@ -122,7 +122,9 @@
           <div v-else>
             <ul class="column-article" v-if="columnShowType == 2">
               <li v-for="article in showArticleList(columnItem.articleList)" :key="article.uid">
-                <a target="_blank" href="/column/pb2d66/vv91fhpithr0t7sl" :title="article.title"
+                <a target="_blank"
+                   :href="'/' + userInfo.domain + '/' + columnItem.uri + '/' + article.uri"
+                   :title="article.title"
                    class="column-summary-item">
                   <span class="column-summary-itemText">{{ article.title }}</span>
                   <span class="column-summary-itemTime">
@@ -296,6 +298,9 @@ export default {
         this.changePermission = value;
         this.deleteColumn = value;
       }
+    },
+    userInfo() {
+      return this.$store.state.userInfo;
     }
   },
   methods: {

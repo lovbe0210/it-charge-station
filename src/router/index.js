@@ -276,14 +276,21 @@ const routes = [
     component: () => import('@/views/WriteCenter')
   },
   {
+    // 个人首页
+    path: '/:domain',
+    props: true,
+    name: 'PersonalHome',
+    component: () => import('@/views/PersonalHome')
+  },
+  {
     // 阅读中心/普通文章
-    path: '/article/:articleId',
+    path: '/:domain/:articleId',
     name: 'ReadCenter',
     props: true,
     component: () => import('@/views/ReadCenter'),
     children: [
       {
-        // 内容阅读
+        // 在路由跳转时判断是走文章阅读还是跳转去专栏首页
         path: '',
         name: 'Reader',
         component: () => import('@/components/Reader')
@@ -292,7 +299,7 @@ const routes = [
   },
   {
     // 阅读中心/专栏文章
-    path: '/column/:columnId',
+    path: '/:domain/:columnId',
     name: 'ReadCenter',
     props: true,
     component: () => import('@/views/ReadCenter'),
@@ -311,13 +318,6 @@ const routes = [
         component: () => import('@/components/Reader')
       }
     ]
-  },
-  {
-    // 个人首页
-    path: '/:domain',
-    props: true,
-    name: 'PersonalHome',
-    component: () => import('@/views/PersonalHome')
   }
 ]
 
@@ -344,5 +344,38 @@ const router = new VueRouter({
 //     window.location.reload();
 //   }
 // })
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'Reader') {
+    next();
+    return;
+  }
+  let params = to.params;
+  if (params.columnId) {
+    next();
+    return;
+  }
+
+  Vue.prototype.$request(
+    {
+      url: "/contentProd/router/" + params?.articleId,
+      method: 'GET'
+    }
+  ).then(data => {
+    if (data?.result) {
+      if (data.data === 2) {
+        // 专栏
+        let newParam = {
+          domain: params?.domain,
+          columnId: params?.articleId
+        }
+        next({
+          name: "SColumnReadHome",
+          params: newParam
+        });
+      }
+    }
+  })
+  next();
+})
 
 export default router

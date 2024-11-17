@@ -115,7 +115,9 @@
           </div>
           <div class="index-module_content">
             <div class="viewer-header">
-              <span class="viewer-content" @click="routeNavigate('read', noteItem)">{{noteItem.title}}</span>
+              <span class="viewer-content" @click="routeNavigate('read', noteItem)">
+                {{noteItem.title}}
+              </span>
             </div>
             <div class="viewer-body">
               <span class="viewer-content">{{noteItem.summary}}</span>
@@ -255,6 +257,9 @@
       },
       indeterminate() {
         return this.checkedList.length > 0 && this.checkedList.length !== this.articleList.length
+      },
+      userInfo() {
+        return this.$store.state.userInfo;
       }
     },
     methods: {
@@ -294,7 +299,7 @@
             break;
           case 'read':
             let readUrl = this.$router.resolve({
-              path: '/article/' + articleItem.uid
+              path: '/' + this.userInfo.domain + '/' + articleItem.uri
             })
             window.open(readUrl.href, '_blank')
             break;

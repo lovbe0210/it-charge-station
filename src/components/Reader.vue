@@ -204,12 +204,13 @@
         newVersion: false,
         showDocSetting: false,
         showDeleteModal: false,
+        articleInfo: {},
         isPublic: true,
         ifLike: false,
         view: null
       }
     },
-    props: ['sidebarWidth'],
+    props: ['sidebarWidth', 'articleId', 'columnId'],
     computed: {
       headerWidth() {
         return 'calc(100vw - ' + ((this.fullScreen ? 0 : this.sidebarWidth) + 'px');
@@ -321,6 +322,7 @@
       }
     },
     mounted() {
+      console.log(this.columnId, this.articleId)
       const container = this.$refs.view;
       if (container) {
         //实例化引擎
@@ -335,6 +337,8 @@
           // 滚动条节点
           scrollNode: this.$refs.scrollbarContext.Node
         });
+
+
 
         if (this.docInfo.content?.length !== 0) {
           view.render(this.docInfo.content)
