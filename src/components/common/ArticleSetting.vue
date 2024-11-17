@@ -323,9 +323,15 @@ export default {
       }
       articleInfo.append('isPublic', this.articleInfo.isPublic);
       articleInfo.append('tagsArray', JSON.stringify(this.articleInfo.tags));
-      articleInfo.append('firstCategory', this.articleInfo.firstCategory);
-      articleInfo.append('secondCategory', this.articleInfo.secondCategory);
-      articleInfo.append('summary', this.articleInfo.summary);
+      if (this.articleInfo.firstCategory) {
+        articleInfo.append('firstCategory', this.articleInfo.firstCategory);
+      }
+      if (this.articleInfo.secondCategory) {
+        articleInfo.append('secondCategory', this.articleInfo.secondCategory);
+      }
+      if (this.articleInfo.summary) {
+        articleInfo.append('summary', this.articleInfo.summary);
+      }
       articleInfo.append('autoSummary', 0);
       WriteCenterApi.updateArticleCover(this, articleInfo).then((data) => {
         if (data?.result) {

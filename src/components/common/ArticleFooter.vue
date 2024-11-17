@@ -8,11 +8,13 @@
       <p class="like-count">11 人点赞</p>
       <ul class="like-user-list">
         <li v-for="user in showUserList" :key="user.userId">
-            <span class="like-user-popover" style="cursor: pointer;">
+          <user-card :userInfo="user" :popoverContainer="tooltipContainer" class="user-info-card-box">
+            <slot>
               <b-avatar :src="user.avatar" variant="light" href="javascript:void(0)" size="2.2rem">
                 <span v-if="!user.avatar">{{ user.username }}</span>
               </b-avatar>
-            </span>
+            </slot>
+          </user-card>
         </li>
         <!-- 超出13时只展示13个，然后显示更多 -->
         <li v-if="likeUserList?.length > 13" class="show-more-like-list" @click="moreLikeUser = true">
@@ -39,11 +41,13 @@
             <p class="like-count">11 人点赞</p>
             <ul class="like-user-list">
               <li v-for="user in likeUserList" :key="user.userId">
-                <span class="like-user-popover" style="cursor: pointer;">
-                  <b-avatar :src="user.avatar" variant="light" href="javascript:void(0)" size="2.2rem">
-                    <span v-if="!user.avatar">{{ user.username }}</span>
-                  </b-avatar>
-                </span>
+                <user-card :userInfo="user" :popoverContainer="tooltipContainer" class="user-info-card-box">
+                  <slot>
+                    <b-avatar :src="user.avatar" variant="light" href="javascript:void(0)" size="2.2rem">
+                      <span v-if="!user.avatar">{{ user.username }}</span>
+                    </b-avatar>
+                  </slot>
+                </user-card>
               </li>
             </ul>
           </Modal>
@@ -132,8 +136,11 @@
 </template>
 
 <script>
+  import UserCard from "@/components/common/UserCard.vue";
+
   export default {
     name: "ArticleFooter",
+    components: { UserCard },
     data() {
       return {
         likeUserList: [
@@ -201,7 +208,8 @@
             avatar: require('@/assets/avatar/15.jpg')
           }
         ],
-        moreLikeUser: false
+        moreLikeUser: false,
+        tooltipContainer: null
       }
     },
     computed: {
@@ -212,7 +220,10 @@
         return this.likeUserList;
       }
     },
-    props: ['ifLike']
+    props: ['ifLike'],
+    mounted() {
+      this.tooltipContainer = this.$refs.tooltipContainer;
+    }
   }
 </script>
 
@@ -389,35 +400,51 @@
     }
   }
 
-  .like-btn-icon {
-    left: -18px;
-    bottom: -2px;
-    z-index: 1;
-    display: inline-block;
-    margin: -1px 0;
-    width: 80px;
-    height: 80px;
-    background: url(https://gw.alipayobjects.com/mdn/prod_resource/afts/img/A*eDsBTKcm1IcAAAAAAAAAAAAAARQnAQ) no-repeat 0 0;
-    background-size: auto 80px;
-  }
-
   /deep/.more-like-list {
     .ivu-modal-body {
-      padding: 0 40px 40px 40px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
+
+      .like-btn-icon {
+        z-index: 1;
+        display: inline-block;
+        margin-top: -20px;
+        width: 80px;
+        height: 80px;
+        background: url(https://gw.alipayobjects.com/mdn/prod_resource/afts/img/A*eDsBTKcm1IcAAAAAAAAAAAAAARQnAQ) no-repeat 0 0;
+        background-size: auto 80px;
+      }
     }
 
     .like-user-list {
-      margin: 22px 0 0 -8px;
-      padding: 0;
+      margin: 18px 10px 25px;
       list-style: none;
       justify-content: center;
       display: flex;
       align-items: center;
       flex-wrap: wrap;
+      max-height: 20vh;
+      overflow-y: scroll;
+
+      &::-webkit-scrollbar-thumb {
+        background-color: unset;
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar {
+        width: 7px;
+      }
+
+      &:hover::-webkit-scrollbar {
+        width: 7px;
+      }
+
+      &:hover::-webkit-scrollbar-thumb {
+        background-color: #8B8B8B;
+        border-radius: 4px;
+      }
 
       li {
         margin-left: 8px;

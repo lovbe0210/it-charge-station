@@ -60,11 +60,13 @@
       <p class="like-count">11 人点赞</p>
       <ul class="like-user-list">
         <li v-for="user in showUserList" :key="user.userId">
-            <span class="like-user-popover" style="cursor: pointer;">
+          <user-card :userInfo="user" :popoverContainer="tooltipContainer" class="user-info-card-box">
+            <slot>
               <b-avatar :src="user.avatar" variant="light" href="javascript:void(0)" size="2.2rem">
                 <span v-if="!user.avatar">{{ user.username }}</span>
               </b-avatar>
-            </span>
+            </slot>
+          </user-card>
         </li>
         <!-- 超出13时只展示13个，然后显示更多 -->
         <li v-if="likeUserList?.length > 13" class="show-more-like-list" @click="moreLikeUser = true">
@@ -73,27 +75,26 @@
               查看所有点赞用户
             </template>
             <b-avatar variant="light" href="javascript:void(0)" size="2.2rem">
-              <svg width="1.5em" height="1.5em" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"
-                   class="larkui-icon larkui-icon-new-ellipsis">
-                <path
-                  d="M227.008 128c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20ZM148 128c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20Zm-78.992 0c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20Z"
-                  fill="currentColor" fill-rule="nonzero"></path>
-              </svg>
+              <span class="iconfont operate-standard" style="font-weight: bold; font-size: 20px"/>
             </b-avatar>
           </a-tooltip>
           <Modal v-model="moreLikeUser"
                  :closable="false"
                  :footer-hide="true"
                  class-name="more-like-list">
+            <div class="like-btn">
+              <span class="like-btn-icon will-like"></span>
+            </div>
             <p class="like-count">共 11 人点赞</p>
-            <ul class="like-user-list beauty-scroll">
+            <ul class="like-user-list">
               <li v-for="user in likeUserList" :key="user.userId">
-                <span class="like-user-popover" style="cursor: pointer;">
-                  <b-avatar :src="user.avatar" variant="light" href="javascript:void(0)" size="1.5rem">
-                    <span v-if="!user.avatar">{{ user.username }}</span>
-                  </b-avatar>
-                  <span class="user-name">{{ user.username }}</span>
-                </span>
+                <user-card :userInfo="user" :popoverContainer="tooltipContainer" class="user-info-card-box">
+                  <slot>
+                    <b-avatar :src="user.avatar" variant="light" href="javascript:void(0)" size="2.2rem">
+                      <span v-if="!user.avatar">{{ user.username }}</span>
+                    </b-avatar>
+                  </slot>
+                </user-card>
               </li>
             </ul>
           </Modal>
@@ -111,6 +112,7 @@
 import {View} from '@aomao/engine'
 import {ramblyPlugins, ramblyCards, pluginConfig} from "@/components/common/editor/config"
 import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
+import UserCard from "@/components/common/UserCard.vue";
 import RamblyJotApi from "@/api/RamblyJotApi";
 
 export default {
@@ -184,7 +186,8 @@ export default {
           avatar: require('@/assets/avatar/15.jpg')
         }
       ],
-      moreLikeUser: false
+      moreLikeUser: false,
+      tooltipContainer: null
     }
   },
   computed: {
@@ -222,9 +225,11 @@ export default {
   },
   props: ['rjId'],
   components: {
+    UserCard,
     ReplyComment
   },
   mounted() {
+    this.tooltipContainer = this.$refs.tooltipContainer;
     const container = this.$refs.view;
     if (container) {
       //实例化引擎

@@ -119,11 +119,6 @@
         margin-left: 8px;
         margin-bottom: 8px;
         list-style: none !important;
-
-        .like-user-popover {
-          display: inline-block;
-        }
-
       }
     }
   }
@@ -165,19 +160,6 @@
 
 // 第三方插件样式覆盖
 
-/deep/ .am-engine-view > :not(p) {
-  margin: 11px 0;
-}
-
-/deep/ .am-engine-view > p {
-  margin: 4px 0;
-}
-
-/deep/ .am-engine-view > ul > li {
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-
 .ant-tooltip-placement-left {
   padding-right: 0;
 }
@@ -195,17 +177,49 @@
     justify-content: center;
     flex-direction: column;
 
+    .like-btn-icon {
+      left: -18px;
+      bottom: -2px;
+      z-index: 1;
+      display: inline-block;
+      margin-top: -20px;
+      width: 80px;
+      height: 80px;
+      background: url(https://gw.alipayobjects.com/mdn/prod_resource/afts/img/A*eDsBTKcm1IcAAAAAAAAAAAAAARQnAQ) no-repeat 0 0;
+      background-size: auto 80px;
+    }
+
     .like-count {
       font-size: 14px;
       margin-bottom: 5px;
     }
     .like-user-list {
-      margin: 10px 0;
+      margin: 18px 10px 25px;
       list-style: none;
       justify-content: center;
+      display: flex;
       align-items: center;
-      max-height: 25Vh;
-      overflow-y: auto;
+      flex-wrap: wrap;
+      max-height: 20vh;
+      overflow-y: scroll;
+
+      &::-webkit-scrollbar-thumb {
+        background-color: unset;
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar {
+        width: 7px;
+      }
+
+      &:hover::-webkit-scrollbar {
+        width: 7px;
+      }
+
+      &:hover::-webkit-scrollbar-thumb {
+        background-color: #8B8B8B;
+        border-radius: 4px;
+      }
 
       li {
         margin-left: 8px;
@@ -213,12 +227,7 @@
         list-style: none !important;
 
         .like-user-popover {
-          display: flex;
-          align-items: center;
-
-          .user-name {
-            margin-left: 10px;
-          }
+          display: inline-block;
         }
 
       }

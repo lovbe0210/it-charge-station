@@ -65,7 +65,7 @@ export default {
   },
   props: ['popoverContainer', 'userInfo'],
   mounted() {
-    this.cardContainer = this.$refs.cardContainer;
+    // this.cardContainer = this.$refs.cardContainer;
   }
 }
 </script>
