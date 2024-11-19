@@ -1,39 +1,38 @@
+import Vue from 'vue'
+
 export default {
   /**
    * 创建空白文档
-   * @param _this
    * @param userId
    * @returns {Promise<void>}
    */
-  async createBlankDoc(_this) {
-    return await _this.$request({
-      url: "/contentProd/createBlankDoc",
+  async createBlankDoc() {
+    return await Vue.prototype.$request({
+      url: "/cpt/createdoc",
       method: 'POST'
     });
   },
 
   /**
    * 获取文档用于编辑
-   * @param _this
    * @param userId
    * @returns {Promise<void>}
    */
-  async getArticleForEdit(_this, articleId) {
-    return await _this.$request({
-      url: "/contentProd/article/" + articleId,
+  async getArticleForEdit(articleId) {
+    return await Vue.prototype.$request({
+      url: "/cpt/article/" + articleId,
       method: 'GET'
     });
   },
 
   /**
    * 文档信息更新（不含封面图片）
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async updateArticleInfo(_this, articleInfo) {
-    return await _this.$request({
-      url: "/contentProd/article/simpleUpdate",
+  async updateArticleInfo(articleInfo) {
+    return await Vue.prototype.$request({
+      url: "/cpt/article/update/simple",
       method: 'POST',
       data: articleInfo
     });
@@ -41,23 +40,21 @@ export default {
 
   /**
    * 文档信息更新（包含封面图片）
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async updateArticleCover(_this, formData) {
-    return await _this.$request.put("/contentProd/article/update", formData);
+  async updateArticleCover(formData) {
+    return await Vue.prototype.$request.put("/cpt/article/update", formData);
   },
 
   /**
    * 文档内容更新
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async updateArticleContent(_this, contentInfo) {
-    return await _this.$request({
-      url: "/contentProd/article/updateContent",
+  async updateArticleContent(contentInfo) {
+    return await Vue.prototype.$request({
+      url: "/cpt/article/content/update",
       method: 'POST',
       data: contentInfo
     });
@@ -65,26 +62,24 @@ export default {
 
   /**
    * 获取文档正文
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async getArticleContent(_this, articleId) {
-    return await _this.$request({
-      url: "/contentProd/article/content/" + articleId,
-      method: 'POST'
+  async getArticleContent(articleId) {
+    return await Vue.prototype.$request({
+      url: "/cpt/article/content/" + articleId,
+      method: 'GET'
     });
   },
 
   /**
    * 获取文档列表
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async getMyArticleList(_this, requestEntity) {
-    return await _this.$request({
-      url: "/contentProd/article/list",
+  async getMyArticleList(requestEntity) {
+    return await Vue.prototype.$request({
+      url: "/cpt/article/list",
       method: 'POST',
       data: requestEntity
     });
@@ -92,24 +87,22 @@ export default {
 
   /**
    * 获取菜单列表
-   * @param _this
    * @returns {Promise<void>}
    */
-  async getMenuList(_this) {
-    return await _this.$request({
-      url: "/contentProd/menu",
+  async getMenuList() {
+    return await Vue.prototype.$request({
+      url: "/cpt/menu",
       method: 'POST'
     });
   },
 
   /**
    * 文章置顶/取消置顶
-   * @param _this
    * @returns {Promise<void>}
    */
-  async updateArticleTop(_this, articleInfo) {
-    return await _this.$request({
-      url: "/contentProd/article/setTop",
+  async updateArticleTop(articleInfo) {
+    return await Vue.prototype.$request({
+      url: "/cpt/article/setop",
       method: 'POST',
       data: articleInfo
     });
@@ -117,36 +110,33 @@ export default {
 
   /**
    * 文章发布
-   * @param _this
    * @returns {Promise<void>}
    */
-  async publishArticle(_this, articleId) {
-    return await _this.$request({
-      url: "/contentProd/article/publish/" + articleId,
+  async publishArticle(articleId) {
+    return await Vue.prototype.$request({
+      url: "/cpt/article/publish/" + articleId,
       method: 'POST'
     });
   },
 
   /**
    * 文章删除
-   * @param _this
    * @returns {Promise<void>}
    */
-  async deleteArticle(_this, articleId) {
-    return await _this.$request({
-      url: "/contentProd/article/delete/" + articleId,
+  async deleteArticle(articleId) {
+    return await Vue.prototype.$request({
+      url: "/cpt/article/delete/" + articleId,
       method: 'POST'
     });
   },
 
   /**
    * 文章批量操作
-   * @param _this
    * @returns {Promise<void>}
    */
-  async articleBatchOperate(_this, operateInfo) {
-    return await _this.$request({
-      url: "/contentProd/article/batchOperate",
+  async articleBatchOperate(operateInfo) {
+    return await Vue.prototype.$request({
+      url: "/cpt/article/operate/batch",
       method: 'POST',
       data: operateInfo
     });
@@ -158,26 +148,24 @@ export default {
 
   /**
    * 获取专栏列表
-   * @param _this
    * @param columnInfo
    * @returns {Promise<void>}
    */
-  async getColumnList(_this) {
-    return await _this.$request({
-      url: "/contentProd/columnList",
-      method: 'POST'
+  async getColumnList() {
+    return await Vue.prototype.$request({
+      url: "/cpt/column/list",
+      method: 'GET'
     });
   },
 
   /**
    * 新建专栏
-   * @param _this
    * @param columnInfo
    * @returns {Promise<void>}
    */
-  async createColumn(_this, columnInfo) {
-    return await _this.$request({
-      url: "/contentProd/column/create",
+  async createColumn(columnInfo) {
+    return await Vue.prototype.$request({
+      url: "/cpt/column/create",
       method: 'POST',
       data: columnInfo
     });
@@ -185,13 +173,12 @@ export default {
 
   /**
    * 专栏-创建文章
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async createArticle(_this, columnId) {
-    return await _this.$request({
-      url: "/contentProd/column/createArticle",
+  async createArticle(columnId) {
+    return await Vue.prototype.$request({
+      url: "/cpt/column/article/create",
       method: 'POST',
       data: {uid: columnId}
     });
@@ -199,13 +186,12 @@ export default {
 
   /**
    * 专栏-复制文章
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async copyArticle(_this, columnId, articleList) {
-    return await _this.$request({
-      url: "/contentProd/column/copyArticle",
+  async copyArticle(columnId, articleList) {
+    return await Vue.prototype.$request({
+      url: "/cpt/column/article/copy",
       method: 'POST',
       data: {
         columnId: columnId,
@@ -216,13 +202,12 @@ export default {
 
   /**
    * 删除专栏
-   * @param _this
    * @param columnInfo
    * @returns {Promise<void>}
    */
-  async deleteColumn(_this, columnInfo) {
-    return await _this.$request({
-      url: "/contentProd/column/delete",
+  async deleteColumn(columnInfo) {
+    return await Vue.prototype.$request({
+      url: "/cpt/column/delete",
       method: 'POST',
       data: columnInfo
     });
@@ -230,36 +215,33 @@ export default {
 
   /**
    * 获取专栏信息
-   * @param _this
    * @param columnInfo
    * @returns {Promise<void>}
    */
-  async getColumnInfo(_this, columnId) {
-    return await _this.$request({
-      url: "/contentProd/column/" + columnId,
+  async getColumnInfo(columnId) {
+    return await Vue.prototype.$request({
+      url: "/cpt/column/" + columnId,
       method: 'GET'
     });
   },
 
   /**
    * 专栏信息更新（包含封面图片）
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async updateColumnInfo(_this, formData) {
-    return await _this.$request.put("/contentProd/column/update", formData);
+  async updateColumnInfo(formData) {
+    return await Vue.prototype.$request.put("/cpt/column/update", formData);
   },
 
   /**
    * 专栏目录更新
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async updateColumnDir(_this, dirInfo) {
-    return await _this.$request({
-      url: "/contentProd/column/dir/update",
+  async updateColumnDir(dirInfo) {
+    return await Vue.prototype.$request({
+      url: "/cpt/column/dir/update",
       method: 'POST',
       data: dirInfo
     });
@@ -267,39 +249,36 @@ export default {
 
   /**
    * 获取专栏目录
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async getColumnDir(_this, columnId) {
-    return await _this.$request({
-      url: "/contentProd/column/dir/" + columnId,
+  async getColumnDir(columnId) {
+    return await Vue.prototype.$request({
+      url: "/cpt/column/dir/" + columnId,
       method: 'GET'
     });
   },
 
   /**
    * 获取专栏文章
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async getColumnArticle(_this, columnId) {
-    return await _this.$request({
-      url: "/contentProd/column/articleList/" + columnId,
+  async getColumnArticle(columnId) {
+    return await Vue.prototype.$request({
+      url: "/cpt/column/article/list/" + columnId,
       method: 'GET'
     });
   },
 
   /**
    * 专栏内容批量操作
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async columnBatchOperate(_this, operateInfo) {
-    return await _this.$request({
-      url: "/contentProd/column/batchOperate",
+  async columnBatchOperate(operateInfo) {
+    return await Vue.prototype.$request({
+      url: "/cpt/column/article/operate/batch",
       method: 'POST',
       data: operateInfo
     });

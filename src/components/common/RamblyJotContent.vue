@@ -26,7 +26,7 @@
                       @on-click="updatePublicStatus"
                       transfer-class-name="dropdown-background dropdown-item-all-hover">
               <a href="javascript:void(0)">
-                <span class="public--range-text">互联网可见</span>
+                <span class="public--range-text">{{ ramblyJot.isPublic === 1 ? '互联网可见' : '仅自己可见' }}</span>
               </a>
               <DropdownMenu slot="list">
                 <DropdownItem :name="1">
@@ -203,7 +203,7 @@ export default {
   },
   methods: {
     deleteRamblyJot() {
-      RamblyJotApi.deleteRamblyJot(this, this.ramblyJot.uid).then(data => {
+      RamblyJotApi.deleteRamblyJot(this.ramblyJot.uid).then(data => {
         if (data?.result) {
           this.$Message.success('删除成功');
           this.$router.go(-1);
@@ -215,7 +215,7 @@ export default {
         uid: this.ramblyJot.uid,
         isPublic: status
       }
-      RamblyJotApi.updateRamblyJot(this, ramblyJotInfo).then(data => {
+      RamblyJotApi.updateRamblyJot(ramblyJotInfo).then(data => {
         if (data?.result) {
           this.$Message.success("修改成功");
           this.ramblyJot.isPublic = status;
@@ -243,7 +243,7 @@ export default {
         readonly: true
       });
       // 获取内容
-      RamblyJotApi.getRamblyJotInfo(this, this.rjId).then(data => {
+      RamblyJotApi.getRamblyJotInfo(this.rjId).then(data => {
         if (data?.result) {
           this.ramblyJot = data.data;
           if (this.ramblyJot != null && this.ramblyJot.content?.length !== 0) {

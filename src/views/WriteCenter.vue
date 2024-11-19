@@ -234,17 +234,6 @@ import WriteCenterApi from "@/api/WriteCenterApi";
 
 export default {
   name: 'WriteCenter',
-  beforeRouteEnter(to, from, next) {
-    next(vc => {
-      // 通过 `vc` 访问组件实例
-      WriteCenterApi.getArticleForEdit(vc, vc.articleId).then(data => {
-        if (data?.result) {
-          vc.articleInfo = data.data
-          next();
-        }
-      })
-    })
-  },
   data() {
     return {
       articleInfo: {
@@ -283,11 +272,7 @@ export default {
      * 手动更新文档内容
      */
     updateDocConten() {
-      let engine = this.$refs.editorContainer?.engine;
-      if (engine) {
-        let value = engine.model.toValue();
-        console.dir(value)
-      }
+      this.$Message.success("发布成功")
     },
     /**
      * 为子组件定义的事件方法
@@ -336,6 +321,13 @@ export default {
     Editor,
     ArticleSetting,
     ArticleVersion
+  },
+  created() {
+    WriteCenterApi.getArticleForEdit(this.articleId).then(data => {
+      if (data?.result) {
+        this.articleInfo = data.data
+      }
+    })
   }
 }
 </script>

@@ -333,7 +333,7 @@ export default {
         articleInfo.append('summary', this.articleInfo.summary);
       }
       articleInfo.append('autoSummary', 0);
-      WriteCenterApi.updateArticleCover(this, articleInfo).then((data) => {
+      WriteCenterApi.updateArticleCover(articleInfo).then((data) => {
         if (data?.result) {
           this.$Message.success("保存成功！");
           this.$emit("updateArticle", this.articleInfo);
@@ -351,7 +351,7 @@ export default {
       this.coverOriginalFile = this.fileService + this.articleInfo.coverUrl;
     }
     // 获取菜单分类
-    WriteCenterApi.getMenuList(this).then(data => {
+    WriteCenterApi.getMenuList().then(data => {
       if (data?.result) {
         let _data = data.data;
         if (_data == null || _data.length === 0) {

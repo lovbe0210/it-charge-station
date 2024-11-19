@@ -95,7 +95,7 @@
               cursor: pointer;
               background: #F4F5F5;
               font-size: 14px;
-              color: #BEC0BF;
+              color: @grey-white-font-color;
               flex: 1;
               border-radius: 8px;
               position: relative;
@@ -679,11 +679,11 @@
       }
 
       .search-bar {
+        color: var(--font-color) !important;
         background: var(--dropdown-bg-color) !important;
-        color: var(--title-color) !important;
 
         &:hover {
-          background: var(--dropdown-item-hover) !important;
+          background: var(--rj-editor-bg-color) !important;
         }
       }
 
@@ -750,6 +750,16 @@
     }
   }
 
+  /deep/ .full-screen {
+    .layout-module_headerWrapper {
+      background: var(--theme-color) !important;
+    }
+
+    .layout-module_bookContentWrapper {
+      background: var(--theme-color) !important;
+    }
+  }
+
   /deep/ .layout-module_headerWrapper {
     border-color: @border-color_normal !important;
     background: unset !important;
@@ -777,7 +787,8 @@
     }
   }
 
-  /deep/.am-engine-view {
+  /deep/.am-engine {
+    background: unset !important;
     color: var(--font-color);
 
     .data-codeblock-container {

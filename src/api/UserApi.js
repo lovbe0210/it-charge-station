@@ -1,16 +1,17 @@
+import Vue from 'vue'
+
 export default {
   /**
    * 获取用户信息
-   * @param _this
    * @param userId
    * @returns {Promise<void>}
    */
-  async getUserInfo(_this, userId) {
+  async getUserInfo(userId) {
     let jsonData = {
       userId: userId
     }
-    return await _this.$request({
-      url: "/user/getUserInfo",
+    return await Vue.prototype.$request({
+      url: "/user/userInfo",
       method: 'POST',
       data: jsonData
     });
@@ -18,12 +19,11 @@ export default {
 
   /**
    * 更新用户信息
-   * @param _this
    * @param userId
    * @returns {Promise<void>}
    */
-  async updateUserInfo(_this, formData) {
-    return await _this.$request.put("/user/updateUserInfo", formData);
+  async updateUserInfo(formData) {
+    return await Vue.prototype.$request.put("/user/userInfo/update", formData);
   }
 }
 

@@ -293,7 +293,6 @@
       },
       submitRambly() {
         let htmlValue = this.engine.model?.toValue();
-        // 通过this.engine.model?.toText();获取纯文本
         let title;
         if (!this.rambly.showTitle) {
           title = null;

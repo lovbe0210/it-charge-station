@@ -315,7 +315,7 @@ export default {
     },
     toWriteCenter() {
       // 创建空白文档
-      WriteCenterApi.createBlankDoc(this).then(data => {
+      WriteCenterApi.createBlankDoc().then(data => {
         if (data?.result) {
           let articleId = data.data.uid;
           let routeUrl = this.$router.resolve({

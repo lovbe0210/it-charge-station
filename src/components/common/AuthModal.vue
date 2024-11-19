@@ -383,11 +383,11 @@ export default {
     },
     reqUserInfo(userInfo) {
       // 请求用户信息
-      userApi.getUserInfo(this, userInfo.uid).then(data => {
+      userApi.getUserInfo(userInfo.uid).then(data => {
         if (!data?.result) {
           return;
         }
-        let loginUser = data.data();
+        let loginUser = data.data;
         userInfo = {...userInfo, ...loginUser};
         // 保存userInfo到store中
         this.$store.commit('login', userInfo)

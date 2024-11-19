@@ -1,13 +1,14 @@
+import Vue from 'vue'
+
 export default {
   /**
    * 创建空白文档
-   * @param _this
    * @param userId
    * @returns {Promise<void>}
    */
-  async saveRamblyJot(_this, ramblyJotInfo) {
-    return await _this.$request({
-      url: "/contentProd/ramblyjot/create",
+  async saveRamblyJot(ramblyJotInfo) {
+    return await Vue.prototype.$request({
+      url: "/cpt/ramblyjot/create",
       method: 'POST',
       data: ramblyJotInfo
     });
@@ -15,109 +16,52 @@ export default {
 
   /**
    * 获取文档用于编辑
-   * @param _this
    * @param userId
    * @returns {Promise<void>}
    */
-  async getRamblyJotInfo(_this, ramblyJotId) {
-    return await _this.$request({
-      url: "/contentProd/ramblyjot/" + ramblyJotId,
+  async getRamblyJotInfo(ramblyJotId) {
+    return await Vue.prototype.$request({
+      url: "/cpt/ramblyjot/" + ramblyJotId,
       method: 'POST'
     });
   },
 
   /**
    * 获取随笔列表
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async getMyRamblyJotList(_this) {
-    return await _this.$request({
-      url: "/contentProd/ramblyjot/list",
+  async getMyRamblyJotList() {
+    return await Vue.prototype.$request({
+      url: "/cpt/ramblyjot/list",
       method: 'POST'
     });
   },
 
   /**
    * 随笔删除
-   * @param _this
    * @returns {Promise<void>}
    */
-  async deleteRamblyJot(_this, ramblyJotId) {
-    return await _this.$request({
-      url: "/contentProd/ramblyjot/delete/" + ramblyJotId,
+  async deleteRamblyJot(ramblyJotId) {
+    return await Vue.prototype.$request({
+      url: "/cpt/ramblyjot/delete/" + ramblyJotId,
       method: 'POST'
     });
   },
 
   /**
    * 随笔信息更新 只允许修改可见范围
-   * @param _this
    * @param articleInfo
    * @returns {Promise<void>}
    */
-  async updateRamblyJot(_this, ramblyJot) {
-    return await _this.$request({
-      url: "/contentProd/ramblyjot/update",
+  async updateRamblyJot(ramblyJot) {
+    return await Vue.prototype.$request({
+      url: "/cpt/ramblyjot/update",
       method: 'POST',
       data: ramblyJot
     });
-  },
-
-  /**
-   * 专栏目录更新
-   * @param _this
-   * @param articleInfo
-   * @returns {Promise<void>}
-   */
-  async updateColumnDir(_this, dirInfo) {
-    return await _this.$request({
-      url: "/contentProd/column/dir/update",
-      method: 'POST',
-      data: dirInfo
-    });
-  },
-
-  /**
-   * 获取专栏目录
-   * @param _this
-   * @param articleInfo
-   * @returns {Promise<void>}
-   */
-  async getColumnDir(_this, columnId) {
-    return await _this.$request({
-      url: "/contentProd/column/dir/" + columnId,
-      method: 'GET'
-    });
-  },
-
-  /**
-   * 获取专栏文章
-   * @param _this
-   * @param articleInfo
-   * @returns {Promise<void>}
-   */
-  async getColumnArticle(_this, columnId) {
-    return await _this.$request({
-      url: "/contentProd/column/articleList/" + columnId,
-      method: 'GET'
-    });
-  },
-
-  /**
-   * 专栏内容批量操作
-   * @param _this
-   * @param articleInfo
-   * @returns {Promise<void>}
-   */
-  async columnBatchOperate(_this, operateInfo) {
-    return await _this.$request({
-      url: "/contentProd/column/batchOperate",
-      method: 'POST',
-      data: operateInfo
-    });
   }
+
 }
 
 

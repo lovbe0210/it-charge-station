@@ -132,7 +132,7 @@
       // 判断用户登录状态是否有效
       let userInfo = this.$store.state.userInfo;
       if (userInfo && userInfo.uid) {
-        UserApi.getUserInfo(this, userInfo.uid).then(data => {
+        UserApi.getUserInfo(userInfo.uid).then(data => {
           if (data?.result) {
             let loginUser = data.data;
             userInfo = {...userInfo, ...loginUser};

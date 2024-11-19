@@ -490,7 +490,7 @@ export default {
       columnInfo.append('synopsis', this.baseInfo.synopsis);
       columnInfo.append('enableComment', this.baseInfo.enableComment ? 1 : 0);
       columnInfo.append('autoPublish', this.baseInfo.autoPublish ? 1 : 0);
-      WriteCenterApi.updateColumnInfo(this, columnInfo).then(data => {
+      WriteCenterApi.updateColumnInfo(columnInfo).then(data => {
         if (data?.result) {
           this.$Message.success('更新成功');
         }
@@ -623,7 +623,7 @@ export default {
       if (this.tmpValue !== this.baseInfo.uri) {
         this.cannotDelete = true;
       } else {
-        WriteCenterApi.deleteColumn(this, {uid: this.columnId}).then(data => {
+        WriteCenterApi.deleteColumn({uid: this.columnId}).then(data => {
           if (data?.result) {
             this.showModal = false;
             this.$Message.success('删除成功');
@@ -652,7 +652,7 @@ export default {
         operateType: operate,
         articleList: this.checkedList
       }
-      WriteCenterApi.columnBatchOperate(this, operateInfo).then(data => {
+      WriteCenterApi.columnBatchOperate(operateInfo).then(data => {
         if (data?.result) {
           this.$Message.success(operate === '1' ? "发布成功" : operate === '2' ? "操作成功" : "删除成功");
         } else {
@@ -706,7 +706,7 @@ export default {
     },
     activeItem(newVal, oldVal) {
       if (oldVal === 'dir' && newVal === 'article') {
-        WriteCenterApi.getColumnArticle(this, this.baseInfo.uid).then(data => {
+        WriteCenterApi.getColumnArticle(this.baseInfo.uid).then(data => {
           if (data?.result) {
             this.baseInfo.articleList = data.data;
           }
@@ -715,7 +715,7 @@ export default {
     }
   },
   created() {
-    WriteCenterApi.getColumnInfo(this, this.columnId).then(data => {
+    WriteCenterApi.getColumnInfo(this.columnId).then(data => {
       if (data?.result) {
         data.data.enableComment = !!data.data.enableComment;
         data.data.autoPublish = !!data.data.autoPublish;

@@ -260,7 +260,7 @@ export default {
               uid: this.currentNode.uid,
               title: this.tmpName.trim()
             }
-            WriteCenterApi.updateArticleInfo(this, articleInfo).then(data => {
+            WriteCenterApi.updateArticleInfo(articleInfo).then(data => {
               if (data?.result) {
                 this.currentNode.title = articleInfo.title;
                 this.treeParamBox.onTreeChange();

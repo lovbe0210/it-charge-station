@@ -40,7 +40,7 @@ export default {
     if (payloadType === -1) {
       jsonData.mobile = _this.account;
     } else {
-      requestUri = "/auth/emailCode/login";
+      requestUri = "/auth/email-code/login";
       jsonData.email = _this.account;
     }
 

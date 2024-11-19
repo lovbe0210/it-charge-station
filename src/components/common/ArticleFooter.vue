@@ -1,5 +1,5 @@
 <template>
-  <div ref="tooltipContainer">
+  <div class="doc-footer" ref="tooltipContainer">
     <!-- 点赞信息 -->
     <div class="reward-module_like un-select">
       <div class="like-btn" @click="$emit('like')">

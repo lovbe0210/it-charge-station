@@ -1,15 +1,15 @@
 <template>
   <div class="reader-route-view" ref="tooltipContainer">
-    <div class="layout-module_contentWrapper" id="contentWrapper">
+    <div :class="['layout-module_contentWrapper', fullScreen ? 'full-screen' : '']" id="contentWrapper">
       <div id="header" class="layout-module_headerWrapper" :style="{ width: headerWidth}">
         <div class="header-crumb">
-          <span class="header_title" title="Seata—分布式事务解决方案">Seata—分布式事务解决方案</span>
+          <span class="header_title" title="Seata—分布式事务解决方案">{{ articleInfo.title }}</span>
           <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
             <template slot="title">
-              {{ isPublic ? '互联网所有人可以访问' : '仅关注可见' }}
+              {{ articleInfo.isPublic ? '互联网所有人可以访问' : '仅关注可见' }}
             </template>
             <div class="header-status-icon">
-              <span class="iconfont public"/>
+              <span :class="['iconfont', articleInfo.isPublic ? 'public' : 'lock']"/>
             </div>
           </a-tooltip>
         </div>
@@ -41,19 +41,20 @@
           <div :class="['doc_header', docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
             <div class="doc_header_wrapper">
               <h1 id="article-title" class="doc-article-title">
-                {{ docInfo.title }}
+                {{ articleInfo.title }}
               </h1>
             </div>
           </div>
           <!-- 内容显示部分 -->
-          <div ref="view"
-               :class="['doc-reader','am-engine-view', docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
+          <div ref="container"
+               :class="['doc-reader','am-engine', docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
           </div>
-          <div class="doc-footer">
+          <!-- 文章页脚 -->
+          <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'">
             <article-footer :ifLike="ifLike" @like="ifLike = !ifLike"/>
           </div>
           <!-- 评论 -->
-          <div :class="[docStyle.pageSize === 1 ? 'reader-standard-wide' : 'reader-ultra-wide']">
+          <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'">
             <reply-comment/>
           </div>
         </div>
@@ -182,13 +183,14 @@
 </template>
 
 <script>
-  import {View, $} from '@aomao/engine'
-  import {plugins, cards, pluginConfig} from "@/components/common/editor/config"
-  import {getTocData} from "@/components/common/editor/utils";
+  import Engine, {$} from '@aomao/engine'
+  import {plugins, cards, pluginConfig} from "./common/editor/config"
+  import {getTocData} from "./common/editor/utils"
   import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
   import ArticleFooter from "@/components/common/ArticleFooter"
   import ArticleSetting from "@/components/common/ArticleSetting"
   import ArticleVersion from "@/components/common/ArticleVersion"
+  import ContentPicksApi from "@/api/ContentPicksApi";
 
   const event = document.createEvent('KeyboardEvent');
   event.initKeyboardEvent('keydown', true, true, window, false, false, false, false, 122, 0);
@@ -207,7 +209,7 @@
         articleInfo: {},
         isPublic: true,
         ifLike: false,
-        view: null
+        engine: null
       }
     },
     props: ['sidebarWidth', 'articleId', 'columnId'],
@@ -233,8 +235,8 @@
        * 渲染标题大纲
        * @param engine
        */
-      renderTocData(view) {
-        let tocData = getTocData(view);
+      renderTocData(engine) {
+        let tocData = getTocData(engine);
         this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
       },
       // 进入演示模式相关方法
@@ -322,34 +324,38 @@
       }
     },
     mounted() {
-      console.log(this.columnId, this.articleId)
-      const container = this.$refs.view;
+      const container = this.$refs.container;
       if (container) {
         //实例化引擎
-        const view = new View(container, {
+        const engine = new Engine(container, {
           // 启用插件
           plugins,
           // 启用卡片
           cards,
           // 所有的插件配置
           config: pluginConfig,
-          readonly: false,
           // 滚动条节点
-          scrollNode: this.$refs.scrollbarContext.Node
+          scrollNode: this.$refs.scrollbarContext.Node,
+          // 阅读模式
+          readonly: true
         });
 
-
-
-        if (this.docInfo.content?.length !== 0) {
-          view.render(this.docInfo.content)
-          const pattern = /h[1-6]/;
-          let match = this.docInfo.content.match(pattern);
-          if (match) {
-            this.renderTocData(view);
+        ContentPicksApi.getArticleInfo(this.articleId).then(data => {
+          if (!data?.result) {
+            return;
           }
-        }
-
-        this.view = view;
+          this.articleInfo = data.data;
+          let content = data.data.content;
+          if (content?.length !== 0) {
+            engine.setJsonValue(JSON.parse(content));
+            const pattern = /h[1-6]/;
+            let match = content.match(pattern);
+            if (match) {
+              this.renderTocData(engine);
+            }
+          }
+        })
+        this.engine = engine;
       }
       window.addEventListener('resize', this.checkFullscreen);
       // const scrollContainer = this.$refs.scrollbarContext;

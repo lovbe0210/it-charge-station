@@ -173,7 +173,7 @@ export default {
         uid: this.columnInfo.uid,
         dirContent: JSON.stringify(this.dirData)
       }
-      WriteCenterApi.updateColumnDir(this, dirInfo)
+      WriteCenterApi.updateColumnDir(dirInfo)
     },
     getDirTotal(node) {
       this.$set(this.tmpAllNodeMap, node.uid, node);
@@ -216,7 +216,7 @@ export default {
         }
       });
       if (copyArticleList.length > 0) {
-        WriteCenterApi.copyArticle(this, this.columnInfo.uid, copyArticleList).then(data => {
+        WriteCenterApi.copyArticle(this.columnInfo.uid, copyArticleList).then(data => {
           if (data?.result) {
             let copyArticleMap = data.data;
             Object.values(nodeList).forEach(node => {
@@ -298,7 +298,7 @@ export default {
     createNode(currentNode, newNodeType) {
       if (newNodeType === 1) {
         // 新建文章
-        WriteCenterApi.createArticle(this, this.columnInfo.uid).then(data => {
+        WriteCenterApi.createArticle(this.columnInfo.uid).then(data => {
           if (data?.result) {
             // 本级节点构造
             let newNode = {
@@ -366,7 +366,7 @@ export default {
           operateType: this.actionType.indexOf('remove') !== -1 ? 2 : this.actionType.indexOf('delete') !== -1 ? 5 : 0,
           articleList: delNodeList
         }
-        WriteCenterApi.columnBatchOperate(this, operateInfo).then(data => {
+        WriteCenterApi.columnBatchOperate(operateInfo).then(data => {
           if (data?.result) {
             this.$Message.success('操作成功')
             this.onTreeChange();
@@ -465,7 +465,7 @@ export default {
   },
   created() {
     if (this.columnInfo?.dirContentId) {
-      WriteCenterApi.getColumnDir(this, this.columnInfo.uid).then(data => {
+      WriteCenterApi.getColumnDir(this.columnInfo.uid).then(data => {
         if (data?.result) {
           this.dirData = data.data;
           this.onTreeChange(undefined, true);
@@ -488,7 +488,7 @@ export default {
       let dirInfo = new FormData();
       dirInfo.append("uid", this.columnInfo.uid);
       dirInfo.append("dirContent", JSON.stringify(this.dirData));
-      WriteCenterApi.updateColumnDir(this, dirInfo).then(data => {
+      WriteCenterApi.updateColumnDir(dirInfo).then(data => {
         if (data?.result) {
           this.$emit("updateDirContentId", data.data);
         }

@@ -357,7 +357,7 @@ router.beforeEach((to, from, next) => {
 
   Vue.prototype.$request(
     {
-      url: "/contentProd/router/" + params?.articleId,
+      url: "/cpt/router/" + params?.articleId,
       method: 'GET'
     }
   ).then(data => {
@@ -373,6 +373,7 @@ router.beforeEach((to, from, next) => {
           params: newParam
         });
       }
+      // 继续走普通文章阅读页面
     }
   })
   next();

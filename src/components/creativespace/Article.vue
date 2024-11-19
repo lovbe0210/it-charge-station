@@ -309,7 +309,7 @@
               this.$Message.error('请先将阅读权限设置为互联网可访问再进行发布');
               break;
             }
-            WriteCenterApi.publishArticle(this, articleItem.uid).then(data => {
+            WriteCenterApi.publishArticle(articleItem.uid).then(data => {
               if (data?.result) {
                 articleItem.publishStatus = 1;
                 this.$Message.success('发布成功，审核通过后可访问最新内容');
@@ -317,7 +317,7 @@
             })
             break;
           case 'setTop':
-            WriteCenterApi.updateArticleTop(this, {uid: articleItem.uid});
+            WriteCenterApi.updateArticleTop({uid: articleItem.uid});
             this.initArticleList();
             break;
           case 'delete':
@@ -333,7 +333,7 @@
           case 'column':
             // 判断专栏列表是否为空
             if (this.columnList?.length === 0) {
-              WriteCenterApi.getColumnList(this).then(data => {
+              WriteCenterApi.getColumnList().then(data => {
                 if (data?.result) {
                   this.columnList = data.data;
                 }
@@ -354,7 +354,7 @@
           uid: noteItem.uid,
           tagsArray: JSON.stringify(noteItem.tags)
         }
-        WriteCenterApi.updateArticleInfo(this, articleInfo);
+        WriteCenterApi.updateArticleInfo(articleInfo);
       },
       // 标签移除
       handleClose(noteItem, removedTag) {
@@ -365,7 +365,7 @@
           uid: noteItem.uid,
           tagsArray: JSON.stringify(noteItem.tags)
         }
-        WriteCenterApi.updateArticleInfo(this, articleInfo);
+        WriteCenterApi.updateArticleInfo(articleInfo);
       },
       // 展示添加新标签
       showInput(noteId) {
@@ -386,7 +386,7 @@
             uid: noteItem.uid,
             tagsArray: JSON.stringify(noteItem.tags)
           }
-          WriteCenterApi.updateArticleInfo(this, articleInfo);
+          WriteCenterApi.updateArticleInfo(articleInfo);
         }
         this.inputVisibleId = '';
         this.inputValue = '';
@@ -395,7 +395,7 @@
         return this.$refs.TooltipContainer
       },
       deleteArticle() {
-        WriteCenterApi.deleteArticle(this, this.currentOperateArticle.uid).then(data => {
+        WriteCenterApi.deleteArticle(this.currentOperateArticle.uid).then(data => {
           if (data?.result) {
             this.$Message.success('删除成功');
             this.articleList = this.articleList.filter(item => item.uid !== this.currentOperateArticle.uid);
@@ -420,7 +420,7 @@
             operateType: 1,
             articleList: this.checkedList
           }
-          WriteCenterApi.articleBatchOperate(this, operateInfo).then(data => {
+          WriteCenterApi.articleBatchOperate(operateInfo).then(data => {
             if (data?.result) {
               this.$Message.success("发布成功")
             }
@@ -428,7 +428,7 @@
           return;
         } else if (operateType === 3) {
           if (this.columnList?.length === 0) {
-            WriteCenterApi.getColumnList(this).then(data => {
+            WriteCenterApi.getColumnList().then(data => {
               if (data?.result) {
                 this.columnList = data.data;
               }
@@ -448,7 +448,7 @@
           columnId: this.tmpSelectColumnId,
           articleList: this.checkedList
         }
-        WriteCenterApi.articleBatchOperate(this, operateInfo).then(data => {
+        WriteCenterApi.articleBatchOperate(operateInfo).then(data => {
           if (data?.result) {
             this.$Message.success("操作成功")
             this.showModal = false;
@@ -461,7 +461,7 @@
           keywords: this.keywords,
           sort: this.orderType
         };
-        WriteCenterApi.getMyArticleList(this, requestEntity).then(data => {
+        WriteCenterApi.getMyArticleList(requestEntity).then(data => {
           if (data?.result) {
             this.articleList = data.data;
             this.checkedList = [];

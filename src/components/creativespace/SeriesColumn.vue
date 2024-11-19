@@ -308,7 +308,7 @@ export default {
       return this.$refs.TooltipContainer
     },
     createColumn() {
-      WriteCenterApi.createColumn(this, this.currentColumn).then(data => {
+      WriteCenterApi.createColumn(this.currentColumn).then(data => {
         if (data?.result) {
           // 将最新创建的专栏放入顶部
           this.seriesColumnList.unshift(data.data);
@@ -327,7 +327,7 @@ export default {
       let columnInfo = new FormData();
       columnInfo.append("uid", this.currentColumn.uid)
       columnInfo.append("isPublic", permission)
-      WriteCenterApi.updateColumnInfo(this, columnInfo).then(data => {
+      WriteCenterApi.updateColumnInfo(columnInfo).then(data => {
         if (data?.result) {
           this.currentColumn.isPublic = permission;
           this.$Message.success("修改成功");
@@ -349,7 +349,7 @@ export default {
       let columnInfo = new FormData();
       columnInfo.append("uid", this.currentColumn.uid)
       columnInfo.append("title", title)
-      WriteCenterApi.updateColumnInfo(this, columnInfo).then(data => {
+      WriteCenterApi.updateColumnInfo(columnInfo).then(data => {
         if (data?.result) {
           renameColumn[0].title = title;
           this.$Message.success('修改成功');
@@ -395,7 +395,7 @@ export default {
           if (data?.result) {
             this.deleteColumn = false;
             this.$Message.success('删除成功');
-            WriteCenterApi.getColumnList(this).then(data => {
+            WriteCenterApi.getColumnList().then(data => {
               if (data?.result) {
                 this.seriesColumnList = data.data;
               }
@@ -450,7 +450,7 @@ export default {
     }
   },
   created() {
-    WriteCenterApi.getColumnList(this).then(data => {
+    WriteCenterApi.getColumnList().then(data => {
       if (data?.result) {
         this.seriesColumnList = data.data;
       }

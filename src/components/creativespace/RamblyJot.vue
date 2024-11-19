@@ -296,7 +296,7 @@ export default {
         previewContent,
         previewImg
       }
-      RamblyJotApi.saveRamblyJot(this, ramblyInfo).then(data => {
+      RamblyJotApi.saveRamblyJot(ramblyInfo).then(data => {
         if (data?.result) {
           this.$Message.success("发表成功")
           this.editorValueIsEmpty = true;
@@ -311,7 +311,7 @@ export default {
       return this.fileService + path;
     },
     deleteRamblyJot(essayId) {
-      RamblyJotApi.deleteRamblyJot(this, essayId).then(data => {
+      RamblyJotApi.deleteRamblyJot(essayId).then(data => {
         if (data?.result) {
           this.ramblyList = this.ramblyList.filter(ramblyJot => ramblyJot.uid !== essayId);
           this.$Message.success('删除成功')
@@ -323,7 +323,7 @@ export default {
         uid: ramblyJot.uid,
         isPublic: status
       }
-      RamblyJotApi.updateRamblyJot(this, ramblyJotInfo).then(data => {
+      RamblyJotApi.updateRamblyJot(ramblyJotInfo).then(data => {
         if (data?.result) {
           this.$Message.success("修改成功");
           ramblyJot.isPublic = status;
@@ -359,7 +359,7 @@ export default {
     this.initEngine()
   },
   created() {
-    RamblyJotApi.getMyRamblyJotList(this).then(data => {
+    RamblyJotApi.getMyRamblyJotList().then(data => {
       if (data?.result) {
         this.ramblyList = data.data
       }

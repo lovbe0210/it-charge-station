@@ -185,7 +185,7 @@ export default {
         title: this.article.title,
         uid: this.articleInfo.uid
       }
-      WriteCenterApi.updateArticleInfo(this, articleInfo).then((data) => {
+      WriteCenterApi.updateArticleInfo(articleInfo).then((data) => {
         if (data?.result) {
           this.$emit('updateArticle', this.article)
         }
@@ -203,12 +203,7 @@ export default {
       if ((event.ctrlKey || event.metaKey) && event.key === 's') {
         // 阻止默认事件
         event.preventDefault()
-        // 执行save方法
-        // TODO 传递到服务器的值需要使用json
-        // let editorValue = this.engine.getJsonValue();
-        let editorValue = this.engine.model.toValue();
-        console.log(editorValue)
-        this.article.content = editorValue;
+        this.renderEditorData();
       }
     },
     /**
@@ -255,7 +250,7 @@ export default {
         this.article.content = null;
       } else {
         this.article.content = this.engine.getJsonValue();
-        let text = this.engine?.model?.toText();
+        let text = this.engine.model.toText();
         if (text) {
           text = text.replace(/\r\n/g, "");
           text = text.replace(/\n/g, "");
@@ -310,8 +305,7 @@ export default {
       }
       this.article.status = 1;
       this.$emit('updateArticle', this.article);
-      WriteCenterApi.updateArticleContent(this, contentDto).then(data => {
-        console.log("---------------编辑器更新文档内容----------------");
+      WriteCenterApi.updateArticleContent(contentDto).then(data => {
         if (data?.result) {
           this.article.contentId = data.data.contentId;
           this.article.updateTime = data.data.updateTime;
@@ -416,7 +410,7 @@ export default {
       });
 
       // 获取内容
-      WriteCenterApi.getArticleContent(this, this.articleInfo.uid).then(data => {
+      WriteCenterApi.getArticleContent(this.articleInfo.uid).then(data => {
         if (data?.result) {
           let _data = data.data;
           if (_data != null) {

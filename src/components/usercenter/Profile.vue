@@ -263,7 +263,7 @@
         if (this.userInfo.industry) {
           userInfo.append('industry', this.userInfo.industry);
         }
-        userApi.updateUserInfo(this, userInfo).then((data) => {
+        userApi.updateUserInfo(userInfo).then((data) => {
           if (data?.result) {
             this.$Message.success("更新成功");
             this.echoUpdateInfo();
@@ -272,7 +272,7 @@
       },
       echoUpdateInfo() {
         let tmp = this.$store.state.userInfo;
-        userApi.getUserInfo(this, tmp.uid).then(data => {
+        userApi.getUserInfo(tmp.uid).then(data => {
           if (data?.result) {
             this.userInfo = data.data;
             let newUserInfo = {...tmp, ...data.data};
