@@ -137,10 +137,9 @@ export const pluginConfig = {
     file: {
       action: `${DOMAIN}/upload`, //图片上传
       data: {pathPrefix: "article"}
-      // headers: {Authorization: 213434}
     },
     remote: {
-      action: `${DOMAIN}/common/upload/url` //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
+      action: `${DOMAIN}/upload/url` //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
     },
     isRemote: src => src.indexOf(DOMAIN) < 0,
     parse: response => {
