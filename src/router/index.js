@@ -357,12 +357,12 @@ router.beforeEach((to, from, next) => {
 
   Vue.prototype.$request(
     {
-      url: "/cpt/router/" + params?.articleId,
+      url: "/cps/router/" + params?.articleId,
       method: 'GET'
     }
   ).then(data => {
     if (data?.result) {
-      if (data.data === 2) {
+      if (data.data?.type === 2) {
         // 专栏
         let newParam = {
           domain: params?.domain,
@@ -372,11 +372,12 @@ router.beforeEach((to, from, next) => {
           name: "SColumnReadHome",
           params: newParam
         });
+      } else {
+        // 继续走普通文章阅读页面
+        next();
       }
-      // 继续走普通文章阅读页面
     }
-  })
-  next();
+  });
 })
 
 export default router

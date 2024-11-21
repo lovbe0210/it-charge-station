@@ -12,9 +12,13 @@
                   <span class="iconfont logo"></span>
                 </a>
                 <span class="iconfont to-right"></span>
-                <div class="action">
-                  <a href="/lovbe0210" class="crumb-text">布衣草人</a>
-                </div>
+                <user-card :userInfo="authorInfo" :popoverContainer="this.$refs.tooltipContainer" class="user-info-card-box">
+                  <slot>
+                    <div class="action">
+                      <a :href="'/' + domain" class="crumb-text">{{ authorInfo.username }}</a>
+                    </div>
+                  </slot>
+                </user-card>
               </div>
             </div>
           </div>
@@ -200,18 +204,13 @@
 
 <script>
   import {formatDate} from "@/utils/utils.js"
+  import ContentPicksApi from "@/api/ContentPicksApi";
+  import UserApi from "../api/UserApi";
+  import UserCard from "@/components/common/UserCard.vue";
 
   export default {
     name: 'ReadCenter',
-    /*  beforeRouteEnter(to, from, next) {
-        next(vc => {
-          // 通过 `vc` 访问组件实例
-          if (vc.$route.params.index) {
-            vc.$store.commit('changeActiveRoute', 'recommend')
-          }
-          next();
-        })
-      },*/
+    components: { UserCard },
     data() {
       return {
         // 搜索框显示
@@ -434,7 +433,7 @@
         ]
       }
     },
-    props: ['columnId', 'articleId'],
+    props: ['domain', 'columnId', 'articleId'],
     computed: {
       // 自适应内容界面的宽度
       adaptiveContentWidth() {
@@ -620,11 +619,29 @@
       }
     },
     mounted() {
+      // 获取个人信息
+      UserApi.getUserInfoByDomain(this.domain).then(data => {
+        if (data?.result) {
+          this.authorInfo = data.data;
+        }
+      })
       this.navShowType = this.isColumnView ? 'tree' : 'list';
       window.addEventListener('keydown', this.handleKeydown);
       if (this.isColumnView) {
         this.searchScope = 2;
       }
+      // 判断获取文章列表还是专栏目录
+      if (this.isColumnView) {
+
+        return;
+      }
+
+      ContentPicksApi.getArticleList(this.domain).then(data => {
+        if (data?.result) {
+
+        }
+      })
+
     },
     beforeDestroy() {
       window.removeEventListener('keydown', this.handleKeydown);

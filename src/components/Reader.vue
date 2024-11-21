@@ -6,7 +6,7 @@
           <span class="header_title" title="Seata—分布式事务解决方案">{{ articleInfo.title }}</span>
           <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
             <template slot="title">
-              {{ articleInfo.isPublic ? '互联网所有人可以访问' : '仅关注可见' }}
+              {{ articleInfo.isPublic ? '互联网所有人可以访问' : '仅作者可见' }}
             </template>
             <div class="header-status-icon">
               <span :class="['iconfont', articleInfo.isPublic ? 'public' : 'lock']"/>
@@ -212,7 +212,7 @@
         engine: null
       }
     },
-    props: ['sidebarWidth', 'articleId', 'columnId'],
+    props: ['sidebarWidth', 'columnId', 'articleId'],
     computed: {
       headerWidth() {
         return 'calc(100vw - ' + ((this.fullScreen ? 0 : this.sidebarWidth) + 'px');

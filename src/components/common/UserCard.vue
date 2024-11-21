@@ -7,11 +7,11 @@
       <template slot="content">
         <div class="user-card-body un-select">
           <div class="user-card-avatar">
-            <b-avatar :src="userInfo.avatar"
+            <b-avatar :src="fileUrl(userInfo.avatarUrl)"
                       variant="light"
                       :to="'/' + userInfo.domain"
                       size="2.8rem">
-              <span v-if="!userInfo.avatar">{{ userInfo.username }}</span>
+              <span v-if="!userInfo.avatarUrl">{{ userInfo.username }}</span>
             </b-avatar>
           </div>
           <div class="user-card-userInfos">
@@ -66,6 +66,11 @@ export default {
   props: ['popoverContainer', 'userInfo'],
   mounted() {
     // this.cardContainer = this.$refs.cardContainer;
+  },
+  methods: {
+    fileUrl(path) {
+      return this.fileService + path;
+    }
   }
 }
 </script>

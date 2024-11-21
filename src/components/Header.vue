@@ -303,13 +303,13 @@ export default {
         AuthApi.logout(this).then(() => {
           this.$store.commit('clearUserInfo')
           this.$Message.success('已成功退出当前用户，记得回来看看哦');
-          this.$router.replace("/")
+          // this.$router.replace("/")
         })
       } else {
         setTimeout(() => {
           this.$store.commit('clearUserInfo')
           this.$Message.success('已成功退出当前用户，记得回来看看哦');
-          this.$router.replace("/")
+          // this.$router.replace("/")
         }, 500)
       }
     },

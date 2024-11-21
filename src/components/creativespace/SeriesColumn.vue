@@ -53,7 +53,7 @@
           <div class="column-meta">
             <div class="card-meta-title">
               <span class="book-name" v-show="currentColumn.uid !== columnItem.uid">
-                <a :href="'/column/' + columnItem.uid" class="book-link" target="_blank">
+                <a :href="'/' + userInfo.domain + '/' + columnItem.uri" class="book-link" target="_blank">
                   <span class="book-name-text" :title="columnItem.title">{{ columnItem.title }}</span>
                 </a>
                 <span class="book-name-scope">
@@ -460,5 +460,5 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import '../css/creativespace/seriesColumn.less';
+  @import '../css/creativespace/seriesColumn.less';
 </style>

@@ -12,6 +12,18 @@ export default {
       url: "/cps/article/" + articleUri,
       method: 'GET'
     });
+  },
+
+  /**
+   * 获取所有公开文章信息（如果是作者获取所有状态，包括未发布的）
+   * @param userId
+   * @returns {Promise<void>}
+   */
+  async getArticleList(domain) {
+    return await Vue.prototype.$request({
+      url: "/cps/article/list/" + domain,
+      method: 'GET'
+    });
   }
 }
 

@@ -288,11 +288,11 @@ export default {
       })
 
       // 获取正文对象
-      let htmlValue = this.engine.model?.toValue();
+      let jsonValue = this.engine.getJsonValue();
 
       // 发送请求
       let ramblyInfo = {
-        content: htmlValue,
+        content: jsonValue,
         previewContent,
         previewImg
       }

@@ -50,7 +50,7 @@
         </div>
       </a-tooltip>
     </div>
-    <div ref="view" class="rambly-content">
+    <div ref="reader" class="rambly-content">
     </div>
     <!-- 点赞信息 -->
     <div class="reward-module_like un-select">
@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import {View} from '@aomao/engine'
+import Engine from '@aomao/engine'
 import {ramblyPlugins, ramblyCards, pluginConfig} from "@/components/common/editor/config"
 import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
 import UserCard from "@/components/common/UserCard.vue";
@@ -119,7 +119,7 @@ export default {
   name: 'RamblyJotContent',
   data() {
     return {
-      view: null,
+      engine: null,
       ramblyJot: {},
       likeUserList: [
         {
@@ -230,16 +230,17 @@ export default {
   },
   mounted() {
     this.tooltipContainer = this.$refs.tooltipContainer;
-    const container = this.$refs.view;
+    const container = this.$refs.reader;
     if (container) {
       //实例化引擎
-      const view = new View(container, {
+      const engine = new Engine(container, {
         // 启用插件 TODO 注意插件的key必须是 plugins
         plugins: ramblyPlugins,
         // 启用卡片
         cards: ramblyCards,
         // 所有的插件配置
         config: pluginConfig,
+        // 阅读模式
         readonly: true
       });
       // 获取内容
@@ -247,11 +248,11 @@ export default {
         if (data?.result) {
           this.ramblyJot = data.data;
           if (this.ramblyJot != null && this.ramblyJot.content?.length !== 0) {
-            view.render(this.ramblyJot.content, true)
+            engine.setJsonValue(JSON.parse(this.ramblyJot.content));
           }
         }
       })
-      this.view = view;
+      this.engine = engine;
     }
   }
 }

@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@aomao/engine": "^2.10.0",
+    "@aomao/engine": "^2.10.26",
     "@aomao/plugin-alignment": "^2.10.0",
     "@aomao/plugin-backcolor": "^2.10.0",
     "@aomao/plugin-bold": "^2.10.0",

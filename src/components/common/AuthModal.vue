@@ -391,9 +391,9 @@ export default {
         userInfo = {...userInfo, ...loginUser};
         // 保存userInfo到store中
         this.$store.commit('login', userInfo)
-        setTimeout(() => {
-          this.$router.go(0);
-        }, 500)
+        // setTimeout(() => {
+        //   this.$router.go(0);
+        // }, 500)
       })
     }
   },

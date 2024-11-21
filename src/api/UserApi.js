@@ -6,14 +6,21 @@ export default {
    * @param userId
    * @returns {Promise<void>}
    */
+  /**
+   * 获取用户信息
+   * @param userId
+   * @returns {Promise<void>}
+   */
   async getUserInfo(userId) {
-    let jsonData = {
-      userId: userId
-    }
     return await Vue.prototype.$request({
-      url: "/user/userInfo",
-      method: 'POST',
-      data: jsonData
+      url: "/user/id/" + userId,
+      method: 'GET'
+    });
+  },
+  async getUserInfoByDomain(domain) {
+    return await Vue.prototype.$request({
+      url: "/user/domain/" + domain,
+      method: 'GET'
     });
   },
 
@@ -23,7 +30,7 @@ export default {
    * @returns {Promise<void>}
    */
   async updateUserInfo(formData) {
-    return await Vue.prototype.$request.put("/user/userInfo/update", formData);
+    return await Vue.prototype.$request.put("/user/update", formData);
   }
 }
 

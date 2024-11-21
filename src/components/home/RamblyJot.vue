@@ -20,7 +20,7 @@
       <div class="rambly-module_action">
         <div class="toolbar-ui">
           <div class="toolbar-wrap">
-            <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :mounted="toolbarUI()"/>
+            <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar"/>
           </div>
 
           <div class="rambly-module_button">
@@ -289,8 +289,6 @@
       }
     },
     methods: {
-      toolbarUI() {
-      },
       submitRambly() {
         let htmlValue = this.engine.model?.toValue();
         let title;
