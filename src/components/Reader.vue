@@ -1,184 +1,187 @@
 <template>
   <div class="reader-route-view" ref="tooltipContainer">
-    <div :class="['layout-module_contentWrapper', fullScreen ? 'full-screen' : '']" id="contentWrapper">
-      <div id="header" class="layout-module_headerWrapper" :style="{ width: headerWidth}">
-        <div class="header-crumb">
-          <span class="header_title" title="Seata—分布式事务解决方案">{{ articleInfo.title }}</span>
-          <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
-            <template slot="title">
-              {{ articleInfo.isPublic ? '互联网所有人可以访问' : '仅作者可见' }}
-            </template>
-            <div class="header-status-icon">
-              <span :class="['iconfont', articleInfo.isPublic ? 'public' : 'lock']"/>
+    <div v-show="!spinShow">
+      <div :class="['layout-module_contentWrapper', fullScreen ? 'full-screen' : '']" id="contentWrapper">
+        <div id="header" class="layout-module_headerWrapper" :style="{ width: headerWidth}">
+          <div class="header-crumb">
+            <span class="header_title" title="Seata—分布式事务解决方案">{{ articleInfo.title }}</span>
+            <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+              <template slot="title">
+                {{ articleInfo.isPublic ? '互联网所有人可以访问' : '仅作者可见' }}
+              </template>
+              <div class="header-status-icon">
+                <span :class="['iconfont', articleInfo.isPublic ? 'public' : 'lock']"/>
+              </div>
+            </a-tooltip>
+          </div>
+          <div class="header-action">
+            <Button type="success" @click="routeNavigate(docInfo)">编辑</Button>
+            <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+              <template slot="title">
+                {{ ifLike ? '取消收藏' : '收藏' }}
+              </template>
+              <div class="action-icon" @click="ifLike = !ifLike">
+                <span :class="['iconfont', ifLike ? 'collected' : 'collect']"></span>
+              </div>
+            </a-tooltip>
+            <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+              <template slot="title">
+                演示模式
+              </template>
+              <div class="action-icon" @click="presentShow()">
+                <span class="iconfont lecture"></span>
+              </div>
+            </a-tooltip>
+            <div class="setting-icon action-icon" @click="showDocSetting = true">
+              <span class="iconfont layout"/>
             </div>
-          </a-tooltip>
+          </div>
         </div>
-        <div class="header-action">
-          <Button type="success" @click="routeNavigate(docInfo)">编辑</Button>
-          <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
-            <template slot="title">
-              {{ ifLike ? '取消收藏' : '收藏' }}
-            </template>
-            <div class="action-icon" @click="ifLike = !ifLike">
-              <span :class="['iconfont', ifLike ? 'collected' : 'collect']"></span>
+        <div class="layout-module_bookContentWrapper beauty-scroll" ref="scrollbarContext" @wheel="handleScrollForToc">
+          <div class="bookReader-module_docContainer">
+            <div :class="['doc_header', docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
+              <div class="doc_header_wrapper">
+                <h1 id="article-title" class="doc-article-title">
+                  {{ articleInfo.title }}
+                </h1>
+              </div>
             </div>
-          </a-tooltip>
-          <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
-            <template slot="title">
-              演示模式
-            </template>
-            <div class="action-icon" @click="presentShow()">
-              <span class="iconfont lecture"></span>
+            <!-- 内容显示部分 -->
+            <div ref="container"
+                 :class="['doc-reader','am-engine', docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
             </div>
-          </a-tooltip>
-          <div class="setting-icon action-icon" @click="showDocSetting = true">
-            <span class="iconfont layout"/>
+            <!-- 文章页脚 -->
+            <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'">
+              <article-footer :ifLike="ifLike" @like="ifLike = !ifLike"/>
+            </div>
+            <!-- 评论 -->
+            <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'">
+              <reply-comment/>
+            </div>
           </div>
         </div>
       </div>
-      <div class="layout-module_bookContentWrapper beauty-scroll" ref="scrollbarContext" @wheel="handleScrollForToc">
-        <div class="bookReader-module_docContainer">
-          <div :class="['doc_header', docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
-            <div class="doc_header_wrapper">
-              <h1 id="article-title" class="doc-article-title">
-                {{ articleInfo.title }}
-              </h1>
-            </div>
-          </div>
-          <!-- 内容显示部分 -->
-          <div ref="container"
-               :class="['doc-reader','am-engine', docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
-          </div>
-          <!-- 文章页脚 -->
-          <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'">
-            <article-footer :ifLike="ifLike" @like="ifLike = !ifLike"/>
-          </div>
-          <!-- 评论 -->
-          <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'">
-            <reply-comment/>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="layout-module_asideWrapper">
-      <!-- 右侧大纲展示 -->
-      <div class="reader-view">
-        <div class="reader-toc-pin">
+      <div class="layout-module_asideWrapper">
+        <!-- 右侧大纲展示 -->
+        <div class="reader-view">
+          <div class="reader-toc-pin">
           <span class="reader-toc-pin-text">
             <span class="iconfont main-point"></span>
             <span>大纲</span>
           </span>
-        </div>
-        <div class="reader-toc-inner beauty-scroll">
-          <div class="toc-content">
-            <div class="toc-item" v-for="item in tocData"
-                 :class="['toc-depth-'+ item.depth, item.id === currentTocId ? 'toc-selected' : '']"
-                 :key="item.id"
-                 @click="jump(item.id)">
-              <div class="toc-item-inner">
-                <div class="toc-item-text" :title="item.text">
-                  <span>{{ item.text }}</span>
+          </div>
+          <div class="reader-toc-inner beauty-scroll">
+            <div class="toc-content">
+              <div class="toc-item" v-for="item in tocData"
+                   :class="['toc-depth-'+ item.depth, item.id === currentTocId ? 'toc-selected' : '']"
+                   :key="item.id"
+                   @click="jump(item.id)">
+                <div class="toc-item-inner">
+                  <div class="toc-item-text" :title="item.text">
+                    <span>{{ item.text }}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <Drawer :closable="false"
-            :mask-closable="drawerType === 0"
-            :transfer="false"
-            :width="17"
-            class="un-select article-drawer"
-            v-model="showDocSetting">
-      <div slot="header" @click="returnDocSetting">
-        <span class="iconfont return"/>
-        <span>{{ drawerType === 1 ? '文档设置' : drawerType === 2 ? '历史版本' : '返回' }}</span>
-      </div>
-      <div class="operate-and-info" v-show="drawerType === 0">
-        <div class="drawer-setting-item page-size">
-          <div class="label-wrapper">
-            <div class="icon-wrapper">
-              <svg width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"
-                   class="larkui-icon Select-module_iconSvg"
-                   data-name="DocAdapt" style="width: 28px; min-width: 28px; height: 28px;">
-                <g fill="#00B96B" fill-rule="evenodd">
-                  <rect width="25" height="28" rx="3" opacity="0.3"></rect>
-                  <rect x="4" y="5" width="18" height="3" rx="1.5"></rect>
-                  <rect x="4" y="10" width="18" height="3" rx="1.5"></rect>
-                  <rect x="4" y="15" width="16" height="3" rx="1.5"></rect>
-                  <rect x="4" y="20" width="14" height="3" rx="1.5" opacity="0.3"></rect>
-                  <rect x="4" y="20" width="6" height="3" rx="1.5"></rect>
-                </g>
-              </svg>
-            </div>
-            <div>
-              <div class="label">超宽模式</div>
-              <div class="label_desc">文档宽度适应屏幕大小</div>
-            </div>
-          </div>
-          <i-switch v-model="docStyle.pageSize"
-                    :true-value="1"
-                    class="switch-btn"
-                    size="small">
-            <span slot="1"/>
-            <span slot="0"/>
-          </i-switch>
+      <Drawer :closable="false"
+              :mask-closable="drawerType === 0"
+              :transfer="false"
+              :width="17"
+              class="un-select article-drawer"
+              v-model="showDocSetting">
+        <div slot="header" @click="returnDocSetting">
+          <span class="iconfont return"/>
+          <span>{{ drawerType === 1 ? '文档设置' : drawerType === 2 ? '历史版本' : '返回' }}</span>
         </div>
-        <div class="drawer-setting-item theme-sync">
-          <div class="label-wrapper">
-            <div class="icon-wrapper">
-              <span class="iconfont custome-theme"></span>
+        <div class="operate-and-info" v-show="drawerType === 0">
+          <div class="drawer-setting-item page-size">
+            <div class="label-wrapper">
+              <div class="icon-wrapper">
+                <svg width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"
+                     class="larkui-icon Select-module_iconSvg"
+                     data-name="DocAdapt" style="width: 28px; min-width: 28px; height: 28px;">
+                  <g fill="#00B96B" fill-rule="evenodd">
+                    <rect width="25" height="28" rx="3" opacity="0.3"></rect>
+                    <rect x="4" y="5" width="18" height="3" rx="1.5"></rect>
+                    <rect x="4" y="10" width="18" height="3" rx="1.5"></rect>
+                    <rect x="4" y="15" width="16" height="3" rx="1.5"></rect>
+                    <rect x="4" y="20" width="14" height="3" rx="1.5" opacity="0.3"></rect>
+                    <rect x="4" y="20" width="6" height="3" rx="1.5"></rect>
+                  </g>
+                </svg>
+              </div>
+              <div>
+                <div class="label">超宽模式</div>
+                <div class="label_desc">文档宽度适应屏幕大小</div>
+              </div>
             </div>
-            <div>
-              <div class="label">主题同步</div>
-              <div class="label_desc">阅读页面同步显示自定义主题</div>
+            <i-switch v-model="docStyle.pageSize"
+                      :true-value="1"
+                      class="switch-btn"
+                      size="small">
+              <span slot="1"/>
+              <span slot="0"/>
+            </i-switch>
+          </div>
+          <div class="drawer-setting-item theme-sync">
+            <div class="label-wrapper">
+              <div class="icon-wrapper">
+                <span class="iconfont custome-theme"></span>
+              </div>
+              <div>
+                <div class="label">主题同步</div>
+                <div class="label_desc">阅读页面同步显示自定义主题</div>
+              </div>
             </div>
+            <i-switch v-model="docStyle.asyncTheme"
+                      :true-value="1"
+                      class="switch-btn"
+                      size="small">
+              <span slot="1"/>
+              <span slot="0"/>
+            </i-switch>
           </div>
-          <i-switch v-model="docStyle.asyncTheme"
-                    :true-value="1"
-                    class="switch-btn"
-                    size="small">
-            <span slot="1"/>
-            <span slot="0"/>
-          </i-switch>
-        </div>
-        <div class="drawer-setting-item more-setting">
-          <div class="doc-setting-btn" @click="drawerType = 1">
-            <span class="iconfont setting"></span>
-            <div class="tab-content-text">文档设置</div>
-          </div>
-          <Divider/>
-          <div class="doc-setting-btn" @click="drawerType = 2">
-            <span class="iconfont history"></span>
-            <div class="tab-content-text">查看历史版本</div>
-          </div>
-          <div class="doc-setting-btn save-version" @click="addNewVersion">
-            <div class="tab-content-text">保存为版本</div>
-          </div>
-          <Divider/>
-          <div class="doc-setting-btn delete-btn">
-            <span class="iconfont delete"></span>
-            <div class="tab-content-text">删除</div>
-          </div>
+          <div class="drawer-setting-item more-setting">
+            <div class="doc-setting-btn" @click="drawerType = 1">
+              <span class="iconfont setting"></span>
+              <div class="tab-content-text">文档设置</div>
+            </div>
+            <Divider/>
+            <div class="doc-setting-btn" @click="drawerType = 2">
+              <span class="iconfont history"></span>
+              <div class="tab-content-text">查看历史版本</div>
+            </div>
+            <div class="doc-setting-btn save-version" @click="addNewVersion">
+              <div class="tab-content-text">保存为版本</div>
+            </div>
+            <Divider/>
+            <div class="doc-setting-btn delete-btn">
+              <span class="iconfont delete"></span>
+              <div class="tab-content-text">删除</div>
+            </div>
 
-        </div>
-        <div class="drawer-setting-item time-info">
-          <div class="label">文档信息</div>
-          <div class="article-time">
-            <span>字数统计：0</span>
-            <span>创建于：2023-08-08 14:09</span>
-            <span>更新于：2023-08-08 14:09</span>
+          </div>
+          <div class="drawer-setting-item time-info">
+            <div class="label">文档信息</div>
+            <div class="article-time">
+              <span>字数统计：0</span>
+              <span>创建于：2023-08-08 14:09</span>
+              <span>更新于：2023-08-08 14:09</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div v-if="drawerType === 1">
-        <article-setting :articleId="docInfo.uid" :changePermission="true"/>
-      </div>
-      <div class="article-version" v-if="drawerType === 2">
-        <article-version :articleId="docInfo.uid" :addNewVersion="newVersion"/>
-      </div>
-    </Drawer>
+        <div v-if="drawerType === 1">
+          <article-setting :articleId="docInfo.uid" :changePermission="true"/>
+        </div>
+        <div class="article-version" v-if="drawerType === 2">
+          <article-version :articleId="docInfo.uid" :addNewVersion="newVersion"/>
+        </div>
+      </Drawer>
+    </div>
+    <Spin size="large" fix="fix" v-if="spinShow"></Spin>
   </div>
 </template>
 
@@ -199,6 +202,8 @@
     data() {
       return {
         fullScreen: false, // 全屏演示模式
+        // 展示等待页面
+        spinShow: false,
         tocData: [],
         currentTocId: '',
         // 更多设置内容 1文档设置，2历史版本
@@ -212,7 +217,7 @@
         engine: null
       }
     },
-    props: ['sidebarWidth', 'columnId', 'articleId'],
+    props: ['sidebarWidth', 'columnUri', 'articleUri'],
     computed: {
       headerWidth() {
         return 'calc(100vw - ' + ((this.fullScreen ? 0 : this.sidebarWidth) + 'px');
@@ -319,8 +324,33 @@
         this.newVersion = true;
         this.drawerType = 2;
       },
-      routeNavigate(articleItem) {
-        this.$router.push({path: '/editor/' + articleItem.uid})
+      routeNavigate() {
+        this.$router.push({path: '/editor/' + this.articleInfo.uri})
+      },
+      initReaderContent() {
+        this.spinShow = true;
+        ContentPicksApi.getArticleInfo(this.articleUri).then(data => {
+          if (!data?.result) {
+            this.spinShow = false;
+            return;
+          }
+          this.articleInfo = data.data;
+          let content = data.data.content;
+          if (content?.length > 0) {
+            this.engine.setJsonValue(JSON.parse(content));
+            const pattern = /h[1-6]/;
+            let match = content.match(pattern);
+            if (match) {
+              this.renderTocData(this.engine);
+            }
+          }
+          this.spinShow = false;
+        })
+      }
+    },
+    watch: {
+      articleUri() {
+        this.initReaderContent();
       }
     },
     mounted() {
@@ -339,23 +369,8 @@
           // 阅读模式
           readonly: true
         });
-
-        ContentPicksApi.getArticleInfo(this.articleId).then(data => {
-          if (!data?.result) {
-            return;
-          }
-          this.articleInfo = data.data;
-          let content = data.data.content;
-          if (content?.length !== 0) {
-            engine.setJsonValue(JSON.parse(content));
-            const pattern = /h[1-6]/;
-            let match = content.match(pattern);
-            if (match) {
-              this.renderTocData(engine);
-            }
-          }
-        })
         this.engine = engine;
+        this.initReaderContent();
       }
       window.addEventListener('resize', this.checkFullscreen);
       // const scrollContainer = this.$refs.scrollbarContext;

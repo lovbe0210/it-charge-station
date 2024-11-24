@@ -247,7 +247,7 @@ export default {
       RamblyJotApi.getRamblyJotInfo(this.rjId).then(data => {
         if (data?.result) {
           this.ramblyJot = data.data;
-          if (this.ramblyJot != null && this.ramblyJot.content?.length !== 0) {
+          if (this.ramblyJot != null && this.ramblyJot.content?.length > 0) {
             engine.setJsonValue(JSON.parse(this.ramblyJot.content));
           }
         }

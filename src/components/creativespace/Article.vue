@@ -293,7 +293,7 @@
         switch (routePath) {
           case 'edit':
             let editUrl = this.$router.resolve({
-              path: '/editor/' + articleItem.uid
+              path: '/editor/' + articleItem.uri
             })
             window.open(editUrl.href, '_blank')
             break;

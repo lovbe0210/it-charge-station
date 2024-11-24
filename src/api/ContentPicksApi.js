@@ -7,9 +7,9 @@ export default {
    * @param userId
    * @returns {Promise<void>}
    */
-  async getArticleInfo(articleUri) {
+  async getArticleInfo(uri) {
     return await Vue.prototype.$request({
-      url: "/cps/article/" + articleUri,
+      url: "/cps/article/" + uri,
       method: 'GET'
     });
   },
@@ -19,9 +19,21 @@ export default {
    * @param userId
    * @returns {Promise<void>}
    */
-  async getArticleList(domain) {
+  async getArticleList(authorId) {
     return await Vue.prototype.$request({
-      url: "/cps/article/list/" + domain,
+      url: "/cps/article/list/" + authorId,
+      method: 'GET'
+    });
+  },
+
+  /**
+   * 获取专栏下所有公开文章信息（如果是作者获取所有状态，包括未发布的）
+   * @param userId
+   * @returns {Promise<void>}
+   */
+  async getColumnDir(uri) {
+    return await Vue.prototype.$request({
+      url: "/cps/column/dir/" + uri,
       method: 'GET'
     });
   }

@@ -32,7 +32,7 @@
                 <span>搜索</span>
               </div>
             </div>
-            <div class="home-nav" v-if="columnId !== undefined"
+            <div class="home-nav" v-if="columnUri !== undefined"
                  @click="routeNavigate('columnIndex')">
               <span class="iconfont home"></span>
               <span>专栏首页</span>
@@ -40,7 +40,7 @@
             <div class="nav-tabs">
               <div class="tabs-bar">
                 <span class="tab-title popover-trigger"
-                      v-if="columnId !== undefined"
+                      v-if="columnUri !== undefined"
                       @click="navShowType = isColumnView ? (navShowType === 'tree' ? 'list' : 'tree') : navShowType">
                   <span :class="['iconfont', navShowType === 'tree' ? 'nav-tree' : 'list']"></span>
                   <span>目录</span>
@@ -65,11 +65,16 @@
                   <div class="tabs-tabpane" v-if="navShowType === 'list'">
                     <div class="tabpane-list" :style="{ width: sidebarWidth + 'px' }">
                       <List>
-                        <ListItem v-for="item in getListDirData()" :key="item.id">
-                          <ListItemMeta description="hahsd沙拉领导啦啦啦速度快垃圾啊猎杀对决垃圾离开见识到了吉拉到家了案件受得了爱讲道理就asdads asd asd按">
-                            <template slot="title">
-                              <div class="title-content" @click="routeNavigate(item.id)">
-                                {{item.title}}
+                        <ListItem v-for="item in getListDirData" :key="item.uid" :class="item.uri === articleUri ? 'current-article' : ''">
+                          <ListItemMeta>
+                            <template slot="description">
+                              <div class="article-item" @click="routeNavigate(item.uri)">
+                                <div class="title">
+                                  {{item.title}}
+                                </div>
+                                <div class="description">
+                                  {{item.summary}}
+                                </div>
                               </div>
                             </template>
                           </ListItemMeta>
@@ -78,17 +83,20 @@
                     </div>
                   </div>
                   <div class="tabs-tabpane tree" v-show="isColumnView && navShowType === 'tree'">
-                    <div class="tabpane-tree">
-                      <div v-for="item in dirData" :key="item.id"
+                      <Tree :data="dirData" @on-select-change="selectTreeNode" class="tabpane-tree">
+                      </Tree>
+<!--                      <div v-for="item in dirData" :key="item.uid"
                            :class="['tree-content',item.type===1?'single-node-tree':item.type===2?'composite-nodes-tree':'']">
-                        <div v-if="item.type === 1" class="single-tree-node" @click="routeNavigate(item.id)">
+                        <div v-if="item.type === 1" class="single-tree-node" @click="routeNavigate(item.uri)">
                           {{item.title}}
                         </div>
                         <div v-if="item.type === 2" class="composite-tree-node">
-                          <Tree :data="new Array(item)" @on-select-change="selectTreeNode"></Tree>
+                          <Tree :data="new Array(item)"
+                                :children-key="item.uid + ''"
+                                @on-select-change="selectTreeNode">
+                          </Tree>
                         </div>
-                      </div>
-                    </div>
+                      </div>-->
                   </div>
                 </div>
               </div>
@@ -98,9 +106,10 @@
       </div>
       <div :style="{ width: adaptiveContentWidth}">
         <router-view :sidebarWidth="sidebarWidth"
-                     :articleId="articleId"
-                     :columnId="columnId"
-                     :docStyle="docStyle"></router-view>
+                     :articleUri="articleUri"
+                     :columnUri="columnUri"
+                     :docStyle="docStyle">
+        </router-view>
       </div>
       <Modal v-model="modalSearch"
              width="750"
@@ -112,7 +121,7 @@
               <span class="iconfont i-search"/>
               <span class="search-scope">
                 <span v-show="searchScope > 0">
-                  Ep流苏
+                  {{ authorInfo.username }}
                   <em>/</em>
                 </span>
                 <span v-show="searchScope > 1">
@@ -152,10 +161,10 @@
               </li>
               <li :class="['search-scope-item', searchScope === 1 ? 'selected' : '']">
                 <span class="scope-content" @click="searchScope = 1">
-                  <b-avatar :src="authorInfo.avatar" size="18px">
-                    <span v-if="!authorInfo.avatar">{{authorInfo.username}}</span>
+                  <b-avatar :src="fileUrl(authorInfo.avatarUrl)" size="18px">
+                    <span v-if="!authorInfo.avatarUrl">{{authorInfo.username}}</span>
                   </b-avatar>
-                  <span class="scope-text">十个雨点</span>
+                  <span class="scope-text">{{ authorInfo.username }}</span>
                 </span>
                 <span class="select-scope" @click="executeSearch(1)">
                   <span class="iconfont enter"/>&nbsp;公开内容搜索
@@ -164,7 +173,7 @@
               <li :class="['search-scope-item', searchScope === 0 ? 'selected' : '']">
                 <span class="scope-content" @click="searchScope = 0">
                   <span class="iconfont logo"/>
-                  <span class="scope-text">it充电站</span>
+                  <span class="scope-text">IT充电站</span>
                 </span>
                 <span class="select-scope" @click="executeSearch(0)">
                   <span class="iconfont enter"/>&nbsp;全站搜索
@@ -181,8 +190,8 @@
                 <span class="iconfont series-column" v-if="item.type === 1"/>
               </div>
               <b-link class="item-desc"
-                      :to="item.type === 1 ? ('/column/' + item.columnId)
-                          : (item.columnId ? ('/column/' + item.columnId + '/' + item.id) : '/article/' + item.id)">
+                      :to="item.type === 1 ? ('/column/' + item.uri)
+                          : (item.uri ? ('/column/' + item.uri + '/' + item.id) : '/article/' + item.id)">
                 <span class="title-label" v-html="item.title"></span>
                 <span class="content-label" v-html="item.content"></span>
               </b-link>
@@ -191,7 +200,7 @@
                   {{ formatDate(new Date(item.updateTime), 'yyyy-MM-dd HH:mm:ss') }}
                 </span>
                 <span class="provenance-label un-select" :title="item.type === 1 ? '' : item.columnName">
-                  {{item.columnId && item.type === 2 ? authorInfo.username + ' / ' + item.columnName : authorInfo.username}}
+                  {{item.uri && item.type === 2 ? authorInfo.username + ' / ' + item.columnName : authorInfo.username}}
                 </span>
               </div>
             </li>
@@ -226,181 +235,14 @@
         startWidth: 0,
         sidebarWidth: 350, // 初始宽度
         fullScreen: false, // 全屏演示模式
-        dirData: [
-          {
-            id: 1,
-            type: 1,
-            title: '单文章节点asd阿萨达啊实打实多爱仕达多撒啊实打实阿萨达1'
-          },
-          {
-            id: 2,
-            type: 1,
-            title: '单文章节点as打实阿萨达1'
-          },
-          {
-            id: 3,
-            type: 2,
-            title: '下游多层目录',
-            expand: false,
-            children: [
-              {
-                id: '23223142342',
-                type: 2,
-                title: '达啊实打实多爱文章文章文章文章文章文章文章文章文章文章',
-                expand: false,
-                children: [
-                  {
-                    id: 'asdasd',
-                    type: 1,
-                    title: '单独文章'
-                  },
-                  {
-                    id: '23223242342',
-                    type: 2,
-                    title: '测试空目录该怎么展示',
-                    expand: true,
-                    children: []
-                  },
-                  {
-                    id: '23223442342',
-                    type: 2,
-                    title: 'parent 1-2',
-                    expand: true,
-                    children: [
-                      {
-                        id: '23227342342',
-                        type: 1,
-                        title: 'leaf 1-2-1'
-                      },
-                      {
-                        id: '23223942342',
-                        type: 1,
-                        title: 'leaf 1-2-1'
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                id: '2322342341',
-                type: 2,
-                title: '多层目录',
-                expand: false,
-                children: [
-                  {
-                    id: 'sfsdfsdfsdf',
-                    type: 1,
-                    title: '单独文章'
-                  },
-                  {
-                    id: '23223422342',
-                    type: 2,
-                    title: '目录文章收到撒阿萨',
-                    expand: false,
-                    children: [
-                      {
-                        id: '23223425342',
-                        type: 1,
-                        title: 'leaf 1-1-1'
-                      },
-                      {
-                        id: '23223242342',
-                        type: 1,
-                        title: 'leaf 1-1-2'
-                      }
-                    ]
-                  },
-                  {
-                    id: '23223425342',
-                    type: 2,
-                    title: 'parent 1-2',
-                    expand: true,
-                    children: [
-                      {
-                        id: '23223492342',
-                        type: 1,
-                        title: 'leaf 1-2-1'
-                      },
-                      {
-                        id: '23223402342',
-                        type: 1,
-                        title: 'leaf 1-2-1'
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            id: 13,
-            type: 2,
-            title: '这也是多层目录',
-            expand: true,
-            children: [
-              {
-                id: 'asd2s3131',
-                type: 2,
-                title: 'parent 11文章文章文章文章文章文章文章文章文章文章',
-                expand: true,
-                children: [
-                  {
-                    id: 'asd23a131',
-                    type: 1,
-                    title: '单独文章'
-                  },
-                  {
-                    id: 'asd231d31',
-                    type: 2,
-                    title: '目录文章',
-                    expand: true,
-                    children: [
-                      {
-                        id: 'asqd23131',
-                        type: 1,
-                        title: 'leaf 1-1-1录文录文录文录文录文录文录文录文录文录文录文录文录文录文录文'
-                      },
-                      {
-                        id: 'asd231r31',
-                        type: 1,
-                        title: 'leaf 1-1-2'
-                      }
-                    ]
-                  },
-                  {
-                    id: 'asd23y131',
-                    type: 2,
-                    title: 'parent 1-2',
-                    expand: true,
-                    children: [
-                      {
-                        id: 'asd2g3131',
-                        type: 1,
-                        title: 'leaf 1-2-1'
-                      },
-                      {
-                        id: 'asd273131',
-                        type: 1,
-                        title: 'leaf 1-2-1'
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ],
+        dirData: [],
         // 菜单列表展示方式  list or tree
         navShowType: null,
         openAllTree: false,
+        currentNode: null,
         view: null,
-        authorInfo: {
-          uid: 9527,
-          username: '布衣草人',
-          domain: 'lovbe0210',
-          level: 6,
-          avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hndj43fdrsj30s010vgtz.jpg'
-        },
+        authorInfo: {},
+        columnInfo: {},
         searchResult: [
           {
             id: 1,
@@ -433,27 +275,18 @@
         ]
       }
     },
-    props: ['domain', 'columnId', 'articleId'],
+    props: ['domain', 'columnUri', 'articleUri'],
     computed: {
       // 自适应内容界面的宽度
       adaptiveContentWidth() {
         return 'calc(100vw - ' + (this.sidebarWidth) + 'px)'
       },
       isColumnView() {
-        return this.columnId !== undefined && this.columnId !== null;
+        return this.columnUri !== undefined && this.columnUri !== null;
       },
       docStyle() {
         return this.$store.state.docStyle;
-      }
-    },
-    watch: {
-      "modalSearch"(newVal) {
-
-      }
-    },
-    methods: {
-      formatDate,
-      // 组装目录树
+      },
       getListDirData() {
         if (this.dirData.length === 0) {
           return [];
@@ -467,7 +300,30 @@
           }
         })
         return array;
-      },
+      }
+    },
+    watch: {
+      "modalSearch"(newVal) {
+
+      }
+    },
+    methods: {
+      formatDate,
+      // 组装目录树
+      // getListDirData() {
+      //   if (this.dirData.length === 0) {
+      //     return [];
+      //   }
+      //   let array = [];
+      //   this.dirData.forEach(dir => {
+      //     if (dir.type === 1) {
+      //       array.push(dir)
+      //     } else if (dir.type === 2) {
+      //       this.recursiveGetDirList(array, dir);
+      //     }
+      //   })
+      //   return array;
+      // },
       recursiveGetDirList(ListArray, dirData) {
         if (dirData.children && dirData.children.length > 0) {
           dirData.children.forEach(dir => {
@@ -540,7 +396,6 @@
           })
         }
       },
-
       /**
        * 路由导航
        * @param itemName
@@ -548,25 +403,32 @@
       routeNavigate(routeParam) {
         if (routeParam === 'columnIndex') {
           // 专栏首页
-          this.$router.push({path: '/column/' + this.columnId});
+          this.currentNode.selected = false;
+          this.$router.push({path: '/column/' + this.columnUri});
         } else {
           // 文章页面需要判断是专栏页面还是普通页面
-          if (this.columnId !== undefined) {
+          if (this.columnUri !== undefined) {
             // 专栏页面
-            this.$router.push({path: '/column/' + this.columnId + '/' + routeParam});
+            this.$router.push({path: '/' + this.domain + '/' + this.columnUri + '/' + routeParam});
           } else {
             // 普通页面
-            this.$router.push({path: '/article/' + routeParam});
+            this.$router.push({path: '/' + this.domain + '/' + routeParam});
           }
         }
       },
       selectTreeNode(selectNode, currentNode) {
-        currentNode.selected = false;
-        currentNode.expand = !currentNode.expand
-        // 只在叶子节点处进行路由跳转
-        if (currentNode.children === undefined) {
-          console.log(currentNode.id)
-          this.routeNavigate(currentNode.id)
+        // 目录节点
+        if (currentNode.type === 2) {
+          currentNode.expand = !currentNode.expand
+          if (this.currentNode != null) {
+            this.currentNode.selected = true;
+          }
+          currentNode.selected = false;
+        } else if (currentNode.type === 1) {
+          // 叶子节点进行路由跳转
+          currentNode.selected = true;
+          this.currentNode = currentNode;
+          this.routeNavigate(currentNode.uri)
         }
       },
       handleInput(event) {
@@ -616,6 +478,9 @@
               break;
           }
         }
+      },
+      fileUrl(path) {
+        return this.fileService + path;
       }
     },
     mounted() {
@@ -623,6 +488,29 @@
       UserApi.getUserInfoByDomain(this.domain).then(data => {
         if (data?.result) {
           this.authorInfo = data.data;
+          // 判断获取文章列表还是专栏目录
+          if (this.isColumnView) {
+            ContentPicksApi.getColumnDir(this.columnUri).then(data => {
+              if (data?.result) {
+                this.columnInfo = data.data;
+                this.dirData = data.data?.dirContent;
+              }
+            })
+          } else {
+            ContentPicksApi.getArticleList(this.authorInfo.uid).then(data => {
+              if (data?.result) {
+                this.dirData = data.data.map(article => {
+                  return {
+                    uid: article.uid,
+                    uri: article.uri,
+                    type: 1,
+                    title: article.title,
+                    summary: article.summary
+                  }
+                });
+              }
+            })
+          }
         }
       })
       this.navShowType = this.isColumnView ? 'tree' : 'list';
@@ -630,18 +518,6 @@
       if (this.isColumnView) {
         this.searchScope = 2;
       }
-      // 判断获取文章列表还是专栏目录
-      if (this.isColumnView) {
-
-        return;
-      }
-
-      ContentPicksApi.getArticleList(this.domain).then(data => {
-        if (data?.result) {
-
-        }
-      })
-
     },
     beforeDestroy() {
       window.removeEventListener('keydown', this.handleKeydown);

@@ -270,7 +270,7 @@ const routes = [
   },
   {
     // 写作中心
-    path: '/editor/:articleId',
+    path: '/editor/:uri',
     name: 'WriteCenter',
     props: true,
     component: () => import('@/views/WriteCenter')
@@ -284,7 +284,7 @@ const routes = [
   },
   {
     // 阅读中心/普通文章
-    path: '/:domain/:articleId',
+    path: '/:domain/:articleUri',
     name: 'ReadCenter',
     props: true,
     component: () => import('@/views/ReadCenter'),
@@ -299,7 +299,7 @@ const routes = [
   },
   {
     // 阅读中心/专栏文章
-    path: '/:domain/:columnId',
+    path: '/:domain/:columnUri',
     name: 'ReadCenter',
     props: true,
     component: () => import('@/views/ReadCenter'),
@@ -312,7 +312,7 @@ const routes = [
       },
       {
         // 内容阅读
-        path: ':articleId',
+        path: ':articleUri',
         name: 'Reader',
         props: true,
         component: () => import('@/components/Reader')
@@ -350,14 +350,14 @@ router.beforeEach((to, from, next) => {
     return;
   }
   let params = to.params;
-  if (params.columnId) {
+  if (params.columnUri) {
     next();
     return;
   }
 
   Vue.prototype.$request(
     {
-      url: "/cps/router/" + params?.articleId,
+      url: "/cps/router/" + params?.articleUri,
       method: 'GET'
     }
   ).then(data => {

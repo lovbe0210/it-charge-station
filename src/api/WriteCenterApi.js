@@ -18,9 +18,9 @@ export default {
    * @param userId
    * @returns {Promise<void>}
    */
-  async getArticleForEdit(articleId) {
+  async getArticleForEdit(articleUri) {
     return await Vue.prototype.$request({
-      url: "/cpt/article/" + articleId,
+      url: "/cpt/article/" + articleUri,
       method: 'GET'
     });
   },
@@ -260,7 +260,7 @@ export default {
   },
 
   /**
-   * 获取专栏文章
+   * 获取专栏目录
    * @param articleInfo
    * @returns {Promise<void>}
    */

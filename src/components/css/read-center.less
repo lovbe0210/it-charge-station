@@ -57,7 +57,7 @@
               }
 
               .to-right {
-                font-size: 11px;
+                font-size: 10px;
                 line-height: 45px;
                 margin: 0 5px;
                 color: @grey-white-font-color;
@@ -81,8 +81,6 @@
         }
 
         .directory-nav {
-          height: calc(~"100% - 78px");
-
           .search-nav {
             display: flex;
             align-items: center;
@@ -137,6 +135,7 @@
             font-feature-settings: "tnum";
             display: flex;
             overflow: hidden;
+            border-bottom: unset;
 
 
             .tabs-bar {
@@ -204,96 +203,23 @@
                   width: 100%;
                   outline: none;
                   position: relative;
-                  height: calc(~"100vh - 189px");
+                  max-height: calc(~"100vh - 150px");
                   will-change: transform;
                   direction: ltr;
                   padding-top: 8px;
 
 
-                  .tabpane-tree {
-                    padding: 0 10px 8px 10px;
 
-                    .tree-content {
-                      padding: 0 8px;
-                      flex: 1;
-                      font-size: 14px;
-                      color: #262626;
-                      overflow: hidden;
-                      text-overflow: ellipsis;
-                      white-space: nowrap;
-                      display: flex;
-                      left: 0px;
-                      width: calc(~"100% - 3px");
-                      cursor: pointer;
-                      align-items: center;
-
-                      .single-tree-node {
-                        height: 36px;
-                        line-height: 36px;
-                        width: 100%;
-                        padding-left: 18px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                      }
-
-                      .composite-tree-node {
-                        width: 100%;
-
-                        /deep/ li {
-                          margin-top: 0;
-                          margin-bottom: 0;
-                        }
-
-                        /deep/ .ivu-tree-arrow {
-                          margin-left: -5px;
-                          width: 20px;
-                          height: 20px;
-                          line-height: 36px;
-                        }
-
-
-                        /deep/ .ivu-icon:hover {
-                          cursor: pointer;
-                          background: #D8DAD9;
-                          border-radius: 4px;
-                        }
-
-                        /deep/ .ivu-tree-title {
-                          padding-left: 4px;
-                          flex: 1;
-                          font-size: 14px;
-                          color: #262626;
-                          overflow: hidden;
-                          text-overflow: ellipsis;
-                          white-space: nowrap;
-                          width: calc(~"100% - 6px");
-                          height: 36px;
-                          line-height: 36px;
-                          padding-right: 13.5px;
-                        }
-
-                        /deep/ .ivu-tree-title:hover {
-                          cursor: pointer;
-                          background: #EFF0F0;
-                          border-radius: 4px;
-                        }
-                      }
-                    }
-
-                    .single-node-tree:hover {
-                      cursor: pointer;
-                      background: #EFF0F0;
-                      border-radius: 4px;
-                    }
-
-                  }
 
                   .tabpane-list {
                     padding: 0 10px 8px 10px;
 
                     /deep/ .ivu-list-item {
                       padding: 8px;
+                    }
+
+                    .current-article {
+                      background: #EFF0F0;
                     }
 
                     .ivu-list-item:hover {
@@ -310,22 +236,34 @@
                       width: 100%;
                     }
 
-                    /deep/ .ivu-list-item-meta-title {
-                      flex: 1;
-                      font-size: 14px;
-                      height: 22px;
+                    /deep/ .ivu-list-item-meta-description {
                       color: #262626;
-                      overflow: hidden;
-                      text-overflow: ellipsis;
-                      white-space: nowrap;
-                      line-height: 22px;
-                      display: flex;
 
-                      .title-content {
-                        //width: calc(~"100% - 22px");
+                      .title {
+                        flex: 1;
+                        font-size: 14px;
+                        height: 22px;
+                        color: #262626;
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
+                        line-height: 22px;
+                        display: flex;
+                        margin-bottom: 2px;
+                      }
+
+                      .description {
+                        color: #8A8F8D;
+                        font-size: 13px;
+                        word-break: break-all;
+                        display: -webkit-box;
+                        max-height: 44px;
+                        min-height: 22px;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        line-height: 22px;
                       }
 
                       .operate {
@@ -350,19 +288,6 @@
                         background-color: #D8DAD9;
                         border-radius: 4px;
                       }
-                    }
-
-                    /deep/ .ivu-list-item-meta-description {
-                      color: #8A8F8D;
-                      font-size: 14px;
-                      word-break: break-all;
-                      display: -webkit-box;
-                      max-height: 44px;
-                      -webkit-line-clamp: 2;
-                      -webkit-box-orient: vertical;
-                      overflow: hidden;
-                      text-overflow: ellipsis;
-                      line-height: 22px;
                     }
                   }
                 }
@@ -407,7 +332,7 @@
       }
 
       &:hover {
-        border-right: 1px solid #E7E9E8;
+        border-right: 1px solid @grey-white-font-color;
       }
     }
   }
@@ -707,39 +632,39 @@
           color: var(--title-color) !important;
         }
 
-        .single-node-tree {
-          color: var(--font-color) !important;
-
-          &:hover {
+        /deep/ .ivu-tree-children {
+          .ivu-tree-title-selected {
             background: var(--dropdown-item-hover) !important;
           }
-        }
 
-        /deep/ .ivu-tree-title {
-          color: var(--font-color) !important;
-          &:hover {
-            background: var(--dropdown-item-hover) !important;
+          .ivu-tree-title {
+            color: var(--font-color) !important;
+
+            &:hover {
+              background: var(--dropdown-item-hover) !important;
+            }
           }
-        }
 
-        /deep/ .composite-tree-node .ivu-icon:hover {
-          background: var(--dropdown-item-hover) !important;
-
-          .ivu-icon-ios-arrow-forward:before {
+          .ivu-icon {
             color: var(--font-color);
+            border-radius: 3px;
+            &:hover {
+              background: var(--dropdown-item-hover) !important;
+            }
           }
         }
 
         /deep/ .ivu-list-items {
           .ivu-list-item {
-            .ivu-list-item-meta-title {
-              color: var(--font-color) !important;
-            }
-
             .ivu-list-item-meta-description {
-              color: var(--title-color) !important;
-            }
+              .title {
+                color: var(--font-color) !important;
+              }
 
+              .description {
+                color: var(--title-color) !important;
+              }
+            }
 
             &:hover {
               background: var(--dropdown-item-hover) !important;
@@ -1063,6 +988,50 @@
 
   /deep/.user-info-card-box .ant-popover-content .ant-popover-inner {
     background: #ffffff;
+  }
+}
+
+/deep/ .tabpane-tree {
+  padding: 0 10px 8px 10px;
+
+  .ivu-tree-children {
+    padding-left: 8px;
+    flex: 1;
+    font-size: 14px;
+    color: #262626;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    left: 0px;
+    cursor: pointer;
+    align-items: center;
+
+    li {
+      margin: unset!important;
+      width: 100%;
+    }
+
+    .ivu-tree-arrow {
+      padding: 6px 0;
+    }
+
+    .ivu-tree-title {
+      margin: 2px 0;
+      padding: 6px 0 6px 5px;
+      width: calc(~"100% - 15px");
+      border-radius: 4px;
+    }
+
+    .ivu-tree-title-selected {
+      background: #EFF0F0;
+
+      &:hover {
+        cursor: pointer;
+        background: #EFF0F0;
+        border-radius: 4px;
+      }
+    }
   }
 }
 

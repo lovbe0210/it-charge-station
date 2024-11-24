@@ -253,7 +253,7 @@ export default {
       fontSizeShowSelect: false
     }
   },
-  props: ['articleId'],
+  props: ['uri'],
   computed: {
     userInfo() {
       return this.$store.state.userInfo;
@@ -323,7 +323,7 @@ export default {
     ArticleVersion
   },
   created() {
-    WriteCenterApi.getArticleForEdit(this.articleId).then(data => {
+    WriteCenterApi.getArticleForEdit(this.uri).then(data => {
       if (data?.result) {
         this.articleInfo = data.data
       }

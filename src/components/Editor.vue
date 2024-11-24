@@ -416,7 +416,7 @@ export default {
           if (_data != null) {
             this.article.contentId = _data.uid;
             this.article.content = _data.content;
-            if (_data.content && _data.content.length !== 0) {
+            if (_data.content && _data.content.length > 0) {
               this.engine.setJsonValue(JSON.parse(_data.content))
               const pattern = /h[1-6]/;
               let match = _data.content.match(pattern);
