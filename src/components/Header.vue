@@ -317,9 +317,9 @@ export default {
       // 创建空白文档
       WriteCenterApi.createBlankDoc().then(data => {
         if (data?.result) {
-          let articleId = data.data.uid;
+          let uri = data.data.uri;
           let routeUrl = this.$router.resolve({
-            path: '/editor/' + articleId
+            path: '/editor/' + uri
           })
           window.open(routeUrl.href, '_blank')
         }
