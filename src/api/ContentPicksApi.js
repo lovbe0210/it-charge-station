@@ -36,6 +36,53 @@ export default {
       url: "/cps/column/dir/" + uri,
       method: 'GET'
     });
+  },
+
+  /**
+   * 获取收藏分组标签
+   * @returns {Promise<void>}
+   */
+  async getCollectTags() {
+    return await Vue.prototype.$request({
+      url: "/cps/collect/tags/list",
+      method: 'GET'
+    });
+  },
+
+  /**
+   * 收藏分组编辑
+   * @returns {Promise<void>}
+   */
+  async createCollectTag(tagInfo) {
+    return await Vue.prototype.$request({
+      url: "/cps/collect/tag/edit",
+      method: 'POST',
+      data: tagInfo
+    });
+  },
+
+  /**
+   * 获取收藏分组标签
+   * @returns {Promise<void>}
+   */
+  async deleteCollectTag(tagInfo) {
+    return await Vue.prototype.$request({
+      url: "/cps/collect/tag/delete",
+      method: 'POST',
+      data: tagInfo
+    });
+  },
+
+  /**
+   * 获取收藏内容列表
+   * @returns {Promise<void>}
+   */
+  async getCollectList(queryMeta) {
+    return await Vue.prototype.$request({
+      url: "/cps/collect/list",
+      method: 'POST',
+      data: queryMeta
+    });
   }
 }
 

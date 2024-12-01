@@ -41,6 +41,8 @@ export default new Vuex.Store({
       titleColor: '#0a0a0a',
       // 背景图(可以设置渐变色和图片两种，渐变色也可以设置纯色，只要起始色和结束色相同即可)
       backgroundImg: 'linear-gradient(45deg, #F4F5F7 0%, #F4F5F7 100%)',
+      // 边框颜色
+      borderColor: 'rgba(0,0,0,0.08)',
       // 下拉框背景色
       dropdownBackgroundColor: '#FFFFFF',
       // 下拉框内的item-hover颜色

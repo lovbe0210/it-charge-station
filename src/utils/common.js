@@ -10,6 +10,7 @@ export default {
       `--theme-color: ${themProperty.themeColor};` +
       `--font-color: ${themProperty.fontColor};` +
       `--title-color: ${themProperty.titleColor};` +
+      `--border-color: ${themProperty.borderColor};` +
       `--dropdown-bg-color: ${themProperty.dropdownBackgroundColor};` +
       `--dropdown-item-hover: ${themProperty.dropdownItemHover};` +
       `--on-theme-bg-color: ${themProperty.onThemeBackgroundColor};` +

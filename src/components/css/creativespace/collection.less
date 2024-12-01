@@ -1,4 +1,5 @@
 @import "../../css/common-var";
+
 .layout-module_collection {
   width: 100%;
   height: 100%;
@@ -99,12 +100,12 @@
       overflow: auto;
       width: 160px;
       min-width: 160px;
-      border-right: 1px solid rgba(0, 0, 0, 0.04);
-      padding: 0 12px 20px 0;
+      border-right: 1px solid var(--border-color);
+      padding-right: 12px;
       margin-top: 20px;
 
       .mark-item {
-        height: 74px;
+        height: 80px;
         border-radius: 8px;
         padding: 10px;
         margin-bottom: 4px;
@@ -117,15 +118,28 @@
           justify-content: space-between;
           font-weight: 500;
 
+          .mark-name-content {
+            word-break: break-all;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
           .mark-aside-add {
             color: @grey-white-font-color;
+
+            .iconfont {
+              color: @grey-white-font-color;
+            }
           }
         }
 
         .mark-action-count {
           font-size: 12px;
           color: @grey-white-font-color;
-          margin-top: 12px;
+          margin-top: 5px;
         }
 
         &:hover {
@@ -140,13 +154,13 @@
 
     .marks-list {
       margin-bottom: 0 !important;
-      padding: 20px 0 20px 10px;
+      padding: 20px 0 0 10px;
       width: 100%;
       overflow-y: auto;
       overflow-x: hidden;
       height: 100%;
 
-      /deep/.ivu-table {
+      /deep/ .ivu-table {
         background-color: unset;
       }
 
@@ -168,7 +182,8 @@
       }
 
       /deep/ .ivu-table-body {
-        overflow-x: hidden!important;
+        overflow-x: hidden !important;
+
         table > tbody {
           tr {
             td {
@@ -212,9 +227,11 @@
         overflow-x: hidden;
         margin-top: 50px;
 
-        table>tbody>tr>td {
+        table > tbody > tr > td {
           border: unset;
-          span{
+          background: unset;
+
+          span {
             color: #8A8F8D;
           }
         }
@@ -227,12 +244,115 @@
   }
 }
 
-/deep/.ant-tooltip {
-  .ant-tooltip-content {
-    margin-bottom: -5px;
+/deep/ .create-new-tag {
+  .ivu-modal-body {
+    padding: 0;
+
+    .add-form {
+      padding: 24px;
+      margin-bottom: 16px;
+
+      .add-label {
+        margin-bottom: 8px;
+      }
+
+      .error {
+        margin: 5px 0 0 2px;
+        color: red;
+        min-height: 16px;
+        font-size: 13px;
+      }
+    }
   }
 
-  .ant-tooltip-arrow {
-    display: none;
+  .add-form-footer {
+    padding: 16px 24px;
+    margin-top: 30px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: row-reverse;
+
+    .ok {
+      margin-left: 5px;
+    }
+  }
+}
+
+.select-group {
+  width: 252px;
+  position: relative;
+
+  .select-group-title {
+    padding: 14px 16px 0;
+    margin-bottom: 15px;
+
+    .select-group-p1 {
+      font-size: 14px;
+      color: var(--font-color);
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .select-group-p2 {
+      font-size: 13px;
+      color: var(--title-color);
+
+      a {
+        color: @link-color;
+      }
+    }
+  }
+
+  .select-group-tags {
+    min-height: 65px;
+    max-height: 240px;
+    margin: 10px 16px 12px 16px;
+    color: var(--font-color);
+
+    .select-group-tags-check {
+      margin-bottom: 12px;
+
+      lebal {
+        display: flex;
+        align-items: center;
+      }
+
+      .select-group-tags-checkboxWrapper {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        font-size: 13px;
+        font-variant: tabular-nums;
+        line-height: 1.5715;
+        list-style: none;
+        font-feature-settings: "tnum", "tnum";
+        display: inline-flex;
+        align-items: baseline;
+        line-height: inherit;
+        align-items: center;
+        cursor: pointer;
+
+        .checkbox-label {
+          padding-right: 8px;
+          padding-left: 8px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+
+  .select-group-footer {
+    border-top: 1px solid var(--border-color);
+    line-height: 45px;
+    font-size: 14px;
+    color: var(--title-color);
+    padding-left: 16px;
+    cursor: pointer;
+
+    .iconfont {
+      font-size: 14px;
+    }
   }
 }
