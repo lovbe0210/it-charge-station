@@ -18,10 +18,50 @@
             <Button type="success" @click="routeNavigate(docInfo)">编辑</Button>
             <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
               <template slot="title">
-                {{ ifLike ? '取消收藏' : '收藏' }}
+                {{ collectId != null ? '取消收藏' : '收藏' }}
               </template>
-              <div class="action-icon" @click="ifLike = !ifLike">
-                <span :class="['iconfont', ifLike ? 'collected' : 'collect']"></span>
+              <div class="action-icon" @click="collectMark">
+                <Poptip placement="bottom-end" padding="0px" v-model="collectPoptipShow">
+                  <span :class="['iconfont', collectId != null ? 'collected' : 'collect']"></span>
+                  <div slot="content" class="select-group">
+                    <div class="select-group-title">
+                      <p class="select-group-p1">选择分组</p>
+                      <p class="select-group-p2">你可以选择分组或直接
+                        <a @click="unmark">取消收藏</a>
+                      </p>
+                    </div>
+                    <div class="select-group-tags beauty-scroll">
+                      <div v-if="inputNewTag" class="select-group-tags-check">
+                        <label class="select-group-tags-checkboxWrapper">
+                          <a-checkbox :checked="false"></a-checkbox>
+                          <span class="checkbox-label">
+                        <Input v-model="inputTagTmp"
+                               id="newTagInput"
+                               size="small"
+                               :autofocus="true"
+                               @on-blur="completeAddTag"
+                               @on-enter="completeAddTag1"
+                               placeholder="请输入分组名称"
+                               maxlength="30"/>
+                      </span>
+                        </label>
+                      </div>
+                      <div class="select-group-tags-check" v-for="tag in collectTags"
+                           :key="tag.uid">
+                        <label class="select-group-tags-checkboxWrapper">
+                          <a-checkbox :checked="collectTags?.tags && collectInfo.tags.includes(tag.uid)"
+                                      @change="updateCollectTags(tag.uid)">
+                          </a-checkbox>
+                          <span class="checkbox-label" :title="tag.title">{{ tag.title }}</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="select-group-footer" @click="inputNewTag = true">
+                      <span class="iconfont add"></span>
+                      新建分组
+                    </div>
+                  </div>
+                </Poptip>
               </div>
             </a-tooltip>
             <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
@@ -186,205 +226,293 @@
 </template>
 
 <script>
-  import Engine, {$} from '@aomao/engine'
-  import {plugins, cards, pluginConfig} from "./common/editor/config"
-  import {getTocData} from "./common/editor/utils"
-  import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
-  import ArticleFooter from "@/components/common/ArticleFooter"
-  import ArticleSetting from "@/components/common/ArticleSetting"
-  import ArticleVersion from "@/components/common/ArticleVersion"
-  import ContentPicksApi from "@/api/ContentPicksApi";
+import Engine, {$} from '@aomao/engine'
+import {plugins, cards, pluginConfig} from "./common/editor/config"
+import {getTocData} from "./common/editor/utils"
+import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
+import ArticleFooter from "@/components/common/ArticleFooter"
+import ArticleSetting from "@/components/common/ArticleSetting"
+import ArticleVersion from "@/components/common/ArticleVersion"
+import ContentPicksApi from "@/api/ContentPicksApi";
 
-  const event = document.createEvent('KeyboardEvent');
-  event.initKeyboardEvent('keydown', true, true, window, false, false, false, false, 122, 0);
-  export default {
-    name: "ArticleRead",
-    data() {
-      return {
-        fullScreen: false, // 全屏演示模式
-        // 展示等待页面
-        spinShow: false,
-        tocData: [],
-        currentTocId: '',
-        // 更多设置内容 1文档设置，2历史版本
-        drawerType: 0,
-        newVersion: false,
-        showDocSetting: false,
-        showDeleteModal: false,
-        articleInfo: {},
-        isPublic: true,
-        ifLike: false,
-        engine: null
-      }
+const event = document.createEvent('KeyboardEvent');
+event.initKeyboardEvent('keydown', true, true, window, false, false, false, false, 122, 0);
+export default {
+  name: "ArticleRead",
+  data() {
+    return {
+      fullScreen: false, // 全屏演示模式
+      // 展示等待页面
+      spinShow: false,
+      tocData: [],
+      currentTocId: '',
+      // 更多设置内容 1文档设置，2历史版本
+      drawerType: 0,
+      newVersion: false,
+      showDocSetting: false,
+      showDeleteModal: false,
+      articleInfo: {},
+      collectId: null,
+      collectInfo: {},
+      collectTags: [],
+      inputTagTmp: null,
+      inputNewTag: false,
+      collectPoptipShow: false,
+      ifLike: false,
+      engine: null
+    }
+  },
+  props: ['sidebarWidth', 'columnUri', 'articleUri'],
+  computed: {
+    headerWidth() {
+      return 'calc(100vw - ' + ((this.fullScreen ? 0 : this.sidebarWidth) + 'px');
     },
-    props: ['sidebarWidth', 'columnUri', 'articleUri'],
-    computed: {
-      headerWidth() {
-        return 'calc(100vw - ' + ((this.fullScreen ? 0 : this.sidebarWidth) + 'px');
-      },
-      docStyle() {
-        return this.$store.state.docStyle;
-      },
-      docInfo() {
-        return this.$store.state.tmpDoc;
-      }
+    docStyle() {
+      return this.$store.state.docStyle;
     },
-    components: {
-      ReplyComment,
-      ArticleFooter,
-      ArticleSetting,
-      ArticleVersion
+    docInfo() {
+      return this.$store.state.tmpDoc;
+    }
+  },
+  components: {
+    ReplyComment,
+    ArticleFooter,
+    ArticleSetting,
+    ArticleVersion
+  },
+  methods: {
+    /**
+     * 渲染标题大纲
+     * @param engine
+     */
+    renderTocData(engine) {
+      let tocData = getTocData(engine);
+      this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
     },
-    methods: {
-      /**
-       * 渲染标题大纲
-       * @param engine
-       */
-      renderTocData(engine) {
-        let tocData = getTocData(engine);
-        this.tocData = (tocData && tocData instanceof Array) ? tocData : [];
-      },
-      // 进入演示模式相关方法
-      presentShow() {
-        let element = document.getElementById("contentWrapper");
-        // 浏览器兼容
-        if (this.fullScreen) {
-          if (document.exitFullscreen) {
-            document.exitFullscreen();
-          } else if (document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
-          } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-          } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-          }
-        } else {
-          if (element.requestFullscreen) {
-            element.requestFullscreen();
-          } else if (element.webkitRequestFullScreen) {
-            element.webkitRequestFullScreen();
-          } else if (element.mozRequestFullScreen) {
-            element.mozRequestFullScreen();
-          } else if (element.msRequestFullscreen) {
-            element.msRequestFullscreen();
-          }
+    // 进入演示模式相关方法
+    presentShow() {
+      let element = document.getElementById("contentWrapper");
+      // 浏览器兼容
+      if (this.fullScreen) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
         }
-      },
-      checkFullscreen() {
-        const isFullscreen = (
-          document.fullscreenElement ||
-          document.webkitFullscreenElement ||
-          document.mozFullScreenElement ||
-          document.msFullscreenElement
-        );
-        this.fullScreen = Boolean(isFullscreen);
-      },
+      } else {
+        if (element.requestFullscreen) {
+          element.requestFullscreen();
+        } else if (element.webkitRequestFullScreen) {
+          element.webkitRequestFullScreen();
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if (element.msRequestFullscreen) {
+          element.msRequestFullscreen();
+        }
+      }
+    },
+    checkFullscreen() {
+      const isFullscreen = (
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      );
+      this.fullScreen = Boolean(isFullscreen);
+    },
 
-      /**
-       * 点击跳转
-       * @param titleId
-       */
-      jump(titleId) {
-        this.currentTocId = titleId;
-        let scrollbarContext = this.$refs.scrollbarContext;
-        let title = $('#' + titleId).get().offsetTop;
-        scrollbarContext.scrollTo({
-          behavior: "smooth",
-          top: title + 20
-        });
-      },
-      /**
-       * 处理滚动条滚动事件
-       */
-      handleScrollForToc(event) {
-        if (this.tocData.length > 0) {
-          let scrollbarRect = this.$refs.scrollbarContext?.getBoundingClientRect();
-          if (scrollbarRect) {
-            let containerTop = scrollbarRect.top + 52;
-            let containerBottom = scrollbarRect.bottom;
-            for (let i = 0; i < this.tocData.length; i++) {
-              let rect = $('#' + this.tocData[i].id).get().getBoundingClientRect();
-              if (rect.top >= containerTop && rect.top <= containerBottom) {
-                this.currentTocId = this.tocData[i].id;
-                return;
-              }
+    /**
+     * 点击跳转
+     * @param titleId
+     */
+    jump(titleId) {
+      this.currentTocId = titleId;
+      let scrollbarContext = this.$refs.scrollbarContext;
+      let title = $('#' + titleId).get().offsetTop;
+      scrollbarContext.scrollTo({
+        behavior: "smooth",
+        top: title + 20
+      });
+    },
+    /**
+     * 处理滚动条滚动事件
+     */
+    handleScrollForToc(event) {
+      if (this.tocData.length > 0) {
+        let scrollbarRect = this.$refs.scrollbarContext?.getBoundingClientRect();
+        if (scrollbarRect) {
+          let containerTop = scrollbarRect.top + 52;
+          let containerBottom = scrollbarRect.bottom;
+          for (let i = 0; i < this.tocData.length; i++) {
+            let rect = $('#' + this.tocData[i].id).get().getBoundingClientRect();
+            if (rect.top >= containerTop && rect.top <= containerBottom) {
+              this.currentTocId = this.tocData[i].id;
+              return;
             }
           }
         }
-      },
-      returnDocSetting() {
-        if (this.drawerType) {
-          this.drawerType = 0;
-          this.newVersion = false;
-        } else {
-          this.showDocSetting = false;
+      }
+    },
+    returnDocSetting() {
+      if (this.drawerType) {
+        this.drawerType = 0;
+        this.newVersion = false;
+      } else {
+        this.showDocSetting = false;
+      }
+    },
+    addNewVersion() {
+      this.newVersion = true;
+      this.drawerType = 2;
+    },
+    routeNavigate() {
+      this.$router.push({path: '/editor/' + this.articleInfo.uri})
+    },
+    collectMark() {
+      if (!this.collectTags || this.collectTags.length === 0) {
+        ContentPicksApi.getCollectTagList().then(data => {
+          if (data?.result) {
+            this.collectTags = data.data;
+            // 请求收藏信息
+
+          }
+        })
+      }
+      if (this.collectInfo.collectId) {
+        // 已收藏
+        this.collectPoptipShow = true;
+      } else {
+        let collectTarget = {
+          uid: this.articleInfo.collectId,
+          targetId: this.articleInfo.uid,
+          targetType: 1
         }
-      },
-      addNewVersion () {
-        this.newVersion = true;
-        this.drawerType = 2;
-      },
-      routeNavigate() {
-        this.$router.push({path: '/editor/' + this.articleInfo.uri})
-      },
-      initReaderContent() {
-        this.spinShow = true;
-        ContentPicksApi.getArticleInfo(this.articleUri).then(data => {
-          if (!data?.result) {
-            this.spinShow = false;
-            return;
+        ContentPicksApi.collectMark(collectTarget).then(data => {
+          if (data?.result) {
+            this.collectInfo.collectId = data.data;
+            this.collectInfo.tags = [];
+            this.$Message.success("收藏成功");
+            this.collectPoptipShow = true;
           }
-          this.articleInfo = data.data;
-          let content = data.data.content;
-          if (content?.length > 0) {
-            this.engine.setJsonValue(JSON.parse(content));
-            const pattern = /h[1-6]/;
-            let match = content.match(pattern);
-            if (match) {
-              this.renderTocData(this.engine);
-            }
-          }
-          this.spinShow = false;
         })
       }
     },
-    watch: {
-      articleUri() {
-        this.initReaderContent();
+    updateCollectTags(tagId) {
+      let tags = this.collectInfo?.tags;
+      if (!tags) {
+        tags = [tagId];
+      } else if (tags.includes(tagId)) {
+        // 如果包含当前tagId,则删除
+        tags = tags.filter(tag => tagId !== tag);
+      } else {
+        // 如果不包含则添加
+        tags.push(tagId);
+      }
+      this.collectInfo.tags = tags;
+      // 更新收藏分类
+      ContentPicksApi.collectMark(this.collectInfo).then()
+    },
+    completeAddTag1() {
+      let element = document.getElementById("newTagInput");
+      if (element) {
+        element.click();
       }
     },
-    mounted() {
-      const container = this.$refs.container;
-      if (container) {
-        //实例化引擎
-        const engine = new Engine(container, {
-          // 启用插件
-          plugins,
-          // 启用卡片
-          cards,
-          // 所有的插件配置
-          config: pluginConfig,
-          // 滚动条节点
-          scrollNode: this.$refs.scrollbarContext.Node,
-          // 阅读模式
-          readonly: true
-        });
-        this.engine = engine;
-        this.initReaderContent();
+    completeAddTag() {
+      if (!this.inputTagTmp) {
+        return;
       }
-      window.addEventListener('resize', this.checkFullscreen);
-      // const scrollContainer = this.$refs.scrollbarContext;
-      // scrollContainer?.addEventListener('scroll', this.handleScrollForToc);
-      this.handleScrollForToc();
+      // 新建标签
+      let tagInfo = {
+        title: this.inputTagTmp
+      }
+      ContentPicksApi.createCollectTag(tagInfo).then(data => {
+        if (data?.result) {
+          this.inputNewTag = false;
+          this.inputTagTmp = null;
+          // 刷新收藏分类
+          ContentPicksApi.getCollectTagList().then(data => {
+            if (data?.result) {
+              this.collectTags = data.data;
+            }
+          })
+          // 更新收藏分组信息
+          this.updateCollectTags(data.data);
+        }
+      });
     },
-    beforeDestroy() {
-      window.removeEventListener('resize', this.checkFullscreen);
-      // const scrollContainer = this.$refs.scrollbarContext;
-      // scrollContainer?.removeEventListener('scroll', this.handleScrollForToc);
+    unmark() {
+      let collectTarget = {uid: this.collectInfo.collectId}
+      ContentPicksApi.collectUnMark(collectTarget).then(data => {
+        if (data?.result) {
+          this.collectInfo.collectId = null;
+          this.$Message.success("已取消收藏");
+        }
+      })
+    },
+    initReaderContent() {
+      this.spinShow = true;
+      ContentPicksApi.getArticleInfo(this.articleUri).then(data => {
+        if (!data?.result) {
+          this.spinShow = false;
+          return;
+        }
+        this.articleInfo = data.data;
+        this.collectInfo.collectId = data.data.collectId;
+        let content = data.data.content;
+        if (content?.length > 0) {
+          this.engine.setJsonValue(JSON.parse(content));
+          const pattern = /h[1-6]/;
+          let match = content.match(pattern);
+          if (match) {
+            this.renderTocData(this.engine);
+          }
+        }
+        this.spinShow = false;
+      })
     }
+  },
+  watch: {
+    articleUri() {
+      this.initReaderContent();
+    }
+  },
+  mounted() {
+    const container = this.$refs.container;
+    if (container) {
+      //实例化引擎
+      const engine = new Engine(container, {
+        // 启用插件
+        plugins,
+        // 启用卡片
+        cards,
+        // 所有的插件配置
+        config: pluginConfig,
+        // 滚动条节点
+        scrollNode: this.$refs.scrollbarContext.Node,
+        // 阅读模式
+        readonly: true
+      });
+      this.engine = engine;
+      this.initReaderContent();
+    }
+    window.addEventListener('resize', this.checkFullscreen);
+    // const scrollContainer = this.$refs.scrollbarContext;
+    // scrollContainer?.addEventListener('scroll', this.handleScrollForToc);
+    this.handleScrollForToc();
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.checkFullscreen);
+    // const scrollContainer = this.$refs.scrollbarContext;
+    // scrollContainer?.removeEventListener('scroll', this.handleScrollForToc);
   }
+}
 </script>
 
 <style scoped lang="less">
-  @import 'css/article-reader.less';
+@import 'css/article-reader.less';
 </style>

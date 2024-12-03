@@ -208,15 +208,12 @@
                   direction: ltr;
                   padding-top: 8px;
 
-
-
-
                   .tabpane-list {
                     padding: 0 10px 8px 10px;
 
                     /deep/ .ivu-list-item {
                       padding: 8px;
-                      border-radius: 4px;
+                      border-radius: 4px 4px 1px 1px;
                     }
 
                     .current-article {
@@ -655,7 +652,13 @@
         }
 
         /deep/ .ivu-list-items {
+          .current-article {
+            background: var(--dropdown-item-hover) !important;
+          }
+
           .ivu-list-item {
+            border-color: var(--border-color);
+
             .ivu-list-item-meta-description {
               .title {
                 color: var(--font-color) !important;

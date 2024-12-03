@@ -39,10 +39,21 @@ export default {
   },
 
   /**
-   * 获取收藏分组标签
+   * 获取收藏分组标签(带统计)
    * @returns {Promise<void>}
    */
-  async getCollectTags() {
+  async getCollectTagCount() {
+    return await Vue.prototype.$request({
+      url: "/cps/collect/tags/count",
+      method: 'GET'
+    });
+  },
+
+  /**
+   * 获取收藏分组标签(纯展示)
+   * @returns {Promise<void>}
+   */
+  async getCollectTagList() {
     return await Vue.prototype.$request({
       url: "/cps/collect/tags/list",
       method: 'GET'
@@ -82,6 +93,32 @@ export default {
       url: "/cps/collect/list",
       method: 'POST',
       data: queryMeta
+    });
+  },
+
+  /**
+   * 添加收藏/修改收藏分组
+   * @param collectTarget
+   * @returns {Promise<*>}
+   */
+  async collectMark(collectTarget) {
+    return await Vue.prototype.$request({
+      url: "/cps/collect/mark",
+      method: 'POST',
+      data: collectTarget
+    });
+  },
+
+  /**
+   * 取消收藏
+   * @param collectTarget
+   * @returns {Promise<*>}
+   */
+  async collectUnMark(collectTarget) {
+    return await Vue.prototype.$request({
+      url: "/cps/collect/unmark",
+      method: 'POST',
+      data: collectTarget
     });
   }
 }

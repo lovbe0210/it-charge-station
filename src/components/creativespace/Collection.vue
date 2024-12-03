@@ -102,10 +102,10 @@
             <a-tooltip :getPopupContainer="()=>tooltipContainer"
                        placement="topLeft">
               <template slot="title">
-                {{ row.targetType === 1 ? row.username + ' / ' + row.columnName : row.userName }}
+                {{ row.username + (row.targetType === 1 ? (row.columnName ? (' / ' + row.columnName) : '') : '') }}
               </template>
               <span>
-                {{ row.targetType === 1 ? row.username + ' / ' + row.columnName : row.userName }}
+                {{ row.username + (row.targetType === 1 ? (row.columnName ? (' / ' + row.columnName) : '') : '') }}
               </span>
             </a-tooltip>
           </template>
@@ -115,11 +115,15 @@
             </span>
           </template>
           <template slot-scope="{ row }" slot="action">
-            <Poptip placement="bottom-end" transfer="transfer" padding="0px">
-              <span class="iconfont collected" :title="row.uid"/>
-              <div slot="content" class="select-group">
+            <Poptip placement="bottom-end"
+                    transfer="transfer"
+                    padding="0px"
+                    @on-popper-show="collectEditShow = true"
+                    @on-popper-hide="collectEditShow = false">
+              <span class="iconfont collected"/>
+              <div slot="content" class="select-group un-select">
                 <div class="select-group-title">
-                  <p class="select-group-p1">选择分组</p>
+                  <h2 class="select-group-p1" id="selectTag">选择分组</h2>
                   <p class="select-group-p2">你可以选择分组或直接
                     <a @click="unmark(row.uid)">取消收藏</a>
                   </p>
@@ -127,14 +131,15 @@
                 <div class="select-group-tags beauty-scroll">
                   <div v-if="inputNewTag" class="select-group-tags-check">
                     <label class="select-group-tags-checkboxWrapper">
-                      <a-checkbox :checked="false"
-                                  @change="updateCollectTags(row, tag.uid)">
+                      <a-checkbox :checked="false">
                       </a-checkbox>
                       <span class="checkbox-label">
                         <Input v-model="inputTagTmp"
+                               id="newTagInput"
                                size="small"
                                :autofocus="true"
-                               @blur="completeAddTag"
+                               @on-blur="completeAddTag(row)"
+                               @on-enter="completeAddTag1(row)"
                                placeholder="请输入分组名称"
                                maxlength="30"/>
                       </span>
@@ -218,8 +223,11 @@ export default {
       ],
       // model添加
       createNewTag: false,
+      // 收藏编辑页面是否显示
+      collectEditShow: false,
       // 收藏页面添加
       inputNewTag: false,
+      // 收藏页临时值
       inputTagTmp: '',
       showErrorTag: '',
       tmpTag: {
@@ -257,10 +265,9 @@ export default {
   },
   methods: {
     selectTagList() {
-      ContentPicksApi.getCollectTags().then(data => {
+      ContentPicksApi.getCollectTagCount().then(data => {
         if (data?.result) {
           this.collectTags = data.data;
-          this.queryMeta.selectTag = -1;
         }
       })
     },
@@ -281,27 +288,35 @@ export default {
     },
     clickCell(row, column) {
       // 收藏类型 1文章 2专栏
+      let uri = '/' + row.domain;
       if (column._index === 0) {
-        if (row.type === 1) {
-          let path = row.columnId ? ('/column/' + row.columnId + '/' + row.id) : ('/article/' + row.id);
-          this.$router.push({path: path});
+        if (row.targetType === 1) {
+          uri += (row.columnUri ? ('/' + row.columnUri + '/') : '/' + row.articleUri);
         } else {
-          this.$router.push({path: '/column/' + row.id});
+          uri += ('/' + row.columnUri);
         }
+        let routeUrl = this.$router.resolve({path: uri});
+        window.open(routeUrl.href, '_blank');
         return;
       }
-
       if (column._index === 1) {
-        if (row.type === 1) {
-          let path = row.columnId ? ('/column/' + row.columnId) : ('/' + row.domain);
-          this.$router.push({path: path});
-        } else {
-          this.$router.push({path: '/' + row.domain});
+        if (row.targetType === 1) {
+          uri += row.columnUri ? ('/' + row.columnUri) : '';
         }
+        let routeUrl = this.$router.resolve({path: uri});
+        window.open(routeUrl.href, '_blank');
       }
+
+
     },
     unmark(uid) {
-      console.log("取下", uid)
+      let collectTarget = {uid}
+      ContentPicksApi.collectUnMark(collectTarget).then(data => {
+        if (data?.result) {
+          this.selectTagList();
+          this.selectCollectList();
+        }
+      })
     },
     updateCollectTags(collect, tagId) {
       // 此处传递的对象是复制过来的，并不是源对象
@@ -318,6 +333,18 @@ export default {
       for (const source of this.collectList) {
         if (source.uid === collect.uid) {
           source.tags = tags;
+          // 更新收藏分类
+          let collectTarget = {
+            uid: source.uid,
+            targetId: source.targetId,
+            targetType: source.targetType,
+            tags: source.tags
+          }
+          ContentPicksApi.collectMark(collectTarget).then(data => {
+            if (data?.result) {
+              this.selectTagList();
+            }
+          })
           break;
         }
       }
@@ -358,7 +385,7 @@ export default {
       ContentPicksApi.createCollectTag(this.tmpTag).then(data => {
         if (data?.result) {
           this.createNewTag = false;
-          ContentPicksApi.getCollectTags().then(data => {
+          ContentPicksApi.getCollectTagCount().then(data => {
             if (data?.result) {
               this.collectTags = data.data;
             }
@@ -390,10 +417,28 @@ export default {
         })
       }
     },
-    completeAddTag() {
-      this.inputNewTag = false;
-      this.inputTagTmp = '';
-
+    completeAddTag1() {
+      let element = document.getElementById("newTagInput");
+      if (element) {
+        element.click();
+      }
+    },
+    completeAddTag(collect) {
+      if (!this.inputTagTmp) {
+        return;
+      }
+      // 新建标签
+      let tagInfo = {
+        title: this.inputTagTmp
+      }
+      ContentPicksApi.createCollectTag(tagInfo).then(data => {
+        if (data?.result) {
+          this.inputNewTag = false;
+          this.inputTagTmp = null;
+          // 更新收藏分类
+          this.updateCollectTags(collect, data.data);
+        }
+      });
     }
   },
   watch: {
@@ -405,6 +450,13 @@ export default {
       this.tmpTag.uid = null;
       this.showErrorTag = '';
     },
+    collectEditShow(newVal) {
+      if (newVal) {
+        return;
+      }
+      this.inputNewTag = false;
+      this.inputTagTmp = '';
+    },
     "queryMeta.selectTag"() {
       this.selectCollectList();
     }
@@ -412,6 +464,7 @@ export default {
   mounted() {
     this.tooltipContainer = this.$refs.tooltipContainer;
     this.selectTagList();
+    this.queryMeta.selectTag = -1;
   }
 }
 </script>
