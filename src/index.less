@@ -65,6 +65,7 @@
 }
 
 .ivu-poptip-popper {
+  z-index: 1050 !important;
   .ivu-poptip-arrow {
     display: none !important;
   }
@@ -74,6 +75,17 @@
     color: var(--font-color);
     font-weight: normal;
     border-radius: 6px;
+  }
+}
+
+.normal-background {
+  .ivu-poptip-inner {
+    background: @dropdown-background;
+    color: @dark-font-color;
+  }
+
+  .ant-checkbox-wrapper .ant-checkbox-inner {
+    //background: unset;
   }
 }
 

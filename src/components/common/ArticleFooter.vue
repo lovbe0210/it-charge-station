@@ -2,8 +2,17 @@
   <div class="doc-footer" ref="tooltipContainer">
     <!-- 点赞信息 -->
     <div class="reward-module_like un-select">
-      <div class="like-btn" @click="$emit('like')">
+      <div class="like-btn"
+           v-if="userInfo.token"
+           @click="$emit('like')">
         <span :class="['like-btn-icon', ifLike ? 'liked' : 'will-like']"></span>
+      </div>
+      <div class="like-btn" v-else>
+        <auth-modal>
+          <slot>
+            <span class="like-btn-icon will-like"/>
+          </slot>
+        </auth-modal>
       </div>
       <p class="like-count">11 人点赞</p>
       <ul class="like-user-list">
@@ -137,10 +146,11 @@
 
 <script>
   import UserCard from "@/components/common/UserCard.vue";
+  import AuthModal from "@/components/common/AuthModal.vue";
 
   export default {
     name: "ArticleFooter",
-    components: { UserCard },
+    components: { UserCard, AuthModal },
     data() {
       return {
         likeUserList: [
@@ -218,6 +228,9 @@
           return this.likeUserList.slice(0, 13);
         }
         return this.likeUserList;
+      },
+      userInfo() {
+        return this.$store.state.userInfo;
       }
     },
     props: ['ifLike'],

@@ -85,18 +85,6 @@
                   <div class="tabs-tabpane tree" v-show="isColumnView && navShowType === 'tree'">
                       <Tree :data="dirData" @on-select-change="selectTreeNode" class="tabpane-tree">
                       </Tree>
-<!--                      <div v-for="item in dirData" :key="item.uid"
-                           :class="['tree-content',item.type===1?'single-node-tree':item.type===2?'composite-nodes-tree':'']">
-                        <div v-if="item.type === 1" class="single-tree-node" @click="routeNavigate(item.uri)">
-                          {{item.title}}
-                        </div>
-                        <div v-if="item.type === 2" class="composite-tree-node">
-                          <Tree :data="new Array(item)"
-                                :children-key="item.uid + ''"
-                                @on-select-change="selectTreeNode">
-                          </Tree>
-                        </div>
-                      </div>-->
                   </div>
                 </div>
               </div>

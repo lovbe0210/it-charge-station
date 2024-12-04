@@ -97,6 +97,17 @@ export default {
   },
 
   /**
+   * 获取收藏详情
+   * @returns {Promise<void>}
+   */
+  async getCollectInfo(collectId) {
+    return await Vue.prototype.$request({
+      url: "/cps/collect/info/" + collectId,
+      method: 'GET'
+    });
+  },
+
+  /**
    * 添加收藏/修改收藏分组
    * @param collectTarget
    * @returns {Promise<*>}
