@@ -488,7 +488,16 @@ export default {
       })
     },
     likeMark() {
-
+      let likeAction = {
+        targetId: this.articleInfo.uid,
+        targetType: 1,
+        action: this.articleInfo.ifLike ? 0 : 1
+      }
+      ContentPicksApi.contentLikeMark(likeAction).then(data => {
+        if (data?.result) {
+          this.articleInfo.ifLike = !this.articleInfo.ifLike;
+        }
+      })
     },
     initReaderContent() {
       this.spinShow = true;

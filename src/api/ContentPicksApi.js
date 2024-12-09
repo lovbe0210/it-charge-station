@@ -131,6 +131,19 @@ export default {
       method: 'POST',
       data: collectTarget
     });
+  },
+
+  /**
+   * 内容点赞/取消点赞
+   * @param collectTarget
+   * @returns {Promise<*>}
+   */
+  async contentLikeMark(likeAction) {
+    return await Vue.prototype.$request({
+      url: "/sl/content/like",
+      method: 'POST',
+      data: likeAction
+    });
   }
 }
 
