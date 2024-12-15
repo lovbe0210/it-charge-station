@@ -109,7 +109,13 @@
               </div>
               <!-- 文章页脚 -->
               <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'">
-                <article-footer :ifLike="articleInfo.ifLike" @like="likeMark"/>
+                <article-footer :ifLike="articleInfo.ifLike"
+                                :likeUserList="articleInfo.likeUserList"
+                                :likeCount="articleInfo.likeCount"
+                                :updateTime="articleInfo.updateTime"
+                                :viewCount="articleInfo.viewCount"
+                                :authorInfo="authorInfo"
+                                @like="likeMark"/>
               </div>
               <!-- 评论 -->
               <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'">
@@ -250,6 +256,7 @@
 import Engine, {$} from '@aomao/engine'
 import {plugins, cards, pluginConfig} from "./common/editor/config"
 import {getTocData} from "./common/editor/utils"
+import { cloneDeep } from '@/utils/emoji'
 import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
 import ArticleFooter from "@/components/common/ArticleFooter"
 import ArticleSetting from "@/components/common/ArticleSetting"
@@ -286,7 +293,7 @@ export default {
       engine: null
     }
   },
-  props: ['sidebarWidth', 'columnUri', 'articleUri'],
+  props: ['sidebarWidth', 'columnUri', 'articleUri', 'authorInfo'],
   computed: {
     headerWidth() {
       return 'calc(100vw - ' + ((this.fullScreen ? 0 : this.sidebarWidth) + 'px');
@@ -495,6 +502,13 @@ export default {
       }
       ContentPicksApi.contentLikeMark(likeAction).then(data => {
         if (data?.result) {
+          this.articleInfo.likeCount = this.articleInfo.likeCount + (this.articleInfo.ifLike ? -1 : 1);
+          if (this.articleInfo.ifLike) {
+            // 取消点赞
+            this.articleInfo.likeUserList = this.articleInfo.likeUserList?.filter(user => user.uid !== this.userInfo.uid);
+          } else {
+            this.articleInfo.likeUserList.unshift(cloneDeep(this.userInfo));
+          }
           this.articleInfo.ifLike = !this.articleInfo.ifLike;
         }
       })

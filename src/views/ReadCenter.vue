@@ -96,6 +96,7 @@
         <router-view :sidebarWidth="sidebarWidth"
                      :articleUri="articleUri"
                      :columnUri="columnUri"
+                     :authorInfo="authorInfo"
                      :docStyle="docStyle">
         </router-view>
       </div>

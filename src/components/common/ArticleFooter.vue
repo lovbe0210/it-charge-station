@@ -1,7 +1,7 @@
 <template>
-  <div class="doc-footer" ref="tooltipContainer">
+  <div class="doc-footer un-select" ref="tooltipContainer">
     <!-- 点赞信息 -->
-    <div class="reward-module_like un-select">
+    <div class="reward-module_like">
       <div class="like-btn"
            v-if="userInfo.token"
            @click="$emit('like')">
@@ -14,7 +14,7 @@
           </slot>
         </auth-modal>
       </div>
-      <p class="like-count">11 人点赞</p>
+      <p class="like-count" v-if="likeCount > 0">{{likeCount}} 人点赞</p>
       <ul class="like-user-list">
         <li v-for="user in showUserList" :key="user.userId">
           <user-card :userInfo="user" :popoverContainer="tooltipContainer" class="user-info-card-box">
@@ -47,7 +47,7 @@
             <div class="like-btn">
               <span class="like-btn-icon will-like"></span>
             </div>
-            <p class="like-count">11 人点赞</p>
+            <p class="like-count" v-if="likeCount > 0">{{likeCount}} 人点赞</p>
             <ul class="like-user-list">
               <li v-for="user in likeUserList" :key="user.userId">
                 <user-card :userInfo="user" :popoverContainer="tooltipContainer" class="user-info-card-box">
@@ -71,31 +71,31 @@
             <div class="meta-item">
               <span class="iconfont author"></span>
               <span class="author-name item-content" style="cursor: pointer;">
-                <a href="/ximentata">少多怪</a>
+                <a :href="'/' + authorInfo.domain" target="_blank" t>{{authorInfo.username}}</a>
               </span>
             </div>
             <a-tooltip placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer">
               <template slot="title">
-                更新于 2024-02-25 17:56:07
+                更新于 {{ formatDate(new Date(updateTime), 'yyyy-MM-dd HH:mm:ss') }}
               </template>
               <div class="meta-item">
                 <span class="iconfont clock"></span>
                 <span class="item-text item-content">
-                02-25 17:56
-              </span>
+                  {{ formatTime(updateTime) }}
+                </span>
               </div>
             </a-tooltip>
             <a-tooltip placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer">
               <template slot="title">
-                文档浏览次数：529
+                文档浏览次数：{{ viewCount }}
               </template>
               <div class="meta-item">
                 <span class="iconfont read"></span>
-                <span class="item-content">506</span>
+                <span class="item-content">{{ formatNumber(viewCount) }}</span>
               </div>
             </a-tooltip>
             <div class="meta-item">
-              <span class="item-content">IP 属地浙江</span>
+              <span class="item-content">IP 属地：浙江</span>
             </div>
             <div class="meta-item" style="margin-left: 12px;">
               <span class="item-content">
@@ -147,77 +147,14 @@
 <script>
   import UserCard from "@/components/common/UserCard.vue";
   import AuthModal from "@/components/common/AuthModal.vue";
+  import { formatTime, formatNumber } from "@/utils/emoji"
+  import { formatDate } from "@/utils/utils.js"
 
   export default {
     name: "ArticleFooter",
     components: { UserCard, AuthModal },
     data() {
       return {
-        likeUserList: [
-          {
-            userId: 1,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/01.jpg')
-          },
-          {
-            userId: 2,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/04.jpg')
-          },
-          {
-            userId: 3,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/03.jpg')
-          }, {
-            userId: 4,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/04.gif')
-          }, {
-            userId: 5,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/05.jpg')
-          }, {
-            userId: 6,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/06.jpg')
-          }, {
-            userId: 7,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/07.jpg')
-          }, {
-            userId: 8,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/08.jpg')
-          }, {
-            userId: 9,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/09.jpg')
-          }, {
-            userId: 10,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/10.jpg')
-          }, {
-            userId: 11,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/11.jpg')
-          }, {
-            userId: 12,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/12.jpg')
-          }, {
-            userId: 13,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/13.jpg')
-          }, {
-            userId: 14,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/14.jpg')
-          }, {
-            userId: 15,
-            username: '融码一生（IT 技术领域）',
-            avatar: require('@/assets/avatar/15.jpg')
-          }
-        ],
         moreLikeUser: false,
         tooltipContainer: null
       }
@@ -233,7 +170,12 @@
         return this.$store.state.userInfo;
       }
     },
-    props: ['ifLike'],
+    props: ['ifLike', "likeUserList", "likeCount", "updateTime", "viewCount", "authorInfo"],
+    methods: {
+      formatTime,
+      formatDate,
+      formatNumber
+    },
     mounted() {
       this.tooltipContainer = this.$refs.tooltipContainer;
     }
@@ -242,8 +184,12 @@
 
 <style scoped lang="less">
   .reward-module_like {
+    min-height: 156px;
     text-align: center;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
     .like-btn {
       position: relative;
