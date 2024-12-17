@@ -59,7 +59,7 @@ export const comment = [
           id: '22',
           parentId: '2',
           content:
-            '回复 <span style="color: #008Ac5;">@别扰我清梦*ぁ:</span> 看完打了一个哈切。。。会传染。。。[委屈]',
+            '回复 <a style="color: #008Ac5;" href="/lovbe" target="_blank">@别扰我清梦*ぁ</a>: 看完打了一个哈切。。。会传染。。。[委屈]',
           address: '来自广州',
           likes: 9,
           ilike: false,

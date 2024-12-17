@@ -119,7 +119,7 @@
               </div>
               <!-- 评论 -->
               <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'">
-                <reply-comment/>
+                <reply-comment :targetId="articleInfo.uid"/>
               </div>
             </div>
           </div>

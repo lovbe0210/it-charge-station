@@ -19,8 +19,8 @@
         <li v-for="user in showUserList" :key="user.userId">
           <user-card :userInfo="user" :popoverContainer="tooltipContainer" class="user-info-card-box">
             <slot>
-              <b-avatar :src="user.avatar" variant="light" href="javascript:void(0)" size="2.2rem">
-                <span v-if="!user.avatar">{{ user.username }}</span>
+              <b-avatar :src="fileUrl(user.avatarUrl)" variant="light" href="javascript:void(0)" size="2.2rem">
+                <span v-if="!user.avatarUrl">{{ user.username }}</span>
               </b-avatar>
             </slot>
           </user-card>
@@ -94,8 +94,8 @@
                 <span class="item-content">{{ formatNumber(viewCount) }}</span>
               </div>
             </a-tooltip>
-            <div class="meta-item">
-              <span class="item-content">IP 属地：浙江</span>
+            <div class="meta-item" v-show="userInfo.recentLoginAddress">
+              <span class="item-content">IP 属地：{{ userInfo.recentLoginAddress}}</span>
             </div>
             <div class="meta-item" style="margin-left: 12px;">
               <span class="item-content">
@@ -172,6 +172,9 @@
     },
     props: ['ifLike', "likeUserList", "likeCount", "updateTime", "viewCount", "authorInfo"],
     methods: {
+      fileUrl(path) {
+        return this.fileService + path;
+      },
       formatTime,
       formatDate,
       formatNumber
