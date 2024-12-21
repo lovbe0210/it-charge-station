@@ -971,19 +971,55 @@
       }
     }
   }
+
+  /deep/ .input-lock {
+    border-color: var(--rj-editor-bg-color) !important;
+    color: var(--font-color);
+    background: var(--rj-editor-bg-color);
+  }
+
+  /deep/ .comment-box {
+    .u-editor {
+      border-color: var(--rj-editor-bg-color);
+      background: var(--rj-editor-bg-color);
+    }
+
+    .active {
+      border-color: @primary-color;
+    }
+  }
+
+  /deep/ .reply-list {
+    background: var(--dropdown-item-hover);
+  }
 }
 
 .normal-background {
-  /deep/ .comment-box {
-    color: @dark-font-color !important;
-    .u-editor {
-      background: #f2f3f5;
+  /deep/ .input-lock {
+    color: @dark-font-color;
+    border: 1px solid @comment-reply-editor-background;
+    background: @comment-reply-editor-background;
+  }
+
+  /deep/ .comment-list {
+    .user-card {
+      .name {
+        color: @dark-font-color;
+      }
+    }
+
+    .u-fold {
+      color: @dark-font-color;
     }
   }
 
   /deep/ .comment-box .user-info {
       color: @dark-font-color;
     }
+
+  /deep/ .rich-input {
+    color: @dark-font-color;
+  }
 
   /deep/ .reply-list {
     background: #fcfbfb;

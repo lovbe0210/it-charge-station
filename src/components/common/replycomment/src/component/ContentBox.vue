@@ -1,34 +1,34 @@
 <template>
   <div class="comment" :class="{ 'reply-from-comment': commentReply?.parentId }" ref="tooltipContainer">
     <div class="comment-sub">
-      <user-card :userInfo="userInfo" :popoverContainer="this.$refs.tooltipContainer" class="user-info-card-box">
+      <user-card :userInfo="userInfo" :popoverContainer="contentBoxParam.popoverContainer" class="user-info-card-box">
         <slot>
-          <b-avatar :src="commentReply.user.avatar" variant="light" size="2.5rem">
-            <span v-if="!commentReply.user.avatar">{{ commentReply.user.username }}</span>
+          <b-avatar :src="fileUrl(commentReply.userInfo.avatarUrl)" variant="light" size="2.5rem">
+            <span v-if="!commentReply.userInfo.avatarUrl">{{ commentReply.userInfo.username }}</span>
           </b-avatar>
         </slot>
       </user-card>
-      <a-popover placement="topLeft"
+<!--      <a-popover placement="topLeft"
                  trigger="hover"
                  :getPopupContainer="()=>this.$refs.tooltipContainer"
                  overlayClassName="user-info-card-box">
         <template slot="content">
 
         </template>
-        <!-- :to="data.user.homeLink" -->
+        &lt;!&ndash; :to="data.user.homeLink" &ndash;&gt;
 
-      </a-popover>
+      </a-popover>-->
     </div>
     <div class="comment-primary">
       <div class="comment-main">
         <div class="user-info">
-          <user-card :userInfo="userInfo" :popoverContainer="this.$refs.tooltipContainer">
+          <user-card :userInfo="commentReply.userInfo" :popoverContainer="contentBoxParam.popoverContainer">
             <slot>
               <div class="username">
-                <span class="name" style="max-width: 10em">{{ commentReply.user.username }}</span>
+                <span class="name" style="max-width: 10em">{{ commentReply.userInfo.username }}</span>
                 <!-- level -->
                 <span blank="true" class="rank">
-                  <span :class="['iconfont',  'icon-level' + commentReply.user.level]"></span>
+                  <span :class="['iconfont',  'icon-level' + commentReply.userInfo.level]"></span>
               </span>
               </div>
             </slot>
@@ -40,7 +40,7 @@
           <div class="u-fold">
             <div ref="textBox" class="txt-box" :class="{ 'over-hidden': !unfold }">
               <div ref="divBox">
-                <div v-html="this.data.content"></div>
+                <div v-html="commentReply.content"></div>
                 <div class="imgbox" v-if="commentReply.contentImg" style="display: flex;">
                   <b-img :src="commentReply.contentImg" @click="previewImage"
                          style="height: 72px; margin: 8px 4px; border-radius: 2px; cursor: pointer"
@@ -67,10 +67,10 @@
             </div>
           </div>
           <!-- 操作栏 -->
-          <div class="item" v-if="commentReply.user.uid === userInfo.uid">
+          <div class="item" v-if="commentReply.userInfo.uid === userInfo.uid">
             <a-popover placement="leftTop"
                        trigger="click"
-                       :getPopupContainer="()=>this.$refs.tooltipContainer"
+                       :getPopupContainer="contentBoxParam.popoverContainer"
                        overlayClassName="operate-more">
               <template slot="content">
                 <div @click="contentBoxParam.remove(commentReply.id)">
@@ -86,7 +86,7 @@
           <InputBox
             ref="commentRef"
             :parent-id="parentId"
-            :placeholder="'回复@' + commentReply.user.username"
+            :placeholder="'回复@' + commentReply.replyUserInfo.username"
             :reply="commentReply"
             content-btn="发布"
             style="margin-top: 12px"
@@ -130,7 +130,7 @@
         type: Object
       },
       parentId: {
-        type: String
+        type: Number
       },
       contentBoxParam: {
         type: Object
@@ -149,6 +149,9 @@
       UserCard
     },
     methods: {
+      fileUrl(path) {
+        return this.fileService + path;
+      },
       //点击回复按钮打开输入框
       reply() {
         this.active = !this.active
@@ -194,6 +197,7 @@
     },
     created() {
       this.commentReply = cloneDeep(this.data);
+      console.log(this.contentBoxParam)
     },
     mounted() {
       this.observer = new ResizeObserver(entry => {

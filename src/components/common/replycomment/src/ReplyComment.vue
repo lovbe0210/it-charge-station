@@ -2,25 +2,48 @@
   <div class="u-comment" ref="popoverContainer">
     <div class="comment-form">
       <div class="reply-header">
-        所有评论（{{total}}）
+        所有评论（{{ total }}）
       </div>
       <div class="content">
         <div class="avatar-box">
-          <b-avatar :src="userInfo.avatar" variant="light" to="/user" size="2.5rem">
-            <span v-if="!userInfo.avatar">{{ userInfo.username }}</span>
+          <b-avatar v-if="userInfo?.token && userInfo.token.length == 32"
+                    :src="fileUrl(userInfo.avatarUrl)"
+                    variant="light"
+                    :to="'/' + userInfo.domain"
+                    size="2.5rem">
+            <span v-if="!userInfo.avatarUrl">{{ userInfo.username }}</span>
+          </b-avatar>
+          <b-avatar v-else
+                    variant="light"
+                    size="2.5rem">
+            <span class="iconfont author2 un-login-avatar"></span>
           </b-avatar>
         </div>
-        <InputBox @submit="submit"
+        <InputBox v-if="userInfo?.token && userInfo.token.length == 32"
+                  @submit="submit"
                   content-btn="发表评论"
                   cancel-btn="取消"/>
+        <div class="input-lock" v-else>
+          <span class="lock-tip un-select">
+            <auth-modal>
+              <slot>
+                <a href="javascript: void(0)">登陆&nbsp;</a>
+              </slot>
+            </auth-modal>
+            <span>后发表评论</span>
+          </span>
+        </div>
       </div>
     </div>
     <div class="comment-list-wrapper">
-      <div class="comment-list">
+      <div class="comment-list" v-show="commentList && commentList.length > 0">
         <u-comment v-for="comment in commentList"
-                   :key="comment.id"
+                   :key="comment.uid"
                    :data="comment"
                    :contentBoxParam="contentBoxParam"/>
+      </div>
+      <div v-if="!commentList || commentList.length == 0" class="comment-empty un-select">
+        <span>没有更多评论</span>
       </div>
     </div>
   </div>
@@ -28,9 +51,10 @@
 
 <script>
 import {createObjectURL} from '@/utils/emoji'
-import {getComment} from '@/assets/emoji/comment';
 import InputBox from './component/InputBox'
 import UComment from './component/Comment'
+import AuthModal from "@/components/common/AuthModal.vue";
+import ContentPicksApi from "@/api/ContentPicksApi";
 
 export default {
   name: 'CommentFull',
@@ -38,7 +62,7 @@ export default {
     return {
       tempId: 100,
       commentList: [],
-      total: '0'
+      total: 0
     }
   },
   computed: {
@@ -48,16 +72,21 @@ export default {
     contentBoxParam() {
       return {
         remove: this.remove,
-        updateTotal: this.updateTotal
+        updateTotal: this.updateTotal,
+        popoverContainer: this.popoverContainer
       }
     }
   },
   props: ["targetId"],
   components: {
+    AuthModal,
     InputBox,
     UComment
   },
   methods: {
+    fileUrl(path) {
+      return this.fileService + path;
+    },
     /**
      * 提交评论
      */
@@ -102,14 +131,25 @@ export default {
       this.total = this.total < 0 ? 0 : this.total;
     }
   },
-  created() {
-    // 初始化评论列表
-    this.commentList = getComment(1, 10);
-    this.total = this.commentList.length;
+  watch: {
+    "targetId"(newVal) {
+      // 更新评论列表
+      let targetCommentInfo = {
+        targetId: newVal,
+        offset: 0,
+        limit: 50
+      }
+      ContentPicksApi.getCommentList(targetCommentInfo).then(data => {
+        if (data?.result) {
+          this.total = data.data.total;
+          this.commentList = data.data.list;
+        }
+      })
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  @import './style/comment.less';
+@import './style/comment.less';
 </style>

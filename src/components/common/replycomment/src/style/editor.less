@@ -6,8 +6,8 @@
 
   .u-editor {
     transition: all 0.3s;
-    border: 1px solid @border-color_normal;
-    background: var(--rj-editor-bg-color);
+    border: 1px solid @comment-reply-editor-background;
+    background: @comment-reply-editor-background;
     border-radius: 4px;
     font-size: 14px;
 
@@ -23,6 +23,7 @@
       // 是否可以手动改变大小
       background-position: 120% -10px;
       transition: background 0.3s;
+      letter-spacing: .03em;
       .mentionUser {
         background-color: red;
       }

@@ -144,6 +144,19 @@ export default {
       method: 'POST',
       data: likeAction
     });
+  },
+
+  /**
+   * 内容点赞/取消点赞
+   * @param collectTarget
+   * @returns {Promise<*>}
+   */
+  async getCommentList(targetCommentInfo) {
+    return await Vue.prototype.$request({
+      url: "/sl/target/comments",
+      method: 'POST',
+      data: targetCommentInfo
+    });
   }
 }
 

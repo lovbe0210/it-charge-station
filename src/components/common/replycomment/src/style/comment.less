@@ -1,7 +1,6 @@
 @import "../../../../css/common-var.less";
+
 .u-comment {
-  //background-color: #ffffff;
-  //color: #262626;
   border-radius: 4px;
   // 设置的边框和内边距的值是包含在width内
   box-sizing: border-box;
@@ -28,12 +27,41 @@
 
       .avatar-box {
         margin-right: 16px;
+
+        .un-login-avatar {
+          font-size: 22px;
+          color: #B2B9C1;
+        }
+      }
+
+      .input-lock {
+        min-height: 70px;
+        max-height: 80px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        border-radius: 4px;
+        font-size: 14px;
+
+        .lock-tip {
+          display: flex;
+          flex-wrap: nowrap;
+        }
       }
     }
   }
 
   .comment-list-wrapper {
     padding: 40px 0 16px;
+
+    .comment-empty {
+      color: var(--title-color);
+      display: flex;
+      justify-content: center;
+      min-height: 50px;
+    }
 
     .title {
       display: flex;
@@ -46,11 +74,5 @@
       justify-content: space-between;
       padding-bottom: 8px;
     }
-  }
-}
-
-html.dark {
-  .u-comment {
-    color: var(--u-color-white);
   }
 }

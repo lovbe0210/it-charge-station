@@ -2,7 +2,7 @@
   <div class="user-card">
     <a-popover placement="topLeft"
                trigger="hover"
-               :getPopupContainer="()=>popoverContainer"
+               :getPopupContainer="() => popoverContainer"
                overlayClassName="user-info-card-box">
       <template slot="content">
         <div class="user-card-body un-select">
@@ -66,6 +66,7 @@ export default {
   props: ['popoverContainer', 'userInfo'],
   mounted() {
     // this.cardContainer = this.$refs.cardContainer;
+    console.log(this.popoverContainer)
   },
   methods: {
     fileUrl(path) {

@@ -71,6 +71,9 @@ export function formatTime(timestamp) {
  * @returns {string}
  */
 export function formatNumber(num) {
+  if (!num) {
+    return 0;
+  }
   if (num > 1000 && num <= 10000) {
     return (num / 1000).toFixed(1) + 'K';
   } else if (num > 10000) {
