@@ -157,7 +157,29 @@ export default {
       method: 'POST',
       data: targetCommentInfo
     });
+  },
+
+  /**
+   * 评论/回复
+   * @param collectTarget
+   * @returns {Promise<*>}
+   */
+  async replyComment(formData) {
+    return await Vue.prototype.$request.put("/sl/target/comment", formData);
+  },
+
+  /**
+   * 删除评论
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async deleteCommentReply(targetId) {
+    return await Vue.prototype.$request({
+      url: "/sl/target/delete/" + targetId,
+      method: 'GET'
+    });
   }
+
 }
 
 

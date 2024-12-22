@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import {createObjectURL} from '@/utils/emoji'
 import InputBox from './component/InputBox'
 import UComment from './component/Comment'
 import AuthModal from "@/components/common/AuthModal.vue";
@@ -74,6 +73,7 @@ export default {
     },
     contentBoxParam() {
       return {
+        targetId: this.targetId,
         remove: this.remove,
         updateTotal: this.updateTotal,
         popoverContainer: this.$refs.popoverContainer
@@ -94,35 +94,52 @@ export default {
      * 提交评论
      */
     submit(comment, clear) {
+      debugger
       // 添加评论
       if (!comment) {
         return;
       }
-      // TODO 开发完成后就不需要生成URL了，返回云端地址
-      if (comment.file) {
-        comment.contentImg = createObjectURL(comment.file)
+      let formData = new FormData();
+      formData.append('targetId', this.targetId);
+      if (comment.parentId) {
+        formData.append('parentId', comment.parentId);
       }
-      setTimeout(() => {
-        // 提交评论添加到评论列表
-        this.commentList.unshift(comment);
-        this.total++;
-        // 清空输入框内容
-        clear();
-        this.$Message.success('评论成功!')
-      }, 200)
+      formData.append('content', comment.content);
+      if (comment.contentImgFile) {
+        formData.append('contentImgFile', comment.contentImgFile);
+      }
+      if (comment.replyUserId) {
+        formData.append('replyUserId', comment.replyUserId);
+      }
+      ContentPicksApi.replyComment(formData).then(data => {
+        if (data?.result) {
+          // 提交评论添加到评论列表
+          this.commentList.unshift(data.data);
+          this.total++;
+          // 清空输入框内容
+          clear();
+          this.$Message.success('评论成功!')
+        }
+      })
     },
     /**
      * 删除当前评论
      * @param comment
      */
-    remove(id) {
-      if (!id) {
+    remove(uid) {
+      if (!uid) {
         return;
       }
-      let index = this.commentList.findIndex(item => item.id === id)
+      let index = this.commentList.findIndex(item => item.uid === uid)
       if (index !== -1) {
-        this.commentList.splice(index, 1);
-        this.total--;
+        // 删除评论
+        ContentPicksApi.deleteCommentReply(uid).then(data => {
+          if (data?.result) {
+            this.commentList.splice(index, 1);
+            this.total--;
+            this.$Message.success("删除成功");
+          }
+        })
       }
     },
     /**

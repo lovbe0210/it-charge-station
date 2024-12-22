@@ -332,6 +332,23 @@
         border-right: 1px solid @grey-white-font-color;
       }
     }
+
+    .reader-route-view {
+      background: @dropdown-background;
+      color: @dark-font-color;
+
+      /deep/ .operate-more {
+        cursor: pointer;
+
+        .ant-popover-inner-content {
+          padding: 0;
+
+          .del {
+            padding: 12px 16px;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -676,6 +693,11 @@
         }
       }
     }
+  }
+
+  .reader-route-view {
+    background: unset !important;
+    color: var(--font-color) !important;
   }
 
   /deep/ .full-screen {

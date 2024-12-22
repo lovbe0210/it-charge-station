@@ -35,8 +35,9 @@
 </template>
 
 <script>
-import {createObjectURL, cloneDeep} from '@/utils/emoji'
+import {cloneDeep} from '@/utils/emoji'
 import ContentBox from './ContentBox.vue'
+import ContentPicksApi from "@/api/ContentPicksApi";
 
 export default {
   name: 'UComment',
@@ -57,7 +58,7 @@ export default {
       type: Object
     },
     contentBoxParam: {
-      // remove、addTotal、popoverContainer
+      // targetId、remove、addTotal、popoverContainer
       type: Object
     }
   },
@@ -101,29 +102,39 @@ export default {
       if (!comment) {
         return;
       }
-      // TODO 开发完成后就不需要生成URL了，返回云端地址
-      if (comment.file) {
-        comment.contentImg = createObjectURL(comment.file)
+      debugger
+      let formData = new FormData();
+      formData.append('targetId', this.contentBoxParam?.targetId);
+      if (comment.parentId) {
+        formData.append('parentId', comment.parentId);
       }
-
-      setTimeout(() => {
-        // 提交评论添加到评论列表
-        if (this.collapse) {
-          this.replyList.splice(2, 0, comment);
-        } else if (!this.collapse && this.total < 5) {
-          this.replyList.unshift(comment);
-        } else if (!this.collapse && this.total >= 5) {
-          this.replyList.splice(this.pageSize * this.currentPage - 1, 0, comment);
-        } else {
-          this.replyList.unshift(comment);
+      formData.append('content', comment.content);
+      if (comment.contentImgFile) {
+        formData.append('contentImgFile', comment.contentImgFile);
+      }
+      if (comment.replyUserId) {
+        formData.append('replyUserId', comment.replyUserId);
+      }
+      ContentPicksApi.replyComment(formData).then(data => {
+        if (data?.result) {
+          // 提交评论添加到评论列表
+          if (this.collapse) {
+            this.replyList.splice(2, 0, data.data);
+          } else if (!this.collapse && this.total < 3) {
+            this.replyList.unshift(data.data);
+          } else if (!this.collapse && this.total >= 3) {
+            this.replyList.splice(this.pageSize * this.currentPage - 1, 0, data.data);
+          } else {
+            this.replyList.unshift(data.data);
+          }
+          this.total++;
+          // 外层评论总数也需要加1
+          this.contentBoxParam.updateTotal(1)
+          // 清空输入框内容
+          clear();
+          this.$Message.success('评论成功!')
         }
-        this.total++;
-        // 外层评论总数也需要加1
-        this.contentBoxParam.updateTotal(1)
-        // 清空输入框内容
-        clear();
-        this.$Message.success('评论成功!')
-      }, 200)
+      })
     },
 
     /**
