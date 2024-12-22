@@ -66,11 +66,14 @@ export default {
   props: ['popoverContainer', 'userInfo'],
   mounted() {
     // this.cardContainer = this.$refs.cardContainer;
-    console.log(this.popoverContainer)
+    // console.log(this.popoverContainer)
   },
   methods: {
     fileUrl(path) {
       return this.fileService + path;
+    },
+    getPopupContainer() {
+      return document.getElementById("popoverContainer")
     }
   }
 }

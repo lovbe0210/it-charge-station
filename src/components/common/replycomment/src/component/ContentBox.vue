@@ -70,7 +70,7 @@
           <div class="item" v-if="commentReply.userInfo.uid === userInfo.uid">
             <a-popover placement="leftTop"
                        trigger="click"
-                       :getPopupContainer="contentBoxParam.popoverContainer"
+                       :getPopupContainer="() => contentBoxParam.popoverContainer"
                        overlayClassName="operate-more">
               <template slot="content">
                 <div @click="contentBoxParam.remove(commentReply.id)">
@@ -197,7 +197,7 @@
     },
     created() {
       this.commentReply = cloneDeep(this.data);
-      console.log(this.contentBoxParam)
+      console.log(this.contentBoxParam.popoverContainer)
     },
     mounted() {
       this.observer = new ResizeObserver(entry => {

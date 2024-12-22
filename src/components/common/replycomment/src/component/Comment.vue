@@ -65,7 +65,8 @@ export default {
     param() {
       return {
         remove: this.remove,
-        submit: this.submit
+        submit: this.submit,
+        popoverContainer: this.contentBoxParam.popoverContainer
       };
     },
     userInfo() {

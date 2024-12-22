@@ -73,7 +73,7 @@ export default {
       return {
         remove: this.remove,
         updateTotal: this.updateTotal,
-        popoverContainer: this.popoverContainer
+        popoverContainer: this.$refs.popoverContainer
       }
     }
   },

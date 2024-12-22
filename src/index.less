@@ -81,6 +81,7 @@
 .normal-background {
   .ivu-poptip-inner {
     background: @dropdown-background;
+    border-color: @border-color_normal;
     color: @dark-font-color;
   }
 
@@ -89,8 +90,38 @@
   }
 
   .user-info-card-box .ant-popover-content .ant-popover-inner .ant-popover-inner-content {
-    color: @dark-font-color;
+    .user-card-body {
+      .user-card-userInfos {
+        color: @dark-font-color;
+        .username {
+          color: @dark-font-color;
+        }
+
+        .signature {
+          color: @light-font-color;
+        }
+      }
+    }
+
+    .user-card-footer {
+      .follow-fans .footer-item {
+        color: @light-font-color;
+
+        .number {
+          color: @grey-white-font-color;
+        }
+      }
+
+      .actions .ivu-btn {
+        color: @dark-font-color;
+
+        &:hover {
+          background: @dropdown-background;
+        }
+      }
+    }
   }
+
 }
 
 .ivu-input {
