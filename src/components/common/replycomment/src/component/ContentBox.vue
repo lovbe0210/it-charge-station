@@ -8,18 +8,8 @@
           </b-avatar>
         </slot>
       </user-card>
-<!--      <a-popover placement="topLeft"
-                 trigger="hover"
-                 :getPopupContainer="()=>this.$refs.tooltipContainer"
-                 overlayClassName="user-info-card-box">
-        <template slot="content">
-
-        </template>
-        &lt;!&ndash; :to="data.user.homeLink" &ndash;&gt;
-
-      </a-popover>-->
     </div>
-    <div class="comment-primary">
+    <div class="comment-primary un-select">
       <div class="comment-main">
         <div class="user-info">
           <user-card :userInfo="commentReply.userInfo" :popoverContainer="contentBoxParam.popoverContainer">
@@ -54,17 +44,34 @@
           </div>
         </div>
         <div class="action-box">
-          <!-- 点赞 -->
           <div class="like-and-reply">
-            <div class="item" @click="like">
-              <span :class="['iconfont', 'like', commentReply.ilike ? 'ilike' : '']"></span>
-              <span v-if="data.likes != 0">{{ commentReply.likes }}</span>
+            <!-- 点赞 -->
+            <div class="item" @click="like" v-if="userInfo?.token && userInfo.token.length === 32">
+              <span :class="['iconfont', 'like', commentReply.iflike ? 'ilike' : '']"></span>
+              <span v-if="data.likeCount != 0">{{ commentReply.likeCount }}</span>
             </div>
+            <auth-modal v-else :normalBackground="docStyle.asyncTheme ? 0 : 1">
+              <slot>
+                <div class="item">
+                  <span class="iconfont like"></span>
+                  <span v-if="data.likeCount != 0">{{ commentReply.likeCount }}</span>
+                </div>
+              </slot>
+            </auth-modal>
+
             <!-- 回复 -->
-            <div class="item" :class="{ active }" @click="reply">
+            <div class="item" :class="{ active }" @click="reply" v-if="userInfo?.token && userInfo.token.length === 32">
               <span class="iconfont reply"></span>
               <span class="reply-btn">{{ active ? '取消回复' : '回复' }}</span>
             </div>
+            <auth-modal v-else :normalBackground="docStyle.asyncTheme ? 0 : 1">
+              <slot>
+                <div class="item">
+                  <span class="iconfont reply"></span>
+                  <span class="reply-btn">回复</span>
+                </div>
+              </slot>
+            </auth-modal>
           </div>
           <!-- 操作栏 -->
           <div class="item" v-if="commentReply.userInfo.uid === userInfo.uid">
@@ -105,6 +112,7 @@
   import InputBox from './InputBox';
   import Pswp from "@/components/common/imagepreview/index"
   import UserCard from "@/components/common/UserCard.vue";
+  import AuthModal from "@/components/common/AuthModal.vue";
 
   export default {
     name: 'ContentBox',
@@ -140,11 +148,15 @@
      /* contents() {
         return useEmojiParse(emoji.allEmoji, this.data.content);
       },*/
+      docStyle() {
+        return this.$store.state.docStyle;
+      },
       userInfo() {
         return this.$store.state.userInfo;
       }
     },
     components: {
+      AuthModal,
       InputBox,
       UserCard
     },
@@ -197,7 +209,6 @@
     },
     created() {
       this.commentReply = cloneDeep(this.data);
-      console.log(this.contentBoxParam.popoverContainer)
     },
     mounted() {
       this.observer = new ResizeObserver(entry => {

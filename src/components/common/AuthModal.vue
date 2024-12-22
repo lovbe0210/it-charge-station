@@ -10,7 +10,7 @@
            :mask-closable="false"
            :width="650"
            :styles="{top: '20%'}"
-           class-name="login-box">
+           :class-name="normalBackground ? 'login-box normal-background' : 'login-box'">
       <div class="auth-body">
         <div class="login-body">
           <div class="site-flag">
@@ -194,7 +194,7 @@ export default {
       sendCodeInterval: null
     }
   },
-  props: ['quickRegister'],
+  props: ['quickRegister', 'normalBackground'],
   components: {
     SliderValidation
   },
@@ -570,6 +570,10 @@ export default {
 
         button:first-child {
           margin-right: 10%;
+        }
+
+        .ivu-btn-default {
+          background-color: var(--modal-bg-color);
         }
       }
 

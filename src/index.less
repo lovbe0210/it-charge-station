@@ -122,6 +122,50 @@
     }
   }
 
+  .ivu-modal .ivu-modal-content {
+    color: @dark-font-color;
+    background: @dropdown-background;
+
+    .auth-body {
+      color: @dark-font-color;
+
+      .login-body {
+        .login-main {
+          .title {
+            color: @light-font-color;
+          }
+
+          .ivu-btn-default {
+            border-color: @border-color_normal;
+            color: @dark-font-color;
+            background-color: @dropdown-background;
+
+            &:hover {
+              border-color: @primary-color;
+              color: @primary-color;
+            }
+          }
+        }
+
+        .site-flag .site-tips .t3 {
+          color: @light-font-color;
+        }
+
+        .ivu-input {
+          color: @dark-font-color;
+        }
+
+        .ivu-btn-text {
+          color: @light-font-color;
+
+          &:hover {
+            color: @dark-font-color;
+            background-color: @dropdown-background;
+          }
+        }
+      }
+    }
+  }
 }
 
 .ivu-input {
@@ -136,6 +180,7 @@
 
 .ivu-btn {
   border-radius: 6px;
+  color: var(--font-color);
 }
 
 .ivu-btn-text {

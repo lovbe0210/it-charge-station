@@ -25,7 +25,7 @@
                   cancel-btn="取消"/>
         <div class="input-lock" v-else>
           <span class="lock-tip un-select">
-            <auth-modal>
+            <auth-modal :normalBackground="docStyle.asyncTheme ? 0 : 1">
               <slot>
                 <a href="javascript: void(0)">登陆&nbsp;</a>
               </slot>
@@ -68,6 +68,9 @@ export default {
   computed: {
     userInfo() {
       return this.$store.state.userInfo;
+    },
+    docStyle() {
+      return this.$store.state.docStyle;
     },
     contentBoxParam() {
       return {
