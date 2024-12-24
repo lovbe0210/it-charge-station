@@ -49,14 +49,14 @@
           <div class="like-and-reply">
             <!-- 点赞 -->
             <div class="item" @click="like" v-if="userInfo?.token && userInfo.token.length === 32">
-              <span :class="['iconfont', 'like', commentReply.iflike ? 'ilike' : '']"></span>
-              <span v-if="data.likeCount != 0">{{ commentReply.likeCount }}</span>
+              <span :class="['iconfont', 'like', commentReply.ifLike ? 'ilike' : '']"></span>
+              <span v-if="commentReply.likeCount != 0">{{ commentReply.likeCount }}</span>
             </div>
             <auth-modal v-else :normalBackground="docStyle.asyncTheme ? 0 : 1">
               <slot>
                 <div class="item">
                   <span class="iconfont like"></span>
-                  <span v-if="data.likeCount != 0">{{ commentReply.likeCount }}</span>
+                  <span v-if="commentReply.likeCount != 0">{{ commentReply.likeCount }}</span>
                 </div>
               </slot>
             </auth-modal>
@@ -121,6 +121,7 @@ import InputBox from './InputBox';
 import Pswp from "@/components/common/imagepreview/index"
 import UserCard from "@/components/common/UserCard.vue";
 import AuthModal from "@/components/common/AuthModal.vue";
+import ContentPicksApi from "@/api/ContentPicksApi";
 
 export default {
   name: 'ContentBox',
@@ -154,9 +155,6 @@ export default {
     }
   },
   computed: {
-    /* contents() {
-       return useEmojiParse(emoji.allEmoji, this.data.content);
-     },*/
     docStyle() {
       return this.$store.state.docStyle;
     },
@@ -199,15 +197,22 @@ export default {
     },
     needFormatDate,
     like() {
-      if (this.commentReply.ilike) {
-        // 原来点赞，现在取消
-        --this.commentReply.likes;
-      } else {
-        // 相反
-        ++this.commentReply.likes;
+      let likeAction = {
+        targetId: this.commentReply.uid,
+        targetType: 4,
+        action: this.commentReply.ifLike ? 0 : 1
       }
-      this.commentReply.ilike = !this.commentReply.ilike;
-      // TODO commentReply.id action：like or cancelLike --> to server
+      ContentPicksApi.contentLikeMark(likeAction).then(data => {
+        if (data?.result) {
+          if (this.commentReply.ifLike) {
+            // 取消点赞
+            this.commentReply.likeCount = (this.commentReply.likeCount - 1) < 0 ? 0 : (this.commentReply.likeCount - 1);
+          } else {
+            ++this.commentReply.likeCount;
+          }
+          this.commentReply.ifLike = this.commentReply.ifLike ? 0 : 1;
+        }
+      })
     },
     previewImage(event) {
       if (this.pswp === null) {

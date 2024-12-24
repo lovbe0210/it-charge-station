@@ -147,7 +147,7 @@ export default {
   },
 
   /**
-   * 内容点赞/取消点赞
+   * 获取点赞列表
    * @param collectTarget
    * @returns {Promise<*>}
    */

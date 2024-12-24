@@ -134,12 +134,17 @@ export const pluginConfig = {
     }
   },
   [ImageUploader.pluginName]: {
+    //图片上传
     file: {
-      action: `${DOMAIN}/upload`, //图片上传
+      action: `${DOMAIN}/upload`,
       data: {pathPrefix: "article"}
     },
+    //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
     remote: {
-      action: `${DOMAIN}/upload/url` //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
+      action: `${DOMAIN}/upload/url`,
+      data: {
+        pathPrefix: "article"
+      }
     },
     isRemote: src => src.indexOf(DOMAIN) < 0,
     parse: response => {

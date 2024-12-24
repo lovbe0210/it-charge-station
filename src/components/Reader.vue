@@ -2,13 +2,13 @@
   <div class="reader-route-view" ref="tooltipContainer">
     <div v-show="!spinShow">
       <div v-show="articleInfo?.uid">
-        <div :class="['layout-module_contentWrapper', fullScreen ? 'full-screen' : '']" id="contentWrapper">
+        <div :class="['layout-module_contentWrapper', fullScreen ? 'full-screen' : '']">
           <div id="header" class="layout-module_headerWrapper" :style="{ width: headerWidth}">
             <div class="header-crumb">
               <span class="header_title" :title="articleInfo.title">{{ articleInfo.title }}</span>
-              <a-tooltip  v-if="articleInfo.title"
-                          overlayClassName="read-header-tooltip"
-                          :getPopupContainer="()=>this.$refs.tooltipContainer">
+              <a-tooltip v-if="articleInfo.title"
+                         overlayClassName="read-header-tooltip"
+                         :getPopupContainer="()=>this.$refs.tooltipContainer">
                 <template slot="title">
                   {{ articleInfo.isPublic ? '互联网所有人可以访问' : '仅作者可见' }}
                 </template>
@@ -18,7 +18,9 @@
               </a-tooltip>
             </div>
             <div class="header-action">
-              <Button type="success" @click="routeNavigate(docInfo)" v-if="userInfo.token && articleInfo.userId === userInfo.uid">编辑</Button>
+              <Button type="success" @click="routeNavigate(docInfo)"
+                      v-if="userInfo.token && articleInfo.userId === userInfo.uid">编辑
+              </Button>
               <a-tooltip overlayClassName="read-header-tooltip"
                          v-if="userInfo.token"
                          :getPopupContainer="()=>this.$refs.tooltipContainer">
@@ -94,7 +96,10 @@
               </div>
             </div>
           </div>
-          <div class="layout-module_bookContentWrapper beauty-scroll" ref="scrollbarContext" @wheel="handleScrollForToc">
+          <div id="contentWrapper"
+               class="layout-module_bookContentWrapper beauty-scroll"
+               ref="scrollbarContext"
+               @wheel="handleScrollForToc">
             <div class="bookReader-module_docContainer">
               <div :class="['doc_header', docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
                 <div class="doc_header_wrapper">
@@ -256,7 +261,7 @@
 import Engine, {$} from '@aomao/engine'
 import {plugins, cards, pluginConfig} from "./common/editor/config"
 import {getTocData} from "./common/editor/utils"
-import { cloneDeep } from '@/utils/emoji'
+import {cloneDeep} from '@/utils/emoji'
 import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
 import ArticleFooter from "@/components/common/ArticleFooter"
 import ArticleSetting from "@/components/common/ArticleSetting"
@@ -450,9 +455,9 @@ export default {
       }
       // 更新收藏分类
       ContentPicksApi.collectMark(collectInfo);
-     /* if (this.$refs.selectGroup) {
-        this.$refs.selectGroup.$forceUpdate();
-      }*/
+      /* if (this.$refs.selectGroup) {
+         this.$refs.selectGroup.$forceUpdate();
+       }*/
     },
     completeAddTag1() {
       let element = document.getElementById("newTagInput");
