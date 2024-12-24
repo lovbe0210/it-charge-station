@@ -108,7 +108,7 @@
                    :class="['doc-reader','am-engine', docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
               </div>
               <!-- 文章页脚 -->
-              <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'">
+              <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'" v-show="!fullScreen">
                 <article-footer :ifLike="articleInfo.ifLike"
                                 :likeUserList="articleInfo.likeUserList"
                                 :likeCount="articleInfo.likeCount"
@@ -118,7 +118,7 @@
                                 @like="likeMark"/>
               </div>
               <!-- 评论 -->
-              <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'">
+              <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'" v-show="!fullScreen">
                 <reply-comment :targetId="articleInfo.uid"/>
               </div>
             </div>
@@ -523,6 +523,7 @@ export default {
         }
         this.articleInfo = data.data;
         this.collectInfo.collectId = data.data.collectId;
+        this.tocData = [];
         let content = data.data.content;
         if (content?.length > 0) {
           this.engine.setJsonValue(JSON.parse(content));
@@ -533,6 +534,10 @@ export default {
           }
         }
         this.spinShow = false;
+        this.$nextTick(() => {
+          const scrollable = this.$refs.scrollbarContext;
+          scrollable.scrollTop = 0;
+        });
         // 文章收藏情况加载
         if (this.collectInfo.collectId && this.userInfo.token) {
           ContentPicksApi.getCollectInfo(this.collectInfo.collectId).then(data => {

@@ -47,9 +47,9 @@ export default {
       currentPage: 1,
       pageSize: 5,
       tempId: 1000,
-      // 当前展示的回复list
+      // 当前评论的回复列表
       replyList: [],
-      // 首次初始化后获取的总回复数
+      // 当前评论的回复数
       total: 0
     }
   },
@@ -102,9 +102,9 @@ export default {
       if (!comment) {
         return;
       }
-      debugger
       let formData = new FormData();
       formData.append('targetId', this.contentBoxParam?.targetId);
+      formData.append('targetType', '4');
       if (comment.parentId) {
         formData.append('parentId', comment.parentId);
       }
@@ -141,25 +141,29 @@ export default {
      * 删除当前评论
      * @param comment
      */
-    remove(id) {
-      if (!id) {
+    remove(uid) {
+      if (!uid) {
         return;
       }
-
-      if (id === this.data.id) {
+      if (uid === this.data.uid) {
         // 需要向上删除
-        this.contentBoxParam.remove(id);
+        this.contentBoxParam.remove(uid, this.total);
         this.return;
       }
 
       // 删除掉具体的回复即可
-      let index = this.replyList.findIndex(item => item.id === id)
+      let index = this.replyList.findIndex(item => item.uid === uid)
       if (index !== -1) {
-        this.replyList.splice(index, 1)
+        ContentPicksApi.deleteCommentReply(uid).then(data => {
+          if (data?.result) {
+            this.replyList.splice(index, 1);
+            this.total--;
+            // 外层评论总数也需要减1
+            this.contentBoxParam.updateTotal(-1)
+            this.$Message.success("删除成功");
+          }
+        })
       }
-      this.total--;
-      // 外层评论总数也需要减1
-      this.contentBoxParam.updateTotal(-1)
     }
   },
   created() {

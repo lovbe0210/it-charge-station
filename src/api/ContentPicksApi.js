@@ -175,8 +175,8 @@ export default {
    */
   async deleteCommentReply(targetId) {
     return await Vue.prototype.$request({
-      url: "/sl/target/delete/" + targetId,
-      method: 'GET'
+      url: "/sl/comment/delete/" + targetId,
+      method: 'POST'
     });
   }
 

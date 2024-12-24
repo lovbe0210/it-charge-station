@@ -52,92 +52,110 @@
       color: #8a8f8d;
     }
   }
-}
-
-.action-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-
-  .like-and-reply {
-    display: flex;
-
-    .item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-right: 16px;
-      font-size: 15px;
-      cursor: pointer;
-      color: #8A8F8D;
-
-      .iconfont {
-        margin-right: 4px;
-        font-size: 15px;
-        cursor: pointer;
-      }
-
-      .reply-btn {
-        font-size: 14px;
-      }
-    }
-
-    .item:nth-child(1) {
-      .iconfont:hover {
-        color: @like-color;
-      }
-    }
-
-    .item:nth-child(2):hover,
-    .active {
-      color: #409eff;
-    }
-  }
-}
-
-.u-fold {
-  margin-top: 8px;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: .03em;
-
-  .txt-box {
-    margin-top: 5px;
-    // 会对过长的单词做词内断词处理，这样单词始终会在容器中，不会溢出容器
-    word-wrap: break-word;
-  }
 
   .action-box {
-    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
 
-    .expand-btn {
-      display: inline-block;
-      line-height: 22px;
-      cursor: pointer;
-      color: #117CEE;
-    }
+    .like-and-reply {
+      display: flex;
+      align-items: center;
 
-    .operate {
-      cursor: pointer;
+      .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-right: 16px;
+        font-size: 14px;
+        cursor: pointer;
+        color: #8A8F8D;
+
+        .iconfont {
+          line-height: 21px;
+          margin-right: 4px;
+          font-size: 15px;
+          cursor: pointer;
+        }
+
+        .reply-btn {
+          font-size: 14px;
+        }
+      }
+
+      .item:nth-child(1) {
+        .iconfont:hover {
+          color: @like-color;
+        }
+      }
+
+      .item:nth-child(2):hover,
+      .active {
+        color: #409eff;
+      }
+
+      .delete-warn {
+        .delete {
+          visibility: hidden;
+
+          &:focus {
+            visibility: visible;
+          }
+        }
+      }
     }
   }
 
-  .over-hidden {
-    //象作为弹性伸缩盒子模型显示。
-    display: -webkit-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    //设置或检索伸缩盒对象的子元素的排列方式。
-    -webkit-box-orient: vertical;
-    //用来限制在一个块元素显示的文本的行数。
-    -webkit-line-clamp: 5;
+  .u-fold {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: .03em;
+
+    .txt-box {
+      margin-top: 5px;
+      // 会对过长的单词做词内断词处理，这样单词始终会在容器中，不会溢出容器
+      word-wrap: break-word;
+    }
+
+    .action-box {
+      margin: 5px 0;
+
+      .expand-btn {
+        display: inline-block;
+        line-height: 22px;
+        cursor: pointer;
+        color: #117CEE;
+      }
+
+      .operate {
+        cursor: pointer;
+      }
+    }
+
+    .over-hidden {
+      //象作为弹性伸缩盒子模型显示。
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      //设置或检索伸缩盒对象的子元素的排列方式。
+      -webkit-box-orient: vertical;
+      //用来限制在一个块元素显示的文本的行数。
+      -webkit-line-clamp: 5;
+    }
+  }
+
+  &:hover {
+    .delete-warn .delete{
+      visibility: visible !important;
+    }
   }
 }
-
 
 .reply-from-comment {
     margin-left: 12px;
+    margin-right: 12px;
     padding: 0;
 
   .comment-main {

@@ -338,13 +338,35 @@
       color: @dark-font-color;
 
       /deep/ .operate-more {
-        cursor: pointer;
+        .ant-popover-arrow {
+          display: none;
+        }
 
         .ant-popover-inner-content {
-          padding: 0;
+          color: @dark-font-color;
+          width: 200px;
+          font-size: 12px;
 
-          .del {
-            padding: 12px 16px;
+          .del-warn-btn {
+            margin: 10px 0 0;
+            display: flex;
+            flex-direction: row-reverse;
+
+            .ivu-btn {
+              font-size: 13px;
+            }
+
+            .ivu-btn-success {
+              margin-left: 10px;
+            }
+
+            .ivu-btn-default {
+              color: @dark-font-color;
+
+              &:hover {
+                color: @primary-color;
+              }
+            }
           }
         }
       }
@@ -398,7 +420,7 @@
         line-height: 32px;
       }
 
-      &:hover{
+      &:hover {
         color: @light-font-color;
 
         .iconfont {
@@ -525,6 +547,7 @@
               border-color: @dark-font-color;
             }
           }
+
           .enter {
             border: 1px solid #8A8F8D;
             border-radius: 3px;
@@ -633,10 +656,11 @@
       }
 
       .nav-tabs {
-        .tabs-bar .tab-title{
+        .tabs-bar .tab-title {
           .iconfont {
             color: var(--title-color) !important;
           }
+
           &:hover {
             background: var(--dropdown-item-hover) !important;
           }
@@ -662,6 +686,7 @@
           .ivu-icon {
             color: var(--font-color);
             border-radius: 3px;
+
             &:hover {
               background: var(--dropdown-item-hover) !important;
             }
@@ -698,6 +723,22 @@
   .reader-route-view {
     background: unset !important;
     color: var(--font-color) !important;
+
+    /deep/ .operate-more {
+      .ant-popover-inner {
+        background-color: var(--dropdown-item-hover);
+
+        .ant-popover-inner-content {
+          color: var(--font-color);
+
+          .del {
+            &:hover {
+              color: var(--title-color);
+            }
+          }
+        }
+      }
+    }
   }
 
   /deep/ .full-screen {
@@ -737,7 +778,7 @@
     }
   }
 
-  /deep/.am-engine {
+  /deep/ .am-engine {
     background: unset !important;
     color: var(--font-color);
 
@@ -776,10 +817,11 @@
   }
 
   // 标题显示ui
-  /deep/.data-anchor-button {
+  /deep/ .data-anchor-button {
     background: var(--dropdown-item-hover);
     color: var(--title-color);
   }
+
   // 代码块工具栏
   /deep/ .data-card-toolbar {
 
@@ -824,9 +866,10 @@
       color: var(--title-color);
     }
 
-    .article-module_info .info_meta{
+    .article-module_info .info_meta {
       .reader-meta-wrapper .meta-left .meta-item {
         color: var(--title-color);
+
         .item-content a {
           color: var(--title-color);
         }
@@ -846,8 +889,9 @@
     }
   }
 
-  /deep/.ivu-drawer {
-    color: var(--font-color)!important;
+  /deep/ .ivu-drawer {
+    color: var(--font-color) !important;
+
     .ivu-drawer-content {
       background: var(--dropdown-bg-color);
 
@@ -860,15 +904,18 @@
       .ivu-drawer-body {
         .drawer-setting-item {
           background-color: var(--dropdown-item-hover) !important;
+
           .label_desc {
             color: var(--title-color) !important;
           }
         }
-        .article-time{
+
+        .article-time {
           span {
             color: var(--title-color);
           }
         }
+
         .doc-setting-btn {
           &:hover {
             background: var(--dropdown-bg-color) !important;
@@ -953,7 +1000,7 @@
           }
         }
 
-        .history-version{
+        .history-version {
           .new-version-tag {
             .ivu-input {
               color: var(--font-color);
@@ -1014,6 +1061,11 @@
   /deep/ .reply-list {
     background: var(--dropdown-item-hover);
   }
+
+  /deep/ .emoji-selector {
+    background: var(--on-theme-bg-color);
+    box-shadow: 0 0 4px 0 rgba(255, 255, 255, 0.15);
+  }
 }
 
 .normal-background {
@@ -1036,8 +1088,8 @@
   }
 
   /deep/ .comment-box .user-info {
-      color: @dark-font-color;
-    }
+    color: @dark-font-color;
+  }
 
   /deep/ .rich-input {
     color: @dark-font-color;
@@ -1047,7 +1099,7 @@
     background: #fcfbfb;
   }
 
-  /deep/.user-info-card-box .ant-popover-content .ant-popover-inner {
+  /deep/ .user-info-card-box .ant-popover-content .ant-popover-inner {
     background: #ffffff;
     border-color: @light-border-color;
   }
@@ -1070,7 +1122,7 @@
     align-items: center;
 
     li {
-      margin: unset!important;
+      margin: unset !important;
       width: 100%;
     }
 

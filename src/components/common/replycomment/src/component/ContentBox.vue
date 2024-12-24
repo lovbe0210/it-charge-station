@@ -74,21 +74,27 @@
                 </div>
               </slot>
             </auth-modal>
-          </div>
-          <!-- 操作栏 -->
-          <div class="item" v-if="commentReply.userInfo.uid === userInfo.uid">
-            <a-popover placement="leftTop"
-                       trigger="click"
-                       :getPopupContainer="() => contentBoxParam.popoverContainer"
-                       overlayClassName="operate-more">
-              <template slot="content">
-                <div  class="del" @click="contentBoxParam.remove(commentReply.uid)">
-                  <span>删除</span>
+            <div class="item delete-warn" v-if="commentReply.userInfo.uid === userInfo.uid">
+              <a-popover placement="top"
+                         trigger="click"
+                         v-model="showDel"
+                         :getPopupContainer="() => contentBoxParam.popoverContainer"
+                         overlayClassName="operate-more">
+                <template slot="content">
+                  <div class="delete-popover-message">
+                    <span class="iconfont delete-warn"></span>
+                    <div class="title">删除评论后，评论下所有回复都会被删除,是否继续?</div>
+                  </div>
+                  <div class="del-warn-btn">
+                    <Button type="success" size="small" @click="contentBoxParam.remove(commentReply.uid)">确定</Button>
+                    <Button @click="showDel = false" size="small">取消</Button>
+                  </div>
+                </template>
+                <div>
+                  <span class="iconfont delete" tabindex="0"></span>
                 </div>
-              </template>
-              <span class="iconfont operate"></span>
-            </a-popover>
-
+              </a-popover>
+            </div>
           </div>
         </div>
         <div v-if="active">
@@ -131,7 +137,8 @@ export default {
       observer: null,
       commentReply: {},
       // 图片预览
-      pswp: null
+      pswp: null,
+      showDel: false
     }
   },
   props: {

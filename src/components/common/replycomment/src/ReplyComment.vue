@@ -94,13 +94,13 @@ export default {
      * 提交评论
      */
     submit(comment, clear) {
-      debugger
       // 添加评论
       if (!comment) {
         return;
       }
       let formData = new FormData();
       formData.append('targetId', this.targetId);
+      formData.append('targetType', '4');
       if (comment.parentId) {
         formData.append('parentId', comment.parentId);
       }
@@ -126,17 +126,14 @@ export default {
      * 删除当前评论
      * @param comment
      */
-    remove(uid) {
-      if (!uid) {
-        return;
-      }
+    remove(uid, replyCount) {
       let index = this.commentList.findIndex(item => item.uid === uid)
       if (index !== -1) {
         // 删除评论
         ContentPicksApi.deleteCommentReply(uid).then(data => {
           if (data?.result) {
             this.commentList.splice(index, 1);
-            this.total--;
+            this.total = (this.total - 1 - replyCount) < 0 ? 0 : this.total - 1 - replyCount;
             this.$Message.success("删除成功");
           }
         })

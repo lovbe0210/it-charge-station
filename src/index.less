@@ -17,6 +17,7 @@
   .ivu-btn-default:not([disabled]) {
     background: var(--dropdown-bg-color) !important;
     color: var(--font-color) !important;
+    border-color: var(--border-color);
 
     &:hover {
       background: var(--on-theme-bg-color) !important;
@@ -25,13 +26,13 @@
     }
   }
   .ivu-btn-success:not([disabled]) {
-    background: var(--dropdown-bg-color) !important;
-    color: var(--font-color) !important;
+    //background: var(--dropdown-bg-color) !important;
+    //color: var(--font-color) !important;
 
     &:hover {
-      background: var(--on-theme-bg-color) !important;
-      color: @primary-color !important;
-      border-color: @primary-color !important;
+      //background: var(--on-theme-bg-color) !important;
+      //color: @primary-color !important;
+      //border-color: @primary-color !important;
     }
   }
 
@@ -86,7 +87,12 @@
   }
 
   .ant-checkbox-wrapper .ant-checkbox-inner {
-    //background: unset;
+    background: unset;
+  }
+
+  .ant-checkbox-checked .ant-checkbox-inner {
+    background: @primary-color;
+    border-color: @primary-color;
   }
 
   .user-info-card-box .ant-popover-content .ant-popover-inner .ant-popover-inner-content {
@@ -165,6 +171,14 @@
         }
       }
     }
+  }
+
+  .ivu-btn-success, .ivu-btn-primary {
+    color: #FFFFFF;
+  }
+
+  .ivu-btn-text {
+    color: @light-font-color !important;
   }
 }
 

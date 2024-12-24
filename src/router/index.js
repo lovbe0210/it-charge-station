@@ -332,9 +332,7 @@ const router = new VueRouter({
     if (fixed) {
       return position;
     } else {
-      if (to.fullPath?.includes('/dashboard')) {
-        return {y: 0}
-      }
+      return {y: 0}
     }
   }
 })
