@@ -22,12 +22,12 @@
           {{formatDate(new Date(item.historyDate), 'yyyy-MM-dd')}}
         </div>
         <div class="view-list-item" v-for="viewItem in item.list" :key="viewItem.uid">
-          <b-link class="item-header" :to="getRoutePath(viewItem)">
+          <a class="item-header" :href="getRoutePath(viewItem)" target="_blank">
             <span :class="['item-type', viewItem.targetType == 1 ? 'doc' : viewItem.targetType == 2 ? 'colum' : 'rambly-jot']">
               {{viewItem.targetType == 1 ? '文章' : viewItem.targetType == 2 ? '专栏' : '随笔'}}
             </span>
             <h2 class="item-title">{{viewItem.title}}</h2>
-          </b-link>
+          </a>
           <div class="item-content">
             <span>{{viewItem.previewContent}}</span>
           </div>
