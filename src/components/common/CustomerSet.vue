@@ -179,7 +179,7 @@
               dropdownItemHover: '#393939',
               onThemeBackgroundColor: '#292929',
               ramblyJotEditorBackgroundColor: '#393939',
-              modalBackgroundColor: '#393939'
+              modalBackgroundColor: '#313131'
             }
             break;
           case 2:

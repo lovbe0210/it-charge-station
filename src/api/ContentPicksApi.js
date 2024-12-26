@@ -178,6 +178,19 @@ export default {
       url: "/sl/comment/delete/" + targetId,
       method: 'POST'
     });
+  },
+
+  /**
+   * 获取浏览历史
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getBrowseHistoryList(browseHistoryPage) {
+    return await Vue.prototype.$request({
+      url: "/cps/history",
+      method: 'POST',
+      data: browseHistoryPage
+    });
   }
 
 }

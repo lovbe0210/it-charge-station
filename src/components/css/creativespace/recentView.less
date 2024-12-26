@@ -136,27 +136,33 @@
       .item-info-action {
         display: flex;
         justify-content: space-between;
+        margin-top: 10px;
 
-        div {
+        .author-and-count {
           height: 20px;
+          display: flex;
+          align-items: center;
         }
-        display: flex;
-        margin-top: 12px;
-
 
         .item-author {
           height: 20px;
           font-style: normal;
           font-weight: 400;
-          font-size: 14px;
+          font-size: 12.5px;
           line-height: 20px;
           color: @grey-white-font-color;
           margin-right: 8px;
+
+          &:hover {
+            color: var(--title-color);
+          }
         }
 
         .tag {
-          color: @grey-white-font-color;
+          border-right: 1.5px solid @grey-white-font-color;
           margin-right: 8px;
+          height: 13px;
+          line-height: 20px;
         }
 
         .item-count {
