@@ -29,7 +29,7 @@ export default {
       csh: canScrollHeight,
       sh: scrollHeight,
       targetId: _this.articleInfo.uid,
-      uniqueId
+      unique_id: uniqueId
     }
     let encodeStr = commonUtil.encodeSign(JSON.stringify(sourceData));
     return await Vue.prototype.$request({
