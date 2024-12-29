@@ -87,8 +87,7 @@ export default {
       tocData: [],
       currentTocId: '',
       // 大纲刷新的防抖函数
-      debounceRefreshToc: function () {
-      },
+      debounceRefreshToc: function () {},
       engine: null,
       // 工具栏内容：下拉面板、
       items: [

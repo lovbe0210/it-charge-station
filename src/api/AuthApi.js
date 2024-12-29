@@ -1,5 +1,5 @@
 import {v4 as uuid} from 'uuid';
-import base64 from 'base-64';
+import commonUtil from "@/utils/common"
 
 export default {
   /**
@@ -11,7 +11,7 @@ export default {
     let payloadType = _this.account.indexOf("@");
     let requestUri = "/auth/mobile/login";
       let jsonData = {
-      password: this.encodeSign(_this.password)
+      password: commonUtil.encodeSign(_this.password)
     };
     if (payloadType === -1) {
       jsonData.mobile = _this.account;
@@ -70,7 +70,7 @@ export default {
       timestamp: Date.now()
     }
     let requestStr = JSON.stringify(requestObj);
-    let sign = this.encodeSign(requestStr);
+    let sign = commonUtil.encodeSign(requestStr);
     let jsonData = {
       sign: sign,
       xt: uuid(),
@@ -102,7 +102,7 @@ export default {
       tn: svToken
     }
     let signStr = JSON.stringify(signObj);
-    let sign = this.encodeSign(signStr);
+    let sign = commonUtil.encodeSign(signStr);
     let jsonData = {
       sign: sign,
       scene: svScene
@@ -148,7 +148,7 @@ export default {
    */
   async resetPassword(_this) {
     let jsonData = {
-      password: this.encodeSign(_this.password),
+      password: commonUtil.encodeSign(_this.password),
       verifyCode: _this.verifyCode
     }
     if (_this.account.indexOf("@") !== -1) {
@@ -180,36 +180,6 @@ export default {
         "icharge-rt": rfToken
       }
     });
-  },
-
-
-  /**
-   * 判断字符为字母或数字
-   * @param code
-   * @returns {boolean}
-   */
-  isLetterOrDigit(code) {
-    return (code >= 65 && code <= 90) || (code >= 97 && code <= 122) || (code >= 48 && code <= 57);
-  },
-
-  /**
-   * 制作简易签名
-   * @param requestObj
-   * @returns {string}
-   */
-  encodeSign(requestStr) {
-    let encodeStr = base64.encode(requestStr);
-    let charArr = Array.from(encodeStr);
-    // 简单转码
-    for (let i = 0; i < charArr.length; i++) {
-      let uniCode = charArr[i].charCodeAt(0);
-      let newChar = uniCode ^ 1;
-      if (this.isLetterOrDigit(newChar)) {
-        charArr[i] = String.fromCharCode(newChar);
-      }
-    }
-    let sign = charArr.join('');
-    return sign;
   }
 }
 

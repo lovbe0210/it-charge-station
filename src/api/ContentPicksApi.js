@@ -1,4 +1,6 @@
 import Vue from 'vue'
+import commonUtil from "@/utils/common"
+import {v4 as uuid} from "uuid";
 
 export default {
 
@@ -12,6 +14,31 @@ export default {
       url: "/cps/article/" + uri,
       method: 'GET'
     });
+  },
+
+
+  async reportView(_this, scrollTop, canScrollHeight, scrollHeight) {
+    let uniqueId = _this.$store.state.uniqueId;
+    if (!uniqueId) {
+      uniqueId = uuid();
+      _this.$store.commit('setUniqueId', uniqueId);
+    }
+    // 计算简单签名
+    let sourceData = {
+      st: scrollTop,
+      csh: canScrollHeight,
+      sh: scrollHeight,
+      targetId: _this.articleInfo.uid,
+      uniqueId
+    }
+    let encodeStr = commonUtil.encodeSign(JSON.stringify(sourceData));
+    return await Vue.prototype.$request({
+      url: "/cps/ae/view?st=" + scrollTop + "&csh=" + canScrollHeight + "&sh=" + scrollHeight,
+      method: 'GET',
+      headers: {
+        sign: encodeStr
+      }
+    })
   },
 
   /**

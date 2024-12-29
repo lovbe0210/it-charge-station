@@ -98,8 +98,7 @@
           </div>
           <div id="contentWrapper"
                class="layout-module_bookContentWrapper beauty-scroll"
-               ref="scrollbarContext"
-               @wheel="handleScrollForToc">
+               ref="scrollbarContext">
             <div class="bookReader-module_docContainer">
               <div :class="['doc_header', docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
                 <div class="doc_header_wrapper">
@@ -261,7 +260,7 @@
 import Engine, {$} from '@aomao/engine'
 import {plugins, cards, pluginConfig} from "./common/editor/config"
 import {getTocData} from "./common/editor/utils"
-import {cloneDeep} from '@/utils/emoji'
+import {debounce, cloneDeep} from '@/utils/emoji'
 import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
 import ArticleFooter from "@/components/common/ArticleFooter"
 import ArticleSetting from "@/components/common/ArticleSetting"
@@ -295,6 +294,8 @@ export default {
       inputTagTmp: null,
       inputNewTag: false,
       collectPoptipShow: false,
+      // 浏览进度汇报的防抖函数
+      debounceReportView: function () {},
       engine: null
     }
   },
@@ -382,8 +383,18 @@ export default {
      * 处理滚动条滚动事件
      */
     handleScrollForToc(event) {
+      // 判断是否移动超过10%
+      let scrollbar = this.$refs.scrollbarContext;
+      let canScrollHeight = scrollbar.scrollHeight - scrollbar.clientHeight;
+      if (canScrollHeight && ((canScrollHeight / scrollbar.scrollHeight) >= 0.1)) {
+        if (scrollbar.scrollTop / canScrollHeight >= 0.1) {
+          // 这里需要使用节流方法
+          this.debounceReportView(scrollbar.scrollTop, canScrollHeight, scrollbar.scrollHeight);
+        }
+      }
+      // 大纲光标移动
       if (this.tocData.length > 0) {
-        let scrollbarRect = this.$refs.scrollbarContext?.getBoundingClientRect();
+        let scrollbarRect = scrollbar?.getBoundingClientRect();
         if (scrollbarRect) {
           let containerTop = scrollbarRect.top + 52;
           let containerBottom = scrollbarRect.bottom;
@@ -396,6 +407,9 @@ export default {
           }
         }
       }
+    },
+    reportViewProcess(scrollTop, canScrollHeight, scrollHeight) {
+      ContentPicksApi.reportView(this, scrollTop, canScrollHeight, scrollHeight).then()
     },
     returnDocSetting() {
       if (this.drawerType) {
@@ -574,6 +588,9 @@ export default {
       this.inputNewTag = false;
     }
   },
+  created() {
+    this.debounceReportView = debounce(this.reportViewProcess, 1000 * 10);
+  },
   mounted() {
     const container = this.$refs.container;
     if (container) {
@@ -594,14 +611,24 @@ export default {
       this.initReaderContent();
     }
     window.addEventListener('resize', this.checkFullscreen);
-    // const scrollContainer = this.$refs.scrollbarContext;
-    // scrollContainer?.addEventListener('scroll', this.handleScrollForToc);
+    const scrollContainer = this.$refs.scrollbarContext;
+    scrollContainer?.addEventListener('scroll', this.handleScrollForToc);
     this.handleScrollForToc();
+    // 文章很短时的进度汇报
+    this.$nextTick(() => {
+      setTimeout(() => {
+        let scrollbar = this.$refs.scrollbarContext;
+        let canScrollHeight = scrollbar.scrollHeight - scrollbar.clientHeight;
+        if (canScrollHeight && ((canScrollHeight / scrollbar.scrollHeight) < 0.1)) {
+          ContentPicksApi.reportView(this, scrollbar.scrollTop, canScrollHeight, scrollbar.scrollHeight).then()
+        }
+      }, 1000 * 10)
+    })
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.checkFullscreen);
-    // const scrollContainer = this.$refs.scrollbarContext;
-    // scrollContainer?.removeEventListener('scroll', this.handleScrollForToc);
+    const scrollContainer = this.$refs.scrollbarContext;
+    scrollContainer?.removeEventListener('scroll', this.handleScrollForToc);
   }
 }
 </script>

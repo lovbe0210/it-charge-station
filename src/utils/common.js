@@ -1,3 +1,5 @@
+import base64 from 'base-64';
+
 export default {
   /**
    * 主题刷新
@@ -51,5 +53,34 @@ export default {
     if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
       return "IE";
     }
+  },
+
+  /**
+   * 制作简易签名
+   * @param requestObj
+   * @returns {string}
+   */
+  encodeSign(sourceStr) {
+    let encodeStr = base64.encode(sourceStr);
+    let charArr = Array.from(encodeStr);
+    // 简单转码
+    for (let i = 0; i < charArr.length; i++) {
+      let uniCode = charArr[i].charCodeAt(0);
+      let newChar = uniCode ^ 1;
+      if (this.isLetterOrDigit(newChar)) {
+        charArr[i] = String.fromCharCode(newChar);
+      }
+    }
+    let sign = charArr.join('');
+    return sign;
+  },
+
+  /**
+   * 判断字符为字母或数字
+   * @param code
+   * @returns {boolean}
+   */
+  isLetterOrDigit(code) {
+    return (code >= 65 && code <= 90) || (code >= 97 && code <= 122) || (code >= 48 && code <= 57);
   }
 }
