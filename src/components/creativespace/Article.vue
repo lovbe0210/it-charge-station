@@ -312,7 +312,7 @@
             WriteCenterApi.publishArticle(articleItem.uid).then(data => {
               if (data?.result) {
                 articleItem.publishStatus = 1;
-                this.$Message.success('发布成功，审核通过后可访问最新内容');
+                this.$Message.success('发布成功');
               }
             })
             break;

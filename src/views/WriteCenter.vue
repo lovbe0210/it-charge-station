@@ -272,7 +272,11 @@ export default {
      * 手动更新文档内容
      */
     updateDocConten() {
-      this.$Message.success("发布成功")
+      WriteCenterApi.publishArticle(this.articleInfo.uid).then(data => {
+        if (data?.result) {
+          this.$Message.success('发布成功');
+        }
+      })
     },
     /**
      * 为子组件定义的事件方法

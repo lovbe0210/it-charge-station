@@ -97,9 +97,9 @@
       getRoutePath(viewItem) {
         // TODO 随笔路径还不确定
         let targetType = viewItem.targetType;
-        if (targetType === "1" || targetType === "2") {
+        if (targetType === 1 || targetType === 2) {
           return "/" + viewItem.userInfo?.domain + "/" + (viewItem.columnUri ? (viewItem.columnUri + '/') : viewItem.uri)
-        } else if (targetType === "3") {
+        } else if (targetType === 3) {
           return "/" + ''
         }
         return "/";

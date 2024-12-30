@@ -4,7 +4,7 @@
       <div class="layout-mode-fixed">
         <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar"/>
         <div class="editor-body">
-          <div class="editor-wrap beauty-scroll" ref="scrollbarContext" @wheel="handleScrollForToc">
+          <div class="editor-wrap beauty-scroll" ref="scrollbarContext">
             <div class="editor-wrap-content">
               <div class="editor-outer-wrap-box">
                 <div class="editor-wrap-box">
@@ -441,13 +441,13 @@ export default {
     // 监听Ctrl+s组合按键
     window.addEventListener('keydown', this.saveArticle)
 
-    // const scrollContainer = this.$refs.scrollbarContext;
-    // scrollContainer?.addEventListener('scroll', this.handleScrollForToc);
+    const scrollContainer = this.$refs.scrollbarContext;
+    scrollContainer?.addEventListener('scroll', this.handleScrollForToc);
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.saveArticle)
-    // const scrollContainer = this.$refs.scrollbarContext;
-    // scrollContainer?.removeEventListener('scroll', this.handleScrollForToc);
+    const scrollContainer = this.$refs.scrollbarContext;
+    scrollContainer?.removeEventListener('scroll', this.handleScrollForToc);
   }
 }
 </script>
