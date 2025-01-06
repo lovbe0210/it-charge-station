@@ -301,15 +301,15 @@ export default {
       let userInfo = this.$store.state.userInfo
       if (userInfo.token) {
         AuthApi.logout(this).then(() => {
-          this.$store.commit('clearUserInfo')
-          this.$Message.success('已成功退出当前用户，记得回来看看哦');
-          // this.$router.replace("/")
+          this.$store.commit('clearUserInfo');
+          this.$router.go(0);
+          this.$nextTick(() => this.$Message.success('已成功退出当前用户，记得回来看看哦'));
         })
       } else {
         setTimeout(() => {
-          this.$store.commit('clearUserInfo')
-          this.$Message.success('已成功退出当前用户，记得回来看看哦');
-          // this.$router.replace("/")
+          this.$store.commit('clearUserInfo');
+          this.$router.go(0);
+          this.$nextTick(() => this.$Message.success('已成功退出当前用户，记得回来看看哦'));
         }, 500)
       }
     },

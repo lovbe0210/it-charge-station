@@ -218,6 +218,19 @@ export default {
       method: 'POST',
       data: browseHistoryPage
     });
+  },
+
+  /**
+   * 获取推荐列表
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getRecommendArticleList(recommendRequest) {
+    return await Vue.prototype.$request({
+      url: "/cps/article/rcd",
+      method: 'POST',
+      data: recommendRequest
+    });
   }
 
 }

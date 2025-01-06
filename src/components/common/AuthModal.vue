@@ -265,7 +265,6 @@ export default {
         if (!data?.result) {
           return;
         }
-        this.$Message.success('登陆成功!')
         this.showLogin = false;
         let loginData = data.data;
         let userInfo = {
@@ -288,7 +287,6 @@ export default {
         if (!data?.result) {
           return;
         }
-        this.$Message.success('登陆成功!')
         this.showLogin = false;
         let loginData = data.data;
         let userInfo = {
@@ -391,9 +389,8 @@ export default {
         userInfo = {...userInfo, ...loginUser};
         // 保存userInfo到store中
         this.$store.commit('login', userInfo)
-        // setTimeout(() => {
-        //   this.$router.go(0);
-        // }, 500)
+        this.$router.go(0);
+        this.$nextTick(() => this.$Message.success('登陆成功!'));
       })
     }
   },

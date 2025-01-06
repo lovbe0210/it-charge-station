@@ -313,12 +313,14 @@
           color: var(--font-color);
 
           &:hover {
+            font-weight: 600;
             color: var(--title-color);
           }
         }
       }
 
       .active {
+        font-weight: 600;
         background-color: var(--dropdown-bg-color);
       }
     }
