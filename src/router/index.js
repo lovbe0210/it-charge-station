@@ -138,7 +138,7 @@ const routes = [
             path: 'articles',
             name: 'FeaturedNotes',
             // 此方式为路由懒加载
-            component: () => import('@/components/ranking/FeaturedNotes')
+            component: () => import('@/components/ranking/FeaturedArticle')
           },
           {
             // 推荐专栏榜

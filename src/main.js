@@ -7,7 +7,7 @@ import {Message} from 'view-design'
 
 Message.config({
   top: 80,
-  duration: 2
+  duration: 1.8
 })
 
 Vue.config.productionTip = false

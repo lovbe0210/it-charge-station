@@ -195,7 +195,7 @@
                      maxlength="30">
                 <span class="iconfont i-search" slot="prefix"/>
               </Input>
-              <Button type="success">新建</Button>
+              <Button type="success" @click="createArticle">新建</Button>
             </div>
           </div>
           <div class="article-list un-select">
@@ -372,7 +372,7 @@
               : actionType === 'delete' ? '删除专栏' : ''"
         :footer-hide="true">
         <div v-if="actionType === 'setting'" class="modal-setting-item">
-          <article-setting :articleId="currentOperateArticle?.uid" :editTitle="true"/>
+          <article-setting :currentArticle="currentOperateArticle" :editTitle="true"/>
         </div>
         <div v-if="actionType === 'export'">
           <div class="export-content un-select">
@@ -568,7 +568,7 @@ export default {
       switch (action) {
         case 'edit':
           let editUrl = this.$router.resolve({
-            path: '/editor/' + row.uid
+            path: '/editor/' + row.uri
           })
           window.open(editUrl.href, '_blank')
           break;
@@ -678,6 +678,13 @@ export default {
     formatTime,
     reportParamBox(treeParamBox) {
       this.treeParamBox = treeParamBox;
+    },
+    createArticle() {
+      WriteCenterApi.createArticle(this.baseInfo.uid).then(data => {
+        if (data?.result) {
+          this.baseInfo.articleList?.unshift(data.data)
+        }
+      })
     }
   },
   watch: {

@@ -208,6 +208,7 @@
 
     <!-- 消息界面初始化就开始挂载 -->
     <Modal v-model="showMessage"
+           v-if="loginStatus"
            :lock-scroll="true"
            :footer-hide="true"
            :width="900"
@@ -302,14 +303,29 @@ export default {
       if (userInfo.token) {
         AuthApi.logout(this).then(() => {
           this.$store.commit('clearUserInfo');
-          this.$router.go(0);
-          this.$nextTick(() => this.$Message.success('已成功退出当前用户，记得回来看看哦'));
+          this.$Message.success('已成功退出当前用户，记得回来看看哦')
+          // 如果路由在首页或者recommend，则刷新页面，其他都回到首页
+          setTimeout(() => {
+            let path = this.$router.currentRoute.path;
+            if (path === "/" || path === "/recommend") {
+              this.$router.go(0);
+            } else {
+              this.$router.replace("/");
+            }
+          }, 400)
         })
       } else {
         setTimeout(() => {
           this.$store.commit('clearUserInfo');
-          this.$router.go(0);
-          this.$nextTick(() => this.$Message.success('已成功退出当前用户，记得回来看看哦'));
+          this.$Message.success('已成功退出当前用户，记得回来看看哦')
+          setTimeout(() => {
+            let path = this.$router.currentRoute.path;
+            if (path === "/" || path === "/recommend") {
+              this.$router.go(0);
+            } else {
+              this.$router.replace("/");
+            }
+          }, 500)
         }, 500)
       }
     },

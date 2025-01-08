@@ -14,31 +14,35 @@
     </div>
     <Divider class="divider"/>
     <div class="hot-list">
-      <a href="/article/7353484906532995135" class="article-item-link" target="_blank" v-for="(item,index) in noteList" :key="item.uid">
+      <a :href="toHref(item)"
+         class="article-item-link"
+         target="_blank"
+         v-for="(item,index) in articleList"
+         :key="item.uid">
         <div class="article-item-wrap">
           <div class="article-item-left">
             <span :class="['iconfont', 'rank-' + (index+1), 'article-number']" v-if="index <= 2"></span>
             <span class="article-number" v-else>{{index}}</span>
             <div class="article-detail">
-              <div :title="item.articleTitle" class="article-title">
-                {{item.articleTitle}}
+              <div :title="item.title" class="article-title">
+                {{item.title}}
               </div>
               <div class="article-author">
-                <a href="/user/3468339576581548" class="article-author-name" target="_blank">
+                <a :href="'/' + item.userInfo.domain" class="article-author-name" target="_blank">
                   <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer">
                     <slot>
                       <b-avatar
-                        :src="item.userInfo.avatar"
+                        :src="fileUrl(item.userInfo.avatarUrl)"
                         size="1.5rem"
                         class="avatar"
-                        to="/lovbe0210">
-                        <span v-if="!item.userInfo.avatar">{{item.userInfo.username}}</span>
+                        :to="'/' + item.userInfo.domain">
+                        <span v-if="!item.userInfo.avatarUrl">{{item.userInfo.username}}</span>
                       </b-avatar>
                     </slot>
                   </user-card>
                   <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer">
                     <slot>
-                      <b-link to="/lovbe0210">
+                      <b-link :to="'/' + item.userInfo.domain">
                         <span class="article-author-name-text">{{item.userInfo.username}}&nbsp;·&nbsp;</span>
                       </b-link>
                     </slot>
@@ -70,140 +74,37 @@
 <script>
   import { formatNumber } from '@/utils/emoji/index.js'
   import UserCard from "@/components/common/UserCard.vue";
+  import contentPicksApi from "@/api/ContentPicksApi";
   export default {
-    name: "FeaturedNotes",
+    name: "FeaturedArticle",
     data() {
       return {
         popoverContainer: null,
-        noteList: [
-          {
-            uid: 123,
-            articleTitle: '我早就看现在的工作流不爽了！- 前端使用 Jenkins',
-            userInfo: {
-              username: 'bald3r',
-              avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hojglubq5nj311y1kwx4c.jpg',
-              userId: 112,
-              domain: '/lovbe0210'
-            },
-            viewCount: 12000,
-            collectCount: 201,
-            likeCount: 203
-          },
-          {
-            uid: 1231,
-            articleTitle: '你不知道的Vue最新功能：Vue Macros',
-            userInfo: {
-              username: '水煮鱼写前端',
-              avatar: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hojgm70ztnj316p1kxqln.jpg',
-              userId: 112,
-              domain: '/lovbe0210'
-            },
-            viewCount: 300,
-            collectCount: 201,
-            likeCount: 203
-          },
-          {
-            uid: 1232,
-            articleTitle: '面试官：如何一次性渲染十万条数据',
-            userInfo: {
-              username: 'Dolphin_海豚',
-              avatar: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hog855y6lpj30sg0zkdk1.jpg',
-              userId: 112,
-              domain: '/lovbe0210'
-            },
-            viewCount: 400,
-            collectCount: 201,
-            likeCount: 203
-          },
-          {
-            uid: 1233,
-            articleTitle: 'Flutter 即将放弃 Html renderer ，你是否支持这个提议？',
-            userInfo: {
-              username: '恋猫de小郭',
-              avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog854ty1oj30u011hwij.jpg',
-              userId: 112,
-              domain: '/lovbe0210'
-            },
-            viewCount: 5020,
-            collectCount: 201,
-            likeCount: 203
-          },
-          {
-            uid: 1234,
-            articleTitle: '秒杀 ：这些问题帮你弄清楚分布式锁应该如何设计',
-            userInfo: {
-              username: '志字辈小蚂蚁',
-              avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hog858wjnhj30u011haf3.jpg',
-              userId: 112,
-              domain: '/lovbe0210'
-            },
-            viewCount: 1000,
-            collectCount: 201,
-            likeCount: 203
-          },
-          {
-            uid: 1235,
-            articleTitle: '陌生Java项目历险记 2 ——搜索与回溯',
-            userInfo: {
-              username: ' 摸鱼总工',
-              avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog859i4f5j30l40qego7.jpg',
-              userId: 112,
-              domain: '/lovbe0210'
-            },
-            viewCount: 1000,
-            collectCount: 201,
-            likeCount: 203
-          },
-          {
-            uid: 1236,
-            articleTitle: 'Spring Cloud Gateway实战',
-            userInfo: {
-              username: '徐年',
-              avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog6fy2jvxj316o1kwk96.jpg',
-              userId: 112,
-              domain: '/lovbe0210'
-            },
-            viewCount: 1000,
-            collectCount: 201,
-            likeCount: 203
-          },
-          {
-            uid: 1237,
-            articleTitle: '写出好的Join语句，前提你得懂这些！',
-            userInfo: {
-              username: '程序员清风',
-              avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hog6g0y71xj311y1kw7eb.jpg',
-              userId: 112,
-              domain: '/lovbe0210'
-            },
-            viewCount: 1000,
-            collectCount: 201,
-            likeCount: 203
-          },
-          {
-            uid: 1238,
-            articleTitle: '经历定时任务事故，我学到了什么？一个案例的全面回顾',
-            userInfo: {
-              username: '小白858',
-              avatar: 'https://p9-passport.byteacctimg.com/img/user-avatar/1231993a9352e0b6c0dd8102c8be5cd1~100x100.awebp',
-              userId: 112,
-              domain: '/lovbe0210'
-            },
-            viewCount: 1000,
-            collectCount: 201,
-            likeCount: 203
-          }
-        ]
+        hasMore: true,
+        articleList: []
       }
     },
     components: {
       UserCard
     },
     methods: {
-      formatNumber
+      formatNumber,
+      toHref(articleItem) {
+        let href = '/' + articleItem?.userInfo?.domain + '/';
+        return href + (articleItem.columnUri ? (articleItem.columnUri + '/') : '') + articleItem.uri;
+      },
+      fileUrl(path) {
+        return this.fileService + path;
+      }
     },
     mounted() {
       this.popoverContainer = this.$refs.popoverContainer;
+      contentPicksApi.getRankArticle({limit: 50}).then(data => {
+        if (data?.result) {
+          this.hasMore = data.data.hasMore;
+          this.articleList.push(...data.data.list);
+        }
+      })
     }
   }
 </script>

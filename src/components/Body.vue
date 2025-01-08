@@ -21,7 +21,7 @@
             <hr>
           </div>
           <div class="swipe">
-            <carousel-swipe :interval="5000" :images="images"></carousel-swipe>
+            <carousel-swipe :interval="5000" :featuredArticle="featuredArticle"></carousel-swipe>
           </div>
         </div>
         <div class="recommend-topics">
@@ -140,6 +140,7 @@
 <script>
   import CarouselSwipe from '@/components/common/CarouselSwipe';
   import {MESSAGE_TYPE} from 'vue-baberrage'
+  import contentPicksApi from "@/api/ContentPicksApi";
 
   export default {
     name: 'Body',
@@ -162,23 +163,7 @@
             description: '内存模型定义了共享内存系统中多线程程序读写操作行为的规范，来屏蔽各种硬件和操作系统的内存访问差异，来实现 Java 程序在各个平台下都能达到一致的内存访问效果。'
           }
         ],
-        images: [
-          {
-            url: '/',
-            src: require('@/assets/img/2.jpg'),
-            title: 'title1title1title1title1title1title1tititle1title1title1title1title1title1tle1title1title1title1'
-          },
-          {
-            url: '/',
-            src: require('@/assets/img/04.jpg'),
-            title: 'title2'
-          },
-          {
-            url: '/',
-            src: require('@/assets/img/6.jpg'),
-            title: 'title3'
-          }
-        ],
+        featuredArticle: [],
         creators: [
           {
             id: '001',
@@ -232,9 +217,6 @@
     },
     components: {
       CarouselSwipe
-      // BackTop
-      // CustomerSet,
-      // MusicIndex
     },
     computed: {
       // 判断页面是手机页面还是pc页面，如果是手机页面则进行全屏显示
@@ -265,8 +247,6 @@
           return '每日一句心灵鸡汤'
         }
       }
-
-
     },
     methods: {
       isEditable(flag) {
@@ -321,15 +301,11 @@
           this.fixedHeight = this.$refs.fixedElement.getBoundingClientRect().top
         })
       }
-      setInterval(() => {
-        for (let i = 0; i < this.images.length; i++) {
-          this.$set(this.images, i, {
-            url: '/',
-            src: require('@/assets/img/' + Math.ceil(Math.random() * 31) + '.jpg'),
-            title: 'title' + i
-          })
+      contentPicksApi.getFeaturedArticle().then(data => {
+        if (data?.result) {
+          this.featuredArticle = data.data;
         }
-      }, 13000)
+      })
     },
     destroyed() {
       // 释放监听

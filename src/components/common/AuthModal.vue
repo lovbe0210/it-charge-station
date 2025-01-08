@@ -33,24 +33,27 @@
             <h1 class="title" v-if="loginType === 3">重置密码</h1>
             <div class="panel-pwd" v-if="loginType === 1">
               <div class="pwd-input-group">
-                <Input v-model="account"
-                       class="account"
-                       placeholder="请输入邮箱/手机号（国际号码加区号如+86）"
-                       @on-change="checkALegitimacy(3)"
-                       maxlength="20"/>
-                <div class="error-text account-error">{{ accountError ? '请输入正确的手机号或邮箱' : '' }}</div>
-                <Input v-model="password"
-                       maxlength="30"
-                       type="password"
-                       @on-change="checkALegitimacy(1)"
-                       placeholder="请输入密码">
-                  <Button slot="suffix"
-                          ghost
-                          @click="forgotPwd"
-                          type="text">忘记密码
-                  </Button>
-                </Input>
-                <div class="error-text">{{ pwdErrorMsg }}</div>
+                <form>
+                  <Input v-model="account"
+                         class="account"
+                         placeholder="请输入邮箱/手机号（国际号码加区号如+86）"
+                         @on-change="checkALegitimacy(3)"
+                         type="text"
+                         maxlength="20"/>
+                  <div class="error-text account-error">{{ accountError ? '请输入正确的手机号或邮箱' : '' }}</div>
+                  <Input v-model="password"
+                         maxlength="30"
+                         type="password"
+                         @on-change="checkALegitimacy(1)"
+                         placeholder="请输入密码">
+                    <Button slot="suffix"
+                            ghost
+                            @click="forgotPwd"
+                            type="text">忘记密码
+                    </Button>
+                  </Input>
+                  <div class="error-text">{{ pwdErrorMsg }}</div>
+                </form>
               </div>
               <div class="button-group">
                 <Button type="primary" size="large" @click="payloadLogin">
@@ -63,25 +66,27 @@
             </div>
             <div class="panel-verify" v-if="loginType === 2">
               <div class="verify-input-group">
-                <Input v-model="account"
-                       placeholder="请输入邮箱/手机号（国际号码加区号如+86）"
-                       maxlength="20"
-                       @on-change="checkALegitimacy(3)">
-                </Input>
-                <div class="error-text account-error">{{ accountError ? '请输入正确的手机号或邮箱' : '' }}</div>
-                <Input v-model="verifyCode"
-                       maxlength="6"
-                       placeholder="请输入验证码"
-                       @on-change="checkALegitimacy(4)">
-                  <Button slot="suffix"
-                          type="text"
-                          ghost
-                          @click="getVerifyCode"
-                          class="verify-code-btn"
-                          :disabled="sendCodeSuccess">
-                    {{ btnValue }}
-                  </Button>
-                </Input>
+                <form>
+                  <Input v-model="account"
+                         placeholder="请输入邮箱/手机号（国际号码加区号如+86）"
+                         maxlength="20"
+                         @on-change="checkALegitimacy(3)">
+                  </Input>
+                  <div class="error-text account-error">{{ accountError ? '请输入正确的手机号或邮箱' : '' }}</div>
+                  <Input v-model="verifyCode"
+                         maxlength="6"
+                         placeholder="请输入验证码"
+                         @on-change="checkALegitimacy(4)">
+                    <Button slot="suffix"
+                            type="text"
+                            ghost
+                            @click="getVerifyCode"
+                            class="verify-code-btn"
+                            :disabled="sendCodeSuccess">
+                      {{ btnValue }}
+                    </Button>
+                  </Input>
+                </form>
                 <div class="error-text">{{ verifyCodeError ? '请输入正确的验证码' : '' }}</div>
               </div>
               <Button size="large" type="primary" @click="quickLogin">
@@ -155,9 +160,9 @@
            :mask-closable="false"
            :width="300"
            :styles="{top: '28%'}">
-      <div class="slider-verify-box" style="height: 200px;">
+      <div class="slider-verify-box" v-if="showSliderValidate" style="height: 200px;">
         <span class="content un-select">请先完成滑块验证</span>
-        <div v-if="showSliderValidate" class="validation">
+        <div class="validation">
           <slider-validation @validate="validate"></slider-validation>
         </div>
       </div>
@@ -266,6 +271,7 @@ export default {
           return;
         }
         this.showLogin = false;
+        this.$Message.success('登陆成功!')
         let loginData = data.data;
         let userInfo = {
           token: loginData.acToken,
@@ -288,6 +294,7 @@ export default {
           return;
         }
         this.showLogin = false;
+        this.$Message.success('登陆成功!')
         let loginData = data.data;
         let userInfo = {
           token: loginData.acToken,
@@ -389,8 +396,9 @@ export default {
         userInfo = {...userInfo, ...loginUser};
         // 保存userInfo到store中
         this.$store.commit('login', userInfo)
-        this.$router.go(0);
-        this.$nextTick(() => this.$Message.success('登陆成功!'));
+        setTimeout(() => {
+          this.$router.go(0);
+        }, 300)
       })
     }
   },
@@ -414,6 +422,8 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import "../css/common-var";
+
 .auth-body {
   color: var(--font-color);
   height: 340px;
@@ -571,6 +581,13 @@ export default {
 
         .ivu-btn-default {
           background-color: var(--modal-bg-color);
+          color: var(--title-color);
+          border-color: var(--border-color);
+
+          &:hover {
+            color: @primary-color;
+            border-color: @primary-color;
+          }
         }
       }
 

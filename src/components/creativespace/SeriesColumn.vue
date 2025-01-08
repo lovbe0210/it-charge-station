@@ -149,10 +149,9 @@
           <div class="permission-radio">
             <div class="private-radio" @click="changeColumnPermission(0)">
               <input type="radio"
-                     id="private"
                      value="0"
                      :class="currentColumn.isPublic ? '' : 'checked'"/>
-              <label class="permission-label un-select" for="private">仅作者可访问</label>
+              <label class="permission-label un-select">仅作者可访问</label>
             </div>
             <Poptip class="un-select"
                     confirm
@@ -223,10 +222,9 @@
           <div class="permission-radio">
             <div class="private-radio" @click="changeColumnPermission(0)">
               <input type="radio"
-                     id="initPrivate"
                      value="0"
                      :class="currentColumn.isPublic ? '' : 'checked'"/>
-              <span class="permission-label un-select" for="initPrivate">仅作者可访问</span>
+              <span class="permission-label un-select">仅作者可访问</span>
             </div>
             <Poptip class="un-select"
                     confirm
@@ -320,6 +318,11 @@ export default {
       })
     },
     changeColumnPermission(permission) {
+      // 如果是创建专栏不做响应
+      if (this.createNewColumn) {
+        this.currentColumn.isPublic = permission;
+        return;
+      }
       if (this.currentColumn.isPublic === permission) {
         return;
       }
@@ -391,7 +394,7 @@ export default {
         this.cannotDelete = true;
       } else {
         let columnInfo = { uid: this.currentColumn.uid }
-        WriteCenterApi.deleteColumn(this, columnInfo).then(data => {
+        WriteCenterApi.deleteColumn(columnInfo).then(data => {
           if (data?.result) {
             this.deleteColumn = false;
             this.$Message.success('删除成功');

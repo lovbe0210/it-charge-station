@@ -485,9 +485,10 @@ export default {
       })
       this.onTreeChange(true);
       this.totalDirNode = this.columnInfo.articleList.length;
-      let dirInfo = new FormData();
-      dirInfo.append("uid", this.columnInfo.uid);
-      dirInfo.append("dirContent", JSON.stringify(this.dirData));
+      let dirInfo = {
+        uid: this.columnInfo.uid,
+        dirContent: JSON.stringify(this.dirData)
+      }
       WriteCenterApi.updateColumnDir(dirInfo).then(data => {
         if (data?.result) {
           this.$emit("updateDirContentId", data.data);

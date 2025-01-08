@@ -16,7 +16,14 @@ export default {
     });
   },
 
-
+  /**
+   * 阅读记录上报
+   * @param _this
+   * @param scrollTop
+   * @param canScrollHeight
+   * @param scrollHeight
+   * @returns {Promise<*>}
+   */
   async reportView(_this, scrollTop, canScrollHeight, scrollHeight) {
     let uniqueId = _this.$store.state.uniqueId;
     if (!uniqueId) {
@@ -33,7 +40,7 @@ export default {
     }
     let encodeStr = commonUtil.encodeSign(JSON.stringify(sourceData));
     return await Vue.prototype.$request({
-      url: "/cps/ae/view?st=" + scrollTop + "&csh=" + canScrollHeight + "&sh=" + scrollHeight,
+      url: "/cps/article/view?st=" + scrollTop + "&csh=" + canScrollHeight + "&sh=" + scrollHeight,
       method: 'GET',
       headers: {
         sign: encodeStr
@@ -54,6 +61,44 @@ export default {
   },
 
   /**
+   * 获取推荐列表
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getRecommendArticleList(recommendRequest) {
+    return await Vue.prototype.$request({
+      url: "/cps/article/recommend",
+      method: 'POST',
+      data: recommendRequest
+    });
+  },
+
+  /**
+   * 获取首页精选文章
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getRankArticle(recommendRequest) {
+    return await Vue.prototype.$request({
+      url: "/cps/article/rank",
+      method: 'POST',
+      data: recommendRequest
+    });
+  },
+
+  /**
+   * 获取首页精选文章(排行榜前3）
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getFeaturedArticle() {
+    return await Vue.prototype.$request({
+      url: "/cps/article/featured",
+      method: 'GET'
+    });
+  },
+
+  /**
    * 获取专栏下所有公开文章信息（如果是作者获取所有状态，包括未发布的）
    * @param userId
    * @returns {Promise<void>}
@@ -61,6 +106,18 @@ export default {
   async getColumnDir(uri) {
     return await Vue.prototype.$request({
       url: "/cps/column/dir/" + uri,
+      method: 'GET'
+    });
+  },
+
+  /**
+   * 获取首页精选专栏(排行榜前3）
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getFeaturedColumn() {
+    return await Vue.prototype.$request({
+      url: "/cps/column/featured",
       method: 'GET'
     });
   },
@@ -217,19 +274,6 @@ export default {
       url: "/cps/history",
       method: 'POST',
       data: browseHistoryPage
-    });
-  },
-
-  /**
-   * 获取推荐列表
-   * @param targetId
-   * @returns {Promise<void>}
-   */
-  async getRecommendArticleList(recommendRequest) {
-    return await Vue.prototype.$request({
-      url: "/cps/article/rcd",
-      method: 'POST',
-      data: recommendRequest
     });
   }
 

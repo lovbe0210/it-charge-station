@@ -338,7 +338,6 @@ export default {
     this.article = {
       title: this.articleInfo.title,
       contentId: this.articleInfo.latestContentId,
-      // content: this.articleInfo.latestContent,
       wordsNum: this.articleInfo.wordsNum
     }
   },
