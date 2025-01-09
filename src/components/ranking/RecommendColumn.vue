@@ -51,7 +51,7 @@
                   {{ formatNumber(item.articleCount) }} 文档&nbsp;·&nbsp;
                 </div>
                 <div class="author-text">
-                  {{ formatNumber(item.subCount) }} 订阅&nbsp;·&nbsp;
+                  {{ formatNumber(item.subCount) }} 收藏&nbsp;·&nbsp;
                 </div>
                 <div class="author-text">
                   {{ formatNumber(item.viewCount) }} 浏览
@@ -61,7 +61,7 @@
           </div>
           <div class="article-right">
             <Button class="action-btn ghost-btn">
-              <span>订阅</span>
+              <span>收藏</span>
             </Button>
           </div>
         </div>

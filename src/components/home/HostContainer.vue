@@ -50,7 +50,7 @@
       margin-bottom: 30px;
 
       &:after {
-        background: var(--title-color);
+        background: var(--border-color);
       }
 
       a {
