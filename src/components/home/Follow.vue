@@ -133,7 +133,7 @@
             PublicTitle: '运算符🔣Family',
             PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索得懂，我这句话主要说了什么？你要不尝试说一下引初见闻MySQL索引初见闻',
             picList: [
-              require('@/assets/img/6.jpg')
+              // require('@/assets/img/6.jpg')
             ],
             pubTime: 1715609438640,
             comments: 10,
@@ -144,8 +144,8 @@
             ramblyId: 'asd32442sdf',
             userInfo: {
               userId: 1,
-              username: '闪魔亮晶晶',
-              avatar: require('@/assets/avatar/16.jpg')
+              username: '闪魔亮晶晶'
+              // avatar: require('@/assets/avatar/16.jpg')
             }
           },
           {
@@ -160,15 +160,15 @@
             articleId: 'ssasdas',
             ramblyId: 'asd32442sdf',
             picList: [
-              require('@/assets/img/05.jpg'),
-              'https://pic.netbian.com/uploads/allimg/240715/001632-1720973792179d.jpg',
-              require('@/assets/img/19.jpg')
+              // require('@/assets/img/05.jpg'),
+              'https://pic.netbian.com/uploads/allimg/240715/001632-1720973792179d.jpg'
+              // require('@/assets/img/19.jpg')
             ],
             pubTime: 1707833424000,
             userInfo: {
               userId: 1,
-              username: '晶莹剔透的Q宝',
-              avatar: require('@/assets/avatar/03.jpg')
+              username: '晶莹剔透的Q宝'
+              // avatar: require('@/assets/avatar/03.jpg')
             }
           },
           {
@@ -177,7 +177,7 @@
             PublicTitle: 'MySQL索引初见闻',
             PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
             picList: [
-              require('@/assets/img/05.jpg')
+              // require('@/assets/img/05.jpg')
             ],
             pubTime: 1715602224000,
             comments: 10,
@@ -188,8 +188,8 @@
             ramblyId: 'asd32442sdf',
             userInfo: {
               userId: 1,
-              username: '无懈可击',
-              avatar: require('@/assets/avatar/01.jpg')
+              username: '无懈可击'
+              // avatar: require('@/assets/avatar/01.jpg')
             }
           },
           {
@@ -198,7 +198,7 @@
             PublicTitle: 'MySQL索引初见闻',
             PublicContent: 'MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻MySQL索引初见闻',
             picList: [
-              require('@/assets/img/3.jpg')
+              // require('@/assets/img/3.jpg')
             ],
             pubTime: 1715584224000,
             comments: 10,
@@ -209,8 +209,8 @@
             ramblyId: 'asd32442sdf',
             userInfo: {
               userId: 1,
-              username: '这是啥撒啊阿萨 ',
-              avatar: require('@/assets/avatar/01.jpg')
+              username: '这是啥撒啊阿萨 '
+              // avatar: require('@/assets/avatar/01.jpg')
             }
           }
         ]

@@ -124,66 +124,66 @@ export default {
       likeUserList: [
         {
           userId: 1,
-          username: '融码一生',
-          avatar: require('@/assets/avatar/01.jpg')
+          username: '融码一生'
+          // avatar: require('@/assets/avatar/01.jpg')
         },
         {
           userId: 2,
-          username: '融asd）',
-          avatar: require('@/assets/avatar/04.jpg')
+          username: '融asd）'
+          // avatar: require('@/assets/avatar/04.jpg')
         },
         {
           userId: 3,
-          username: '融3sdfs',
-          avatar: require('@/assets/avatar/03.jpg')
+          username: '融3sdfs'
+          // avatar: require('@/assets/avatar/03.jpg')
         }, {
           userId: 4,
-          username: 'acvxcvff',
-          avatar: require('@/assets/avatar/04.gif')
+          username: 'acvxcvff'
+          // avatar: require('@/assets/avatar/04.gif')
         }, {
           userId: 5,
-          username: '飒飒打撒方法',
-          avatar: require('@/assets/avatar/05.jpg')
+          username: '飒飒打撒方法'
+          // avatar: require('@/assets/avatar/05.jpg')
         }, {
           userId: 6,
-          username: '3撒旦发射点和',
-          avatar: require('@/assets/avatar/06.jpg')
+          username: '3撒旦发射点和'
+          // avatar: require('@/assets/avatar/06.jpg')
         }, {
           userId: 7,
-          username: '阿萨的观光热点覆盖',
-          avatar: require('@/assets/avatar/07.jpg')
+          username: '阿萨的观光热点覆盖'
+          // avatar: require('@/assets/avatar/07.jpg')
         }, {
           userId: 8,
-          username: '手动阀手动阀',
-          avatar: require('@/assets/avatar/08.jpg')
+          username: '手动阀手动阀'
+          // avatar: require('@/assets/avatar/08.jpg')
         }, {
           userId: 9,
-          username: '士大夫胜多负少大师傅',
-          avatar: require('@/assets/avatar/09.jpg')
+          username: '士大夫胜多负少大师傅'
+          // avatar: require('@/assets/avatar/09.jpg')
         }, {
           userId: 10,
-          username: '撒旦发射点和地方）',
-          avatar: require('@/assets/avatar/10.jpg')
+          username: '撒旦发射点和地方）'
+          // avatar: require('@/assets/avatar/10.jpg')
         }, {
           userId: 11,
-          username: 'asderrer）',
-          avatar: require('@/assets/avatar/11.jpg')
+          username: 'asderrer）'
+          // avatar: require('@/assets/avatar/11.jpg')
         }, {
           userId: 12,
-          username: 'asdhghfg',
-          avatar: require('@/assets/avatar/12.jpg')
+          username: 'asdhghfg'
+          // avatar: require('@/assets/avatar/12.jpg')
         }, {
           userId: 13,
-          username: '阿斯顿撒旦 域）',
-          avatar: require('@/assets/avatar/13.jpg')
+          username: '阿斯顿撒旦 域）'
+          // avatar: require('@/assets/avatar/13.jpg')
         }, {
           userId: 14,
-          username: '融胜多负少）',
-          avatar: require('@/assets/avatar/14.jpg')
+          username: '融胜多负少）'
+          // avatar: require('@/assets/avatar/14.jpg')
         }, {
           userId: 15,
-          username: '融发的干扰对方域）',
-          avatar: require('@/assets/avatar/15.jpg')
+          username: '融发的干扰对方域）'
+          // avatar: require('@/assets/avatar/15.jpg')
         }
       ],
       moreLikeUser: false,

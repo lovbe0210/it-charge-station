@@ -75,8 +75,8 @@
             coverUrl: 'https://pic.netbian.com/uploads/allimg/240727/150142-172206370296d1.jpg',
             describe: "个人学习、工作常用知识或工作遇到问题的小记",
             viewCount: 1002,
-            columnId: 12444343,
-            avatar: 'https://pic.netbian.com/uploads/allimg/240626/203002-1719405002f79c.jpg'
+            columnId: 12444343
+            // avatar: 'https://pic.netbian.com/uploads/allimg/240626/203002-1719405002f79c.jpg'
           }, {
             uid: "002",
             personalDomain: "lzy8684",
@@ -90,7 +90,7 @@
             uid: "003",
             personalDomain: "wuyiwa",
             title: "Linux 系统环境部署大飒飒大啊实打实多",
-            coverUrl: require('@/assets/img/3.jpg'),
+            // coverUrl: require('@/assets/img/3.jpg'),
             describe: "讲解 Linux 系统部署 Java 项目需要的环境",
             viewCount: 502,
             columnId: 12444343,
@@ -99,7 +99,7 @@
             uid: "004",
             personalDomain: "whalexplorer",
             title: "我是第4个",
-            coverUrl: require('@/assets/img/04.jpg'),
+            // coverUrl: require('@/assets/img/04.jpg'),
             avatar: 'https://pic.netbian.com/uploads/allimg/240424/003411-1713890051411d.jpg',
             viewCount: 308,
             columnId: 12444343,
@@ -108,7 +108,7 @@
             uid: "005",
             personalDomain: "jiaowovitamin",
             title: "我是第5个",
-            coverUrl: require('@/assets/img/05.jpg'),
+            // coverUrl: require('@/assets/img/05.jpg'),
             avatar: 'https://pic.netbian.com/uploads/allimg/240727/161014-172206781404ef.jpg',
             viewCount: 100,
             columnId: 12444343,

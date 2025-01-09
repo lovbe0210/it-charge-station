@@ -204,7 +204,6 @@
 
           .other {
             height: 0;
-            background-image: url("../../assets/other_bacc.jpg");
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center center;

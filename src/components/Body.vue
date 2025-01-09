@@ -34,21 +34,21 @@
           </div>
           <div class="topic">
             <b-list-group flush>
-              <b-list-group-item class="flex-column align-items-start" v-for="item in topics" :key="item.id">
+              <b-list-group-item class="flex-column align-items-start" v-for="item in featuredColumn" :key="item.uid">
                 <div class="title">
                   <b-link to="/login">
                     <span class="title">{{item.title}}</span>
                   </b-link>
                 </div>
                 <span class="desc">
-                  {{item.description}}
+                  {{item.synopsis}}
                 </span>
                 <b-row class="icon">
                   <div>
-                    <span class="iconfont series-column"></span> 2233
+                    <span class="iconfont series-column"></span> {{ item.articleCount }}
                   </div>
                   <div>
-                    <span class="iconfont like"></span> 11223
+                    <span class="iconfont like"></span> {{ item.viewCount }}
                   </div>
                 </b-row>
               </b-list-group-item>
@@ -139,35 +139,18 @@
 
 <script>
   import CarouselSwipe from '@/components/common/CarouselSwipe';
-  import {MESSAGE_TYPE} from 'vue-baberrage'
   import contentPicksApi from "@/api/ContentPicksApi";
 
   export default {
     name: 'Body',
     data() {
       return {
-        topics: [
-          {
-            id: '001',
-            title: 'MySQL精讲30篇让你一次性学够还不够啊',
-            description: '很多朋友会提出语的困惑'
-          },
-          {
-            id: '002',
-            title: 'Java后端随笔',
-            description: '王有志，一个分享硬核Java技术的互金摸鱼侠 加入Java人的提桶跑路群：共同富裕的Java人 平时我在网上冲浪的时候，收集了不少八股文和面试文，内容虽然多，但质量上良莠不齐，主打一个不假思索的互相抄，使得很多错误内容一代代得“传承”了下来。所以，我对收集的内容做了归纳和整理，通过查阅资料重新做了解答，并给出了每道八股文评分'
-          },
-          {
-            id: '003',
-            title: 'Java 内存模型（JMM）',
-            description: '内存模型定义了共享内存系统中多线程程序读写操作行为的规范，来屏蔽各种硬件和操作系统的内存访问差异，来实现 Java 程序在各个平台下都能达到一致的内存访问效果。'
-          }
-        ],
+        featuredColumn: [],
         featuredArticle: [],
         creators: [
           {
             id: '001',
-            avatar: require('@/assets/avatar/01.jpg'),
+            // avatar: require('@/assets/avatar/01.jpg'),
             level: '6',
             nickName: '昵称多的字数需要限制',
             tag: ['自我驱动', '坚持不懈', '目标大厂', '年薪百万']
@@ -181,7 +164,7 @@
           },
           {
             id: '003',
-            avatar: require('@/assets/avatar/03.jpg'),
+            // avatar: require('@/assets/avatar/03.jpg'),
             level: '5',
             nickName: 'lovbe0210',
             tag: ['全栈', '用心写文']
@@ -269,20 +252,6 @@
         } else {
           this.needFixed = false
         }
-      },
-      /**
-       * 弹幕添加方法
-       */
-      addToList() {
-        let barrage = {
-          id: ++this.currentId,
-          avatar: require('@/assets/music_bacc.jpg'),
-          msg: '这是一条弹幕',
-          time: 5,
-          type: MESSAGE_TYPE.NORMAL
-        };
-        // debugger
-        this.barrageList.push(barrage);
       }
     },
     mounted() {
@@ -304,6 +273,11 @@
       contentPicksApi.getFeaturedArticle().then(data => {
         if (data?.result) {
           this.featuredArticle = data.data;
+        }
+      })
+      contentPicksApi.getFeaturedColumn().then(data => {
+        if (data?.result) {
+          this.featuredColumn = data.data;
         }
       })
     },

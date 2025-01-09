@@ -104,7 +104,7 @@
                 <div class="larkui-sortable">
                   <div class="personalBooks-module_pbContentItem">
                     <div class="personalBooks-module_pbContentItemTop">
-                      <img :src="require('@/assets/img/2.jpg')" alt="">
+                      <img src="" alt="">
                     </div>
                     <div class="personalBooks-module_pbContentItemBot">
                       <p class="personalBooks-module_pbContentItemBotTitle">Java开发技术手册</p>
@@ -253,7 +253,7 @@
             time: '07-04 15:23',
             title: 'Nginx ——— 深入浅出',
             summary: '引言早期的业务都是基于单体节点部署，由于前期访问流量不大，因此单体结构也可满足需求，但随着业务增长，流量也越来越大，那么最终单台服务器受到的访问压力也会逐步增高。时间一长，单台服务器性能无法跟上业务增长，就会造成线上频繁宕机的现象发生，最终导致系统瘫痪无法继续处理用户的请求。从上面的描述中，主...',
-            cover: require('@/assets/cover/cover2.png'),
+            // cover: require('@/assets/cover/cover2.png'),
             simplifyLikeCount: 233
           }
         ]

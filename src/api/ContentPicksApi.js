@@ -123,6 +123,19 @@ export default {
   },
 
   /**
+   * 获取专栏排行榜
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getRankColumn(recommendRequest) {
+    return await Vue.prototype.$request({
+      url: "/cps/column/rank",
+      method: 'POST',
+      data: recommendRequest
+    });
+  },
+
+  /**
    * 获取收藏分组标签(带统计)
    * @returns {Promise<void>}
    */

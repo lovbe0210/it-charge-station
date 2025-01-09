@@ -187,7 +187,7 @@
             userId: 112,
             usernameShow: '闪魔亮<span style="color: red;">晶晶</span>',
             username: '闪魔亮晶晶',
-            avatar: require('@/assets/avatar/16.jpg'),
+            // avatar: require('@/assets/avatar/16.jpg'),
             domain: 'lovbe0210',
             location: '四川成都',
             industry: '新时代农民工'
@@ -196,7 +196,7 @@
             userId: 113,
             usernameShow: '山野寻<span style="color: red;">雾灯</span>',
             username: '山野寻雾灯',
-            avatar: require('@/assets/avatar/15.jpg'),
+            // avatar: require('@/assets/avatar/15.jpg'),
             domain: 'lovbe0211',
             location: '四川成都',
             industry: '新时代农民工'
@@ -205,7 +205,7 @@
             userId: 114,
             usernameShow: 'AbnerPei',
             username: 'AbnerPei',
-            avatar: require('@/assets/avatar/14.jpg'),
+            // avatar: require('@/assets/avatar/14.jpg'),
             domain: 'lovbe0212',
             location: '',
             industry: ''
@@ -221,7 +221,7 @@
             userInfo: {
               userId: 112,
               domain: 'lovesdfsd',
-              avatar: require('@/assets/avatar/14.jpg'),
+              // avatar: require('@/assets/avatar/14.jpg'),
               username: '闪魔亮晶晶'
             }
           },
@@ -232,7 +232,7 @@
             describe: "该知识库用于收藏平常遇到过的一些关于技术的文章（涵盖前端与后端）",
             userInfo: {
               userId: 113,
-              avatar: require('@/assets/avatar/15.jpg'),
+              // avatar: require('@/assets/avatar/15.jpg'),
               domain: 'lovesdfsd',
               username: 'whalexplorer'
             }
@@ -243,7 +243,7 @@
             describe: "讲解 Linux 系统部署 Java 项目需要的环境",
             userInfo: {
               userId: 114,
-              avatar: require('@/assets/avatar/16.jpg'),
+              // avatar: require('@/assets/avatar/16.jpg'),
               domain: 'lovesdfsd',
               username: 'whalexplorer'
             }
