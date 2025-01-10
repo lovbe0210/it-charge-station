@@ -41,6 +41,19 @@
   import BackTop from "@/components/common/BackTop";
   export default {
     name: 'Ranking',
+    beforeRouteEnter(to, from, next) {
+      next(vc => {
+        let activeMenu = vc.$route.name;
+        if (activeMenu === 'FeaturedArticle') {
+          vc.activeMenu = 'articles';
+        } else if (activeMenu === 'RecommendColumn') {
+          vc.activeMenu = 'column';
+        } else {
+          vc.activeMenu = 'authors'
+        }
+        next();
+      });
+    },
     data() {
       return {
         app: null,

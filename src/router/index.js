@@ -136,7 +136,7 @@ const routes = [
           {
             // 精选文章榜
             path: 'articles',
-            name: 'FeaturedNotes',
+            name: 'FeaturedArticle',
             // 此方式为路由懒加载
             component: () => import('@/components/ranking/FeaturedArticle')
           },
@@ -149,8 +149,8 @@ const routes = [
           {
             // 优质作者榜
             path: 'authors',
-            name: 'QualityAuthors',
-            component: () => import('@/components/ranking/QualityAuthors')
+            name: 'QualityAuthor',
+            component: () => import('@/components/ranking/QualityAuthor')
           }
         ]
       },

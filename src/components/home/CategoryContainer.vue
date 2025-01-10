@@ -332,7 +332,7 @@
 
         .text {
           width: auto;
-          padding: 0 15px 0 12px;
+          padding: 0 15px 0 5px;
         }
 
         .preview-image {

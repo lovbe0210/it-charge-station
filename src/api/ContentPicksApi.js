@@ -124,7 +124,6 @@ export default {
 
   /**
    * 获取专栏排行榜
-   * @param targetId
    * @returns {Promise<void>}
    */
   async getRankColumn(recommendRequest) {
@@ -132,6 +131,42 @@ export default {
       url: "/cps/column/rank",
       method: 'POST',
       data: recommendRequest
+    });
+  },
+
+  /**
+   * 获取专栏排行榜
+   * @returns {Promise<void>}
+   */
+  async getPublicColumn(recommendRequest) {
+    return await Vue.prototype.$request({
+      url: "/cps/column/public",
+      method: 'POST',
+      data: recommendRequest
+    });
+  },
+
+  /**
+   * 获取创作者排行榜
+   * @returns {Promise<void>}
+   */
+  async getRankAuthor(recommendRequest) {
+    return await Vue.prototype.$request({
+      url: "/cps/article/rank",
+      method: 'POST',
+      data: recommendRequest
+    });
+  },
+
+  /**
+   * 获取首页优秀创作者(排行榜前3）
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getFeaturedAuthor() {
+    return await Vue.prototype.$request({
+      url: "/cps/article/featured",
+      method: 'GET'
     });
   },
 

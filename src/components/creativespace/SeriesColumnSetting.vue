@@ -219,7 +219,7 @@
                 <div class="update-time">更新时间</div>
               </div>
               <div class="right-action" v-if="checkedList.length > 0 || showCheckToolBar">
-                <Button type="text" ghost @click="batchOperate('4')">批量删除</Button>
+                <Button type="text" ghost @click="batchOperate('5')">批量删除</Button>
                 <Button type="text" ghost @click="batchOperate('3')">批量导出</Button>
                 <Button type="text" ghost @click="batchOperate('2')">移出专栏</Button>
                 <Button type="text" ghost @click="batchOperate('1')">批量发布</Button>
@@ -369,7 +369,8 @@
         :transfer="false"
         :title="actionType === 'setting' ? '文档设置'
               : actionType === 'export' ? '导出'
-              : actionType === 'delete' ? '删除专栏' : ''"
+              : actionType === 'delete' ? '删除专栏'
+              : actionType === 'deleteA' ? '删除文章' : ''"
         :footer-hide="true">
         <div v-if="actionType === 'setting'" class="modal-setting-item">
           <article-setting :currentArticle="currentOperateArticle" :editTitle="true"/>
@@ -383,13 +384,13 @@
           <div class="delete-warn">
             <div class="warn-content un-select">
               <span class="iconfont i-warn"></span>
-              <span>
-              正在删除专栏
-              <span class="column-name">
-                {{ baseInfo.uri }}
+                <span>
+                正在删除专栏
+                <span class="column-name">
+                  {{ baseInfo.uri }}
+                </span>
+                ，该操作不可逆，一旦操作成功，专栏下的所有内容将会删除。请输入下面内容再次确认操作。
               </span>
-              ，该操作不可逆，一旦操作成功，专栏下的所有内容将会删除。请输入下面内容再次确认操作。
-            </span>
             </div>
             <div class="warn-confirm">
               <span>请在下方输入框中输入 “{{ baseInfo.uri }}” 以确认操作</span>
@@ -404,6 +405,24 @@
               <Button type="error" class="warn-btn" @click="columnDelete">
                 <span class="column-name">确定删除 {{ baseInfo.title }}</span>
               </Button>
+            </div>
+          </div>
+          <div v-if="actionType === 'deleteA'">
+            <div class="delete-warn">
+              <div class="warn-content un-select">
+                <span class="iconfont i-warn"></span>
+                <span>
+                  确定删除所选文章？
+                </span>
+              </div>
+              <div>
+                <Button type="error" class="warn-btn" @click="columnDelete">
+                  <span class="column-name">确定</span>
+                </Button>
+                <Button type="error" class="warn-btn" @click="columnDelete">
+                  <span class="column-name">确定</span>
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -579,7 +598,11 @@ export default {
           window.open(readUrl.href, '_blank')
           break;
         case 'publish':
-          this.$Message.success('发布成功，审核通过后将会同步到阅读页')
+          WriteCenterApi.publishArticle(row.uid).then(data => {
+            if (data?.result) {
+              this.$Message.success('发布成功，审核通过后将会同步到阅读页')
+            }
+          })
           break;
         case 'setting':
           this.currentOperateArticle = row;
@@ -591,6 +614,9 @@ export default {
           this.actionType = 'export';
           break;
         case 'delete':
+          this.currentOperateArticle = row;
+          this.showModal = true;
+          this.actionType = 'deleteA';
           break;
       }
     },
@@ -667,7 +693,7 @@ export default {
             })
             break;
           case "2":
-          case "4":
+          case "5":
             let articleList = this.baseInfo.articleList?.filter(article => !this.checkedList.includes(article.uid));
             this.baseInfo.articleList = articleList || [];
             this.checkedList = [];

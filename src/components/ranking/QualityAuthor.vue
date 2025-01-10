@@ -13,7 +13,10 @@
       </p>
     </div>
     <Divider class="divider"/>
-    <div class="hot-list">
+    <div class="hot-list"
+         v-infinite-scroll="loadMore"
+         :infinite-scroll-disabled="!hasMore"
+         :infinite-scroll-distance="100">
       <a href="/post/7353484906532995135" class="article-item-link" target="_blank" v-for="(item,index) in authorList" :key="item.userId">
         <div class="author-item-wrap">
           <div class="author-item-left">
@@ -66,8 +69,10 @@
 <script>
   import { formatNumber } from '@/utils/emoji/index.js'
   import UserCard from "@/components/common/UserCard.vue";
+  import contentPicksApi from "@/api/ContentPicksApi";
+
   export default {
-    name: "QualityAuthors",
+    name: "QualityAuthor",
     data() {
       return {
         popoverContainer: null,
@@ -169,7 +174,24 @@
       UserCard
     },
     methods: {
-      formatNumber
+      formatNumber,
+      fileUrl(path) {
+        return this.fileService + path;
+      },
+      loadMore() {
+        if (!this.hasMore) {
+          return;
+        }
+        contentPicksApi.getRankArticle({offset: this.offset}).then(data => {
+          if (data?.result) {
+            this.articleList.push(...data.data.list);
+            this.hasMore = data.data.hasMore
+            if (data.data.hasMore) {
+              this.offset = this.offset + 20;
+            }
+          }
+        })
+      }
     },
     mounted() {
       this.popoverContainer = this.$refs.popoverContainer;

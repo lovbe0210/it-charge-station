@@ -93,7 +93,7 @@ export default {
     },
     // 设置无限滚动条目数
     busy() {
-      return this.data.length > 100
+      return this.data.length > 200
     }
   },
   methods: {
@@ -101,6 +101,7 @@ export default {
       if (!this.hasMore || this.busy) {
         return;
       }
+
       ContentPicksApi.getRecommendArticleList({offset: this.offset}).then(data => {
         if (data?.result) {
           this.hasMore = data.data.hasMore;
@@ -121,15 +122,6 @@ export default {
   },
   mounted() {
     this.popoverContainer = this.$refs.popoverContainer;
-    /*ContentPicksApi.getRecommendArticleList({offset: 0}).then(data => {
-      if (data?.result) {
-        this.hasMore = data.data.hasMore;
-        if (data.data.hasMore) {
-          this.offset = this.offset + 20;
-        }
-        this.data = data.data.list;
-      }
-    })*/
   }
 }
 </script>

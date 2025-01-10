@@ -17,7 +17,7 @@
     </div>
     <!--底部标题-->
     <div class="swipe_title">
-      <div class="text">{{ featuredArticle[currentIndex].title }}</div>
+      <div class="text">{{ featuredArticle[currentIndex]?.title }}</div>
     </div>
   </b-container>
 </template>
@@ -55,6 +55,9 @@ export default {
   },
   methods: {
     fileUrl(path) {
+      if (!path) {
+        return require('@/assets/cover/no-cover.png')
+      }
       return this.fileService + path;
     },
     articleUrl(item) {

@@ -13,7 +13,10 @@
       </p>
     </div>
     <Divider class="divider"/>
-    <div class="hot-list">
+    <div class="hot-list"
+         v-infinite-scroll="loadMore"
+         :infinite-scroll-disabled="!hasMore"
+         :infinite-scroll-distance="100">
       <a :href="toHref(item)"
          class="article-item-link"
          target="_blank"
@@ -61,9 +64,9 @@
             </div>
           </div>
           <div class="article-right">
-            <Button ghost class="ghost-btn action-btn">
+<!--            <Button ghost class="ghost-btn action-btn">
               <span>收藏</span>
-            </Button>
+            </Button>-->
           </div>
         </div>
       </a>
@@ -95,16 +98,24 @@
       },
       fileUrl(path) {
         return this.fileService + path;
+      },
+      loadMore() {
+        if (!this.hasMore) {
+          return;
+        }
+        contentPicksApi.getRankArticle({offset: this.offset}).then(data => {
+          if (data?.result) {
+            this.articleList.push(...data.data.list);
+            this.hasMore = data.data.hasMore
+            if (data.data.hasMore) {
+              this.offset = this.offset + 20;
+            }
+          }
+        })
       }
     },
     mounted() {
       this.popoverContainer = this.$refs.popoverContainer;
-      contentPicksApi.getRankArticle({limit: 50}).then(data => {
-        if (data?.result) {
-          this.hasMore = data.data.hasMore;
-          this.articleList.push(...data.data.list);
-        }
-      })
     }
   }
 </script>

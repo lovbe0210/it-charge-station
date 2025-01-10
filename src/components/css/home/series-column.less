@@ -55,41 +55,43 @@
 
           .card-content-item {
             width: 100%;
-            padding-left: 24px;
-            padding-right: 24px;
-            padding-top: 10px;
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 3px;
 
             .topic-title {
+              width: 100%;
               font-size: 15px;
               color: var(--font-color);
               letter-spacing: 0;
               text-align: left;
-              line-height: 26px;
+              line-height: 25px;
               font-weight: 600;
               z-index: 4;
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
-              margin-bottom: 5px;
+              margin-bottom: 3px;
             }
 
             .topic-description {
-              font-size: 14px;
+              width: 100%;
+              font-size: 12px;
               color: var(--title-color);
-              letter-spacing: 0;
-              text-align: left;
-              font-weight: 400;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              height: 22px;
-              margin-bottom: 5px;
+              line-height: 20px;
+              display: -webkit-box;
+              height: 40px;
+              -webkit-box-orient: vertical;    /* 使盒子垂直排列子元素 */
+              -webkit-line-clamp: 2;           /* 限制显示两行 */
+              overflow: hidden;                /* 隐藏超出内容 */
+              text-overflow: ellipsis;         /* 添加省略号 */
+              white-space: normal;
+              margin-bottom: 3px;
             }
 
             .topic-viewCount {
               color: var(--title-color);
               font-size: 12px;
-              margin-top: 10px;
 
               span {
                 color: var(--font-color);

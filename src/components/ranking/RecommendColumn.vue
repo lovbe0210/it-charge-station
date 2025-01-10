@@ -13,8 +13,15 @@
       </p>
     </div>
     <Divider class="divider"/>
-    <div class="hot-list">
-      <a :href="'/' + item.userInfo.domain + '/' + item.uri" class="article-item-link" target="_blank" v-for="item in columnList" :key="item.uid">
+    <div class="hot-list"
+         v-infinite-scroll="loadMore"
+         :infinite-scroll-disabled="!hasMore"
+         :infinite-scroll-distance="100">
+      <a :href="'/' + item.userInfo.domain + '/' + item.uri"
+         class="article-item-link"
+         target="_blank"
+         v-for="item in columnList"
+         :key="item.uid">
         <div class="article-item-wrap">
           <div class="article-item-left">
             <div class="article-detail">
@@ -60,9 +67,9 @@
             </div>
           </div>
           <div class="article-right">
-            <Button class="action-btn ghost-btn">
+<!--            <Button class="action-btn ghost-btn">
               <span>收藏</span>
-            </Button>
+            </Button>-->
           </div>
         </div>
       </a>
@@ -80,6 +87,7 @@
       return {
         popoverContainer: null,
         hasMore: true,
+        offSet: 0,
         columnList: []
       }
     },
@@ -90,16 +98,24 @@
       formatNumber,
       fileUrl(path) {
         return this.fileService + path;
+      },
+      loadMore() {
+        if (!this.hasMore) {
+          return;
+        }
+        contentPicksApi.getRankColumn({offset: this.offset}).then(data => {
+          if (data?.result) {
+            this.columnList.push(...data.data.list);
+            this.hasMore = data.data.hasMore
+            if (data.data.hasMore) {
+              this.offset = this.offset + 20;
+            }
+          }
+        })
       }
     },
     mounted() {
       this.popoverContainer = this.$refs.popoverContainer;
-      contentPicksApi.getRankColumn({limit: 50}).then(data => {
-        if (data?.result) {
-          this.hasMore = data.data.hasMore;
-          this.columnList.push(...data.data.list);
-        }
-      })
     }
   }
 </script>

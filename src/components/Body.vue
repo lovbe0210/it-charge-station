@@ -36,7 +36,7 @@
             <b-list-group flush>
               <b-list-group-item class="flex-column align-items-start" v-for="item in featuredColumn" :key="item.uid">
                 <div class="title">
-                  <b-link to="/login">
+                  <b-link :to="'/' + item.userInfo.domain + '/' + item.uri" target="_blank">
                     <span class="title">{{item.title}}</span>
                   </b-link>
                 </div>
