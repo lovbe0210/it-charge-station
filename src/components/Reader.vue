@@ -241,7 +241,7 @@
             </div>
           </div>
           <div v-if="drawerType === 1">
-            <article-setting :articleId="docInfo.uid" :changePermission="true"/>
+            <article-setting :currentArticle="articleInfo" :changePermission="true"/>
           </div>
           <div class="article-version" v-if="drawerType === 2">
             <article-version :articleId="docInfo.uid" :addNewVersion="newVersion"/>

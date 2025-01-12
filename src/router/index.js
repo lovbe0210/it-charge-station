@@ -67,14 +67,14 @@ const routes = [
           },
           {
             // 计算机与网络
-            path: '/computenetwork',
+            path: '/technet',
             name: 'ComputeNetwork',
             // 此方式为路由懒加载
             component: () => import('@/components/home/CategoryContainer')
           },
           {
             // 编程语言分类
-            path: '/language',
+            path: '/lang',
             name: 'Language',
             // 此方式为路由懒加载
             component: () => import('@/components/home/CategoryContainer')
@@ -88,14 +88,14 @@ const routes = [
           },
           {
             // 中间件分类
-            path: '/middleware',
+            path: '/midware',
             name: 'Middleware',
             // 此方式为路由懒加载
             component: () => import('@/components/home/CategoryContainer')
           },
           {
             // 算法分类
-            path: '/arithmetic',
+            path: '/algthm',
             name: 'Arithmetic',
             // 此方式为路由懒加载
             component: () => import('@/components/home/CategoryContainer')
@@ -324,24 +324,25 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes,
-  // 滚动条行为
-  scrollBehavior(to, from, position) {
-    let fixed = from.fullPath?.includes('/ramblyJot/') && to.fullPath === '/ramblyJot';
-    fixed = fixed || (from.fullPath?.includes('/column/setting/') && to.fullPath === '/dashboard/seriesColumn');
-    if (fixed) {
-      return position;
-    } else {
-      return {y: 0}
-    }
-  }
+  routes
 })
 
-// router.afterEach((to, from) => {
-//   if (from.name === 'WriteCenter') {
-//     window.location.reload();
-//   }
-// })
+router.afterEach((to, from) => {
+  // 路由跳转后有些页面滚动条需要保持或回到顶部
+  let fixed1 = from.name === 'RamblyJotContent' && to.name === 'RamblyJot';
+  let fixed2 = to.name === 'RamblyJotContent' && from.name === 'RamblyJot';
+  let fixed3 = from.fullPath?.includes('/column/setting/') && to.fullPath === '/dashboard/seriesColumn';
+  let fixed = fixed1 || fixed2 || fixed3;
+  if (fixed) {
+    return;
+  }
+  const scrollableDivs = document.querySelectorAll('.beauty-scroll');
+  // 遍历这些元素并滚动到顶部
+  scrollableDivs.forEach(div => {
+    div.scrollTop = 0;
+  });
+})
+
 router.beforeEach((to, from, next) => {
   if (to.name !== 'Reader') {
     next();

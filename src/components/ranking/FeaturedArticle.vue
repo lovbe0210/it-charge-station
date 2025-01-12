@@ -14,7 +14,7 @@
     </div>
     <Divider class="divider"/>
     <div class="hot-list"
-         v-infinite-scroll="loadMore"
+         v-infinite-scroll="debounceRequestRank"
          :infinite-scroll-disabled="!hasMore"
          :infinite-scroll-distance="100">
       <a :href="toHref(item)"
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-  import { formatNumber } from '@/utils/emoji/index.js'
+  import { formatNumber, debounce } from '@/utils/emoji/index.js'
   import UserCard from "@/components/common/UserCard.vue";
   import contentPicksApi from "@/api/ContentPicksApi";
   export default {
@@ -84,7 +84,8 @@
       return {
         popoverContainer: null,
         hasMore: true,
-        articleList: []
+        articleList: [],
+        debounceRequestRank: function () {}
       }
     },
     components: {
@@ -116,6 +117,10 @@
     },
     mounted() {
       this.popoverContainer = this.$refs.popoverContainer;
+    },
+    created() {
+      this.articleList = [];
+      this.debounceRequestRank = debounce(this.loadMore, 800, true);
     }
   }
 </script>

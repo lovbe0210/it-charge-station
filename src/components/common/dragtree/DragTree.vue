@@ -61,7 +61,7 @@
               : actionType.indexOf('delete') !== -1 ? '删除' : ''"
         @on-ok="deleteNode">
         <div v-if="actionType.indexOf('remove1') !== -1">
-          确定将文档移出专栏吗？
+          确定将文章移出专栏吗？
         </div>
         <div v-if="actionType.indexOf('remove2') !== -1">
           确定将分组移出专栏吗？如果分组下有节点也将全部移出专栏！
@@ -70,7 +70,7 @@
           确定将所选节点移出专栏吗？如果包含分组，则分组下的节点也将全部移出专栏！
         </div>
         <div v-if="actionType.indexOf('delete1') !== -1">
-          确定删除文档吗？
+          确定删除文章吗？
         </div>
         <div v-if="actionType.indexOf('delete2') !== -1">
           确定删除分组吗？如果分组下有节点也将全部删除，请慎重操作！

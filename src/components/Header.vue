@@ -33,8 +33,10 @@
 
         <!-- 菜单栏 -->
         <b-navbar-nav class="menu" :fill="true" align="center">
-          <b-nav-item v-for="item in quickLink" class="mr-2" :key="item.uid">
-            <div @click="routeNavigate(item.code)">
+          <b-nav-item v-for="item in firstMenu"
+                      :class="['mr-2', activeMenu === item.menuCode ? 'active' : '']"
+                      :key="item.uid">
+            <div @click="routeNavigate(item.menuCode)">
               <span>{{ item.menuName }}</span>
             </div>
           </b-nav-item>
@@ -222,10 +224,28 @@
 import MessageNotification from "./MessageNotification";
 import AuthModal from "@/components/common/AuthModal.vue";
 import AuthApi from "@/api/AuthApi";
-import WriteCenterApi from "../api/WriteCenterApi";
+import WriteCenterApi from "@/api/WriteCenterApi";
 
 export default {
   name: 'Header',
+  beforeRouteEnter(to, from, next) {
+    next(vc => {
+      console.log(to, from)
+      /*let activeMenu = vc.$route.name;
+      if (activeMenu === 'ComputeNetwork') {
+        vc.activeMenu = 'technet';
+      } else if (activeMenu === 'Language') {
+        vc.activeMenu = 'lang';
+      } else if (activeMenu === 'Database') {
+        vc.activeMenu = 'database'
+      } else if (activeMenu === 'Middleware') {
+        vc.activeMenu = 'midware'
+      } else if (activeMenu === 'Arithmetic') {
+        vc.activeMenu = 'algthm'
+      }*/
+      next();
+    });
+  },
   data() {
     return {
       keywords: '',
@@ -233,42 +253,12 @@ export default {
       changeBorderColor: false,
       messageMenu: [],
       searchKey: '',
-      quickLink: [
-        {
-          uid: 'sdfsf55',
-          code: 'computenetwork',
-          menuName: '计算机与网络'
-        },
-        {
-          uid: 'asdas34213',
-          menuName: '编程语言',
-          code: 'language'
-        },
-        {
-          uid: 'sdfs453',
-          code: 'database',
-          menuName: '数据库'
-        },
-        {
-          uid: 'dfg345g',
-          code: 'middleware',
-          menuName: '中间件'
-        },
-        {
-          uid: 'sgfg566',
-          code: 'arithmetic',
-          menuName: '算法'
-        },
-        {
-          uid: '4564gdgd',
-          code: 'ramblyJot',
-          menuName: '随笔'
-        }
-      ],
+      firstMenu: [],
       flag: false,
       maxWidth: null,
       showMessage: false,
-      msgNotifyTypeActive: null
+      msgNotifyTypeActive: null,
+      activeMenu: null
     }
   },
   components: {
@@ -282,6 +272,13 @@ export default {
     loginStatus() {
       let userInfo = this.$store.state.userInfo
       return userInfo !== null && userInfo.token?.length === 32
+    }
+  },
+  watch: {
+    '$route'(to, from) {
+      // 处理路由变化
+      let activeMenu = to.path?.replace('/', '');
+      this.activeMenu = activeMenu;
     }
   },
   methods: {
@@ -381,20 +378,20 @@ export default {
         case 'ramblyJot':
           this.$router.push({path: '/ramblyJot'})
           break;
-        case 'arithmetic':
-          this.$router.push({path: '/arithmetic'})
+        case 'algthm':
+          this.$router.push({path: '/algthm'})
           break;
-        case 'middleware':
-          this.$router.push({path: '/middleware'})
+        case 'midware':
+          this.$router.push({path: '/midware'})
           break;
         case 'database':
           this.$router.push({path: '/database'})
           break;
-        case 'language':
-          this.$router.push({path: '/language'})
+        case 'lang':
+          this.$router.push({path: '/lang'})
           break;
-        case 'computenetwork':
-          this.$router.push({path: '/computenetwork'})
+        case 'technet':
+          this.$router.push({path: '/technet'})
           break;
         default:
           this.$router.push({path: '/cate/' + itemName})
@@ -414,6 +411,22 @@ export default {
     if (this.$store.state.isPhone) {
       this.maxWidth = document.documentElement.clientWidth
     }
+    let path = this.$route.path;
+    this.activeMenu = path?.replace('/', '');
+  },
+  created() {
+    // 获取菜单分类
+    WriteCenterApi.getMenuList().then(data => {
+      if (data?.result) {
+        let _data = data.data;
+        this.firstMenu = _data.filter(menu => menu.type === 1)
+        this.firstMenu.push({
+          uid: 'ramblyJot',
+          menuCode: 'ramblyJot',
+          menuName: '随笔'
+        })
+      }
+    })
   }
 }
 </script>

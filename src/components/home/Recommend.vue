@@ -101,7 +101,6 @@ export default {
       if (!this.hasMore || this.busy) {
         return;
       }
-
       ContentPicksApi.getRecommendArticleList({offset: this.offset}).then(data => {
         if (data?.result) {
           this.hasMore = data.data.hasMore;

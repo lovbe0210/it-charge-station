@@ -64,18 +64,24 @@
             <hr>
           </div>
           <b-list-group class="rank">
-            <b-list-group-item to="some-link" v-for="item in creators" :key="item.id">
-              <b-avatar variant="info" :src="item.avatar" to="/lovbe0210" class="creator-avatar" size="40px"/>
+            <b-list-group-item to="some-link"
+                               v-for="item in authors"
+                               :key="item.uid">
+              <b-avatar variant="info"
+                        :src="fileUrl(item.avatarUrl)"
+                        :to="'/' + item.domain"
+                        class="creator-avatar"
+                        size="40px"/>
               <div class="info">
                 <b-row>
                     <span class="nick-name">
-                      {{item.nickName}}
+                      {{item.username}}
                       <span :class="'iconfont icon-level' + item.level"/>
                     </span>
 
                 </b-row>
                 <span class="tag">
-                    {{item.tag.toString().replace(/,/g,' @ ')}}
+                    {{ authorShow(item) }}
                 </span>
               </div>
             </b-list-group-item>
@@ -147,36 +153,7 @@
       return {
         featuredColumn: [],
         featuredArticle: [],
-        creators: [
-          {
-            id: '001',
-            // avatar: require('@/assets/avatar/01.jpg'),
-            level: '6',
-            nickName: '昵称多的字数需要限制',
-            tag: ['自我驱动', '坚持不懈', '目标大厂', '年薪百万']
-          },
-          {
-            id: '002',
-            avatar: 'https://pic.netbian.com/uploads/allimg/240709/163712-1720514232a9ee.jpg',
-            level: '0',
-            nickName: 'lovbe0210',
-            tag: ['创新', '原创']
-          },
-          {
-            id: '003',
-            // avatar: require('@/assets/avatar/03.jpg'),
-            level: '5',
-            nickName: 'lovbe0210',
-            tag: ['全栈', '用心写文']
-          },
-          {
-            id: '004',
-            avatar: 'https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/t01948ff2341a5d1ac3.jpg',
-            level: '2',
-            nickName: 'lovbe0210',
-            tag: ['前段', '用心写文']
-          }
-        ],
+        authors: [],
         links: [
           {
             title: '编程自学之路',
@@ -252,6 +229,15 @@
         } else {
           this.needFixed = false
         }
+      },
+      fileUrl(path) {
+        return this.fileService + path;
+      },
+      authorShow(user) {
+        if (user.tags != null || user.tags.length > 0) {
+          return user.tags.map(tag => tag.content).join(" @ ");
+        }
+        return user.introduction || user.industry || user.location || " ";
       }
     },
     mounted() {
@@ -278,6 +264,11 @@
       contentPicksApi.getFeaturedColumn().then(data => {
         if (data?.result) {
           this.featuredColumn = data.data;
+        }
+      })
+      contentPicksApi.getExcellentAuthor().then(data => {
+        if (data?.result) {
+          this.authors = data.data;
         }
       })
     },

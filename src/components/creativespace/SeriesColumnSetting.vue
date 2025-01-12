@@ -219,7 +219,7 @@
                 <div class="update-time">更新时间</div>
               </div>
               <div class="right-action" v-if="checkedList.length > 0 || showCheckToolBar">
-                <Button type="text" ghost @click="batchOperate('5')">批量删除</Button>
+                <Button type="text" ghost @click="confirmDelete('deleteA')">批量删除</Button>
                 <Button type="text" ghost @click="batchOperate('3')">批量导出</Button>
                 <Button type="text" ghost @click="batchOperate('2')">移出专栏</Button>
                 <Button type="text" ghost @click="batchOperate('1')">批量发布</Button>
@@ -240,9 +240,11 @@
                   </div>
                   <div class="status">
                     <span>
-                      {{ noteItem.publishStatus === 0 ? '未发布' :
-                         noteItem.publishStatus === 1 ? '审核中' :
-                         noteItem.publishStatus === 2 ? '审核失败' : '已发布' }}
+                      {{
+                        noteItem.publishStatus === 0 ? '未发布' :
+                          noteItem.publishStatus === 1 ? '审核中' :
+                            noteItem.publishStatus === 2 ? '审核失败' : '已发布'
+                      }}
                     </span>
                   </div>
                   <div class="create-time">
@@ -354,7 +356,7 @@
                   <p class="setting-action-title">删除专栏 </p>
                   <p class="setting-tips-content">将这个专栏彻底删除，专栏下的所有数据将会删除</p>
                 </div>
-                <Button type="error" size="small" @click="confirmDelete">
+                <Button type="error" size="small" @click="confirmDelete('delete')">
                   <span>删除</span>
                 </Button>
               </div>
@@ -370,8 +372,9 @@
         :title="actionType === 'setting' ? '文档设置'
               : actionType === 'export' ? '导出'
               : actionType === 'delete' ? '删除专栏'
-              : actionType === 'deleteA' ? '删除文章' : ''"
-        :footer-hide="true">
+              : actionType === 'deleteA' ? '删除' : ''"
+        @on-ok="deleteArticle"
+        :footer-hide="actionType !== 'deleteA'">
         <div v-if="actionType === 'setting'" class="modal-setting-item">
           <article-setting :currentArticle="currentOperateArticle" :editTitle="true"/>
         </div>
@@ -384,7 +387,7 @@
           <div class="delete-warn">
             <div class="warn-content un-select">
               <span class="iconfont i-warn"></span>
-                <span>
+              <span>
                 正在删除专栏
                 <span class="column-name">
                   {{ baseInfo.uri }}
@@ -407,23 +410,12 @@
               </Button>
             </div>
           </div>
-          <div v-if="actionType === 'deleteA'">
-            <div class="delete-warn">
-              <div class="warn-content un-select">
-                <span class="iconfont i-warn"></span>
-                <span>
-                  确定删除所选文章？
-                </span>
-              </div>
-              <div>
-                <Button type="error" class="warn-btn" @click="columnDelete">
-                  <span class="column-name">确定</span>
-                </Button>
-                <Button type="error" class="warn-btn" @click="columnDelete">
-                  <span class="column-name">确定</span>
-                </Button>
-              </div>
-            </div>
+        </div>
+        <div v-if="actionType === 'deleteA'">
+          <div class="delete-warn">
+            <span>
+              确定删除所选文章？
+            </span>
           </div>
         </div>
       </Modal>
@@ -615,8 +607,7 @@ export default {
           break;
         case 'delete':
           this.currentOperateArticle = row;
-          this.showModal = true;
-          this.actionType = 'deleteA';
+          this.confirmDelete('deleteA');
           break;
       }
     },
@@ -658,9 +649,30 @@ export default {
         })
       }
     },
-    confirmDelete() {
-      this.actionType = 'delete';
+    confirmDelete(action) {
+      if (action === 'deleteA' && (this.currentOperateArticle == null && this.checkedList.length === 0)) {
+        return;
+      }
+      this.actionType = action;
       this.showModal = true;
+    },
+    deleteArticle() {
+      if (this.currentOperateArticle != null) {
+        // 单个删除
+        let uid = this.currentOperateArticle.uid;
+        WriteCenterApi.deleteArticle(uid).then(data => {
+          if (data?.result) {
+            this.$Message.success("删除成功");
+            let articleList = this.baseInfo.articleList?.filter(article => uid !== article.uid);
+            this.baseInfo.articleList = articleList || [];
+          }
+        })
+        return;
+      }
+      if (this.checkedList.length !== 0) {
+        // 批量删除
+        this.batchOperate('5');
+      }
     },
     updateDirContentId(dirContentId) {
       this.baseInfo.dirContentId = dirContentId;
@@ -670,6 +682,7 @@ export default {
         return;
       }
       if (operate === '3') {
+        // 导出
         this.$Message.info("敬请期待");
         return;
       }
@@ -685,15 +698,15 @@ export default {
           return;
         }
         switch (operate) {
-          case "1":
+          case "1": // 发布
             this.baseInfo.articleList.forEach(article => {
               if (article.publishStatus !== 3 && this.checkedList.includes(article.uid)) {
                 article.publishStatus = 1;
               }
             })
             break;
-          case "2":
-          case "5":
+          case "2": // 移出专栏
+          case "5": // 删除
             let articleList = this.baseInfo.articleList?.filter(article => !this.checkedList.includes(article.uid));
             this.baseInfo.articleList = articleList || [];
             this.checkedList = [];

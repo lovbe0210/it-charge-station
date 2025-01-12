@@ -152,7 +152,7 @@ export default {
    */
   async getRankAuthor(recommendRequest) {
     return await Vue.prototype.$request({
-      url: "/cps/article/rank",
+      url: "/cps/author/rank",
       method: 'POST',
       data: recommendRequest
     });
@@ -163,9 +163,9 @@ export default {
    * @param targetId
    * @returns {Promise<void>}
    */
-  async getFeaturedAuthor() {
+  async getExcellentAuthor() {
     return await Vue.prototype.$request({
-      url: "/cps/article/featured",
+      url: "/cps/author/excellent",
       method: 'GET'
     });
   },

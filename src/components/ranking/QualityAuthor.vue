@@ -14,10 +14,10 @@
     </div>
     <Divider class="divider"/>
     <div class="hot-list"
-         v-infinite-scroll="loadMore"
+         v-infinite-scroll="debounceRequestRank"
          :infinite-scroll-disabled="!hasMore"
          :infinite-scroll-distance="100">
-      <a href="/post/7353484906532995135" class="article-item-link" target="_blank" v-for="(item,index) in authorList" :key="item.userId">
+      <a :href="'/' + item.domain" class="article-item-link" target="_blank" v-for="(item,index) in authorList" :key="item.uid">
         <div class="author-item-wrap">
           <div class="author-item-left">
             <span :class="['iconfont', 'rank-' + (index+1), 'sort-number']" v-if="index <= 2"></span>
@@ -25,11 +25,11 @@
             <user-card :userInfo="item" :popoverContainer="popoverContainer">
               <slot>
                 <b-avatar
-                  :src="item.avatar"
+                  :src="fileUrl(item.avatarUrl)"
                   size="2.5rem"
                   class="author-avatar"
-                  to="/lovbe0210">
-                  <span v-if="!item.avatar">{{item.username}}</span>
+                  :to="'/' + item.domain">
+                  <span v-if="!item.avatarUrl">{{item.username}}</span>
                 </b-avatar>
               </slot>
             </user-card>
@@ -47,7 +47,7 @@
                   {{ formatNumber(item.articleCount) }} 文章&nbsp;·&nbsp;
                 </div>
                 <div class="author-text">
-                  {{ formatNumber(item.likedCount) }} 获赞&nbsp;·&nbsp;
+                  {{ formatNumber(item.likeCount) }} 获赞&nbsp;·&nbsp;
                 </div>
                 <div class="author-text">
                   {{ formatNumber(item.fansCount) }} 粉丝
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-  import { formatNumber } from '@/utils/emoji/index.js'
+  import { formatNumber, debounce } from '@/utils/emoji/index.js'
   import UserCard from "@/components/common/UserCard.vue";
   import contentPicksApi from "@/api/ContentPicksApi";
 
@@ -76,98 +76,10 @@
     data() {
       return {
         popoverContainer: null,
-        authorList: [
-          {
-            username: 'bald3r',
-            avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hojglubq5nj311y1kwx4c.jpg',
-            userId: 112,
-            domain: '/lovbe0210',
-            level: 6,
-            articleCount: 12000,
-            likedCount: 201,
-            fansCount: 203
-          },
-          {
-            username: '水煮鱼写前端',
-            avatar: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hojgm70ztnj316p1kxqln.jpg',
-            userId: 113,
-            domain: '/lovbe0210',
-            level: 2,
-            articleCount: 201,
-            likedCount: 203,
-            fansCount: 23
-          },
-          {
-            username: 'Dolphin_海豚',
-            avatar: 'https://image.baidu.com/search/down?url=https://tvax2.sinaimg.cn/large/006BNqYCly1hog855y6lpj30sg0zkdk1.jpg',
-            userId: 114,
-            domain: '/lovbe0210',
-            level: 1,
-            articleCount: 400,
-            likedCount: 201,
-            fansCount: 203
-          },
-          {
-            username: '恋猫de小郭',
-            avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog854ty1oj30u011hwij.jpg',
-            userId: 1121,
-            domain: '/lovbe0210',
-            level: 5,
-            articleCount: 201,
-            likedCount: 203,
-            fansCount: 23
-          },
-          {
-            username: '志字辈小蚂蚁',
-            avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hog858wjnhj30u011haf3.jpg',
-            userId: 1122,
-            domain: '/lovbe0210',
-            level: 4,
-            articleCount: 201,
-            likedCount: 203,
-            fansCount: 23
-          },
-          {
-            username: ' 摸鱼总工',
-            avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog859i4f5j30l40qego7.jpg',
-            userId: 1123,
-            domain: '/lovbe0210',
-            level: 0,
-            articleCount: 201,
-            likedCount: 203,
-            fansCount: 23
-          },
-          {
-            username: '徐年',
-            avatar: 'https://image.baidu.com/search/down?url=https://tvax4.sinaimg.cn/large/006BNqYCly1hog6fy2jvxj316o1kwk96.jpg',
-            userId: 1124,
-            domain: '/lovbe0210',
-            level: 5,
-            articleCount: 201,
-            likedCount: 203,
-            fansCount: 23
-          },
-          {
-            username: '程序员清风',
-            avatar: 'https://image.baidu.com/search/down?url=https://tvax3.sinaimg.cn/large/006BNqYCly1hog6g0y71xj311y1kw7eb.jpg',
-            userId: 1152,
-            domain: '/lovbe0210',
-            level: 6,
-            articleCount: 201,
-            likedCount: 203,
-            fansCount: 23
-          },
-          {
-            username: '小白858',
-            avatar: 'https://p9-passport.byteacctimg.com/img/user-avatar/1231993a9352e0b6c0dd8102c8be5cd1~100x100.awebp',
-            userId: 1126,
-            domain: '/lovbe0210',
-            level: 0,
-            articleCount: 201,
-            likedCount: 203,
-            fansCount: 23
-          }
-        ]
+        hasMore: true,
+        offset: 0,
+        authorList: [],
+        debounceRequestRank: function () {}
       }
     },
     components: {
@@ -182,9 +94,9 @@
         if (!this.hasMore) {
           return;
         }
-        contentPicksApi.getRankArticle({offset: this.offset}).then(data => {
+        contentPicksApi.getRankAuthor({offset: this.offset}).then(data => {
           if (data?.result) {
-            this.articleList.push(...data.data.list);
+            this.authorList.push(...data.data.list);
             this.hasMore = data.data.hasMore
             if (data.data.hasMore) {
               this.offset = this.offset + 20;
@@ -195,6 +107,10 @@
     },
     mounted() {
       this.popoverContainer = this.$refs.popoverContainer;
+    },
+    created() {
+      this.authorList = [];
+      this.debounceRequestRank = debounce(this.loadMore, 800, true);
     }
   }
 </script>

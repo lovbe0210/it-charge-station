@@ -427,7 +427,7 @@
       },
       loadMsgNotify(activeMenu) {
         setTimeout(() => {
-          console.log('更新数据')
+          console.log('TODO 更新msg')
         }, 1000)
         switch (activeMenu) {
           case 'commentReply':
