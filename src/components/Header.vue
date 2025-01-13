@@ -25,8 +25,8 @@
                      class="search-input"
                      maxlength="250"
                      v-model="keywords"
-                     @blur="changeBorder(false)"
-                     @focus="changeBorder(true)" @keydown.enter="search">
+                     @blur="changeBorderColor = false"
+                     @focus="changeBorderColor = true" @keydown.enter="search">
             </span>
           </div>
         </b-navbar-nav>
@@ -228,24 +228,6 @@ import WriteCenterApi from "@/api/WriteCenterApi";
 
 export default {
   name: 'Header',
-  beforeRouteEnter(to, from, next) {
-    next(vc => {
-      console.log(to, from)
-      /*let activeMenu = vc.$route.name;
-      if (activeMenu === 'ComputeNetwork') {
-        vc.activeMenu = 'technet';
-      } else if (activeMenu === 'Language') {
-        vc.activeMenu = 'lang';
-      } else if (activeMenu === 'Database') {
-        vc.activeMenu = 'database'
-      } else if (activeMenu === 'Middleware') {
-        vc.activeMenu = 'midware'
-      } else if (activeMenu === 'Arithmetic') {
-        vc.activeMenu = 'algthm'
-      }*/
-      next();
-    });
-  },
   data() {
     return {
       keywords: '',
@@ -282,10 +264,6 @@ export default {
     }
   },
   methods: {
-    // ui交互，改变输入框的大小和颜色
-    changeBorder(flag) {
-      this.changeBorderColor = flag
-    },
     disableNav(flag) {
       this.$store.commit('changeShowContext', flag)
     },
@@ -403,6 +381,9 @@ export default {
       this.msgNotifyTypeActive = itemName;
     },
     search() {
+      if (!this.keywords) {
+        return;
+      }
       let path = '/search?k=' + (this.keywords ? this.keywords : this.placeholder);
       this.$router.push({path: path})
     }

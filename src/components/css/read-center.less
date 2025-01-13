@@ -12,7 +12,7 @@
       color: @dark-font-color;
       overflow: hidden;
       position: relative;
-      border-right: 1px solid @border-color_normal;
+      border-right: 1px solid @light-border-color;
 
       .layout-module_directory {
 
@@ -329,7 +329,7 @@
       }
 
       &:hover {
-        border-right: 1px solid @grey-white-font-color;
+        border-color: @border-color_normal;
       }
     }
 
@@ -634,6 +634,7 @@
   .layout-module_directoryWrapper {
     background: unset !important;
     color: var(--font-color) !important;
+    border-color: var(--border-color);
 
     .layout-module_directory {
       .crumb-text {
