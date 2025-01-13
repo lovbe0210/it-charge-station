@@ -61,6 +61,19 @@ export default {
   },
 
   /**
+   * 获取首页分类文章列表
+   * @param categoryRequest
+   * @returns {Promise<void>}
+   */
+  async getCategoryArticleList(categoryRequest) {
+    return await Vue.prototype.$request({
+      url: "/cps/article/category",
+      method: 'POST',
+      data: categoryRequest
+    });
+  },
+
+  /**
    * 获取推荐列表
    * @param targetId
    * @returns {Promise<void>}

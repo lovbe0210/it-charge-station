@@ -27,10 +27,10 @@
                 </user-card>
                 <span class="count-info">
                   <span>
-                    <span class="iconfont i-view"/> {{ item.viewCount }}
+                    <span class="iconfont i-view"/> {{ formatNumber(item.viewCount) }}
                   </span>
                   <span>
-                    <span :class="['iconfont', 'like', item.ifLike ? 'liked' : '']"/> {{ item.likeCount }}
+                    <span :class="['iconfont', 'like', item.ifLike ? 'liked' : '']"/> {{ formatNumber(item.likeCount) }}
                   </span>
                 </span>
               </div>
@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import { formatNumber } from '@/utils/emoji/index.js'
 import UserCard from "@/components/common/UserCard.vue";
 import ContentPicksApi from "@/api/ContentPicksApi";
 
@@ -117,7 +118,8 @@ export default {
     },
     fileUrl(path) {
       return this.fileService + path;
-    }
+    },
+    formatNumber
   },
   mounted() {
     this.popoverContainer = this.$refs.popoverContainer;

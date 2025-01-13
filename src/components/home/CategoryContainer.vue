@@ -3,8 +3,8 @@
     <div class="category-module_header">
       <div v-for="menu in secondMenuList"
            :key="menu.uid"
-           @click="activeMenu = menu.uid"
-           :class="['tag-menu', 'un-select', menu.uid === activeMenu ? 'active' : '']">
+           @click="activeMenu = menu.menuCode"
+           :class="['tag-menu', 'un-select', menu.menuCode === activeMenu ? 'active' : '']">
         <span>{{ menu.menuName }}</span>
       </div>
     </div>
@@ -16,12 +16,12 @@
               <b-col :cols="isPhone || !item.coverUrl ? 12 : 8" class="text">
                 <b-link :to="toHref(item)" target="_blank">
                   <div class="title">
-                    <span>{{ item.title }}</span>
+                    <span :title="item.title">{{ item.title }}</span>
                   </div>
                   <div class="description">
-                <span>
-                  {{ item.summary }}
-                </span>
+                    <span>
+                      {{ item.summary }}
+                    </span>
                   </div>
                 </b-link>
                 <b-row class="item-addition-info un-select">
@@ -37,19 +37,20 @@
                     </user-card>
                     <span class="count-info">
                   <span>
-                    <span class="iconfont i-view"/> {{ item.viewCount }}
+                    <span class="iconfont i-view"/> {{ formatNumber(item.viewCount) }}
                   </span>
                   <span>
-                    <span :class="['iconfont', 'like', item.ifLike ? 'liked' : '']"/> {{ item.likeCount }}
+                    <span :class="['iconfont', 'like', item.ifLike ? 'liked' : '']"/> {{ formatNumber(item.likeCount) }}
                   </span>
                 </span>
                   </div>
                   <span class="acticle-tags">
-                <span :class="'ant-tag ant-tag-' + tag.color"
-                      v-for="(tag,index) in item.tags"
-                      :title="tag.content"
-                      :key="index">{{ tag.content }}</span>
-              </span>
+                    <span :class="'ant-tag ant-tag-' + tag.color"
+                          v-for="(tag,index) in item.tags"
+                          :title="tag.content"
+                          :key="index">{{ tag.content }}
+                    </span>
+                  </span>
                 </b-row>
               </b-col>
               <b-col v-if="!isPhone && item.coverUrl" cols="4" fluid class="preview-image">
@@ -69,6 +70,7 @@
 </template>
 
 <script>
+import { formatNumber } from '@/utils/emoji/index.js'
 import WriteCenterApi from "@/api/WriteCenterApi";
 import UserCard from "@/components/common/UserCard.vue";
 import ContentPicksApi from "@/api/ContentPicksApi";
@@ -81,7 +83,7 @@ export default {
       firstMenu: null,
       secondMenuList: [],
       allMenuList: [],
-      activeMenu: 0,
+      activeMenu: '0',
       hasMore: true,
       offset: 0,
       data: []
@@ -101,8 +103,12 @@ export default {
       if (!this.hasMore || this.busy) {
         return;
       }
-      console.log('first request: ', this.firstMenu, this.activeMenu, this.offset)
-      ContentPicksApi.getRecommendArticleList({offset: this.offset}).then(data => {
+      let requestData = {
+        offset: this.offset,
+        firstCategory: this.firstMenu,
+        secondCategory: this.activeMenu === '0' ? null : this.activeMenu
+      };
+      ContentPicksApi.getCategoryArticleList(requestData).then(data => {
         if (data?.result) {
           this.hasMore = data.data.hasMore;
           if (data.data.hasMore) {
@@ -118,21 +124,26 @@ export default {
     },
     fileUrl(path) {
       return this.fileService + path;
-    }
+    },
+    formatNumber
   },
   watch: {
     "$route"(to, from) {
       this.firstMenu = to.path?.replace('/', '');
-      this.activeMenu = 0;
+      this.activeMenu = '0';
       this.secondMenuList = [
         {
           uid: 0,
           menuName: '全部',
-          menuCode: '',
+          menuCode: '0',
           sort: 0
         }
       ];
       this.secondMenuList.push(...this.allMenuList.filter(menu => menu.parentCode === this.firstMenu));
+      this.offset = 0;
+      this.hasMore = true;
+      this.data = [];
+      this.loadMore();
     },
     "activeMenu"() {
       this.offset = 0;
@@ -157,7 +168,7 @@ export default {
           {
             uid: 0,
             menuName: '全部',
-            menuCode: '',
+            menuCode: '0',
             sort: 0
           }
         ];
