@@ -470,6 +470,9 @@ export default {
       return this.searchKeywords?.trim()
         ? this.baseInfo.articleList.filter(article => article.title.indexOf(this.searchKeywords.trim()) !== -1)
         : this.baseInfo.articleList;
+    },
+    userInfo() {
+      return this.$store.state.userInfo;
     }
   },
   components: {
@@ -585,7 +588,7 @@ export default {
           break;
         case 'read':
           let readUrl = this.$router.resolve({
-            path: (row.columnId ? ('/column/' + row.columnId + '/') : ('/article/')) + row.uid
+            path: '/' + this.userInfo.domain + '/' + this.baseInfo.uri + '/' + row.uri
           })
           window.open(readUrl.href, '_blank')
           break;
