@@ -69,10 +69,10 @@
                           <ListItemMeta>
                             <template slot="description">
                               <div class="article-item" @click="routeNavigate(item.uri)">
-                                <div class="title">
+                                <div class="title" :title="item.title">
                                   {{item.title}}
                                 </div>
-                                <div class="description">
+                                <div class="description" :title="item.summary">
                                   {{item.summary}}
                                 </div>
                               </div>
@@ -114,7 +114,7 @@
                   <em>/</em>
                 </span>
                 <span v-show="searchScope > 1">
-                  guli-mall
+                  {{ columnInfo.title }}
                   <em>/</em>
                 </span>
               </span>
@@ -142,7 +142,7 @@
               <li :class="['search-scope-item', searchScope === 2 ? 'selected' : '']" v-if="isColumnView">
                 <span class="scope-content" @click="searchScope = 2">
                   <span class="iconfont series-column"/>
-                  <span class="scope-text">不做手机控帮助文档</span>
+                  <span class="scope-text">{{ columnInfo.title }}</span>
                 </span>
                 <span class="select-scope" @click="executeSearch(2)">
                   <span class="iconfont enter"/>&nbsp;专栏内搜索
@@ -173,16 +173,14 @@
           <Divider/>
           <div class="search-result-list">
             <div class="search-tip">相关内容</div>
-            <li class="search-result-item" v-for="item in searchResult" :key="item.id">
+            <li class="search-result-item" v-for="item in searchResult" :key="item.uid">
               <div class="item-icon">
-                <span class="iconfont article" v-if="item.type === 2"/>
-                <span class="iconfont series-column" v-if="item.type === 1"/>
+                <span class="iconfont article"/>
               </div>
               <b-link class="item-desc"
-                      :to="item.type === 1 ? ('/column/' + item.uri)
-                          : (item.uri ? ('/column/' + item.uri + '/' + item.id) : '/article/' + item.id)">
-                <span class="title-label" v-html="item.title"></span>
-                <span class="content-label" v-html="item.content"></span>
+                      :to="'/' + domain + '/' + columnUri !== undefined ? (this.columnUri + '/') : '/' + item.uri">
+                <span class="title-label" v-html="item.highLightTitle || item.title" :title="item.title"></span>
+                <span class="content-label" v-html="item.highLightSummary || item.summary" :title="item.summary"></span>
               </b-link>
               <div class="item-info">
                 <span class="time-label un-select">
@@ -203,8 +201,9 @@
 <script>
   import {formatDate} from "@/utils/utils.js"
   import ContentPicksApi from "@/api/ContentPicksApi";
-  import UserApi from "../api/UserApi";
+  import UserApi from "@/api/UserApi";
   import UserCard from "@/components/common/UserCard.vue";
+  import contentPicksApi from "../api/ContentPicksApi";
 
   export default {
     name: 'ReadCenter',
@@ -232,36 +231,7 @@
         view: null,
         authorInfo: {},
         columnInfo: {},
-        searchResult: [
-          {
-            id: 1,
-            // 1 专栏 2 文章
-            type: 2,
-            title: 'Elasticsearch-Elasticsearch-使用入门ElasticElasticsearch-使用入门Elasticsearch-使用入门search-使用入门使用入门',
-            content: '前面介绍说，Elasticsearch 都是通过 REST API <span style="color: red;">接口</span>来操作数据的，那么下面接通过几个<span style="color: red;">接口</span>的请求来演示它的使用。（当前虚拟机IP为192.168.163.131）',
-            columnId: 123,
-            columnName: '全文检索技术探讨',
-            updateTime: 1717429008233
-          },
-          {
-            id: 2,
-            type: 1,
-            title: '如何讨富婆欢心-使用入门',
-            content: '前面介绍说，Elasticsearch 都是通过 REST API <span style="color: red;">接口</span>来操作数据的，那么下面接通过几个<span style="color: red;">接口</span>的请求来演示它的使用。（当前虚拟机IP为192.168.163.131）',
-            columnId: 124,
-            columnName: '如何讨富婆欢心',
-            updateTime: 1717429237310
-          },
-          {
-            id: 3,
-            type: 2,
-            title: '随笔该如何使用？',
-            content: '前面介绍说，Elasticsearch 都是通过 REST API 接口来操作数据的，那么下面接通过几个接口的请求来演示它的使用。（当前虚拟机IP为192.168.163.131）',
-            columnId: null,
-            columnName: null,
-            updateTime: 1717429296426
-          }
-        ]
+        searchResult: []
       }
     },
     props: ['domain', 'columnUri', 'articleUri'],
@@ -393,7 +363,7 @@
         if (routeParam === 'columnIndex') {
           // 专栏首页
           this.currentNode.selected = false;
-          this.$router.push({path: '/column/' + this.columnUri});
+          this.$router.push({path: '/' + this.domain + '/' + this.columnUri});
         } else {
           // 文章页面需要判断是专栏页面还是普通页面
           if (this.columnUri !== undefined) {
@@ -442,12 +412,23 @@
           this.searchScope = searchScope;
         }
         if (this.keywords?.trim().length > 0) {
-          this.$Message.success('搜索。。。');
           if (this.searchScope === 0) {
             this.modalSearch = false;
             let path = '/search?k=' + this.keywords;
             this.$router.push({path: path})
+            return;
           }
+          // 在指定范围内搜索
+          let scopeSearchRequest = {
+            keywords: this.keywords,
+            columnId: this.searchScope === 2 ? this.columnInfo.uid : null,
+            userId: this.searchScope === 1 ? this.authorInfo.uid : null
+          };
+          contentPicksApi.getScopeSearchResult(scopeSearchRequest).then(data => {
+            if (data?.result) {
+              this.searchResult = data.data;
+            }
+          })
         } else {
           this.searchError = true;
           this.$refs.searchInput.focus();

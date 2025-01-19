@@ -193,7 +193,7 @@
             </div>
           </div>
           <div v-if="drawerType === 1">
-            <article-setting :currentArticle="articleInfo" :changePermission="true" @updateArticle="updateArticleForSetting"/>
+            <article-setting :articleUri="uri" :changePermission="true" @updateArticle="updateArticleForSetting"/>
           </div>
           <div v-if="drawerType === 2">
             <article-version :articleId="articleInfo.uid" :addNewVersion="newVersion"/>

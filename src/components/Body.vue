@@ -95,11 +95,8 @@
             <span>
               我的Flag
             </span>
-            <div class="textarea-wrapper"
-                 @mouseenter="isHover(true)"
-                 @mouseleave="isHover(false)">
+            <div class="textarea-wrapper">
                 <textarea rows="4" type="textarea" placeholder="立个flag？来吧"
-                          :class="{'hover-border':changeBorder,'primeval-border':!changeBorder}"
                           maxlength="150" v-model="flagContent"
                           class="be-textarea_inner"
                           @blur="isEditable(false)"
@@ -107,7 +104,6 @@
                 </textarea>
               <div class="be-input-word-counter" v-show="focused">{{contentLength}}/150</div>
             </div>
-
           </div>
         </div>
         <div class="site-info enable-background">
@@ -194,9 +190,6 @@
       contentLength() {
         return this.flagContent == null ? 0 : this.flagContent.length
       },
-      changeBorder() {
-        return this.focused ? true : this.hovered
-      },
       chickenSoup() {
         let content = '每日一句心灵鸡汤'
         // 请求接口
@@ -215,9 +208,6 @@
           this.$store.commit('editFlagContent', this.flagContent)
         }
         this.focused = flag
-      },
-      isHover(flag) {
-        this.hovered = flag
       },
       // 滚动条滚动处理事件：
       handleScroll() {

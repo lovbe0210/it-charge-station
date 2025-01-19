@@ -177,7 +177,7 @@
 </template>
 <script>
 import { VueCropper } from 'vue-cropper'
-import { formatTime, cloneDeep } from '@/utils/emoji'
+import { formatTime } from '@/utils/emoji'
 import { getRandomColor, dataURLtoFile } from '@/utils/utils'
 import WriteCenterApi from "@/api/WriteCenterApi";
 
@@ -201,7 +201,7 @@ export default {
       firstMenuList: []
     }
   },
-  props: ['currentArticle', 'editTitle', 'changePermission'],
+  props: ['articleUri', 'editTitle', 'changePermission'],
   computed: {
     docStyle() {
       return this.$store.state.docStyle;
@@ -346,10 +346,6 @@ export default {
     formatTime
   },
   created() {
-    this.articleInfo = this.currentArticle ? cloneDeep(this.currentArticle) : {};
-    if (this.articleInfo?.coverUrl) {
-      this.coverOriginalFile = this.fileService + this.articleInfo.coverUrl;
-    }
     // 获取菜单分类
     WriteCenterApi.getMenuList().then(data => {
       if (data?.result) {
@@ -359,6 +355,15 @@ export default {
         }
         this.allMenuList = _data;
         this.firstMenuList = _data.filter(menu => menu.type === 1)
+      }
+    })
+
+    WriteCenterApi.getArticleForEdit(this.articleUri).then(data => {
+      if (data?.result) {
+        this.articleInfo = data.data;
+        if (this.articleInfo.coverUrl) {
+          this.coverOriginalFile = this.fileService + this.articleInfo.coverUrl;
+        }
       }
     })
   },

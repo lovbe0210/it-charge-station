@@ -115,12 +115,16 @@
           </div>
           <div class="index-module_content">
             <div class="viewer-header">
-              <span class="viewer-content" @click="routeNavigate('read', noteItem)">
+              <span class="viewer-content"
+                    :title="noteItem.title"
+                    @click="routeNavigate('read', noteItem)">
                 {{noteItem.title}}
               </span>
             </div>
             <div class="viewer-body">
-              <span class="viewer-content">{{noteItem.summary}}</span>
+              <span class="viewer-content" :title="noteItem.summary">
+                {{noteItem.summary}}
+              </span>
             </div>
           </div>
         </div>

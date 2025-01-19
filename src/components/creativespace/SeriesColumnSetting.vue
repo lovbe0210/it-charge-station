@@ -452,7 +452,7 @@ export default {
       showCheckToolBar: false,
       showModal: false,
       // setting 文档设置； export 导出, delete 删除专栏
-      actionType: 'setting',
+      actionType: '',
       cannotDelete: false,
       tmpValue: '',
       treeParamBox: null

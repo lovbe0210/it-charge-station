@@ -213,6 +213,11 @@
             font-size: 12.5px;
             font-family: Microsoft Yahei;
             background-color: transparent;
+            border-color: @border-color_normal;
+
+            &:hover, &:focus {
+              border-color: @primary-color;
+            }
           }
         }
 
@@ -237,7 +242,7 @@
         }
 
         .primeval-border {
-          border-color: #7f7f7f;
+          border-color: var(--border-color);
         }
       }
     }

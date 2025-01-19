@@ -5,18 +5,28 @@
     color: var(--font-color);
     line-height: 20px;
 
-    .return-all {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
+    .title-wrap {
       margin: 20px 0 0 10px;
+      display: flex;
+      justify-content: space-between;
 
-      &:hover {
-        color: var(--title-color);
+      .return-all {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        &:hover {
+          color: var(--title-color);
+        }
+
+        span {
+          line-height: 16px;
+        }
       }
 
-      span {
-        line-height: 16px;
+      .search-total-page {
+        font-size: 13px;
+        color: var(--title-color);
       }
     }
 
@@ -33,20 +43,27 @@
         line-height: 16px;
       }
     }
+
+    .search-total-page-article {
+      float: right;
+      font-size: 13px;
+      color: var(--title-color);
+    }
   }
 
   .search-result-suggestions {
+    margin: 15px 0 10px 0;
     display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
+    flex-wrap: wrap;
 
     .suggestions-item-user {
       width: 32%;
       display: flex;
-      border: 1px solid @border-004;
-      border-radius: 4px;
-      padding: 20px 20px;
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      padding: 20px 15px;
       word-break: break-word;
+      margin-bottom: 15px;
 
       .item-avatar {
         margin-right: 15px;
@@ -62,8 +79,11 @@
         min-width: 0;
 
         .item-userName {
-          font-size: 16px;
+          font-size: 15px;
           color: var(--font-color);
+          overflow: hidden; /* 隐藏超出内容 */
+          text-overflow: ellipsis; /* 添加省略号 */
+          white-space: nowrap;
         }
 
         .item-social {
@@ -72,14 +92,24 @@
           margin-top: 2px;
 
           .index-module_meta {
+            font-size: 13px;
             color: var(--title-color);
+            overflow: hidden; /* 隐藏超出内容 */
+            text-overflow: ellipsis; /* 添加省略号 */
+            white-space: nowrap;
+            margin-top: 3px;
 
             .iconfont {
               margin-right: 5px;
               font-size: 14px;
             }
+
           }
         }
+      }
+
+      &:not(:nth-child(3n)) {
+        margin-right: calc(2%);
       }
     }
 
@@ -87,12 +117,13 @@
       width: 32%;
       display: flex;
       border: 1px solid @border-004;
-      border-radius: 4px;
-      padding: 20px 20px;
+      border-radius: 5px;
+      padding: 20px 15px;
       word-break: break-word;
+      margin-bottom: 15px;
 
       .series-column {
-        font-size: 22px;
+        font-size: 20px;
         margin-right: 10px;
         margin-top: -3px;
       }
@@ -101,7 +132,7 @@
         overflow: hidden;
 
         .item-title {
-          font-size: 16px;
+          font-size: 15px;
           margin-bottom: 8px;
           display: flex;
           align-items: center;
@@ -125,7 +156,7 @@
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           line-height: 18px;
-          font-size: 14px;
+          font-size: 13px;
           margin-bottom: 8px;
           display: block;
           overflow: hidden;
@@ -136,9 +167,21 @@
         .item-belong {
           color: @grey-white-font-color;
           cursor: pointer;
+          font-size: 13px;
         }
       }
+
+      &:not(:nth-child(3n)) {
+        margin-right: calc(2%);
+      }
     }
+
+    &::after {
+      content: '';
+      flex: 0 0 31%;
+      width: 31%;
+    }
+
   }
 
   .only-user-column {
@@ -153,28 +196,32 @@
   }
 
   .search-result-suggestions-article {
+    width: 100%;
     .article-item-container {
+      width: 100%;
+
       .suggestions-article-item {
         display: flex;
         align-content: space-between;
-        padding: 20px 20px;
-        border-bottom: 1px solid @border-color_normal;
-        margin-bottom: 10px;
+        padding: 20px 0 15px 0;
+        border-bottom: 1px solid var(--border-color);
+        width: 100%;
 
         a {
           color: var(--font-color);
         }
 
         .article {
-          font-size: 22px;
+          font-size: 20px;
           margin-right: 10px;
           margin-top: -3px;
         }
 
         .article-item-info {
+          width: calc(~"100% - 30px");
 
           .article-item-title {
-            font-size: 16px;
+            font-size: 15px;
             margin-bottom: 8px;
             font-weight: 500;
             line-height: 22px;
@@ -189,13 +236,13 @@
             overflow: hidden;
             text-overflow: ellipsis;
             line-height: 18px;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 8px;
           }
 
           .article-item-belongInfo {
             line-height: 18px;
-            font-size: 14px;
+            font-size: 13px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -228,40 +275,7 @@
       margin-right: 20px;
     }
 
-    .pagination-suffix {
-      margin-left: 15px;
-
-      .ivu-dropdown {
-        border: 1px solid @border-color_normal;
-        border-radius: 4px;
-        .ivu-dropdown-item-selected, .ivu-dropdown-item-selected:hover {
-          color: @primary-color;
-        }
-
-        .ivu-dropdown-item:hover {
-          background: #e1faeb;
-          color: @primary-color;
-        }
-      }
-
-      .pageSize-select {
-        margin: 0 15px;
-        cursor: pointer;
-
-        .expand {
-          font-size: 14px;
-          color: #8a8f8d;
-        }
-
-        .rotate {
-          display: inline-block;
-          transform: rotate(-180deg);
-          transition: transform 0.3s ease-in-out;
-        }
-      }
-    }
-
-    /deep/.pagination {
+    /deep/ .pagination {
 
       .page-item {
         border-radius: 4px;
@@ -292,15 +306,23 @@
       .disabled:not([role="separator"]) > .page-link {
         cursor: not-allowed;
         pointer-events: unset;
+        color: @not-allowed;
+        border-color: @not-allowed;
       }
 
-      .page-item.active .page-link,  .page-item:not(.disabled):hover .page-link{
+      .page-item.active .page-link, .page-item:not(.disabled):hover .page-link {
         z-index: 3;
         color: #00b96b;
         background-color: unset;
         border-color: #00b96b;
       }
     }
+  }
+
+  .empty-result {
+    display: flex;
+    align-content: center;
+    justify-content: center;
   }
 
 }

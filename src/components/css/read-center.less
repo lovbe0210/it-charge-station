@@ -243,9 +243,10 @@
                         color: #262626;
                         overflow: hidden;
                         text-overflow: ellipsis;
-                        white-space: nowrap;
+                        -webkit-line-clamp: 1;
+                        -webkit-box-orient: vertical;
                         line-height: 22px;
-                        display: flex;
+                        display: -webkit-box;
                         margin-bottom: 2px;
                       }
 

@@ -15,7 +15,7 @@
                         variant="light"
                         href="javascript:void(0)"
                         class="avatar-uploader-show">
-                <span v-if="!userInfo.avatarUrl">{{userInfo.username}}</span>
+                <span v-if="!userInfo.avatarUrl">{{ userInfo.username }}</span>
               </b-avatar>
               <div class="avatar-uploader-btn-wrapper">
                 <Upload action="/"
@@ -88,12 +88,12 @@
             <div class="nickname-editor-control">
               <span class="nickname-editor-control-content">
                 <input autocomplete="off"
-                       :class="['control-input', 'nickName-module_input','item-border',userInfo.username && userInfo.username.length >= 16 ? 'error-editor-control' : '']"
+                       :class="['control-input', 'nickName-module_input','item-border',userInfo.username?.length > 15 ? 'error-editor-control' : '']"
                        type="text" placeholder="必填" v-model="userInfo.username" id="nickName" maxlength="20">
               </span>
             </div>
             <div class="setting-legacy-form-explain">
-              <span v-show="userInfo.username && userInfo.username.length >= 16">最多可输入 15 个字符</span>
+              <span v-show="userInfo.username?.length > 15">最多可输入 15 个字符</span>
             </div>
           </div>
         </div>
@@ -124,7 +124,7 @@
                        :style="{ width: '100px' }" v-model="inputValue"
                        @on-blur="handleInputConfirm"
                        @on-enter="handleInputConfirm"/>
-                <a-tag v-else class="empty-to-add"  @click="showInput">
+                <a-tag v-else class="empty-to-add" @click="showInput">
                   <span class="iconfont add" style="font-size: 12px"></span>
                   添加标签
                 </a-tag>
@@ -136,20 +136,21 @@
           <div class="setting-form-item-label">
             <label for="biography">
               <span>简介</span>
-              <span class="textarea-words-count">{{(userInfo.introduction ? userInfo.introduction.length : 0) + '/200'}}</span>
+              <span
+                class="textarea-words-count">{{ (userInfo.introduction ? userInfo.introduction.length : 0) + '/200' }}</span>
             </label>
           </div>
           <div class="setting-legacy-form-item-control-wrapper">
             <div class="biography-editor-control">
               <span class="biography-editor-control-content">
                 <textarea id="biography" placeholder="简单介绍一下你自己" autocomplete="off" maxlength="210"
-                          :class="['control-input','biography-module_textarea','item-border',userInfo.introduction && userInfo.introduction.length > 200 ? 'error-editor-control' : '']"
+                          :class="['control-input','biography-module_textarea','item-border',userInfo.introduction?.length > 200 ? 'error-editor-control' : '']"
                           v-model="userInfo.introduction">
                 </textarea>
               </span>
             </div>
             <div class="setting-legacy-form-explain">
-              <span v-show="userInfo.introduction && userInfo.introduction.length > 200">最多可输入 200 个字符</span>
+              <span v-show="userInfo.introduction?.length > 200">最多可输入 200 个字符</span>
             </div>
           </div>
         </div>
@@ -163,13 +164,13 @@
             <div class="setting-legacy-form-item-control-wrapper">
               <div class="location-editor-control">
                   <span class="location-editor-control-content">
-                    <input id="location" autocomplete="false" type="text" placeholder="你所在的地址" maxlength="100"
-                           :class="['control-input','item-border',userInfo.location && userInfo.location.length > 50 ? 'error-editor-control' : '']"
+                    <input id="location" autocomplete="false" type="text" placeholder="你所在的地址" maxlength="51"
+                           :class="['control-input','item-border',userInfo.location?.length > 50 ? 'error-editor-control' : '']"
                            v-model="userInfo.location">
                   </span>
               </div>
               <div class="setting-legacy-form-explain">
-                <span v-show="userInfo.location && userInfo.location.length > 50">最多可输入 50 个字符</span>
+                <span v-show="userInfo.location?.length > 50">最多可输入 50 个字符</span>
               </div>
             </div>
           </div>
@@ -184,13 +185,13 @@
             <div class="setting-legacy-form-item-control-wrapper">
               <div class="profession-editor-control">
                 <span class="profession-editor-control-content">
-                  <input id="profession" autocomplete="false" type="text" placeholder="你所在的行业" maxlength="30"
-                         :class="['control-input','item-border',userInfo.industry && userInfo.industry.length > 15 ? 'error-editor-control' : '']"
+                  <input id="profession" autocomplete="false" type="text" placeholder="你所在的行业" maxlength="16"
+                         :class="['control-input','item-border',userInfo.industry?.length > 15 ? 'error-editor-control' : '']"
                          v-model="userInfo.industry">
                 </span>
               </div>
               <div class="setting-legacy-form-explain">
-                <span v-show="userInfo.industry && userInfo.industry.length > 15">最多可输入 15 个字符</span>
+                <span v-show="userInfo.industry?.length > 15">最多可输入 15 个字符</span>
               </div>
             </div>
           </div>
@@ -199,7 +200,7 @@
           <div class="setting-legacy-form-item-control-wrapper">
             <div class="update-editor-control">
               <span class="update-editor-control-content">
-                <Button type="success" @click="updateUserInfo">
+                <Button type="success" @click="updateUserInfo" :disabled="cannotSubmit">
                   <span>更新信息</span>
                 </Button>
               </span>
@@ -212,158 +213,164 @@
 </template>
 
 <script>
-  import {VueCropper} from 'vue-cropper'
-  import {getRandomColor} from '@/utils/utils'
-  import userApi from "@/api/UserApi";
-  import {dataURLtoFile} from "@/utils/utils"
+import {VueCropper} from 'vue-cropper'
+import {getRandomColor} from '@/utils/utils'
+import userApi from "@/api/UserApi";
+import {dataURLtoFile} from "@/utils/utils"
 
-  export default {
-    name: 'Profile',
-    data() {
-      return {
-        userInfo: {},
-        showAvatarCropper: false,
-        avatarOriginalFile: null,
-        avatarPreview: null,
-        inputVisible: false,
-        inputValue: '',
-        tagColor: 'red'
-      }
-    },
-    computed: {
-      avatar() {
-        return this.userInfo.avatarUrl && this.userInfo.avatarUrl.startsWith('/') ? this.fileService + this.userInfo.avatarUrl
-          : this.userInfo.avatarUrl
-      }
-    },
-    components: {
-      VueCropper
-    },
-    methods: {
-      /**
-       * 更新用户信息
-       */
-      updateUserInfo() {
-        let userInfo = new FormData();
-        if (this.avatarPreview) {
-          userInfo.append('avatarFile', dataURLtoFile(this.avatarPreview, "preview.jpg"));
-        }
-        if (this.userInfo.username) {
-          userInfo.append('username', this.userInfo.username);
-        }
-        if (this.userInfo.tags) {
-          userInfo.append('tagArray', JSON.stringify(this.userInfo.tags));
-        }
-        if (this.userInfo.introduction) {
-          userInfo.append('introduction', this.userInfo.introduction);
-        }
-        if (this.userInfo.location) {
-          userInfo.append('location', this.userInfo.location);
-        }
-        if (this.userInfo.industry) {
-          userInfo.append('industry', this.userInfo.industry);
-        }
-        userApi.updateUserInfo(userInfo).then((data) => {
-          if (data?.result) {
-            this.$Message.success("更新成功");
-            this.echoUpdateInfo();
-          }
-        })
-      },
-      echoUpdateInfo() {
-        let tmp = this.$store.state.userInfo;
-        userApi.getUserInfo(tmp.uid).then(data => {
-          if (data?.result) {
-            this.userInfo = data.data;
-            let newUserInfo = {...tmp, ...data.data};
-            this.$store.commit("login", newUserInfo);
-          }
-        })
-      },
-      fileHandle(file) {
-        if (file?.size > 10 * 1024 * 1024) {
-          this.$Message.error('文件大小不得超过10M')
-          return false;
-        }
-        let _this = this;
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-          _this.avatarOriginalFile = this.result;
-          _this.showAvatarCropper = true;
-        }
-        return false;
-      },
-      /**
-       * 处理截图框移动事件
-       * @param data
-       */
-      cropMoving(data) {
-        if (!data?.moving) {
-          // 移动停止，获取截图框内图片
-          this.getNewCropImage();
-        }
-      },
-      getNewCropImage() {
-        this.$refs.cropper.getCropData(data => {
-          this.avatarPreview = data;
-        })
-      },
-      imgLoadOver(data) {
-        if (data) {
-          this.$nextTick(() => {
-            this.getNewCropImage();
-          })
-        }
-      },
-      reUploadAvatar() {
-        this.showAvatarCropper = false;
-        this.$nextTick(() => {
-          this.$refs.avatarBtn.click();
-        });
-      },
-      confirmAvatarCrop() {
-        this.userInfo.avatarUrl = this.avatarPreview;
-      },
-      clearAvatarCrop() {
-        this.avatarOriginalFile = null;
-        this.avatarPreview = null;
-      },
-      // 标签移除
-      handleClose(removedTag) {
-        this.userInfo.tags = this.userInfo.tags.filter(tag => tag !== removedTag);
-        event.preventDefault();
-      },
-      // 展示添加新标签
-      showInput() {
-        this.inputVisible = true;
-        this.$nextTick(function () {
-          this.$refs.input.focus();
-        });
-      },
-      // 标签添加完成
-      handleInputConfirm() {
-        const tag = {content: this.inputValue, color: getRandomColor()};
-        let tags = this.userInfo.tags;
-        if (tag.content && tags.indexOf(tag) === -1) {
-          this.userInfo.tags = [...tags, tag];
-        }
-        this.inputVisible = false;
-        this.inputValue = '';
-      },
-      getTooltipContainer() {
-        return this.$refs.TooltipContainer
-      },
-      changeTagColor(tag) {
-        tag.color = getRandomColor();
-      }
-    },
-    created() {
-      this.echoUpdateInfo();
+export default {
+  name: 'Profile',
+  data() {
+    return {
+      userInfo: {},
+      showAvatarCropper: false,
+      avatarOriginalFile: null,
+      avatarPreview: null,
+      inputVisible: false,
+      inputValue: '',
+      tagColor: 'red'
     }
+  },
+  computed: {
+    avatar() {
+      return this.userInfo.avatarUrl && this.userInfo.avatarUrl.startsWith('/') ? this.fileService + this.userInfo.avatarUrl
+        : this.userInfo.avatarUrl
+    },
+    cannotSubmit() {
+      return this.userInfo.username?.length > 15 ||
+        this.userInfo.introduction?.length > 200 ||
+        this.userInfo.location?.length > 50 ||
+        this.userInfo.industry?.length > 15;
+    }
+  },
+  components: {
+    VueCropper
+  },
+  methods: {
+    /**
+     * 更新用户信息
+     */
+    updateUserInfo() {
+      let userInfo = new FormData();
+      if (this.avatarPreview) {
+        userInfo.append('avatarFile', dataURLtoFile(this.avatarPreview, "preview.jpg"));
+      }
+      if (this.userInfo.username) {
+        userInfo.append('username', this.userInfo.username);
+      }
+      if (this.userInfo.tags) {
+        userInfo.append('tagArray', JSON.stringify(this.userInfo.tags));
+      }
+      if (this.userInfo.introduction) {
+        userInfo.append('introduction', this.userInfo.introduction);
+      }
+      if (this.userInfo.location) {
+        userInfo.append('location', this.userInfo.location);
+      }
+      if (this.userInfo.industry) {
+        userInfo.append('industry', this.userInfo.industry);
+      }
+      userApi.updateUserInfo(userInfo).then((data) => {
+        if (data?.result) {
+          this.$Message.success("更新成功");
+          this.echoUpdateInfo();
+        }
+      })
+    },
+    echoUpdateInfo() {
+      let tmp = this.$store.state.userInfo;
+      userApi.getUserInfo(tmp.uid).then(data => {
+        if (data?.result) {
+          this.userInfo = data.data;
+          let newUserInfo = {...tmp, ...data.data};
+          this.$store.commit("login", newUserInfo);
+        }
+      })
+    },
+    fileHandle(file) {
+      if (file?.size > 10 * 1024 * 1024) {
+        this.$Message.error('文件大小不得超过10M')
+        return false;
+      }
+      let _this = this;
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        _this.avatarOriginalFile = this.result;
+        _this.showAvatarCropper = true;
+      }
+      return false;
+    },
+    /**
+     * 处理截图框移动事件
+     * @param data
+     */
+    cropMoving(data) {
+      if (!data?.moving) {
+        // 移动停止，获取截图框内图片
+        this.getNewCropImage();
+      }
+    },
+    getNewCropImage() {
+      this.$refs.cropper.getCropData(data => {
+        this.avatarPreview = data;
+      })
+    },
+    imgLoadOver(data) {
+      if (data) {
+        this.$nextTick(() => {
+          this.getNewCropImage();
+        })
+      }
+    },
+    reUploadAvatar() {
+      this.showAvatarCropper = false;
+      this.$nextTick(() => {
+        this.$refs.avatarBtn.click();
+      });
+    },
+    confirmAvatarCrop() {
+      this.userInfo.avatarUrl = this.avatarPreview;
+    },
+    clearAvatarCrop() {
+      this.avatarOriginalFile = null;
+      this.avatarPreview = null;
+    },
+    // 标签移除
+    handleClose(removedTag) {
+      this.userInfo.tags = this.userInfo.tags.filter(tag => tag !== removedTag);
+      event.preventDefault();
+    },
+    // 展示添加新标签
+    showInput() {
+      this.inputVisible = true;
+      this.$nextTick(function () {
+        this.$refs.input.focus();
+      });
+    },
+    // 标签添加完成
+    handleInputConfirm() {
+      const tag = {content: this.inputValue, color: getRandomColor()};
+      let tags = this.userInfo.tags;
+      if (tag.content && tags.indexOf(tag) === -1) {
+        this.userInfo.tags = [...tags, tag];
+      }
+      this.inputVisible = false;
+      this.inputValue = '';
+    },
+    getTooltipContainer() {
+      return this.$refs.TooltipContainer
+    },
+    changeTagColor(tag) {
+      tag.color = getRandomColor();
+    }
+  },
+  created() {
+    this.echoUpdateInfo();
   }
+}
 </script>
 
 <style scoped lang="less">
-  @import '../css/usercenter/profile.less';
+@import '../css/usercenter/profile.less';
 </style>
