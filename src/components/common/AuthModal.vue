@@ -396,9 +396,13 @@ export default {
         userInfo = {...userInfo, ...loginUser};
         // 保存userInfo到store中
         this.$store.commit('login', userInfo)
-        setTimeout(() => {
-          this.$router.go(0);
-        }, 300)
+        // 阅读页面的路由不刷新体验更好
+        let routeName = this.$route.name;
+        if (routeName !== 'Reader' && routeName !== 'SColumnReadHome' && routeName !== 'ReadCenter') {
+          setTimeout(() => {
+            this.$router.go(0);
+          }, 300)
+        }
       })
     }
   },

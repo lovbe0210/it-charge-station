@@ -176,7 +176,7 @@
 
 <script>
 import UserCard from "@/components/common/UserCard.vue";
-import contentPicksApi from "@/api/ContentPicksApi";
+import publicSearchApi from "@/api/PublicSearchApi";
 
 export default {
   name: "GlobalSearch",
@@ -243,7 +243,7 @@ export default {
           limit: this.pageSize,
           offset: (page - 1) * this.pageSize
         };
-        contentPicksApi.getGlobalSearchArticleList(searchRequest).then(data => {
+        publicSearchApi.getGlobalSearchArticleList(searchRequest).then(data => {
           if (data?.result) {
             this.searchArticles = data.data;
             // 滚动条回到初始位置
@@ -263,7 +263,7 @@ export default {
           limit: this.pageSize,
           offset: (page - 1) * this.pageSize
         };
-        contentPicksApi.getGlobalSearchUserList(searchRequest).then(data => {
+        publicSearchApi.getGlobalSearchUserList(searchRequest).then(data => {
           if (data?.result) {
             this.searchUsers = data.data;
             // 滚动条回到初始位置
@@ -283,7 +283,7 @@ export default {
           limit: this.pageSize,
           offset: (page - 1) * this.pageSize
         };
-        contentPicksApi.getGlobalSearchColumnList(searchRequest).then(data => {
+        publicSearchApi.getGlobalSearchColumnList(searchRequest).then(data => {
           if (data?.result) {
             this.searchColumns = data.data;
             // 滚动条回到初始位置
@@ -301,7 +301,7 @@ export default {
         limit: this.pageSize,
         offset: (this.currentPage - 1) * this.pageSize
       };
-      contentPicksApi.getGlobalSearchResult(searchRequest).then(data => {
+      publicSearchApi.getGlobalSearchResult(searchRequest).then(data => {
         if (data?.result) {
           this.searchUsers = data.data.searchUserList;
           this.searchUserTotal = data.data.searchUserCount;
@@ -331,7 +331,7 @@ export default {
         offset: 0
       };
       if (oldVal === 1) {
-        contentPicksApi.getGlobalSearchUserList(searchRequest).then(data => {
+        publicSearchApi.getGlobalSearchUserList(searchRequest).then(data => {
           if (data?.result) {
             this.searchUsers = data.data;
           }
@@ -340,7 +340,7 @@ export default {
       }
 
       if (oldVal === 2) {
-        contentPicksApi.getGlobalSearchColumnList(searchRequest).then(data => {
+        publicSearchApi.getGlobalSearchColumnList(searchRequest).then(data => {
           if (data?.result) {
             this.searchColumns = data.data;
           }

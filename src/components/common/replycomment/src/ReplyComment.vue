@@ -25,11 +25,7 @@
                   cancel-btn="取消"/>
         <div class="input-lock" v-else>
           <span class="lock-tip un-select">
-            <auth-modal :normalBackground="docStyle.asyncTheme ? 0 : 1">
-              <slot>
-                <a href="javascript: void(0)">登陆&nbsp;</a>
-              </slot>
-            </auth-modal>
+            <a href="javascript: void(0)" @click="login">登陆&nbsp;</a>
             <span>后发表评论</span>
           </span>
         </div>
@@ -52,8 +48,7 @@
 <script>
 import InputBox from './component/InputBox'
 import UComment from './component/Comment'
-import AuthModal from "@/components/common/AuthModal.vue";
-import ContentPicksApi from "@/api/ContentPicksApi";
+import socialApi from "@/api/SocialApi";
 
 export default {
   name: 'CommentFull',
@@ -82,7 +77,6 @@ export default {
   },
   props: ["targetId"],
   components: {
-    AuthModal,
     InputBox,
     UComment
   },
@@ -111,7 +105,7 @@ export default {
       if (comment.replyUserId) {
         formData.append('replyUserId', comment.replyUserId);
       }
-      ContentPicksApi.replyComment(formData).then(data => {
+      socialApi.replyComment(formData).then(data => {
         if (data?.result) {
           // 提交评论添加到评论列表
           this.commentList.unshift(data.data);
@@ -130,7 +124,7 @@ export default {
       let index = this.commentList.findIndex(item => item.uid === uid)
       if (index !== -1) {
         // 删除评论
-        ContentPicksApi.deleteCommentReply(uid).then(data => {
+        socialApi.deleteCommentReply(uid).then(data => {
           if (data?.result) {
             this.commentList.splice(index, 1);
             this.total = (this.total - 1 - replyCount) < 0 ? 0 : this.total - 1 - replyCount;
@@ -146,6 +140,12 @@ export default {
     updateTotal(inc) {
       this.total = this.total + inc;
       this.total = this.total < 0 ? 0 : this.total;
+    },
+    login() {
+      let loginBtn = document.getElementById("pwdLoginBtn");
+      if (loginBtn) {
+        loginBtn.click();
+      }
     }
   },
   watch: {
@@ -156,7 +156,7 @@ export default {
         offset: 0,
         limit: 50
       }
-      ContentPicksApi.getCommentList(targetCommentInfo).then(data => {
+      socialApi.getCommentList(targetCommentInfo).then(data => {
         if (data?.result) {
           this.total = data.data.total;
           this.commentList = data.data.list;

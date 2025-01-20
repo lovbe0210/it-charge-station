@@ -19,10 +19,10 @@
             </div>
             <div class="header-action">
               <Button type="success" @click="routeNavigate(docInfo)"
-                      v-if="userInfo.token && articleInfo.userId === userInfo.uid">编辑
+                      v-if="loginStatus && articleInfo.userId === userInfo.uid">编辑
               </Button>
               <a-tooltip overlayClassName="read-header-tooltip"
-                         v-if="userInfo.token"
+                         v-if="loginStatus"
                          :getPopupContainer="()=>this.$refs.tooltipContainer">
                 <template slot="title">
                   {{ collectInfo.collectId != null ? '取消收藏' : '收藏' }}
@@ -76,12 +76,8 @@
                   </Poptip>
                 </div>
               </a-tooltip>
-              <div class="action-icon" v-else>
-                <auth-modal>
-                  <slot>
-                    <span class="iconfont collect"/>
-                  </slot>
-                </auth-modal>
+              <div class="action-icon" v-else @click="login">
+                <span class="iconfont collect"/>
               </div>
               <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
                 <template slot="title">
@@ -119,6 +115,7 @@
                                 :updateTime="articleInfo.updateTime"
                                 :viewCount="articleInfo.viewCount"
                                 :authorInfo="authorInfo"
+                                @updateFollowStatus="updateFollowStatus"
                                 @like="likeMark"/>
               </div>
               <!-- 评论 -->
@@ -211,7 +208,7 @@
                 <span slot="0"/>
               </i-switch>
             </div>
-            <div class="drawer-setting-item more-setting">
+            <div class="drawer-setting-item more-setting" v-if="loginStatus && articleInfo.userId === userInfo.uid">
               <div class="doc-setting-btn" @click="drawerType = 1">
                 <span class="iconfont setting"></span>
                 <div class="tab-content-text">文档设置</div>
@@ -229,7 +226,6 @@
                 <span class="iconfont delete"></span>
                 <div class="tab-content-text">删除</div>
               </div>
-
             </div>
             <div class="drawer-setting-item time-info">
               <div class="label">文档信息</div>
@@ -267,7 +263,7 @@ import ArticleSetting from "@/components/common/ArticleSetting"
 import ArticleVersion from "@/components/common/ArticleVersion"
 import ContentPicksApi from "@/api/ContentPicksApi";
 import NotFound from "@/components/common/404"
-import AuthModal from "@/components/common/AuthModal.vue";
+import socialApi from "@/api/SocialApi";
 
 const event = document.createEvent('KeyboardEvent');
 event.initKeyboardEvent('keydown', true, true, window, false, false, false, false, 122, 0);
@@ -295,7 +291,8 @@ export default {
       inputNewTag: false,
       collectPoptipShow: false,
       // 浏览进度汇报的防抖函数
-      debounceReportView: function () {},
+      debounceReportView: function () {
+      },
       engine: null
     }
   },
@@ -312,6 +309,10 @@ export default {
     },
     userInfo() {
       return this.$store.state.userInfo;
+    },
+    loginStatus() {
+      let userInfo = this.$store.state.userInfo
+      return userInfo !== null && userInfo.token?.length === 32
     }
   },
   components: {
@@ -319,8 +320,7 @@ export default {
     ArticleFooter,
     ArticleSetting,
     ArticleVersion,
-    NotFound,
-    AuthModal
+    NotFound
   },
   methods: {
     /**
@@ -504,7 +504,7 @@ export default {
     },
     unmark() {
       let collectTarget = {uid: this.collectInfo.collectId}
-      ContentPicksApi.collectUnMark(collectTarget).then(data => {
+      socialApi.collectUnMark(collectTarget).then(data => {
         if (data?.result) {
           this.collectInfo.collectId = null;
           this.collectInfo.tags = [];
@@ -519,7 +519,7 @@ export default {
         targetType: 1,
         action: this.articleInfo.ifLike ? 0 : 1
       }
-      ContentPicksApi.contentLikeMark(likeAction).then(data => {
+      socialApi.contentLikeMark(likeAction).then(data => {
         if (data?.result) {
           this.articleInfo.likeCount = this.articleInfo.likeCount + (this.articleInfo.ifLike ? -1 : 1);
           if (this.articleInfo.ifLike) {
@@ -573,6 +573,23 @@ export default {
             this.collectTags = data.data;
           }
         })
+      }
+    },
+    login() {
+      let loginBtn = document.getElementById("pwdLoginBtn");
+      if (loginBtn) {
+        loginBtn.click();
+      } else {
+        console.log("没有找到登录盒子")
+      }
+    },
+    updateFollowStatus(targetUserId) {
+      if (this.articleInfo.likeUserList && this.articleInfo.likeUserList.length > 0) {
+        this.articleInfo.likeUserList
+          .filter(user => targetUserId === user.uid)
+          .forEach(user => {
+            user.isFollow = user.isFollow === 1 ? 0 : 1;
+          })
       }
     }
   },

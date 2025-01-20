@@ -180,20 +180,12 @@
         <!--未登录功能栏-->
         <b-navbar-nav v-else class="ml-auto" :fill="true" align="center">
           <div class="login-register">
-            <auth-modal>
-              <slot>
-                <Button type="text" class="login">
-                  <span>登陆</span>
-                </Button>
-              </slot>
-            </auth-modal>
-            <auth-modal :quickRegister="true">
-              <slot>
-                <Button type="success" class="register">
-                  <span>快速注册</span>
-                </Button>
-              </slot>
-            </auth-modal>
+            <Button type="text" class="login" @click="login">
+              <span>登陆</span>
+            </Button>
+            <Button type="success" class="register" @click="login(true)">
+              <span>快速注册</span>
+            </Button>
           </div>
         </b-navbar-nav>
 
@@ -207,6 +199,24 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+
+    <!-- 登录盒子 -->
+    <div style="display: none;">
+      <auth-modal>
+        <slot>
+          <Button id="pwdLoginBtn">
+            <span>登陆</span>
+          </Button>
+        </slot>
+      </auth-modal>
+      <auth-modal>
+        <slot>
+          <Button id="quickLoginBtn">
+            <span>登陆</span>
+          </Button>
+        </slot>
+      </auth-modal>
+    </div>
 
     <!-- 消息界面初始化就开始挂载 -->
     <Modal v-model="showMessage"
@@ -271,7 +281,13 @@ export default {
     chooseMessage(item) {
       this.$router.push({name: item.menuKey})
     },
-
+    login (quickLogin) {
+      let loginBtnId = quickLogin ? 'quickLoginBtn' : 'pwdLoginBtn';
+      let loginBtn = document.getElementById(loginBtnId);
+      if (loginBtn) {
+        loginBtn.click();
+      }
+    },
     // 请求登出，删除服务器token信息
     logout() {
       let userInfo = this.$store.state.userInfo

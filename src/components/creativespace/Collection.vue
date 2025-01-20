@@ -193,6 +193,7 @@
 <script>
 import {formatDate} from '@/utils/utils.js'
 import ContentPicksApi from "@/api/ContentPicksApi";
+import socialApi from "@/api/SocialApi";
 
 export default {
   name: 'Collection',
@@ -311,7 +312,7 @@ export default {
     },
     unmark(uid) {
       let collectTarget = {uid}
-      ContentPicksApi.collectUnMark(collectTarget).then(data => {
+      socialApi.collectUnMark(collectTarget).then(data => {
         if (data?.result) {
           this.selectTagList();
           this.selectCollectList();

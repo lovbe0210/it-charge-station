@@ -17,9 +17,9 @@
          v-infinite-scroll="debounceRequestRank"
          :infinite-scroll-disabled="!hasMore"
          :infinite-scroll-distance="100">
-      <a :href="'/' + item.domain" class="article-item-link" target="_blank" v-for="(item,index) in authorList" :key="item.uid">
+      <div class="article-item-link"  v-for="(item,index) in authorList" :key="item.uid">
         <div class="author-item-wrap">
-          <div class="author-item-left">
+          <a class="author-item-left" :href="'/' + item.domain" target="_blank">
             <span :class="['iconfont', 'rank-' + (index+1), 'sort-number']" v-if="index <= 2"></span>
             <span class="sort-number" v-else>{{index}}</span>
             <user-card :userInfo="item" :popoverContainer="popoverContainer">
@@ -54,14 +54,14 @@
                 </div>
               </div>
             </a>
-          </div>
+          </a>
           <div class="author-right">
-            <Button class="action-btn ghost-btn">
+            <Button class="action-btn ghost-btn" @click="attention(item)">
               <span>关注</span>
             </Button>
           </div>
         </div>
-      </a>
+      </div>
     </div>
   </div>
 </template>
@@ -80,6 +80,12 @@
         offset: 0,
         authorList: [],
         debounceRequestRank: function () {}
+      }
+    },
+    computed: {
+      loginStatus() {
+        let userInfo = this.$store.state.userInfo
+        return userInfo !== null && userInfo.token?.length === 32
       }
     },
     components: {
@@ -103,6 +109,17 @@
             }
           }
         })
+      },
+      attention() {
+        // 未登录
+        if (!this.loginStatus) {
+          let loginBtn = document.getElementById("pwdLoginBtn");
+          if (loginBtn) {
+            loginBtn.click();
+          }
+        }
+        // 登录状态
+
       }
     },
     mounted() {

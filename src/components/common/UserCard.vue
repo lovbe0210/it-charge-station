@@ -19,15 +19,15 @@
               <span class="name" :title="userInfo.username">{{ userInfo.username }}</span>
               <span :class="['iconfont',  'icon-level' + userInfo.level]"></span>
             </b-link>
-            <div class="signature">You will never walk alone.</div>
+            <div class="signature">{{ userInfo.introduction }}</div>
             <div class="info-list" style="margin-top: 10px;">
-              <div class="info-item">
+              <div class="info-item" v-if="userInfo.location">
                 <span class="iconfont location"/>
-                <span class="info-detail">永胜上沙的街角</span>
+                <span class="info-detail">{{ userInfo.location }}</span>
               </div>
-              <div class="info-item">
+              <div class="info-item" v-if="userInfo.industry">
                 <span class="iconfont industry"/>
-                <span class="info-detail">互联网·教育·足球·哲学</span>
+                <span class="info-detail">{{ userInfo.industry }}</span>
               </div>
             </div>
           </div>
@@ -41,11 +41,11 @@
                 关注<span class="number">6</span>
               </div>
             </div>
-            <div class="actions">
-              <Button>
-                <span>关注</span>
+            <div class="actions" v-if="loginUser.uid !== userInfo.uid">
+              <Button @click="attention">
+                <span>{{ followStatus }}</span>
               </Button>
-              <Button>
+              <Button @click="sendMessage">
                 <span>私信</span>
               </Button>
             </div>
@@ -58,22 +58,62 @@
 </template>
 
 <script>
+import socialApi from "@/api/SocialApi";
+
 export default {
   name: "UserCard",
   data() {
     return {}
   },
   props: ['popoverContainer', 'userInfo'],
-  mounted() {
-    // this.cardContainer = this.$refs.cardContainer;
-    // console.log(this.popoverContainer)
+  computed: {
+    loginUser() {
+      return this.$store.state.userInfo;
+    },
+    loginStatus() {
+      let userInfo = this.$store.state.userInfo
+      return userInfo !== null && userInfo.token?.length === 32
+    },
+    followStatus() {
+      return this.userInfo.isFollow === 1 ? '已关注' : '关注';
+    }
   },
   methods: {
     fileUrl(path) {
       return this.fileService + path;
     },
-    getPopupContainer() {
-      return document.getElementById("popoverContainer")
+    attention() {
+      if (!this.loginStatus) {
+        let loginBtn = document.getElementById("pwdLoginBtn");
+        if (loginBtn) {
+          loginBtn.click();
+        }
+        return;
+      }
+      // 根据当前状态判断要执行的操作
+      let attentionRequest = {
+        targetUser: this.userInfo?.uid,
+        action: this.userInfo?.isFollow ? 0 : 1
+      }
+      socialApi.focusAttention(attentionRequest).then(data => {
+        if (data?.result) {
+          this.$Message.success(this.userInfo?.isFollow ? '已取消关注' : '关注成功');
+          this.$emit("updateFollowAction", this.userInfo?.uid);
+        }
+      })
+    },
+    sendMessage() {
+      if (!this.loginStatus) {
+        let loginBtn = document.getElementById("pwdLoginBtn");
+        if (loginBtn) {
+          loginBtn.click();
+        }
+        return;
+      }
+      // 跳转到首页打开会话页面
+      if (this.userInfo?.isFollow) {
+        // 取消关注
+      }
     }
   }
 }

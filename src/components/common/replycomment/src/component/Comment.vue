@@ -37,7 +37,7 @@
 <script>
 import {cloneDeep} from '@/utils/emoji'
 import ContentBox from './ContentBox.vue'
-import ContentPicksApi from "@/api/ContentPicksApi";
+import socialApi from "@/api/SocialApi";
 
 export default {
   name: 'UComment',
@@ -115,7 +115,7 @@ export default {
       if (comment.replyUserId) {
         formData.append('replyUserId', comment.replyUserId);
       }
-      ContentPicksApi.replyComment(formData).then(data => {
+      socialApi.replyComment(formData).then(data => {
         if (data?.result) {
           // 提交评论添加到评论列表
           if (this.collapse) {
@@ -154,7 +154,7 @@ export default {
       // 删除掉具体的回复即可
       let index = this.replyList.findIndex(item => item.uid === uid)
       if (index !== -1) {
-        ContentPicksApi.deleteCommentReply(uid).then(data => {
+        socialApi.deleteCommentReply(uid).then(data => {
           if (data?.result) {
             this.replyList.splice(index, 1);
             this.total--;

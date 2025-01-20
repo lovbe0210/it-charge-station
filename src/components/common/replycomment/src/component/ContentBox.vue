@@ -17,11 +17,11 @@
           <user-card :userInfo="commentReply.userInfo" :popoverContainer="contentBoxParam.popoverContainer">
             <slot>
               <div class="username">
-                <span class="name" style="max-width: 10em">{{ commentReply.userInfo?.username }}</span>
+                <span class="name">{{ commentReply.userInfo?.username }}</span>
                 <!-- level -->
                 <span blank="true" class="rank">
                   <span :class="['iconfont',  'icon-level' + commentReply.userInfo?.level]"></span>
-              </span>
+                </span>
               </div>
             </slot>
           </user-card>
@@ -48,32 +48,24 @@
         <div class="action-box">
           <div class="like-and-reply">
             <!-- 点赞 -->
-            <div class="item" @click="like" v-if="userInfo?.token && userInfo.token.length === 32">
+            <div class="item" @click="like" v-if="loginStatus">
               <span :class="['iconfont', 'like', commentReply.ifLike ? 'ilike' : '']"></span>
               <span v-if="commentReply.likeCount != 0">{{ commentReply.likeCount }}</span>
             </div>
-            <auth-modal v-else :normalBackground="docStyle.asyncTheme ? 0 : 1">
-              <slot>
-                <div class="item">
-                  <span class="iconfont like"></span>
-                  <span v-if="commentReply.likeCount != 0">{{ commentReply.likeCount }}</span>
-                </div>
-              </slot>
-            </auth-modal>
+            <div v-else class="item" @click="login">
+              <span class="iconfont like"></span>
+              <span v-if="commentReply.likeCount != 0">{{ commentReply.likeCount }}</span>
+            </div>
 
             <!-- 回复 -->
-            <div class="item" :class="{ active }" @click="reply" v-if="userInfo?.token && userInfo.token.length === 32">
+            <div class="item" :class="{ active }" @click="reply" v-if="loginStatus">
               <span class="iconfont reply"></span>
               <span class="reply-btn">{{ active ? '取消回复' : '回复' }}</span>
             </div>
-            <auth-modal v-else :normalBackground="docStyle.asyncTheme ? 0 : 1">
-              <slot>
-                <div class="item">
-                  <span class="iconfont reply"></span>
-                  <span class="reply-btn">回复</span>
-                </div>
-              </slot>
-            </auth-modal>
+            <div class="item" v-else @click="login">
+              <span class="iconfont reply"></span>
+              <span class="reply-btn">回复</span>
+            </div>
             <div class="item delete-warn" v-if="commentReply.userInfo.uid === userInfo.uid">
               <a-popover placement="top"
                          trigger="click"
@@ -120,8 +112,7 @@ import {cloneDeep, needFormatDate} from '@/utils/emoji';
 import InputBox from './InputBox';
 import Pswp from "@/components/common/imagepreview/index"
 import UserCard from "@/components/common/UserCard.vue";
-import AuthModal from "@/components/common/AuthModal.vue";
-import ContentPicksApi from "@/api/ContentPicksApi";
+import socialApi from "@/api/SocialApi";
 
 export default {
   name: 'ContentBox',
@@ -161,6 +152,10 @@ export default {
     userInfo() {
       return this.$store.state.userInfo;
     },
+    loginStatus() {
+      let userInfo = this.$store.state.userInfo
+      return userInfo !== null && userInfo.token?.length === 32
+    },
     contentHtmlValue() {
       let content = this.commentReply.content;
       if (this.commentReply.replyUserInfo?.username) {
@@ -170,7 +165,6 @@ export default {
     }
   },
   components: {
-    AuthModal,
     InputBox,
     UserCard
   },
@@ -202,7 +196,7 @@ export default {
         targetType: 4,
         action: this.commentReply.ifLike ? 0 : 1
       }
-      ContentPicksApi.contentLikeMark(likeAction).then(data => {
+      socialApi.contentLikeMark(likeAction).then(data => {
         if (data?.result) {
           if (this.commentReply.ifLike) {
             // 取消点赞
@@ -226,6 +220,12 @@ export default {
         h: img.naturalHeight
       }]
       this.pswp.open(items, 0)
+    },
+    login() {
+      let loginBtn = document.getElementById("pwdLoginBtn");
+      if (loginBtn) {
+        loginBtn.click();
+      }
     }
   },
   created() {
