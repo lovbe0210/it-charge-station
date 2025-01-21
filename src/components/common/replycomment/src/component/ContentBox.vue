@@ -14,7 +14,8 @@
     <div class="comment-primary un-select">
       <div class="comment-main">
         <div class="user-info">
-          <user-card :userInfo="commentReply.userInfo" :popoverContainer="contentBoxParam.popoverContainer">
+          <user-card :userInfo="commentReply.userInfo"
+                     :popoverContainer="contentBoxParam.popoverContainer">
             <slot>
               <div class="username">
                 <span class="name">{{ commentReply.userInfo?.username }}</span>

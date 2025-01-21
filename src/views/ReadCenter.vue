@@ -14,7 +14,6 @@
                 <span class="iconfont to-right"></span>
                 <user-card :userInfo="authorInfo"
                            :popoverContainer="this.$refs.tooltipContainer"
-                           @updateFollowAction="updateFollow"
                            class="user-info-card-box">
                   <slot>
                     <div class="action">
@@ -226,7 +225,6 @@ import UserApi from "@/api/UserApi";
 import UserCard from "@/components/common/UserCard.vue";
 import AuthModal from "@/components/common/AuthModal.vue";
 import publicSearchApi from "@/api/PublicSearchApi";
-import socialApi from "@/api/SocialApi";
 
 export default {
   name: 'ReadCenter',
@@ -535,9 +533,6 @@ export default {
           }
         })
       }
-    },
-    updateFollow() {
-      this.authorInfo.isFollow = this.authorInfo.isFollow === 1 ? 0 : 1;
     }
   },
   mounted() {
@@ -547,20 +542,6 @@ export default {
         this.authorInfo = data.data;
         // 判断获取文章列表还是专栏目录
         this.requestArticleOrDir();
-        // 如果是登录用户，获取关注状态
-        if (this.loginStatus && data.data?.uid !== this.userInfo.uid) {
-          socialApi.getRelationship(data.data?.uid).then(data => {
-            if (data?.result) {
-              if (data.data?.userIdMaster === this.userInfo.uid) {
-                this.$set(this.authorInfo, 'isFollow', data.data.masterWatchSlave);
-              } else if (data.data?.userIdSlave === this.userInfo.uid) {
-                this.$set(this.authorInfo, 'isFollow', data.data.slaveWatchMaster);
-              } else {
-                this.$set(this.authorInfo, 'isFollow', 0);
-              }
-            }
-          })
-        }
       }
     })
     this.navShowType = this.isColumnView ? 'tree' : 'list';

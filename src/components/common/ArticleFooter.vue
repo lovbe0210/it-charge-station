@@ -17,7 +17,9 @@
       <p class="like-count" v-if="likeCount > 0">{{likeCount}} 人点赞</p>
       <ul class="like-user-list">
         <li v-for="user in showUserList" :key="user.userId">
-          <user-card :userInfo="user" :popoverContainer="tooltipContainer" class="user-info-card-box">
+          <user-card :userInfo="user"
+                     :popoverContainer="tooltipContainer"
+                     class="user-info-card-box">
             <slot>
               <b-avatar :src="fileUrl(user.avatarUrl)" variant="light" href="javascript:void(0)" size="2.2rem">
                 <span v-if="!user.avatarUrl">{{ user.username }}</span>
@@ -50,7 +52,9 @@
             <p class="like-count" v-if="likeCount > 0">{{likeCount}} 人点赞</p>
             <ul class="like-user-list">
               <li v-for="user in likeUserList" :key="user.userId">
-                <user-card :userInfo="user" :popoverContainer="tooltipContainer" class="user-info-card-box">
+                <user-card :userInfo="user"
+                           :popoverContainer="tooltipContainer"
+                           class="user-info-card-box">
                   <slot>
                     <b-avatar :src="user.avatar" variant="light" href="javascript:void(0)" size="2.2rem">
                       <span v-if="!user.avatar">{{ user.username }}</span>

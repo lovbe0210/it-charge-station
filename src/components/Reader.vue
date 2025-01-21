@@ -115,7 +115,6 @@
                                 :updateTime="articleInfo.updateTime"
                                 :viewCount="articleInfo.viewCount"
                                 :authorInfo="authorInfo"
-                                @updateFollowStatus="updateFollowStatus"
                                 @like="likeMark"/>
               </div>
               <!-- 评论 -->
@@ -581,15 +580,6 @@ export default {
         loginBtn.click();
       } else {
         console.log("没有找到登录盒子")
-      }
-    },
-    updateFollowStatus(targetUserId) {
-      if (this.articleInfo.likeUserList && this.articleInfo.likeUserList.length > 0) {
-        this.articleInfo.likeUserList
-          .filter(user => targetUserId === user.uid)
-          .forEach(user => {
-            user.isFollow = user.isFollow === 1 ? 0 : 1;
-          })
       }
     }
   },

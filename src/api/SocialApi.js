@@ -83,20 +83,20 @@ export default {
    */
   async focusAttention(attentionRequest) {
     return await Vue.prototype.$request({
-      url: "/sl/user/follow",
+      url: "/sl/user/action/follow",
       method: 'POST',
       data: attentionRequest
     });
   },
 
   /**
-   * 关注/取消关注
+   * 获取关注记录
    * @param targetId
    * @returns {Promise<void>}
    */
-  async getRelationship(targetUserId) {
+  async getFollowAction(targetUserId) {
     return await Vue.prototype.$request({
-      url: "/sl/user/relationship/" + targetUserId,
+      url: "/sl/user/follow/" + targetUserId,
       method: 'GET'
     });
   }

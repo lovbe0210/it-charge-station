@@ -2,6 +2,7 @@
   <div class="user-card">
     <a-popover placement="topLeft"
                trigger="hover"
+               @visibleChange="getFollowStatus"
                :getPopupContainer="() => popoverContainer"
                overlayClassName="user-info-card-box">
       <template slot="content">
@@ -42,7 +43,7 @@
               </div>
             </div>
             <div class="actions" v-if="loginUser.uid !== userInfo.uid">
-              <Button @click="attention">
+              <Button @click="followAction">
                 <span>{{ followStatus }}</span>
               </Button>
               <Button @click="sendMessage">
@@ -63,7 +64,9 @@ import socialApi from "@/api/SocialApi";
 export default {
   name: "UserCard",
   data() {
-    return {}
+    return {
+      isFollow: 0
+    }
   },
   props: ['popoverContainer', 'userInfo'],
   computed: {
@@ -75,14 +78,31 @@ export default {
       return userInfo !== null && userInfo.token?.length === 32
     },
     followStatus() {
-      return this.userInfo.isFollow === 1 ? '已关注' : '关注';
+      return this.isFollow === 1 ? '已关注' : '关注';
     }
   },
   methods: {
     fileUrl(path) {
       return this.fileService + path;
     },
-    attention() {
+    getFollowStatus(visible) {
+      if (!visible) {
+        return;
+      }
+      // 如果是登录用户，获取关注状态
+      if (this.loginStatus && this.userInfo.uid !== this.loginUser.uid) {
+        socialApi.getFollowAction(this.userInfo.uid).then(data => {
+          if (data?.result) {
+            if (data.data?.userIdMaster === this.loginUser.uid) {
+              this.isFollow = data.data.masterWatchSlave;
+            } else if (data.data?.userIdSlave === this.loginUser.uid) {
+              this.isFollow = data.data.slaveWatchMaster;
+            }
+          }
+        })
+      }
+    },
+    followAction() {
       if (!this.loginStatus) {
         let loginBtn = document.getElementById("pwdLoginBtn");
         if (loginBtn) {
@@ -93,12 +113,12 @@ export default {
       // 根据当前状态判断要执行的操作
       let attentionRequest = {
         targetUser: this.userInfo?.uid,
-        action: this.userInfo?.isFollow ? 0 : 1
+        action: this.isFollow === 1 ? 0 : 1
       }
       socialApi.focusAttention(attentionRequest).then(data => {
         if (data?.result) {
           this.$Message.success(this.userInfo?.isFollow ? '已取消关注' : '关注成功');
-          this.$emit("updateFollowAction", this.userInfo?.uid);
+          this.isFollow = attentionRequest.action;
         }
       })
     },

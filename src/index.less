@@ -294,6 +294,7 @@
 }
 
 .user-info-card-box {
+  z-index: 99;
 
   .ant-popover-content {
     width: 330px;
@@ -402,12 +403,13 @@
           .actions {
             .ivu-btn {
               background: transparent;
-              border-color: @border-color_normal;
+              border-color: var(--border-color);
               color: var(--font-color);
 
               &:hover {
                 color: @primary-color;
                 background: var(--theme-color);
+                border-color: @primary-color;
               }
 
               &:last-child {
