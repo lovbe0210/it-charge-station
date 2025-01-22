@@ -81,11 +81,11 @@ export default {
    * @param targetId
    * @returns {Promise<void>}
    */
-  async focusAttention(attentionRequest) {
+  async followAction(followRequest) {
     return await Vue.prototype.$request({
       url: "/sl/user/action/follow",
       method: 'POST',
-      data: attentionRequest
+      data: followRequest
     });
   },
 
@@ -97,6 +97,30 @@ export default {
   async getFollowAction(targetUserId) {
     return await Vue.prototype.$request({
       url: "/sl/user/follow/" + targetUserId,
+      method: 'GET'
+    });
+  },
+
+  /**
+   * 获取粉丝关注数
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getRelationshipCount(userId) {
+    return await Vue.prototype.$request({
+      url: "/sl/user/relationship/count/" + userId,
+      method: 'GET'
+    });
+  },
+
+  /**
+   * 获取粉丝关注列表
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getRelationshipList(ship) {
+    return await Vue.prototype.$request({
+      url: "/sl/user/relationship/" + ship,
       method: 'GET'
     });
   }

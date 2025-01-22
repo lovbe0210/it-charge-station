@@ -55,9 +55,11 @@
               </div>
             </a>
           </a>
-          <div class="author-right">
-            <Button class="action-btn ghost-btn" @click="attention(item)">
-              <span>关注</span>
+          <div class="author-right" v-if="1 === 0">
+            <Button class="action-btn ghost-btn"
+                    v-if="!loginStatus || loginUser?.uid !== item.uid"
+                    @click="followAction(item)">
+              <span>{{ item.isFollow ? '已关注' : '关注' }}</span>
             </Button>
           </div>
         </div>
@@ -70,6 +72,7 @@
   import { formatNumber, debounce } from '@/utils/emoji/index.js'
   import UserCard from "@/components/common/UserCard.vue";
   import contentPicksApi from "@/api/ContentPicksApi";
+  import socialApi from "@/api/SocialApi";
 
   export default {
     name: "QualityAuthor",
@@ -83,6 +86,9 @@
       }
     },
     computed: {
+      loginUser() {
+        return this.$store.state.userInfo;
+      },
       loginStatus() {
         let userInfo = this.$store.state.userInfo
         return userInfo !== null && userInfo.token?.length === 32
@@ -110,7 +116,7 @@
           }
         })
       },
-      attention() {
+      followAction(author) {
         // 未登录
         if (!this.loginStatus) {
           let loginBtn = document.getElementById("pwdLoginBtn");
@@ -119,7 +125,16 @@
           }
         }
         // 登录状态
-
+        let attentionRequest = {
+          targetUser: author.uid,
+          action: author.isFollow === 1 ? 0 : 1
+        }
+        socialApi.followAction(attentionRequest).then(data => {
+          if (data?.result) {
+            author.isFollow = attentionRequest.action;
+            this.$Message.success(attentionRequest.action ? '关注成功' : '已取消关注');
+          }
+        })
       }
     },
     mounted() {

@@ -48,6 +48,7 @@
       background-color: transparent;
       border-radius: 3px;
       margin-bottom: 30px;
+      z-index: auto;
 
       &:after {
         background: var(--border-color);

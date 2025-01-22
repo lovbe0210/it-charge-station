@@ -162,7 +162,7 @@
               backgroundImg: 'linear-gradient(45deg, #F4F5F7 0%, #F4F5F7 100%)',
               borderColor: 'rgba(0,0,0,0.08)',
               dropdownBackgroundColor: '#FFFFFF',
-              dropdownItemHover: '#E9E9E9',
+              dropdownItemHover: '#F8F8F8',
               onThemeBackgroundColor: '#FAFAFA',
               ramblyJotEditorBackgroundColor: '#F2F3F5',
               modalBackgroundColor: '#FFFFFF'

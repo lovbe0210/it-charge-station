@@ -2,7 +2,7 @@
 .layout-module_relational {
   width: 100%;
   height: 100%;
-  margin-top: 10px;
+  margin: 48px 0 40px 0;
   border: 1px solid @border-color_normal;
   border-radius: 6px;
 
@@ -30,6 +30,10 @@
 
         span {
           cursor: pointer;
+
+          &:hover {
+            color: var(--title-color);
+          }
         }
 
         span:last-child {
@@ -38,7 +42,7 @@
 
         .active {
           font-weight: 700;
-          color: @primary-color;
+          color: var(--font-color);
         }
       }
 
@@ -67,7 +71,7 @@
     /deep/ .ivu-table-header {
       table > thead > tr > th {
         background-color: var(--on-theme-bg-color);
-        height: 60px;
+        height: 52px;
         border-color: @border-color_normal;
 
         .ivu-table-cell {

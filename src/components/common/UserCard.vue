@@ -36,10 +36,10 @@
         <div class="user-card-footer un-select">
             <div class="follow-fans">
               <div class="footer-item">
-                粉丝<span class="number">55</span>
+                粉丝<span class="number">{{ fansCount }}</span>
               </div>
               <div class="footer-item">
-                关注<span class="number">6</span>
+                关注<span class="number">{{ followCount }}</span>
               </div>
             </div>
             <div class="actions" v-if="loginUser.uid !== userInfo.uid">
@@ -65,7 +65,9 @@ export default {
   name: "UserCard",
   data() {
     return {
-      isFollow: 0
+      isFollow: 0,
+      followCount: 0,
+      fansCount: 0
     }
   },
   props: ['popoverContainer', 'userInfo'],
@@ -89,6 +91,13 @@ export default {
       if (!visible) {
         return;
       }
+      // 获取粉丝关注数
+      socialApi.getRelationshipCount(this.userInfo.uid).then(data => {
+        if (data?.result) {
+          this.followCount = data.data.follow;
+          this.fansCount = data.data.fans;
+        }
+      })
       // 如果是登录用户，获取关注状态
       if (this.loginStatus && this.userInfo.uid !== this.loginUser.uid) {
         socialApi.getFollowAction(this.userInfo.uid).then(data => {
@@ -115,10 +124,15 @@ export default {
         targetUser: this.userInfo?.uid,
         action: this.isFollow === 1 ? 0 : 1
       }
-      socialApi.focusAttention(attentionRequest).then(data => {
+      socialApi.followAction(attentionRequest).then(data => {
         if (data?.result) {
           this.$Message.success(this.userInfo?.isFollow ? '已取消关注' : '关注成功');
           this.isFollow = attentionRequest.action;
+          if (attentionRequest.action === 1) {
+            this.fansCount++;
+          } else {
+            this.fansCount = (this.fansCount - 1) < 0 ? 0 : (this.fansCount - 1);
+          }
         }
       })
     },
