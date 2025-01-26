@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-module_relational" ref="popoverContainer">
+  <div class="layout-module_relational un-select" ref="popoverContainer">
     <div class="relational-header">
       <div class="head-wrapper">
         <div class="head-title">
@@ -9,11 +9,6 @@
           <span :class="relational === 'fans' ? 'active' : ''" @click="changeRelationalType">
             粉丝
           </span>
-        </div>
-        <div class="head-input-search">
-          <Input placeholder="搜索">
-            <span class="iconfont i-search" slot="prefix"/>
-          </Input>
         </div>
       </div>
     </div>
@@ -68,6 +63,28 @@
         </template>
       </Table>
     </div>
+    <div class="relationship-pagination" v-if="total > pageInfo.limit">
+      <div class="pagination-prefix">
+        <span>总共{{ total }}人</span>
+      </div>
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="total"
+        :per-page="pageInfo.limit"
+        first-number
+        last-number
+        @change="pageChange">
+        <template #prev-text>
+          <span class="iconfont return"></span>
+        </template>
+        <template #next-text>
+          <span class="iconfont to-right"></span>
+        </template>
+        <template #ellipsis-text>
+          <span class="iconfont operate-standard"></span>
+        </template>
+      </b-pagination>
+    </div>
   </div>
 </template>
 
@@ -96,16 +113,19 @@
             width: 180
           }
         ],
+        total: 0,
+        currentPage: 1,
         relationanList: [],
         popoverContainer: null,
         // 当前hover的行id
         hoverRow: null,
-        limit: 10,
-        offset: 0
+        pageInfo: {
+          limit: 10,
+          offset: 0
+        }
       }
     },
     computed: {
-
     },
     props: ['relational'],
     methods: {
@@ -146,25 +166,40 @@
             this.$Message.success(attentionRequest.action ? '关注成功' : '已取消关注');
           }
         })
+      },
+      pageChange(page) {
+        this.pageInfo.offset = (page - 1) * this.pageInfo.limit;
+        socialApi.getRelationshipList(this.relational, this.pageInfo).then(data => {
+          if (data?.result) {
+            this.relationanList = data.data.list;
+            this.total = data.data.total;
+          }
+        })
       }
     },
     components: {
       UserCard
     },
     watch: {
-      'relational'(newValue, oldValue) {
-        socialApi.getRelationshipList(newValue).then(data => {
+      'relational'(newValue) {
+        this.total = 0;
+        this.currentPage = 1;
+        this.pageInfo.offset = 0;
+        this.pageInfo.limit = 10;
+        socialApi.getRelationshipList(newValue, this.pageInfo).then(data => {
           if (data?.result) {
-            this.relationanList = data.data;
+            this.relationanList = data.data.list;
+            this.total = data.data.total;
           }
         })
       }
     },
     mounted() {
       this.popoverContainer = this.$refs.popoverContainer;
-      socialApi.getRelationshipList(this.relational).then(data => {
+      socialApi.getRelationshipList(this.relational, this.pageInfo).then(data => {
         if (data?.result) {
-          this.relationanList = data.data;
+          this.relationanList = data.data.list;
+          this.total = data.data.total;
         }
       })
     }

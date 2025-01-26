@@ -54,7 +54,7 @@
 
     .like-btn {
       position: relative;
-      margin: 10px auto;
+      margin: 5px auto;
       width: 40px;
       height: 50px;
       text-align: center;
@@ -70,7 +70,7 @@
         margin: -1px 0;
         width: 80px;
         height: 80px;
-        background: url(https://gw.alipayobjects.com/mdn/prod_resource/afts/img/A*eDsBTKcm1IcAAAAAAAAAAAAAARQnAQ) no-repeat 0 0;
+        background: url("../../assets/like_action.png") no-repeat 0 0;
         background-size: auto 80px;
       }
 
@@ -86,7 +86,6 @@
         animation-timing-function: steps(27);
         animation-fill-mode: forwards;
       }
-
     }
 
     .like-btn:hover {
@@ -155,6 +154,17 @@
 
     /deep/.ivu-select-dropdown {
       margin-top: 10px;
+    }
+  }
+
+  /deep/ .comment-box {
+    .u-editor {
+      border-color: var(--rj-editor-bg-color);
+      background: var(--rj-editor-bg-color);
+    }
+
+    .active {
+      border-color: @primary-color;
     }
   }
 }

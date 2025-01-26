@@ -1,6 +1,6 @@
 <template>
   <div class="comment" :class="{ 'reply-from-comment': commentReply.parentId }" ref="tooltipContainer">
-    <div class="comment-sub">
+    <div class="comment-sub un-select">
       <user-card :userInfo="commentReply.userInfo"
                  :popoverContainer="contentBoxParam.popoverContainer"
                  class="user-info-card-box">
@@ -11,9 +11,9 @@
         </slot>
       </user-card>
     </div>
-    <div class="comment-primary un-select">
+    <div class="comment-primary">
       <div class="comment-main">
-        <div class="user-info">
+        <div class="user-info un-select">
           <user-card :userInfo="commentReply.userInfo"
                      :popoverContainer="contentBoxParam.popoverContainer">
             <slot>
@@ -46,7 +46,7 @@
             </div>
           </div>
         </div>
-        <div class="action-box">
+        <div class="action-box un-select">
           <div class="like-and-reply">
             <!-- 点赞 -->
             <div class="item" @click="like" v-if="loginStatus">

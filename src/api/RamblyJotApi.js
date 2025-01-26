@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 export default {
   /**
-   * 创建空白文档
+   * 创建随笔信息
    * @param userId
    * @returns {Promise<void>}
    */
@@ -15,14 +15,14 @@ export default {
   },
 
   /**
-   * 获取文档用于编辑
+   * 获取随笔内容
    * @param userId
    * @returns {Promise<void>}
    */
   async getRamblyJotInfo(ramblyJotId) {
     return await Vue.prototype.$request({
-      url: "/cpt/ramblyjot/" + ramblyJotId,
-      method: 'POST'
+      url: "/cps/ramblyjot/" + ramblyJotId,
+      method: 'GET'
     });
   },
 
@@ -35,6 +35,19 @@ export default {
     return await Vue.prototype.$request({
       url: "/cpt/ramblyjot/list",
       method: 'POST'
+    });
+  },
+
+  /**
+   * 获取公开随笔列表
+   * @param articleInfo
+   * @returns {Promise<void>}
+   */
+  async getPublicRamblyJotList(essayListRequest) {
+    return await Vue.prototype.$request({
+      url: "/cps/ramblyjot/list",
+      method: 'POST',
+      data: essayListRequest
     });
   },
 

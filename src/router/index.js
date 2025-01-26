@@ -332,7 +332,8 @@ router.afterEach((to, from) => {
   let fixed1 = from.name === 'RamblyJotContent' && to.name === 'RamblyJot';
   let fixed2 = to.name === 'RamblyJotContent' && from.name === 'RamblyJot';
   let fixed3 = from.fullPath?.includes('/column/setting/') && to.fullPath === '/dashboard/seriesColumn';
-  let fixed = fixed1 || fixed2 || fixed3;
+  console.log("f1: ", fixed1, "f2: ", fixed2, "f3: ", fixed3)
+  let fixed = fixed1 || fixed3;
   if (fixed) {
     return;
   }

@@ -11,7 +11,7 @@
       <a-tooltip overlayClassName="read-header-tooltip"
                  trigger="click"
                  placement="left"
-                 v-if="ramblyJot.userId === loginUserId"
+                 v-if="loginStatus && ramblyJot.userInfo?.uid === userInfo?.uid"
                  :getPopupContainer="()=>this.$refs.tooltipContainer">
         <template slot="title">
           <div class="operate-wrap">
@@ -54,22 +54,22 @@
     </div>
     <!-- 点赞信息 -->
     <div class="reward-module_like un-select">
-      <div class="like-btn" @click="ramblyJot.ilike = ramblyJot.ilike === 1 ? 0 : 1">
-        <span :class="['like-btn-icon', ramblyJot.ilike === 1 ? 'liked' : 'will-like']"></span>
+      <div class="like-btn" @click="likeMark">
+        <span :class="['like-btn-icon', ramblyJot.ifLike ? 'liked' : 'will-like']"></span>
       </div>
-      <p class="like-count">11 人点赞</p>
+      <p class="like-count" v-if="ramblyJot.likeCount > 0">{{ ramblyJot.likeCount }} 人点赞</p>
       <ul class="like-user-list">
-        <li v-for="user in showUserList" :key="user.userId">
+        <li v-for="user in ramblyJot.likeUserList" :key="user.uid">
           <user-card :userInfo="user" :popoverContainer="tooltipContainer" class="user-info-card-box">
             <slot>
-              <b-avatar :src="user.avatar" variant="light" href="javascript:void(0)" size="2.2rem">
-                <span v-if="!user.avatar">{{ user.username }}</span>
+              <b-avatar :src="fileUrl(user.avatarUrl)" variant="light" href="javascript:void(0)" size="2.2rem">
+                <span v-if="!user.avatarUrl">{{ user.username }}</span>
               </b-avatar>
             </slot>
           </user-card>
         </li>
         <!-- 超出13时只展示13个，然后显示更多 -->
-        <li v-if="likeUserList?.length > 13" class="show-more-like-list" @click="moreLikeUser = true">
+        <li v-if="ramblyJot.likeCount > 13" class="show-more-like-list" @click="moreLikeUser = true">
           <a-tooltip placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer">
             <template slot="title">
               查看所有点赞用户
@@ -85,13 +85,13 @@
             <div class="like-btn">
               <span class="like-btn-icon will-like"></span>
             </div>
-            <p class="like-count">共 11 人点赞</p>
+            <p class="like-count" v-if="ramblyJot.likeCount > 0">共 {{ ramblyJot.likeCount }} 人点赞</p>
             <ul class="like-user-list">
-              <li v-for="user in likeUserList" :key="user.userId">
+              <li v-for="user in ramblyJot.likeUserList" :key="user.uid">
                 <user-card :userInfo="user" :popoverContainer="tooltipContainer" class="user-info-card-box">
                   <slot>
-                    <b-avatar :src="user.avatar" variant="light" href="javascript:void(0)" size="2.2rem">
-                      <span v-if="!user.avatar">{{ user.username }}</span>
+                    <b-avatar :src="fileUrl(user.avatarUrl)" variant="light" href="javascript:void(0)" size="2.2rem">
+                      <span v-if="!user.avatarUrl">{{ user.username }}</span>
                     </b-avatar>
                   </slot>
                 </user-card>
@@ -103,7 +103,7 @@
     </div>
     <!-- 评论 -->
     <div class="">
-      <reply-comment/>
+      <reply-comment :targetId="ramblyJot.uid"/>
     </div>
   </div>
 </template>
@@ -114,6 +114,8 @@ import {ramblyPlugins, ramblyCards, pluginConfig} from "@/components/common/edit
 import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
 import UserCard from "@/components/common/UserCard.vue";
 import RamblyJotApi from "@/api/RamblyJotApi";
+import socialApi from "@/api/SocialApi";
+import {cloneDeep} from "@/utils/emoji";
 
 export default {
   name: 'RamblyJotContent',
@@ -121,87 +123,49 @@ export default {
     return {
       engine: null,
       ramblyJot: {},
-      likeUserList: [
-        {
-          userId: 1,
-          username: '融码一生'
-          // avatar: require('@/assets/avatar/01.jpg')
-        },
-        {
-          userId: 2,
-          username: '融asd）'
-          // avatar: require('@/assets/avatar/04.jpg')
-        },
-        {
-          userId: 3,
-          username: '融3sdfs'
-          // avatar: require('@/assets/avatar/03.jpg')
-        }, {
-          userId: 4,
-          username: 'acvxcvff'
-          // avatar: require('@/assets/avatar/04.gif')
-        }, {
-          userId: 5,
-          username: '飒飒打撒方法'
-          // avatar: require('@/assets/avatar/05.jpg')
-        }, {
-          userId: 6,
-          username: '3撒旦发射点和'
-          // avatar: require('@/assets/avatar/06.jpg')
-        }, {
-          userId: 7,
-          username: '阿萨的观光热点覆盖'
-          // avatar: require('@/assets/avatar/07.jpg')
-        }, {
-          userId: 8,
-          username: '手动阀手动阀'
-          // avatar: require('@/assets/avatar/08.jpg')
-        }, {
-          userId: 9,
-          username: '士大夫胜多负少大师傅'
-          // avatar: require('@/assets/avatar/09.jpg')
-        }, {
-          userId: 10,
-          username: '撒旦发射点和地方）'
-          // avatar: require('@/assets/avatar/10.jpg')
-        }, {
-          userId: 11,
-          username: 'asderrer）'
-          // avatar: require('@/assets/avatar/11.jpg')
-        }, {
-          userId: 12,
-          username: 'asdhghfg'
-          // avatar: require('@/assets/avatar/12.jpg')
-        }, {
-          userId: 13,
-          username: '阿斯顿撒旦 域）'
-          // avatar: require('@/assets/avatar/13.jpg')
-        }, {
-          userId: 14,
-          username: '融胜多负少）'
-          // avatar: require('@/assets/avatar/14.jpg')
-        }, {
-          userId: 15,
-          username: '融发的干扰对方域）'
-          // avatar: require('@/assets/avatar/15.jpg')
-        }
-      ],
       moreLikeUser: false,
       tooltipContainer: null
     }
   },
   computed: {
-    loginUserId() {
-      return this.$store.state.userInfo.uid;
+    userInfo() {
+      return this.$store.state.userInfo;
     },
-    showUserList() {
-      if (this.likeUserList?.length > 13) {
-        return this.likeUserList.slice(0, 13);
-      }
-      return this.likeUserList;
+    loginStatus() {
+      let userInfo = this.$store.state.userInfo
+      return userInfo !== null && userInfo.token?.length === 32
     }
   },
   methods: {
+    fileUrl(path) {
+      return this.fileService + path;
+    },
+    likeMark() {
+      if (!this.loginStatus) {
+        let loginBtn = document.getElementById("pwdLoginBtn");
+        if (loginBtn) {
+          loginBtn.click();
+        }
+        return;
+      }
+      let likeAction = {
+        targetId: this.ramblyJot.uid,
+        targetType: 3,
+        action: this.ramblyJot.ifLike ? 0 : 1
+      }
+      socialApi.contentLikeMark(likeAction).then(data => {
+        if (data?.result) {
+          this.ramblyJot.likeCount = this.ramblyJot.likeCount + (this.ramblyJot.ifLike ? -1 : 1);
+          if (this.ramblyJot.ifLike) {
+            // 取消点赞
+            this.ramblyJot.likeUserList = this.ramblyJot.likeUserList?.filter(user => user.uid !== this.userInfo.uid);
+          } else {
+            this.ramblyJot.likeUserList.unshift(cloneDeep(this.userInfo));
+          }
+          this.ramblyJot.ifLike = !this.ramblyJot.ifLike;
+        }
+      })
+    },
     deleteRamblyJot() {
       RamblyJotApi.deleteRamblyJot(this.ramblyJot.uid).then(data => {
         if (data?.result) {

@@ -26,9 +26,8 @@
           <div class="toolbar-wrap">
             <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar"/>
           </div>
-
           <div class="rambly-module_button">
-            <Button type="primary" ghost @click="submitRamblyJot"
+            <Button ghost @click="submitRamblyJot"
                     :disabled="editorValueIsEmpty">
               <span>小记一下</span>
             </button>
@@ -81,49 +80,45 @@
               <p>{{ item.previewContent }}</p>
             </b-link>
             <div class="photo-content p1" v-if="item.previewImg?.length === 1">
-              <div>
-                <div class="cover-url">
-                  <div class="cover-url-item">
-                    <div class="bottom-mask">
-                      <img :src="fileUrl(item.previewImg[0])"
-                           :alt="item.title"
-                           class="bottom-img">
-                    </div>
-                    <div class="blur"></div>
-                    <div class="cover-item" :id="item.uid">
-                      <div @click="previewImage(item.uid, item.previewImg, 0)">
-                        <b-img-lazy :src="fileUrl(item.previewImg[0])"
-                                    class="cover-url-item" rounded
-                                    :alt="item.title">
-                        </b-img-lazy>
-                      </div>
+              <div class="cover-url">
+                <div class="cover-url-item">
+                  <div class="bottom-mask">
+                    <img :src="fileUrl(item.previewImg[0])"
+                         :alt="item.title"
+                         class="bottom-img">
+                  </div>
+                  <div class="blur"></div>
+                  <div class="cover-item" :id="item.uid">
+                    <div @click="previewImage(item.uid, item.previewImg, 0)">
+                      <b-img-lazy :src="fileUrl(item.previewImg[0])"
+                                  class="cover-url-item" rounded
+                                  :alt="item.title">
+                      </b-img-lazy>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="photo-content p2" v-if="item.previewImg?.length === 2">
-              <div>
-                <div class="cover-url">
-                  <div class="cover-url-item">
-                    <div class="bottom-mask">
-                      <img v-for="pic in item.previewImg"
-                           :key="pic"
-                           :src="fileUrl(pic)"
-                           :alt="item.title"
-                           class="bottom-img">
-                    </div>
-                    <div class="blur"></div>
-                    <div class="cover-item" :id="item.uid">
-                      <div v-for="(pic, index) in item.previewImg"
-                           :key="index"
-                           @click="previewImage(item.uid, item.previewImg, index)"
-                           class="cover-item-box">
-                        <b-img-lazy :src="fileUrl(pic)"
-                                    class="cover-url-item" rounded
-                                    :alt="item.title">
-                        </b-img-lazy>
-                      </div>
+              <div class="cover-url">
+                <div class="cover-url-item">
+                  <div class="bottom-mask">
+                    <img v-for="pic in item.previewImg"
+                         :key="pic"
+                         :src="fileUrl(pic)"
+                         :alt="item.title"
+                         class="bottom-img">
+                  </div>
+                  <div class="blur"></div>
+                  <div class="cover-item" :id="item.uid">
+                    <div v-for="(pic, index) in item.previewImg"
+                         :key="index"
+                         @click="previewImage(item.uid, item.previewImg, index)"
+                         class="cover-item-box">
+                      <b-img-lazy :src="fileUrl(pic)"
+                                  class="cover-url-item" rounded
+                                  :alt="item.title">
+                      </b-img-lazy>
                     </div>
                   </div>
                 </div>
@@ -191,7 +186,6 @@ export default {
         ]
       ],
       editorValueIsEmpty: true,
-      readmeEmpty: true,
       extendCurtains: false,
       ramblyList: []
     }
@@ -356,7 +350,7 @@ export default {
     Toolbar
   },
   mounted() {
-    this.initEngine()
+    this.initEngine();
   },
   created() {
     RamblyJotApi.getMyRamblyJotList().then(data => {

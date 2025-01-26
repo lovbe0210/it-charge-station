@@ -26,7 +26,7 @@
         padding-top: 3px;
         font-size: 16px;
         font-weight: 500;
-        line-height: 32px;
+        line-height: 35px;
 
         span {
           cursor: pointer;
@@ -43,15 +43,6 @@
         .active {
           font-weight: 700;
           color: var(--font-color);
-        }
-      }
-
-      .head-input-search {
-        /deep/.ivu-input-prefix {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          //color: #262626;
         }
       }
     }
@@ -71,7 +62,7 @@
     /deep/ .ivu-table-header {
       table > thead > tr > th {
         background-color: var(--on-theme-bg-color);
-        height: 52px;
+        height: 50px;
         border-color: @border-color_normal;
 
         .ivu-table-cell {
@@ -167,77 +158,60 @@
       display: none;
     }
   }
-}
 
-// userCard
-.ant-popover-inner {
-  width: 120px;
-}
-
-.ant-popover-inner:hover {
-  background: #FAFAFA;
-}
-
-.ant-popover-arrow {
-  display: none;
-}
-
-/deep/ .user-info-card-box {
-
-  .ant-popover-arrow {
-    display: none;
-  }
-
-  .user-info-card {
+  .relationship-pagination {
     display: flex;
-    margin: 15px 10px;
-    justify-content: space-around;
+    align-items: center;
+    justify-content: flex-start;
+    line-height: 32px;
+    margin: 13px;
 
-    .user-avatar {
-      margin-right: 15px;
+    .pagination-prefix {
+      margin-right: 20px;
     }
 
-    .user-content {
-      font-size: 16px;
+    /deep/ .pagination {
 
-      a {
-        color: #585A5A;
+      .page-item {
+        border-radius: 4px;
+        margin-right: 8px;
+
+        .page-link {
+          padding: 0;
+          line-height: 32px;
+          width: 32px;
+          margin: 0 1px;
+          text-align: center;
+          border-radius: 4px;
+          color: var(--title-color);
+          border-color: @border-color_normal;
+          background: unset;
+
+          &:focus {
+            outline: 0;
+            box-shadow: none;
+          }
+
+          .iconfont {
+            font-size: 14px;
+          }
+        }
       }
 
-      .user-info {
-        margin-bottom: 10px;
-
-        .name {
-          margin-right: 5px;
-        }
-
-        .iconfont {
-          font-size: 20px;
-        }
-
+      .disabled:not([role="separator"]) > .page-link {
+        cursor: not-allowed;
+        pointer-events: unset;
+        color: @not-allowed;
+        border-color: @not-allowed;
       }
 
-      .social-info {
-        margin-bottom: 15px;
-        font-size: 14px;
-
-        a {
-          color: #8A8F8D;
-        }
-
-        .attention, .follower {
-          margin-right: 8px;
-        }
-
-      }
-
-      .card-btn {
-
-        button:first-child {
-          margin-right: 12px;
-        }
-
+      .page-item.active .page-link, .page-item:not(.disabled):hover .page-link {
+        z-index: 3;
+        color: #00b96b;
+        background-color: unset;
+        border-color: #00b96b;
       }
     }
   }
 }
+

@@ -172,7 +172,7 @@
       height: 100%;
       position: absolute;
       background-color: rgba(255,255,255, 0.4);
-      z-index: 999;
+      z-index: 1;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -198,6 +198,7 @@
 
       .item-right {
         margin-left: 20px;
+        width: 100%;
 
         /deep/.username {
           font-size: 14px;
@@ -212,11 +213,11 @@
             margin: 10px 0 0;
             -webkit-box-orient: vertical;
             display: -webkit-box;
-            max-height: 45px;
+            max-height: 68px;
             overflow: hidden;
             text-overflow: ellipsis;
             word-break: break-word;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 3;
           }
         }
 
@@ -233,6 +234,7 @@
                 overflow: hidden;
                 position: relative;
                 border-radius: 5px;
+                cursor: zoom-in;
 
                 .blur {
                   backdrop-filter: blur(25px);
@@ -273,7 +275,9 @@
               z-index: 2;
 
               img {
-                max-width: 80% !important;
+                max-height: 240px !important;
+                min-width: 20% !important;
+                object-fit: cover;
                 display: block;
                 margin: 0 auto;
               }
@@ -306,6 +310,8 @@
 
                 img {
                   max-width: 80% !important;
+                  height: auto !important;
+                  object-fit: cover;
                   display: block;
                   margin: 0 auto;
                 }
@@ -327,23 +333,29 @@
           .p3 {
             .more-images {
               display: flex;
+              flex-wrap: wrap;
               justify-content: space-between;
 
-              .photo {
-                display: flex;
-                width: 31%;
+              .cover-item-box {
+                min-width: 32%;
+                max-width: 32%;
+                min-height: 100%;
 
-                img {
-                  height: 270px;
+                .cover-url-item {
                   width: 100%;
-                  //background-position: 50%;
-                  //background-size: cover;
-                  border-radius: 5px;
+                  height: 100%;
+                  //height: auto;
+                  object-fit: cover;
+                  cursor: zoom-in;
+                  /*
+                  object-fit 属性有以下几个值：
+                    fill：图片会缩放以完全填充容器，可能会变形。
+                    contain：图片会缩放以适应容器，保持宽高比，不留白。
+                    cover：图片会缩放以覆盖容器，保持宽高比，可能会被裁剪。
+                    none：图片不会缩放，保持原始尺寸。
+                    scale-down：图片会缩放到其尺寸小于或等于容器尺寸的最大尺寸。
+                  */
                 }
-              }
-
-              .photo:nth-last-child(-n+3) {
-                margin: 0;
               }
             }
           }

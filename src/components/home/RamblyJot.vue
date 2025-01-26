@@ -3,7 +3,7 @@
     <div :class="['rambly-module_editor', extendCurtains ? 'extend-curtains' : '']">
       <div class="scrollbar-visible">
         <div class="layout-mode-fixed">
-          <div :class="['editor-body',  editorFocus ? 'editor-focus' : '']"  @click="focusEditor()">
+          <div :class="['editor-body',  editorFocus ? 'editor-focus' : '']">
             <div class="editor-wrap beauty-scroll" ref="scrollbarContext">
               <div class="editor-wrap-content">
                 <div ref="container"></div>
@@ -22,16 +22,15 @@
           <div class="toolbar-wrap">
             <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar"/>
           </div>
-
           <div class="rambly-module_button">
-            <Button type="primary" ghost @click="submitRambly"
-                    :disabled="canSubmit">
+            <Button ghost @click="submitRamblyJot"
+                    :disabled="editorValueIsEmpty">
               <span>小记一下</span>
             </Button>
           </div>
         </div>
       </div>
-      <div class="modal-lock" v-if="!userInfo || !userInfo.token || userInfo.token.length !== 32">
+      <div class="modal-lock" v-if="!loginStatus">
         <span class="lock-tip">
           <auth-modal>
             <slot>
@@ -43,82 +42,105 @@
       </div>
     </div>
     <div class="rambly-module_list">
-      <div class="rambly-item" v-for="item in ramblyList" :key="item.id">
-        <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer" class="item-left">
-          <slot>
-            <b-avatar :src="item.userInfo.avatar" class="avatar">
-              <span v-if="!item.userInfo.avatar">{{item.userInfo.username}}</span>
-            </b-avatar>
-          </slot>
-        </user-card>
-        <div class="item-right">
-          <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer">
+      <div class="rambly-jot-wrap"
+           v-infinite-scroll="debounceRequestRank"
+           :infinite-scroll-disabled="!hasMore"
+           :infinite-scroll-distance="100">
+        <div class="rambly-item" v-for="item in ramblyList" :key="item.uid">
+          <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer" class="item-left">
             <slot>
-              <span class="username">{{item.userInfo.username}}</span>
+              <b-avatar :src="fileUrl(item.userInfo?.avatarUrl)" class="avatar">
+                <span v-if="!item.userInfo?.avatarUrl">{{ item.userInfo?.username }}</span>
+              </b-avatar>
             </slot>
           </user-card>
-          <div class="post-content">
-            <b-link to="/ramblyJot/sadasd">
-              <p>{{item.content}}</p>
-            </b-link>
-          </div>
-          <div class="post-image">
-            <div class="photo-content p1" v-if="item.picList?.length === 1">
-              <div>
-                <div class="cover-url">
-                  <div class="cover-url-item">
-                    <div class="bottom-mask">
-                      <img :src="item.picList[0]" :alt="'灵感时刻-' + item.createTime" class="bottom-img">
-                    </div>
-                    <div class="blur"></div>
-                    <div class="cover-item">
-                      <img :src="item.picList[0]" :alt="'灵感时刻-' + item.createTime" class="cover-url-item">
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div class="item-right">
+            <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer">
+              <slot>
+                <span class="username">{{ item.userInfo?.username }}</span>
+              </slot>
+            </user-card>
+            <div class="post-content">
+              <b-link :to="'/creative/ramblyJot/' + item.uid">
+                <p>{{ item.previewContent }}</p>
+              </b-link>
             </div>
-            <div class="photo-content p2" v-if="item.picList?.length === 2">
-              <div>
+            <div class="post-image">
+              <div class="photo-content p1" v-if="item.previewImg?.length === 1">
                 <div class="cover-url">
                   <div class="cover-url-item">
                     <div class="bottom-mask">
-                      <img v-for="pic in item.picList" :key="pic" :src="pic" :alt="'灵感时刻-' + item.createTime"
+                      <img :src="fileUrl(item.previewImg[0])"
+                           :alt="item.title"
                            class="bottom-img">
                     </div>
                     <div class="blur"></div>
-                    <div class="cover-item">
-                      <div v-for="pic in item.picList" :key="pic" class="cover-item-box">
-                        <img :src="pic" :alt="'灵感时刻-' + item.createTime" class="cover-url-item">
+                    <div class="cover-item" :id="item.uid">
+                      <div @click="previewImage(item.uid, item.previewImg, 0)">
+                        <b-img-lazy :src="fileUrl(item.previewImg[0])"
+                                    class="cover-url-item" rounded
+                                    :alt="item.title">
+                        </b-img-lazy>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="photo-content p3" v-if="item.picList?.length === 3">
-              <div class="more-images">
-                <div v-for="pic in item.picList" :key="pic" class="photo">
-                  <img :src="pic" :alt="'灵感时刻-' + item.createTime">
+              <div class="photo-content p2" v-if="item.previewImg?.length === 2">
+                <div class="cover-url">
+                  <div class="cover-url-item">
+                    <div class="bottom-mask">
+                      <img v-for="pic in item.previewImg"
+                           :key="pic"
+                           :src="fileUrl(pic)"
+                           :alt="item.title"
+                           class="bottom-img">
+                    </div>
+                    <div class="blur"></div>
+                    <div class="cover-item" :id="item.uid">
+                      <div v-for="(pic, index) in item.previewImg"
+                           :key="index"
+                           @click="previewImage(item.uid, item.previewImg, index)"
+                           class="cover-item-box">
+                        <b-img-lazy :src="fileUrl(pic)"
+                                    class="cover-url-item" rounded
+                                    :alt="item.title">
+                        </b-img-lazy>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="photo-content p3" v-if="item.previewImg?.length === 3">
+                <div class="more-images" :id="item.uid">
+                  <div v-for="(pic, index) in item.previewImg"
+                       :key="index"
+                       class="cover-item-box"
+                       @click="previewImage(item.uid, item.previewImg, index)">
+                    <b-img-lazy :src="fileUrl(pic)"
+                                class="cover-url-item" rounded
+                                :alt="item.title">
+                    </b-img-lazy>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="action-box">
-            <div class="post-time">
-              <span>发布于 </span>
-              <Time class="time" :time="item.createTime" v-if="needFormatDate(item.createTime)"/>
-              <Time class="time" :time="item.createTime" v-else type="datetime"/>
-            </div>
-            <div class="action">
+            <div class="action-box">
+              <div class="post-time">
+              <span>发布于
+                <span class="time">{{ formatTime(item.createTime) }}</span>
+              </span>
+              </div>
+              <div class="action">
               <span class="reply-btn">
                 <span class="iconfont reply"></span>
-                {{item.comments}}
+                {{ item.commentCount }}
               </span>
-              <span class="like-btn">
-                <span class="iconfont like"></span>
-                {{item.likes}}
+                <span class="like-btn">
+                <span :class="['iconfont', 'like', item.ifLike ? 'ilike' : '']"></span>
+                {{ item.likeCount }}
               </span>
+              </div>
             </div>
           </div>
         </div>
@@ -128,109 +150,82 @@
 </template>
 
 <script>
-  import Engine from '@aomao/engine'
-  import {$} from '@aomao/engine'
-  // import Toolbar from 'am-editor-toolbar-vue2'
-  import Toolbar from "@/components/common/editor/packages/toolbar/src"
-  import {ramblyPlugins, cards, pluginConfig} from "@/components/common/editor/config"
-  import UserCard from "@/components/common/UserCard.vue";
-  import {needFormatDate} from '@/utils/emoji';
-  import AuthModal from "@/components/common/AuthModal.vue";
+import Engine from '@aomao/engine'
+import Toolbar from "@/components/common/editor/packages/toolbar/src"
+import {ramblyPlugins, ramblyCards, pluginConfig} from "@/components/common/editor/config"
+import Pswp from "@/components/common/imagepreview/index"
+import UserCard from "@/components/common/UserCard.vue";
+import {formatTime, debounce} from "@/utils/emoji"
+import AuthModal from "@/components/common/AuthModal.vue";
+import ramblyJotApi from "@/api/RamblyJotApi";
 
-  export default {
-    name: 'RamblyJot',
-    data() {
-      return {
-        engine: null,
-        editorFocus: false,
-        // 工具栏内容：下拉面板、
-        items: [
-          [
-            {
-              type: "button",
-              name: "image-uploader",
-              icon: `<span class="toolbar-icon iconfont pic-upload"/><span class="toolbar-title">图片</span>`
-            },
-            {
-              name: "tasklist",
-              icon: `<span class="toolbar-icon iconfont task-list"/><span class="toolbar-title">任务</span>`,
-              title: ''
-            },
-            {
-              name: "link",
-              icon: `<span class="toolbar-icon iconfont link"/><span class="toolbar-title">链接</span>`,
-              title: ''
-            },
-            {
-              type: "button",
-              name: "file-uploader",
-              icon: `<span class="toolbar-icon iconfont attachment-wb"/><span class="toolbar-title">附件</span>`
-            }
-          ]
-        ],
-        editorValueIsEmpty: true,
-        readmeEmpty: true,
-        extendCurtains: false,
-        rambly: {
-          htmlValue: null
-        },
-        popoverContainer: null,
-        titleRows: 1,
-        ramblyList: [
-
-        ],
-        showLogin: false
-      }
+export default {
+  name: 'RamblyJot',
+  data() {
+    return {
+      engine: null,
+      // 图片预览
+      pswp: null,
+      editorFocus: false,
+      // 工具栏内容：下拉面板
+      items: [
+        [
+          {
+            type: "button",
+            name: "image-uploader",
+            icon: `<span class="toolbar-icon iconfont pic-upload"/><span class="toolbar-title">图片</span>`
+          },
+          {
+            name: "tasklist",
+            icon: `<span class="toolbar-icon iconfont task-list"/><span class="toolbar-title">任务</span>`,
+            title: ''
+          },
+          {
+            name: "link",
+            icon: `<span class="toolbar-icon iconfont link"/><span class="toolbar-title">链接</span>`,
+            title: ''
+          },
+          {
+            type: "button",
+            name: "file-uploader",
+            icon: `<span class="toolbar-icon iconfont attachment-wb"/><span class="toolbar-title">附件</span>`
+          }
+        ]
+      ],
+      editorValueIsEmpty: true,
+      extendCurtains: false,
+      popoverContainer: null,
+      ramblyList: [],
+      showLogin: false,
+      hasMore: true,
+      offset: 0,
+      limit: 20,
+      debounceRequestRank: function () {}
+    }
+  },
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo;
     },
-    computed: {
-      canSubmit() {
-        if (this.editorValueIsEmpty) {
-          return this.rambly.showTitle ? this.rambly.title.length === 0 : true;
-        } else {
-          return false;
-        }
-      },
-      userInfo() {
-        return this.$store.state.userInfo;
-      }
-    },
-    methods: {
-      submitRambly() {
-        let htmlValue = this.engine.model?.toValue();
-        let title;
-        if (!this.rambly.showTitle) {
-          title = null;
-        } else {
-          title = this.rambly.title.length > 0 ? this.rambly.title : null;
-        }
-        this.rambly = {...this.rambly, title, htmlValue};
-      },
-      focusEditor() {
-        if (this.editorValueIsEmpty) {
-          const container = this.$refs.container;
-          container.focus();
-        } else {
-          this.engine.focus();
-        }
-      },
-      needFormatDate
-    },
-    components: {
-      Toolbar,
-      UserCard,
-      AuthModal
-    },
-    watch: {
-      "rambly.title"(newVal) {
-        console.log(newVal);
-        this.titleRows = this.rambly.title.split('\n').length;
-      }
-    },
-    mounted() {
-      this.popoverContainer = this.$refs.popoverContainer;
+    loginStatus() {
+      let userInfo = this.$store.state.userInfo
+      return userInfo !== null && userInfo.token?.length === 32
+    }
+  },
+  methods: {
+    initEngine() {
       pluginConfig.link = {hotkey: {key: ""}};
       pluginConfig.tasklist = {hotkey: {key: ""}};
       pluginConfig.heading = {hotkey: {key: ""}};
+      pluginConfig.image = {
+        hotkey: {key: ""},
+        maxHeight: 150,
+        onBeforeRender: (status, url) => {
+          if (url.startsWith("data:image/")) return url
+          return url
+        }
+      }
+
       const container = this.$refs.container;
       if (container) {
         //实例化引擎
@@ -238,7 +233,7 @@
           // 启用插件
           plugins: ramblyPlugins,
           // 启用卡片
-          cards,
+          cards: ramblyCards,
           // 所有的插件配置
           config: pluginConfig,
           autoPrepend: false,
@@ -254,15 +249,6 @@
         engine.messageError = (error) => {
           console.log(error);
         };
-        //卡片最大化时设置编辑页面样式
-        engine.on("card:maximize", () => {
-          $(".editor-toolbar").css("z-index", "9999").css("top", "0");
-          $(".card-maximize-header").css("height", "60px");
-          // $(".editor-toolbar").css("z-index", "9999");
-        });
-        engine.on("card:minimize", () => {
-          $(".editor-toolbar").css("z-index", "").css("top", "");
-        });
 
         // 监听编辑器值改变事件
         engine.on("change", () => {
@@ -274,13 +260,130 @@
         engine.on("blur", () => {
           this.editorFocus = false;
         });
-
         this.engine = engine;
       }
+    },
+    submitRamblyJot() {
+      if (this.editorValueIsEmpty) {
+        return;
+      }
+
+      // 获取预览内容
+      let text = this.engine?.model?.toText();
+      let previewContent = '';
+      if (text) {
+        text = text.replace(/\r\n/g, "");
+        text = text.replace(/\n/g, "");
+        text = text.replace(" ", "");
+        // 判断是否需要提取摘要
+        if (text.length > 297) {
+          previewContent = text.substr(0, 297);
+          previewContent += "...";
+        } else {
+          previewContent = text;
+        }
+      }
+
+      if (!previewContent && previewContent === '') {
+        this.editorValueIsEmpty = true;
+        return;
+      }
+
+      // 获取图片文件
+      let nodeArray = this.engine.container
+        .find('[data-card-key="image"]')
+        .toArray()
+        .filter(image => {
+          return image.find("img").length > 0
+        });
+      let previewImg = nodeArray.slice(0, 3).map(node => {
+        let card = this.engine.card.find(node);
+        let value = card?.getValue();
+        let imgUrl = value?.src.replace(this.fileService, '');
+        return imgUrl;
+      })
+
+      // 获取正文对象
+      let jsonValue = this.engine.getJsonValue();
+
+      // 发送请求
+      let ramblyInfo = {
+        content: jsonValue,
+        previewContent,
+        previewImg
+      }
+      ramblyJotApi.saveRamblyJot(ramblyInfo).then(data => {
+        if (data?.result) {
+          this.$Message.success("发表成功")
+          this.editorValueIsEmpty = true;
+          this.extendCurtains = false;
+          this.ramblyList.unshift(data.data);
+          this.engine.destroy();
+          this.initEngine();
+        }
+      })
+    },
+    fileUrl(path) {
+      return this.fileService + path;
+    },
+    previewImage(trendId, imgArray, currentIndex) {
+      if (this.pswp === null) {
+        this.pswp = new Pswp(null);
+      }
+      let imgWrapp = document.getElementById(trendId);
+      let imgBoxList = imgWrapp?.children;
+      if (imgBoxList) {
+        let imgItems = [];
+        for (let imgBox of imgBoxList) {
+          let img = imgBox.firstChild;
+          imgItems.push({
+            src: img.src,
+            msrc: img.src,
+            w: img.naturalWidth,
+            h: img.naturalHeight
+          })
+        }
+        this.pswp.open(imgItems, currentIndex)
+      }
+    },
+    loadMore() {
+      if (!this.hasMore) {
+        return;
+      }
+      let essayListRequest = {
+        offset: this.offset,
+        limit: this.limit
+      }
+      ramblyJotApi.getPublicRamblyJotList(essayListRequest).then(data => {
+        if (data?.result) {
+          this.hasMore = data.data.hasMore;
+          this.ramblyList = data.data.list;
+        }
+      })
+    },
+    formatTime
+  },
+  components: {
+    Toolbar,
+    UserCard,
+    AuthModal
+  },
+  watch: {
+    "rambly.title"(newVal) {
+      console.log(newVal);
+      this.titleRows = this.rambly.title.split('\n').length;
     }
+  },
+  mounted() {
+    this.initEngine();
+    this.popoverContainer = this.$refs.popoverContainer;
+  },
+  created() {
+    this.debounceRequestRank = debounce(this.loadMore, 800, true);
   }
+}
 </script>
 
 <style scoped lang="less">
-  @import "../css/home/ramblyJot.less";
+@import "../css/home/ramblyJot.less";
 </style>

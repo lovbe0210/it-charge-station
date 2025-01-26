@@ -118,10 +118,11 @@ export default {
    * @param targetId
    * @returns {Promise<void>}
    */
-  async getRelationshipList(ship) {
+  async getRelationshipList(ship, pageInfo) {
     return await Vue.prototype.$request({
       url: "/sl/user/relationship/" + ship,
-      method: 'GET'
+      method: 'POST',
+      data: pageInfo
     });
   }
 
