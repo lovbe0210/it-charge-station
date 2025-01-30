@@ -192,7 +192,7 @@
         </div>
       </div>
       <div class="modal-setting-item" v-if="modalContentType === 2">
-        <article-setting :currentArticle="currentOperateArticle"
+        <article-setting :articleUri="currentOperateArticle.uri"
                          :changePermission="true"
                          :editTitle="true"
                          @updateArticle="updateArticle"/>

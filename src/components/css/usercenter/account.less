@@ -39,8 +39,8 @@
       display: flex;
       align-items: center;
 
-      .icon-account-completed, .icon-account-unComplete {
-        font-size: 29px;
+      .account-complete, .account-unComplete {
+        font-size: 19px;
       }
 
       .form-content {
@@ -161,12 +161,16 @@
     font-size: 15px;
     line-height: 22px;
     word-wrap: break-word;
-    margin-bottom: 5px;
+    margin: 10px 0;
   }
 
   .warn {
     color: var(--title-color);
-    margin-bottom: 35px;
+    margin-bottom: 25px;
+
+    .un-enable-tips {
+      font-size: 12px;
+    }
   }
 
   .verify-type-select {
@@ -200,7 +204,7 @@
       }
 
       .ivu-select-item-selected, .ivu-select-item-selected:hover {
-        color: @primary-color;
+        color: var(--font-color);
       }
     }
 
@@ -210,11 +214,21 @@
   }
 
   .validation {
-    margin: 15px 0 10px 0;
+    margin-top: 25px;
+
+    .slider-valid-tip {
+      margin-top: 10px;
+      font-size: 14px;
+      height: 20px;
+
+      .error-tip {
+        color: red;
+      }
+    }
   }
 
   .check-code {
-    margin: 40px 0 10px 0;
+    margin: 15px 0 5px 0;
     display: flex;
     justify-content: space-between;
 
@@ -252,6 +266,10 @@
     .error-tip {
       color: red;
     }
+
+    .success-tip {
+      margin-top: 5px;
+    }
   }
 
   .action {
@@ -279,22 +297,23 @@
   }
 
   .step-2 {
-
-    .change-item-input {
-      padding: 0 8px 10px 8px;
-    }
+    margin: 0 8px;
 
     .check-code {
-      margin: 15px 8px 10px 8px;
+      margin: 15px 0 10px 0;
     }
 
     .new-value-tip, .confirm-value-tip {
-      margin: 5px 8px 10px 8px;
+      margin: 5px 0 10px 0;
       font-size: 14px;
       height: 20px;
 
       .error-tip {
         color: red;
+      }
+
+      .success-tip {
+        margin-top: 5px;
       }
     }
 

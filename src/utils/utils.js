@@ -246,12 +246,12 @@ const prefixSorted = [
   {prefix: '685', en: 'Samoa Western', cn: '萨摩亚西部'},
   {prefix: '687', en: 'New Caledonia', cn: '新喀里多尼亚'},
   {prefix: '689', en: 'French Polynesia', cn: '法属波利尼西亚'},
-  {prefix: '852', en: 'Hong Kong', cn: '香港'},
-  {prefix: '853', en: 'Macao', cn: '澳门'},
+  {prefix: '852', en: 'Hong Kong', cn: '中国香港'},
+  {prefix: '853', en: 'Macao', cn: '中国澳门'},
   {prefix: '855', en: 'Cambodia', cn: '柬埔寨'},
   {prefix: '856', en: 'Laos', cn: '老挝'},
   {prefix: '880', en: 'Bangladesh', cn: '孟加拉国'},
-  {prefix: '886', en: 'Taiwan', cn: '台湾'},
+  {prefix: '886', en: 'Taiwan', cn: '中国台湾'},
   {prefix: '960', en: 'Maldives', cn: '马尔代夫'},
   {prefix: '961', en: 'Lebanon', cn: '黎巴嫩'},
   {prefix: '962', en: 'Jordan', cn: '约旦'},
@@ -308,6 +308,13 @@ export function verifyTelLawful(telephone) {
   if (telephone == null || telephone.length === 0) {
     return false;
   }
+  // 过滤其他无用字符，只保留数字和+
+  telephone = telephone.replace(/[^\d+]/g, '');
+  //如果是国内手机号，直接及进行校验
+  telephone = telephone.replace('+86', '');
+  if (telephone.startsWith('86')) {
+    telephone = telephone.substr(2, telephone.length - 2);
+  }
   let prefix = telephone.indexOf("+");
   if (prefix === -1) {
     // 国内手机号
@@ -315,20 +322,14 @@ export function verifyTelLawful(telephone) {
   }
   let replace = telephone.replace('+', '');
   let filter = prefixSorted.filter(pre => {
-    return replace.startWith(pre.prefix);
+    return replace.startsWith(pre.prefix);
   });
   if (filter == null || filter.length === 0) {
     return false;
   }
   let filterPrefix = filter[0].prefix;
   replace = replace.replace(filterPrefix, '');
-  if (filterPrefix === '86') {
-    // 校验国内手机号码格式
-    return chinaPhoneReg.test(replace);
-  } else {
-    return otherPhoneReg.test(replace);
-  }
-
+  return otherPhoneReg.test(replace);
 }
 
 /**

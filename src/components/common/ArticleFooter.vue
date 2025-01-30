@@ -3,16 +3,14 @@
     <!-- 点赞信息 -->
     <div class="reward-module_like">
       <div class="like-btn"
-           v-if="userInfo.token"
+           v-if="loginStatus"
            @click="$emit('like')">
         <span :class="['like-btn-icon', ifLike ? 'liked' : 'will-like']"></span>
       </div>
-      <div class="like-btn" v-else>
-        <auth-modal>
-          <slot>
-            <span class="like-btn-icon will-like"/>
-          </slot>
-        </auth-modal>
+      <div class="like-btn"
+           v-else
+           @click="login">
+        <span class="like-btn-icon will-like"/>
       </div>
       <p class="like-count" v-if="likeCount > 0">{{likeCount}} 人点赞</p>
       <ul class="like-user-list">
@@ -150,13 +148,12 @@
 
 <script>
   import UserCard from "@/components/common/UserCard.vue";
-  import AuthModal from "@/components/common/AuthModal.vue";
   import { formatTime, formatNumber } from "@/utils/emoji"
   import { formatDate } from "@/utils/utils.js"
 
   export default {
     name: "ArticleFooter",
-    components: { UserCard, AuthModal },
+    components: { UserCard },
     data() {
       return {
         moreLikeUser: false,
@@ -172,12 +169,22 @@
       },
       userInfo() {
         return this.$store.state.userInfo;
+      },
+      loginStatus() {
+        let userInfo = this.$store.state.userInfo
+        return userInfo !== null && userInfo.token?.length === 32
       }
     },
     props: ['ifLike', "likeUserList", "likeCount", "updateTime", "viewCount", "authorInfo"],
     methods: {
       fileUrl(path) {
         return this.fileService + path;
+      },
+      login() {
+        let loginBtn = document.getElementById("pwdLoginBtn");
+        if (loginBtn) {
+          loginBtn.click();
+        }
       },
       formatTime,
       formatDate,
@@ -216,7 +223,7 @@
         margin: -1px 0;
         width: 80px;
         height: 80px;
-        background: url(https://gw.alipayobjects.com/mdn/prod_resource/afts/img/A*eDsBTKcm1IcAAAAAAAAAAAAAARQnAQ) no-repeat 0 0;
+        background: url("../../assets/like_action.png") no-repeat 0 0;
         background-size: auto 80px;
       }
 

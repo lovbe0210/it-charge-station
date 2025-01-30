@@ -1,5 +1,6 @@
 import {v4 as uuid} from 'uuid';
 import commonUtil from "@/utils/common"
+import Vue from "vue";
 
 export default {
   /**
@@ -117,7 +118,7 @@ export default {
       jsonData.mobile = _this.account;
     }
 
-    return await _this.$request({
+    return await Vue.prototype.$request({
       url: requestUri,
       method: 'POST',
       data: jsonData

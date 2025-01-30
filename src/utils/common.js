@@ -66,7 +66,10 @@ export default {
     // 简单转码
     for (let i = 0; i < charArr.length; i++) {
       let uniCode = charArr[i].charCodeAt(0);
-      let newChar = uniCode ^ 1;
+      if (!this.isLetterOrDigit(uniCode)) {
+        continue;
+      }
+      let newChar = uniCode ^ 127;
       if (this.isLetterOrDigit(newChar)) {
         charArr[i] = String.fromCharCode(newChar);
       }
