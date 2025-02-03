@@ -25,16 +25,6 @@
       border-color: @primary-color !important;
     }
   }
-  .ivu-btn-success:not([disabled]) {
-    //background: var(--dropdown-bg-color) !important;
-    //color: var(--font-color) !important;
-
-    &:hover {
-      //background: var(--on-theme-bg-color) !important;
-      //color: @primary-color !important;
-      //border-color: @primary-color !important;
-    }
-  }
 
   .reply-header {
     color: var(--font-color) !important;
@@ -179,6 +169,13 @@
 
   .ivu-btn-text {
     color: @light-font-color !important;
+  }
+
+  // 滚动条全局美化
+  .beauty-scroll {
+    &:hover::-webkit-scrollbar-thumb {
+      background-color: #8B8B8B !important;
+    }
   }
 }
 
@@ -483,7 +480,7 @@
   }
 
   &:hover::-webkit-scrollbar-thumb {
-    background-color: #8B8B8B;
+    background-color: rgba(139, 139, 139, 0.93);
     border-radius: 4px;
   }
 }

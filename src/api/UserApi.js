@@ -88,7 +88,7 @@ export default {
    * @param id
    * @returns {Promise<[]>}
    */
-  async sendBindingPayloadCode(_this, svScene, svToken) {
+  async sendBindingPayloadCode(_this, svScene, codeScene, svToken) {
     let uniqueId = _this.$store.state.uniqueId;
     if (!uniqueId) {
       uniqueId = uuid();
@@ -103,7 +103,7 @@ export default {
     let sign = commonUtil.encodeSign(signStr);
     let jsonData = {
       sign: sign,
-      scene: svScene
+      scene: codeScene
     };
     return await Vue.prototype.$request({
       url: "/user/binding/code",
@@ -118,6 +118,19 @@ export default {
       method: 'POST',
       data: simpleCodeVerifyReq
     });
+  },
+
+  async updateAccount(scene, newValue) {
+    let sign = commonUtil.encodeSign(newValue);
+    let updateAccountReq = {
+      scene: scene,
+      sign
+    }
+    return await Vue.prototype.$request({
+      url: "/user/account/update",
+      method: 'POST',
+      data: updateAccountReq
+    })
   }
 }
 

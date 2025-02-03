@@ -96,7 +96,7 @@
             </Option>
           </Select>
           <div v-if="showModal" class="validation">
-            <slider-validation @validate="validate"></slider-validation>
+            <slider-validation @validate="validate" :key="step"></slider-validation>
             <div class="slider-valid-tip">
               <p v-show="sliderVerifyTipString !== null && sliderVerifyTipString" class="error-tip">
                 {{ sliderVerifyTipString }}
@@ -184,7 +184,7 @@
             <Input autocomplete="off"
                    :class="['change-item-input', checkNewValueResult !== null && !checkNewValueResult ? 'error-code-input' : '']"
                    placeholder="输入新密码" @on-change="checkNewValueChange()" v-model="newValue" type="password"
-                   maxlength="512"/>
+                   maxlength="100"/>
             <div class="new-value-tip">
               <p v-show="checkNewValueResult !== null && !checkNewValueResult" class="error-tip">
                 {{newValueTipString}}
@@ -290,8 +290,11 @@ export default {
       changeItemType: 0,
       // 滑块验证码埋点
       svToken: null,
+      // 滑块验证通过时的场景
+      svScene: null,
       // 滑块验证结果
       verifyResult: false,
+      sliderVerifyKeep: null,
       sliderVerifyTipString: null,
       // 验证码结果
       checkCodeResult: null,
@@ -309,8 +312,8 @@ export default {
     }
   },
   computed: {
-    // 滑块验证码场景
-    svScene() {
+    // 验证码场景
+    codeScene() {
       if (this.changeItemType === 1) {
         if (this.bindingSettings.mobile) {
           return this.step === 1 ? (this.selectOption === 0 ? 5 : 51) : 31;
@@ -327,6 +330,9 @@ export default {
       }
       if (this.changeItemType === 3) {
         return this.selectOption === 0 ? 7 : 8;
+      }
+      if (this.changeItemType === 4.2) {
+        return 11;
       }
       return 0;
     }
@@ -357,13 +363,24 @@ export default {
     },
     validate() {
       // 只在成功时回调
-      authApi.getSvCookie(this, this.svScene).then(data => {
+      authApi.getSvCookie(this, this.codeScene).then(data => {
         if (!data?.result) {
           return;
+        }
+        if (this.sliderVerifyKeep !== null) {
+          clearTimeout(this.sliderVerifyKeep);
         }
         this.verifyResult = true;
         this.sliderVerifyTipString = null;
         this.svToken = data.data.tn;
+        this.svScene = this.codeScene;
+        this.sliderVerifyKeep = setTimeout(() => {
+          this.verifyResult = false;
+          this.sliderVerifyTipString = null;
+          this.svToken = null;
+          this.svScene = null;
+          this.step = 1;
+        }, 1000 * 60 * 60 * 2)
       })
     },
     checkCodeChange() {
@@ -404,7 +421,7 @@ export default {
         }
       }
       if (this.step === 1) {
-        userApi.sendBindingPayloadCode(this, this.svScene, this.svToken).then(result => {
+        userApi.sendBindingPayloadCode(this, this.svScene, this.codeScene, this.svToken).then(result => {
           if (!result?.result) {
             return;
           }
@@ -426,15 +443,7 @@ export default {
           }, 1000);
         })
       } else {
-        // 第一步和第二部的验证码场景是不同的,而页面只需触发一次滑块验证，继续沿用上一次的滑块埋点，因此需要手动更改滑块的使用场景
-        let svScene = 0;
-        if (this.changeItemType === 1) {
-          svScene = this.bindingSettings.mobile ? (this.selectOption === 0 ? 5 : 51) : 3;
-        }
-        if (this.changeItemType === 2) {
-          svScene = this.bindingSettings.email ? (this.selectOption === 0 ? 6 : 61) : 4;
-        }
-        userApi.sendPayloadCode(this, svScene, this.svScene, this.svToken, this.newValue).then(result => {
+        userApi.sendPayloadCode(this, this.svScene, this.codeScene, this.svToken, this.newValue).then(result => {
           if (!result?.result) {
             return;
           }
@@ -479,7 +488,7 @@ export default {
       }
       // 验证码正确性校验
       let simpleCodeVerifyReq = {
-        scene: this.svScene,
+        scene: this.codeScene,
         code: this.checkCode
       };
       userApi.useVerifyCode(simpleCodeVerifyReq).then(data => {
@@ -530,11 +539,7 @@ export default {
     },
     confirmChange() {
       // 数据校验
-      debugger
-      this.checkNewValueChange()
-      if (this.changeItemType === 3) {
-        this.checkNewValueChange(this.confirmValue)
-      }
+      this.checkNewValueChange(this.changeItemType === 3 ? this.confirmValue : undefined);
       // 常规校验判断校验结果
       if ((this.checkNewValueResult != null && !this.checkNewValueResult) ||
         (this.checkConfirmValueResult != null && !this.checkConfirmValueResult)) {
@@ -545,38 +550,47 @@ export default {
         let regexResult = domainRegex.test(this.newValue);
         if (!regexResult) {
           this.checkNewValueResult = false;
-          this.newValueTipString = '仅支持小写字母、数字、横线、下划线和点，至少 4 个字符';
+          this.newValueTipString = '仅支持小写字母、数字、横线、下划线和点，至少 6 个字符';
           return;
         }
+        // 更新account信息
+        userApi.updateAccount(this.codeScene, this.newValue).then(data => {
+          if (data?.result) {
+            this.showModal = false;
+            this.getAccountSettings();
+            this.$Message.success('更新成功');
+          }
+        })
       } else if (this.changeItemType <= 2) {
         if (!this.checkCode || this.checkCode.length === 0) {
           this.checkCodeResult = false;
           this.tipString = '验证码不能为空';
-          return;
         } else if (this.checkCode.length < 6) {
           this.checkCodeResult = false;
           this.tipString = '验证码错误';
-          return;
         } else {
           // 验证码正确性校验
           let simpleCodeVerifyReq = {
-            scene: this.svScene,
+            scene: this.codeScene,
             code: this.checkCode
           };
+          if (this.changeItemType === 1) {
+            simpleCodeVerifyReq.mobile = this.newValue;
+          } else if (this.changeItemType === 2) {
+            simpleCodeVerifyReq.email = this.newValue;
+          }
           userApi.useVerifyCode(simpleCodeVerifyReq).then(data => {
             if (data?.result) {
-              // 初始化输入框填充值
-              this.checkCode = '';
-              this.checkCodeResult = null;
-              this.tipString = '';
-              this.confirmValue = '';
-              // 关闭定时器，移除验证码发送信息
-              this.btnValue = '获取验证码';
-              this.sendCodeSuccess = false;
-              clearInterval(this.sendCodeInterval)
-              this.step = 2;
+              // 更新account信息
+              userApi.updateAccount(this.codeScene, this.newValue).then(data => {
+                if (data?.result) {
+                  this.showModal = false;
+                  this.getAccountSettings();
+                  this.$Message.success('更新成功');
+                }
+              })
             }
-          })
+          });
         }
       } else {
         if (this.confirmValue.length < 8) {
@@ -584,42 +598,54 @@ export default {
           this.tipString = '密码长度至少 8 位';
           return;
         }
+        // 更新account信息
+        userApi.updateAccount(this.codeScene, this.newValue).then(data => {
+          if (data?.result) {
+            this.showModal = false;
+            this.getAccountSettings();
+            this.$Message.success('更新成功');
+          }
+        })
       }
-      setTimeout(() => {
-        // TODO 更新数据库
-        this.showModal = false;
-        this.$Message.success('更新成功')
-      }, 500);
+    },
+    /**
+     * 获取账号设置信息
+     */
+    getAccountSettings() {
+      userApi.getAccountSettings().then(data => {
+        if (!data?.result) {
+          return;
+        }
+        this.bindingSettings = {...this.bindingSettings, ...data.data};
+        if (data.data?.domain) {
+          const origin = window.location.origin;
+          this.bindingSettings.domain = origin + '/' + data.data.domain;
+        }
+        if (data.data?.mobile) {
+          this.bindOptions.push({
+            key: 0,
+            title: '使用手机 ' + data.data.mobile + ' 验证'
+          });
+        }
+        if (data.data?.email) {
+          this.bindOptions.push({
+            key: 1,
+            title: '使用邮箱 ' + data.data.email + ' 验证'
+          });
+          if (this.bindOptions.length === 2) {
+            this.selectOption = 0;
+          } else {
+            this.selectOption = 1;
+          }
+        }
+      })
     }
   },
   mounted() {
   },
   created() {
     // 获取账号绑定状态
-    userApi.getAccountSettings().then(data => {
-      if (!data?.result) {
-        return;
-      }
-      this.bindingSettings = {...this.bindingSettings, ...data.data};
-      if (data.data?.domain) {
-        const origin = window.location.origin;
-        this.bindingSettings.domain = origin + '/' + data.data.domain;
-      }
-      if (data.data?.mobile) {
-        this.bindOptions.push({
-          key: 0,
-          title: '使用手机 ' + data.data.mobile + ' 验证'
-        });
-        this.selectOption = 0;
-      }
-      if (data.data?.email) {
-        this.bindOptions.push({
-          key: 1,
-          title: '使用邮箱 ' + data.data.email + ' 验证'
-        });
-        this.selectOption = 1;
-      }
-    })
+    this.getAccountSettings();
   }
 }
 </script>

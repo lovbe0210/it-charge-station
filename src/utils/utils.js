@@ -302,7 +302,7 @@ const otherPhoneReg = /^[0-9]+(-[0-9]+)*$/;
 // 邮箱验证
 export const emailRegex = /^([a-z0-9A-Z]+[-|.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?.)+[a-zA-Z]{2,}$/;
 // 个人主页路径验证
-export const domainRegex = /^[a-z0-9-_.]{4,}$/;
+export const domainRegex = /^[a-z0-9A-Z-_]{6,30}$/;
 
 export function verifyTelLawful(telephone) {
   if (telephone == null || telephone.length === 0) {
