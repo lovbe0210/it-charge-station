@@ -22,9 +22,9 @@ import Quote from "@aomao/plugin-quote"
 import PaintFormat from "@aomao/plugin-paintformat"
 import RemoveFormat from "@aomao/plugin-removeformat"
 import SelectAll from "@aomao/plugin-selectall"
-// import Image, {ImageComponent, ImageUploader} from "@aomao/plugin-image"
 import Image, {ImageComponent, ImageUploader} from "./packages/image/src"
-import Table, {TableComponent} from "@aomao/plugin-table"
+// import Table, {TableComponent} from "@aomao/plugin-table"
+import Table, {TableComponent} from "./packages/table/index"
 import File, {FileComponent, FileUploader} from "@aomao/plugin-file"
 import Video, {VideoComponent, VideoUploader} from "@aomao/plugin-video"
 import Math, {MathComponent} from "@aomao/plugin-math"
@@ -32,13 +32,9 @@ import Fontfamily from "@aomao/plugin-fontfamily"
 import Status, {StatusComponent} from "@aomao/plugin-status"
 import LineHeight from "@aomao/plugin-line-height"
 // import Mention, {MentionComponent} from "@aomao/plugin-mention"
-// import {fontFamilyDefaultData, ToolbarPlugin, ToolbarComponent} from "am-editor-toolbar-vue2"
 import {fontFamilyDefaultData, ToolbarPlugin, ToolbarComponent} from "./packages/toolbar/src"
-// import Link from "am-editor-link-vue2"
 import Link from "./packages/link/index"
-// import CodeBlock, {CodeBlockComponent} from "am-editor-codeblock-vue2"
 import CodeBlock, {CodeBlockComponent} from "./packages/codeblock/src"
-// import mulit_codeblock from '@aomao/plugin-mulit-codeblock';
 
 import Lightblock, {LightblockComponent} from "./packages/lightblock/src";
 
@@ -99,6 +95,25 @@ export const ramblyPlugins = [
   Tasklist
 ]
 
+export const domainPlugins = [
+  Fontsize,
+  Bold,
+  Undo,
+  Image,
+  ImageUploader,
+  Table,
+  Status,
+  Backcolor,
+  Fontcolor,
+  Link,
+  Indent,
+  Alignment,
+  Tasklist,
+  Orderedlist,
+  Unorderedlist,
+  Lightblock
+]
+
 export const ramblyCards = [
   CheckboxComponent,
   ImageComponent,
@@ -125,6 +140,9 @@ export const pluginConfig = {
   [Italic.pluginName]: {
     // 默认为 _ 下划线，这里修改为单个 * 号
     markdown: "*"
+  },
+  [Table.pluginName]: {
+    enableScroll: true
   },
   [Image.pluginName]: {
     maxHeight: 300,

@@ -112,6 +112,11 @@ export default {
     });
   },
 
+  /**
+   * 验证码使用
+   * @param simpleCodeVerifyReq
+   * @returns {Promise<*>}
+   */
   async useVerifyCode(simpleCodeVerifyReq) {
     return await Vue.prototype.$request({
       url: "/user/code/verify",
@@ -120,6 +125,12 @@ export default {
     });
   },
 
+  /**
+   * 修改账号信息
+   * @param scene
+   * @param newValue
+   * @returns {Promise<*>}
+   */
   async updateAccount(scene, newValue) {
     let sign = commonUtil.encodeSign(newValue);
     let updateAccountReq = {
@@ -130,6 +141,39 @@ export default {
       url: "/user/account/update",
       method: 'POST',
       data: updateAccountReq
+    })
+  },
+
+  /**
+   * 获取个人主页内容
+   * @param contentId
+   * @returns {Promise<*>}
+   */
+  async getDomainContent(contentId) {
+    return await Vue.prototype.$request({
+      url: "/user/dmcontent/" + contentId,
+      method: 'GET'
+    });
+  },
+
+  /**
+   * 个人主页
+   * @param domainContent
+   * @returns {Promise<*>}
+   */
+  async updateDomainContent(domainContent) {
+    return await Vue.prototype.$request({
+      url: "/user/dmcontent/update",
+      method: 'POST',
+      data: domainContent
+    })
+  },
+
+  async deleteDomainContent(contentId) {
+    return await Vue.prototype.$request({
+      url: "/user/dmcontent/delete",
+      method: 'POST',
+      data: { contentId }
     })
   }
 }

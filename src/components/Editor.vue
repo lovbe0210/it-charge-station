@@ -98,46 +98,14 @@ export default {
             groups: [
               {
                 items: [
-                  {
-                    name: 'image-uploader',
-                    icon: '<span class="iconfont upload-image"></span>',
-                    title: '图片上传'
-                  },
-                  {
-                    name: 'codeblock',
-                    icon: '<span class="iconfont code-block"></span>',
-                    title: '代码块'
-                  },
-                  {
-                    name: 'table',
-                    icon: '<span class="iconfont i-table"></span>',
-                    title: '表格'
-                  },
-                  {
-                    name: 'status',
-                    icon: '<span class="iconfont i-status"></span>',
-                    title: '状态'
-                  },
-                  {
-                    name: 'lightblock',
-                    icon: '<span class="iconfont high-light"></span>',
-                    title: '高亮块'
-                  },
-                  {
-                    name: 'file-uploader',
-                    icon: '<span class="iconfont attachment"></span>',
-                    title: '附件'
-                  },
-                  {
-                    name: 'video-uploader',
-                    icon: '<span class="iconfont media"></span>',
-                    title: '音视频'
-                  },
-                  {
-                    name: 'math',
-                    icon: '<span class="iconfont formula"></span>',
-                    title: '公式'
-                  }
+                  'image-uploader',
+                  'codeblock',
+                  'table',
+                  'status',
+                  'lightblock',
+                  'file-uploader',
+                  'video-uploader',
+                  'math'
                 ]
               }
             ]
@@ -368,7 +336,6 @@ export default {
       this.engine.on("card:maximize", () => {
         $(".editor-toolbar").css("z-index", "9999").css("top", "0");
         $(".card-maximize-header").css("height", "60px");
-        // $(".editor-toolbar").css("z-index", "9999");
       });
       this.engine.on("card:minimize", () => {
         $(".editor-toolbar").css("z-index", "").css("top", "");

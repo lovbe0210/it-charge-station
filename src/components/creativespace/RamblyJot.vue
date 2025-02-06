@@ -192,18 +192,6 @@ export default {
   },
   methods: {
     initEngine() {
-      pluginConfig.link = {hotkey: {key: ""}};
-      pluginConfig.tasklist = {hotkey: {key: ""}};
-      pluginConfig.heading = {hotkey: {key: ""}};
-      pluginConfig.image = {
-        hotkey: {key: ""},
-        maxHeight: 150,
-        onBeforeRender: (status, url) => {
-          if (url.startsWith("data:image/")) return url
-          return url
-        }
-      }
-
       const container = this.$refs.container;
       if (container) {
         //实例化引擎

@@ -2098,10 +2098,30 @@
 
     .hotmap {
       width: 100%;
-      overflow-x: auto;
-      -ms-overflow-style: -ms-autohiding-scrollbar;
-      scrollbar-color: #E7E9E8;
-      scrollbar-width: thin;
+      overflow-x: hidden;
+
+      &:hover {
+        overflow-x: auto;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: unset;
+        border-radius: 4px;
+      }
+
+      &::-webkit-scrollbar {
+        height: 7px;
+      }
+
+      &:hover::-webkit-scrollbar {
+        width: 7px;
+      }
+
+      &:hover::-webkit-scrollbar-thumb {
+        background-color: rgba(139, 139, 139, 0.93);
+        border-radius: 4px;
+      }
+
 
       svg:not(:root) {
         overflow: hidden;

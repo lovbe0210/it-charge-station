@@ -136,6 +136,19 @@ export default {
   },
 
   /**
+   * 获取个人主页公开专栏
+   * @param userId
+   * @returns {Promise<*>}
+   */
+  async getDomainPublicColumn(userId) {
+    return await Vue.prototype.$request({
+      url: "/cps/column/domain",
+      method: 'POST',
+      data: { userId }
+    });
+  },
+
+  /**
    * 获取专栏排行榜
    * @returns {Promise<void>}
    */

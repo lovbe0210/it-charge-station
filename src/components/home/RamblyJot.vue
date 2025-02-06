@@ -214,18 +214,6 @@ export default {
   },
   methods: {
     initEngine() {
-      pluginConfig.link = {hotkey: {key: ""}};
-      pluginConfig.tasklist = {hotkey: {key: ""}};
-      pluginConfig.heading = {hotkey: {key: ""}};
-      pluginConfig.image = {
-        hotkey: {key: ""},
-        maxHeight: 150,
-        onBeforeRender: (status, url) => {
-          if (url.startsWith("data:image/")) return url
-          return url
-        }
-      }
-
       const container = this.$refs.container;
       if (container) {
         //实例化引擎
@@ -317,6 +305,7 @@ export default {
           this.$Message.success("发表成功")
           this.editorValueIsEmpty = true;
           this.extendCurtains = false;
+          data.data.userInfo = this.userInfo;
           this.ramblyList.unshift(data.data);
           this.engine.destroy();
           this.initEngine();

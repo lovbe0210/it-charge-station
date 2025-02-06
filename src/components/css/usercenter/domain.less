@@ -73,6 +73,11 @@
         line-height: 22px;
         font-weight: 400;
         margin-top: 12px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;    /* 使盒子垂直排列子元素 */
+        -webkit-line-clamp: 3;           /* 限制显示两行 */
+        overflow: hidden;                /* 隐藏超出内容 */
+        text-overflow: ellipsis;         /* 添加省略号 */
       }
 
       .userInfo-module_detail {
@@ -88,11 +93,17 @@
         .index-module_meta {
           display: flex;
           line-height: 22px;
+          max-width: 60%;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;    /* 使盒子垂直排列子元素 */
+          -webkit-line-clamp: 1;           /* 限制显示两行 */
+          overflow: hidden;                /* 隐藏超出内容 */
+          text-overflow: ellipsis;         /* 添加省略号 */
         }
       }
 
       .userInfo-module_followInfo {
-        margin-top: 22px;
+        margin-top: 15px;
         display: flex;
         align-items: center;
 
@@ -126,8 +137,8 @@
   }
 
   .readme-module_userBoardParent {
-    margin-top: 40px;
-    margin-bottom: 40px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 
     .readme-module_empty {
       cursor: pointer;
@@ -136,6 +147,7 @@
       border-radius: 8px;
       width: 100%;
       display: flex;
+      margin-top: 24px;
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -167,11 +179,23 @@
       min-height: 223px;
       position: relative;
 
+      .readme-edit_action {
+        visibility: hidden;
+        display: flex;
+        flex-direction: row-reverse;
+
+        .ivu-btn {
+          padding: 0 11px;
+          height: 26px;
+          border-color: transparent;
+        }
+      }
+
       .editorBase-module_editor {
         position: relative;
         height: 100%;
-        border: 1px solid @border-color_normal;
         border-radius: 4px;
+        border: 1px solid transparent;
 
         .layout-mode-adapt {
           position: relative;
@@ -184,20 +208,28 @@
           .toolbar-ui {
             position: static;
             z-index: auto;
+            display: none;
 
             .editor-toolbar {
+              justify-content: unset;
               border: none;
-              padding-left: 8px;
+              padding: 0 12px 0 12px;
 
-              /deep/.toolbar-button {
-                color: @grey-white-font-color;
+              /deep/ .toolbar-button {
+                color: var(--title-color);
 
                 &:hover {
                   background: var(--dropdown-item-hover);
+                  color: var(--font-color);
                 }
               }
 
+              /deep/ .toolbar-button-active {
+                background-color: var(--dropdown-item-hover);
+              }
+
               /deep/ .editor-toolbar-content {
+                display: flex;
                 justify-content: unset;
 
                 .editor-toolbar-group {
@@ -258,10 +290,13 @@
                     margin-bottom: 0;
 
                     .readme-editor {
-                      padding: 16px 24px 8px 24px;
                       min-height: 188px;
                       background: none;
                       color: var(--font-color);
+                    }
+
+                    .editing {
+                      padding: 16px 24px 8px 24px;
                     }
                   }
                 }
@@ -269,9 +304,26 @@
             }
           }
         }
+
+        &:hover {
+          border-color: var(--border-color);
+        }
       }
 
-      .readme-module_action {
+      .editing {
+        margin-top: 24px;
+        border-color: var(--border-color);
+
+        .toolbar-ui {
+          display: unset !important;
+        }
+
+        .readme-editor {
+          padding: 10px 16px 8px 18px;
+        }
+      }
+
+      .readme-submit_action {
         margin-top: 15px;
 
         .readme-module_cancel {
@@ -285,79 +337,154 @@
           }
         }
       }
+
+      &:hover {
+        .readme-edit_action {
+          visibility: visible;
+        }
+
+        .editorBase-module_editor {
+          border-color: var(--border-color);
+        }
+      }
     }
   }
 
-}
+  .columns-module_publicColumn {
+    margin-bottom: 20px;
 
-// 第三方插件样式覆盖
-/deep/ .data-link-editor {
-  p {
-    .ant-input:focus {
-      border-color: #00AE9D;
-      box-shadow: none !important;
+    .columns-module_header {
+      color: var(--font-color);
+      font-weight: 500;
+      margin-bottom: 10px;
     }
-    .ant-input:hover {
-      border-color: #00AE9D;
+
+    .columns-module_column-list {
+      display: flex;
+      flex-wrap: wrap;
+
+      .column-empty {
+        margin: 0 auto;
+      }
+
+      .topic-card {
+        width: 32%;
+        border: 1px solid hsla(0, 0%, 0%, 0.04);
+        border-radius: 8px;
+        position: relative;
+        box-sizing: border-box;
+        overflow: hidden;
+        margin-bottom: 15px;
+
+        &:not(:nth-child(3n)) {
+          margin-right: calc(6% / 3);
+        }
+
+        /deep/.ant-card-cover {
+          width: 100%;
+          height: 110px;
+          overflow: hidden;
+          cursor: auto;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+        /deep/ .ant-card-body {
+          width: 100%;
+          height: 120px;
+          padding: 0;
+
+          .ant-card-meta {
+            margin: -27px 0;
+
+            .topic-avatar {
+              margin-left: 30px;
+            }
+
+            .card-content-item {
+              width: 100%;
+              padding-left: 15px;
+              padding-right: 15px;
+              padding-top: 3px;
+
+              .topic-title {
+                width: 100%;
+                font-size: 15px;
+                color: var(--font-color);
+                letter-spacing: 0;
+                text-align: left;
+                line-height: 25px;
+                font-weight: 600;
+                z-index: 4;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                margin-bottom: 3px;
+              }
+
+              .topic-description {
+                width: 100%;
+                font-size: 12px;
+                color: var(--title-color);
+                line-height: 20px;
+                display: -webkit-box;
+                height: 40px;
+                -webkit-box-orient: vertical;    /* 使盒子垂直排列子元素 */
+                -webkit-line-clamp: 2;           /* 限制显示两行 */
+                overflow: hidden;                /* 隐藏超出内容 */
+                text-overflow: ellipsis;         /* 添加省略号 */
+                white-space: normal;
+                margin-bottom: 3px;
+              }
+
+              .topic-viewCount {
+                color: var(--title-color);
+                font-size: 12px;
+
+                span {
+                  color: var(--font-color);
+                  font-weight: 500;
+                }
+              }
+            }
+          }
+        }
+      }
     }
+  }
+
+  .dataStats-module_hotMap {
+    margin-bottom: 60px;
   }
 }
 
-/deep/ .data-toolbar-group .table-color-dropdown-trigger {
-  button {
-    height: 28px;
+.delete-modal {
+  .modal-delete-item {
+    padding: 20px 20px 10px 20px;
     display: flex;
-    align-items: center;
+
+    .delete-icon {
+      margin-right: 10px;
+
+      .iconfont {
+        font-size: 22px;
+        color: orange;
+      }
+    }
+
+    .delete-tips {
+      p {
+        font-size: 14px;
+        line-height: 30px;
+      }
+    }
   }
 }
 
-/deep/ .data-toolbar-group .data-toolbar-item {
-  .data-toolbar-btn {
-    justify-content: center;
-  }
-}
-
-/deep/.am-engine>:not(p) {
-  margin: 15px 0;
-}
-
-/deep/.am-engine>p {
-  margin: 8px 0;
-}
-
-/deep/.am-engine>ul {
-  margin: 8px 0;
-  li {
-    margin: 8px 0;
-  }
-  li:not(.data-list-item) {
-    margin: 8px 0  8px 15px;
-  }
-}
-
-/deep/.am-engine>ol {
-  margin: 8px 0;
-  li {
-    margin: 8px 0 8px 25px;
-  }
-}
-
-/deep/.am-engine>h2 {
-  margin: 13px 0;
-}
-
-/deep/.am-engine>h3 {
-  margin: 11px 0;
-}
-
-/deep/.am-engine>h4 {
-  margin: 9px 0;
-}
-
-/deep/.am-engine>h5 {
-  margin: 8px 0;
-}
-
-/deep/.am-engine>h6 {
-  margin: 8px 0;
+/deep/.editor-toolbar:not(.editor-toolbar-mobile) .toolbar-button:active, .editor-toolbar .toolbar-button-active, .editor-toolbar:not(.editor-toolbar-mobile) .toolbar-button-active:hover {
+  //background-color: var(--dropdown-item-hover);
 }

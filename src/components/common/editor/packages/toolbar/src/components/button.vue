@@ -189,5 +189,6 @@
 
 .toolbar-tooltip-title {
   font-size: 12px;
+  line-height: 20px;
 }
 </style>

@@ -535,81 +535,10 @@
   }
 }
 
-
 // editor相关
 // 编辑器
 .am-engine, .am-engine-view {
-  .data-codeblock-container {
-    border-color: @border-color_normal;
-    border-radius: 2px;
-
-    .data-codeblock-content {
-      .CodeMirror-sizer {
-        .CodeMirror-lines {
-          .CodeMirror-code {
-            .CodeMirror-line {
-              padding: 0 4px 0 8px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-.am-engine {
-  .data-list-task [data-card-key="checkbox"] {
-    margin-left: 0 !important;
-  }
-}
-
-// 工具栏
-.editor-toolbar {
-  display: flex;
-  justify-content: center;
-
-  .editor-toolbar-content {
-    align-items: center;
-    width: auto;
-
-    .colorpicker-button-group:hover, .colorpicker-button-group:hover, .colorpicker-button-group-active {
-      .toolbar-button {
-        //border: unset;
-      }
-    }
-
-    .toolbar-button {
-      height: 32px;
-    }
-  }
-}
-
-// 可拖拽标识符
-.data-card-dnd {
-  width: 24px !important;
-  border-radius: 4px;
-  justify-content: center;
-}
-
-// 代码块工具栏
-.data-card-toolbar {
-
-  .data-toolbar-group {
-    box-shadow: 0 0 4px 0 rgba(225, 225, 225, 0.5);
-
-    .data-toolbar-switch {
-      .switch-btn {
-        display: flex;
-      }
-
-      .switch-btn.switch-checked {
-        background-color: @primary-color;
-      }
-    }
-  }
-}
-
-.am-engine, .am-engine-view {
+  // ==================== 段落间距 =====================
   & > :not(p) {
     margin: 15px 0 !important;
   }
@@ -660,6 +589,79 @@
 
   .data-list-task [data-card-key="checkbox"] {
     margin-left: 0 !important;
+  }
+
+  // ==================== 代码块插件 =====================
+  .data-codeblock-container {
+    border-color: @border-color_normal;
+    border-radius: 2px;
+
+    .data-codeblock-content {
+      .CodeMirror-sizer {
+        .CodeMirror-lines {
+          .CodeMirror-code {
+            .CodeMirror-line {
+              padding: 0 4px 0 8px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // ==================== 表格插件 =====================
+  .data-table {
+    background: unset;
+  }
+}
+
+.am-engine-placeholder:before {
+  color: var(--border-color) !important;
+}
+
+// 工具栏
+.editor-toolbar {
+  display: flex;
+  justify-content: center;
+
+  .editor-toolbar-content {
+    align-items: center;
+    width: auto;
+
+    .colorpicker-button-group:hover, .colorpicker-button-group:hover, .colorpicker-button-group-active {
+      .toolbar-button {
+        //border: unset;
+      }
+    }
+
+    .toolbar-button {
+      height: 32px;
+    }
+  }
+}
+
+// 可拖拽标识符
+.data-card-dnd {
+  width: 24px !important;
+  border-radius: 4px;
+  justify-content: center;
+}
+
+// 通用插件相关工具栏
+.data-card-toolbar {
+
+  .data-toolbar-group {
+    box-shadow: 0 0 4px 0 rgba(225, 225, 225, 0.5);
+
+    .data-toolbar-switch {
+      .switch-btn {
+        display: flex;
+      }
+
+      .switch-btn.switch-checked {
+        background-color: @primary-color;
+      }
+    }
   }
 }
 
