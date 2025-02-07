@@ -20,7 +20,9 @@
                            :userInfo="item.userInfo"
                            :popoverContainer="popoverContainer">
                   <slot>
-                    <b-link :to="('/' + item.userInfo.domain)" class="from">
+                    <b-link :to="('/' + item.userInfo.domain)"
+                            target="_blank"
+                            class="from">
                       <span>{{ item.userInfo.username }}</span>
                     </b-link>
                   </slot>

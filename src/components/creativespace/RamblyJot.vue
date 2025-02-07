@@ -30,7 +30,7 @@
             <Button ghost @click="submitRamblyJot"
                     :disabled="editorValueIsEmpty">
               <span>小记一下</span>
-            </button>
+            </Button>
           </div>
         </div>
       </div>

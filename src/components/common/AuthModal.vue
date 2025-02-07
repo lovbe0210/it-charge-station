@@ -11,7 +11,7 @@
            :width="650"
            :styles="{top: '20%'}"
            :class-name="normalBackground ? 'login-box normal-background' : 'login-box'">
-      <div class="auth-body">
+      <div class="auth-body" v-if="showLogin">
         <div class="login-body">
           <div class="site-flag">
             <div class="site-tips">
@@ -73,6 +73,7 @@
                          @on-change="checkALegitimacy(3)">
                   </Input>
                   <div class="error-text account-error">{{ accountError ? '请输入正确的手机号或邮箱' : '' }}</div>
+                </form>
                   <Input v-model="verifyCode"
                          maxlength="6"
                          placeholder="请输入验证码"
@@ -86,7 +87,6 @@
                       {{ btnValue }}
                     </Button>
                   </Input>
-                </form>
                 <div class="error-text">{{ verifyCodeError ? '请输入正确的验证码' : '' }}</div>
               </div>
               <Button size="large" type="primary" @click="quickLogin">
@@ -415,6 +415,11 @@ export default {
       this.password = null;
       this.verifyCode = null;
       this.sliderValidateResult = false;
+    },
+    "showLogin"(val) {
+      if (!val) {
+        this.loginType = this.quickRegister ? 2 : 1;
+      }
     }
   },
   mounted() {

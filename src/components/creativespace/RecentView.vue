@@ -22,13 +22,13 @@
           {{formatDate(new Date(item.historyDate), 'yyyy-MM-dd')}}
         </div>
         <div class="view-list-item" v-for="viewItem in item.list" :key="viewItem.uid">
-          <a class="item-header" :href="getRoutePath(viewItem)" target="_blank">
+          <a class="item-header" :href="getRoutePath(viewItem)" :target="viewItem.targetType === 3 ? '' : '_blank'">
             <span :class="['item-type', viewItem.targetType == 1 ? 'doc' : viewItem.targetType == 2 ? 'colum' : 'rambly-jot']">
               {{viewItem.targetType == 1 ? '文章' : viewItem.targetType == 2 ? '专栏' : '随笔'}}
             </span>
             <h2 class="item-title">{{viewItem.title}}</h2>
           </a>
-          <div class="item-content">
+          <div class="item-content" :title="viewItem.previewContent">
             <span>{{viewItem.previewContent}}</span>
           </div>
           <div class="item-info-action un-select">
@@ -44,11 +44,11 @@
               <span class="item-count" v-if="viewItem.targetType == 1">
                 {{viewItem.viewCount}}阅读 · {{viewItem.likeCount}}赞 · {{viewItem.commentCount}}评论
               </span>
-              <span class="item-count" v-if="viewItem.type === 2">
+              <span class="item-count" v-if="viewItem.targetType === 2">
                 {{viewItem.viewCount}}阅读 · {{viewItem.likeCount}}赞 · {{viewItem.collectCount}}收藏
               </span>
-              <span class="item-count" v-if="viewItem.type === 3">
-                {{viewItem.viewCount}}阅读 · {{viewItem.commentCount}}评论
+              <span class="item-count" v-if="viewItem.targetType === 3">
+                {{viewItem.likeCount}}赞 · {{viewItem.commentCount}}评论
               </span>
             </div>
           </div>
@@ -98,9 +98,9 @@
         // TODO 随笔路径还不确定
         let targetType = viewItem.targetType;
         if (targetType === 1 || targetType === 2) {
-          return "/" + viewItem.userInfo?.domain + "/" + (viewItem.columnUri ? (viewItem.columnUri + '/') : viewItem.uri)
+          return "/" + viewItem.userInfo?.domain + "/" + (viewItem.columnUri ? (viewItem.columnUri + '/') : viewItem.uri);
         } else if (targetType === 3) {
-          return "/" + ''
+          return "/creative/recentview/" + viewItem.targetId;
         }
         return "/";
       }

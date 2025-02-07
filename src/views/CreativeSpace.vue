@@ -80,8 +80,13 @@
     beforeRouteEnter(to, from, next) {
       next(vc => {
         let activeMenu = vc.$route.name;
-        if (activeMenu === 'Relational') {
-          vc.activeMenu = vc.$route.params.relational;
+        if (activeMenu === 'RamblyJotContent') {
+          if (vc.$route.path?.indexOf('ramblyJot') !== -1) {
+            vc.activeMenu = 'RamblyJot';
+          } else {
+            vc.activeMenu = 'RecentView';
+          }
+          vc.activeMenu = 'RecentView';
         } else {
           vc.activeMenu = activeMenu;
         }
@@ -98,8 +103,12 @@
     watch: {
       $route(to) {
         let activeMenu = to.name;
-        if (activeMenu === 'Relational') {
-          this.activeMenu = to.params.relational;
+        if (activeMenu === 'RamblyJotContent') {
+          if (to.path?.indexOf('ramblyJot') !== -1) {
+            this.activeMenu = 'RamblyJot';
+          } else {
+            this.activeMenu = 'RecentView';
+          }
         } else {
           this.activeMenu = activeMenu;
         }

@@ -248,7 +248,7 @@ export default {
     },
     finalConfig() {
       let config = cloneDeep(pluginConfig);
-      config.table.enableScroll = false;
+      // config.table.enableScroll = false;
       return config;
     }
   },

@@ -180,7 +180,7 @@
         <!--未登录功能栏-->
         <b-navbar-nav v-else class="ml-auto" :fill="true" align="center">
           <div class="login-register">
-            <Button type="text" class="login" @click="login">
+            <Button type="text" class="login" @click="login(false)">
               <span>登陆</span>
             </Button>
             <Button type="success" class="register" @click="login(true)">
@@ -202,14 +202,14 @@
 
     <!-- 登录盒子 -->
     <div style="display: none;">
-      <auth-modal>
+      <auth-modal key="loginPwd">
         <slot>
           <Button id="pwdLoginBtn">
             <span>登陆</span>
           </Button>
         </slot>
       </auth-modal>
-      <auth-modal>
+      <auth-modal :quickRegister="true" key="loginCode">
         <slot>
           <Button id="quickLoginBtn">
             <span>登陆</span>

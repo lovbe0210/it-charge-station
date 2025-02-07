@@ -43,7 +43,7 @@
     </div>
     <div class="rambly-module_list">
       <div class="rambly-jot-wrap"
-           v-infinite-scroll="debounceRequestRank"
+           v-infinite-scroll="debounceRequest"
            :infinite-scroll-disabled="!hasMore"
            :infinite-scroll-distance="100">
         <div class="rambly-item" v-for="item in ramblyList" :key="item.uid">
@@ -200,7 +200,7 @@ export default {
       hasMore: true,
       offset: 0,
       limit: 20,
-      debounceRequestRank: function () {}
+      debounceRequest: function () {}
     }
   },
   computed: {
@@ -368,7 +368,7 @@ export default {
     this.popoverContainer = this.$refs.popoverContainer;
   },
   created() {
-    this.debounceRequestRank = debounce(this.loadMore, 800, true);
+    this.debounceRequest = debounce(this.loadMore, 800, true);
   }
 }
 </script>

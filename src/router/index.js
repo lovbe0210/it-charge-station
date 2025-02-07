@@ -215,8 +215,14 @@ const routes = [
             // 最近浏览
             path: 'recentview',
             name: 'RecentView',
-            // 此方式为路由懒加载
             component: () => import('@/components/creativespace/RecentView')
+          },
+          {
+            // 随笔内容展示
+            path: 'recentview/:rjId',
+            props: true,
+            name: 'RamblyJotContent',
+            component: () => import('@/components/common/RamblyJotContent')
           }
         ]
       },
