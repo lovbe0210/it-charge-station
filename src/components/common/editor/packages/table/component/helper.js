@@ -1,45 +1,53 @@
-import isInteger from 'lodash/isInteger';
-import {$, DATA_TRANSIENT_ATTRIBUTES, EDITABLE_SELECTOR, isEngine, isNode, transformCustomTags} from '@aomao/engine';
-import Template from './template';
+import isInteger from "lodash/isInteger"
+import {
+  $,
+  EDITABLE_SELECTOR,
+  DATA_TRANSIENT_ATTRIBUTES,
+  isNode,
+  transformCustomTags,
+  isEngine
+} from "@aomao/engine"
+import Template from "./template"
+import { convertToPX } from "../utils"
 
 class Helper {
+  #editor
+
   constructor(editor) {
-    this._editor = editor;
-    this.clipboard = undefined;
+    this.#editor = editor
   }
 
-  // 判断模型是否为空（合并单元格占位）
   isEmptyModelCol(model) {
-    return model && model.isEmpty;
+    return model && model.isEmpty
   }
 
   /**
    * 获取表格数据模型
-   * @param {NodeInterface} table
-   * @returns {TableModel}
+   * @param table
+   * @returns
    */
   getTableModel(table) {
-    let model = [];
-    const tableElement = table.get();
-    const rows = tableElement.rows;
-    const rowCount = rows ? rows.length : 0;
+    let model = []
+    const tableElement = table.get()
+    const rows = tableElement.rows
+    const rowCount = rows?.length || 0
 
     for (let r = 0; r < rowCount; r++) {
-      const tr = rows[r];
-      const cells = tr.cells;
-      const cellCount = cells.length;
+      const tr = rows[r]
+      const cells = tr.cells
+      const cellCount = cells.length
 
       for (let c = 0; c < cellCount; c++) {
-        const td = cells[c];
-        let { rowSpan, colSpan } = td;
-        rowSpan = rowSpan === undefined ? 1 : rowSpan;
-        colSpan = colSpan === undefined ? 1 : colSpan;
-        const isMulti = rowSpan > 1 || colSpan > 1;
-        if (!model[r]) model[r] = [];
-        // 如果当前位置已有数据，则向右推移
-        let _c = c;
+        const td = cells[c]
+        let { rowSpan, colSpan } = td
+        rowSpan = rowSpan === undefined ? 1 : rowSpan
+        colSpan = colSpan === undefined ? 1 : colSpan
+        const isMulti = rowSpan > 1 || colSpan > 1
+        model[r] = model[r] || []
+        // 如果当前单元格的 model 已经存在，说明是前面已经有合并单元格覆盖了当前坐标，需要往右推移
+        let _c = c
         while (model[r][_c]) {
-          _c++;
+          _c++
         }
 
         model[r][_c] = {
@@ -47,47 +55,53 @@ class Helper {
           colSpan: colSpan,
           isMulti: isMulti,
           element: td
-        };
+        }
 
         if (isMulti) {
-          // 补齐被合并单元格的占位
-          let _rowCount = rowSpan;
+          // 补齐被合并的单元格占位
+          let _rowCount = rowSpan
+
           while (_rowCount > 0) {
-            let colCount = colSpan;
+            let colCount = colSpan
             while (colCount > 0) {
               if (colCount !== 1 || _rowCount !== 1) {
-                const rowIndex = r + _rowCount - 1;
-                const colIndex = _c + colCount - 1;
-                if (!model[rowIndex]) model[rowIndex] = [];
+                const rowIndex = r + _rowCount - 1
+                const colIndex = _c + colCount - 1
+                model[rowIndex] = model[rowIndex] || []
                 model[rowIndex][colIndex] = {
                   isEmpty: true,
-                  parent: { row: r, col: _c },
+                  parent: {
+                    row: r,
+                    col: _c
+                  },
                   element: null
-                };
+                }
               }
-              colCount--;
+              colCount--
             }
-            _rowCount--;
+            _rowCount--
           }
         }
       }
     }
 
-    const colCounts = model.map((trModel) => trModel.length);
-    const MaxColCount = Math.max(...colCounts);
-    model.forEach((trModel) => {
+    const colCounts = model.map(trModel => {
+      return trModel.length
+    })
+    const MaxColCount = Math.max(...colCounts)
+    model.forEach(trModel => {
       if (trModel.length < MaxColCount) {
-        let addCount = MaxColCount - trModel.length;
+        let addCount = MaxColCount - trModel.length
         while (addCount--) {
           trModel.push({
             rowSpan: 1,
             colSpan: 1,
             isShadow: true,
             element: null
-          });
+          })
         }
       }
-      // 对于数组中可能存在的空项，也补齐为 shadow
+      // 表格内有空数组项，补齐为 shadow
       for (let i = 0; i < MaxColCount; i++) {
         if (!trModel[i]) {
           trModel[i] = {
@@ -95,470 +109,536 @@ class Helper {
             colSpan: 1,
             isShadow: true,
             element: null
-          };
+          }
         }
       }
-    });
-
-    return {
+    })
+    const result = {
       rows: model.length,
       cols: MaxColCount,
       width: tableElement.offsetWidth,
       height: tableElement.offsetHeight,
       table: model
-    };
+    }
+    return result
   }
 
   /**
-   * 修复表格，补全丢失的单元格和行
-   * @param {NodeInterface} table
-   * @returns {NodeInterface} 修正后的 table
+   * 修复表格，补全丢失的单元格
+   * @param table
+   * @returns
    */
   normalize(table) {
-    this.trimStartTr(table);
-    this.fixNumberTr(table);
-    table.addClass('data-table');
-    table.attributes(DATA_TRANSIENT_ATTRIBUTES, 'class');
+    this.trimStartTr(table)
+    this.fixNumberTr(table)
+    table.addClass("data-table")
+    table.attributes(DATA_TRANSIENT_ATTRIBUTES, "class")
+    // 修正表格宽度为 pt 场景
+    const width = table.css("width")
 
-    // 修正表格宽度（针对 pt 单位场景）
-    const width = table.css('width');
     if (parseInt(width) === 0) {
-      table.css('width', 'auto');
+      table.css("width", "auto")
     }
-    table.css('background-color', '');
+    table.css("background-color", "")
 
-    const model = this.getTableModel(table);
+    const model = this.getTableModel(table)
 
     // 修正列的 span 场景
-    let cols = table.find('col');
+    let cols = table.find("col")
     if (cols.length !== 0) {
       for (let c = cols.length - 1; c >= 0; c--) {
-        const colElement = cols[c];
-        const _width = cols.eq(c) && cols.eq(c).attributes('width');
+        const colElement = cols[c]
+        const _width = cols.eq(c)?.attributes("width")
         if (_width) {
-          cols.eq(c).attributes('width', parseInt(_width));
+          cols.eq(c)?.attributes("width", parseInt(_width))
         }
+
         if (colElement.span > 1) {
-          let addCount = colElement.span - 1;
+          let addCount = colElement.span - 1
           while (addCount--) {
-            let parent = cols[c].parentElement || cols[c].parentNode;
-            parent && parent.insertBefore(cols[c].cloneNode(), cols[c]);
+            ;(cols[c].parentElement ?? cols[c].parentNode)?.insertBefore(
+              cols[c].cloneNode(),
+              cols[c]
+            )
           }
         }
       }
-      cols = table.find('col');
+      cols = table.find("col")
       if (cols.length < model.cols) {
-        const lastCol = cols.length - 1;
-        let colsAddCount = model.cols - cols.length;
+        const lastCol = cols.length - 1
+        let colsAddCount = model.cols - cols.length
         while (colsAddCount--) {
-          let parent = cols[0].parentElement || cols[0].parentNode;
-          parent && parent.appendChild(cols[lastCol].cloneNode());
+          ;(cols[0].parentElement ?? cols[0].parentNode)?.appendChild(
+            cols[lastCol].cloneNode()
+          )
         }
       }
-      table.find('col').attributes('span', 1);
+      table.find("col").attributes("span", 1)
     } else {
-      let colgroup = table.find('colgroup')[0];
+      let colgroup = table.find("colgroup")[0]
       if (!colgroup) {
-        colgroup = document.createElement('colgroup');
+        colgroup = document.createElement("colgroup")
       }
-      table.prepend(colgroup);
-      const widths = (function (table) {
-        const tr = table.find('tr')[0];
-        const tds = $(tr).find('td');
-        const widthArray = [];
+      table.prepend(colgroup)
+      const widths = (function(table) {
+        const tr = table.find("tr")[0]
+        const tds = $(tr).find("td")
+        const widthArray = []
         tds.each((_, index) => {
-          const $td = tds.eq(index);
-          if (!$td) return;
-          let colWidth = $td.attributes('data-colwidth');
-          let tdWidth = $td.attributes('width');
-          const tdColSpan = $td[0].colSpan;
+          const $td = tds.eq(index)
+          if (!$td) return
+          let colWidth = $td.attributes("data-colwidth")
+          let tdWidth = $td.attributes("width")
+          const tdColSpan = $td[0].colSpan
           if (colWidth) {
-            colWidth = colWidth.split(',');
+            colWidth = colWidth.split(",")
           } else if (tdWidth) {
-            tdWidth = parseInt(tdWidth) / tdColSpan;
+            tdWidth = parseInt(tdWidth) / tdColSpan
           }
-          for (let o = 0; o < tdColSpan; o++) {
+          for (let o = 0; tdColSpan > o; o++) {
             if (colWidth && colWidth[o]) {
-              widthArray.push(parseInt(colWidth[o]));
+              widthArray.push(parseInt(colWidth[o]))
             } else if (tdWidth) {
-              widthArray.push(parseInt(tdWidth.toString()));
+              widthArray.push(parseInt(tdWidth.toString()))
             } else {
-              widthArray.push(undefined);
+              widthArray.push(undefined)
             }
           }
-        });
-        const td = table.find('td');
-        td.removeAttributes('data-colwidth');
-        td.removeAttributes('width');
-        return widthArray;
-      })(table);
-      const col = document.createElement('col');
-      for (let f = 0; f < model.cols; f++) {
-        const node = col.cloneNode();
+        })
+        const td = table.find("td")
+        td.removeAttributes("data-colwidth")
+        td.removeAttributes("width")
+        return widthArray
+      })(table)
+      const col = document.createElement("col")
+      for (let f = 0; model.cols > f; f++) {
+        const node = col.cloneNode()
         if (widths[f]) {
-          node.setAttribute('width', (widths[f] || '').toString());
+          node.setAttribute("width", (widths[f] || "").toString())
         }
-        colgroup.appendChild(node);
+        colgroup.appendChild(node)
       }
     }
-
-    // 补齐表格行：当数据模型与实际 DOM 行数不一致时，插入缺失的行
-    const tableElement = table.get();
+    // 数据模型和实际 dom 结构的行数不一致，需要寻找并补齐行
+    const tableElement = table.get()
     model.table.forEach((tr, r) => {
       if (!tableElement.rows[r]) {
-        tableElement.insertRow(r);
+        tableElement.insertRow(r)
       }
-      const shadow = tr.filter((td) => {
-        return this.isEmptyModelCol(td) ? false : td.isShadow;
-      });
-      let shadowCount = shadow.length;
+      const shadow = tr.filter(td => {
+        return this.isEmptyModelCol(td) ? false : td.isShadow
+      })
+      let shadowCount = shadow.length
       while (shadowCount--) {
-        tableElement.rows[r].insertCell();
+        if (r === 0) {
+          tableElement.rows[r].insertCell(0)
+        } else {
+          tableElement.rows[r].insertCell()
+        }
       }
-    });
-
-    // 修正每行行高
-    const trs = table.find('tr');
+    })
+    // 修正行高
+    const trs = table.find("tr")
     trs.each((_, index) => {
-      const $tr = trs.eq(index);
-      if (!$tr) return;
-      let height = parseInt($tr.css('height'));
+      const $tr = trs.eq(index)
+      if (!$tr) return
+      let height = parseInt($tr.css("height"))
       height =
         height ||
-        (this._editor.plugin.findPlugin('table') &&
-          this._editor.plugin.findPlugin('table').options.rowMinHeight) ||
-        0;
-      $tr.css('height', height + 'px');
-    });
-
-    // 补充可编辑区域：为单元格添加空白占位符，并确保编辑器区域内至少有一个 <br>
-    const tds = table.find('td');
-    const emptyTd = $(Template.EmptyCell(!isEngine(this._editor) || this._editor.readonly));
+        this.#editor.plugin.findPlugin("table")?.options.rowMinHeight ||
+        0
+      $tr.css("height", height + "px")
+    })
+    //补充可编辑器区域
+    const tds = table.find("td")
+    const emptyTd = $(
+      Template.EmptyCell(!isEngine(this.#editor) || this.#editor.readonly)
+    )
     tds.each((_, index) => {
-      const tdNode = tds.eq(index);
-      if (!tdNode) return;
-      tdNode.attributes(DATA_TRANSIENT_ATTRIBUTES, 'table-cell-selection');
-      let editableElement = tdNode.find(EDITABLE_SELECTOR);
+      const tdNode = tds.eq(index)
+      if (!tdNode) return
+      tdNode.attributes(DATA_TRANSIENT_ATTRIBUTES, "table-cell-selection")
+      let editableElement = tdNode.find(EDITABLE_SELECTOR)
       if (editableElement.length === 0) {
-        const children = tdNode.children();
-        tdNode.append(emptyTd.clone(true));
-        editableElement = tdNode.find(EDITABLE_SELECTOR);
-        editableElement.empty();
-        editableElement.append(children);
+        const children = tdNode.children()
+        tdNode.append(emptyTd.clone(true))
+        editableElement = tdNode.find(EDITABLE_SELECTOR)
+        editableElement.empty()
+        editableElement.append(children)
       }
-      editableElement.find('p').each((pNode) => {
+      editableElement.find("p").each(pNode => {
         if (pNode.childNodes.length === 0) {
-          pNode.appendChild(document.createElement('br'));
+          pNode.appendChild(document.createElement("br"))
         }
-      });
-    });
-    return table;
+      })
+    })
+    return table
   }
 
   /**
-   * 过滤掉 table 开头的空 tr（部分网页拷贝时会出现空行）
-   * @param {NodeInterface} table
+   * 过滤 table 中的首行空tr, 当表格尾部有空白单元格时，网页拷贝时头部会莫名其妙的出现一个空的Tr
+   * @param {nodeModel} table 传入的table
    */
   trimStartTr(table) {
-    const tr = table.find('tr');
-    const first = tr.eq(0);
-    if (first && first.get() && first.get().childNodes.length === 0) {
-      first.remove();
+    const tr = table.find("tr")
+    const first = tr.eq(0)
+    if (first && first.get()?.childNodes.length === 0) {
+      first.remove()
     }
   }
 
   fixNumberTr(table) {
-    const tableElement = table.get();
-    const rows = tableElement.rows;
-    const rowCount = rows ? rows.length : 0;
-    let colCounts = [];
-    let firstColCount = 0;
-    let cellCounts = [];
-    let totalCellCounts = 0;
-    let emptyCounts = 0;
-    let maxCellCounts = 0;
+    const tableElement = table.get()
+    const rows = tableElement.rows
+    const rowCount = rows?.length || 0
+    let colCounts = []
+    let firstColCount = 0 // 第一列的单元格个数
+    let cellCounts = [] // 每行单元格个数
+    let totalCellCounts = 0 // 总单元格个数
+    let emptyCounts = 0 // 跨行合并缺损的单元格
+    // 已经存在一行中的 td 的最大数，最终算出来的最大列数一定要大于等于这个值
+    let maxCellCounts = 0 // 在不确定是否缺少tr时，先拿到已经存在的td，和一些关键信息
 
     for (let r = 0; r < rowCount; r++) {
-      const row = rows[r];
-      const cells = row.cells;
-      let cellCountThisRow = 0;
+      const row = rows[r]
+      const cells = row.cells
+      let cellCountThisRow = 0
+
       for (let c = 0; c < cells.length; c++) {
-        const { rowSpan, colSpan } = cells[c];
-        totalCellCounts += rowSpan * colSpan;
-        cellCountThisRow += colSpan;
+        const { rowSpan, colSpan } = cells[c]
+        totalCellCounts += rowSpan * colSpan
+        cellCountThisRow += colSpan
         if (rowSpan > 1) {
-          emptyCounts += (rowSpan - 1) * colSpan;
+          emptyCounts += (rowSpan - 1) * colSpan
         }
       }
-      cellCounts[r] = cellCountThisRow;
+      cellCounts[r] = cellCountThisRow
       if (r === 0) {
-        firstColCount = cellCountThisRow;
+        firstColCount = cellCountThisRow
       }
-      maxCellCounts = Math.max(cellCountThisRow, maxCellCounts);
+      maxCellCounts = Math.max(cellCountThisRow, maxCellCounts)
     }
-
-    const isNumber1 = isInteger(totalCellCounts / firstColCount);
-    const isNumber2 = firstColCount === maxCellCounts;
-    const isNumber = isNumber1 && isNumber2;
+    // number拷贝的一定是首行列数能被单元格总数整除
+    const isNumber1 = isInteger(totalCellCounts / firstColCount) // number拷贝的一定是首行列数最大
+    const isNumber2 = firstColCount === maxCellCounts
+    const isNumber = isNumber1 && isNumber2 // 判断是否是 number, 是因为 number 需要考虑先修复省略的 tr，否则后面修复出来就会有问题
 
     if (isNumber) {
-      let lossCellCounts = 0;
-      cellCounts.forEach((cellCount) => {
-        lossCellCounts += maxCellCounts - cellCount;
-      });
+      let lossCellCounts = 0
+      cellCounts.forEach(cellCount => {
+        lossCellCounts += maxCellCounts - cellCount
+      })
 
       if (lossCellCounts !== emptyCounts) {
-        const missCellCounts = emptyCounts - lossCellCounts;
+        const missCellCounts = emptyCounts - lossCellCounts
         if (isInteger(missCellCounts / maxCellCounts)) {
-          let lossRowIndex = [];
+          let lossRowIndex = [] // 记录哪一行缺 tr
+
           for (let _r = 0; _r < rowCount; _r++) {
-            const _row = rows[_r];
-            const _cells = _row.cells;
-            let realRow = _r + lossRowIndex.length;
+            const _row = rows[_r]
+            const _cells = _row.cells
+            let realRow = _r + lossRowIndex.length
+
             while (colCounts[realRow] === maxCellCounts) {
-              lossRowIndex.push(realRow);
-              realRow++;
+              lossRowIndex.push(realRow)
+              realRow++
             }
+
             for (let _c2 = 0; _c2 < _cells.length; _c2++) {
-              const { rowSpan, colSpan } = _cells[_c2];
+              const { rowSpan, colSpan } = _cells[_c2]
               if (rowSpan > 1) {
                 for (let rr = 1; rr < rowSpan; rr++) {
-                  colCounts[realRow + rr] = (colCounts[realRow + rr] || 0) + colSpan;
+                  colCounts[realRow + rr] =
+                    (colCounts[realRow + rr] || 0) + colSpan
                 }
               }
             }
           }
-          lossRowIndex.forEach((row) => {
-            tableElement.insertRow(row);
-          });
+
+          lossRowIndex.forEach(row => {
+            tableElement.insertRow(row)
+          })
         }
       }
     }
   }
 
-  // firefox 下拖拽兼容处理：设置一个 firefox 不识别的 mimetype
+  // firefox 下的拖拽需要这样处理
+  // clearData 是为了防止新开 tab
+  // hack: 如果不 setData, firefox 不会触发拖拽事件，但设置 data 之后，又会开新 tab, 这里设置一个 firefox 不识别的 mimetype: aomao
   fixDragEvent(event) {
+    event.dataTransfer?.clearData()
+    event.dataTransfer?.setData("aomao", "")
     if (event.dataTransfer) {
-      event.dataTransfer.clearData();
-      event.dataTransfer.setData('aomao', '');
-      event.dataTransfer.effectAllowed = 'all';
+      event.dataTransfer.effectAllowed = "all"
     }
   }
 
   /**
    * 从源节点复制样式到目标节点
-   * @param {NodeInterface|Node} from
-   * @param {NodeInterface|Node} to
+   * @param from 源节点
+   * @param to 目标节点
    */
   copyCss(from, to) {
-    if (isNode(from)) from = $(from);
-    if (isNode(to)) to = $(to);
-    to.css('vertical-align', from.css('vertical-align'));
-    let tdBgColor = from.css('background-color');
-    tdBgColor = tdBgColor !== 'rgba(0, 0, 0, 0)' ? tdBgColor : '';
-    to.css('background-color', tdBgColor);
+    if (isNode(from)) from = $(from)
+    if (isNode(to)) to = $(to)
+    // to.css('text-align', from.css('text-align'));
+    to.css("vertical-align", from.css("vertical-align"))
+    let tdBgColor = from.css("background-color")
+    tdBgColor = tdBgColor !== "rgba(0, 0, 0, 0)" ? tdBgColor : ""
+    to.css("background-color", tdBgColor)
+    // to.css('color', from.css('color'));
+    // to.css('font-weight', from.css('font-weight'));
   }
 
   /**
    * 从源节点复制样式和内容到目标节点
-   * @param {NodeInterface|Node} from
-   * @param {NodeInterface|Node} to
+   * @param from 源节点
+   * @param to 目标节点
    */
   copyTo(from, to) {
-    if (isNode(from)) from = $(from);
-    if (isNode(to)) to = $(to);
-    let editableElement = to.find(EDITABLE_SELECTOR);
+    if (isNode(from)) from = $(from)
+    if (isNode(to)) to = $(to)
+
+    let editableElement = to.find(EDITABLE_SELECTOR)
     if (editableElement.length === 0) {
-      to.html(Template.EmptyCell(!isEngine(this._editor) || this._editor.readonly));
-      editableElement = to.find(EDITABLE_SELECTOR);
+      to.html(
+        Template.EmptyCell(!isEngine(this.#editor) || this.#editor.readonly)
+      )
+      editableElement = to.find(EDITABLE_SELECTOR)
     }
-    editableElement.html(transformCustomTags(from.html()));
-    if (to.name === 'td' && to.find(Template.TABLE_TD_BG_CLASS).length === 0) {
-      to.append($(Template.CellBG));
+    editableElement.html(transformCustomTags(from.html()))
+    if (to.name === "td" && to.find(Template.TABLE_TD_BG_CLASS).length === 0) {
+      to.append($(Template.CellBG))
     }
-    if (to.name === 'td') {
-      to.attributes('data-transient-attributes', 'table-cell-selection');
+    if (to.name === "td") {
+      to.attributes("data-transient-attributes", "table-cell-selection")
     }
-    this.copyCss(from, to);
-  }
-
-  copyHTML(html) {
-    this.clipboard = {
-      html: html,
-      text: $(html).get() ? $(html).get().innerText : ''
-    };
-  }
-
-  getCopyData() {
-    return this.clipboard;
-  }
-
-  clearCopyData() {
-    this.clipboard = undefined;
-  }
-
-  trimBlankSpan(node) {
-    const len = node.length;
-    let nodelist = [];
-    let i = 0;
-    let j = len - 1;
-    while (
-      node[i] &&
-      node[i].tagName.toLowerCase() === 'span' &&
-      node[i].innerText.trim() === ''
-      ) {
-      i++;
-    }
-    while (
-      node[j] &&
-      node[j].tagName.toLowerCase() === 'span' &&
-      node[j].innerText.trim() === ''
-      ) {
-      j--;
-    }
-    if (i <= j) {
-      for (let k = i; k <= j; k++) {
-        nodelist.push(node[k]);
-      }
-    }
-    return nodelist.length ? $(nodelist) : node;
+    this.copyCss(from, to)
   }
 
   /**
-   * 规范表格结构：补齐丢失的单元格、修正列宽和行高、补充编辑区域
-   * @param {NodeInterface} table
-   * @returns {NodeInterface} 规范后的 table
+   * 复制html
+   * @param html HTML
+   */
+  copyHTML(html) {
+    this.clipboard = {
+      html: html,
+      text: $(html).get()?.innerText || ""
+    }
+  }
+
+  /**
+   * 获取复制的数据
+   * @returns
+   */
+  getCopyData() {
+    return this.clipboard
+  }
+
+  clearCopyData() {
+    this.clipboard = undefined
+  }
+
+  trimBlankSpan(node) {
+    const len = node.length
+    let nodelist = []
+    let i = 0
+    let j = len - 1
+    while (
+      node[i] &&
+      node[i].tagName.toLowerCase() === "span" &&
+      node[i].innerText.trim() === ""
+      ) {
+      i++
+    }
+
+    while (
+      node[j] &&
+      node[j].tagName.toLowerCase() === "span" &&
+      node[j].innerText.trim() === ""
+      ) {
+      j--
+    }
+
+    if (i <= j) {
+      for (let k = i; k <= j; k++) {
+        nodelist.push(node[k])
+      }
+    }
+
+    if (nodelist.length) {
+      return $(nodelist)
+    }
+    return node
+  }
+
+  /**
+   * table 结构标准化，补齐丢掉的单元格和行
+   * 场景1. number 拷贝过来的 html 中，如果这一行没有单元格，就会省掉 tr，渲染的时候会有问题
+   * 场景2. 从网页中鼠标随意选取表格中的一部分，会丢掉没有选中的单元格，需要补齐单元格
+   * @param {NodeInterface} table 表格 Dom
+   * @return {NodeInterface} 修复过的 table dom
    */
   normalizeTable(table) {
-    this.trimStartTr(table);
-    this.fixNumberTr(table);
-    table.addClass('data-table');
-    const width = table.css('width');
+    this.trimStartTr(table)
+    this.fixNumberTr(table)
+    table.addClass("data-table")
+    // 修正表格宽度为 pt 场景
+    const width = table.css("width")
+
     if (parseInt(width) === 0) {
-      table.css('width', 'auto');
-    } else if (!width.endsWith('%')) {
-      table.css('width', parseInt(width, 10) + 'px');
-    }
-    table.css('background-color', '');
-    const model = this.getTableModel(table);
-    let cols = table.find('col');
+      table.css("width", "auto")
+    } else if (!width.endsWith("%")) {
+      // pt 直接转为 px, 因为 col 的 width 属性是没有单位的，会直接被理解为 px, 这里 table 的 width 也直接换成 px。
+      table.css("width", parseInt(width, 10) + "px")
+    } // 表格 table 标签不允许有背景色，无法设置
+
+    table.css("background-color", "")
+    const model = this.getTableModel(table)
+    // 修正列的 span 场景
+    let cols = table.find("col")
     if (cols.length !== 0) {
       for (let c = cols.length - 1; c >= 0; c--) {
-        const colElement = cols[c];
-        const _width = cols.eq(c) && cols.eq(c).attributes('width');
-        if (_width && !_width.endsWith('%')) {
-          cols.eq(c) && cols.eq(c).attributes('width', parseInt(_width));
+        const colElement = cols[c]
+        const _width = cols.eq(c)?.attributes("width")
+        if (_width && !_width.endsWith("%")) {
+          const widthValue = parseInt(_width)
+          if (!Number.isNaN(widthValue)) { cols.eq(c)?.attributes("width", widthValue) }
         }
+
         if (colElement.span > 1) {
-          let addCount = colElement.span - 1;
+          let addCount = colElement.span - 1
           while (addCount--) {
-            let parent = cols[c].parentElement || cols[c].parentNode;
-            parent && parent.insertBefore(cols[c].cloneNode(), cols[c]);
+            ;(cols[c].parentElement ?? cols[c].parentNode)?.insertBefore(
+              cols[c].cloneNode(),
+              cols[c]
+            )
           }
         }
       }
-      cols = table.find('col');
+      cols = table.find("col")
       if (cols.length < model.cols) {
-        const lastCol = cols.length - 1;
-        let colsAddCount = model.cols - cols.length;
+        const lastCol = cols.length - 1
+        let colsAddCount = model.cols - cols.length
         while (colsAddCount--) {
-          let parent = cols[0].parentElement || cols[0].parentNode;
-          parent && parent.appendChild(cols[lastCol].cloneNode());
+          ;(cols[0].parentElement ?? cols[0].parentNode)?.appendChild(
+            cols[lastCol].cloneNode()
+          )
         }
       }
-      table.find('col').attributes('span', 1);
+      table.find("col").attributes("span", 1)
     } else {
-      let colgroup = table.find('colgroup')[0];
+      let colgroup = table.find("colgroup")[0]
       if (!colgroup) {
-        colgroup = document.createElement('colgroup');
+        colgroup = document.createElement("colgroup")
       }
-      table.prepend(colgroup);
-      const widths = (function (table) {
-        const tr = table.find('tr')[0];
-        const tds = $(tr).find('td');
-        const widthArray = [];
-        tds.each((_, index) => {
-          const $td = tds.eq(index);
-          if (!$td) return;
-          let colWidth = $td.attributes('data-colwidth');
-          let tdWidth = $td.attributes('width') || $td.css('width');
-          const tdColSpan = $td[0].colSpan;
-          if (colWidth) {
-            colWidth = colWidth.split(',');
-          } else if (tdWidth) {
-            tdWidth = parseInt(tdWidth) / tdColSpan;
+      table.prepend(colgroup)
+      const widths = (function(table) {
+        const trs = table.find("tr")
+        // 找到td最多的那行，不然别的行可能会有合并的单元格
+        let mainTr = trs[0]
+        trs.each(node => {
+          const tr = node
+          if (tr.cells.length > mainTr.cells.length) {
+            mainTr = tr
           }
-          for (let o = 0; o < tdColSpan; o++) {
+        })
+
+        const tds = $(mainTr).find("td")
+        const widthArray = []
+        tds.each((_, index) => {
+          const tdNode = tds.eq(index)
+          if (!tdNode) return
+          let colWidth = tdNode.attributes("data-colwidth")
+          let tdWidth = tdNode.attributes("width") || tdNode.css("width")
+
+          const tdColSpan = tdNode[0].colSpan
+          if (colWidth) {
+            colWidth = colWidth.split(",")
+          } else if (tdWidth) {
+            let w = parseInt(tdWidth)
+            const borderWidth = tdNode.css("border-width")
+            const paddingLeft = tdNode.css("padding-left")
+            const paddingRight = tdNode.css("padding-right")
+            if (borderWidth) {
+              w += parseInt(convertToPX(borderWidth))
+            }
+            if (paddingLeft) {
+              w += parseInt(convertToPX(paddingLeft))
+            }
+            if (paddingRight) {
+              w += parseInt(convertToPX(paddingRight))
+            }
+            tdWidth = w / tdColSpan
+          }
+          for (let o = 0; tdColSpan > o; o++) {
             if (colWidth && colWidth[o]) {
-              widthArray.push(parseInt(colWidth[o]));
+              widthArray.push(parseInt(colWidth[o]))
             } else if (tdWidth) {
-              widthArray.push(parseInt(tdWidth.toString()));
+              widthArray.push(parseInt(tdWidth.toString()))
             } else {
-              widthArray.push(undefined);
+              widthArray.push(undefined)
             }
           }
-        });
-        const td = table.find('td');
-        td.removeAttributes('data-colwidth');
-        td.removeAttributes('width');
-        return widthArray;
-      })(table);
-      const col = document.createElement('col');
-      for (let f = 0; f < model.cols; f++) {
-        const node = col.cloneNode();
+        })
+        const td = table.find("td")
+        td.css("width", "")
+        td.css("border-width", "")
+        td.css("padding-left", "")
+        td.css("padding-right", "")
+        td.removeAttributes("data-colwidth")
+        td.removeAttributes("width")
+        return widthArray
+      })(table)
+      const col = document.createElement("col")
+      for (let f = 0; model.cols > f; f++) {
+        const node = col.cloneNode()
         if (widths[f]) {
-          node.setAttribute('width', (widths[f] || '').toString());
+          node.setAttribute("width", (widths[f] || "").toString())
         }
-        colgroup.appendChild(node);
+        colgroup.appendChild(node)
       }
     }
-    const tableElement = table.get();
+    // 数据模型和实际 dom 结构的行数不一致，需要寻找并补齐行
+    const tableElement = table.get()
     model.table.forEach((tr, r) => {
       if (!tableElement.rows[r]) {
-        tableElement.insertRow(r);
+        tableElement.insertRow(r)
       }
-      const shadow = tr.filter((td) => {
-        return this.isEmptyModelCol(td) ? false : td.isShadow;
-      });
-      let shadowCount = shadow.length;
+      const shadow = tr.filter(td => {
+        return td.isShadow
+      })
+      let shadowCount = shadow.length
       while (shadowCount--) {
-        tableElement.rows[r].insertCell();
+        // if (r === 0) {
+        // tableElement.rows[r].insertCell(0);
+        // } else {
+        tableElement.rows[r].insertCell()
+        // }
       }
-    });
-    const trs = table.find('tr');
+    })
+    // 修正行高
+    const trs = table.find("tr")
     trs.each((_, index) => {
-      const $tr = trs.eq(index);
-      if (!$tr) return;
-      let height = parseInt($tr.css('height'));
+      const $tr = trs.eq(index)
+      if (!$tr) return
+      const h = $tr.css("height")
+      // 一般word里面的表格行高是0px就是空行，这里直接删除
+      if (h === "0px") {
+        $tr.remove()
+        return
+      }
+      let height = parseInt(h)
+
       height =
         height ||
-        (this._editor.plugin.findPlugin('table') &&
-          this._editor.plugin.findPlugin('table').options.rowMinHeight) ||
-        0;
-      $tr.css('height', height + 'px');
-    });
-    const tds = table.find('td');
-    const emptyTd = $(Template.EmptyCell(!isEngine(this._editor) || this._editor.readonly));
-    tds.each((_, index) => {
-      const tdNode = tds.eq(index);
-      if (!tdNode) return;
-      tdNode.attributes(DATA_TRANSIENT_ATTRIBUTES, 'table-cell-selection');
-      let editableElement = tdNode.find(EDITABLE_SELECTOR);
-      if (editableElement.length === 0) {
-        const children = tdNode.children();
-        tdNode.append(emptyTd.clone(true));
-        editableElement = tdNode.find(EDITABLE_SELECTOR);
-        editableElement.empty();
-        editableElement.append(children);
-      }
-      editableElement.find('p').each((pNode) => {
-        if (pNode.childNodes.length === 0) {
-          pNode.appendChild(document.createElement('br'));
-        }
-      });
-    });
-    return table;
+        this.#editor.plugin.findPlugin("table")?.options.rowMinHeight ||
+        0
+      $tr.css("height", height + "px")
+    })
+    return table
   }
 }
 
-export default Helper;
+export default Helper

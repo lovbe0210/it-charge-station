@@ -8,7 +8,13 @@ module.exports = {
     '@vue/standard'
   ],
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: "@babel/eslint-parser",
+    requireConfigFile: false,
+    ecmaVersion: 2020,
+    sourceType: "module",
+    ecmaFeatures: {
+      jsx: true
+    }
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -22,6 +28,7 @@ module.exports = {
     'quotes': "off",
     // 不用table而是用两个空格
     'no-tables': "off",
+    'no-tabs': 'off',
     'quote-props': "off",
     'import/no-duplicates': 'off',
     'indent': "off",

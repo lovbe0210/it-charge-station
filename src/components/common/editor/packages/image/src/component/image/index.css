@@ -16,8 +16,8 @@
     text-indent: 0;
     -webkit-user-select: none;
     -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .data-image-blcok {
@@ -32,7 +32,7 @@
 }
 
 .data-image-detail {
-  display: inline-block;
+    display: inline-block;
 }
 
 .data-image-blcok .data-image-detail {
@@ -77,7 +77,7 @@
     margin-left: 1px;
 }
 
-.data-image-loading , .data-image-loaded {
+.data-image-loading, .data-image-loaded {
     display: inline-block;
     border-radius: 0 0;
     padding: 0 0;
@@ -97,13 +97,13 @@
     display: block;
 }
 
-.data-image-loading .data-image-meta img,.data-image-loaded .data-image-meta img {
+.data-image-loading .data-image-meta img, .data-image-loaded .data-image-meta img {
     border-radius: 2px 2px;
     display: inline-block;
     width: 100%;
     opacity: 0.6;
     text-align: left;
-    cursor: pointer;
+    cursor: zoom-in;
     transition: opacity 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
@@ -111,11 +111,11 @@
     display: block;
 }
 
-.data-image-loading .data-image-meta img , .data-image-blcok .data-image-loading .data-image-meta img {
+.data-image-loading .data-image-meta img, .data-image-blcok .data-image-loading .data-image-meta img {
     display: none;
 }
 
-.data-image-loading  .data-image-meta .data-image-progress,.data-image-loaded .data-image-meta .data-image-progress {
+.data-image-loading .data-image-meta .data-image-progress, .data-image-loaded .data-image-meta .data-image-progress {
     font-family: 'Lucida Console', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     position: absolute;
     bottom: 8px;
@@ -169,7 +169,7 @@
     display: none;
     border-radius: 2px;
     opacity: 0.6;
-    background-size:100% 100%;
+    background-size: 100% 100%;
     background-color: #FAFAFA;
     background-repeat: no-repeat;
     background-position: center;

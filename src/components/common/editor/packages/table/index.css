@@ -11,10 +11,11 @@ div[dnd-trigger-key="table"], div[toolbar-trigger-key="table"] {
     white-space: pre-wrap;
     width: 100%;
     border-collapse: collapse;
+    background-color: #ffffff;
 }
 
 div[data-card-key="table"].card-selected .data-table, div[data-card-key="table"].card-selected-other .data-table {
-    background: transparent
+  background: transparent
 }
 
 .am-engine [data-card-key="table"].card-selected [data-card-element="center"].data-card-background-selected {
@@ -26,7 +27,7 @@ div[data-card-key="table"].card-selected .data-table, div[data-card-key="table"]
 }
 
 .am-engine-mobile div[data-card-key="table"].card-activated {
-    margin-left: 20px;
+  margin-left: 20px;
 }
 
 .data-table tr,.data-table td {
@@ -90,7 +91,6 @@ div[data-card-key="table"].card-selected .data-table, div[data-card-key="table"]
     height: 14px;
     cursor: pointer;
     z-index: 4;
-    background-color: #ffffff;
 }
 
 .table-wrapper .table-header .table-header-item {
@@ -101,9 +101,6 @@ div[data-card-key="table"].card-selected .data-table, div[data-card-key="table"]
     height: 100%;
 }
 
-.table-wrapper .table-header:hover {
-    background-color: #ffffff;
-}
 
 .table-wrapper.data-table-highlight-all .table-header .table-header-item {
     background: rgba(255, 77, 79, 0.4) !important;
@@ -209,8 +206,8 @@ div[data-card-key="table"].card-selected .data-table, div[data-card-key="table"]
 }
 
 .am-engine-mobile .table-wrapper .table-cols-header .table-cols-header-item .cols-trigger {
-    right: -3px;
-    width: 6px;
+  right: -3px;
+  width: 6px;
 }
 
 .am-engine:not(.am-engine-mobile) .table-wrapper .table-cols-header .table-cols-header-item .cols-trigger.active {
@@ -336,8 +333,8 @@ div[data-card-key="table"].card-selected .data-table, div[data-card-key="table"]
 }
 
 .am-engine-mobile .table-wrapper .table-rows-header .table-rows-header-item .rows-trigger {
-    bottom: -3px;
-    height: 6px;
+  bottom: -3px;
+  height: 6px;
 }
 
 .am-engine:not(.am-engine-mobile) .table-wrapper .table-rows-header .table-rows-header-item .rows-trigger.active {

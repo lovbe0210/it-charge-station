@@ -72,10 +72,23 @@ class Image {
       img = `<a href="${sanitizeUrl(link.href)}" target="${target}">${img}</a>`
     }
     //全屏图标
-    let maximize =
-      `<span class="data-image-maximize" style="display: none;">
-        <span class="data-icon data-icon-maximize"></span>
-      </span>`
+    // let maximize =
+    //   `<span class="data-image-maximize" style="display: none;">
+    //     <span class="data-icon data-icon-maximize"></span>
+    //   </span>`
+
+   /* return `<span class="data-image">
+                <span class="data-image-content data-image-loading">
+                    <span class="data-image-detail">
+                        <span class="data-image-meta">
+                          ${img}
+                          ${progress}
+                          <span class="data-image-bg"></span>
+                          ${maximize}
+                        </span>
+                    </span>
+                </span>
+            </span>`*/
 
     return `<span class="data-image">
                 <span class="data-image-content data-image-loading">
@@ -84,7 +97,6 @@ class Image {
                           ${img}
                           ${progress}
                           <span class="data-image-bg"></span>
-                          ${maximize}
                         </span>
                     </span>
                 </span>

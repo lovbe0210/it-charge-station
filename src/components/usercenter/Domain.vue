@@ -248,7 +248,6 @@ export default {
     },
     finalConfig() {
       let config = cloneDeep(pluginConfig);
-
       config.table.enableScroll = false;
       return config;
     }
@@ -329,6 +328,15 @@ export default {
           // 文档提示语
           placeholder: '开始设置个性主页'
         });
+
+        // 设置显示成功消息UI，默认使用 console.log
+        engine.messageSuccess = (msg) => {
+          console.log(msg);
+        };
+        // 设置显示错误消息UI，默认使用 console.error
+        engine.messageError = (error) => {
+          console.log(error);
+        };
 
         // 监听编辑器值改变事件
         engine.on("change", () => {

@@ -875,7 +875,7 @@
   /deep/.data-card-dnd {
     background: var(--dropdown-item-hover);
   }
-  // 代码块工具栏
+  // 通用工具栏
   /deep/ .data-card-toolbar {
 
     .data-toolbar-group {
@@ -912,6 +912,43 @@
       .data-toolbar-switch:hover {
         background: var(--dropdown-item-hover);
       }
+    }
+  }
+
+  /deep/.table-color-dropdown-trigger {
+    .table-color-dropdown-button-text:hover, .table-color-dropdown-arrow:hover {
+      background: var(--dropdown-item-hover);
+      border-color: var(--border-color);
+    }
+
+    &:hover {
+      .table-color-dropdown-button-text, .table-color-dropdown-arrow {
+        border-color: var(--border-color);
+      }
+    }
+
+  }
+
+  // 表格相关
+  /deep/.table-wrapper {
+    .table-header .table-header-item,
+    .table-rows-header .table-rows-header-item,
+    .table-cols-header .table-cols-header-item {
+      background: var(--rj-editor-bg-color);
+      border-color: var(--border-color);
+
+      &:hover {
+        background: var(--modal-bg-color);
+      }
+    }
+  }
+
+  /deep/ .data-table-color-tool {
+    background: var(--dropdown-bg-color);
+    border-color: var(--border-color);
+
+    .data-table-color-tool-default:hover {
+      background: var(--dropdown-item-hover);
     }
   }
 }

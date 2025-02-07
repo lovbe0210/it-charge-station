@@ -485,6 +485,78 @@
   }
 }
 
-/deep/.editor-toolbar:not(.editor-toolbar-mobile) .toolbar-button:active, .editor-toolbar .toolbar-button-active, .editor-toolbar:not(.editor-toolbar-mobile) .toolbar-button-active:hover {
-  //background-color: var(--dropdown-item-hover);
+// 编辑器相关
+/deep/.table-wrapper {
+  .table-header .table-header-item,
+  .table-rows-header .table-rows-header-item,
+  .table-cols-header .table-cols-header-item {
+    background: var(--rj-editor-bg-color);
+    border-color: var(--border-color);
+
+    &:hover {
+      background: var(--modal-bg-color);
+    }
+  }
 }
+
+// 可拖拽组件
+/deep/.data-card-dnd {
+  background: var(--dropdown-item-hover);
+}
+
+// 通用工具栏
+/deep/ .data-card-toolbar {
+  .data-toolbar-group {
+    background: var(--dropdown-bg-color);
+    border-color: @border-color_normal;
+
+    .data-toolbar-item:not(.data-toolbar-item-input):hover, .data-toolbar-item.active:not(.data-toolbar-item-input) {
+      background-color: var(--dropdown-item-hover);
+      border-radius: 4px;
+    }
+
+    .data-toolbar-btn {
+      color: var(--title-color);
+    }
+
+    .ivu-select-selection {
+      background: var(--dropdown-bg-color);
+      border-color: @border-color_normal;
+
+      .ivu-select-input {
+        color: var(--font-color);
+      }
+    }
+
+    .ivu-select-dropdown {
+      background: var(--dropdown-bg-color);
+
+      .ivu-select-item:hover, .ivu-select-item-focus {
+        background: var(--dropdown-item-hover);
+        color: var(--font-color);
+      }
+    }
+
+    .data-toolbar-switch:hover {
+      background: var(--dropdown-item-hover);
+    }
+
+    .table-color-dropdown-trigger .table-color-dropdown-button-text:hover, .table-color-dropdown-trigger .table-color-dropdown-arrow:hover {
+      background-color: var(--dropdown-item-hover);
+    }
+
+    .table-color-dropdown-trigger:hover .table-color-dropdown-button-text, .table-color-dropdown-trigger:hover .table-color-dropdown-arrow {
+      border-color: var(--border-color);
+    }
+  }
+}
+
+/deep/ .data-table-color-tool {
+  background: var(--dropdown-bg-color);
+  border-color: var(--border-color);
+
+  .data-table-color-tool-default:hover {
+    background: var(--dropdown-item-hover);
+  }
+}
+
