@@ -29,7 +29,7 @@
               :on-exceeded-size="handleMaxSize" :on-format-error="handleFormatError"
               :on-success="handleServerSuccess" :on-error="handleServerError">
         <div class="upload-icon align-items-center">
-          <span v-show="uploadStatus !== 1" class="iconfont icon-upload-img" style="font-size: 24px;"></span>
+          <span v-show="uploadStatus !== 1" class="iconfont upload-img"></span>
       <!--    <Icon :type="uploadIcon" size="24" :color="uploadStatus===3?'#00AE9D':uploadStatus===2?'red': ''"
                 v-show="uploadStatus !== 1 && uploadStatus !== 0"/>-->
           <b-spinner style="width: 1.1rem; height: 1.1rem;color: #00AE9D;" v-show="uploadStatus === 1"/>

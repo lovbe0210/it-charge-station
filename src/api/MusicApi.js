@@ -1,3 +1,5 @@
+import Vue from "vue";
+
 export default {
   /**
    * 获取歌词并解析
@@ -6,8 +8,8 @@ export default {
    * @returns {Promise<[]>}
    */
   async getLyricById(_this, id) {
-    let data = await _this.$request({
-      url: "/lyric?id=" + id,
+    let data = await Vue.prototype.$request({
+      url: "/music/lyric?id=" + id,
       method: 'get'
     })
     let lyrics = data.lrc.lyric;
@@ -45,8 +47,8 @@ export default {
    */
   async getMusicUrlById(_this, id) {
     // TODO 需要做容错处理以及收费歌曲、没版权歌曲
-    let response = await _this.$request({
-      url: "/song/url?id=" + id,
+    let response = await Vue.prototype.$request({
+      url: "/music/song/url?id=" + id,
       method: 'get'
     });
     let data = response.data[0].url + "?refreshID=" + new Date().getTime();
@@ -60,8 +62,8 @@ export default {
    * @returns {Promise<[]>}
    */
   async cloudSearch(_this, keywords) {
-    let data = await _this.$request({
-      url: "/cloudsearch?keywords=" + keywords + "&limit=50",
+    let data = await Vue.prototype.$request({
+      url: "/music/cloudsearch?keywords=" + keywords + "&limit=50",
       method: 'get'
     })
     if (data.result === undefined || data.result === null || data.result.songs === undefined) {

@@ -40,7 +40,8 @@
         <!-- 因为歌词快了一句,所以减1 -->
         <!-- 歌词item -->
         <div class="lyricsItem" v-for="(item, index) in lyric" :key="index"
-             :class="lyricsIndex - 1 == index ? 'currentLyric' : ''">
+             :class="lyricsIndex - 1 == index ? 'currentLyric' : ''"
+             :style="lyricsIndex - 1 == index ? '' : `color: ` + background">
           {{ item[1] }}
         </div>
         <!-- 占位 -->
@@ -53,7 +54,8 @@
 
 <script>
   import ColorThief from 'colorthief';
-  import MusicApi from "@/utils/MusicApi";
+  import MusicApi from "@/api/MusicApi";
+  import color from "../editor/packages/table/component/toolbar/color";
 
   let placeholderHeight = 0;
   export default {
@@ -71,7 +73,7 @@
         lyric: [[0, "无限音乐，无限可能"]],
         // 当前歌词索引
         lyricsIndex: 0,
-        background: "rgb(227,226,227)",
+        background: "var(--dropdown-bg-color)",
         // 0播放界面1列表界面
         returnStatus: 1,
         // 当前歌曲id,用于判断是否已经计算过主题色
@@ -79,6 +81,9 @@
       }
     },
     computed: {
+      color() {
+        return color
+      },
       // 是否显示歌曲详情卡片
       isMusicDetailCardShow() {
         return this.$store.state.musicInfo.isMusicDetailCardShow;
@@ -142,7 +147,7 @@
             al: {picUrl: null}
           };
           // 重置背景色
-          this.background = "rgb(227,226,227)";
+          this.background = "var(--dropdown-bg-color)";
           this.returnStatus = 1;
           return;
         }
@@ -157,7 +162,7 @@
             this.lyric = data;
           })
           // 重置背景色
-          this.background = "rgb(227,226,227)";
+          this.background = "var(--dropdown-bg-color)";
           this.returnStatus = 1;
           setTimeout(() => {
             this.returnStatus = 0;
@@ -196,7 +201,7 @@
 
         // 重置背景色
         if (this.musicInfo.id !== this.currentMusicId) {
-          this.background = "rgb(227,226,227)";
+          this.background = "var(--dropdown-bg-color)";
           this.returnStatus = 1;
           setTimeout(() => {
             this.returnStatus = 0;

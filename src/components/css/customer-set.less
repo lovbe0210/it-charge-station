@@ -15,9 +15,9 @@
 
 
 .customer-set {
+  font-size: 0.88rem;
   .title {
     padding: 20px 0 5px 15px;
-    font-size: 1.0em;
   }
 
   .settings {
@@ -28,6 +28,10 @@
     .context {
       height: 24px;
       line-height: 24px;
+    }
+
+    .ivu-btn-small {
+      font-size: 0.8rem;
     }
   }
 
@@ -59,11 +63,15 @@
       }
 
       .ivu-select-dropdown {
-        left: 90px !important;
-        width: 250px;
+        left: 29% !important;
+        width: 70%;
 
         .ivu-color-picker-picker-wrapper {
           padding: 5px 5px 0 5px;
+
+          .ivu-color-picker-picker-panel {
+            width: unset;
+          }
         }
 
         .ivu-color-picker-confirm {
@@ -86,11 +94,18 @@
             left: 0;
             width: 155px;
 
-            .ivu-input-small {
-              padding: 0 4px;
+            .ivu-input-wrapper {
+              display: flex;
+
+              .ivu-input-small {
+                padding: 0 4px;
+                font-size: 0.8rem;
+                width: 82%;
+                color: @light-font-color;
+              }
             }
 
-            :focus {
+            &:focus {
               box-shadow: none;
             }
           }
@@ -102,28 +117,28 @@
   /deep/ .bacc-color {
 
     .switch-btn {
-      height: 22px;
-      margin-left: 15px;
+      height: 21px;
+      margin-left: 13px;
       border: none;
       box-shadow: none;
+      max-width: 19%;
 
       .ivu-switch-inner {
-        left: 21px;
         line-height: 22px;
         font-size: 0.8rem;
+        left: 39%;
       }
     }
 
     .ivu-switch:after {
-      width: 19px;
-      height: 19px;
+      width: 35%;
+      height: 87%;
       border-radius: 50%;
-      top: 1.5px;
       transition: left .3s ease-in-out, width .3s ease-in-out;
     }
 
     .ivu-switch-large.ivu-switch-checked:after {
-      left: 36px;
+      left: 65%;
     }
 
     .ivu-switch-checked {
@@ -132,6 +147,7 @@
 
       .ivu-switch-inner {
         left: 4px;
+        font-size: 0.7rem;
       }
     }
 
@@ -145,15 +161,19 @@
         height: 24px;
         display: flex;
         justify-content: center;
+
+        .iconfont {
+          font-size: 1.5rem;
+        }
       }
     }
 
     .gradient-color {
       display: flex;
       align-content: center;
-      width: 150px;
+      //width: 150px;
       height: 24px;
-      margin-left: 20px;
+      margin-left: 6px;
 
       .ivu-btn-text {
         height: 24px;
@@ -184,6 +204,7 @@
             border: none;
             box-shadow: none;
             background-color: transparent;
+            color: @light-font-color;
           }
 
           .ivu-color-picker-color {
@@ -207,19 +228,24 @@
         }
 
         .ivu-select-dropdown {
-          left: 90px !important;
-          width: 250px;
-          z-index: 99999;
+          left: 29% !important;
+          width: 70%;
+          top: unset !important;
+          z-index: 100;
 
           .ivu-color-picker-picker-wrapper {
             padding: 5px 5px 0 5px;
+
+            .ivu-color-picker-picker-panel {
+              width: unset;
+            }
           }
 
           .ivu-color-picker-confirm {
             margin: 0 5px 0 5px;
 
             .ivu-input-wrapper {
-              width: 100px;
+              width: 100%;
             }
 
             .ivu-btn-default:hover {
@@ -239,12 +265,17 @@
   }
 
   .quick-setting {
+    justify-content: space-between;
+
     .ivu-btn {
       border: 1px solid @border-color_normal;
-      margin-right: 10px;
       width: 64px;
       padding: 0;
       color: var(--title-color);
+    }
+
+    .ivu-btn:not(:last-child) {
+      margin-right: 10px;
     }
 
     .ivu-btn-default:hover {

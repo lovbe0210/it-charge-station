@@ -1,5 +1,6 @@
 <template>
-  <div class="bottom-control" ref="btoContainer">
+  <div ref="btoContainer"
+       :class="[$store.state.musicInfo.isMusicDetailCardShow ? 'bottom-control detail-control' : 'bottom-control']">
     <audio
       :src="musicUrl"
       ref="audioPlayer"
@@ -54,9 +55,9 @@
                    class="volume-input"/>
           </template>
           <span>
-          <span class="iconfont" :class="isMuted ? 'volume-close' : 'volume-open'" id="volumeController"
-                @click="changeVolumeState()"/>
-        </span>
+            <span class="iconfont" :class="isMuted ? 'volume-close' : 'volume-open'" id="volumeController"
+                  @click="changeVolumeState()"/>
+          </span>
         </a-tooltip>
       </div>
       <!-- 进度条 -->
@@ -77,7 +78,7 @@
 
 <script>
   import {handleMusicTime, returnSecond} from "@/utils/utils"
-  import MusicApi from '@/utils/MusicApi'
+  import MusicApi from '@/api/MusicApi'
 
   export default {
     name: "BottomControl",
@@ -164,7 +165,7 @@
         if (this.musicId === null) {
           return;
         }
-        let readyState = this.$refs.audioPlayer.readyState;
+        let readyState = this.$refs.audioPlayer?.readyState;
         if (readyState === 4) {
           // 主流浏览器已经禁用了自动播放，所以在初始化时播放会报错
           this.$refs.audioPlayer.play().catch(e => {

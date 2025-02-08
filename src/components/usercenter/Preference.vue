@@ -201,6 +201,10 @@ export default {
     }
   },
   mounted() {
+  },
+  created() {
+    // 获取偏好设置
+
   }
 }
 </script>

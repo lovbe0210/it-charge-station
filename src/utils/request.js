@@ -44,6 +44,11 @@ http.interceptors.response.use(
       if (data.result) {
         return Promise.resolve(data);
       }
+      // TODO 外部接口没有result
+      if (data.result === undefined) {
+        return Promise.resolve(data);
+      }
+
       // 401 actoken过期
       if (data.code === 401) {
         // 使用rftoken去刷新

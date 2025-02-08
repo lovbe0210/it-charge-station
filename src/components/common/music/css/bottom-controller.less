@@ -1,34 +1,39 @@
+@import "../../../css/common-var";
 .bottom-control {
-  border-top: 1px solid #ddd;
+  width: calc(~"17.8%");
+  height: calc(~"5.7%");
+  border-top: 1px solid @border-color_normal;
   border-radius: 5px;
   position: fixed;
   bottom: 0;
   display: flex;
   padding: 5px 5px;
-  z-index: 10000;
+  z-index: 99;
 
   .left {
     display: flex;
     align-items: center;
+    width: 35%;
+    height: 100%;
 
     .avatar {
-      width: 40px;
-      height: 40px;
       border-radius: 5px;
       overflow: hidden;
-      margin-right: 10px;
+      margin-right: 5px;
       cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      max-height: 100%;
 
       img {
         width: 100%;
       }
     }
 
-
     .musicInfo {
       color: var(--font-color);
-      font-size: 13px;
-      width: 70px;
+      font-size: 0.77rem;
+      width: 62%;
 
       .music-name {
         margin-bottom: 3px;
@@ -49,25 +54,28 @@
   }
 
   .center {
-    margin-top: 5px;
+    width: 65%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-evenly;
 
     .buttons {
       display: flex;
       align-items: center;
-      height: 13px;
+      height: 25%;
+      width: 100%;
 
       .iconfont {
-        font-size: 19px;
+        font-size: 1rem;
       }
 
       span {
-        display: inline-block;
-        width: 35.1px;
+        display: flex;
+        width: 100%/6;
         box-sizing: border-box;
         text-align: center;
+        justify-content: center;
       }
 
       span:nth-child(3) i {
@@ -78,9 +86,10 @@
     .progressBar {
       display: flex;
       align-items: center;
-      height: 10px;
-      margin-top: 12px;
+      height: 30%;
+      margin-top: 5px;
       overflow: hidden;
+      width: 100%;
 
       .currentTime,
       .totalTime {
@@ -93,25 +102,26 @@
 
       .progress-wrapp {
         margin: 0 2px;
+        width: 68%;
       }
 
-      .totalProgress{
+      .totalProgress {
         //margin: 0 6px;
         cursor: pointer;
-        width: 134px;
+        width: 100%;
         height: 6px;
         background-color: #c6c6c6;
         border-radius: 10px;
-        -webkit-border-top-left-radius:10px ;
+        -webkit-border-top-left-radius: 10px;
         -webkit-border-bottom-left-radius: 10px;
       }
 
-      .currentProgress{
+      .currentProgress {
         width: 0;
         height: 100%;
         border-radius: 10px;
         background-color: red;
-        -webkit-border-top-left-radius:10px ;
+        -webkit-border-top-left-radius: 10px;
         -webkit-border-bottom-left-radius: 10px;
       }
     }
@@ -126,19 +136,22 @@
 
 }
 
-/deep/.volume-control-tooltip {
+/deep/ .volume-control-tooltip {
 
   .ant-tooltip-content {
     .ant-tooltip-inner {
       background-color: transparent !important;
       box-shadow: none;
       padding: 0;
-      margin-bottom: -5px;
+      display: flex;
+      justify-content: center;
     }
   }
+
   .ant-tooltip-arrow {
     display: none;
   }
+
   .volume-input {
     writing-mode: bt-lr;
     -webkit-appearance: slider-vertical;
@@ -146,8 +159,6 @@
     height: 80px;
   }
 }
-
-
 
 
 .volumeControl {
@@ -202,4 +213,12 @@
 
 .center .icon-suiji1 {
   font-size: 15px;
+}
+
+.detail-control {
+  color: var(--dropdown-item-hover);
+
+  .musicInfo {
+    color: var(--dropdown-item-hover) !important;
+  }
 }

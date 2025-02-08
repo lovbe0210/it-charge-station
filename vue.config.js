@@ -36,6 +36,14 @@ module.exports = {
     disableHostCheck: true,
     port: 80,
     proxy: {
+      '/api/music': {
+        target: 'http://www.codeman.ink:3000',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/api/music': ''
+        }
+      },
       '/api': {
         target: 'http://10.2.2.17:10210',
         // target: 'http://localhost:10210',

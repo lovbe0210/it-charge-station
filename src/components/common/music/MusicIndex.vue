@@ -27,6 +27,7 @@
 <style scoped lang="less">
   .music-index {
     height: 100%;
+    width: 100%;
   }
 
 </style>

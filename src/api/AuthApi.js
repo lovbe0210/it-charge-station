@@ -21,7 +21,7 @@ export default {
       jsonData.email = _this.account;
     }
 
-    return await _this.$request({
+    return await Vue.prototype.$request({
       url: requestUri,
       method: 'POST',
       data: jsonData
@@ -45,7 +45,7 @@ export default {
       jsonData.email = _this.account;
     }
 
-    return await _this.$request({
+    return await Vue.prototype.$request({
       url: requestUri,
       method: 'POST',
       data: jsonData
@@ -78,7 +78,7 @@ export default {
       efy: Date.now()
     };
 
-    return await _this.$request({
+    return await Vue.prototype.$request({
       url: "/auth/svcookie",
       method: 'POST',
       data: jsonData
@@ -133,7 +133,7 @@ export default {
   async logout(_this) {
     let userInfo = _this.$store.state.userInfo;
     let requestUri = "/auth/logout";
-    return await _this.$request({
+    return await Vue.prototype.$request({
       url: requestUri,
       method: 'POST',
       headers: {
@@ -160,7 +160,7 @@ export default {
       jsonData.scene = 9;
     }
     let requestUri = "/user/reset/password";
-    return await _this.$request({
+    return await Vue.prototype.$request({
       url: requestUri,
       method: 'POST',
       data: jsonData
@@ -174,7 +174,7 @@ export default {
    * @returns {Promise<void>}
    */
   async refreshToken(_this, rfToken) {
-    return await _this.$request({
+    return await Vue.prototype.$request({
       url: "/auth/t/refresh",
       method: "POST",
       headers: {

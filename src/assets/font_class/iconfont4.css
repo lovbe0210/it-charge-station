@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont";
-  src: url('//at.alicdn.com/t/c/font_4221367_wt9qxtrefsm.woff2?t=1738584087044') format('woff2');
+  src: url('//at.alicdn.com/t/c/font_4221367_d0cps2ivrh.woff2?t=1739032415210') format('woff2');
 }
 
 .iconfont {
@@ -505,4 +505,8 @@
 
 .wb-high-light:before {
   content: "\e737";
+}
+
+.upload-img:before {
+  content: "\e738";
 }

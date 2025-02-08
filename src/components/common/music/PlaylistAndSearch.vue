@@ -44,7 +44,7 @@
 </template>
 
 <script>
-  import MusicApi from '@/utils/MusicApi.js'
+  import MusicApi from '@/api/MusicApi.js'
 
   export default {
     name: "PlayListAndSearch",
