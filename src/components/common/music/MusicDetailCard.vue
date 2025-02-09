@@ -6,7 +6,7 @@
     <div class="left">
       <div class="toList" @click="toPlayList()">
         <div :class="['iconfont',returnStatus == 0 ? 'return' : 'return']"
-             :style="'color:' + (returnStatus == 0 ? '#ffffff' : '#515a6e')">返回
+             :style="'color:' + (returnStatus == 0 ? '#515a6e' : '#515a6e')">返回
         </div>
       </div>
       <div class="discContainer">

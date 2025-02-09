@@ -5,20 +5,14 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    userInfo: {},
+
+    // ============== 页面相关参数 ===============
     // 页面状态，用来记录当前页面的一些变化，控制页面数据的持久化和传递
     // 页面创建：init，页面最小化、非当前窗口、被其他应用覆盖等使用：hidden，页面最大化、切回当前table，其他应用最小化：show，
     // 页面刷新：flush，页面关闭：close
     pageState: "init",
     uniqueId: null,
-    // TODO 这里还是无法解决先切换到别的页面然后后台播放然后backplay = true，然后再刷新导致不能播放的问题
-    userInfo: {},
-    tmpDoc: {
-      uid: 1213324,
-      title: null,
-      content: '<h1 style=\\"line-height: 1.5;\\" data-id=\\"hf2fwtl74-20ncvfo96tsw0\\" id=\\"hf2fwtl74-20ncvfo96tsw0\\">1. 引言</h1><h2 style=\\"line-height: 1.5;\\" data-id=\\"hf2fwtl74-eyv3l6o7sf40\\" id=\\"hf2fwtl74-eyv3l6o7sf40\\">1.1 什么是LangChain？</h2><p data-id=\\"p1dr9j7ls-13tdumj39y1s0\\"><a href="javascript:console.log(123);">正式开始前</a>，还是有必要从定义（<strong>What</strong>）开始。LangChain是2022年10月底，由哈佛大学的Harrison Chase发起的基于开源大语言模型的AI工程开发框架。当然也可以问一下AI：</p><p data-id=\\"p1dr9j7ls-tsfnkakg0lc0\\"><br /></p>'
-    },
-    // 是否有后台播放音乐的页面
-    backgroundPlay: false,
     // 首页显示激活的菜单项
     activeName: 'recommend',
     // 手机页面的菜单栏的状态，true为打开，false为关闭，默认关闭
@@ -27,6 +21,10 @@ export default new Vuex.Store({
     isPhone: false,
     // 计算是否要固定右侧标签的高度
     fixedHeight: null,
+
+    // ============== 个性化相关 =================
+    // 显示自定义主题开关
+    showCustomer: false,
     // 首页的flag内容
     flagContent: {
       timestamp: new Date().getTime(),
@@ -57,14 +55,15 @@ export default new Vuex.Store({
       asyncTheme: 1,
       // 正文字体大小(写页面，保存到内容格式中)
       docFontSize: 15,
-      // 文章段间距  常规、宽松 standard/loose (写页面)
+      // 文章段间距  常规、宽松 standard/loose
       segmentSpace: 'standard',
       // 页面大小0=标宽模式，1=超宽模式
       pageSize: 1
     },
-    // 显示自定义主题开关background-color: #4158D0;
-    showCustomer: false,
-    // 音乐播放相关
+
+    // ============= 音乐播放相关 ================
+    // 是否有后台播放音乐的页面 TODO 这里还是无法解决先切换到别的页面然后后台播放然后backgroundPlay = true，然后再刷新导致不能播放的问题
+    backgroundPlay: false,
     musicInfo: {
       // 当前播放音乐id
       musicId: null,

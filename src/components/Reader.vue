@@ -18,7 +18,7 @@
               </a-tooltip>
             </div>
             <div class="header-action">
-              <Button type="success" @click="routeNavigate(docInfo)"
+              <Button type="success" @click="routeNavigate"
                       v-if="loginStatus && articleInfo.userId === userInfo.uid">编辑
               </Button>
               <a-tooltip overlayClassName="read-header-tooltip"
@@ -239,7 +239,7 @@
             <article-setting :articleUri="articleUri" :changePermission="true"/>
           </div>
           <div class="article-version" v-if="drawerType === 2">
-            <article-version :articleId="docInfo.uid" :addNewVersion="newVersion"/>
+            <article-version :articleId="articleInfo?.uid" :addNewVersion="newVersion"/>
           </div>
         </Drawer>
       </div>
@@ -302,9 +302,6 @@ export default {
     },
     docStyle() {
       return this.$store.state.docStyle;
-    },
-    docInfo() {
-      return this.$store.state.tmpDoc;
     },
     userInfo() {
       return this.$store.state.userInfo;
