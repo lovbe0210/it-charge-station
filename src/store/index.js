@@ -52,13 +52,17 @@ export default new Vuex.Store({
     },
     docStyle: {
       // 是否同步自定义主题 0否1是
-      asyncTheme: 1,
+      docThemeSync: 1,
       // 正文字体大小(写页面，保存到内容格式中)
-      docFontSize: 15,
+      docStyleDefaultFont: 15,
       // 文章段间距  常规、宽松 standard/loose
       segmentSpace: 'standard',
-      // 页面大小0=标宽模式，1=超宽模式
-      pageSize: 1
+      // 页面布局 0标宽模式 1超宽模式
+      docStylePageSize: 0,
+      // 自动发布 0否1是
+      autoPublish: 0,
+      // 评论功能
+      enableComment: 1
     },
 
     // ============= 音乐播放相关 ================
@@ -275,6 +279,14 @@ export default new Vuex.Store({
     login(state, value) {
       state.userInfo = value;
       localStorage.setItem('store', JSON.stringify(state));
+    },
+    /**
+     * 偏好设置 注意这里的传参必须是一个对象
+     * @param state
+     * @param value
+     */
+    preferenceSet(state, value) {
+      state.docStyle = Object.assign(state.docStyle, value);
     },
     /**
      * 自定义主题，注意这里的传参必须是一个对象

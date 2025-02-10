@@ -178,11 +178,11 @@ export default {
       ],
       pageSizeOptions: [
         {
-          key: 1,
+          key: 0,
           title: '标宽模式'
         },
         {
-          key: 0,
+          key: 1,
           title: '超宽模式'
         }
       ],
@@ -219,6 +219,14 @@ export default {
       preferenceApi.updatePreferenceSetting(config).then(data => {
         if (data?.result) {
           this.userConfigs = {...this.userConfigs, ...config};
+          let preferenceSet = {
+            docThemeSync: this.userConfigs.docThemeSync,
+            docStyleDefaultFont: this.userConfigs.docStyleDefaultFont,
+            docStylePageSize: this.userConfigs.docStylePageSize,
+            autoPublish: this.userConfigs.autoPublish,
+            enableComment: this.userConfigs.enableComment
+          };
+          this.$store.commit("preferenceSet", preferenceSet);
           this.$Message.success('保存成功！');
         }
       })
@@ -228,6 +236,7 @@ export default {
   },
   created() {
     // 获取偏好设置
+    this.userConfigs = {...this.userConfigs, ...this.$store.state.docStyle};
     preferenceApi.getPreferenceSetting().then(data => {
       if (data?.result) {
         this.userConfigs = {...this.userConfigs, ...data.data}

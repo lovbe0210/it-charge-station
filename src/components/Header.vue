@@ -331,7 +331,6 @@ export default {
           window.open(routeUrl.href, '_blank')
         }
       })
-
     },
 
     /**

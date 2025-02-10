@@ -1,10 +1,10 @@
 <template>
-  <div :class="['editor-center', docStyle.asyncTheme ? 'enable-background' : 'normal-background']"
+  <div :class="['editor-center', docStyle.docThemeSync ? 'enable-background' : 'normal-background']"
        ref="TooltipContainer">
     <b-row class="editor-header">
       <div class="left-dropdown-wrapp">
         <Dropdown trigger="click"
-                  :transfer-class-name="docStyle.asyncTheme ? 'dropdown-background dropdown-item-all-hover' : ''"
+                  :transfer-class-name="docStyle.docThemeSync ? 'dropdown-background dropdown-item-all-hover' : ''"
                   placement="bottom-start">
           <div class="menu-icon">
             <span class="iconfont menu-dots"/>
@@ -29,7 +29,7 @@
               </div>
             </DropdownItem>
             <DropdownItem>
-              <div class="quick-menu" @click="saveAndNewDoc">
+              <div class="quick-menu" @click="createNewDoc">
                 <span class="iconfont i-add"/>
                 新建文章
               </div>
@@ -59,7 +59,7 @@
       <div class="editor-setting">
         <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.TooltipContainer">
           <template slot="title">
-            <span>已开启自动发布，内容将自动更新至阅读页面，亦可手动点击更新</span>
+            <span>{{docStyle.autoPublish === 1 ? '已开启自动发布，内容将自动更新至阅读页面，亦可手动点击更新' : '将最新内容更新至阅读页面'}}</span>
           </template>
           <Button class="update-btn" type="success" @click="updateDocConten">
             发布
@@ -89,7 +89,7 @@
               <div class="font-select">
                 <div class="slider-module_slideTitle">
                   <span>正文大小</span>
-                  <div class="selected-font-size">{{ docStyle.docFontSize }}px</div>
+                  <div class="selected-font-size">{{ docStyle.docStyleDefaultFont }}px</div>
                 </div>
                 <div class="select-point">
                   <div class="slider-module_slideContainer un-select" @mouseenter="fontSizeShowSelect = true"
@@ -100,7 +100,6 @@
                         <div v-for="(item,index) in fontSizeRange"
                              :key="index"
                              @click="changeFontSize(item)"
-                             :sdsd="index"
                              class="slider-dot-wrapp"
                              :style="'left: '+ index * 100/(fontSizeRange.length-1) + '%;'">
                           <span class="slider-dot"/>
@@ -137,8 +136,9 @@
                   <div class="label_desc">文档宽度适应屏幕大小</div>
                 </div>
               </div>
-              <i-switch v-model="docStyle.pageSize"
+              <i-switch v-model="docStyle.docStylePageSize"
                         :true-value="1"
+                        :false-value="0"
                         class="switch-btn"
                         size="small">
                 <span slot="1"/>
@@ -155,8 +155,9 @@
                   <div class="label_desc">阅读页面同步显示自定义主题</div>
                 </div>
               </div>
-              <i-switch v-model="docStyle.asyncTheme"
+              <i-switch v-model="docStyle.docThemeSync"
                         :true-value="1"
+                        :false-value="0"
                         class="switch-btn"
                         size="small">
                 <span slot="1"/>
@@ -200,7 +201,7 @@
           </div>
         </Drawer>
         <Modal v-model="showDeleteModal"
-               :class-name="docStyle.asyncTheme ? 'delete-modal delete-modal-ct' : 'delete-modal'"
+               :class-name="docStyle.docThemeSync ? 'delete-modal delete-modal-ct' : 'delete-modal'"
                :width="416"
                :transfer="false"
                :footer-hide="true">
@@ -209,7 +210,7 @@
             确认删除 {{ articleInfo.title }} ？
           </div>
           <div class="confirm-btn">
-            <Button :class="docStyle.asyncTheme ? 'ghost-btn' : ''">取消</Button>
+            <Button :class="docStyle.docThemeSync ? 'ghost-btn' : ''">取消</Button>
             <Button type="success">确定</Button>
           </div>
         </Modal>
@@ -219,6 +220,8 @@
       <editor v-if="articleInfo.uid"
               @updateArticle="updateArticleForEditor"
               :articleInfo="articleInfo"
+              :docStylePageSize="docStyle.docStylePageSize"
+              :docStyleDefaultFont="docStyle.docStyleDefaultFont"
               ref="editorContainer">
       </editor>
     </b-row>
@@ -245,12 +248,14 @@ export default {
       // 1更新中，0更新完成，-1更新失败
       articleUpdateStatus: 0,
       newVersion: false,
-      fontSizeRange: [12, 13, 14, 15, 16, 17, 18, 19],
+      fontSizeRange: [12, 13, 14, 15, 16, 19, 22, 24],
       showDocSetting: false,
       showDeleteModal: false,
       // 更多设置内容 1文档设置，2历史版本
       drawerType: 0,
-      fontSizeShowSelect: false
+      fontSizeShowSelect: false,
+      // 样式相关
+      docStyle: {}
     }
   },
   props: ['uri'],
@@ -260,16 +265,13 @@ export default {
     },
     currentFontIndex() {
       return this.fontSizeRange.findIndex(
-        (item) => item === this.docStyle.docFontSize
+        (item) => item === this.docStyle.docStyleDefaultFont
       );
-    },
-    docStyle() {
-      return this.$store.state.docStyle;
     }
   },
   methods: {
     /**
-     * 手动更新文档内容
+     * 发布
      */
     updateDocConten() {
       WriteCenterApi.publishArticle(this.articleInfo.uid).then(data => {
@@ -300,7 +302,7 @@ export default {
       this.returnDocSetting();
     },
     changeFontSize(value) {
-      this.docStyle.docFontSize = value;
+      this.docStyle.docStyleDefaultFont = value;
     },
     routerPush(path) {
       this.$router.push({path: path})
@@ -317,7 +319,17 @@ export default {
         this.showDocSetting = false;
       }
     },
-    saveAndNewDoc() {
+    createNewDoc() {
+      // 创建空白文档
+      WriteCenterApi.createBlankDoc().then(data => {
+        if (data?.result) {
+          let uri = data.data.uri;
+          let routeUrl = this.$router.resolve({
+            path: '/editor/' + uri
+          })
+          window.open(routeUrl.href, '_blank')
+        }
+      })
     },
     formatTime
   },
@@ -327,9 +339,13 @@ export default {
     ArticleVersion
   },
   created() {
+    this.docStyle = {...this.docStyle, ...this.$store.state.docStyle};
     WriteCenterApi.getArticleForEdit(this.uri).then(data => {
       if (data?.result) {
-        this.articleInfo = data.data
+        this.articleInfo = data.data;
+        if (data.data?.bodyFontSize) {
+          this.docStyle.docStyleDefaultFont = data.data.bodyFontSize;
+        }
       }
     })
   }

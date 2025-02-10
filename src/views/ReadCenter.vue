@@ -1,5 +1,5 @@
 <template>
-  <div :class="[docStyle.asyncTheme ? 'enable-background' : 'normal-background', 'read-center']"
+  <div :class="[docStyle.docThemeSync ? 'enable-background' : 'normal-background', 'read-center']"
        ref="tooltipContainer">
     <div class="layout-module_wrapper">
       <div class="layout-module_directoryWrapper" :style="{ width: sidebarWidth + 'px' }">
@@ -100,11 +100,12 @@
                      :articleUri="articleUri"
                      :columnUri="columnUri"
                      :authorInfo="authorInfo"
-                     :docStyle="docStyle">
+                     :parentDocStyle="docStyle"
+                     @updateDocStyle="updateDocStyle">
         </router-view>
       </div>
       <Modal v-model="modalSearch"
-             :class-name="docStyle.asyncTheme ? 'search-modal search-modal-enable-background' : 'search-modal search-modal-normal'"
+             :class-name="docStyle.docThemeSync ? 'search-modal search-modal-enable-background' : 'search-modal search-modal-normal'"
              width="750"
              :footer-hide="true">
         <span slot="close"/>
@@ -207,7 +208,7 @@
 
     <!-- 登录盒子 -->
     <div style="display: none;">
-      <auth-modal :normalBackground="docStyle.asyncTheme ? 0 : 1">
+      <auth-modal :normalBackground="docStyle.docThemeSync ? 0 : 1">
         <slot>
           <Button id="pwdLoginBtn">
             <span>登陆</span>
@@ -255,7 +256,9 @@ export default {
       authorInfo: {},
       columnInfo: {},
       searchResult: [],
-      emptySearchResult: false
+      emptySearchResult: false,
+      // 样式相关
+      docStyle: {}
     }
   },
   props: ['domain', 'columnUri', 'articleUri'],
@@ -273,9 +276,6 @@ export default {
     loginStatus() {
       let userInfo = this.$store.state.userInfo
       return userInfo !== null && userInfo.token?.length === 32
-    },
-    docStyle() {
-      return this.$store.state.docStyle;
     },
     getListDirData() {
       if (this.dirData.length === 0) {
@@ -533,6 +533,9 @@ export default {
           }
         })
       }
+    },
+    updateDocStyle(styleConfig) {
+      this.docStyle = {...this.docStyle, ...styleConfig};
     }
   },
   mounted() {
@@ -549,6 +552,9 @@ export default {
     if (this.isColumnView) {
       this.searchScope = 2;
     }
+  },
+  created() {
+    this.docStyle = {...this.docStyle, ...this.$store.state.docStyle};
   },
   beforeDestroy() {
     window.removeEventListener('keydown', this.handleKeydown);

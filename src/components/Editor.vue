@@ -8,7 +8,7 @@
             <div class="editor-wrap-content">
               <div class="editor-outer-wrap-box">
                 <div class="editor-wrap-box">
-                  <div :class="['title-box', docStyle.pageSize ? 'title-ultra-wide' : 'title-standard-wide']">
+                  <div :class="['title-box', docStylePageSize ? 'title-ultra-wide' : 'title-standard-wide']">
                     <div class="title-editor">
                       <textarea class="title" v-model="article.title" placeholder="请输入标题"
                                 maxlength="50" tabindex="1" rows="1" ref="titleTextarea"
@@ -20,7 +20,7 @@
                     <div class="engine-box">
                       <div class="engine">
                         <div
-                          :class="['doc-editor','am-engine','am-engine-placeholder', docStyle.pageSize ? 'editor-ultra-wide' : 'editor-standard-wide']"
+                          :class="['doc-editor','am-engine','am-engine-placeholder', docStylePageSize ? 'editor-ultra-wide' : 'editor-standard-wide']"
                           ref="container"></div>
                       </div>
                     </div>
@@ -68,7 +68,7 @@ import Toolbar from "./common/editor/packages/toolbar/src"
 import {plugins, cards, pluginConfig} from "./common/editor/config"
 import {getTocData, getParentNode} from "./common/editor/utils"
 import WriteCenterApi from "@/api/WriteCenterApi";
-import { debounce } from '@/utils/emoji'
+import {debounce, cloneDeep} from '@/utils/emoji'
 
 export default {
   name: 'Editor',
@@ -87,7 +87,8 @@ export default {
       tocData: [],
       currentTocId: '',
       // 大纲刷新的防抖函数
-      debounceRefreshToc: function () {},
+      debounceRefreshToc: function () {
+      },
       engine: null,
       // 工具栏内容：下拉面板、
       items: [
@@ -124,11 +125,13 @@ export default {
     Toolbar
   },
   computed: {
-    docStyle() {
-      return this.$store.state.docStyle;
+    finalConfig() {
+      let config = cloneDeep(pluginConfig);
+      config.fontsize.defaultSize = this.docStyleDefaultFont + 'px'
+      return config;
     }
   },
-  props: ['articleInfo'],
+  props: ['articleInfo', 'docStylePageSize', 'docStyleDefaultFont'],
   methods: {
     changeTitleHeight() {
       let _this = this
@@ -292,12 +295,16 @@ export default {
       // 改变标题框的高度
       this.changeTitleHeight()
     },
-    'docStyle.pageSize'() {
+    'docStylePageSize'() {
       this.$nextTick(() => {
         this.engine?.trigger("editor:resize");
         this.changeTitleHeight()
       })
+    },
+    'docStyleDefaultFont'(newVal) {
       // TODO 改变非标题字体大小
+      let articleInfo = {uid: this.articleInfo.uid, bodyFontSize: newVal};
+      WriteCenterApi.updateArticleInfo(articleInfo);
     }
   },
   created() {
@@ -319,7 +326,7 @@ export default {
         // 启用卡片
         cards,
         // 所有的插件配置
-        config: pluginConfig,
+        config: this.finalConfig,
         autoPrepend: false,
         // 文档提示语
         placeholder: '输入 / 唤起更多'

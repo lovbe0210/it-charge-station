@@ -28,7 +28,7 @@
                   {{ collectInfo.collectId != null ? '取消收藏' : '收藏' }}
                 </template>
                 <div class="action-icon" @click="collectMark">
-                  <Poptip :popper-class="docStyle.asyncTheme ? 'enable-background' : 'normal-background'"
+                  <Poptip :popper-class="docStyle.docThemeSync ? 'enable-background' : 'normal-background'"
                           placement="bottom-end"
                           transfer="transfer"
                           padding="0px"
@@ -96,7 +96,7 @@
                class="layout-module_bookContentWrapper beauty-scroll"
                ref="scrollbarContext">
             <div class="bookReader-module_docContainer">
-              <div :class="['doc_header', docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
+              <div :class="['doc_header', docStyle.docStylePageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
                 <div class="doc_header_wrapper">
                   <h1 id="article-title" class="doc-article-title">
                     {{ articleInfo.title }}
@@ -105,10 +105,10 @@
               </div>
               <!-- 内容显示部分 -->
               <div ref="container"
-                   :class="['doc-reader','am-engine', docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
+                   :class="['doc-reader','am-engine', docStyle.docStylePageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
               </div>
               <!-- 文章页脚 -->
-              <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'" v-show="!fullScreen">
+              <div :class="docStyle.docStylePageSize ? 'reader-ultra-wide' : 'reader-standard-wide'" v-show="!fullScreen">
                 <article-footer :ifLike="articleInfo.ifLike"
                                 :likeUserList="articleInfo.likeUserList"
                                 :likeCount="articleInfo.likeCount"
@@ -118,7 +118,7 @@
                                 @like="likeMark"/>
               </div>
               <!-- 评论 -->
-              <div :class="docStyle.pageSize ? 'reader-ultra-wide' : 'reader-standard-wide'" v-show="!fullScreen">
+              <div :class="docStyle.docStylePageSize ? 'reader-ultra-wide' : 'reader-standard-wide'" v-show="!fullScreen">
                 <reply-comment :targetId="articleInfo.uid"/>
               </div>
             </div>
@@ -181,8 +181,10 @@
                   <div class="label_desc">文档宽度适应屏幕大小</div>
                 </div>
               </div>
-              <i-switch v-model="docStyle.pageSize"
+              <i-switch v-model="docStyle.docStylePageSize"
                         :true-value="1"
+                        :false-value="0"
+                        @on-change="changeDocStyle"
                         class="switch-btn"
                         size="small">
                 <span slot="1"/>
@@ -199,8 +201,10 @@
                   <div class="label_desc">阅读页面同步显示自定义主题</div>
                 </div>
               </div>
-              <i-switch v-model="docStyle.asyncTheme"
+              <i-switch v-model="docStyle.docThemeSync"
                         :true-value="1"
+                        :false-value="0"
+                        @on-change="changeDocStyle"
                         class="switch-btn"
                         size="small">
                 <span slot="1"/>
@@ -292,16 +296,15 @@ export default {
       // 浏览进度汇报的防抖函数
       debounceReportView: function () {
       },
-      engine: null
+      engine: null,
+      // 样式相关
+      docStyle: {}
     }
   },
-  props: ['sidebarWidth', 'columnUri', 'articleUri', 'authorInfo'],
+  props: ['sidebarWidth', 'columnUri', 'articleUri', 'authorInfo', 'parentDocStyle'],
   computed: {
     headerWidth() {
       return 'calc(100vw - ' + ((this.fullScreen ? 0 : this.sidebarWidth) + 'px');
-    },
-    docStyle() {
-      return this.$store.state.docStyle;
     },
     userInfo() {
       return this.$store.state.userInfo;
@@ -578,6 +581,9 @@ export default {
       } else {
         console.log("没有找到登录盒子")
       }
+    },
+    changeDocStyle() {
+      this.$emit("updateDocStyle", this.docStyle);
     }
   },
   watch: {
@@ -594,6 +600,7 @@ export default {
   },
   created() {
     this.debounceReportView = debounce(this.reportViewProcess, 1000 * 10);
+    this.docStyle = {...this.docStyle, ...this.parentDocStyle};
   },
   mounted() {
     const container = this.$refs.container;
