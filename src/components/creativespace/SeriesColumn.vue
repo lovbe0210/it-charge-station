@@ -261,6 +261,7 @@
 <script>
 import WriteCenterApi from "@/api/WriteCenterApi";
 import {formatTime} from '@/utils/emoji'
+import preferenceApi from "../../api/PreferenceApi";
 
 export default {
   name: 'SeriesColumn',
@@ -453,6 +454,11 @@ export default {
     }
   },
   created() {
+    preferenceApi.getPreferenceSetting().then(data => {
+      if (data?.result) {
+        this.currentColumn.isPublic = data.data.contentDefaultPublic;
+      }
+    })
     WriteCenterApi.getColumnList().then(data => {
       if (data?.result) {
         this.seriesColumnList = data.data;

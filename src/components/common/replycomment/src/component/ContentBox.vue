@@ -1,5 +1,5 @@
 <template>
-  <div class="comment" :class="{ 'reply-from-comment': commentReply.parentId }" ref="tooltipContainer">
+  <div class="comment" ref="tooltipContainer">
     <div class="comment-sub un-select">
       <user-card :userInfo="commentReply.userInfo"
                  :popoverContainer="contentBoxParam.popoverContainer"

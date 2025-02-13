@@ -197,7 +197,7 @@
         if (!true) {
           return content
         } else {
-          return '每日一句心灵鸡汤'
+          return '每一步黑暗，都踩亮一颗星。'
         }
       }
     },
@@ -205,7 +205,7 @@
       isEditable(flag) {
         if (!flag) {
           // 失去焦点，更新内容
-          this.$store.commit('editFlagContent', this.flagContent)
+          this.$store.commit('editFlag', this.flagContent)
         }
         this.focused = flag
       },
@@ -230,22 +230,7 @@
         return user.introduction || user.industry || user.location || " ";
       }
     },
-    mounted() {
-      this.needFixed = false;
-      // 从store中获取今日flag并赋值给flagContent
-      this.flagContent = this.$store.state.flagContent.content
-      if (!this.$store.state.isPhone) {
-        // 给window添加一个滚动监听事件
-        let app = document.getElementById("app");
-        app.addEventListener('scroll', this.handleScroll)
-        // 获取元素高度
-        this.$nextTick(() => {
-          if (this.fixedHeight !== null) {
-            return;
-          }
-          this.fixedHeight = this.$refs.fixedElement.getBoundingClientRect().top
-        })
-      }
+    created() {
       contentPicksApi.getFeaturedArticle().then(data => {
         if (data?.result) {
           this.featuredArticle = data.data;
@@ -261,6 +246,22 @@
           this.authors = data.data;
         }
       })
+    },
+    mounted() {
+      this.needFixed = false;
+      // 从store中获取今日flag并赋值给flagContent
+      this.flagContent = this.$store.state.flagContent.content
+      if (!this.$store.state.isPhone) {
+        // 给window添加一个滚动监听事件
+        let app = document.getElementById("app");
+        app.addEventListener('scroll', this.handleScroll)
+        // 获取元素高度
+        setTimeout(() => {
+          this.$nextTick(() => {
+            this.fixedHeight = this.$refs.fixedElement.getBoundingClientRect().top
+          })
+        }, 1000)
+      }
     },
     destroyed() {
       // 释放监听

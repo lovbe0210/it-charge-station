@@ -28,6 +28,7 @@
   // uuid
   import { v4 as uuid } from 'uuid';
   import UserApi from "@/api/UserApi";
+  import preferenceApi from "./api/PreferenceApi";
 
 
   // 安装bootstrap和图标库
@@ -102,43 +103,108 @@
         // 自定义主题状态初始化
         storeData.showCustomer = false;
 
-        // 页面状态初始化
-        // storeData.pageState = "init";
-
         // 判断是否有唯一标识
         if (storeData.uniqueId === null || storeData.uniqueId === undefined || storeData.uniqueId.length === 0) {
           storeData.uniqueId = uuid();
         }
 
-        this.$store.replaceState(
-          Object.assign(
-            {},
-            this.$store.state,
-            storeData
+        // 判断是手机页面还是pc页面
+        if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+          // 手机端
+          storeData.isPhone = true;
+        } else {
+          // pc页面
+          storeData.isPhone = false;
+        }
+
+        // 设置页面状态为初始化
+        storeData.pageState = "init";
+
+        // 判断用户登录状态是否有效
+        let userInfo = storeData.userInfo;
+        if (!userInfo || !userInfo.uid || !userInfo.token) {
+          // 未登录状态直接覆盖vuex
+          this.$store.replaceState(
+            Object.assign(
+              {},
+              this.$store.state,
+              storeData
+            )
           )
-        )
-      }
-
-      this.$store.commit("updatePageState", "init");
-
-      // 判断是手机页面还是pc页面
-      if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
-        // 手机端
-        this.$store.commit('isPhone', true)
-      } else {
-        // pc页面
-        this.$store.commit('isPhone', false)
-      }
-
-      // 判断用户登录状态是否有效
-      let userInfo = this.$store.state.userInfo;
-      if (userInfo && userInfo.uid) {
+          return;
+        }
+        // 登录状态，获取用户信息，同步偏好设置、主题、音乐播放列表
         UserApi.getUserInfo(userInfo.uid).then(data => {
           if (data?.result) {
             let loginUser = data.data;
-            userInfo = {...userInfo, ...loginUser};
             // 保存userInfo到store中
-            this.$store.commit('login', userInfo);
+            storeData.userInfo = {...userInfo, ...loginUser};
+            // 偏好设置同步
+            preferenceApi.getPreferenceSetting().then(data => {
+              if (data?.result) {
+                // 0云端 1本地
+                if (data.data.configFrom === 0) {
+                  // 云端数据为主，覆盖本地数据
+                  let docSetting = {
+                    autoPublish: data.data.autoPublish,
+                    docThemeSync: data.data.docThemeSync,
+                    docStyleDefaultFont: data.data.docStyleDefaultFont,
+                    docStylePageSize: data.data.docStylePageSize,
+                    enableComment: data.data.enableComment
+                  };
+                  storeData.docStyle = Object.assign(storeData.docStyle, docSetting);
+                  storeData.customerSet = JSON.parse(data.data.customTheme);
+                  let flagContent = data.data.flagContent;
+                  if (flagContent) {
+                    storeData.flagContent = JSON.parse(flagContent);
+                  }
+                  let musicPlay = data.data.musicPlay;
+                  if (musicPlay) {
+                    storeData.musicInfo = Object.assign(storeData.musicInfo, JSON.parse(musicPlay));
+                  }
+                  preferenceApi.getMusicPlayList().then(data => {
+                    if (data.result && data.data && data.data.length > 0) {
+                      storeData.musicInfo.musicList = data.data;
+                    }
+                    this.$store.replaceState(
+                      Object.assign(
+                        {},
+                        this.$store.state,
+                        storeData
+                      )
+                    )
+                  })
+                } else {
+                  this.$store.replaceState(
+                    Object.assign(
+                      {},
+                      this.$store.state,
+                      storeData
+                    )
+                  )
+                  let musicInfo = storeData.musicInfo;
+                  let updateConfig = {
+                    customTheme: storeData.customerSet,
+                    musicPlay: {
+                      musicId: musicInfo.musicId,
+                      currentVolume: musicInfo.currentVolume,
+                      playType: musicInfo.playType
+                    }
+                  };
+                  // 本地数据为主，更新至云端
+                  preferenceApi.updatePreferenceSetting(updateConfig);
+                  if (musicInfo.musicList && musicInfo.musicList.length > 0) {
+                    preferenceApi.updateMusicPlayList(musicInfo.musicList);
+                  } else {
+                    preferenceApi.getMusicPlayList().then(data => {
+                      if (data.result && data.data && data.data.length > 0) {
+                        this.$store.commit("updateMusicInfo", {musicList: data.data});
+                      }
+                    })
+                  }
+                }
+              }
+            })
           }
         })
       }
@@ -176,7 +242,6 @@
         this.$store.commit("updatePageState", "close");
         // 火狐浏览器关闭时只会触发unload事件
         if (commonUtil.getBrowerAgent() === "Firefox") {
-          this.$store.commit("updateBackgroundPlay", false);
           this.$store.commit("updateMusicInfo", {isPlay: false});
           localStorage.setItem('store', JSON.stringify(this.$store.state))
           return;
@@ -186,9 +251,8 @@
         this._gap_time = new Date().getTime() - this._beforeUnload_time
         //判断是窗口关闭还是刷新
         if (this._gap_time <= 5) {
-          // 关闭窗口，将flag信息保存到localStorage中
+          // 关闭窗口，将vuex信息保存到localStorage中
           this.$store.commit("updatePageState", "close");
-          this.$store.commit("updateBackgroundPlay", false);
           this.$store.commit("updateMusicInfo", {isPlay: false});
           localStorage.setItem('store', JSON.stringify(this.$store.state))
         }
@@ -203,10 +267,6 @@
         if (document.visibilityState === "hidden" && pageState !== "flush") {
           // 如果是刷新后的回调事件，则不在进行操作
           this.$store.commit("updatePageState", "hidden");
-          // 如果当前有音乐播放，则修改后台播放状态
-          if (this.$store.state.musicInfo.isPlay) {
-            this.$store.commit("updateBackgroundPlay", true);
-          }
           // 页面变为后台状态，保存vuex中的数据，除过播放状态和自定义设置主题卡片状态
           // 注意此处为深拷贝，要不会改变store的状态
           let state = JSON.parse(JSON.stringify(this.$store.state));

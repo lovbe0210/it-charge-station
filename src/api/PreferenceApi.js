@@ -25,6 +25,31 @@ export default {
       method: 'POST',
       data: preferenceSetting
     });
+  },
+
+  /**
+   * 更新音乐播放列表
+   * @param musicList
+   * @returns {Promise<*>}
+   */
+  async updateMusicPlayList(playList) {
+    return await Vue.prototype.$request({
+      url: "/in/music/list/update",
+      method: 'POST',
+      data: playList
+    });
+  },
+
+  /**
+   * 获取音乐播放列表
+   * @param musicList
+   * @returns {Promise<*>}
+   */
+  async getMusicPlayList() {
+    return await Vue.prototype.$request({
+      url: "/in/music/list/get",
+      method: 'GET'
+    });
   }
 
 }

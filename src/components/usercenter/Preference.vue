@@ -6,7 +6,7 @@
       <div class="settings-form-item">
         <div class="setting-item-label">
           <h4>配置更新规则</h4>
-          <p>当云端配置项和本地配置项冲突时配置更新原则（包括自定义主题、音乐播放列表和文档专栏等配置项）</p>
+          <p>当云端配置项和本地配置项冲突时配置更新规则（包括自定义主题、音乐播放列表和文档专栏等默认配置项）</p>
         </div>
         <div class="setting-item-switch">
           <Select v-model="userConfigs.configFrom" @on-change="updateConfigFrom">

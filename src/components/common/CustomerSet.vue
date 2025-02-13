@@ -23,7 +23,7 @@
         <span slot="close">Color</span>
       </i-switch>
       <Upload v-show="!gradientColor"
-              action="/icharge/common/upload" :show-upload-list="false"
+              action="/api/st/upload" :show-upload-list="false"
               :format="['jpg','jpeg','png']" :max-size="10240" :on-progress="uploading"
               accept="image/png, image/jpeg" :disabled="uploadStatus === 1"
               :on-exceeded-size="handleMaxSize" :on-format-error="handleFormatError"
@@ -62,6 +62,8 @@
 </template>
 
 <script>
+  import preferenceApi from "../../api/PreferenceApi";
+
   export default {
     name: "CustomerSet",
     data() {
@@ -92,6 +94,10 @@
       },
       showCustomer() {
         return this.$store.state.showCustomer;
+      },
+      loginStatus() {
+        let userInfo = this.$store.state.userInfo
+        return userInfo !== null && userInfo.token?.length === 32
       }
     },
     methods: {
@@ -203,22 +209,27 @@
               titleColor: '#585A5A',
               backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)',
               borderColor: 'rgba(0,0,0,0.08)',
-              dropdownBackgroundColor: 'rgba(255,255,255,0.98)',
+              dropdownBackgroundColor: 'rgba(255,255,255,0.95)',
               dropdownItemHover: '#E9E9E9',
-              onThemeBackgroundColor: 'rgba(250,251,251,0.98)',
+              onThemeBackgroundColor: 'rgba(250,251,251,0.95)',
               ramblyJotEditorBackgroundColor: '#F2F3F5',
               modalBackgroundColor: 'rgba(250,251,251,0.98)'
             }
             break;
         }
-        this.$store.commit('customerSet', customerSet)
+        this.$store.commit('customerSet', customerSet);
       }
     },
     watch: {
       customerSet: {
         immediate: true,
         deep: true,
-        handler() {
+        handler(value) {
+          console.log("呦呦呦")
+          if (this.loginStatus) {
+            let preferenceSetting = {customTheme: value}
+            preferenceApi.updatePreferenceSetting(preferenceSetting);
+          }
           let backgroundImg = this.$store.state.customerSet.backgroundImg;
           this.gradientColor = backgroundImg.indexOf('linear-gradient') !== -1;
           // 如果当前是渐变色，则需要解析出渐变色中的颜色

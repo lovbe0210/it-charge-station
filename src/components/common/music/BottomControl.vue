@@ -43,10 +43,10 @@
         <span @click="musicList.length != 0 ? changeMusic('next') : ''">
           <span class="iconfont next"/>
         </span>
-        <span>
+<!--        <span>
           <span class="iconfont" :class="isUserLikeCurrentMusic ? 'like-yes' : 'like-no'"
              @click="musicList.length != 0 ? likeIt() : ''"/>
-        </span>
+        </span>-->
         <a-tooltip placement="top"
                    overlayClassName="volume-control-tooltip"
                    :getPopupContainer="()=>this.$refs.btoContainer">
@@ -407,7 +407,7 @@
       // 初始化当前播放的歌曲信息
       this.musicInfo = this.musicList[this.currentMusicIndex];
       // 更新musicId
-      this.$store.commit("updateMusicInfo", {musicId: this.musicInfo.id})
+      this.$store.commit("updateMusicInfo", {musicId: this.musicInfo.musicId})
       MusicApi.getMusicUrlById(this, this.musicInfo.id).then((data) => {
         this.musicUrl = data;
         // 初始化播放时间和vuex中的保持一致

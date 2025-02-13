@@ -43,13 +43,26 @@ export default {
   },
 
   /**
-   * 获取点赞列表
+   * 获取评论列表
    * @param collectTarget
    * @returns {Promise<*>}
    */
   async getCommentList(targetCommentInfo) {
     return await Vue.prototype.$request({
       url: "/sl/target/comments",
+      method: 'POST',
+      data: targetCommentInfo
+    });
+  },
+
+  /**
+   * 获取回复列表
+   * @param collectTarget
+   * @returns {Promise<*>}
+   */
+  async getReplyList(targetCommentInfo) {
+    return await Vue.prototype.$request({
+      url: "/sl/comment/replies",
       method: 'POST',
       data: targetCommentInfo
     });

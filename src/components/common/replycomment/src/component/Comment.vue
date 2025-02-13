@@ -5,29 +5,41 @@
                 :contentBoxParam="param"/>
     <div class="reply-box" v-if="total > 0">
       <div class="reply-list">
-        <ContentBox v-for="(reply, index) in showReply"
-                    :key="index"
+        <ContentBox v-for="reply in replyList"
+                    :key="reply.uid"
                     :data="reply"
                     :parent-id="data.uid"
                     :contentBoxParam="param"/>
-        <!-- 如果total>3则进行折叠，打开折叠后如果小于分页数，直接全部显示，否则使用分页显示 -->
-        <div v-if="total > 3" class="fetch-more">
-          <div v-if="collapse">
-            <span>共{{ total }}条回复,&nbsp;</span>
-            <span class="fetch-more-comment" @click="moreReply">
+        <!-- 如果total>5则进行折叠，打开折叠后如果小于分页数，直接全部显示，否则使用分页显示 -->
+        <div v-if="total > 3 && collapse" class="fetch-more un-select">
+          <span>共{{ total }}条回复,&nbsp;</span>
+          <span class="fetch-more-comment" @click="moreReply(1)">
                 点击查看
                 <span class="iconfont drop-down"></span>
               </span>
-          </div>
         </div>
-        <div v-if="!collapse && total > pageSize" class="fetch-more">
-          <a-pagination
-            size="small"
+        <div v-if="!collapse && total > pageSize" class="fetch-more un-select">
+          <div class="pagination-prefix">
+            <span>共{{ Math.ceil(total / pageSize) }}页</span>
+          </div>
+          <b-pagination
             v-model="currentPage"
-            :pageSize="pageSize"
-            :total="total"
-            :show-total="() => `共 ${total} 条`"
-          />
+            :total-rows="total"
+            :per-page="pageSize"
+            first-number
+            last-number
+            size="sm"
+            @change="moreReply">
+            <template #prev-text>
+              <span class="prev-page">上一页</span>
+            </template>
+            <template #next-text>
+              <span class="next-page">下一页</span>
+            </template>
+            <template #ellipsis-text>
+              <span class="iconfont operate-standard"></span>
+            </template>
+          </b-pagination>
         </div>
       </div>
     </div>
@@ -72,15 +84,6 @@ export default {
     },
     userInfo() {
       return this.$store.state.userInfo;
-    },
-    showReply() {
-      if (this.collapse && this.total > 3) {
-        return this.replyList.slice(0, 3);
-      } else if (this.collapse && this.total <= 3) {
-        return this.replyList;
-      } else {
-        return this.replyList.slice(this.pageSize * (this.currentPage - 1), this.pageSize * this.currentPage);
-      }
     }
   },
 
@@ -88,11 +91,22 @@ export default {
     ContentBox
   },
   methods: {
-    moreReply() {
+    moreReply(page) {
       // 请求数据
-      setTimeout(() => {
+      let commentReplyRequest = {
+        targetId: this.contentBoxParam.targetId,
+        commentId: this.data?.uid,
+        offset: (page - 1) * this.pageSize,
+        limit: this.pageSize
+      };
+      socialApi.getReplyList(commentReplyRequest).then(data => {
+        if (data?.result) {
+          this.replyList = data.data;
+        }
+      })
+      if (this.collapse) {
         this.collapse = false;
-      }, 200)
+      }
     },
 
     /**
@@ -169,13 +183,14 @@ export default {
   created() {
     let tmpList = cloneDeep(this.data?.replyList);
     this.replyList = tmpList == null ? [] : tmpList;
-    this.total = tmpList ? tmpList.length : 0;
+    this.total = this.data?.replyCount;
   }
 }
 
 </script>
 
 <style lang="less" scoped>
+@import "../../../../css/common-var";
 .comment-list > .comment > .comment-primary > .comment-main {
   margin-right: 12px;
 }
@@ -184,16 +199,16 @@ export default {
   margin: 10px 0 10px 56px;
 
   .reply-list {
-    padding: 12px 0 12px 12px;
+    padding-left: 12px;
     border-radius: 4px;
   }
 
   .fetch-more {
-    margin-left: 36px;
-    margin-top: 10px;
-    color: #6d757a;
+    padding: 10px 0;
     font-size: 12px;
     line-height: 22px;
+    display: flex;
+    align-items: center;
 
     .fetch-more-comment {
       color: #1890ff;
@@ -205,33 +220,36 @@ export default {
       }
     }
 
-    /deep/ .ant-pagination {
-      // 分页UI
-      font-size: 12px !important;
+    .pagination-prefix {
+      margin-right: 8px;
+    }
 
-      .ant-pagination-item-link {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: none !important;
+    .pagination {
+      align-items: center;
+      /deep/.page-item {
+        .page-link {
+          border: unset !important;
+          background: unset;
+          font-size: 13px;
+          font-weight: 500;
+          color: @light-font-color;
 
-        i {
-          font-size: 10px;
+          &:hover {
+            color: @link-color !important;
+          }
+
+          &:focus {
+            box-shadow: unset;
+          }
+        }
+
+        [role="menuitem"][aria-disabled="true"].page-link {
+          display: none;
         }
       }
 
-      .ant-pagination-prev:focus .ant-pagination-item-link, .ant-pagination-next:focus .ant-pagination-item-link {
-        color: unset;
-      }
-
-      .ant-pagination-item {
-        border: none !important;
-      }
-
-      .ant-pagination-item-active {
-        border: none !important;
-        background-color: unset !important;
-        color: #1890ff;
+      /deep/.page-item.active .page-link {
+        color: @link-color !important;
       }
     }
   }

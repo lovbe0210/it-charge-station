@@ -167,6 +167,50 @@
       border-color: @primary-color;
     }
   }
+
+  /deep/ .operate-more {
+    .ant-popover-arrow {
+      display: none;
+    }
+
+    .ant-popover-inner {
+      background-color: var(--dropdown-item-hover);
+
+      .ant-popover-inner-content {
+        color: var(--font-color);
+        width: 200px;
+        font-size: 12px;
+
+        .del-warn-btn {
+          margin: 10px 0 0;
+          display: flex;
+          flex-direction: row-reverse;
+
+          .ivu-btn {
+            font-size: 13px;
+          }
+
+          .ivu-btn-success {
+            margin-left: 10px;
+          }
+
+          .ivu-btn-default {
+            color: var(--font-color);
+
+            &:hover {
+              color: @primary-color;
+            }
+          }
+        }
+
+        .del {
+          &:hover {
+            color: var(--title-color);
+          }
+        }
+      }
+    }
+  }
 }
 
 // 第三方插件样式覆盖
