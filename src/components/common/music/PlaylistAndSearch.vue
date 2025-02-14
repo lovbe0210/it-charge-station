@@ -18,21 +18,21 @@
     </div>
     <!-- 歌单 -->
     <b-list-group class="music-list" @wheel="handleScrollWheel">
-      <b-list-group-item class="playItem" v-for="(item,index) in playList" :key="item.id" @dblclick="playSelect(index)">
-        <b-row :class="[$store.state.musicInfo.musicId === item.id ? 'currentPlay' : '']"
-               @mouseenter="currentShowId=item.id"
+      <b-list-group-item class="playItem" v-for="(item,index) in playList" :key="item.musicId" @dblclick="playSelect(index)">
+        <b-row :class="[$store.state.musicInfo.musicId === item.musicId ? 'currentPlay' : '']"
+               @mouseenter="currentShowId=item.musicId"
                @mouseleave="currentShowId=null">
-          <b-col cols="6" class="music-name" :title="item.name">
-            {{item.name}}
+          <b-col cols="6" class="music-name" :title="item.musicName">
+            {{item.musicName}}
           </b-col>
-          <b-col cols="3" class="signerName" :title="item.ar[0].name">
-            {{item.ar[0].name}}
+          <b-col cols="3" class="signerName" :title="item.author">
+            {{item.author}}
           </b-col>
-          <b-col cols="2" class="next-play" v-show="ifSearchOrPlayList && currentShowId===item.id"
+          <b-col cols="2" class="next-play" v-show="ifSearchOrPlayList && currentShowId===item.musicId"
                  @click="nextPlay(index)">
             <span class="iconfont add"></span>
           </b-col>
-          <b-col cols="2" class="music-del" v-show="!ifSearchOrPlayList && currentShowId===item.id"
+          <b-col cols="2" class="music-del" v-show="!ifSearchOrPlayList && currentShowId===item.musicId"
                  @click="removeFromPlayList(index)">
             <span class="iconfont delete"></span>
           </b-col>
@@ -45,6 +45,8 @@
 
 <script>
   import MusicApi from '@/api/MusicApi.js'
+  import { returnSecond } from "@/utils/utils"
+  import preferenceApi from "../../../api/PreferenceApi";
 
   export default {
     name: "PlayListAndSearch",
@@ -73,11 +75,15 @@
       },
       currentMusicId() {
         return this.$store.state.musicInfo.musicId;
+      },
+      loginStatus() {
+        let userInfo = this.$store.state.userInfo
+        return userInfo !== null && userInfo.token?.length === 32
       }
     },
     methods: {
       searchMusic() {
-        MusicApi.cloudSearch(this, this.keywords.length === 0 ? this.placeholder : this.keywords).then(data => {
+        MusicApi.cloudSearch(this.keywords.length === 0 ? this.placeholder : this.keywords).then(data => {
           this.ifSearchOrPlayList = 1;
           this.searchResult = [];
           this.topMusicScroll = 0;
@@ -88,7 +94,16 @@
           });
           setTimeout(() => {
             if (data.length > 0) {
-              this.searchResult = data;
+              this.searchResult = data.map(resultItem => {
+                return {
+                  musicId: resultItem.id,
+                  musicName: resultItem.name,
+                  musicCover: resultItem.al?.picUrl,
+                  author: resultItem.ar?.map(r => r.name).join(','),
+                  duration: typeof resultItem.dt === "number" ? resultItem.dt : returnSecond(resultItem.dt),
+                  platformCode: 1
+                }
+              });
             }
           }, 1)
         })
@@ -97,23 +112,26 @@
         let selectMusic = this.playList[index];
         if (this.ifSearchOrPlayList === 0) {
           // 播放列表
-          this.$store.commit("updateMusicInfo", {musicId: selectMusic.id, currentIndex: index});
+          this.$store.commit("updateMusicInfo", {musicId: selectMusic.musicId, currentIndex: index});
         } else {
           // 搜索列表
           let playList = this.$store.state.musicInfo.musicList;
           let index = playList.findIndex(
-            (item) => item.id === selectMusic.id
+            (item) => item.musicId === selectMusic.musicId
           );
           if (index === -1) {
-            playList.push(selectMusic)
+            playList.push(selectMusic);
             this.$store.commit("updateMusicInfo", {
-              musicList: playList,
-              musicId: selectMusic.id,
+              musicId: selectMusic.musicId,
               currentIndex: playList.length - 1
             });
+            // 如果是登陆用户保存播放列表
+            if (this.loginStatus) {
+              preferenceApi.addMusic2PlayList(selectMusic);
+            }
           } else {
             this.$store.commit("updateMusicInfo", {
-              musicId: selectMusic.id,
+              musicId: selectMusic.musicId,
               currentIndex: index
             });
           }
@@ -125,25 +143,31 @@
         // 搜索列表
         let playList = this.$store.state.musicInfo.musicList;
         let findIndex = playList.findIndex(
-          (item) => item.id === selectMusic.id
+          (item) => item.musicId === selectMusic.musicId
         );
         if (findIndex === -1) {
           let currentPlayIndex = this.$store.state.musicInfo.currentIndex;
           playList.splice(currentPlayIndex + 1, 0, selectMusic);
+          if (this.loginStatus) {
+            preferenceApi.addMusic2PlayList(selectMusic);
+          }
         }
       },
       removeFromPlayList(index) {
         let selectMusic = this.playList[index];
         this.playList.splice(index, 1);
-        if (selectMusic.id === this.currentMusicId) {
+        if (selectMusic.musicId === this.currentMusicId) {
           // 直接停止音乐
           this.$store.commit("updateMusicInfo", {musicId: null});
         } else if (this.currentMusicId !== null) {
           // 更新当前播放音乐的index
           let findIndex = this.playList.findIndex(
-            (item) => item.id === this.currentMusicId
+            (item) => item.musicId === this.currentMusicId
           );
           this.$store.commit("updateMusicInfo", {currentIndex: findIndex});
+          if (this.loginStatus) {
+            preferenceApi.deleteMusicPlayList(selectMusic);
+          }
         }
 
       },
@@ -189,11 +213,6 @@
           setTimeout(() => {
             this.playListShow = true;
           }, 200)
-        }
-      },
-      playListShow(flag) {
-        if (flag) {
-
         }
       }
     },

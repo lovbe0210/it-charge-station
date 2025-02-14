@@ -188,18 +188,20 @@
             border-radius: 6px;
             color: var(--font-color);
             background-color: var(--dropdown-bg-color);
-            border-left: 1px solid rgba(255,255,255, 0.2);
-            border-right: 1px solid rgba(255,255,255, 0.2);
           }
 
           .theme {
             height: 100/2%;
-            border-top: 1px solid rgba(255,255,255, 0.2);
+            border-top: 1px solid @border-color_normal;
+            border-left: 1px solid @border-color_normal;
+            border-right: 1px solid @border-color_normal;
           }
 
           .music {
             height: 100/2%;
-            border-bottom: 1px solid rgba(255,255,255, 0.2);
+            border-bottom: 1px solid @border-color_normal;
+            border-left: 1px solid @border-color_normal;
+            border-right: 1px solid @border-color_normal;
           }
 
           .other {

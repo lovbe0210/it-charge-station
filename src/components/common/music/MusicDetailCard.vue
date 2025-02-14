@@ -17,20 +17,20 @@
         <div class="disc" :class="[$store.state.musicInfo.isPlay ? '' : 'pause',
                                    $store.state.musicInfo.isMusicLoad ? '' : 'discAnimation']" ref="disc">
           <img :src="require('@/assets/img/MusicDetailCard/disc.png')" alt=""/>
-          <img :src="require('@/assets/img/test.jpg')" alt="" class="musicAvatar" v-if="!musicInfo.al.picUrl"
+          <img :src="require('@/assets/img/test.jpg')" alt="" class="musicAvatar" v-if="!musicInfo.musicCover"
                ref="avatar"/>
-          <img :src="musicInfo.al.picUrl" alt="" class="musicAvatar" v-else ref="avatar" crossorigin="anonymous"/>
+          <img :src="musicInfo.musicCover" alt="" class="musicAvatar" v-else ref="avatar" crossorigin="anonymous"/>
         </div>
       </div>
     </div>
     <div class="right">
       <div class="title">
         <div class="musicInfo">
-          <div class="music-name" :title="musicInfo.name">
-            {{ musicInfo.name }}
+          <div class="music-name" :title="musicInfo.musicName">
+            {{ musicInfo.musicName }}
           </div>
-          <div class="singer" @click="goToDetailPage('singerDetail', musicInfo.ar[0].id)">
-            {{ musicInfo.name ? musicInfo.ar[0].name : ""}}
+          <div class="singer">
+            {{ musicInfo.musicName ? musicInfo.author : ""}}
           </div>
         </div>
       </div>
@@ -62,10 +62,8 @@
     data() {
       return {
         musicInfo: {
-          id: null,
-          al: {
-            picUrl: null
-          }
+          musicId: null,
+          musicCover: null
         },
         // 是否删除卡片渲染的内容
         cleanCard: true,
@@ -143,8 +141,8 @@
           this.lyric = [[0, "无限音乐，无限可能"]];
           this.lyricsIndex = 0;
           this.musicInfo = {
-            id: null,
-            al: {picUrl: null}
+            musicId: null,
+            musicCover: null
           };
           // 重置背景色
           this.background = "var(--dropdown-bg-color)";
@@ -158,7 +156,7 @@
         this.musicInfo = this.$store.state.musicInfo.musicList[this.$store.state.musicInfo.currentIndex];
         // 优化性能,仅在卡片展示时才发送请求
         if (this.isMusicDetailCardShow) {
-          MusicApi.getLyricById(this, musicId).then((data) => {
+          MusicApi.getLyricById(musicId).then((data) => {
             this.lyric = data;
           })
           // 重置背景色
@@ -167,7 +165,7 @@
           setTimeout(() => {
             this.returnStatus = 0;
             this.background = this.getColor(this.$refs.avatar);
-            this.currentMusicId = this.musicInfo.id;
+            this.currentMusicId = this.musicInfo.musicId;
           }, 2000);
         }
       },
@@ -178,13 +176,13 @@
           return;
         }
         // 更新当前歌曲信息
-        if (this.musicInfo.id === null) {
+        if (this.musicInfo.musicId === null) {
           return;
         }
         // this.musicInfo = this.$store.state.musicInfo.musicList[this.$store.state.musicInfo.currentIndex];
         let currentTime = this.$store.state.musicInfo.currentTime;
         if (this.lyric.length === 1) {
-          MusicApi.getLyricById(this, this.musicInfo.id).then((data) => {
+          MusicApi.getLyricById(this.musicInfo.musicId).then((data) => {
             this.lyric = data;
             // 歌词处理,直接跳转到当前播放歌词
             this.getCurrentLyricsIndex(currentTime);
@@ -200,14 +198,14 @@
         }
 
         // 重置背景色
-        if (this.musicInfo.id !== this.currentMusicId) {
+        if (this.musicInfo.musicId !== this.currentMusicId) {
           this.background = "var(--dropdown-bg-color)";
           this.returnStatus = 1;
           setTimeout(() => {
             this.returnStatus = 0;
             let color = this.getColor(this.$refs.avatar);
             this.background = color;
-            this.currentMusicId = this.musicInfo.id;
+            this.currentMusicId = this.musicInfo.musicId;
           }, 2000);
         }
       },

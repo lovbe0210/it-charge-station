@@ -50,6 +50,32 @@ export default {
       url: "/in/music/list/get",
       method: 'GET'
     });
+  },
+
+  /**
+   * 添加音乐到播放列表
+   * @param musicList
+   * @returns {Promise<*>}
+   */
+  async addMusic2PlayList(playInfo) {
+    return await Vue.prototype.$request({
+      url: "/in/music/list/add",
+      method: 'POST',
+      data: playInfo
+    });
+  },
+
+  /**
+   * 删除音乐播放列表
+   * @param musicList
+   * @returns {Promise<*>}
+   */
+  async deleteMusicPlayList(playInfo) {
+    return await Vue.prototype.$request({
+      url: "/in/music/list/del",
+      method: 'POST',
+      data: playInfo
+    });
   }
 
 }

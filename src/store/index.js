@@ -80,14 +80,18 @@ export default new Vuex.Store({
         {
           musicId: 1877526024,
           musicName: "忙しい生活「人山人海」",
+          musicCover: "http://p1.music.126.net/nsqh0VBUziGp2z5_5w_6fA==/109951166378021242.jpg",
           author: "时空储蓄罐",
+          duration: 123857,
           platformCode: 1,
           isLike: 0
         },
         {
           musicId: 187797,
           musicName: "风雨无阻",
+          musicCover: "http://p1.music.126.net/WvSPLq6pHBE3oFv2CdfLnQ==/109951165611287994.jpg",
           author: "周华健",
+          duration: 273333,
           platformCode: 1,
           isLike: 0
         }
@@ -223,7 +227,7 @@ export default new Vuex.Store({
     updateMusicInfo(state, musicInfo) {
       state.musicInfo = Object.assign(state.musicInfo, musicInfo);
       if (musicInfo.musicList && musicInfo.musicList.length > 0 && state.musicInfo.musicId) {
-        let number = state.musicInfo.musicList.findIndex(mp => mp.id === state.musicInfo.musicId);
+        let number = state.musicInfo.musicList.findIndex(mp => mp.musicId === state.musicInfo.musicId);
         state.musicInfo.currentIndex = number === -1 ? 0 : number;
       }
     },

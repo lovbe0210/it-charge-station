@@ -3,11 +3,10 @@ import Vue from "vue";
 export default {
   /**
    * 获取歌词并解析
-   * @param _this
    * @param id
    * @returns {Promise<[]>}
    */
-  async getLyricById(_this, id) {
+  async getLyricById(id) {
     let data = await Vue.prototype.$request({
       url: "/music/lyric?id=" + id,
       method: 'get'
@@ -41,11 +40,10 @@ export default {
 
   /**
    * 获取歌曲播放url
-   * @param _this
    * @param id
    * @returns {Promise<string>}
    */
-  async getMusicUrlById(_this, id) {
+  async getMusicUrlById(id) {
     // TODO 需要做容错处理以及收费歌曲、没版权歌曲
     let response = await Vue.prototype.$request({
       url: "/music/song/url?id=" + id,
@@ -57,11 +55,10 @@ export default {
 
   /**
    * 搜素（暂时只搜索歌曲）
-   * @param _this
    * @param keywords 关键字
    * @returns {Promise<[]>}
    */
-  async cloudSearch(_this, keywords) {
+  async cloudSearch(keywords) {
     let data = await Vue.prototype.$request({
       url: "/music/cloudsearch?keywords=" + keywords + "&limit=50",
       method: 'get'
