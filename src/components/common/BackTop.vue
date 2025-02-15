@@ -3,26 +3,25 @@
     <div class="back-top" v-show="backTopShow" @click="backTop">
       <span class="iconfont to-top"/>
     </div>
-    <div class="settings" v-show="immediate || backTopShow" v-b-tooltip.hover.leftbottom.v-secondary :title="title"
-         @click="$store.commit('showCustomer', true)">
-      <span class="iconfont icon-colorful-setting"/>
+    <div v-if="showSurprise">
+      <div class="settings" v-show="immediate || backTopShow" v-b-tooltip.hover.leftbottom.v-secondary :title="title"
+           @click="$store.commit('showCustomer', true)">
+        <span class="iconfont icon-colorful-setting"/>
+      </div>
     </div>
     <!-- surprise -->
     <Drawer placement="right" v-model="showCustomer" :closable="false"
             width="18" :lock-scroll="false" class-name="customer un-select">
-      <div class="theme">
-        <customer-set></customer-set>
-      </div>
-      <div class="music">
-        <music-index></music-index>
-      </div>
-      <div class="other">
-        <vue-baberrage :isShow="false"
-                       :barrageList="barrageList"
-                       :lanes-count="4"
-                       :message-height="10"
-                       :loop="true">
-        </vue-baberrage>
+      <div v-if="showSurprise">
+        <div class="theme">
+          <customer-set></customer-set>
+        </div>
+        <div class="music">
+          <music-index></music-index>
+        </div>
+        <div class="other">
+
+        </div>
       </div>
     </Drawer>
   </div>
@@ -50,6 +49,10 @@
       },
       // 即刻显示
       immediate: {
+        type: Boolean,
+        default: true
+      },
+      showSurprise: {
         type: Boolean,
         default: true
       }
@@ -104,7 +107,6 @@
             timer = requestAnimationFrame(fn);
           } else {
             cancelAnimationFrame(timer);
-            varThis.goTopShow = false;
           }
         });
       },
@@ -151,7 +153,7 @@
     }
 
     .back-top:hover {
-      //background: @background-color-base;
+      background: var(--dropdown-item-hover);
     }
 
     .settings {

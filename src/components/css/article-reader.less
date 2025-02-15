@@ -384,6 +384,50 @@
     position: unset!important;
     background-color: unset;
   }
+
+  .back-top {
+    position: absolute;
+    z-index: 999;
+    bottom: 50px;
+    right: 50px;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(255,255,255,1);
+    cursor: pointer;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
+
+    .to-top {
+      border-radius: 50%;
+      margin-left: 7.5px;
+      font-size: 33px;
+      color: @light-font-color;
+    }
+
+    &:hover {
+      background: @dropdown-item-hover;
+
+      .to-top {
+        color: @dark-font-color;
+      }
+    }
+  }
+
+  .enable-background-backTop {
+    background: var(--theme-color);
+    box-shadow: 0 0 6px var(---border-color);
+
+    .to-top {
+      color: var(--font-color);
+    }
+    &:hover {
+      background: var(--dropdown-item-hover);
+
+      .to-top {
+        color: var(--font-color);
+      }
+    }
+  }
 }
 
 .select-group {

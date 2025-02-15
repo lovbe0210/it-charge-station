@@ -110,9 +110,18 @@
       },
       playSelect(index) {
         let selectMusic = this.playList[index];
+        // 如果是当前正在播放的需要重新触发播放
+        if (this.currentMusicId === selectMusic.musicId) {
+          this.$store.commit("updateMusicInfo", {musicId: null});
+        }
         if (this.ifSearchOrPlayList === 0) {
           // 播放列表
-          this.$store.commit("updateMusicInfo", {musicId: selectMusic.musicId, currentIndex: index});
+          let playInfo = {
+            musicId: selectMusic.musicId,
+            currentIndex: index,
+            isPlay: true
+          };
+          this.$store.commit("updateMusicInfo", playInfo);
         } else {
           // 搜索列表
           let playList = this.$store.state.musicInfo.musicList;
@@ -123,7 +132,8 @@
             playList.push(selectMusic);
             this.$store.commit("updateMusicInfo", {
               musicId: selectMusic.musicId,
-              currentIndex: playList.length - 1
+              currentIndex: playList.length - 1,
+              isPlay: true
             });
             // 如果是登陆用户保存播放列表
             if (this.loginStatus) {
@@ -132,7 +142,8 @@
           } else {
             this.$store.commit("updateMusicInfo", {
               musicId: selectMusic.musicId,
-              currentIndex: index
+              currentIndex: index,
+              isPlay: true
             });
           }
         }
@@ -155,21 +166,19 @@
       },
       removeFromPlayList(index) {
         let selectMusic = this.playList[index];
+        if (this.loginStatus) {
+          preferenceApi.deleteMusicPlayList(selectMusic);
+        }
         this.playList.splice(index, 1);
         if (selectMusic.musicId === this.currentMusicId) {
           // 直接停止音乐
           this.$store.commit("updateMusicInfo", {musicId: null});
-        } else if (this.currentMusicId !== null) {
-          // 更新当前播放音乐的index
-          let findIndex = this.playList.findIndex(
-            (item) => item.musicId === this.currentMusicId
-          );
-          this.$store.commit("updateMusicInfo", {currentIndex: findIndex});
-          if (this.loginStatus) {
-            preferenceApi.deleteMusicPlayList(selectMusic);
-          }
         }
-
+        // 更新当前播放音乐的index
+        let findIndex = this.playList.findIndex(
+          (item) => item.musicId === this.currentMusicId
+        );
+        this.$store.commit("updateMusicInfo", {currentIndex: findIndex === -1 ? 0 : findIndex});
       },
       handleScrollWheel(event) {
         // 如果list大于4时才进行滚动

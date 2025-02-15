@@ -250,6 +250,9 @@
       <div v-if="!articleInfo?.uid">
         <not-found></not-found>
       </div>
+      <div :class="['back-top', docStyle.docThemeSync === 1 ? 'enable-background-backTop' : '']" v-show="backTopShow" @click="backTop">
+        <span class="iconfont to-top"/>
+      </div>
     </div>
     <Spin size="large" fix="fix" v-if="spinShow"></Spin>
   </div>
@@ -298,7 +301,10 @@ export default {
       },
       engine: null,
       // 样式相关
-      docStyle: {}
+      docStyle: {},
+      scrollTop: 0,
+      backTopHeight: 700,
+      backTopShow: false
     }
   },
   props: ['sidebarWidth', 'columnUri', 'articleUri', 'authorInfo', 'parentDocStyle'],
@@ -384,6 +390,8 @@ export default {
     handleScrollForToc(event) {
       // 判断是否移动超过10%
       let scrollbar = this.$refs.scrollbarContext;
+      this.scrollTop = scrollbar.scrollTop;
+      this.backTopShow = scrollbar.scrollTop > this.backTopHeight;
       let canScrollHeight = scrollbar.scrollHeight - scrollbar.clientHeight;
       if (canScrollHeight && ((canScrollHeight / scrollbar.scrollHeight) >= 0.1)) {
         if (scrollbar.scrollTop / canScrollHeight >= 0.1) {
@@ -584,6 +592,21 @@ export default {
     },
     changeDocStyle() {
       this.$emit("updateDocStyle", this.docStyle);
+    },
+    backTop() {
+      let timer = null;
+      const varThis = this;
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        if (varThis.scrollTop > 0) {
+          varThis.scrollTop -= (varThis.scrollTop / 1000) * 120;
+          varThis.$refs.scrollbarContext.scrollTop = varThis.scrollTop;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+          varThis.backTopShow = false;
+        }
+      });
     }
   },
   watch: {

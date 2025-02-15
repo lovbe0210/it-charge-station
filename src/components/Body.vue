@@ -36,7 +36,7 @@
             <b-list-group flush>
               <b-list-group-item class="flex-column align-items-start" v-for="item in featuredColumn" :key="item.uid">
                 <div class="title">
-                  <b-link :to="'/' + item.userInfo.domain + '/' + item.uri" target="_blank">
+                  <b-link :to="'/' + item.userInfo?.domain + '/' + item.uri" target="_blank">
                     <span class="title">{{item.title}}</span>
                   </b-link>
                 </div>
@@ -44,10 +44,10 @@
                   {{item.synopsis}}
                 </span>
                 <b-row class="icon">
-                  <div>
+                  <div v-if="item.uid">
                     <span class="iconfont series-column"></span> {{ item.articleCount }}
                   </div>
-                  <div>
+                  <div v-if="item.uid">
                     <span class="iconfont like"></span> {{ item.viewCount }}
                   </div>
                 </b-row>
@@ -68,8 +68,13 @@
                                v-for="item in authors"
                                :key="item.uid">
               <b-avatar variant="info"
+                        v-if="item.avatarUrl"
                         :src="fileUrl(item.avatarUrl)"
                         :to="'/' + item.domain"
+                        class="creator-avatar"
+                        size="40px"/>
+              <b-avatar v-else
+                        to="/"
                         class="creator-avatar"
                         size="40px"/>
               <div class="info">
@@ -142,6 +147,7 @@
 <script>
   import CarouselSwipe from '@/components/common/CarouselSwipe';
   import contentPicksApi from "@/api/ContentPicksApi";
+  import preferenceApi from "@/api/PreferenceApi";
 
   export default {
     name: 'Body',
@@ -190,6 +196,9 @@
       contentLength() {
         return this.flagContent == null ? 0 : this.flagContent.length
       },
+      stateFlag() {
+        return this.$store.state.flagContent;
+      },
       chickenSoup() {
         let content = '每日一句心灵鸡汤'
         // 请求接口
@@ -199,32 +208,47 @@
         } else {
           return '每一步黑暗，都踩亮一颗星。'
         }
+      },
+      loginStatus() {
+        let userInfo = this.$store.state.userInfo
+        return userInfo !== null && userInfo.token?.length === 32
       }
     },
     methods: {
       isEditable(flag) {
         if (!flag) {
-          // 失去焦点，更新内容
-          this.$store.commit('editFlag', this.flagContent)
+          // 失去焦点，判断内容是否有变化然后更新内容
+          let content = this.stateFlag.content;
+          if (content !== this.flagContent) {
+            let flag = {
+              content: this.flagContent,
+              timestamp: this.flagContent && this.flagContent.trim().length > 0 ? new Date().getTime() : null
+            }
+            this.$store.commit('editFlag', flag);
+            // 调用接口更新
+            if (this.loginStatus) {
+              preferenceApi.updatePreferenceSetting({flagContent: JSON.stringify(flag)});
+            }
+          }
         }
-        this.focused = flag
+        this.focused = flag;
       },
       // 滚动条滚动处理事件：
       handleScroll() {
         let app = document.getElementById("app");
-        const scrollTop = app.pageYOffset || app.scrollTop || app.scrollTop
+        const scrollTop = app.pageYOffset || app.scrollTop || app.scrollTop;
         // 视窗固定
         if (scrollTop > this.fixedHeight) {
-          this.needFixed = true
+          this.needFixed = true;
         } else {
-          this.needFixed = false
+          this.needFixed = false;
         }
       },
       fileUrl(path) {
         return this.fileService + path;
       },
       authorShow(user) {
-        if (user.tags != null || user.tags.length > 0) {
+        if (user.tags && user.tags.length > 0) {
           return user.tags.map(tag => tag.content).join(" @ ");
         }
         return user.introduction || user.industry || user.location || " ";
@@ -239,34 +263,38 @@
       contentPicksApi.getFeaturedColumn().then(data => {
         if (data?.result) {
           this.featuredColumn = data.data;
+          this.$nextTick(() => {
+            this.fixedHeight = this.$refs.fixedElement.getBoundingClientRect().top;
+          })
         }
       })
       contentPicksApi.getExcellentAuthor().then(data => {
         if (data?.result) {
           this.authors = data.data;
+          this.$nextTick(() => {
+            this.fixedHeight = this.$refs.fixedElement.getBoundingClientRect().top;
+          })
         }
       })
     },
     mounted() {
       this.needFixed = false;
       // 从store中获取今日flag并赋值给flagContent
-      this.flagContent = this.$store.state.flagContent.content
+      this.flagContent = this.stateFlag.content;
       if (!this.$store.state.isPhone) {
         // 给window添加一个滚动监听事件
         let app = document.getElementById("app");
-        app.addEventListener('scroll', this.handleScroll)
+        app.addEventListener('scroll', this.handleScroll);
         // 获取元素高度
-        setTimeout(() => {
-          this.$nextTick(() => {
-            this.fixedHeight = this.$refs.fixedElement.getBoundingClientRect().top
-          })
-        }, 1000)
+        this.$nextTick(() => {
+          this.fixedHeight = this.$refs.fixedElement.getBoundingClientRect().top;
+        })
       }
     },
     destroyed() {
       // 释放监听
       let app = document.getElementById("app");
-      app.removeEventListener('scroll', this.handleScroll)
+      app.removeEventListener('scroll', this.handleScroll);
     }
   }
 </script>

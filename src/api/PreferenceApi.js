@@ -72,7 +72,7 @@ export default {
    */
   async deleteMusicPlayList(playInfo) {
     return await Vue.prototype.$request({
-      url: "/in/music/list/del",
+      url: "/in/music/list/delete",
       method: 'POST',
       data: playInfo
     });

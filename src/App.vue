@@ -143,6 +143,7 @@
             preferenceApi.getPreferenceSetting().then(data => {
               if (data?.result) {
                 // 0云端 1本地
+                // debugger
                 if (data.data.configFrom === 0) {
                   // 云端数据为主，覆盖本地数据
                   let docSetting = {
@@ -161,11 +162,14 @@
                   let musicPlay = data.data.musicPlay;
                   if (musicPlay) {
                     storeData.musicInfo = Object.assign(storeData.musicInfo, JSON.parse(musicPlay));
+
                   }
                   preferenceApi.getMusicPlayList().then(data => {
                     if (data.result && data.data && data.data.length > 0) {
                       storeData.musicInfo.musicList = data.data;
                     }
+                    let currentIndex = storeData.musicInfo.musicList.findIndex(music => music.musicId === storeData.musicInfo.musicId);
+                    storeData.musicInfo.currentIndex = currentIndex === -1 ? 0 : currentIndex;
                     this.$store.replaceState(
                       Object.assign(
                         {},
@@ -186,9 +190,7 @@
                   let updateConfig = {
                     customTheme: storeData.customerSet,
                     musicPlay: {
-                      musicId: musicInfo.musicId,
-                      currentVolume: musicInfo.currentVolume,
-                      playType: musicInfo.playType
+                      musicId: musicInfo.musicId
                     }
                   };
                   // 本地数据为主，更新至云端

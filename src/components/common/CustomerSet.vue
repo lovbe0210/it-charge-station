@@ -225,7 +225,6 @@
         immediate: true,
         deep: true,
         handler(value) {
-          console.log("呦呦呦")
           if (this.loginStatus) {
             let preferenceSetting = {customTheme: value}
             preferenceApi.updatePreferenceSetting(preferenceSetting);

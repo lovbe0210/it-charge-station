@@ -193,6 +193,7 @@
         </div>
       </div>
     </div>
+    <back-top :showSurprise="false"></back-top>
 
     <!-- 登录盒子 -->
     <div style="display: none;">
@@ -216,6 +217,7 @@ import HotMap from "@/components/common/HotMap";
 import Engine from '@aomao/engine'
 import {domainPlugins, cards, pluginConfig} from "@/components/common/editor/config"
 import {cloneDeep} from "../utils/emoji";
+import BackTop from "@/components/common/BackTop.vue";
 
 export default {
   name: 'PersonCenter',
@@ -314,7 +316,8 @@ export default {
   },
   components: {
     AuthModal,
-    HotMap
+    HotMap,
+    BackTop
   },
   methods: {
     fileUrl(path) {

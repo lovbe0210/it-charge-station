@@ -103,8 +103,6 @@ export default {
       timeProgress: 0,
       // 是否准备好可以播放
       readyState: false,
-      // 是否静音
-      isMuted: false,
       // 用户的喜欢音乐列表
       likeMuiscList: [],
       // 用户是否喜欢当前音乐
@@ -173,12 +171,20 @@ export default {
     // audio开始或暂停播放的回调  在vuex中改变状态
     changeState(state) {
       this.$store.commit("updateMusicInfo", {isPlay: state});
+      console.log("isPlay: ", state)
     },
     // 切歌函数
     changeMusic(type) {
+      this.currentTime = 0;
       if (this.musicList.length === 0) {
         return;
       }
+      let willPlayInfo = {
+        currentIndex: 0,
+        musicId: null,
+        isPlay: true
+      };
+
       // 上一首
       if (type === "pre") {
         let currentMusicIndex = this.currentMusicIndex;
@@ -200,7 +206,8 @@ export default {
           this.$refs.audioPlayer.currentTime = 0;
           this.playMusic();
         }
-        this.$store.commit("updateMusicInfo", {currentIndex: preIndex, musicId: this.musicList[preIndex].musicId});
+        willPlayInfo.currentIndex = preIndex;
+        willPlayInfo.musicId = this.musicList[preIndex].musicId;
 
         // 下一首
       } else if (type === "next") {
@@ -224,8 +231,10 @@ export default {
             }
           }
         }
-        this.$store.commit("updateMusicInfo", {currentIndex: nextIndex, musicId: this.musicList[nextIndex].musicId});
+        willPlayInfo.currentIndex = nextIndex;
+        willPlayInfo.musicId = this.musicList[nextIndex].musicId;
       }
+      this.$store.commit("updateMusicInfo", willPlayInfo);
     },
     // 当前播放时间位置
     timeupdate() {
@@ -334,6 +343,14 @@ export default {
         this.$store.commit("updateMusicInfo", {currentVolume: value});
       }
     },
+    isMuted: {
+      get() {
+        return this.$store.state.musicInfo.isMuted;
+      },
+      set(value) {
+        this.$store.commit("updateMusicInfo", {isMuted: value});
+      }
+    },
     currentMusicIndex() {
       return this.$store.state.musicInfo.currentIndex;
     },
@@ -357,31 +374,26 @@ export default {
     }
   },
   mounted() {
-    // 初始化音量
-    this.changeVolume();
-    if (this.musicList.length === 0 || this.musicId === null) {
-      return;
-    }
-
-    // 初始化当前播放的歌曲信息
-    this.musicInfo = this.musicList[this.currentMusicIndex];
-    // 更新musicId
-    this.$store.commit("updateMusicInfo", {musicId: this.musicInfo.musicId})
+    // 根据list中的索引直接获取歌曲信息（这就要求其他地方必须同时更新currentIndex）
+    this.musicInfo = this.musicList[this.currentMusicIndex]
+    // 获取歌曲播放url
     MusicApi.getMusicUrlById(this.musicInfo.musicId).then((data) => {
       this.musicUrl = data;
-      // 初始化播放时间和vuex中的保持一致
-      this.$refs.audioPlayer.currentTime = this.$store.state.musicInfo.currentTime;
     });
     // 判断用户是否喜欢当前音乐
     // this.getIsUserLikeCurrentMusic();
-    let play = !this.$refs.audioPlayer.paused;
-    if (this.isPlay !== play && !play) {
+    // 播放时间重置，开始播放(如果首次进来时则不需要播放)
+    this.$refs.audioPlayer.currentTime = this.$store.state.musicInfo.currentTime;
+    // 设置音量
+    let volume = this.isMuted ? 0 : this.volume;
+    this.$refs.audioPlayer.volume = volume / 100;
+    if (this.isPlay) {
       this.playMusic();
     }
   },
   watch: {
     // 监听vuex中musicId的变化
-    "$store.state.musicInfo.musicId"(newVal) {
+    "$store.state.musicInfo.musicId"(newVal, oldVal) {
       if (newVal === null) {
         // 停止播放
         this.pauseMusic();
@@ -397,8 +409,6 @@ export default {
         this.$refs.audioPlayer.currentTime = 0;
         return;
       }
-      // 先暂停当前播放的音乐
-      this.pauseMusic();
       // 根据list中的索引直接获取歌曲信息（这就要求其他地方必须同时更新currentIndex）
       this.musicInfo = this.musicList[this.currentMusicIndex]
       // 获取歌曲播放url
@@ -406,18 +416,18 @@ export default {
         this.musicUrl = data;
       });
       // 判断用户是否喜欢当前音乐
-      this.getIsUserLikeCurrentMusic();
+      // this.getIsUserLikeCurrentMusic();
       // 播放时间重置，开始播放(如果首次进来时则不需要播放)
-      this.$refs.audioPlayer.currentTime = 0;
-      this.playMusic();
+      this.$refs.audioPlayer.currentTime = this.$store.state.musicInfo.currentTime;
+      // 设置音量
+      let volume = this.isMuted ? 0 : this.volume;
+      this.$refs.audioPlayer.volume = volume / 100;
+      if (this.isPlay) {
+        this.playMusic();
+      }
       // 播放器状态入库
       if (this.loginStatus) {
-        let musicPlay = {
-          musicId: newVal,
-          currentVolume: this.volume,
-          playType: this.playType
-        }
-        preferenceApi.updatePreferenceSetting({musicPlay});
+        preferenceApi.updatePreferenceSetting({musicPlay: {musicId: this.musicId}});
       }
     }
   }

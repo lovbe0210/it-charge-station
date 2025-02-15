@@ -29,7 +29,7 @@
           <div class="music-name" :title="musicInfo.musicName">
             {{ musicInfo.musicName }}
           </div>
-          <div class="singer">
+          <div class="singer" :title="musicInfo.musicName ? musicInfo.author : ''">
             {{ musicInfo.musicName ? musicInfo.author : ""}}
           </div>
         </div>

@@ -75,6 +75,8 @@ export default new Vuex.Store({
       currentTime: 0,
       // 当前设置的音量大小
       currentVolume: 30,
+      // 是否静音
+      isMuted: false,
       // 音乐列表
       musicList: [
         {
@@ -104,7 +106,7 @@ export default new Vuex.Store({
       // 音乐是否在加载中
       isMusicLoad: false,
       // 是否展示音乐播放页面
-      isMusicDetailCardShow: true
+      isMusicDetailCardShow: false
     }
   },
 
@@ -167,14 +169,6 @@ export default new Vuex.Store({
      * @param value
      */
     editFlag(state, value) {
-      state.flagContent.content = value;
-      if (value) {
-        state.flagContent.timestamp = new Date().getTime();
-      } else {
-        state.flagContent.timestamp = null;
-      }
-    },
-    updateFlag(state, value) {
       state.flagContent = value;
     },
     /**
