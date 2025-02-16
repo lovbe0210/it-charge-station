@@ -20,13 +20,17 @@
               <span class="name" :title="userInfo.username">{{ userInfo.username }}</span>
               <span :class="['iconfont',  'icon-level' + userInfo.level]"></span>
             </b-link>
-            <div class="signature">{{ userInfo.introduction }}</div>
+            <div class="user-signature" :title="userInfo.introduction">
+              <span class="signature-text">
+                {{ userInfo.introduction }}
+              </span>
+            </div>
             <div class="info-list" style="margin-top: 10px;">
-              <div class="info-item" v-if="userInfo.location">
+              <div class="info-item" v-if="userInfo.location" :title="userInfo.location">
                 <span class="iconfont location"/>
                 <span class="info-detail">{{ userInfo.location }}</span>
               </div>
-              <div class="info-item" v-if="userInfo.industry">
+              <div class="info-item" v-if="userInfo.industry" :title="userInfo.industry">
                 <span class="iconfont industry"/>
                 <span class="info-detail">{{ userInfo.industry }}</span>
               </div>

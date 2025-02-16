@@ -116,6 +116,7 @@
       color: rgb(22, 22, 22);
       text-align: center;
       margin: 15px 0 0 0;
+      width: 100%;
 
       .music-name {
         margin-right: 5px;
@@ -125,10 +126,16 @@
       }
 
       .singer {
+        width: 100%;
         margin-left: -5px;
         color: #515a6e;
         font-size: 0.8rem;
         overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1; /* 限制最多显示一行 */
+        word-break: break-all; /* 防止长单词换行问题 */
       }
     }
 

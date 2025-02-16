@@ -120,17 +120,19 @@
         // 设置页面状态为初始化
         storeData.pageState = "init";
 
+        // 先将页面初始化数据覆盖vuex
+        this.$store.replaceState(
+          Object.assign(
+            {},
+            this.$store.state,
+            storeData
+          )
+        )
+
         // 判断用户登录状态是否有效
         let userInfo = storeData.userInfo;
         if (!userInfo || !userInfo.uid || !userInfo.token) {
-          // 未登录状态直接覆盖vuex
-          this.$store.replaceState(
-            Object.assign(
-              {},
-              this.$store.state,
-              storeData
-            )
-          )
+          // 未登录状态到这就结束了
           return;
         }
         // 登录状态，获取用户信息，同步偏好设置、主题、音乐播放列表
@@ -143,79 +145,25 @@
             preferenceApi.getPreferenceSetting().then(data => {
               if (data?.result) {
                 // 0云端 1本地
-                // debugger
                 if (data.data.configFrom === 0) {
                   // 云端数据为主，覆盖本地数据
-                  let docSetting = {
-                    autoPublish: data.data.autoPublish,
-                    docThemeSync: data.data.docThemeSync,
-                    docStyleDefaultFont: data.data.docStyleDefaultFont,
-                    docStylePageSize: data.data.docStylePageSize,
-                    enableComment: data.data.enableComment
-                  };
-                  storeData.docStyle = Object.assign(storeData.docStyle, docSetting);
-                  storeData.customerSet = JSON.parse(data.data.customTheme);
-                  let flagContent = data.data.flagContent;
-                  if (flagContent) {
-                    storeData.flagContent = JSON.parse(flagContent);
-                  }
-                  let musicPlay = data.data.musicPlay;
-                  if (musicPlay) {
-                    storeData.musicInfo = Object.assign(storeData.musicInfo, JSON.parse(musicPlay));
-
-                  }
-                  preferenceApi.getMusicPlayList().then(data => {
-                    if (data.result && data.data && data.data.length > 0) {
-                      storeData.musicInfo.musicList = data.data;
-                    }
-                    let currentIndex = storeData.musicInfo.musicList.findIndex(music => music.musicId === storeData.musicInfo.musicId);
-                    storeData.musicInfo.currentIndex = currentIndex === -1 ? 0 : currentIndex;
-                    this.$store.replaceState(
-                      Object.assign(
-                        {},
-                        this.$store.state,
-                        storeData
-                      )
-                    )
-                  })
+                  this.syncRemotePS2Local(data.data, storeData);
                 } else {
-                  this.$store.replaceState(
-                    Object.assign(
-                      {},
-                      this.$store.state,
-                      storeData
-                    )
-                  )
-                  let musicInfo = storeData.musicInfo;
-                  let updateConfig = {
-                    customTheme: storeData.customerSet,
-                    musicPlay: {
-                      musicId: musicInfo.musicId
-                    }
-                  };
-                  // 本地数据为主，更新至云端
-                  preferenceApi.updatePreferenceSetting(updateConfig);
-                  if (musicInfo.musicList && musicInfo.musicList.length > 0) {
-                    preferenceApi.updateMusicPlayList(musicInfo.musicList);
-                  } else {
-                    preferenceApi.getMusicPlayList().then(data => {
-                      if (data.result && data.data && data.data.length > 0) {
-                        this.$store.commit("updateMusicInfo", {musicList: data.data});
-                      }
-                    })
-                  }
+                  this.syncLocalPS2Remote(storeData);
                 }
               }
             })
           }
         })
+
+        // 创建长连接
       }
     },
     watch: {
       // 开启深度监视，然后实时刷新自定义主题
       customerSet: {
         handler() {
-          this.flushCustomerSet();
+          commonUtil.flushCustomerSet(this.customerSet);
         },
         deep: true
       }
@@ -233,13 +181,88 @@
       document.removeEventListener('visibilitychange', e => this.handleVisibilityChange(e))
     },
     methods: {
+      /**
+       * 同步云端数据到本地vuex
+       * @param remoteData
+       * @param localData
+       */
+      syncRemotePS2Local(remoteData, localData) {
+        let docSetting = {
+          autoPublish: remoteData.autoPublish,
+          docThemeSync: remoteData.docThemeSync,
+          docStyleDefaultFont: remoteData.docStyleDefaultFont,
+          docStylePageSize: remoteData.docStylePageSize,
+          enableComment: remoteData.enableComment
+        };
+        localData.docStyle = Object.assign(localData.docStyle, docSetting);
+        localData.customerSet = JSON.parse(remoteData.customTheme);
+        let flagContent = remoteData.flagContent;
+        if (flagContent) {
+          localData.flagContent = JSON.parse(flagContent);
+        }
+        let musicPlay = remoteData.musicPlay;
+        if (musicPlay) {
+          localData.musicInfo = Object.assign(localData.musicInfo, JSON.parse(musicPlay));
+        }
+        preferenceApi.getMusicPlayList().then(data => {
+          if (data.result && data.data && data.data.length > 0) {
+            localData.musicInfo.musicList = data.data;
+          }
+          let currentIndex = localData.musicInfo.musicList.findIndex(music => music.musicId === localData.musicInfo.musicId);
+          localData.musicInfo.currentIndex = currentIndex === -1 ? 0 : currentIndex;
+          this.$store.replaceState(
+            Object.assign(
+              {},
+              this.$store.state,
+              localData
+            )
+          )
+        })
+      },
+      /**
+       * 同步本地localStorage数据到云端
+       * @param localData
+       */
+      syncLocalPS2Remote(localData) {
+        this.$store.replaceState(
+          Object.assign(
+            {},
+            this.$store.state,
+            localData
+          )
+        )
+        let musicInfo = localData.musicInfo;
+        let updateConfig = {
+          customTheme: localData.customerSet,
+          musicPlay: {
+            musicId: musicInfo.musicId
+          }
+        };
+        // 本地数据为主，更新至云端
+        preferenceApi.updatePreferenceSetting(updateConfig);
+        if (musicInfo.musicList && musicInfo.musicList.length > 0) {
+          preferenceApi.updateMusicPlayList(musicInfo.musicList);
+        } else {
+          preferenceApi.getMusicPlayList().then(data => {
+            if (data.result && data.data && data.data.length > 0) {
+              this.$store.commit("updateMusicInfo", {musicList: data.data});
+            }
+          })
+        }
+      },
+      /**
+       * 页面刷新前的回调
+       */
       beforeunloadHandler() {
-        // 在页面刷新时将vuex里的信息保存到localStorage里
+        // 在页面刷新前将vuex里的信息保存到localStorage里
         // 兼容edge、chrome、firefox
         this.$store.commit("updatePageState", "flush");
         localStorage.setItem('store', JSON.stringify(this.$store.state))
         this._beforeUnload_time = new Date().getTime()
       },
+      /**
+       * 关闭或刷新时的回调
+       */
       unloadHandler() {
         this.$store.commit("updatePageState", "close");
         // 火狐浏览器关闭时只会触发unload事件
@@ -259,15 +282,12 @@
           localStorage.setItem('store', JSON.stringify(this.$store.state))
         }
       },
-
-      flushCustomerSet() {
-        commonUtil.flushCustomerSet(this.customerSet);
-      },
-
+      /**
+       * 页面状态变化 如果是刷新后的回调事件，则不在进行操作
+       */
       handleVisibilityChange() {
         let pageState = this.$store.state.pageState;
         if (document.visibilityState === "hidden" && pageState !== "flush") {
-          // 如果是刷新后的回调事件，则不在进行操作
           this.$store.commit("updatePageState", "hidden");
           // 页面变为后台状态，保存vuex中的数据，除过播放状态和自定义设置主题卡片状态
           // 注意此处为深拷贝，要不会改变store的状态

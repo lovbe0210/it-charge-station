@@ -171,7 +171,6 @@ export default {
     // audio开始或暂停播放的回调  在vuex中改变状态
     changeState(state) {
       this.$store.commit("updateMusicInfo", {isPlay: state});
-      console.log("isPlay: ", state)
     },
     // 切歌函数
     changeMusic(type) {

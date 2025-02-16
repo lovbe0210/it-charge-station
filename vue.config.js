@@ -1,3 +1,4 @@
+const FileManagerPlugin = require("filemanager-webpack-plugin");
 /**
  * vue.config.js
  * 作为一个可选配置，配置vue脚手架中的一些公共配置
@@ -18,8 +19,8 @@ module.exports = {
     }
   },
   configureWebpack: {
-    devtool: "source map"
-    /*plugins: [
+    devtool: "source map",
+    plugins: [
       new FileManagerPlugin({
         events: {
           onEnd: {
@@ -28,7 +29,7 @@ module.exports = {
           }
         }
       })
-    ]*/
+    ]
   },
   devServer: {
     // ipv6支持

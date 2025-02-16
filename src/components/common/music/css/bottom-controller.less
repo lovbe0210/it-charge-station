@@ -1,7 +1,8 @@
 @import "../../../css/common-var";
 .bottom-control {
   width: calc(~"17.9%");
-  height: calc(~"5.7%");
+  //height: calc(~"5.7%");
+  height: 5.7vh;
   border-top: 1px solid @border-color_normal;
   background: var(--dropdown-bg-color);
   border-radius: 5px;
@@ -155,8 +156,8 @@
   }
 
   .volume-input {
-    writing-mode: bt-lr;
-    -webkit-appearance: slider-vertical;
+    direction: rtl;
+    writing-mode: vertical-lr;
     width: 6px;
     height: 80px;
   }

@@ -193,14 +193,14 @@
           }
 
           .theme {
-            height: 100/2%;
+            height: 45/2vh;
             border-top: 1px solid @border-color_normal;
             border-left: 1px solid @border-color_normal;
             border-right: 1px solid @border-color_normal;
           }
 
           .music {
-            height: 100/2%;
+            height: 45/2vh;
             border-bottom: 1px solid @border-color_normal;
             border-left: 1px solid @border-color_normal;
             border-right: 1px solid @border-color_normal;

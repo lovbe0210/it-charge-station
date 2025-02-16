@@ -295,6 +295,7 @@
   }
 }
 
+// 用户信息卡片
 .user-info-card-box {
   z-index: 99;
 
@@ -349,14 +350,17 @@
               }
             }
 
-            .signature {
-              display: block;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              color: var(--title-color);
-              margin-top: 8px;
-              word-break: break-all;
+            .user-signature {
+              .signature-text {
+                color: var(--title-color);
+                margin-top: 8px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2; /* 限制最多显示两行 */
+                word-break: break-all; /* 防止长单词换行问题 */
+              }
             }
 
             .info-item {
@@ -367,10 +371,20 @@
 
               .iconfont {
                 margin-right: 5px;
+                margin-top: 1px;
               }
 
               &:last-child {
                 margin-bottom: 0;
+              }
+
+              .info-detail {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1; /* 限制最多显示一行 */
+                word-break: break-all; /* 防止长单词换行问题 */
               }
             }
           }

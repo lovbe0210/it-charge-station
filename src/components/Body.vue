@@ -124,8 +124,12 @@
 
           </div>
           <div class="about">
-            <span class="first"><a href="">关于本站</a></span>
-            <span><a href="">BUG反馈</a></span>
+            <span class="first">
+              <a href="" target="_blank">关于本站</a>
+            </span>
+            <span>
+              <a href="" target="_blank">BUG反馈</a>
+            </span>
           </div>
           <div class="contact">
             <b-link href="https://github.com/lovbe0210/it-charge-station" target="_blank">
