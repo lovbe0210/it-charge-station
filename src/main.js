@@ -14,7 +14,6 @@ Vue.config.productionTip = false
 Vue.prototype.$request = request
 Vue.prototype.$Message = Message
 let fileService = '/oss'
-// let fileService = 'http://[2409:8a62:4f5:6f91:20c:29ff:fe29:775f]:9000'
 Vue.prototype.fileService = fileService;
 
 

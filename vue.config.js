@@ -37,6 +37,10 @@ module.exports = {
     disableHostCheck: true,
     port: 80,
     proxy: {
+      '/oss': {
+        target: 'http://10.2.2.13:1380',
+        changeOrigin: true
+      },
       '/api/music': {
         target: 'http://www.codeman.ink:3000',
         changeOrigin: true,
@@ -47,11 +51,11 @@ module.exports = {
       '/api/sl/ws': {
         target: 'http://10.2.2.104:10215',
         changeOrigin: true,
-        ws: true
+        ws: false
       },
       '/api': {
-        target: 'https://www.10020210.xyz',
-        // target: 'http://localhost:10210',
+        // target: 'https://www.10020210.xyz',
+        target: 'http://10.2.2.13:1380',
         changeOrigin: true,
         ws: true
       },
