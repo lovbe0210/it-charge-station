@@ -40,10 +40,14 @@ module.exports = {
       '/api/music': {
         target: 'http://www.codeman.ink:3000',
         changeOrigin: true,
-        ws: true,
         pathRewrite: {
           '^/api/music': ''
         }
+      },
+      '/api/sl/ws': {
+        target: 'http://10.2.2.104:10215',
+        changeOrigin: true,
+        ws: true
       },
       '/api': {
         target: 'http://10.2.2.17:10210',

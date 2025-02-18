@@ -374,6 +374,7 @@
 
 <script>
   import {formatTime} from '@/utils/emoji';
+  import { getWorker } from '@/utils/worker-client';
   import InputBox from "@/components/common/replycomment/src/component/InputBox";
   import Pswp from "@/components/common/imagepreview/index"
 
@@ -1147,6 +1148,9 @@
     mounted() {
       this.activeMenu = 'commentReply';
       this.loadMsgNotify('commentReply');
+    },
+    created() {
+
     }
   }
 </script>
