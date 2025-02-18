@@ -38,7 +38,7 @@ import CodeBlock, {CodeBlockComponent} from "./packages/codeblock/src"
 
 import Lightblock, {LightblockComponent} from "./packages/lightblock/src";
 
-const FILE_SERVICE = "http://10.2.2.15:9000";
+const FILE_SERVICE = "/oss";
 
 const DOMAIN = "/api/st";
 

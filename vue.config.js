@@ -1,4 +1,4 @@
-const FileManagerPlugin = require("filemanager-webpack-plugin");
+// const FileManagerPlugin = require("filemanager-webpack-plugin");
 /**
  * vue.config.js
  * 作为一个可选配置，配置vue脚手架中的一些公共配置
@@ -21,14 +21,14 @@ module.exports = {
   configureWebpack: {
     devtool: "source map",
     plugins: [
-      new FileManagerPlugin({
+      /*new FileManagerPlugin({
         events: {
           onEnd: {
             delete: ['./dist.zip'],
             archive: [{source: './dist', destination: './dist.zip'}]
           }
         }
-      })
+      })*/
     ]
   },
   devServer: {
@@ -50,7 +50,7 @@ module.exports = {
         ws: true
       },
       '/api': {
-        target: 'http://10.2.2.17:10210',
+        target: 'https://www.10020210.xyz',
         // target: 'http://localhost:10210',
         changeOrigin: true,
         ws: true
