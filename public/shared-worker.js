@@ -1,9 +1,10 @@
 let ports = [];
 let ws;
-let closed = false; // 连接是否已关闭
-let opened = false; // 连接是否已打开
+let initing = false;
+let opened = false; // 连接状态 打开/关闭
 
 self.onconnect = (e) => {
+  debugger
   const port = e.ports[0]
   ports.push(port)
   // 发送消息给连接的页面
@@ -23,13 +24,13 @@ self.onconnect = (e) => {
     // type=3 关闭连接
     // type=4 从shareWorker移除当前连接的页面
     // type=10 输出日志
-    if (d.type === 0) {
+    if (d.type === 0 && !initing) {
+      initing = true;
       // WebSocket如果未进行连接则需要建立一个新的连接
       // WebSocket连接如果已关闭需重新连接
-      if (!ws || closed) {
-        closed = false;
-        // const wsBaseUrl = "ws://10.2.2.13:1380" + d.data.wsBaseUrl
-        const wsBaseUrl = "ws://10.2.2.13:1380/api/sl/ws"
+      if (!ws || !opened) {
+        const wsBaseUrl = d.data.wsBaseUrl
+        // const wsBaseUrl = "ws://10.2.2.13:1380/api/sl/ws"
         try {
           postAllMessage({
             type: 10,
@@ -41,8 +42,9 @@ self.onconnect = (e) => {
             data: 'WebSocket创建连接成功:' + wsBaseUrl
           });
 
-          ws.onopen = function () {
+          ws.onopen = function (e) {
             opened = true;
+            console.log('onopen', e)
             postAllMessage({
               type: 10,
               data: 'WebSocket连接打开'
@@ -55,9 +57,8 @@ self.onconnect = (e) => {
           }
 
           ws.onclose = function (e) {
-            // console.log('onclose', e)
-            closed = true
-            opened = false
+            console.log('onclose', e)
+            opened = false;
             postAllMessage({
               type: 10,
               data: `WebSocket连接关闭:${JSON.stringify(e)}`
@@ -70,7 +71,7 @@ self.onconnect = (e) => {
             });
           }
           ws.onmessage = (e) => {
-            // console.log('onmessage', e)
+            console.log('onmessage', e)
             const data = e.data
             postAllMessage({
               type: 10,
@@ -84,7 +85,7 @@ self.onconnect = (e) => {
             });
           }
           ws.onerror = function (e) {
-            // console.log('onerror', e)
+            console.log('onerror', e)
             opened = false
             postAllMessage({
               type: 10,
@@ -161,12 +162,6 @@ self.onconnect = (e) => {
     // console.log('给每个页面发送消息', msg)
     // 广播消息给所有连接的页面
     for (let i = 0; i < ports.length; i++) {
-      ports[i].postMessage(
-        JSON.stringify({
-          type: 10,
-          data: 'postAllMessage'
-        })
-      )
       const message = JSON.stringify(msg)
       // console.log('消息转成字符串', message)
       ports[i].postMessage(message)

@@ -427,6 +427,14 @@ export default {
     }
   },
   props: ['msgNotifyTypeActive'],
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo;
+    }
+  },
+  components: {
+    InputBox
+  },
   methods: {
     routeNavigate(activeMenu) {
       if (this.activeMenu === activeMenu) {
@@ -1027,7 +1035,7 @@ export default {
       const timeout = 1000 * 9;
 
       let message = JSON.stringify({
-        id: this.webid,
+        userId: this.userInfo.uid,
         src: 'web', // 设备类型
         'User-Agent': navigator.userAgent
       })
@@ -1070,7 +1078,7 @@ export default {
     createWebSocket(heartCheck, message) {
       // 连接次数超过5次，则不再连接（主要为了服务端出错后导致前端不断进行连接的问题）
       if (this.connectFrequency >= 5) {
-        return
+        return;
       }
       try {
         this.sharedWorker.port.postMessage({
@@ -1084,7 +1092,7 @@ export default {
     },
     init(heartCheck, message) {
       this.sharedWorker.port.onmessage = (e) => {
-        // console.log('端口接收消息1:' + e.data)
+        console.log('接收消息:' + e.data)
         const d = JSON.parse(e.data)
         // webSocket打开
         if (d.type === 1 && d.success) {
@@ -1282,22 +1290,24 @@ export default {
       }, 500)
     }
   },
-  computed: {
-    userInfo() {
-      return this.$store.state.userInfo;
-    }
-  },
-  components: {
-    InputBox
-  },
   mounted() {
     this.activeMenu = 'commentReply';
     this.loadMsgNotify('commentReply');
   },
   created() {
-    debugger
+    // debugger
     this.sharedWorker = new SharedWorker('../shared-worker.js', 'workerWs')
     this.handleConnectWebSocket();
+    // let ws = new WebSocket('/api/sl/ws');
+    // setTimeout(() => {
+    //   ws.send("awebwebwebwebwebweb");
+    // }, 10000)
+    // ws.onerror(() => {
+    //   console.log('连接关闭')
+    // })
+    // ws.onopen(() => {
+    //   console.log('连接打开')
+    // })
   }
 }
 </script>
