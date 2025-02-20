@@ -48,18 +48,15 @@ module.exports = {
           '^/api/music': ''
         }
       },
-      // '/socket': {
-      //   target: 'http://10.2.2.104:10215/api/sl/ws',
-      //   changeOrigin: true,
-      //   ws: true,
-      //   pathRewrite: {
-      //     '^/socket': ''
-      //   }
-      // },
+      '/socket': {
+        target: 'http://10.2.2.104:10215',
+        changeOrigin: true,
+        ws: true
+      },
       '/api': {
         // target: 'https://www.10020210.xyz',
         target: 'http://10.2.2.13:1380',
-        ws: true
+        ws: false
       },
       'm7': {
         target: 'http://m7.music.126.net',

@@ -430,6 +430,10 @@ export default {
   computed: {
     userInfo() {
       return this.$store.state.userInfo;
+    },
+    loginStatus() {
+      let userInfo = this.$store.state.userInfo
+      return userInfo !== null && userInfo.token?.length === 32
     }
   },
   components: {
@@ -1032,15 +1036,9 @@ export default {
     handleConnectWebSocket() {
       // const that = this
       this.loadingConnect = true
-      const timeout = 1000 * 9;
+      // const timeout = 1000 * 9;
 
-      let message = JSON.stringify({
-        userId: this.userInfo.uid,
-        src: 'web', // 设备类型
-        'User-Agent': navigator.userAgent
-      })
-
-      const heartCheck = {
+      /*const heartCheck = {
         sendTimeoutObj: null,
         serverTimeoutObj: null,
         // 重置心跳发送
@@ -1066,13 +1064,13 @@ export default {
             }, timeout)
           }, timeout)
         }
-      }
-      this.createWebSocket(heartCheck, message);
+      }*/
+      // this.createWebSocket(heartCheck, message);
 
       // 初始化webSocket
-      this.init(heartCheck, message);
+      // this.init(heartCheck, message);
       // 重连
-      this.reconnect(heartCheck);
+      // this.reconnect(heartCheck);
     },
     // 创建webSocket
     createWebSocket(heartCheck, message) {
@@ -1081,79 +1079,30 @@ export default {
         return;
       }
       try {
-        this.sharedWorker.port.postMessage({
-          type: 0,
-          data: {wsBaseUrl: '/api/sl/ws'}
-        })
-        this.init(heartCheck, message);
+
+        // this.init(heartCheck, message);
       } catch (e) {
         console.log(e)
       }
     },
-    init(heartCheck, message) {
-      this.sharedWorker.port.onmessage = (e) => {
-        console.log('接收消息:' + e.data)
-        const d = JSON.parse(e.data)
-        // webSocket打开
-        if (d.type === 1 && d.success) {
-          if (d.method === 'onopen') {
-            onopen(d)
-            this.sharedWorker.port.postMessage({
-              type: 2,
-              data: message
-            })
-          }
-          // webSocket连接关闭后
-          if (d.method === 'onclose') {
-            onclose(d.data)
-          }
-          if (d.method === 'onmessage') {
-            onmessage(d)
-          }
-          if (d.method === 'onerror') {
-            onerror(d.data)
-          }
-        }
-      }
-      // webSocket打开
-      let onopen = () => {
-        this.loadingConnect = false
-        // tryHideFullScreenLoading();
-        // that.$store.commit('call/setConnectedApp', true)
-        heartCheck.reset()
-        heartCheck.start()
-      }
-      // webSocket连接关闭后
-      let onclose = (e) => {
-        // console.log('连接已关闭，请检查网络设置', e)
-        this.loadingConnect = false
-        // tryHideFullScreenLoading()
-        // that.$store.commit('call/setConnectedApp', false)
-        // 重新建立连接
-        this.reconnect()
-      }
-      // webSocket接收消息
-      let onmessage = (res) => {
-        heartCheck.reset()
-        heartCheck.start()
-        // console.log('webSocket接收消息', res.data)
+    wsInit() {
+      let port = this.sharedWorker.port;
+      // 监听sharedWorker消息
+      port.onmessage = (res) => {
         const data = JSON.parse(res.data)
-        // 不是数组不作处理，服务端有可能发送数字心跳，也可能为null
-        if (!Array.isArray(data)) {
-          return
-        }
-        // 只保留在线的设备
-        this.list = data.filter((i) => i.channelStatus === 1)
-        // console.log('最新设备列表', that.list, that)
+        console.log('webSocket接收消息: ', data)
       }
-      // webSocket连接错误
-      let onerror = (e) => {
-        // console.log('webSocket连接错误', e)
-        this.loadingConnect = false
-        // tryHideFullScreenLoading()
-        // that.$store.commit('call/setConnectedApp', false)
-        this.connectFrequency++ // 连接失败次数
+
+      port.onerror = (e) => {
+        console.log(e)
       }
+
+      // 发送消息，初始化websocket连接
+      port.postMessage({
+        type: 0,
+        data: {wsBaseUrl: 'ws://' + location.host + '/socket'}
+      })
+
     },
     reconnect(heartCheck) {
       // 当前正在操作连接的时候就不进行连接，防止出现重复连接的情况
@@ -1288,6 +1237,13 @@ export default {
           });
         }
       }, 500)
+    },
+    'loginStatus'(status) {
+      if (!status && this.sharedWorker) {
+        this.sharedWorker.port.postMessage({
+          type: 3
+        })
+      }
     }
   },
   mounted() {
@@ -1297,17 +1253,18 @@ export default {
   created() {
     // debugger
     this.sharedWorker = new SharedWorker('../shared-worker.js', 'workerWs')
-    this.handleConnectWebSocket();
-    // let ws = new WebSocket('/api/sl/ws');
-    // setTimeout(() => {
-    //   ws.send("awebwebwebwebwebweb");
-    // }, 10000)
-    // ws.onerror(() => {
-    //   console.log('连接关闭')
-    // })
-    // ws.onopen(() => {
-    //   console.log('连接打开')
-    // })
+    if (!this.sharedWorker) {
+      console.error("sharedWorker启动失败，请换一个支持sharedWorker的浏览器访问吧")
+      return;
+    }
+    this.wsInit();
+  },
+  beforeDestroy() {
+    if (this.sharedWorker) {
+      this.sharedWorker.port.postMessage({
+        type: 4
+      })
+    }
   }
 }
 </script>
