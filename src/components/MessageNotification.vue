@@ -1033,66 +1033,33 @@ export default {
       }
       this.pswp.open(imgItems, currentIndex)
     },
-    handleConnectWebSocket() {
-      // const that = this
-      this.loadingConnect = true
-      // const timeout = 1000 * 9;
-
-      /*const heartCheck = {
-        sendTimeoutObj: null,
-        serverTimeoutObj: null,
-        // 重置心跳发送
-        reset: function () {
-          clearTimeout(this.sendTimeoutObj)
-          clearTimeout(this.serverTimeoutObj)
-        },
-        // 发送心跳
-        start: function () {
-          // 定时发送心跳
-          this.sendTimeoutObj = setTimeout(() => {
-            this.port.postMessage({
-              type: 2,
-              data: message
-            })
-            // 正常来说，当发送完心跳包后，服务端会响应即在onmessage中做出响应，并清除此心跳包发送新的心跳包，
-            // 如果没有做出响应的，则达到超时时间主动关闭websocket，开始重连
-            this.serverTimeoutObj = setTimeout(() => {
-              // console.log('主动关闭Socket')
-              this.port.postMessage({
-                type: 3
-              })
-            }, timeout)
-          }, timeout)
-        }
-      }*/
-      // this.createWebSocket(heartCheck, message);
-
-      // 初始化webSocket
-      // this.init(heartCheck, message);
-      // 重连
-      // this.reconnect(heartCheck);
-    },
-    // 创建webSocket
-    createWebSocket(heartCheck, message) {
-      // 连接次数超过5次，则不再连接（主要为了服务端出错后导致前端不断进行连接的问题）
-      if (this.connectFrequency >= 5) {
-        return;
-      }
-      try {
-
-        // this.init(heartCheck, message);
-      } catch (e) {
-        console.log(e)
-      }
-    },
     wsInit() {
       let port = this.sharedWorker.port;
       // 监听sharedWorker消息
       port.onmessage = (res) => {
         const data = JSON.parse(res.data)
         console.log('webSocket接收消息: ', data)
+        if (data && data.type === 1) {
+          // ws连接已成功建立，可以发送消息了
+          this.isConnected = true;
+          console.log(data.data);
+          return;
+        }
+        if (data && data.type === 2) {
+          // ws消息
+          this.handleMessage(data.data);
+        }
+        if (data && data.type === 3) {
+          // ws连接已被关闭
+          this.isConnected = false;
+          console.log(data.data);
+          return;
+        }
+        if (data && data.type === 10) {
+          // ws/sw日志
+          console.log(data.data);
+        }
       }
-
       port.onerror = (e) => {
         console.log(e)
       }
@@ -1102,18 +1069,9 @@ export default {
         type: 0,
         data: {wsBaseUrl: 'ws://' + location.host + '/socket'}
       })
-
     },
-    reconnect(heartCheck) {
-      // 当前正在操作连接的时候就不进行连接，防止出现重复连接的情况
-      if (this.isConnected) return
-      this.isConnected = true
-      this.reconnectTimeout && clearTimeout(this.reconnectTimeout)
-      this.reconnectTimeout = setTimeout(() => {
-        heartCheck.reset()
-        this.isConnected = false
-        this.createWebSocket()
-      }, 1000)
+    handleMessage(message) {
+      console.log(message);
     }
   },
   watch: {
@@ -1263,7 +1221,8 @@ export default {
     if (this.sharedWorker) {
       this.sharedWorker.port.postMessage({
         type: 4
-      })
+      });
+      this.sharedWorker = null;
     }
   }
 }

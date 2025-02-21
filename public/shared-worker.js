@@ -3,9 +3,11 @@ let ws;
 let sockerUrl = null;
 let initing = false;
 let opened = false; // 连接状态 打开/关闭
-let retries = 0 // 重试次数,最多5次
+let retries = 0; // 重试次数,最多5次
+let retryIntervalTime = 5000; // 重试时间间隔，单位毫秒
 let retryTimeout = null;
 let heartCheckInterval = null; //心跳检测
+let heartIntervalTime = 9000; //心跳时间间隔，9秒，后端服务器设置30秒空闲关闭连接，所以正好3次网络波动的机会
 
 self.onconnect = (e) => {
   const port = e.ports[0]
@@ -23,7 +25,7 @@ self.onconnect = (e) => {
     // 处理从连接的页面接收到的消息
     const d = e.data
     // type=0 新建连接WebSocket
-    // type=1 初始化WebSocket
+    // type=1 建立webSocket连接，状态：open
     // type=2 发送数据
     // type=3 关闭连接
     // type=4 从shareWorker移除当前连接的页面
@@ -35,11 +37,6 @@ self.onconnect = (e) => {
         sockerUrl = d.data.wsBaseUrl
         try {
           ws = new WebSocket(sockerUrl);
-          postAllMessage({
-            type: 0,
-            data: 'WebSocket新建连接:' + sockerUrl
-          });
-
           ws.onopen = function (e) {
             opened = true;
             postAllMessage({
@@ -53,19 +50,17 @@ self.onconnect = (e) => {
                 data: "ping"
               }
               ws.send(JSON.stringify(heartBeat));
-            }, 10000);
+            }, heartIntervalTime);
           }
-
           ws.onclose = function (e) {
             opened = false;
             postAllMessage({
-              type: 10,
+              type: 3,
               data: `WebSocket连接关闭:${JSON.stringify(e)}`
             });
             clearInterval(heartCheckInterval);
-            retry("onclose");
+            // retry("onclose");
           }
-
           ws.onmessage = (e) => {
             const data = e.data
             postAllMessage({
@@ -75,14 +70,11 @@ self.onconnect = (e) => {
               data: data
             });
           }
-
           ws.onerror = function (e) {
             opened = false
             postAllMessage({
-              type: 2,
-              success: false,
-              method: 'onerror',
-              data: e
+              type: 10,
+              data: `WebSocket连接错误，errorInfo: ${JSON.stringify(e)}`
             });
             clearInterval(heartCheckInterval);
             retry("onerror");
@@ -96,8 +88,8 @@ self.onconnect = (e) => {
         }
       } else {
         postAllMessage({
-          type: 10,
-          data: 'WebSocket连接已打开,开始共享WebSocket连接'
+          type: 1,
+          data: 'WebSocket连接已建立,使用共享WebSocket连接'
         });
       }
       // 初始化结束，initing归位
@@ -106,10 +98,6 @@ self.onconnect = (e) => {
       ws.send(d.data);
     } else if (d.type === 3) {
       ws.close();
-      postAllMessage({
-        type: 10,
-        data: 'WebSocket关闭连接成功'
-      });
     } else if (d.type === 4) {
       const index = ports.indexOf(port)
       ports.splice(index, 1)
@@ -121,10 +109,6 @@ self.onconnect = (e) => {
       )
       if (ports.length === 0) {
         ws.close();
-        postAllMessage({
-          type: 10,
-          data: 'SharedWorker已移除所有页面，关闭websocket连接'
-        });
       }
     }
   }
@@ -146,7 +130,7 @@ self.onconnect = (e) => {
             data: {wsBaseUrl: sockerUrl}
           }
         })
-      }, 5000)
+      }, retryIntervalTime)
     }
   }
 
