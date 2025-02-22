@@ -415,14 +415,7 @@ export default {
         systemNotice: true,
         chatMessage: true
       },
-      loadingConnect: false,
-      sendTimeoutObj: null,
-      serverTimeoutObj: null,
-      webid: 1212121,
-      list: [],
-      connectFrequency: 0,
       isConnected: false,
-      reconnectTimeout: null,
       sharedWorker: null
     }
   },
@@ -1038,7 +1031,6 @@ export default {
       // 监听sharedWorker消息
       port.onmessage = (res) => {
         const data = JSON.parse(res.data)
-        console.log('webSocket接收消息: ', data)
         if (data && data.type === 1) {
           // ws连接已成功建立，可以发送消息了
           this.isConnected = true;
@@ -1067,7 +1059,7 @@ export default {
       // 发送消息，初始化websocket连接
       port.postMessage({
         type: 0,
-        data: {wsBaseUrl: 'ws://' + location.host + '/socket'}
+        data: {wsBaseUrl: (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/socket'}
       })
     },
     handleMessage(message) {
@@ -1209,13 +1201,14 @@ export default {
     this.loadMsgNotify('commentReply');
   },
   created() {
-    // debugger
+    // 初始化sharedWorker进行webSocket连接
     this.sharedWorker = new SharedWorker('../shared-worker.js', 'workerWs')
     if (!this.sharedWorker) {
       console.error("sharedWorker启动失败，请换一个支持sharedWorker的浏览器访问吧")
       return;
     }
     this.wsInit();
+    // 获取
   },
   beforeDestroy() {
     if (this.sharedWorker) {

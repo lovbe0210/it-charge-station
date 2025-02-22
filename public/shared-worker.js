@@ -1,4 +1,4 @@
-let ports = [];
+let ports = new Set();
 let ws;
 let sockerUrl = null;
 let initing = false;
@@ -10,13 +10,14 @@ let heartCheckInterval = null; //心跳检测
 let heartIntervalTime = 9000; //心跳时间间隔，9秒，后端服务器设置30秒空闲关闭连接，所以正好3次网络波动的机会
 
 self.onconnect = (e) => {
+  console.log(e, JSON.stringify(e))
   const port = e.ports[0]
-  ports.push(port)
+  ports.add(port)
   // 发送消息给连接的页面
   port.postMessage(
     JSON.stringify({
       type: 10,
-      data: `SharedWorker连接成功,连接数:${ports.length}`
+      data: `SharedWorker连接成功,连接数:${ports.size}`
     })
   )
   port.onmessage = (e) => executePageMessages(e);
@@ -53,13 +54,11 @@ self.onconnect = (e) => {
             }, heartIntervalTime);
           }
           ws.onclose = function (e) {
-            opened = false;
             postAllMessage({
               type: 3,
               data: `WebSocket连接关闭:${JSON.stringify(e)}`
             });
             clearInterval(heartCheckInterval);
-            // retry("onclose");
           }
           ws.onmessage = (e) => {
             const data = e.data
@@ -71,7 +70,7 @@ self.onconnect = (e) => {
             });
           }
           ws.onerror = function (e) {
-            opened = false
+            opened = false;
             postAllMessage({
               type: 10,
               data: `WebSocket连接错误，errorInfo: ${JSON.stringify(e)}`
@@ -80,6 +79,7 @@ self.onconnect = (e) => {
             retry("onerror");
           }
         } catch (e) {
+          debugger
           postAllMessage({
             type: 10,
             data: 'WebSocket创建连接失败:' + sockerUrl + '\n错误信息：' + e
@@ -99,15 +99,14 @@ self.onconnect = (e) => {
     } else if (d.type === 3) {
       ws.close();
     } else if (d.type === 4) {
-      const index = ports.indexOf(port)
-      ports.splice(index, 1)
+      ports.delete(port);
       port.postMessage(
         JSON.stringify({
           type: 10,
           data: `从SharedWorker移除已关闭的页面`
         })
       )
-      if (ports.length === 0) {
+      if (ports.size === 0) {
         ws.close();
       }
     }
@@ -131,14 +130,17 @@ self.onconnect = (e) => {
           }
         })
       }, retryIntervalTime)
+    } else {
+      clearTimeout(retryTimeout);
+      retries = 0;
     }
   }
 
   function postAllMessage(msg) {
     // 广播消息给所有连接的页面
-    for (let i = 0; i < ports.length; i++) {
+    for (let port of ports) {
       const message = JSON.stringify(msg)
-      ports[i].postMessage(message)
+      port.postMessage(message)
     }
   }
 }

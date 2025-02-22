@@ -5,6 +5,7 @@
  * 配置项地址见：https://cli.vuejs.org/zh/config/#pages
  */
 // const FileManagerPlugin = require('filemanager-webpack-plugin') //引入插件
+require('events').EventEmitter.defaultMaxListeners = 0; // 解除限制
 module.exports = {
   // 根路径  @ is an alias to /src
   publicPath: '/',
@@ -49,7 +50,7 @@ module.exports = {
         }
       },
       '/socket': {
-        target: 'http://10.2.2.104:10215',
+        target: 'http://10.2.2.13:1380',
         changeOrigin: true,
         ws: true
       },
