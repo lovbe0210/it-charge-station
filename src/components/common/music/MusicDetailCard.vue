@@ -11,13 +11,13 @@
       </div>
       <div class="discContainer">
         <div class="needle" :class="$store.state.musicInfo.isPlay ? 'needleRotate' : ''" ref="needle">
-          <img :src="require('@/assets/img/MusicDetailCard/needle.png')" alt=""/>
+          <img src="https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/needle.png" alt=""/>
         </div>
         <!-- 通过音乐的加载时差删除discAnimation类名再添加,达到重置动画的效果 -->
         <div class="disc" :class="[$store.state.musicInfo.isPlay ? '' : 'pause',
                                    $store.state.musicInfo.isMusicLoad ? '' : 'discAnimation']" ref="disc">
-          <img :src="require('@/assets/img/MusicDetailCard/disc.png')" alt=""/>
-          <img :src="require('@/assets/img/test.jpg')" alt="" class="musicAvatar" v-if="!musicInfo.musicCover"
+          <img src="https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/disc.png" alt=""/>
+          <img src="https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/test.jpg" alt="" class="musicAvatar" v-if="!musicInfo.musicCover"
                ref="avatar"/>
           <img :src="musicInfo.musicCover" alt="" class="musicAvatar" v-else ref="avatar" crossorigin="anonymous"/>
         </div>

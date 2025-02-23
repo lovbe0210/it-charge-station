@@ -53,7 +53,7 @@
     <h1 class="setting-title">充电激励</h1>
     <div class="layout-module_chargeIncentive layout-module_item">
       <div class="chargeIncentive-module_wrapper">
-        <img :src="require('@/assets/img/charge.jpg')" class="charge-incentive-left-img">
+        <img src="https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/charge.jpg" class="charge-incentive-left-img">
         <div class="charge-incentive-content">
           <p class="charge-incentive-title">
             已获得

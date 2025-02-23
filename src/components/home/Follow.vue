@@ -93,7 +93,7 @@
     <div v-else>
       <div class="unlogin un-select">
         <div class="unlogin_img">
-          <img :src="require('@/assets/img/unlogin.png')" alt="">
+          <img src="https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/unlogin.png" alt="">
         </div>
         <div class="to-login">
           <div class="unlogin_title">登录后看看都有哪些新动态</div>

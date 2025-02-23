@@ -13,7 +13,7 @@
     <div class="left">
       <div class="avatar" @click="showDetailCard()">
         <img :src="musicInfo.musicCover" alt="" v-if="musicInfo.musicCover" :draggable="false"/>
-        <img :src="require('@/assets/img/test.jpg')" alt="" v-else :draggable="false"/>
+        <img src="https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/test.jpg" alt="" v-else :draggable="false"/>
       </div>
       <div class="musicInfo">
         <div class="music-name"

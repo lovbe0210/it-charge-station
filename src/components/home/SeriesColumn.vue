@@ -97,7 +97,7 @@ export default {
   methods: {
     fileUrl(path) {
       if (!path) {
-        return require('@/assets/cover/no-cover.png')
+        return 'https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/no-cover.png';
       }
       return this.fileService + path;
     },

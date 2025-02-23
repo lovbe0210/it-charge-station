@@ -1,5 +1,5 @@
 // 静态表情包的目录
-const raw = '/static'
+const raw = 'https://lovbe-blog.oss-cn-chengdu.aliyuncs.com'
 // 各类表情包头部代表，顺序和emojiList相对应
 const headerList = [`${raw}/emoji/smile.webp`, `${raw}/emoji/tv/tv.webp`]
 

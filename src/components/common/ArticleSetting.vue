@@ -538,7 +538,7 @@ export default {
         width: 300px;
         height: 240px;
         background-size: cover !important;
-        background: url("../../assets/column-placeholder-cover.png");
+        background: url("https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/column-placeholder-cover.png");
       }
     }
   }
