@@ -136,7 +136,7 @@
               <a href="javascript:void(0)">
                 <div class="message-menu-wrapper">
                   <div class="message-menu-body">
-                    <div class="c-badge" v-if="messageSetting.newMsgDot"/>
+                    <div class="c-badge" v-if="unreadStatistic.unreadTotal && messageSetting.newMsgDot"/>
                     <span class="iconfont i-message"></span>
                   </div>
                 </div>
@@ -146,7 +146,7 @@
                   <div class="comment-reply quick-start-item">
                     <span>回复我的</span>
                     <Badge v-show="messageSetting.msgCount"
-                           :count="30"
+                           :count="unreadStatistic.commentCount"
                            overflow-count="99"
                            class="msg-item-badge"/>
                   </div>
@@ -155,7 +155,7 @@
                   <div class="new-fans quick-start-item">
                     <span>收到的赞</span>
                     <Badge v-show="messageSetting.msgCount"
-                           :count="10"
+                           :count="unreadStatistic.likeCount"
                            overflow-count="99"
                            class="msg-item-badge"/>
                   </div>
@@ -164,7 +164,7 @@
                   <div class="like-favorite quick-start-item">
                     <span>新增关注</span>
                     <Badge v-show="messageSetting.msgCount"
-                           :count="100"
+                           :count="unreadStatistic.newFollowCount"
                            overflow-count="99"
                            class="msg-item-badge"/>
                   </div>
@@ -173,7 +173,7 @@
                   <div class="msg-system quick-start-item">
                     <span>系统消息</span>
                     <Badge v-show="messageSetting.msgCount"
-                           :count="35"
+                           :count="unreadStatistic.systemMsgCount"
                            overflow-count="99"
                            class="msg-item-badge"/>
                   </div>
@@ -182,7 +182,7 @@
                   <div class="msg-session quick-start-item">
                     <span>我的消息</span>
                     <Badge v-show="messageSetting.msgCount"
-                           :count="8"
+                           :count="unreadStatistic.chatMsgCount"
                            overflow-count="99"
                            class="msg-item-badge"/>
                   </div>
@@ -266,7 +266,15 @@ export default {
       maxWidth: null,
       showMessage: false,
       msgNotifyTypeActive: null,
-      activeMenu: null
+      activeMenu: null,
+      unreadStatistic: {
+        commentCount: 0,
+        likeCount: 0,
+        newFollowCount: 0,
+        systemMsgCount: 0,
+        chatMsgCount: 0,
+        unreadTotal: 0
+      }
     }
   },
   components: {
@@ -453,7 +461,11 @@ export default {
       }
     })
     // 获取未读通知
-
+    socialApi.getUnreadStatistic().then(data => {
+      if (data?.result) {
+        this.unreadStatistic = data.data;
+      }
+    })
   }
 }
 </script>

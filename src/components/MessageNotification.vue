@@ -71,7 +71,7 @@
                 消息设置
               </span>
             </span>
-            <span class="all-read-action">
+            <span class="all-read-action" v-if="activeMenu !== 'messageSetting'">
               <span class="iconfont clean"></span>
               <span>
                 全部已读
@@ -218,21 +218,24 @@
               <div class="session-box">
                 <div class="dialog">
                   <div class="title">
-                    <div class="is-black" style="display: none;">
-                      (&gt;﹏&lt; )该用户已经被你加入黑名单
+                    <div class="is-black" style="">
+                      (&gt;﹏&lt; )该用户已经被你屏蔽啦
                     </div>
                     <span>{{ activeSession.session_user_name }}</span>
                     <div class="action-menu">
-                      <Dropdown placement="bottom-end" trigger="click">
+                      <Dropdown placement="bottom-end"
+                                trigger="click"
+                                transfer-class-name="dropdown-background dropdown-item-all-hover">
                         <a href="javascript:void(0)">
                           <div class="menu-btn">
                             <span class="iconfont operate"></span>
                           </div>
                         </a>
                         <DropdownMenu slot="list">
+                          <DropdownItem>置顶聊天</DropdownItem>
                           <DropdownItem>开启免打扰</DropdownItem>
-                          <DropdownItem>加入黑名单</DropdownItem>
-                          <DropdownItem>不再关注</DropdownItem>
+                          <DropdownItem>屏蔽该用户</DropdownItem>
+                          <DropdownItem>举报</DropdownItem>
                         </DropdownMenu>
                       </Dropdown>
                     </div>
@@ -300,7 +303,7 @@
                               size="small"
                               :false-value="0"
                               :true-value="1"
-                              @on-change="msgNotifyChange">
+                              @on-change="msgSettingChange({newMsgDot: tmpMessageSetting.newMsgDot})">
                     </i-switch>
                   </span>
                 </div>
@@ -312,7 +315,7 @@
                               size="small"
                               :false-value="0"
                               :true-value="1"
-                              @on-change="msgNotifyChange">
+                              @on-change="msgSettingChange({msgCount: tmpMessageSetting.msgCount})">
                     </i-switch>
                   </span>
                 </div>
@@ -322,10 +325,11 @@
                 <h4>回复我的消息提醒</h4>
                 <p>接受谁的评论、回复或@消息提醒</p>
                 <span class="settings-radio">
-                  <RadioGroup v-model="tmpMessageSetting.commentMsgAccept" @on-change="msgNotifyChange">
+                  <RadioGroup v-model="tmpMessageSetting.commentMsgAccept"
+                              @on-change="msgSettingChange({commentMsgAccept: tmpMessageSetting.commentMsgAccept})">
                       <Radio :label="1">所有人</Radio>
-                      <Radio :label="2">关注的人</Radio>
-                      <Radio :label="0">不接受任何消息提醒</Radio>
+                      <Radio :label="0">关注的人</Radio>
+                      <Radio :label="-1">不接受任何消息提醒</Radio>
                   </RadioGroup>
                 </span>
               </div>
@@ -333,10 +337,11 @@
                 <h4>收到的赞消息提醒</h4>
                 <p>当他人给我的文档、随笔或评论点赞时</p>
                 <span class="settings-radio">
-                  <RadioGroup v-model="tmpMessageSetting.likeMsgAccept" @on-change="msgNotifyChange">
+                  <RadioGroup v-model="tmpMessageSetting.likeMsgAccept"
+                              @on-change="msgSettingChange({likeMsgAccept: tmpMessageSetting.likeMsgAccept})">
                       <Radio :label="1">所有人</Radio>
-                      <Radio :label="2">关注的人</Radio>
-                      <Radio :label="0">不接受任何消息提醒</Radio>
+                      <Radio :label="0">关注的人</Radio>
+                      <Radio :label="-1">不接受任何消息提醒</Radio>
                   </RadioGroup>
                 </span>
               </div>
@@ -348,7 +353,7 @@
                             size="small"
                             :false-value="0"
                             :true-value="1"
-                            @on-change="msgNotifyChange">
+                            @on-change="msgSettingChange({newFollowerMsg: tmpMessageSetting.newFollowerMsg})">
                     </i-switch>
                 </span>
               </div>
@@ -360,7 +365,7 @@
                             :false-value="0"
                             :true-value="1"
                             size="small"
-                            @on-change="msgNotifyChange">
+                            @on-change="msgSettingChange({systemNotice: tmpMessageSetting.systemNotice})">
                     </i-switch>
                 </span>
               </div>
@@ -372,7 +377,7 @@
                             :false-value="0"
                             :true-value="1"
                             size="small"
-                            @on-change="msgNotifyChange">
+                            @on-change="msgSettingChange({enableChatMessage: tmpMessageSetting.enableChatMessage})">
                     </i-switch>
                 </span>
               </div>
@@ -389,6 +394,7 @@ import {formatTime} from '@/utils/emoji';
 import InputBox from "@/components/common/replycomment/src/component/InputBox";
 import Pswp from "@/components/common/imagepreview/index"
 import {cloneDeep} from "../utils/emoji";
+import socialApi from "../api/SocialApi";
 
 export default {
   name: "MessageNotification",
@@ -1018,8 +1024,13 @@ export default {
         });
       }
     },
-    msgNotifyChange() {
-      this.$Message.success('设置成功');
+    msgSettingChange(changeValue) {
+      socialApi.updateNoticeSetting(changeValue).then(data => {
+        if (data?.result) {
+          this.$store.commit("messageSetting", changeValue);
+          this.$Message.success('设置成功');
+        }
+      })
     },
     previewImage(currentUrl) {
       if (this.pswp === null) {

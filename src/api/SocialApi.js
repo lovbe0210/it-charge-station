@@ -162,6 +162,18 @@ export default {
       method: 'POST',
       data: noticeConfig
     });
+  },
+
+  /**
+   * 获取未读消息统计
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getUnreadStatistic() {
+    return await Vue.prototype.$request({
+      url: "/sl/notice/unread/statistic",
+      method: 'GET'
+    });
   }
 
 }
