@@ -69,13 +69,14 @@ export default {
     contentBoxParam() {
       return {
         targetId: this.targetId,
+        targetType: this.targetType,
         remove: this.remove,
         updateTotal: this.updateTotal,
         popoverContainer: this.$refs.popoverContainer
       }
     }
   },
-  props: ["targetId"],
+  props: ["targetId", "targetType"],
   components: {
     InputBox,
     UComment
@@ -88,13 +89,12 @@ export default {
      * 提交评论
      */
     submit(comment, clear) {
-      // 添加评论
       if (!comment) {
         return;
       }
       let formData = new FormData();
       formData.append('targetId', this.targetId);
-      formData.append('targetType', '4');
+      formData.append('targetType', this.targetType);
       if (comment.parentId) {
         formData.append('parentId', comment.parentId);
       }

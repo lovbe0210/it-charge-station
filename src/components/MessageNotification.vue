@@ -1,6 +1,6 @@
 <template>
   <div class="layout-message-notification">
-    <div class="msg-notify-menu">
+    <div class="msg-notify-menu un-select">
       <div class="fixed-anchor-point">
         <div class="item">
           <span class="iconfont i-message"></span>
@@ -10,31 +10,31 @@
       <div class="menu-item" @click="routeNavigate('commentReply')">
         <div :class="['item', activeMenu === 'commentReply' ? 'active-menu' : '']">
           <span>回复我的</span>
-          <span class="count">5</span>
+          <span class="count" v-if="messageSetting.msgCount">5</span>
         </div>
       </div>
       <div class="menu-item" @click="routeNavigate('likesReceived')">
         <div :class="['item', activeMenu === 'likesReceived' ? 'active-menu' : '']">
           <span>收到的赞</span>
-          <span class="count">1</span>
+          <span class="count" v-if="messageSetting.msgCount">1</span>
         </div>
       </div>
       <div class="menu-item" @click="routeNavigate('newFans')">
         <div :class="['item', activeMenu === 'newFans' ? 'active-menu' : '']">
           <span>新增关注</span>
-          <span class="count">10</span>
+          <span class="count" v-if="messageSetting.msgCount">10</span>
         </div>
       </div>
       <div class="menu-item" @click="routeNavigate('systemMessage')">
         <div :class="['item', activeMenu === 'systemMessage' ? 'active-menu' : '']">
           <span>系统消息</span>
-          <span class="count">23</span>
+          <span class="count" v-if="messageSetting.msgCount">23</span>
         </div>
       </div>
       <div class="menu-item" @click="routeNavigate('chatMessage')">
         <div :class="['item', activeMenu === 'chatMessage' ? 'active-menu' : '']">
           <span>我的消息</span>
-          <span class="count">99+</span>
+          <span class="count" v-if="messageSetting.msgCount">99+</span>
         </div>
       </div>
       <div class="menu-item item-line">
@@ -50,7 +50,7 @@
     <div class="msg-notify-body">
       <div class="module-tabs-wrapper">
         <div class="module-tabs-tabpane-active">
-          <div class="tabs-tabpane-head">
+          <div class="tabs-tabpane-head un-select">
             <span class="active-tab">
               <span v-if="activeMenu === 'commentReply'">
                 回复我的
@@ -104,9 +104,9 @@
                         发表了评论
                       </span>
                       <span v-if="item.action === 2">
-                        的评论中提到了你
+                        的评论中回复了我
                       </span>
-                      <Badge dot v-if="item.read === 0" :offset="[-9, -3]"/>
+                      <Badge dot v-if="item.read === 0 && messageSetting.newMsgDot" :offset="[-9, -3]"/>
                     </p>
                     <time>
                       <span>2023-03-16 14:58</span>
@@ -132,7 +132,7 @@
                       <a href="/go/notification/134715579" target="_blank">
                         <span class="context-subject">{{ item.targetVectorName }}&nbsp;</span>
                       </a>
-                      <Badge dot v-if="item.read === 0" :offset="[-9, -3]"/>
+                      <Badge dot v-if="item.read === 0 && messageSetting.newMsgDot" :offset="[-9, -3]"/>
                     </p>
                     <time>
                       <span>2023-03-16 14:58</span>
@@ -155,7 +155,7 @@
                     <p>
                       <a href="/u25607691" target="_blank" class="context-actor">{{ item.username }}</a>
                       关注了我
-                      <Badge dot v-if="item.read === 0" :offset="[-9, -3]"/>
+                      <Badge dot v-if="item.read === 0 && messageSetting.newMsgDot" :offset="[-9, -3]"/>
                     </p>
                     <time>
                       <span>2023-03-16 14:58</span>
@@ -177,7 +177,7 @@
                       <a :href="item.url" target="_blank">
                         <span class="sys-msg-label">&nbsp;{{ item.label }}&nbsp;</span>
                       </a>
-                      <Badge dot v-if="item.read === 0" :offset="[-9, -5]"/>
+                      <Badge dot v-if="item.read === 0 && messageSetting.newMsgDot" :offset="[-9, -5]"/>
                     </p>
                     <time>
                       <span>2023-03-16 14:58</span>
@@ -296,8 +296,10 @@
                   <h4>有新消息时显示消息提醒</h4>
                   <p>关闭后，当有新动态时，不展示相应位置的红点提示</p>
                   <span class="settings-selector">
-                    <i-switch v-model="messageSetting.msgDot"
+                    <i-switch v-model="tmpMessageSetting.newMsgDot"
                               size="small"
+                              :false-value="0"
+                              :true-value="1"
                               @on-change="msgNotifyChange">
                     </i-switch>
                   </span>
@@ -306,8 +308,10 @@
                   <h4>有新消息时展示消息数量</h4>
                   <p>关闭后，当有新消息时，不展示相应位置的未读统计</p>
                   <span class="settings-selector">
-                    <i-switch v-model="messageSetting.msgCount"
+                    <i-switch v-model="tmpMessageSetting.msgCount"
                               size="small"
+                              :false-value="0"
+                              :true-value="1"
                               @on-change="msgNotifyChange">
                     </i-switch>
                   </span>
@@ -318,7 +322,7 @@
                 <h4>回复我的消息提醒</h4>
                 <p>接受谁的评论、回复或@消息提醒</p>
                 <span class="settings-radio">
-                  <RadioGroup v-model="messageSetting.replyAccept" @on-change="msgNotifyChange">
+                  <RadioGroup v-model="tmpMessageSetting.commentMsgAccept" @on-change="msgNotifyChange">
                       <Radio :label="1">所有人</Radio>
                       <Radio :label="2">关注的人</Radio>
                       <Radio :label="0">不接受任何消息提醒</Radio>
@@ -329,7 +333,7 @@
                 <h4>收到的赞消息提醒</h4>
                 <p>当他人给我的文档、随笔或评论点赞时</p>
                 <span class="settings-radio">
-                  <RadioGroup v-model="messageSetting.likeAccept" @on-change="msgNotifyChange">
+                  <RadioGroup v-model="tmpMessageSetting.likeMsgAccept" @on-change="msgNotifyChange">
                       <Radio :label="1">所有人</Radio>
                       <Radio :label="2">关注的人</Radio>
                       <Radio :label="0">不接受任何消息提醒</Radio>
@@ -340,8 +344,10 @@
                 <h4>关注提醒</h4>
                 <p>当他人关注我时</p>
                 <span class="settings-selector">
-                  <i-switch v-model="messageSetting.newFollower"
+                  <i-switch v-model="tmpMessageSetting.newFollowerMsg"
                             size="small"
+                            :false-value="0"
+                            :true-value="1"
                             @on-change="msgNotifyChange">
                     </i-switch>
                 </span>
@@ -350,7 +356,9 @@
                 <h4>系统消息</h4>
                 <p>风险提示，功能变更，运营活动</p>
                 <span class="settings-selector">
-                  <i-switch v-model="messageSetting.systemNotice"
+                  <i-switch v-model="tmpMessageSetting.systemNotice"
+                            :false-value="0"
+                            :true-value="1"
                             size="small"
                             @on-change="msgNotifyChange">
                     </i-switch>
@@ -358,9 +366,11 @@
               </div>
               <div class="settings-item">
                 <h4>我的消息</h4>
-                <p>我对别人发起或别人对我发起的私信消息</p>
+                <p>允许别人对我发起私信消息</p>
                 <span class="settings-selector">
-                  <i-switch v-model="messageSetting.chatMessage"
+                  <i-switch v-model="tmpMessageSetting.enableChatMessage"
+                            :false-value="0"
+                            :true-value="1"
                             size="small"
                             @on-change="msgNotifyChange">
                     </i-switch>
@@ -378,6 +388,7 @@
 import {formatTime} from '@/utils/emoji';
 import InputBox from "@/components/common/replycomment/src/component/InputBox";
 import Pswp from "@/components/common/imagepreview/index"
+import {cloneDeep} from "../utils/emoji";
 
 export default {
   name: "MessageNotification",
@@ -406,14 +417,20 @@ export default {
       },
       EmojiSelectorPosition: null,
       tmpId: 100,
-      messageSetting: {
-        msgDot: true,
-        msgCount: true,
-        replyAccept: 1,
-        likeAccept: 1,
-        newFollower: true,
-        systemNotice: true,
-        chatMessage: true
+      tmpMessageSetting: {
+        newMsgDot: 1,
+        // 新消息展示数量统计
+        msgCount: 1,
+        // 评论回复提醒接收范围 1 所有人 0关注的人 -1不接受任何提醒
+        commentMsgAccept: 1,
+        // 点赞消息提薪人员范围 1 所有人 0关注的人 -1不接受任何提醒
+        likeMsgAccept: 1,
+        // 他人关注是否提醒 0否1是
+        newFollowerMsg: 1,
+        // 是否开启系统通知 0否1是
+        systemNotice: 1,
+        // 是否开启私聊消息 0否1是
+        enableChatMessage: 1
       },
       isConnected: false,
       sharedWorker: null
@@ -427,6 +444,9 @@ export default {
     loginStatus() {
       let userInfo = this.$store.state.userInfo
       return userInfo !== null && userInfo.token?.length === 32
+    },
+    messageSetting () {
+      return this.$store.state.messageSetting;
     }
   },
   components: {
@@ -1194,6 +1214,11 @@ export default {
           type: 3
         })
       }
+    },
+    'activeMenu'(newValue) {
+      if (newValue === 'messageSetting') {
+        this.tmpMessageSetting = cloneDeep(this.messageSetting);
+      }
     }
   },
   mounted() {
@@ -1208,7 +1233,6 @@ export default {
       return;
     }
     this.wsInit();
-    // 获取
   },
   beforeDestroy() {
     if (this.sharedWorker) {

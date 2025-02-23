@@ -137,6 +137,31 @@ export default {
       method: 'POST',
       data: pageInfo
     });
+  },
+
+  /**
+   * 获取消息设置
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getNoticeSetting() {
+    return await Vue.prototype.$request({
+      url: "/sl/notice/setting",
+      method: 'GET'
+    });
+  },
+
+  /**
+   * 消息设置改动
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async updateNoticeSetting(noticeConfig) {
+    return await Vue.prototype.$request({
+      url: "/sl/notice/setting/update",
+      method: 'POST',
+      data: noticeConfig
+    });
   }
 
 }

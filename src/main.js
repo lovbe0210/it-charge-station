@@ -16,7 +16,6 @@ Vue.prototype.$Message = Message
 let fileService = '/oss'
 Vue.prototype.fileService = fileService;
 
-
 new Vue({
   router,
   store,

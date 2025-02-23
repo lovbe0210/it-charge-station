@@ -131,12 +131,12 @@
           <b-nav-item class="msg mr-2">
             <Dropdown placement="bottom"
                       trigger="click"
-                      transfer-class-name="dropdown-background dropdown-item-all-hover"
+                      :transfer-class-name="messageSetting.msgCount ? 'dropdown-background dropdown-item-all-hover show-count' : 'dropdown-background dropdown-item-all-hover'"
                       @on-click="readMessage">
               <a href="javascript:void(0)">
                 <div class="message-menu-wrapper">
                   <div class="message-menu-body">
-                    <div class="c-badge" v-if="1"/>
+                    <div class="c-badge" v-if="messageSetting.newMsgDot"/>
                     <span class="iconfont i-message"></span>
                   </div>
                 </div>
@@ -145,31 +145,46 @@
                 <DropdownItem name="commentReply">
                   <div class="comment-reply quick-start-item">
                     <span>回复我的</span>
-                    <Badge :count="30" overflow-count="99" class="msg-item-badge"></Badge>
+                    <Badge v-show="messageSetting.msgCount"
+                           :count="30"
+                           overflow-count="99"
+                           class="msg-item-badge"/>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="likesReceived">
                   <div class="new-fans quick-start-item">
                     <span>收到的赞</span>
-                    <Badge :count="10" overflow-count="99" class="msg-item-badge"></Badge>
+                    <Badge v-show="messageSetting.msgCount"
+                           :count="10"
+                           overflow-count="99"
+                           class="msg-item-badge"/>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="newFans">
                   <div class="like-favorite quick-start-item">
-                    <span>新增粉丝</span>
-                    <Badge :count="100" overflow-count="99" class="msg-item-badge"></Badge>
+                    <span>新增关注</span>
+                    <Badge v-show="messageSetting.msgCount"
+                           :count="100"
+                           overflow-count="99"
+                           class="msg-item-badge"/>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="systemMessage">
                   <div class="msg-system quick-start-item">
                     <span>系统消息</span>
-                    <Badge :count="35" overflow-count="99" class="msg-item-badge"></Badge>
+                    <Badge v-show="messageSetting.msgCount"
+                           :count="35"
+                           overflow-count="99"
+                           class="msg-item-badge"/>
                   </div>
                 </DropdownItem>
                 <DropdownItem name="chatMessage">
                   <div class="msg-session quick-start-item">
                     <span>我的消息</span>
-                    <Badge :count="8" overflow-count="99" class="msg-item-badge"></Badge>
+                    <Badge v-show="messageSetting.msgCount"
+                           :count="8"
+                           overflow-count="99"
+                           class="msg-item-badge"/>
                   </div>
                 </DropdownItem>
               </DropdownMenu>
@@ -235,6 +250,7 @@ import MessageNotification from "./MessageNotification";
 import AuthModal from "@/components/common/AuthModal.vue";
 import AuthApi from "@/api/AuthApi";
 import WriteCenterApi from "@/api/WriteCenterApi";
+import socialApi from "../api/SocialApi";
 
 export default {
   name: 'Header',
@@ -264,6 +280,9 @@ export default {
     loginStatus() {
       let userInfo = this.$store.state.userInfo
       return userInfo !== null && userInfo.token?.length === 32
+    },
+    messageSetting() {
+      return this.$store.state.messageSetting;
     }
   },
   watch: {
@@ -412,6 +431,7 @@ export default {
   },
   created() {
     // 获取菜单分类
+    this.firstMenu = this.$store.state.firstMenu;
     WriteCenterApi.getMenuList().then(data => {
       if (data?.result) {
         let _data = data.data;
@@ -421,6 +441,15 @@ export default {
           menuCode: 'ramblyJot',
           menuName: '随笔'
         })
+      }
+    })
+    if (!this.loginStatus) {
+      return;
+    }
+    // 获取消息显示设置
+    socialApi.getNoticeSetting().then(data => {
+      if (data?.result) {
+        this.$store.commit("messageSetting", data.data);
       }
     })
     // 获取未读通知

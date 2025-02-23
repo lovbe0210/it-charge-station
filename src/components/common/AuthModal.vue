@@ -25,7 +25,9 @@
                 —— 永远电量满满，永远激情澎湃
               </span>
             </div>
-            <img :src="require('@/assets/cy2.png')" alt="">
+            <div class="logo-icon-img">
+              <img src="https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/cy2.png" alt="">
+            </div>
           </div>
           <div class="login-main">
             <h1 class="title" v-if="loginType === 1">账号密码登录</h1>
@@ -56,7 +58,10 @@
                 </form>
               </div>
               <div class="button-group">
-                <Button type="primary" size="large" @click="payloadLogin">
+                <Button type="primary"
+                        size="large"
+                        @click="payloadLogin"
+                        :loading="loginLading">
                   登录
                 </Button>
                 <Button size="large" @click="changeLoginType">
@@ -83,13 +88,17 @@
                             ghost
                             @click="getVerifyCode"
                             class="verify-code-btn"
+                            :loading="codeLoading"
                             :disabled="sendCodeSuccess">
                       {{ btnValue }}
                     </Button>
                   </Input>
                 <div class="error-text">{{ verifyCodeError ? '请输入正确的验证码' : '' }}</div>
               </div>
-              <Button size="large" type="primary" @click="quickLogin">
+              <Button size="large"
+                      type="primary"
+                      :loading="loginLading"
+                      @click="quickLogin">
                 登录 / 注册
               </Button>
             </div>
@@ -115,14 +124,18 @@
                           type="text"
                           ghost
                           @click="getVerifyCode"
-                          :disabled="sendCodeSuccess">
+                          :disabled="sendCodeSuccess"
+                          :loading="codeLoading">
                     {{ btnValue }}
                   </Button>
                 </Input>
                 <div class="error-text">{{ verifyCodeError ? '请输入正确的验证码' : '' }}</div>
               </div>
               <div class="reset-action-group">
-                <Button size="large" type="primary" @click="resetPassword">
+                <Button size="large"
+                        type="primary"
+                        @click="resetPassword"
+                        :loading="loginLading">
                   修改
                 </Button>
                 <span class="return-login" @click="returnLogin">返回登录</span>
@@ -182,6 +195,10 @@ export default {
     return {
       showLogin: false,
       showSliderValidate: false,
+      // 登录按钮loading
+      loginLading: false,
+      // 验证码按钮loading
+      codeLoading: false,
       // 登录类型：1 密码登录， 2 验证码登录 3 重置密码
       loginType: 1,
       // 行为类型 1注册 2登录
@@ -218,7 +235,9 @@ export default {
       } else {
         svScene = this.account.indexOf('@') === -1 ? 9 : 10;
       }
+      this.codeLoading = true;
       authApi.getSvCookie(this, svScene).then(data => {
+        this.codeLoading = false;
         if (!data?.result) {
           return;
         }
@@ -227,7 +246,9 @@ export default {
         if (!svToken) {
           return;
         }
+        this.codeLoading = true;
         authApi.sendPayloadCode(this, svScene, svToken).then(result => {
+          this.codeLoading = false;
           if (!result?.result) {
             return;
           }
@@ -266,7 +287,9 @@ export default {
       if (!checkResult) {
         return;
       }
+      this.loading = true
       authApi.payloadLogin(this).then(data => {
+        this.loading = false;
         if (!data?.result) {
           return;
         }
@@ -289,7 +312,9 @@ export default {
       if (!checkResult) {
         return;
       }
+      this.loginLading = true;
       authApi.verifyCodeLogin(this).then(data => {
+        this.loginLading = false;
         if (!data?.result) {
           return;
         }
@@ -312,7 +337,9 @@ export default {
       if (!checkResult) {
         return;
       }
+      this.loginLading = true;
       authApi.resetPassword(this).then(data => {
+        this.loginLading = false;
         if (!data?.result) {
           return;
         }
@@ -415,6 +442,8 @@ export default {
       this.password = null;
       this.verifyCode = null;
       this.sliderValidateResult = false;
+      this.loginLading = false;
+      this.codeLoading = false;
     },
     "showLogin"(val) {
       if (!val) {
@@ -477,10 +506,38 @@ export default {
         }
       }
 
-      img {
-        max-width: 100%;
-        border-radius: 6px;
+      .logo-icon-img {
+        width: 100%;
+        position: relative; /* 为绝对定位图片提供参照 */
+        overflow: hidden;
+
+        &::before {
+          border-radius: 8px;
+          background: #EFF0F0; /* 占位背景色 */
+          animation: pulse 1.5s infinite; /* 呼吸动画 */
+          content: "";
+          display: block;
+          padding-top: 100%; /* 1:1 宽高比（正方形） */
+        }
+
+        @keyframes pulse {
+          0% { opacity: 0.4; }
+          50% { opacity: 1; }
+          100% { opacity: 0.5; }
+        }
+
+        img {
+          position: absolute; /* 脱离文档流 */
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 6px;
+        }
       }
+
+
     }
 
     .login-main {

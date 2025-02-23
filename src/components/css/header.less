@@ -261,7 +261,7 @@
 
             .ivu-dropdown-menu {
               text-align: left;
-              min-width: 160px;
+              width: 7.5rem;
               padding: 5px 0;
 
               .ivu-dropdown-item {
@@ -274,7 +274,6 @@
                 transition: background-color .3s;
               }
 
-
               .quick-start-item {
                 font-size: 14px;
                 color: var(--title-color);
@@ -284,9 +283,18 @@
                 .msg-item-badge {
                   position: absolute;
                   right: 24px;
+
+                  .ivu-badge-count {
+                    line-height: 20px;
+                  }
                 }
               }
+            }
+          }
 
+          /deep/ .show-count {
+            .ivu-dropdown-menu {
+              width: 9.5rem;
             }
           }
         }

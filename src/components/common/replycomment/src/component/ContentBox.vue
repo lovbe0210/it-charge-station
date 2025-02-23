@@ -51,21 +51,21 @@
             <!-- 点赞 -->
             <div class="item" @click="like" v-if="loginStatus">
               <span :class="['iconfont', 'like', commentReply.ifLike ? 'ilike' : '']"></span>
-              <span v-if="commentReply.likeCount != 0">{{ commentReply.likeCount }}</span>
+              <span v-if="commentReply.likeCount !== 0">{{ commentReply.likeCount }}</span>
             </div>
             <div v-else class="item" @click="login">
               <span class="iconfont like"></span>
-              <span v-if="commentReply.likeCount != 0">{{ commentReply.likeCount }}</span>
+              <span v-if="commentReply.likeCount !== 0">{{ commentReply.likeCount }}</span>
             </div>
 
             <!-- 回复 -->
             <div class="item" :class="{ active }" @click="reply" v-if="loginStatus">
               <span class="iconfont reply"></span>
-              <span class="reply-btn">{{ active ? '取消回复' : '回复' }}</span>
+              <span class="reply-btn">{{ active ? '取消回复' : ('回复' + (replyCount ? replyCount : '')) }}</span>
             </div>
             <div class="item" v-else @click="login">
               <span class="iconfont reply"></span>
-              <span class="reply-btn">回复</span>
+              <span class="reply-btn">{{'回复' + (replyCount ? replyCount : '')}}</span>
             </div>
             <div class="item delete-warn" v-if="commentReply.userInfo.uid === userInfo.uid">
               <a-popover placement="top"
@@ -135,11 +135,14 @@ export default {
     }
   },
   props: {
-    // 楼中楼的回复
+    // 评论/楼中楼回复
     data: {
       type: Object
     },
     parentId: {
+      type: Number
+    },
+    replyCount: {
       type: Number
     },
     contentBoxParam: {

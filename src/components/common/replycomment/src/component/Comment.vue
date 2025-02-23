@@ -2,6 +2,7 @@
   <div>
     <ContentBox :data="data"
                 :parent-id="data.uid"
+                :reply-count="total"
                 :contentBoxParam="param"/>
     <div class="reply-box" v-if="total > 0">
       <div class="reply-list">
@@ -10,13 +11,13 @@
                     :data="reply"
                     :parent-id="data.uid"
                     :contentBoxParam="param"/>
-        <!-- 如果total>5则进行折叠，打开折叠后如果小于分页数，直接全部显示，否则使用分页显示 -->
+        <!-- 如果total>3则进行折叠，打开折叠后如果小于分页数，直接全部显示，否则使用分页显示 -->
         <div v-if="total > 3 && collapse" class="fetch-more un-select">
           <span>共{{ total }}条回复,&nbsp;</span>
           <span class="fetch-more-comment" @click="moreReply(1)">
-                点击查看
-                <span class="iconfont drop-down"></span>
-              </span>
+            点击查看
+            <span class="iconfont drop-down"></span>
+          </span>
         </div>
         <div v-if="!collapse && total > pageSize" class="fetch-more un-select">
           <div class="pagination-prefix">
@@ -118,7 +119,7 @@ export default {
       }
       let formData = new FormData();
       formData.append('targetId', this.contentBoxParam?.targetId);
-      formData.append('targetType', '4');
+      formData.append('targetType', this.contentBoxParam?.targetType);
       if (comment.parentId) {
         formData.append('parentId', comment.parentId);
       }
@@ -133,7 +134,7 @@ export default {
         if (data?.result) {
           // 提交评论添加到评论列表
           if (this.collapse) {
-            this.replyList.splice(2, 0, data.data);
+            this.replyList.splice(0, 1, data.data);
           } else if (!this.collapse && this.total < 3) {
             this.replyList.unshift(data.data);
           } else if (!this.collapse && this.total >= 3) {

@@ -5,7 +5,10 @@
  * 配置项地址见：https://cli.vuejs.org/zh/config/#pages
  */
 // const FileManagerPlugin = require('filemanager-webpack-plugin') //引入插件
-require('events').EventEmitter.defaultMaxListeners = 0; // 解除限制
+//捕获未捕捉的异常，避免Node进程退出。
+process.on('uncaughtException', function (err) {
+  console.log('Caught Exception:' + err);
+});
 module.exports = {
   // 根路径  @ is an alias to /src
   publicPath: '/',

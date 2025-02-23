@@ -103,7 +103,7 @@
     </div>
     <!-- 评论 -->
     <div class="">
-      <reply-comment :targetId="ramblyJot.uid"/>
+      <reply-comment :targetId="ramblyJot.uid" :targetType="3"/>
     </div>
   </div>
 </template>

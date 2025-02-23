@@ -3,6 +3,7 @@ let ws;
 let sockerUrl = null;
 let initing = false;
 let opened = false; // 连接状态 打开/关闭
+let activeClose = false; // 主动关闭
 let retries = 0; // 重试次数,最多5次
 let retryIntervalTime = 5000; // 重试时间间隔，单位毫秒
 let retryTimeout = null;
@@ -40,6 +41,7 @@ self.onconnect = (e) => {
           ws = new WebSocket(sockerUrl);
           ws.onopen = function (e) {
             opened = true;
+            activeClose = false;
             postAllMessage({
               type: 1,
               data: 'WebSocket已连接'
@@ -54,11 +56,15 @@ self.onconnect = (e) => {
             }, heartIntervalTime);
           }
           ws.onclose = function (e) {
+            opened = false;
             postAllMessage({
               type: 3,
               data: `WebSocket连接关闭:${JSON.stringify(e)}`
             });
             clearInterval(heartCheckInterval);
+            if (!activeClose) {
+              retry("onclose")
+            }
           }
           ws.onmessage = (e) => {
             const data = e.data
@@ -107,6 +113,7 @@ self.onconnect = (e) => {
         })
       )
       if (ports.size === 0) {
+        activeClose = true;
         ws.close();
       }
     }

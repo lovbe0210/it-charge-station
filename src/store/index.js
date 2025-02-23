@@ -21,6 +21,39 @@ export default new Vuex.Store({
     isPhone: false,
     // 计算是否要固定右侧标签的高度
     fixedHeight: null,
+    // 页面一级标题
+    firstMenu: [
+      {
+        "uid": 1,
+        "menuCode": "technet",
+        "menuName": "计算机与网络"
+      },
+      {
+        "uid": 2,
+        "menuCode": "lang",
+        "menuName": "编程语言"
+      },
+      {
+        "uid": 3,
+        "menuCode": "database",
+        "menuName": "数据库"
+      },
+      {
+        "uid": 4,
+        "menuCode": "midware",
+        "menuName": "中间件"
+      },
+      {
+        "uid": 5,
+        "menuCode": "algthm",
+        "menuName": "算法"
+      },
+      {
+        uid: 'ramblyJot',
+        menuCode: 'ramblyJot',
+        menuName: '随笔'
+      }
+    ],
 
     // ============== 个性化相关 =================
     // 显示自定义主题开关
@@ -107,6 +140,24 @@ export default new Vuex.Store({
       isMusicLoad: false,
       // 是否展示音乐播放页面
       isMusicDetailCardShow: false
+    },
+
+    // ============= 消息通知类 ==================
+    messageSetting: {
+      // 新消息红点提醒
+      newMsgDot: 1,
+      // 新消息展示数量统计
+      msgCount: 1,
+      // 评论回复提醒人员范围 1 所有人 0关注的人 -1不接受任何提醒
+      commentMsgAccept: 1,
+      // 点赞消息提薪人员范围 1 所有人 0关注的人 -1不接受任何提醒
+      likeMsgAccept: 1,
+      // 他人关注是否提醒 0否1是
+      newFollowerMsg: 1,
+      // 是否开启系统通知 0否1是
+      systemNotice: 1,
+      // 是否开启私聊消息 0否1是
+      enableChatMessage: 1
     }
   },
 
@@ -187,6 +238,14 @@ export default new Vuex.Store({
      */
     preferenceSet(state, value) {
       state.docStyle = Object.assign(state.docStyle, value);
+    },
+    /**
+     * 通知设置 注意这里的传参必须是一个对象
+     * @param state
+     * @param value
+     */
+    messageSetting(state, value) {
+      state.messageSetting = Object.assign(state.messageSetting, value);
     },
     /**
      * 自定义主题，注意这里的传参必须是一个对象
