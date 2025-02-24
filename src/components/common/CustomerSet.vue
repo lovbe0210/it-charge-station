@@ -62,7 +62,10 @@
 </template>
 
 <script>
-  import preferenceApi from "../../api/PreferenceApi";
+  // import preferenceApi from "@/api/PreferenceApi";
+
+  import {deepEqual} from "@/utils/utils";
+  import preferenceApi from "@/api/PreferenceApi";
 
   export default {
     name: "CustomerSet",
@@ -224,7 +227,10 @@
       customerSet: {
         immediate: true,
         deep: true,
-        handler(value) {
+        handler(value, old) {
+          if (old === undefined || deepEqual(value, old)) {
+            return;
+          }
           if (this.loginStatus) {
             let preferenceSetting = {customTheme: value}
             preferenceApi.updatePreferenceSetting(preferenceSetting);

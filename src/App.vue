@@ -141,6 +141,14 @@
             let loginUser = data.data;
             // 保存userInfo到store中
             storeData.userInfo = {...userInfo, ...loginUser};
+            // 先更新用户信息到vuex中
+            this.$store.replaceState(
+              Object.assign(
+                {},
+                this.$store.state,
+                storeData
+              )
+            )
             // 偏好设置同步
             preferenceApi.getPreferenceSetting().then(data => {
               if (data?.result) {
@@ -234,9 +242,7 @@
         let musicInfo = localData.musicInfo;
         let updateConfig = {
           customTheme: localData.customerSet,
-          musicPlay: {
-            musicId: musicInfo.musicId
-          }
+          musicPlay: {musicId: musicInfo.musicId}
         };
         // 本地数据为主，更新至云端
         preferenceApi.updatePreferenceSetting(updateConfig);

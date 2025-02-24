@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-message-notification">
+  <div class="layout-message-notification" ref="popoverContainer">
     <div class="msg-notify-menu un-select">
       <div class="fixed-anchor-point">
         <div class="item">
@@ -82,35 +82,43 @@
                v-if="activeMenu !== 'chatMessage' && activeMenu !== 'messageSetting'">
             <ul class="tab-list-items" v-if="activeMenu === 'commentReply'">
               <li class="tab-list-item"
-                  v-for="item in commentReplyList"
-                  :key="item.id">
+                  v-for="item in msgNoticeList"
+                  :key="item.uid">
                 <div class="notification-item">
-                  <b-avatar class="avatar"
-                            :src="item.avatar"
-                            variant="light" to="/asdasd" size="2rem">
-                    <span v-if="!item.avatar">{{ item.username }}</span>
-                  </b-avatar>
+                  <user-card :userInfo="item.actionUserInfo" :popoverContainer="popoverContainer">
+                    <slot>
+                      <b-avatar class="avatar"
+                                :src="fileUrl(item.actionUserInfo?.avatarUrl)"
+                                variant="light"
+                                :to="'/' + item.actionUserInfo?.domain"
+                                size="2rem">
+                        <span v-if="!item.actionUserInfo?.avatarUrl">{{ item.actionUserInfo?.username }}</span>
+                      </b-avatar>
+                    </slot>
+                  </user-card>
                   <div class="item-content">
-                    <p>
-                      <a href="/u25607691" target="_blank" class="context-actor">{{ item.username }}</a>
-                      {{
-                        (item.action === 1 ? '对' : item.action === 2 ? '在' : '') +
-                        (item.type === 1 ? '文档' : item.type === 2 ? '随笔' : '')
-                      }}
-                      <a href="/go/notification/134715579" target="_blank">
-                        <span class="context-subject">{{ item.targetVectorName }}</span>
-                      </a>
-                      <span v-if="item.action === 1">
-                        发表了评论
+                    <p class="action-info">
+                      <span>
+                        <a :href="'/' + item.actionUserInfo?.domain" target="_blank" class="context-actor">{{ item.actionUserInfo?.username }}</a>
+                        {{
+                            (item.replyId ? '在' : '对') + (item.targetType === 1 ? '文档' : item.targetType === 3 ? '随笔' : '')
+                          }}
+                        <a href="/go/notification/134715579" target="_blank" class="context-subject">
+                          <span >{{ item.targetType === 1 ? item.articleInfo?.title : item.targetType === 3 ? item.ramblyJot?.title : '已删除内容' }}</span>
+                        </a>
+                        <span v-if="!item.replyId">
+                          发表了评论
+                        </span>
+                        <span v-if="item.replyId">
+                          的评论中回复了我
+                        </span>
+                        <Badge dot v-if="item.readStatus === 0 && messageSetting.newMsgDot" :offset="[-9, -3]"/>
                       </span>
-                      <span v-if="item.action === 2">
-                        的评论中回复了我
-                      </span>
-                      <Badge dot v-if="item.read === 0 && messageSetting.newMsgDot" :offset="[-9, -3]"/>
+                      <span class="msg-time">{{ formatTime(item.createTime) }}</span>
                     </p>
-                    <time>
-                      <span>2023-03-16 14:58</span>
-                    </time>
+                    <p class="action-content" :title="item.replyId ? item.replyContent : item.commentContent">
+                      <span v-html="item.replyId ? item.replyContent : item.commentContent"/>
+                    </p>
                   </div>
                 </div>
               </li>
@@ -393,8 +401,9 @@
 import {formatTime} from '@/utils/emoji';
 import InputBox from "@/components/common/replycomment/src/component/InputBox";
 import Pswp from "@/components/common/imagepreview/index"
-import {cloneDeep} from "../utils/emoji";
-import socialApi from "../api/SocialApi";
+import {cloneDeep} from "@/utils/emoji";
+import msgNoticeApi from "@/api/MsgNoticeApi";
+import UserCard from "@/components/common/UserCard.vue";
 
 export default {
   name: "MessageNotification",
@@ -402,6 +411,11 @@ export default {
     return {
       // 图片预览
       pswp: null,
+      offset: 0,
+      limit: 20,
+      total: 0,
+      msgNoticeList: [],
+      popoverContainer: null,
       // 评论回复
       commentReplyList: [],
       // 点赞
@@ -456,26 +470,36 @@ export default {
     }
   },
   components: {
-    InputBox
+    InputBox,
+    UserCard
   },
   methods: {
+    fileUrl(path) {
+      return this.fileService + path;
+    },
     routeNavigate(activeMenu) {
       if (this.activeMenu === activeMenu) {
-        // 滚动条滚动套第一个未读的消息列表，如果全部已读则无需滚动
+        // 滚动条滚动到第一个未读的消息列表，如果全部已读则无需滚动
         return;
       }
       this.activeMenu = activeMenu;
       this.loadMsgNotify(activeMenu);
     },
     loadMsgNotify(activeMenu) {
-      setTimeout(() => {
-        console.log('TODO 更新msg')
-      }, 1000)
       switch (activeMenu) {
         case 'commentReply':
-          this.commentReplyList = [
+          msgNoticeApi.getCommentNotice({
+            offset: this.offset,
+            limit: this.limit
+          }).then(data => {
+            if (data?.result) {
+              this.total = data.data.total;
+              this.msgNoticeList.push(...data.data.list);
+            }
+          })
+      /*    this.commentReplyList = [
             // type: 1 文档 2 随笔
-            // action: 1 评论 2 提及
+            // action: 1 评论 2 回复
             {
               id: 121112,
               username: '安沐夕',
@@ -564,7 +588,7 @@ export default {
               targetVectorId: 1212112129432,
               targetVectorName: "为什么现在的年轻人都不生孩子了？"
             }
-          ]
+          ]*/
           break;
         case 'likesReceived':
           this.likesList = [
@@ -1025,7 +1049,7 @@ export default {
       }
     },
     msgSettingChange(changeValue) {
-      socialApi.updateNoticeSetting(changeValue).then(data => {
+      msgNoticeApi.updateNoticeSetting(changeValue).then(data => {
         if (data?.result) {
           this.$store.commit("messageSetting", changeValue);
           this.$Message.success('设置成功');
@@ -1230,9 +1254,11 @@ export default {
       if (newValue === 'messageSetting') {
         this.tmpMessageSetting = cloneDeep(this.messageSetting);
       }
+      this.msgNoticeList = [];
     }
   },
   mounted() {
+    this.popoverContainer = this.$refs.popoverContainer;
     this.activeMenu = 'commentReply';
     this.loadMsgNotify('commentReply');
   },

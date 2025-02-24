@@ -373,6 +373,7 @@
       insertEmoji(emojiVal) {
         let emoji;
         let emojiPath = this.c_emoji.allEmoji[emojiVal];
+        console.log(emojiVal, emojiPath)
         if (emojiPath) {
           // 当前输入对象为表情
           emoji = [

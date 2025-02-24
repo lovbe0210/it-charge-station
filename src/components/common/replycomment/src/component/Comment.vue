@@ -133,7 +133,7 @@ export default {
       socialApi.replyComment(formData).then(data => {
         if (data?.result) {
           // 提交评论添加到评论列表
-          if (this.collapse) {
+          if (this.collapse && this.total >= 3) {
             this.replyList.splice(0, 1, data.data);
           } else if (!this.collapse && this.total < 3) {
             this.replyList.unshift(data.data);

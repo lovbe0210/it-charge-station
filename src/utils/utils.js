@@ -350,10 +350,54 @@ export function dataURLtoFile(dataurl, fileName) {
   }
 
   // 将Uint8Array转换为Blob对象
-  const blob = new Blob([u8arr], { type: mime });
+  const blob = new Blob([u8arr], {type: mime});
 
   // 创建File对象
-  const file = new File([blob], fileName, { type: mime });
+  const file = new File([blob], fileName, {type: mime});
 
   return file;
+}
+
+export function deepEqual(a, b) {
+  // 处理严格相等情况（包括基本类型和同一对象引用）
+  if (a === b) return true;
+
+  // 处理 null/undefined 的情况
+  if (a === null || b === null || typeof a !== 'object' || typeof b !== 'object') {
+    return a === b;
+  }
+
+  // 获取对象类型标识
+  const typeA = Object.prototype.toString.call(a);
+  const typeB = Object.prototype.toString.call(b);
+  if (typeA !== typeB) return false;
+
+  // 处理特殊对象类型
+  switch (typeA) {
+    case '[object Date]':
+      return a.getTime() === b.getTime();
+    case '[object RegExp]':
+      return a.toString() === b.toString();
+    case '[object Number]':
+    case '[object String]':
+    case '[object Boolean]':
+      return a.valueOf() === b.valueOf();
+  }
+
+  // 处理数组
+  if (Array.isArray(a)) {
+    if (a.length !== b.length) return false;
+    return a.every((item, index) => deepEqual(item, b[index]));
+  }
+
+  // 处理普通对象
+  if (typeA === '[object Object]') {
+    const keysA = Object.keys(a).sort();
+    const keysB = Object.keys(b).sort();
+    return keysA.length === keysB.length &&
+      keysA.every((key, index) => key === keysB[index] && deepEqual(a[key], b[key]));
+  }
+
+  // 其他未处理的对象类型默认返回 false
+  return false;
 }

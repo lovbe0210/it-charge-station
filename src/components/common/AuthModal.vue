@@ -414,23 +414,22 @@ export default {
       this.loginType = 1;
     },
     reqUserInfo(userInfo) {
-      // 请求用户信息
-      userApi.getUserInfo(userInfo.uid).then(data => {
-        if (!data?.result) {
-          return;
-        }
-        let loginUser = data.data;
-        userInfo = {...userInfo, ...loginUser};
-        // 保存userInfo到store中
-        this.$store.commit('login', userInfo)
+      let routeName = this.$route.name;
+      if (routeName !== 'Reader' && routeName !== 'SColumnReadHome' && routeName !== 'ReadCenter') {
+        // 页面刷新获取用户信息
+        this.$router.go(0);
+      } else {
         // 阅读页面的路由不刷新体验更好
-        let routeName = this.$route.name;
-        if (routeName !== 'Reader' && routeName !== 'SColumnReadHome' && routeName !== 'ReadCenter') {
-          setTimeout(() => {
-            this.$router.go(0);
-          }, 300)
-        }
-      })
+        userApi.getUserInfo(userInfo.uid).then(data => {
+          if (!data?.result) {
+            return;
+          }
+          let loginUser = data.data;
+          userInfo = {...userInfo, ...loginUser};
+          // 保存userInfo到store中
+          this.$store.commit('login', userInfo)
+        })
+      }
     }
   },
   watch: {

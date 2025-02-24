@@ -250,7 +250,7 @@ import MessageNotification from "./MessageNotification";
 import AuthModal from "@/components/common/AuthModal.vue";
 import AuthApi from "@/api/AuthApi";
 import WriteCenterApi from "@/api/WriteCenterApi";
-import socialApi from "../api/SocialApi";
+import msgNoticeApi from "@/api/MsgNoticeApi";
 
 export default {
   name: 'Header',
@@ -323,28 +323,24 @@ export default {
           this.$store.commit('clearUserInfo');
           this.$Message.success('已成功退出当前用户，记得回来看看哦')
           // 如果路由在首页或者recommend，则刷新页面，其他都回到首页
-          setTimeout(() => {
-            let path = this.$router.currentRoute.path;
-            if (path === "/" || path === "/recommend") {
-              this.$router.go(0);
-            } else {
-              this.$router.replace("/");
-            }
-          }, 400)
+          let path = this.$router.currentRoute.path;
+          if (path === "/" || path === "/recommend") {
+            this.$router.go(0);
+          } else {
+            this.$router.replace("/");
+          }
         })
       } else {
+        this.$store.commit('clearUserInfo');
+        this.$Message.success('已成功退出当前用户，记得回来看看哦')
         setTimeout(() => {
-          this.$store.commit('clearUserInfo');
-          this.$Message.success('已成功退出当前用户，记得回来看看哦')
-          setTimeout(() => {
-            let path = this.$router.currentRoute.path;
-            if (path === "/" || path === "/recommend") {
-              this.$router.go(0);
-            } else {
-              this.$router.replace("/");
-            }
-          }, 500)
-        }, 500)
+          let path = this.$router.currentRoute.path;
+          if (path === "/" || path === "/recommend") {
+            this.$router.go(0);
+          } else {
+            this.$router.replace("/");
+          }
+        }, 250)
       }
     },
     toWriteCenter() {
@@ -455,13 +451,13 @@ export default {
       return;
     }
     // 获取消息显示设置
-    socialApi.getNoticeSetting().then(data => {
+    msgNoticeApi.getNoticeSetting().then(data => {
       if (data?.result) {
         this.$store.commit("messageSetting", data.data);
       }
     })
     // 获取未读通知
-    socialApi.getUnreadStatistic().then(data => {
+    msgNoticeApi.getUnreadStatistic().then(data => {
       if (data?.result) {
         this.unreadStatistic = data.data;
       }
