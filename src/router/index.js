@@ -109,7 +109,7 @@ const routes = [
           },
           {
             // 随笔内容
-            path: '/ramblyJot/:id',
+            path: '/ramblyJot/:rjId',
             props: true,
             name: 'RamblyJotContent',
             // 此方式为路由懒加载

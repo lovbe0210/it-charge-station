@@ -45,7 +45,7 @@
       // 自定义滚动的高度
       customHeight: {
         type: Number,
-        default: 550 // 单位默认px
+        default: 280 // 单位默认px
       },
       // 即刻显示
       immediate: {
@@ -102,7 +102,7 @@
         cancelAnimationFrame(timer);
         timer = requestAnimationFrame(function fn() {
           if (varThis.scrollTop > 0) {
-            varThis.scrollTop -= 50;
+            varThis.scrollTop -= (varThis.scrollTop / 1000) * 120;
             varThis.app.scrollTop = varThis.scrollTop;
             timer = requestAnimationFrame(fn);
           } else {

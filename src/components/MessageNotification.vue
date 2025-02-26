@@ -10,31 +10,31 @@
       <div class="menu-item" @click="routeNavigate('commentReply')">
         <div :class="['item', activeMenu === 'commentReply' ? 'active-menu' : '']">
           <span>回复我的</span>
-          <span class="count" v-if="messageSetting.msgCount">5</span>
+          <span class="count" v-if="messageSetting.msgCount">{{ unreadStatistic.commentCount }}</span>
         </div>
       </div>
       <div class="menu-item" @click="routeNavigate('likesReceived')">
         <div :class="['item', activeMenu === 'likesReceived' ? 'active-menu' : '']">
           <span>收到的赞</span>
-          <span class="count" v-if="messageSetting.msgCount">1</span>
+          <span class="count" v-if="messageSetting.msgCount">{{ unreadStatistic.likeCount }}</span>
         </div>
       </div>
       <div class="menu-item" @click="routeNavigate('newFans')">
         <div :class="['item', activeMenu === 'newFans' ? 'active-menu' : '']">
           <span>新增关注</span>
-          <span class="count" v-if="messageSetting.msgCount">10</span>
+          <span class="count" v-if="messageSetting.msgCount">{{ unreadStatistic.newFollowCount }}</span>
         </div>
       </div>
       <div class="menu-item" @click="routeNavigate('systemMessage')">
         <div :class="['item', activeMenu === 'systemMessage' ? 'active-menu' : '']">
           <span>系统消息</span>
-          <span class="count" v-if="messageSetting.msgCount">23</span>
+          <span class="count" v-if="messageSetting.msgCount">{{ unreadStatistic.systemMsgCount }}</span>
         </div>
       </div>
       <div class="menu-item" @click="routeNavigate('chatMessage')">
         <div :class="['item', activeMenu === 'chatMessage' ? 'active-menu' : '']">
           <span>我的消息</span>
-          <span class="count" v-if="messageSetting.msgCount">99+</span>
+          <span class="count" v-if="messageSetting.msgCount">{{ unreadStatistic.chatMsgCount > 99 ? '99+' : unreadStatistic.chatMsgCount }}</span>
         </div>
       </div>
       <div class="menu-item item-line">
@@ -97,27 +97,38 @@
                     </slot>
                   </user-card>
                   <div class="item-content">
-                    <p class="action-info">
-                      <span>
-                        <a :href="'/' + item.actionUserInfo?.domain" target="_blank" class="context-actor">{{ item.actionUserInfo?.username }}</a>
+                    <div class="action-info">
+                      <div class="content">
+                        <b-link :to="'/' + item.actionUserInfo?.domain"
+                                target="_blank"
+                                class="context-actor">
+                          <span>
+                            {{ item.actionUserInfo?.username }}
+                          </span>
+                        </b-link>
                         {{
-                            (item.replyId ? '在' : '对') + (item.targetType === 1 ? '文档' : item.targetType === 3 ? '随笔' : '')
-                          }}
-                        <a href="/go/notification/134715579" target="_blank" class="context-subject">
-                          <span >{{ item.targetType === 1 ? item.articleInfo?.title : item.targetType === 3 ? item.ramblyJot?.title : '已删除内容' }}</span>
-                        </a>
-                        <span v-if="!item.replyId">
-                          发表了评论
-                        </span>
-                        <span v-if="item.replyId">
-                          的评论中回复了我
-                        </span>
-                        <Badge dot v-if="item.readStatus === 0 && messageSetting.newMsgDot" :offset="[-9, -3]"/>
-                      </span>
+                          (item.noticeType === 1 ? '在' : item.noticeType === 2 ? '对' : '') +
+                          (item.targetType === 1 ? '文档' : item.targetType === 3 ? '随笔' : '')
+                        }}
+                        <b-link @click="routePath(item)"
+                                class="context-subject"
+                                :title="item.targetType === 1 ? item.articleInfo?.title : item.targetType === 3 ? item.ramblyJot?.title : '已删除内容'">
+                          <span>{{ item.targetType === 1 ? item.articleInfo?.title : item.targetType === 3 ? item.ramblyJot?.title : '已删除内容' }}</span>
+                        </b-link>
+                      </div>
                       <span class="msg-time">{{ formatTime(item.createTime) }}</span>
-                    </p>
-                    <p class="action-content" :title="item.replyId ? item.replyContent : item.commentContent">
-                      <span v-html="item.replyId ? item.replyContent : item.commentContent"/>
+                    </div>
+                    <p class="action-content" :title="item.noticeType === 1 ? item.commentContent : item.replyContent">
+                      <span class="tip-content">
+                        <span v-if="item.noticeType === 2" class="notice-tip">
+                          发表了评论:&nbsp;
+                        </span>
+                        <span v-if="item.noticeType === 1" class="notice-tip">
+                          回复了我的评论:&nbsp;
+                        </span>
+                        <span v-html="item.noticeType === 1 ? item.commentContent : item.replyContent"/>
+                      </span>
+                      <Badge dot v-if="item.readStatus === 0 && messageSetting.newMsgDot" :offset="[2, -2]"/>
                     </p>
                   </div>
                 </div>
@@ -125,26 +136,43 @@
             </ul>
             <ul class="tab-list-items" v-if="activeMenu === 'likesReceived'">
               <li class="tab-list-item"
-                  v-for="item in likesList"
-                  :key="item.id">
+                  v-for="item in msgNoticeList"
+                  :key="item.uid">
                 <div class="notification-item">
-                  <b-avatar class="avatar"
-                            :src="item.avatar"
-                            variant="light" to="/asdasd" size="2rem">
-                    <span v-if="!item.avatar">{{ item.username }}</span>
-                  </b-avatar>
+                  <user-card :userInfo="item.actionUserInfo" :popoverContainer="popoverContainer">
+                    <slot>
+                      <b-avatar class="avatar"
+                                :src="fileUrl(item.actionUserInfo?.avatarUrl)"
+                                variant="light"
+                                :to="'/' + item.actionUserInfo?.domain"
+                                size="2rem">
+                        <span v-if="!item.actionUserInfo?.avatarUrl">{{ item.actionUserInfo?.username }}</span>
+                      </b-avatar>
+                    </slot>
+                  </user-card>
                   <div class="item-content">
-                    <p>
-                      <a href="/u25607691" target="_blank" class="context-actor">{{ item.username }}</a>
-                      赞了我的{{ item.type == 1 ? '文档' : item.type == 2 ? '随笔' : '评论' }}
-                      <a href="/go/notification/134715579" target="_blank">
-                        <span class="context-subject">{{ item.targetVectorName }}&nbsp;</span>
-                      </a>
-                      <Badge dot v-if="item.read === 0 && messageSetting.newMsgDot" :offset="[-9, -3]"/>
-                    </p>
-                    <time>
-                      <span>2023-03-16 14:58</span>
-                    </time>
+                    <div class="action-info">
+                      <div class="content">
+                        <div class="content-warp">
+                          <b-link :to="'/' + item.actionUserInfo?.domain"
+                                  target="_blank"
+                                  class="context-actor">
+                            {{ item.actionUserInfo?.username }}
+                          </b-link>
+                          赞了我的{{ item.targetType == 1 ? '文章' : item.targetType == 3 ? '随笔' : item.targetType == 4 ? '评论' : '内容' }}
+                          <b-link @click="routePath(item)"
+                                  class="context-subject">
+                          <span>
+                            {{ item.targetType === 1 ? item.articleInfo?.title :
+                            item.targetType === 3 ? item.ramblyJot?.title :
+                              item.targetType === 4 ? (item.replyId ? item.replyContent : item.commentContent) : '已删除内容' }}
+                          </span>
+                          </b-link>
+                        </div>
+                        <Badge dot v-if="item.readStatus === 0 && messageSetting.newMsgDot" :offset="[2, -2]"/>
+                      </div>
+                      <span class="msg-time">{{ formatTime(item.createTime) }}</span>
+                    </div>
                   </div>
                 </div>
               </li>
@@ -416,10 +444,6 @@ export default {
       total: 0,
       msgNoticeList: [],
       popoverContainer: null,
-      // 评论回复
-      commentReplyList: [],
-      // 点赞
-      likesList: [],
       newFansList: [],
       systemMsgList: [],
       sessionList: [],
@@ -456,7 +480,7 @@ export default {
       sharedWorker: null
     }
   },
-  props: ['msgNotifyTypeActive'],
+  props: ['msgNotifyActived', 'unreadStatistic'],
   computed: {
     userInfo() {
       return this.$store.state.userInfo;
@@ -476,6 +500,42 @@ export default {
   methods: {
     fileUrl(path) {
       return this.fileService + path;
+    },
+    routePath(noticeItem) {
+      let targetType = noticeItem.targetType;
+      switch (targetType) {
+        case 1:
+          // 文章
+          let uri = "/" + noticeItem.articleInfo?.domain + "/";
+          if (noticeItem.articleInfo?.columnUri) {
+            uri += (noticeItem.articleInfo?.columnUri + "/");
+          }
+          uri += noticeItem.articleInfo?.uri;
+          let routeUrl = this.$router.resolve({path: uri});
+          window.open(routeUrl.href, '_blank');
+          return;
+        case 3:
+          // 随笔，需要关闭消息提示框，在当前页面打开
+          this.$emit('changeModalStatus');
+          let path = "/ramblyJot/" + noticeItem.ramblyJot?.uid;
+          this.$router.push({path});
+          return;
+        case 4:
+          // 评论，实际还是要走文章或随笔
+          if (noticeItem.articleInfo?.uid) {
+            let uri = "/" + noticeItem.articleInfo?.domain + "/";
+            if (noticeItem.articleInfo?.columnUri) {
+              uri += (noticeItem.articleInfo?.columnUri + "/");
+            }
+            uri += noticeItem.articleInfo?.uri;
+            let routeUrl = this.$router.resolve({path: uri});
+            window.open(routeUrl.href, '_blank');
+          } else if (noticeItem.ramblyJot?.uid) {
+            this.$emit('changeModalStatus');
+            let path = "/ramblyJot/" + noticeItem.ramblyJot?.uid;
+            this.$router.push({path});
+          }
+      }
     },
     routeNavigate(activeMenu) {
       if (this.activeMenu === activeMenu) {
@@ -497,183 +557,21 @@ export default {
               this.msgNoticeList.push(...data.data.list);
             }
           })
-      /*    this.commentReplyList = [
-            // type: 1 文档 2 随笔
-            // action: 1 评论 2 回复
-            {
-              id: 121112,
-              username: '安沐夕',
-              avatar: '',
-              domain: 'asd34dsff',
-              type: 1,
-              action: 1,
-              read: 0,
-              targetVectorId: 121212,
-              targetVectorName: "浅谈Redis分布式锁(上)"
-            },
-            {
-              id: 2235663,
-              username: 'HappyDragon1994',
-              avatar: '',
-              domain: 'asd34dsasdff',
-              type: 1,
-              action: 2,
-              read: 1,
-              targetVectorId: 12129432,
-              targetVectorName: "浅谈Redis分布式锁(下)"
-            },
-            {
-              id: 11553436,
-              username: 'bravo1988',
-              avatar: '',
-              domain: '23dfsssgg55',
-              type: 2,
-              action: 2,
-              read: 0,
-              targetVectorId: 12129432,
-              targetVectorName: "浅谈Redis分布式锁(下)"
-            },
-            {
-              id: 33442222,
-              username: '咔咔',
-              avatar: '',
-              domain: 'sasdasdas',
-              type: 2,
-              action: 1,
-              read: 0,
-              targetVectorId: 12129432,
-              targetVectorName: "浅谈Redis分布式锁(下)"
-            },
-            {
-              id: 1214424,
-              username: '白白bai',
-              avatar: '',
-              domain: 'sasdasdas',
-              type: 2,
-              action: 2,
-              read: 1,
-              targetVectorId: 12121129432,
-              targetVectorName: "衣公子《迪拜：风浪越大，鱼越贵》"
-            },
-            {
-              id: 75434234445353,
-              username: 'IT\'S ME!',
-              avatar: '',
-              domain: 'ssds2323',
-              type: 1,
-              action: 2,
-              read: 1,
-              targetVectorId: 12121129432,
-              targetVectorName: "冯大辉：为什么我不赞同都去读研究生》"
-            },
-            {
-              id: 12345511666,
-              username: '在下查尔斯',
-              avatar: '',
-              domain: 'ssds2323',
-              type: 1,
-              action: 1,
-              read: 1,
-              targetVectorId: 1212112922432,
-              targetVectorName: "阿尔都塞：意识形态和意识形态国家机器"
-            },
-            {
-              id: 754345353,
-              username: '小小哥的 Blog',
-              avatar: '',
-              domain: 'ssds2323',
-              type: 2,
-              action: 2,
-              read: 0,
-              targetVectorId: 1212112129432,
-              targetVectorName: "为什么现在的年轻人都不生孩子了？"
-            }
-          ]*/
           break;
         case 'likesReceived':
-          this.likesList = [
-            // type: 1 文档 2 随笔 3评论
-            {
-              id: 121112,
-              username: '安沐夕',
-              avatar: '',
-              domain: 'asd34dsff',
-              type: 1,
-              read: 0,
-              targetVectorId: 121212,
-              targetVectorName: "浅谈Redis分布式锁(上)"
-            },
-            {
-              id: 2235663,
-              username: 'HappyDragon1994',
-              avatar: '',
-              domain: 'asd34dsasdff',
-              type: 2,
-              read: 1,
-              targetVectorId: 12129432,
-              targetVectorName: "浅谈Redis分布式锁(下)"
-            },
-            {
-              id: 11553436,
-              username: 'bravo1988',
-              avatar: '',
-              domain: '23dfsssgg55',
-              type: 3,
-              read: 0,
-              targetVectorId: 12129432,
-              targetVectorName: "支持一下up[给心心]"
-            },
-            {
-              id: 33442222,
-              username: '咔咔',
-              avatar: '',
-              domain: 'sasdasdas',
-              type: 3,
-              read: 1,
-              targetVectorId: 12129432,
-              targetVectorName: "可能和大家的固有思维有关吧，卡农就是舒缓版，然后就。。"
-            },
-            {
-              id: 1214424,
-              username: '白白bai',
-              avatar: '',
-              domain: 'sasdasdas',
-              type: 2,
-              read: 1,
-              targetVectorId: 12121129432,
-              targetVectorName: "只有经历过社会毒打才会明白"
-            },
-            {
-              id: 75434234445353,
-              username: 'IT\'S ME!',
-              avatar: '',
-              domain: 'ssds2323',
-              type: 1,
-              read: 1,
-              targetVectorId: 12121129432,
-              targetVectorName: "Nginx — 深入浅出"
-            },
-            {
-              id: 12345511666,
-              username: '在下查尔斯',
-              avatar: '',
-              domain: 'ssds2323',
-              type: 3,
-              read: 1,
-              targetVectorId: 1212112922432,
-              targetVectorName: "回复 @吾爱财经 :听了王妈的话，进了中盖，大不了我亏一个点走人也不去追"
-            },
-            {
-              id: 754345353,
-              username: '小小哥的 Blog',
-              avatar: '',
-              domain: 'ssds2323',
-              type: 2,
-              read: 0,
-              targetVectorId: 1212112129432,
-              targetVectorName: "当卡农Canon和EDM交响后&remix!你绝对想不到的震撼"
+          msgNoticeApi.getLikeNotice({
+            offset: this.offset,
+            limit: this.limit
+          }).then(data => {
+            if (data?.result) {
+              this.total = data.data.total;
+              this.msgNoticeList.push(...data.data.list);
             }
-          ]
+          })
+        /*  this.likesList = [
+            // type: 1 文档 2 随笔 3评论
+
+          ]*/
           break;
         case 'newFans':
           this.newFansList = [
@@ -1122,7 +1020,7 @@ export default {
     }
   },
   watch: {
-    'msgNotifyTypeActive'(newVal) {
+    'msgNotifyActived'(newVal) {
       if (newVal === this.activeMenu) {
         return;
       }
@@ -1255,6 +1153,8 @@ export default {
         this.tmpMessageSetting = cloneDeep(this.messageSetting);
       }
       this.msgNoticeList = [];
+      this.offset = 0;
+      this.total = 0;
     }
   },
   mounted() {

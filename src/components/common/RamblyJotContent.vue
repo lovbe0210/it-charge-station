@@ -6,7 +6,19 @@
     </div>
     <div class="rambly-info">
       <div class="content-title">
-        <span>{{ ramblyJot.title }}</span>
+        <span v-if="ramblyJot.userInfo.uid !== userInfo.uid">
+          <user-card :userInfo="ramblyJot.userInfo" :popoverContainer="tooltipContainer" class="user-info-card-box">
+            <slot>
+              <b-link :to="'/' + ramblyJot.userInfo?.domain"
+                      target="_blank"
+                      class="rambly-author">
+                <span>{{ramblyJot.userInfo?.username }}</span>
+              </b-link>
+              <span> 的</span>
+            </slot>
+          </user-card>
+        </span>
+        <span>{{ramblyJot.title }}</span>
       </div>
       <a-tooltip overlayClassName="read-header-tooltip"
                  trigger="click"
@@ -185,12 +197,28 @@ export default {
           this.ramblyJot.isPublic = status;
         }
       })
+    },
+    getRamblyJotInfo() {
+      RamblyJotApi.getRamblyJotInfo(this.rjId).then(data => {
+        if (data?.result) {
+          this.ramblyJot = data.data;
+          if (this.ramblyJot != null && this.ramblyJot.content?.length > 0) {
+            this.engine.setJsonValue(JSON.parse(this.ramblyJot.content));
+          }
+        }
+      })
     }
   },
   props: ['rjId'],
   components: {
     UserCard,
     ReplyComment
+  },
+  watch: {
+    'rjId'(newValue, old) {
+      // console.log(newValue, old)
+      this.getRamblyJotInfo();
+    }
   },
   mounted() {
     this.tooltipContainer = this.$refs.tooltipContainer;
@@ -208,14 +236,7 @@ export default {
         readonly: true
       });
       // 获取内容
-      RamblyJotApi.getRamblyJotInfo(this.rjId).then(data => {
-        if (data?.result) {
-          this.ramblyJot = data.data;
-          if (this.ramblyJot != null && this.ramblyJot.content?.length > 0) {
-            engine.setJsonValue(JSON.parse(this.ramblyJot.content));
-          }
-        }
-      })
+      this.getRamblyJotInfo();
       this.engine = engine;
     }
   }

@@ -50,6 +50,19 @@ export default {
       method: 'POST',
       data: pageInfo
     });
+  },
+
+  /**
+   * 获取点赞消息通知
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getLikeNotice(pageInfo) {
+    return await Vue.prototype.$request({
+      url: "/sl/notice/likes",
+      method: 'POST',
+      data: pageInfo
+    });
   }
 
 }

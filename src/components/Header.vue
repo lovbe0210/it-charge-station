@@ -240,7 +240,9 @@
            :footer-hide="true"
            :width="900"
            class-name="message-box">
-      <message-notification :msgNotifyTypeActive="msgNotifyTypeActive"/>
+      <message-notification :msgNotifyActived="msgNotifyActived"
+                            :unreadStatistic="unreadStatistic"
+                            @changeModalStatus="showMessage = false"/>
     </Modal>
   </b-row>
 </template>
@@ -265,7 +267,7 @@ export default {
       flag: false,
       maxWidth: null,
       showMessage: false,
-      msgNotifyTypeActive: null,
+      msgNotifyActived: null,
       activeMenu: null,
       unreadStatistic: {
         commentCount: 0,
@@ -415,8 +417,8 @@ export default {
       }
     },
     readMessage(itemName) {
+      this.msgNotifyActived = itemName;
       this.showMessage = true;
-      this.msgNotifyTypeActive = itemName;
     },
     search() {
       if (!this.keywords) {

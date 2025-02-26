@@ -61,7 +61,7 @@
               </slot>
             </user-card>
             <div class="post-content">
-              <b-link :to="'/creative/ramblyJot/' + item.uid">
+              <b-link :to="'/ramblyJot/' + item.uid">
                 <p>{{ item.previewContent }}</p>
               </b-link>
             </div>

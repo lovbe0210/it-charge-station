@@ -196,61 +196,77 @@
                   font-size: 14px;
                   word-wrap: break-word;
                   overflow: hidden;
-                  width: 98%;
+                  width: 100%;
 
-                  p {
-                    margin-bottom: 0;
-                    max-width: 95%;
+                  .action-info {
+                    width: 100%;
+                    margin-bottom: 5px;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px; /* 可选间距 */
 
-                    .context-actor {
-                      font-weight: 600;
-                      color: var(--font-color);
-                    }
-
-                    .context-subject {
-                      max-width: 50%;
-                      //display: block;
-                      overflow: hidden; /* 隐藏超出内容 */
-                      text-overflow: ellipsis; /* 添加省略号 */
+                    .content {
+                      flex: 1; /* 占据剩余空间 */
+                      min-width: 0; /* 关键：允许内容区域收缩 */
+                      overflow: hidden;
+                      text-overflow: ellipsis;
                       white-space: nowrap;
-                      font-weight: 400;
-                      color: var(--font-color);
-                    }
 
-                    .sys-msg-label {
-                      color: #1389bf;
-                    }
 
-                    .context-actor:hover, .context-subject:hover {
-                      color: var(--title-color);
-                    }
 
-                    .ivu-badge > .ivu-badge-dot {
-                      height: 6px;
-                      width: 6px;
+                      .context-actor {
+                        font-weight: 600;
+                        color: var(--font-color);
+                      }
+
+                      .context-subject {
+                        font-weight: 400;
+                        color: var(--font-color);
+                        width: 100%;
+
+                        span {
+                          max-width: 80%;
+                          overflow: hidden; /* 隐藏超出内容 */
+                          text-overflow: ellipsis; /* 添加省略号 */
+                          white-space: nowrap;
+                        }
+                      }
+
+                      .sys-msg-label {
+                        color: #1389bf;
+                      }
+
+                      .context-actor:hover, .context-subject:hover {
+                        color: var(--title-color);
+                      }
                     }
 
                     .msg-time {
-                      right: 30px;
-                      position: absolute;
+                      flex-shrink: 0; /* 禁止收缩 */
+                      /* 可选：防止内容换行 */
+                      white-space: nowrap;
                       font-size: 12px;
                       color: @grey-white-font-color;
                     }
                   }
 
-                  .action-info {
-                    margin-bottom: 10px;
-                  }
 
                   .action-content {
                     font-size: 14px;
                     color: var(--font-color);
+                    display: flex;
 
-                    span {
+                    .tip-content {
+                      max-width: 98.5%;
                       display: block;
                       overflow: hidden; /* 隐藏超出内容 */
                       text-overflow: ellipsis; /* 添加省略号 */
                       white-space: nowrap;
+                    }
+
+                    .ivu-badge > .ivu-badge-dot {
+                      height: 6px;
+                      width: 6px;
                     }
                   }
                 }
