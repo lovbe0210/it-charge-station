@@ -141,6 +141,25 @@
 
           .active-tab {
             margin-left: 15px;
+
+            .chat-msg-retry {
+              font-size: 11px;
+
+              .iconfont {
+                font-size: 12px;
+                animation: pulse 1.5s infinite;
+              }
+
+              /* disc动画 */
+              @keyframes disc {
+                from {
+                  transform: rotate(0deg);
+                }
+                to {
+                  transform: rotate(360deg);
+                }
+              }
+            }
           }
 
           .all-read-action {
@@ -169,6 +188,7 @@
           max-height: 570px;
           height: 570px;
           border-radius: 0;
+          overflow-y: auto;
 
           .tab-list-items {
             margin: 0;
@@ -184,7 +204,7 @@
                 transition: background-color .3s ease;
                 word-break: break-word;
                 position: relative;
-                padding: 16px;
+                padding: 15px 16px;
 
                 .avatar {
                   margin-top: 2px;
@@ -203,53 +223,36 @@
                     margin-bottom: 5px;
                     display: flex;
                     align-items: center;
+                    justify-content: space-between;
                     gap: 8px; /* 可选间距 */
 
-                    .content {
+                    .action {
+                      flex: 1; /* 占据剩余空间 */
+                      min-width: 0; /* 关键：允许内容区域收缩 */
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                    }
+
+                    .action-content {
                       flex: 1; /* 占据剩余空间 */
                       min-width: 0; /* 关键：允许内容区域收缩 */
                       overflow: hidden;
                       text-overflow: ellipsis;
                       white-space: nowrap;
 
-
-
-                      .context-actor {
-                        font-weight: 600;
-                        color: var(--font-color);
+                      .content-warp {
+                        max-width: 98.5%;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
                       }
 
-                      .context-subject {
-                        font-weight: 400;
-                        color: var(--font-color);
-                        width: 100%;
-
-                        span {
-                          max-width: 80%;
-                          overflow: hidden; /* 隐藏超出内容 */
-                          text-overflow: ellipsis; /* 添加省略号 */
-                          white-space: nowrap;
-                        }
+                      .ivu-badge {
+                        flex-shrink: 0; /* 禁止收缩 */
                       }
-
-                      .sys-msg-label {
-                        color: #1389bf;
-                      }
-
-                      .context-actor:hover, .context-subject:hover {
-                        color: var(--title-color);
-                      }
-                    }
-
-                    .msg-time {
-                      flex-shrink: 0; /* 禁止收缩 */
-                      /* 可选：防止内容换行 */
-                      white-space: nowrap;
-                      font-size: 12px;
-                      color: @grey-white-font-color;
                     }
                   }
-
 
                   .action-content {
                     font-size: 14px;
@@ -263,11 +266,45 @@
                       text-overflow: ellipsis; /* 添加省略号 */
                       white-space: nowrap;
                     }
+                  }
 
-                    .ivu-badge > .ivu-badge-dot {
-                      height: 6px;
-                      width: 6px;
+                  .context-actor {
+                    font-weight: 600;
+                    color: var(--font-color);
+                  }
+
+                  .context-subject {
+                    font-weight: 400;
+                    color: var(--font-color);
+                    width: 100%;
+
+                    span {
+                      max-width: 80%;
+                      overflow: hidden; /* 隐藏超出内容 */
+                      text-overflow: ellipsis; /* 添加省略号 */
+                      white-space: nowrap;
                     }
+                  }
+
+                  .sys-msg-label {
+                    color: #1389bf;
+                  }
+
+                  .context-actor:hover, .context-subject:hover {
+                    color: var(--title-color);
+                  }
+
+                  .ivu-badge > .ivu-badge-dot {
+                    height: 6px;
+                    width: 6px;
+                  }
+
+                  .msg-time {
+                    flex-shrink: 0; /* 禁止收缩 */
+                    /* 可选：防止内容换行 */
+                    white-space: nowrap;
+                    font-size: 12px;
+                    color: @grey-white-font-color;
                   }
                 }
               }

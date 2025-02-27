@@ -32,8 +32,12 @@ self.onconnect = (e) => {
     // type=3 关闭连接
     // type=4 从shareWorker移除当前连接的页面
     // type=10 输出日志
+    // action: new页面重新/新建发起连接
     if (d.type === 0 && !initing) {
       initing = true;
+      if (d.action === 'new') {
+        retries = 0;
+      }
       if (!ws || !opened) {
         // WebSocket如果未进行连接则需要建立一个新的连接
         sockerUrl = d.data.wsBaseUrl
@@ -139,7 +143,6 @@ self.onconnect = (e) => {
       }, retryIntervalTime)
     } else {
       clearTimeout(retryTimeout);
-      retries = 0;
     }
   }
 

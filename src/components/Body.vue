@@ -64,13 +64,15 @@
             <hr>
           </div>
           <b-list-group class="rank">
-            <b-list-group-item to="some-link"
+            <b-list-group-item :to="'/' + item.domain"
+                               target="_blank"
                                v-for="item in authors"
                                :key="item.uid">
               <b-avatar variant="info"
                         v-if="item.avatarUrl"
                         :src="fileUrl(item.avatarUrl)"
                         :to="'/' + item.domain"
+                        target="_blank"
                         class="creator-avatar"
                         size="40px"/>
               <b-avatar v-else

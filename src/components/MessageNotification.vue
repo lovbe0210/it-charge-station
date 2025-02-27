@@ -66,6 +66,9 @@
               </span>
               <span v-if="activeMenu === 'chatMessage'">
                 我的消息
+                <span v-show="retry" class="chat-msg-retry">
+                  <span class="iconfont update-ing"/>重连中...
+                </span>
               </span>
               <span v-if="activeMenu === 'messageSetting'">
                 消息设置
@@ -98,7 +101,7 @@
                   </user-card>
                   <div class="item-content">
                     <div class="action-info">
-                      <div class="content">
+                      <div class="action">
                         <b-link :to="'/' + item.actionUserInfo?.domain"
                                 target="_blank"
                                 class="context-actor">
@@ -152,7 +155,7 @@
                   </user-card>
                   <div class="item-content">
                     <div class="action-info">
-                      <div class="content">
+                      <div class="action-content">
                         <div class="content-warp">
                           <b-link :to="'/' + item.actionUserInfo?.domain"
                                   target="_blank"
@@ -162,40 +165,47 @@
                           赞了我的{{ item.targetType == 1 ? '文章' : item.targetType == 3 ? '随笔' : item.targetType == 4 ? '评论' : '内容' }}
                           <b-link @click="routePath(item)"
                                   class="context-subject">
-                          <span>
-                            {{ item.targetType === 1 ? item.articleInfo?.title :
+                          <span v-html="item.targetType === 1 ? item.articleInfo?.title :
                             item.targetType === 3 ? item.ramblyJot?.title :
-                              item.targetType === 4 ? (item.replyId ? item.replyContent : item.commentContent) : '已删除内容' }}
+                              item.targetType === 4 ? (item.replyId ? item.replyContent : item.commentContent) : '已删除内容'">
                           </span>
                           </b-link>
                         </div>
-                        <Badge dot v-if="item.readStatus === 0 && messageSetting.newMsgDot" :offset="[2, -2]"/>
+                        <Badge dot v-if="item.readStatus === 0 && messageSetting.newMsgDot" :offset="[6, -4]"/>
                       </div>
-                      <span class="msg-time">{{ formatTime(item.createTime) }}</span>
                     </div>
+                    <p>
+                      <span class="msg-time">{{ formatTime(item.createTime) }}</span>
+                    </p>
                   </div>
                 </div>
               </li>
             </ul>
             <ul class="tab-list-items" v-if="activeMenu === 'newFans'">
               <li class="tab-list-item"
-                  v-for="item in newFansList"
-                  :key="item.id">
+                  v-for="item in msgNoticeList"
+                  :key="item.uid">
                 <div class="notification-item">
-                  <b-avatar class="avatar"
-                            :src="item.avatar"
-                            variant="light" to="/asdasd" size="2rem">
-                    <span v-if="!item.avatar">{{ item.username }}</span>
-                  </b-avatar>
+                  <user-card :userInfo="item.actionUserInfo" :popoverContainer="popoverContainer">
+                    <slot>
+                      <b-avatar class="avatar"
+                                :src="fileUrl(item.actionUserInfo?.avatarUrl)"
+                                variant="light"
+                                :to="'/' + item.actionUserInfo?.domain"
+                                size="2rem">
+                        <span v-if="!item.actionUserInfo?.avatarUrl">{{ item.actionUserInfo?.username }}</span>
+                      </b-avatar>
+                    </slot>
+                  </user-card>
                   <div class="item-content">
                     <p>
-                      <a href="/u25607691" target="_blank" class="context-actor">{{ item.username }}</a>
+                      <a :href="'/' + item.actionUserInfo?.domain" target="_blank" class="context-actor">{{ item.actionUserInfo?.username }}</a>
                       关注了我
-                      <Badge dot v-if="item.read === 0 && messageSetting.newMsgDot" :offset="[-9, -3]"/>
+                      <Badge dot v-if="item.readStatus === 0 && messageSetting.newMsgDot" :offset="[-9, -1]"/>
                     </p>
-                    <time>
-                      <span>2023-03-16 14:58</span>
-                    </time>
+                    <p>
+                      <span>{{ formatTime(item.createTime) }}</span>
+                    </p>
                   </div>
                 </div>
               </li>
@@ -444,7 +454,6 @@ export default {
       total: 0,
       msgNoticeList: [],
       popoverContainer: null,
-      newFansList: [],
       systemMsgList: [],
       sessionList: [],
       activeSession: {
@@ -476,7 +485,10 @@ export default {
         // 是否开启私聊消息 0否1是
         enableChatMessage: 1
       },
+      // 已建立连接
       isConnected: false,
+      // 连接重连中
+      retry: false,
       sharedWorker: null
     }
   },
@@ -556,7 +568,7 @@ export default {
               this.total = data.data.total;
               this.msgNoticeList.push(...data.data.list);
             }
-          })
+          });
           break;
         case 'likesReceived':
           msgNoticeApi.getLikeNotice({
@@ -567,43 +579,18 @@ export default {
               this.total = data.data.total;
               this.msgNoticeList.push(...data.data.list);
             }
-          })
-        /*  this.likesList = [
-            // type: 1 文档 2 随笔 3评论
-
-          ]*/
+          });
           break;
         case 'newFans':
-          this.newFansList = [
-            {
-              id: 121112,
-              username: '安沐夕',
-              avatar: '',
-              domain: 'asd34dsff',
-              read: 0
-            },
-            {
-              id: 2235663,
-              username: 'HappyDragon1994',
-              avatar: '',
-              domain: 'asd34dsasdff',
-              read: 1
-            },
-            {
-              id: 11553436,
-              username: 'bravo1988',
-              avatar: '',
-              domain: '23dfsssgg55',
-              read: 1
-            },
-            {
-              id: 33442222,
-              username: '咔咔',
-              avatar: '',
-              domain: 'sasdasdas',
-              read: 0
+          msgNoticeApi.getFollowNotice({
+            offset: this.offset,
+            limit: this.limit
+          }).then(data => {
+            if (data?.result) {
+              this.total = data.data.total;
+              this.msgNoticeList.push(...data.data.list);
             }
-          ]
+          });
           break;
         case 'systemMessage':
           this.systemMsgList = [
@@ -613,38 +600,19 @@ export default {
               label: '点此查看',
               url: 'http://www.baidu.com',
               read: 0
-            },
-            {
-              id: 2,
-              content: '进来抽奖，即得100万现金红包瓜分资格! ',
-              label: '点此查看',
-              url: 'http://www.baidu.com',
-              read: 1
-            },
-            {
-              id: 3,
-              content: '进来抽奖，即得100万现金红包瓜分资格! ',
-              label: '点此查看',
-              url: 'http://www.baidu.com',
-              read: 1
-            },
-            {
-              id: 4,
-              content: '叮！你获得了新的限时任务啦！ ',
-              label: '查看任务',
-              url: 'https://message.bilibili.com/?spm_id_from=333.1228.0.0#/system',
-              read: 0
-            },
-            {
-              id: 5,
-              content: '2022年的愿望，都来这里实现！ ',
-              label: '点我马上参与>>> ',
-              url: 'https://www.bilibili.com/blackboard/activity-DWi81m1Xbv.html',
-              read: 0
             }
           ]
           break;
         case 'chatMessage':
+          if (!this.isConnected || !this.sharedWorker) {
+            this.retry = true;
+            this.wsInit();
+          } else {
+            this.sharedWorker.port.postMessage({
+              type: 2,
+              callback: 'updateSessionList'
+            });
+          }
           this.sessionList = [
             {
               "session_id": 1,
@@ -987,7 +955,13 @@ export default {
         if (data && data.type === 1) {
           // ws连接已成功建立，可以发送消息了
           this.isConnected = true;
+          this.retry = false;
           console.log(data.data);
+          // 获取会话列表
+          port.postMessage({
+            type: 2,
+            callback: 'updateSessionList'
+          })
           return;
         }
         if (data && data.type === 2) {
@@ -1012,11 +986,18 @@ export default {
       // 发送消息，初始化websocket连接
       port.postMessage({
         type: 0,
+        action: 'new',
         data: {wsBaseUrl: (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/socket'}
       })
     },
     handleMessage(message) {
-      console.log(message);
+      let data = JSON.parse(message)
+      switch (data?.callback) {
+        case 'updateSessionList':
+          // 更新会话列表
+          this.sessionList = data.data;
+          break;
+      }
     }
   },
   watch: {

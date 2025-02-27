@@ -63,6 +63,19 @@ export default {
       method: 'POST',
       data: pageInfo
     });
+  },
+
+  /**
+   * 获取关注消息通知
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getFollowNotice(pageInfo) {
+    return await Vue.prototype.$request({
+      url: "/sl/notice/follows",
+      method: 'POST',
+      data: pageInfo
+    });
   }
 
 }

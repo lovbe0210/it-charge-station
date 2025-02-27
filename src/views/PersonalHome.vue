@@ -44,17 +44,17 @@
                     {{ tag.content }}
                   </a-tag>
                 </div>
-                <div class="userInfo-module_description">
+                <div class="userInfo-module_description" v-if="userInfo.introduction">
                   {{ userInfo.introduction }}
                 </div>
                 <div class="userInfo-module_detail">
                   <span class="index-module_meta">
                     <span class="iconfont location"></span>
-                    <span>{{ userInfo.location }}</span>
+                    <span>{{ userInfo.location || '未填写'  }}</span>
                   </span>
                   <span class="index-module_meta">
                     <span class="iconfont industry"></span>
-                    <span>{{ userInfo.industry }}</span>
+                    <span>{{ userInfo.industry || '未填写' }}</span>
                   </span>
                 </div>
                 <div class="userInfo-module_followInfo">
