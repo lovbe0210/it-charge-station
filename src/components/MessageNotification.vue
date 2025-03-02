@@ -273,7 +273,7 @@
               <div class="session-box">
                 <div class="dialog" v-if="activeSession.session_id">
                   <div class="title">
-                    <div class="is-black" style="">
+                    <div class="is-black" >
                       (&gt;﹏&lt; )该用户已经被你屏蔽啦
                     </div>
                     <span>{{ activeSession.session_user_name }}</span>

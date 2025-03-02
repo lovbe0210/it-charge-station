@@ -250,7 +250,7 @@ export default {
       modalSearch: false,
       // 聊天框显示
       showMessage: false,
-      activeMenu: 'chatMessage',
+      activeMenu: null,
       keywords: null,
       // 搜索状态是否正在进行中 0否1是
       searchStatus: 0,
