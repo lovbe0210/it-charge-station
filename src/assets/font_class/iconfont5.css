@@ -1,7 +1,7 @@
 @font-face {
   font-family: "iconfont";
   src:
-      url('//at.alicdn.com/t/c/font_4499563_iq9hwgb8sso.woff2?t=1738166125265') format('woff2');
+      url('//at.alicdn.com/t/c/font_4499563_o7257u35fp.woff2?t=1740759560859') format('woff2');
 }
 
 .iconfont {
@@ -106,6 +106,10 @@
 
 .account-complete:before {
   content: "\e523";
+}
+
+.empty-session:before {
+  content: "\e524";
 }
 
 

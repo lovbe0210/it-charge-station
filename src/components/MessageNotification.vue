@@ -34,7 +34,9 @@
       <div class="menu-item" @click="routeNavigate('chatMessage')">
         <div :class="['item', activeMenu === 'chatMessage' ? 'active-menu' : '']">
           <span>我的消息</span>
-          <span class="count" v-if="messageSetting.msgCount">{{ unreadStatistic.chatMsgCount > 99 ? '99+' : unreadStatistic.chatMsgCount }}</span>
+          <span class="count" v-if="messageSetting.msgCount">{{
+              unreadStatistic.chatMsgCount > 99 ? '99+' : unreadStatistic.chatMsgCount
+            }}</span>
         </div>
       </div>
       <div class="menu-item item-line">
@@ -116,7 +118,9 @@
                         <b-link @click="routePath(item)"
                                 class="context-subject"
                                 :title="item.targetType === 1 ? item.articleInfo?.title : item.targetType === 3 ? item.ramblyJot?.title : '已删除内容'">
-                          <span>{{ item.targetType === 1 ? item.articleInfo?.title : item.targetType === 3 ? item.ramblyJot?.title : '已删除内容' }}</span>
+                          <span>{{
+                              item.targetType === 1 ? item.articleInfo?.title : item.targetType === 3 ? item.ramblyJot?.title : '已删除内容'
+                            }}</span>
                         </b-link>
                       </div>
                       <span class="msg-time">{{ formatTime(item.createTime) }}</span>
@@ -162,7 +166,9 @@
                                   class="context-actor">
                             {{ item.actionUserInfo?.username }}
                           </b-link>
-                          赞了我的{{ item.targetType == 1 ? '文章' : item.targetType == 3 ? '随笔' : item.targetType == 4 ? '评论' : '内容' }}
+                          赞了我的{{
+                            item.targetType == 1 ? '文章' : item.targetType == 3 ? '随笔' : item.targetType == 4 ? '评论' : '内容'
+                          }}
                           <b-link @click="routePath(item)"
                                   class="context-subject">
                           <span v-html="item.targetType === 1 ? item.articleInfo?.title :
@@ -199,7 +205,8 @@
                   </user-card>
                   <div class="item-content">
                     <p>
-                      <a :href="'/' + item.actionUserInfo?.domain" target="_blank" class="context-actor">{{ item.actionUserInfo?.username }}</a>
+                      <a :href="'/' + item.actionUserInfo?.domain" target="_blank"
+                         class="context-actor">{{ item.actionUserInfo?.username }}</a>
                       关注了我
                       <Badge dot v-if="item.readStatus === 0 && messageSetting.newMsgDot" :offset="[-9, -1]"/>
                     </p>
@@ -238,18 +245,20 @@
               <div class="session-list beauty-scroll">
                 <div class="list-container">
                   <div
-                    :class="['list-item', session.session_user_id === activeSession.session_user_id ? 'active' : '']"
+                    :class="['list-item', session.sessionUserInfo.uid === activeSession.session_user_id ? 'active' : '']"
                     v-for="session in sessionList"
                     @click="changeActiveSession(session)"
-                    :key="session.session_id">
+                    :key="session.sessionId">
                     <b-avatar class="avatar"
-                              :src="session.session_user_avatar"
-                              variant="light" to="/asdasd" size="2rem">
-                      <span v-if="!session.session_user_avatar">{{ session.session_user_name }}</span>
+                              :src="fileUrl(session.sessionUserInfo.avatarUrl)"
+                              variant="light"
+                              :to="'/' + session.sessionUserInfo.domain"
+                              size="2rem">
+                      <span v-if="!session.sessionUserInfo.username">{{ session.sessionUserInfo.username }}</span>
                     </b-avatar>
                     <div class="name-box">
-                      <div class="name" :title="session.session_user_name">
-                        <div class="name-value">{{ session.session_user_name }}</div>
+                      <div class="name" :title="session.sessionUserInfo.username">
+                        <div class="name-value">{{ session.sessionUserInfo.username }}</div>
                       </div>
                       <div :title="session.last_msg?.content?.content" class="last-word">
                         {{ session.last_msg?.content?.content }}
@@ -262,7 +271,7 @@
                 </div>
               </div>
               <div class="session-box">
-                <div class="dialog">
+                <div class="dialog" v-if="activeSession.session_id">
                   <div class="title">
                     <div class="is-black" style="">
                       (&gt;﹏&lt; )该用户已经被你屏蔽啦
@@ -333,6 +342,10 @@
                       @uploadImage="sendImage"
                       @submit="sendMessage"/>
                   </div>
+                </div>
+                <div v-else class="lovbe-im-placeholder">
+                  <span class="iconfont empty-session"/>
+                  <div data-v-79fbb4b0="" class="tip">快找小伙伴聊天吧 ( ゜- ゜)つロ</div>
                 </div>
               </div>
             </div>
@@ -442,6 +455,7 @@ import Pswp from "@/components/common/imagepreview/index"
 import {cloneDeep} from "@/utils/emoji";
 import msgNoticeApi from "@/api/MsgNoticeApi";
 import UserCard from "@/components/common/UserCard.vue";
+import Vue from "vue";
 
 export default {
   name: "MessageNotification",
@@ -492,7 +506,25 @@ export default {
       sharedWorker: null
     }
   },
-  props: ['msgNotifyActived', 'unreadStatistic'],
+  props: {
+    propsActiveMenu: {
+      type: String,
+      default: 'commentReply'
+    },
+    unreadStatistic: {
+      type: Object,
+      default: () => {
+        return {
+          commentCount: 0,
+          likeCount: 0,
+          newFollowCount: 0,
+          systemMsgCount: 0,
+          chatMsgCount: 0,
+          unreadTotal: 0
+        }
+      }
+    }
+  },
   computed: {
     userInfo() {
       return this.$store.state.userInfo;
@@ -501,8 +533,11 @@ export default {
       let userInfo = this.$store.state.userInfo
       return userInfo !== null && userInfo.token?.length === 32
     },
-    messageSetting () {
+    messageSetting() {
       return this.$store.state.messageSetting;
+    },
+    activeSessionId() {
+      return this.$store.state.chatMessage.activeSessionId;
     }
   },
   components: {
@@ -604,236 +639,21 @@ export default {
           ]
           break;
         case 'chatMessage':
-          if (!this.isConnected || !this.sharedWorker) {
+          if (!this.isConnected || !this.$sharedWorker) {
             this.retry = true;
             this.wsInit();
           } else {
-            this.sharedWorker.port.postMessage({
+            this.$sharedWorker.port.postMessage({
               type: 2,
-              callback: 'updateSessionList'
+              data: {
+                type: 1,
+                callback: 'getSessionList'
+              }
             });
           }
-          this.sessionList = [
-            {
-              "session_id": 1,
-              "session_user_id": 123123123,
-              "session_user_name": "股市-目标1000万股桃哥",
-              "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg",
-              "is_follow": 1,
-              "session_ts": 1710826535376070,
-              "unread_count": 0,
-              "live_status": 0,
-              "last_msg": {
-                "sender_uid": 271221082,
-                "receiver_type": 1,
-                "receiver_id": 625315686,
-                "msg_type": 1,
-                "content": {"content": "没人好像"},
-                "timestamp": 1710826535,
-                "at_uids": null,
-                "msg_key": 7347944017136584000,
-                "msg_status": 0
-              }
-            },
-            {
-              "session_id": 2,
-              "session_user_id": 123122123123,
-              "session_user_name": "Music郑在看",
-              "session_user_avatar": "https://pic.netbian.com/uploads/allimg/231228/004217-1703695337659d.jpg",
-              "is_follow": 0,
-              "session_ts": 1700109866222339,
-              "unread_count": 1,
-              "live_status": 0,
-              "last_msg": {
-                "sender_uid": 233200988,
-                "receiver_type": 1,
-                "receiver_id": 271221082,
-                "msg_type": 1,
-                "content": {"content": "谢谢关注。祝投资顺利！买的都是大牛股！"},
-                "timestamp": 1700109865,
-                "at_uids": null,
-                "msg_key": 7301916270749065000,
-                "msg_status": 0
-              }
-            },
-            {
-              "session_id": 3,
-              "session_user_id": 12312443123,
-              "session_user_name": "鹏城杰森",
-              "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg",
-              "is_follow": 0,
-              "session_ts": 1698548656929697,
-              "unread_count": 1,
-              "live_status": 0,
-              "last_msg": {
-                "sender_uid": 3493297165175445,
-                "receiver_type": 1,
-                "receiver_id": 271221082,
-                "msg_type": 1,
-                "content": {"content": "周末一过明天又是开战的一天哦"},
-                "timestamp": 1698548656,
-                "at_uids": null,
-                "msg_key": 7295210928955405000,
-                "msg_status": 0
-              }
-            },
-            {
-              "session_id": 4,
-              "session_user_id": 12367123123,
-              "session_user_name": "保彪",
-              "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240614/003252-17182963729660.jpg",
-              "is_follow": 0,
-              "session_ts": 1694423942225948,
-              "unread_count": 1,
-              "live_status": 0,
-              "last_msg": {
-                "sender_uid": 1764905834,
-                "receiver_type": 1,
-                "receiver_id": 271221082,
-                "msg_type": 1,
-                "content": {
-                  "content": "现在要破3000了[妙啊]"
-                },
-                "timestamp": 1694423941,
-                "at_uids": null,
-                "msg_key": 7277495413156296000,
-                "msg_status": 0
-              }
-            },
-            {
-              "session_id": 5,
-              "session_user_id": 12387123123,
-              "session_user_name": "江东刀郎",
-              "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg",
-              "is_follow": 1,
-              "session_ts": 1693372352970827,
-              "unread_count": 1,
-              "live_status": 0,
-              "last_msg": {
-                "sender_uid": 96081167,
-                "receiver_type": 1,
-                "receiver_id": 271221082,
-                "msg_type": 2,
-                "content": {
-                  "content": "图片",
-                  "height": 1280,
-                  "imageType": "png",
-                  "original": 0,
-                  "size": "173",
-                  "url": "https://pic.netbian.com/uploads/allimg/240624/000024-1719158424fed3.jpg",
-                  "width": 795
-                },
-                "timestamp": 1693372352,
-                "at_uids": null,
-                "msg_key": 7272978872691186000,
-                "msg_status": 0
-              }
-            },
-            {
-              "session_id": 6,
-              "session_user_id": 12319823123,
-              "session_user_name": "福利吧搬运工",
-              "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240617/000154-17185537148d4b.jpg",
-              "is_follow": 1,
-              "session_ts": 1672072267119796,
-              "unread_count": 1,
-              "live_status": 0,
-              "last_msg": {
-                "sender_uid": 1803963357,
-                "receiver_type": 1,
-                "receiver_id": 271221082,
-                "msg_type": 1,
-                "content": {
-                  "content": "影视歌只要想的基本全本地化。网盘不知哪天变动，就被动vip了。阿里云就是，还好大多在天翼和迅雷。"
-                },
-                "timestamp": 1672072266,
-                "at_uids": null,
-                "msg_key": 7181495700031737000,
-                "msg_status": 0
-              }
-            },
-            {
-              "session_id": 7,
-              "session_user_id": 1231113423123,
-              "session_user_name": "私募小日常",
-              "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240617/000154-17185537148d4b.jpg",
-              "is_follow": 1,
-              "session_ts": 1672072267119796,
-              "unread_count": 1,
-              "live_status": 0,
-              "last_msg": {
-                "sender_uid": 1803963357,
-                "receiver_type": 1,
-                "receiver_id": 271221082,
-                "msg_type": 1,
-                "content": {"content": "宝贝，请坐我的小板凳～来了就别走啦！我给你看我收藏的好东西(ू•ᴗ•ू❁)有啥想问的随时私信我！聊个5毛钱的哈哈哈哈哈"},
-                "timestamp": 1672072266,
-                "at_uids": null,
-                "msg_key": 7181495700031737000,
-                "msg_status": 0
-              }
-            },
-            {
-              "session_id": 8,
-              "session_user_id": 12083123123,
-              "session_user_name": "依旧smile",
-              "session_user_avatar": "https://pic.netbian.com/uploads/allimg/240624/002118-1719159678b8ea.jpg",
-              "is_follow": 1,
-              "session_ts": 1672072267119796,
-              "unread_count": 1,
-              "live_status": 0,
-              "last_msg": {
-                "sender_uid": 1803963357,
-                "receiver_type": 1,
-                "receiver_id": 271221082,
-                "msg_type": 1,
-                "content": {"content": "音乐嘛。我觉得最重要的就是全。很少有比较全的音乐app，我都是混着用"},
-                "timestamp": 1672072266,
-                "at_uids": null,
-                "msg_key": 7181495700031737000,
-                "msg_status": 0
-              }
-            },
-            {
-              "session_id": 9,
-              "session_user_id": 115723123123,
-              "session_user_name": "深夜港湾",
-              "session_user_avatar": "https://image.baidu.com/search/down?url=https://tv…img.cn/large/006BNqYCly1hmv3du2z1zj30k00qowme.jpg",
-              "is_follow": 1,
-              "session_ts": 1672072267119796,
-              "unread_count": 1,
-              "live_status": 0,
-              "last_msg": {
-                "sender_uid": 1803963357,
-                "receiver_type": 1,
-                "receiver_id": 271221082,
-                "msg_type": 1,
-                "content": {"content": "内容还蛮有趣，画风是Q版的，没那么辣眼睛，如果你的对象比较含蓄也可以毫不违和的一起看。"},
-                "timestamp": 1672072266,
-                "at_uids": null,
-                "msg_key": 7181495700031737000,
-                "msg_status": 0
-              }
-            }
-          ]
-          let session = this.sessionList.length > 0 ? this.sessionList[0] : {};
-          this.activeSession.session_id = session.session_id;
-          this.activeSession.session_user_id = session.session_user_id;
-          this.activeSession.session_user_name = session.session_user_name;
-          this.activeSession.session_user_avatar = session.session_user_avatar;
-          break;
-        case 'ramblyJot':
-          break;
       }
     },
     formatTime,
-    changeActiveSession(session) {
-      this.activeSession.session_id = session.session_id;
-      this.activeSession.session_user_id = session.session_user_id;
-      this.activeSession.session_user_name = session.session_user_name;
-      this.activeSession.session_user_avatar = session.session_user_avatar;
-      this.activeSession.messages = [];
-    },
     sendMessage(msgContent, clear) {
       // 清空输入框内容
       clear();
@@ -948,41 +768,45 @@ export default {
       this.pswp.open(imgItems, currentIndex)
     },
     wsInit() {
-      let port = this.sharedWorker.port;
+      let port = this.$sharedWorker.port;
       // 监听sharedWorker消息
       port.onmessage = (res) => {
         const data = JSON.parse(res.data)
-        if (data && data.type === 1) {
+        console.log(data);
+        if (data?.type === 1) {
           // ws连接已成功建立，可以发送消息了
           this.isConnected = true;
           this.retry = false;
-          console.log(data.data);
-          // 获取会话列表
-          port.postMessage({
-            type: 2,
-            callback: 'updateSessionList'
-          })
           return;
         }
-        if (data && data.type === 2) {
+        if (data?.type === 2) {
           // ws消息
-          this.handleMessage(data.data);
+          let wsData = JSON.parse(data?.data);
+          if (wsData?.type === 0) {
+            // 心跳消息
+          } else {
+            // 1 会话相关 // 2消息相关
+            let callback = wsData?.callback;
+            if (typeof this[callback] === "function") {
+              this[callback](wsData?.data);
+            } else {
+              console.warn(`未知回调: ${callback}`);
+            }
+          }
+          return;
         }
-        if (data && data.type === 3) {
+        if (data?.type === 3) {
           // ws连接已被关闭
           this.isConnected = false;
-          console.log(data.data);
           return;
         }
-        if (data && data.type === 10) {
+        if (data?.type === 10) {
           // ws/sw日志
-          console.log(data.data);
         }
       }
       port.onerror = (e) => {
         console.log(e)
       }
-
       // 发送消息，初始化websocket连接
       port.postMessage({
         type: 0,
@@ -990,23 +814,140 @@ export default {
         data: {wsBaseUrl: (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/socket'}
       })
     },
-    handleMessage(message) {
-      let data = JSON.parse(message)
-      switch (data?.callback) {
-        case 'updateSessionList':
-          // 更新会话列表
-          this.sessionList = data.data;
-          break;
+    getSessionList(sessionList) {
+      this.sessionList = sessionList;
+      let session = this.sessionList.length > 0 ? this.sessionList[0] : {};
+      this.changeActiveSession(session);
+    },
+    changeActiveSession(session) {
+      this.activeSession.session_id = session.sessionId;
+      this.activeSession.session_user_id = session.sessionUserInfo.uid;
+      this.activeSession.session_user_name = session.sessionUserInfo.username;
+      this.activeSession.session_user_avatar = session.sessionUserInfo.avatarUrl;
+      this.$sharedWorker.port.postMessage({
+        type: 2,
+        data: {
+          type: 1,
+          callback: 'getChatMsgList'
+        }
+      });
+      this.activeSession.messages = [
+        {
+          "msg_type": 0,
+          "timestamp": 1711211709000
+        },
+        {
+          "sender_uid": 123123123,
+          "receiver_type": 1,
+          "receiver_id": 271221082,
+          "msg_type": 1,
+          "content": {"content": "宝贝，请坐我的小板凳～来了就别走啦！我给你看我收藏的好东西(ू•ᴗ•ू❁)有啥想问的随时私信我！聊个5毛钱的哈哈哈哈哈"},
+          "timestamp": 1706546109000,
+          "msg_key": 11,
+          "msg_status": 0
+        },
+        {
+          "msg_type": 0,
+          "timestamp": 1709481909000
+        },
+        {
+          "sender_uid": 0,
+          "receiver_type": 1,
+          "receiver_id": 271221082,
+          "msg_type": 1,
+          "content": {"content": "桃哥，怎么开0.5的"},
+          "timestamp": 1672072266000,
+          "msg_key": 22,
+          "msg_status": 0
+        },
+        {
+          "msg_type": 0,
+          "timestamp": 1711730115671
+        },
+        {
+          "sender_uid": 123123123,
+          "receiver_type": 1,
+          "receiver_id": 271221082,
+          "msg_type": 1,
+          "content": {"content": "加下我qq<br> 2156058387"},
+          "timestamp": 1711730115671,
+          "msg_key": 33,
+          "msg_status": 0
+        },
+        {
+          "sender_uid": 123123123,
+          "receiver_type": 1,
+          "receiver_id": 271221082,
+          "msg_type": 1,
+          "content": {"content": "完了，BBQ了，停不下来了"},
+          "timestamp": 1711730115671,
+          "msg_key": 44,
+          "msg_status": 0
+        },
+        {
+          "sender_uid": 271221082,
+          "receiver_type": 1,
+          "receiver_id": 271221082,
+          "msg_type": 1,
+          "content": {"content": "再发两次就不发了"},
+          "timestamp": 1711730115671,
+          "msg_key": 55,
+          "msg_status": 0
+        },
+        {
+          "sender_uid": 271221082,
+          "receiver_type": 1,
+          "receiver_id": 271221082,
+          "msg_type": 1,
+          "content": {"content": "z最后一次，不发了"},
+          "timestamp": 1711730115671,
+          "msg_key": 66,
+          "msg_status": 0
+        },
+        {
+          "sender_uid": 123123123,
+          "receiver_type": 1,
+          "receiver_id": 271221082,
+          "msg_type": 1,
+          "content": {"content": "再发我就不干了"},
+          "timestamp": 1711730115671,
+          "msg_key": 77,
+          "msg_status": 0
+        },
+        {
+          "sender_uid": 123123123,
+          "receiver_type": 1,
+          "receiver_id": 271221082,
+          "msg_type": 2,
+          "content": {
+            "content": "图片",
+            'imageUrl': 'https://pic.netbian.com/uploads/allimg/240610/002738-171795045835b6.jpg'
+          },
+          "timestamp": 1711730115671,
+          "msg_key": 88,
+          "msg_status": 0
+        }
+      ];
+    },
+    getChatMsgList(chatMsgInfo) {
+      // 判断获取消息记录的会话id和ws返回的消息id是否相同
+      let sessionId = chatMsgInfo.currentSessionId;
+      if (this.activeSession.sessionId === sessionId) {
+        this.activeSession.messages = chatMsgInfo.msgList;
       }
     }
   },
   watch: {
-    'msgNotifyActived'(newVal) {
+    'propsActiveMenu'(newVal, oldVal) {
+      console.log('menu: ', newVal, oldVal)
       if (newVal === this.activeMenu) {
         return;
       }
       this.activeMenu = newVal;
       this.loadMsgNotify(newVal);
+    },
+    'activeSessionId'(newVal) {
+      this.activeSession.session_id = newVal;
     },
     'activeSession.session_id'(newVal, oldVla) {
       // TODO 获取消息列表
@@ -1016,101 +957,7 @@ export default {
       setTimeout(() => {
         this.activeSession.messages = [
           // msg_type 0用于时间显示 1文本消息 2图片消息
-          {
-            "msg_type": 0,
-            "timestamp": 1711211709000
-          },
-          {
-            "sender_uid": 123123123,
-            "receiver_type": 1,
-            "receiver_id": 271221082,
-            "msg_type": 1,
-            "content": {"content": "宝贝，请坐我的小板凳～来了就别走啦！我给你看我收藏的好东西(ू•ᴗ•ू❁)有啥想问的随时私信我！聊个5毛钱的哈哈哈哈哈"},
-            "timestamp": 1706546109000,
-            "msg_key": 11,
-            "msg_status": 0
-          },
-          {
-            "msg_type": 0,
-            "timestamp": 1709481909000
-          },
-          {
-            "sender_uid": 0,
-            "receiver_type": 1,
-            "receiver_id": 271221082,
-            "msg_type": 1,
-            "content": {"content": "桃哥，怎么开0.5的"},
-            "timestamp": 1672072266000,
-            "msg_key": 22,
-            "msg_status": 0
-          },
-          {
-            "msg_type": 0,
-            "timestamp": 1711730115671
-          },
-          {
-            "sender_uid": 123123123,
-            "receiver_type": 1,
-            "receiver_id": 271221082,
-            "msg_type": 1,
-            "content": {"content": "加下我qq<br> 2156058387"},
-            "timestamp": 1711730115671,
-            "msg_key": 33,
-            "msg_status": 0
-          },
-          {
-            "sender_uid": 123123123,
-            "receiver_type": 1,
-            "receiver_id": 271221082,
-            "msg_type": 1,
-            "content": {"content": "完了，BBQ了，停不下来了"},
-            "timestamp": 1711730115671,
-            "msg_key": 44,
-            "msg_status": 0
-          },
-          {
-            "sender_uid": 271221082,
-            "receiver_type": 1,
-            "receiver_id": 271221082,
-            "msg_type": 1,
-            "content": {"content": "再发两次就不发了"},
-            "timestamp": 1711730115671,
-            "msg_key": 55,
-            "msg_status": 0
-          },
-          {
-            "sender_uid": 271221082,
-            "receiver_type": 1,
-            "receiver_id": 271221082,
-            "msg_type": 1,
-            "content": {"content": "z最后一次，不发了"},
-            "timestamp": 1711730115671,
-            "msg_key": 66,
-            "msg_status": 0
-          },
-          {
-            "sender_uid": 123123123,
-            "receiver_type": 1,
-            "receiver_id": 271221082,
-            "msg_type": 1,
-            "content": {"content": "再发我就不干了"},
-            "timestamp": 1711730115671,
-            "msg_key": 77,
-            "msg_status": 0
-          },
-          {
-            "sender_uid": 123123123,
-            "receiver_type": 1,
-            "receiver_id": 271221082,
-            "msg_type": 2,
-            "content": {
-              "content": "图片",
-              'imageUrl': 'https://pic.netbian.com/uploads/allimg/240610/002738-171795045835b6.jpg'
-            },
-            "timestamp": 1711730115671,
-            "msg_key": 88,
-            "msg_status": 0
-          }
+
         ];
         let messageScroll = this.$refs.messageScroll;
         if (messageScroll) {
@@ -1123,8 +970,8 @@ export default {
       }, 500)
     },
     'loginStatus'(status) {
-      if (!status && this.sharedWorker) {
-        this.sharedWorker.port.postMessage({
+      if (!status && this.$sharedWorker) {
+        this.$sharedWorker.port.postMessage({
           type: 3
         })
       }
@@ -1140,24 +987,22 @@ export default {
   },
   mounted() {
     this.popoverContainer = this.$refs.popoverContainer;
-    this.activeMenu = 'commentReply';
-    this.loadMsgNotify('commentReply');
   },
   created() {
     // 初始化sharedWorker进行webSocket连接
-    this.sharedWorker = new SharedWorker('../shared-worker.js', 'workerWs')
-    if (!this.sharedWorker) {
+    Vue.prototype.$sharedWorker = new SharedWorker('../shared-worker.js', 'workerWs');
+    if (!this.$sharedWorker) {
       console.error("sharedWorker启动失败，请换一个支持sharedWorker的浏览器访问吧")
       return;
     }
     this.wsInit();
   },
   beforeDestroy() {
-    if (this.sharedWorker) {
-      this.sharedWorker.port.postMessage({
+    if (this.$sharedWorker) {
+      this.$sharedWorker.port.postMessage({
         type: 4
       });
-      this.sharedWorker = null;
+      this.$sharedWorker = null;
     }
   }
 }

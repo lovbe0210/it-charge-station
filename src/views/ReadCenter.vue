@@ -204,6 +204,18 @@
           </div>
         </div>
       </Modal>
+
+      <!-- 消息界面初始化就开始挂载 -->
+      <Modal v-model="showMessage"
+             v-if="loginStatus"
+             :lock-scroll="true"
+             :footer-hide="true"
+             :width="900"
+             class-name="message-box">
+        <message-notification :propsActiveMenu="activeMenu"
+                              :unreadStatistic="unreadStatistic"
+                              @changeModalStatus="showMessage = false"/>
+      </Modal>
     </div>
 
     <!-- 登录盒子 -->
@@ -226,14 +238,19 @@ import UserApi from "@/api/UserApi";
 import UserCard from "@/components/common/UserCard.vue";
 import AuthModal from "@/components/common/AuthModal.vue";
 import publicSearchApi from "@/api/PublicSearchApi";
+import MessageNotification from "@/components/MessageNotification.vue";
+import msgNoticeApi from "@/api/MsgNoticeApi";
 
 export default {
   name: 'ReadCenter',
-  components: {AuthModal, UserCard},
+  components: {MessageNotification, AuthModal, UserCard},
   data() {
     return {
       // 搜索框显示
       modalSearch: false,
+      // 聊天框显示
+      showMessage: false,
+      activeMenu: 'chatMessage',
       keywords: null,
       // 搜索状态是否正在进行中 0否1是
       searchStatus: 0,
@@ -258,7 +275,16 @@ export default {
       searchResult: [],
       emptySearchResult: false,
       // 样式相关
-      docStyle: {}
+      docStyle: {},
+      // 未读消息统计
+      unreadStatistic: {
+        commentCount: 0,
+        likeCount: 0,
+        newFollowCount: 0,
+        systemMsgCount: 0,
+        chatMsgCount: 0,
+        unreadTotal: 0
+      }
     }
   },
   props: ['domain', 'columnUri', 'articleUri'],
@@ -290,6 +316,9 @@ export default {
         }
       })
       return array;
+    },
+    chatMessage() {
+      return this.$store.state.chatMessage;
     }
   },
   watch: {
@@ -312,25 +341,21 @@ export default {
     },
     "$route"() {
       this.requestArticleOrDir();
+    },
+    'chatMessage.activeSessionId'(val) {
+      if (val) {
+        this.showMessage = true;
+        this.activeMenu = 'chatMessage'
+      }
+    },
+    'showMessage'(val) {
+      if (!val) {
+        this.$store.commit("updateChatSession", null);
+      }
     }
   },
   methods: {
     formatDate,
-    // 组装目录树
-    // getListDirData() {
-    //   if (this.dirData.length === 0) {
-    //     return [];
-    //   }
-    //   let array = [];
-    //   this.dirData.forEach(dir => {
-    //     if (dir.type === 1) {
-    //       array.push(dir)
-    //     } else if (dir.type === 2) {
-    //       this.recursiveGetDirList(array, dir);
-    //     }
-    //   })
-    //   return array;
-    // },
     recursiveGetDirList(ListArray, dirData) {
       if (dirData.children && dirData.children.length > 0) {
         dirData.children.forEach(dir => {
@@ -342,17 +367,9 @@ export default {
         })
       }
     },
-    /**
-     * 为子组件定义的事件方法
-     */
-    updateTitle(titleValue) {
-      this.docInfo.title = titleValue;
-    },
-
     onSelect(selectedKeys, info) {
       console.log('selected', selectedKeys, info);
     },
-
     /**
      * 左侧目录拖动相关方法
      * @param event
@@ -377,7 +394,6 @@ export default {
       document.removeEventListener('mousemove', this.handleDrag);
       document.removeEventListener('mouseup', this.stopDrag);
     },
-
     /**
      * tree节点展开/收起
      */
@@ -552,6 +568,12 @@ export default {
     if (this.isColumnView) {
       this.searchScope = 2;
     }
+    // 获取未读通知
+    msgNoticeApi.getUnreadStatistic().then(data => {
+      if (data?.result) {
+        this.unreadStatistic = data.data;
+      }
+    })
   },
   created() {
     this.docStyle = {...this.docStyle, ...this.$store.state.docStyle};

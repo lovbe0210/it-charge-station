@@ -76,6 +76,19 @@ export default {
       method: 'POST',
       data: pageInfo
     });
+  },
+
+  /**
+   * 开始新的私聊会话
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async startMessageSession(sessionInfo) {
+    return await Vue.prototype.$request({
+      url: "/sl/chat/session/new",
+      method: 'POST',
+      data: sessionInfo
+    });
   }
 
 }

@@ -94,7 +94,7 @@
         // 删除空对象，避免覆盖默数据
         let storeData = JSON.parse(localStorage.getItem('store'));
         Object.keys(storeData).forEach(item => {
-          if (storeData[item] === '' || storeData[item] === undefined || storeData[item] === null) {
+          if (storeData[item] === '' || storeData[item] === undefined || storeData[item] === null || item === 'chatMessage') {
             delete storeData[item];
           }
           return storeData;
@@ -210,7 +210,12 @@
         }
         let musicPlay = remoteData.musicPlay;
         if (musicPlay) {
-          localData.musicInfo = Object.assign(localData.musicInfo, JSON.parse(musicPlay));
+          localData.musicInfo = Object.assign(localData.musicInfo ? localData.musicInfo : {
+            currentIndex: 0,
+            currentTime: 0,
+            currentVolume: 30,
+            playType: "listLoop"
+          }, JSON.parse(musicPlay));
         }
         preferenceApi.getMusicPlayList().then(data => {
           if (data.result && data.data && data.data.length > 0) {
@@ -287,6 +292,14 @@
           this.$store.commit("updateMusicInfo", {isPlay: false});
           localStorage.setItem('store', JSON.stringify(this.$store.state))
         }
+
+        // 如果存在sharedWorker则需要释放连接
+        if (this.$sharedWorker) {
+          this.$sharedWorker.port.postMessage({
+            type: 4
+          });
+          this.$sharedWorker = null;
+        }
       },
       /**
        * 页面状态变化 如果是刷新后的回调事件，则不在进行操作
@@ -298,8 +311,8 @@
           // 页面变为后台状态，保存vuex中的数据，除过播放状态和自定义设置主题卡片状态
           // 注意此处为深拷贝，要不会改变store的状态
           let state = JSON.parse(JSON.stringify(this.$store.state));
-          delete state.showCustomer;
           delete state.musicInfo;
+          delete state.chatMessage;
           localStorage.setItem('store', JSON.stringify(state))
         } else if (document.visibilityState === "visible") {
           // 页面变为前台状态，从本地更新数据
@@ -307,8 +320,8 @@
             // 删除空对象，避免覆盖默数据
             let storeData = JSON.parse(localStorage.getItem('store'));
             Object.keys(storeData).forEach(item => {
-              // 保留自定义设置状态和音乐播放状态
-              if (item === 'showCustomer' || item === 'musicInfo' ||
+              // 保留音乐播放状态
+              if (item === 'musicInfo' || item === 'chatMessage' ||
                 storeData[item] === '' || storeData[item] === undefined || storeData[item] === null) {
                 delete storeData[item];
               }

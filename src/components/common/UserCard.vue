@@ -64,6 +64,7 @@
 
 <script>
 import socialApi from "@/api/SocialApi";
+import msgNoticeApi from "../../api/MsgNoticeApi";
 
 export default {
   name: "UserCard",
@@ -148,10 +149,12 @@ export default {
         }
         return;
       }
-      // 跳转到首页打开会话页面
-      if (this.userInfo?.isFollow) {
-        // 取消关注
-      }
+      msgNoticeApi.startMessageSession({targetUserId: this.userInfo?.uid}).then(data => {
+        if (data?.result) {
+          // 打开消息界面并激活与当前用户的会话
+          this.$store.commit("updateChatSession", data.data)
+        }
+      })
     }
   }
 }

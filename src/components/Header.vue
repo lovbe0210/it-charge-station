@@ -240,7 +240,7 @@
            :footer-hide="true"
            :width="900"
            class-name="message-box">
-      <message-notification :msgNotifyActived="msgNotifyActived"
+      <message-notification :propsActiveMenu="activeMenu"
                             :unreadStatistic="unreadStatistic"
                             @changeModalStatus="showMessage = false"/>
     </Modal>
@@ -267,7 +267,6 @@ export default {
       flag: false,
       maxWidth: null,
       showMessage: false,
-      msgNotifyActived: null,
       activeMenu: null,
       unreadStatistic: {
         commentCount: 0,
@@ -293,6 +292,9 @@ export default {
     },
     messageSetting() {
       return this.$store.state.messageSetting;
+    },
+    chatMessage() {
+      return this.$store.state.chatMessage;
     }
   },
   watch: {
@@ -300,6 +302,17 @@ export default {
       // 处理路由变化
       let activeMenu = to.path?.replace('/', '');
       this.activeMenu = activeMenu;
+    },
+    'chatMessage.activeSessionId'(val) {
+      if (val) {
+        this.showMessage = true;
+        this.activeMenu = 'chatMessage'
+      }
+    },
+    'showMessage'(val) {
+      if (!val) {
+        this.$store.commit("updateChatSession", null);
+      }
     }
   },
   methods: {
@@ -417,7 +430,7 @@ export default {
       }
     },
     readMessage(itemName) {
-      this.msgNotifyActived = itemName;
+      this.activeMenu = itemName;
       this.showMessage = true;
     },
     search() {

@@ -158,6 +158,14 @@ export default new Vuex.Store({
       systemNotice: 1,
       // 是否开启私聊消息 0否1是
       enableChatMessage: 1
+    },
+
+    // ============= 消息会话 ====================
+    chatMessage: {
+      // 是否展示消息界面
+      showMessage: false,
+      // 当前激活会话id
+      activeSessionId: null
     }
   },
 
@@ -253,7 +261,7 @@ export default new Vuex.Store({
      * @param value
      */
     customerSet(state, value) {
-      state.customerSet = Object.assign(state.customerSet, value);
+      state.customerSet = {...state.customerSet, ...value};
     },
 
     /**
@@ -283,6 +291,14 @@ export default new Vuex.Store({
         let number = state.musicInfo.musicList.findIndex(mp => mp.musicId === state.musicInfo.musicId);
         state.musicInfo.currentIndex = number === -1 ? 0 : number;
       }
+    },
+    /**
+     *
+     * @param state
+     * @param activeSessionId
+     */
+    updateChatSession(state, activeSessionId) {
+      state.chatMessage = Object.assign(state.chatMessage, {activeSessionId});
     },
     /**
      * music信息修改

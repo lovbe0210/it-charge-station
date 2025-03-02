@@ -105,7 +105,8 @@ self.onconnect = (e) => {
       // 初始化结束，initing归位
       initing = false;
     } else if (d.type === 2) {
-      ws.send(d.data);
+      console.log(d)
+      ws.send(JSON.stringify(d.data));
     } else if (d.type === 3) {
       ws.close();
     } else if (d.type === 4) {

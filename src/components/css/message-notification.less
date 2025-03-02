@@ -145,19 +145,20 @@
             .chat-msg-retry {
               font-size: 11px;
 
-              .iconfont {
+              .update-ing {
                 font-size: 12px;
-                animation: pulse 1.5s infinite;
+                animation: spin 25s linear infinite;
+                animation-delay: 0.8s;
+                &:before {
+                  animation: spin 25s linear infinite;
+                  animation-delay: 0.8s;
+                }
               }
 
               /* disc动画 */
-              @keyframes disc {
-                from {
-                  transform: rotate(0deg);
-                }
-                to {
-                  transform: rotate(360deg);
-                }
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
               }
             }
           }
@@ -433,7 +434,7 @@
                   }
 
                   &:hover {
-                    background-color: var(--dropdown-bg-color);
+                    background-color: var(--dropdown-item-hover);
 
                     .close {
                       -webkit-transform: translateX(0);
@@ -444,7 +445,7 @@
                 }
 
                 .active {
-                  background-color: var(--dropdown-bg-color);
+                  background-color: var(--dropdown-item-hover);
                 }
               }
             }
@@ -679,6 +680,13 @@
                       }
                     }
                   }
+                }
+              }
+
+              .lovbe-im-placeholder {
+                .empty-session {
+                  font-size: 1.5rem;
+                  color: @grey-white-font-color;
                 }
               }
             }
