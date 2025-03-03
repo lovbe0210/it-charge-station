@@ -253,6 +253,7 @@
                               :src="fileUrl(session.sessionUserInfo.avatarUrl)"
                               variant="light"
                               :to="'/' + session.sessionUserInfo.domain"
+                              target="_blank"
                               size="2rem">
                       <span v-if="!session.sessionUserInfo.username">{{ session.sessionUserInfo.username }}</span>
                     </b-avatar>
@@ -274,7 +275,7 @@
                 <div class="dialog" v-if="activeSession.session_id">
                   <div class="title">
                     <div class="is-black" >
-                      (&gt;﹏&lt; )该用户已经被你屏蔽啦
+                      (&gt;﹏&lt;)该用户已经被你屏蔽啦
                     </div>
                     <span>{{ activeSession.session_user_name }}</span>
                     <div class="action-menu">
@@ -299,7 +300,7 @@
                     <div class="message-list-content" id="messageListContent">
                       <div class="msg-more">
                         <span class="loading" style="display: none;">
-                          <div data-v-2fe28aba="" class="lds-spinner">
+                          <div class="lds-spinner">
                           </div>
                         </span>
                         <span class="error" style="display: none;">
@@ -308,21 +309,27 @@
                         </span>
                       </div>
                       <div v-for="msg in activeSession.messages"
-                           :class="[msg.msg_type === 0?'msg-time':'msg-item', msg.sender_uid === userInfo.uid?'is-me':'not-me']"
-                           :key="msg.msg_key">
-                        <span class="time" v-if="msg.msg_type === 0">{{ formatTime(msg.timestamp) }}</span>
-                        <b-avatar v-if="msg.msg_type !== 0"
+                           :class="[msg.contentType === 100?'msg-time':'msg-item', msg.sendId === userInfo.uid?'is-me':'not-me']"
+                           :key="msg.clientMsgId">
+                        <span class="time" v-if="msg.contentType === 100">{{ formatTime(msg.sendTime) }}</span>
+                        <b-avatar v-if="msg.contentType !== 100"
                                   class="avatar"
-                                  :src="msg.sender_uid === userInfo.uid ? userInfo.avatar : activeSession.session_user_avatar"
-                                  variant="light" to="/asdasd" size="2rem">
+                                  :src="fileUrl(msg.sendId === userInfo.uid ? userInfo.avatarUrl : activeSession.session_user_avatar)"
+                                  :to="'/' + msg.sendId === userInfo.uid ? userInfo.domain : activeSession.session_user_domain"
+                                  target="_blank"
+                                  variant="light"
+                                  size="2rem">
                           <span
-                            v-if="!(msg.sender_uid === userInfo.uid ? userInfo.avatar : activeSession.session_user_avatar)">
-                            {{ msg.sender_uid === userInfo.uid ? userInfo.username : activeSession.session_user_name }}
+                            v-if="!(msg.sendId === userInfo.uid ? userInfo.avatarUrl : activeSession.session_user_avatar)">
+                            {{ msg.sendId === userInfo.uid ? userInfo.username : activeSession.session_user_name }}
                           </span>
                         </b-avatar>
-                        <div class="message" v-if="msg.msg_type !== 0">
-                          <div v-if="msg.msg_type === 1" class="message-content" v-html="msg.content.content"></div>
-                          <div v-if="msg.msg_type === 2" class="message-content is-img">
+                        <div class="message" v-if="msg.contentType !== 100">
+                          <div v-if="!msg.uid" class="message-send-status">
+                            <span class="iconfont update-ing"></span>
+                          </div>
+                          <div v-if="msg.contentType === 101" class="message-content" v-html="msg.content.content"></div>
+                          <div v-if="msg.contentType === 102" class="message-content is-img">
                             <img class="im-msg-item-img" title="[图片] 点击查看大图" alt="[图片] 点击查看大图"
                                  :src="msg.content.imageUrl"
                                  @click="previewImage(msg.content.imageUrl)"
@@ -335,7 +342,7 @@
                   <div class="send-box">
                     <InputBox
                       ref="commentRef"
-                      placeholder=" "
+                      placeholder=""
                       content-btn=" 发 送 "
                       :mentionConfig="mentionConfig"
                       scene="message"
@@ -345,7 +352,7 @@
                 </div>
                 <div v-else class="lovbe-im-placeholder">
                   <span class="iconfont empty-session"/>
-                  <div data-v-79fbb4b0="" class="tip">快找小伙伴聊天吧 ( ゜- ゜)つロ</div>
+                  <div class="tip">快找小伙伴聊天吧 ( ゜- ゜)つロ</div>
                 </div>
               </div>
             </div>
@@ -450,12 +457,16 @@
 
 <script>
 import {formatTime} from '@/utils/emoji';
+import {useEmojiParse} from '@/utils/hooks';
 import InputBox from "@/components/common/replycomment/src/component/InputBox";
 import Pswp from "@/components/common/imagepreview/index"
 import {cloneDeep} from "@/utils/emoji";
 import msgNoticeApi from "@/api/MsgNoticeApi";
 import UserCard from "@/components/common/UserCard.vue";
 import Vue from "vue";
+import { v4 as uuid } from 'uuid';
+import CommonUtil from "@/utils/common";
+import emoji from '@/assets/emoji/emoji.js';
 
 export default {
   name: "MessageNotification",
@@ -472,6 +483,10 @@ export default {
       sessionList: [],
       activeSession: {
         session_id: null,
+        session_user_id: null,
+        session_user_name: null,
+        session_user_avatar: null,
+        session_user_domain: null,
         messages: []
       },
       activeMenu: null,
@@ -655,31 +670,52 @@ export default {
     },
     formatTime,
     sendMessage(msgContent, clear) {
+      debugger
       // 清空输入框内容
       clear();
       // 发送消息
-      setTimeout(() => {
-        this.addMsgTime(msgContent.createTime);
-        this.activeSession.messages.push({
-          "sender_uid": this.userInfo.uid,
-          "receiver_type": 1,
-          "receiver_id": this.activeSession.session_id,
-          "msg_type": 1,
-          "content": {"content": msgContent.content},
-          "timestamp": msgContent.createTime,
-          "msg_key": this.tmpId++,
-          "msg_status": 0
-        });
-        let messageScroll = this.$refs.messageScroll;
-        if (messageScroll) {
-          // 使用 setTimeout 来确保在 DOM 更新之后再进行滚动
-          this.$nextTick(() => {
-            // 将滚动位置设置为容器的滚动高度
-            messageScroll.scrollTop = messageScroll.scrollHeight;
-          });
+      let clientMsgId = uuid()?.replaceAll('-', '');
+      let msgBody = {
+        clientMsgId,
+        sendId: this.userInfo.uid,
+        recvId: this.activeSession.session_id,
+        recvType: 1,
+        senderPlatformId: 1,
+        // 100发送时间（前端展示） 101 文字消息 102图片 103站内文章 104链接 111撤回消息
+        contentType: 101,
+        content: {content: msgContent.content},
+        sendTime: new Date().getTime()
+      }
+      this.$sharedWorker.port.postMessage({
+        type: 2,
+        data: {
+          type: 2,
+          callback: 'sendMessage',
+          data: CommonUtil.encodeSign(JSON.stringify(msgBody))
         }
-      }, 500)
-      this.ifShowEmojiSelector = false;
+      });
+      this.addMsgTime(msgContent.createTime);
+      // 对特殊字符进行转义
+      let parseContent = msgContent.content?.replace(/[&<>"']/g, tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[tag]));
+      // 需要将表情转换为img标签
+      parseContent = useEmojiParse(emoji.allEmoji, msgContent.content);
+      msgBody.content = {content: parseContent};
+      this.activeSession.messages.push(msgBody);
+      let messageScroll = this.$refs.messageScroll;
+      if (messageScroll) {
+        // 使用 setTimeout 来确保在 DOM 更新之后再进行滚动
+        this.$nextTick(() => {
+          // 将滚动位置设置为容器的滚动高度
+          messageScroll.scrollTop = messageScroll.scrollHeight;
+        });
+      }
+
     },
     sendImage(file) {
       // 生成base64格式进行显示
@@ -715,23 +751,19 @@ export default {
       reader.readAsDataURL(file);
     },
     addMsgTime(now) {
+      let sendTime = {
+        contentType: 100,
+        sendTime: now
+      }
       // 比较当前时间与最后一条数据的时间差
-      let size = this.activeSession?.messages?.length;
+      let size = this.activeSession.messages?.length;
       if (!size) {
-        this.activeSession.messages = [
-          {
-            "msg_type": 0,
-            "timestamp": now
-          }
-        ];
+        this.activeSession.messages = [sendTime];
         return;
       }
       let message = this.activeSession.messages[size - 1];
-      if (message?.type !== 0 && (now - message.timestamp) > 1000 * 60 * 5) {
-        this.activeSession.messages.push({
-          "msg_type": 0,
-          "timestamp": now
-        });
+      if (message.contentType !== 100 && (now - message.sendTime) > 1000 * 60 * 5) {
+        this.activeSession.messages.push(sendTime);
       }
     },
     msgSettingChange(changeValue) {
@@ -772,7 +804,6 @@ export default {
       // 监听sharedWorker消息
       port.onmessage = (res) => {
         const data = JSON.parse(res.data)
-        console.log(data);
         if (data?.type === 1) {
           // ws连接已成功建立，可以发送消息了
           this.isConnected = true;
@@ -785,10 +816,12 @@ export default {
           if (wsData?.type === 0) {
             // 心跳消息
           } else {
-            // 1 会话相关 // 2消息相关
+            // 1 会话相关 // 2消息相关，需要解密
+            let wsEncode = CommonUtil.decodeSign(wsData?.data);
+            let wsContent = JSON.parse(wsEncode);
             let callback = wsData?.callback;
             if (typeof this[callback] === "function") {
-              this[callback](wsData?.data);
+              this[callback](wsContent);
             } else {
               console.warn(`未知回调: ${callback}`);
             }
@@ -824,6 +857,7 @@ export default {
       this.activeSession.session_user_id = session.sessionUserInfo.uid;
       this.activeSession.session_user_name = session.sessionUserInfo.username;
       this.activeSession.session_user_avatar = session.sessionUserInfo.avatarUrl;
+      this.activeSession.session_user_domain = session.sessionUserInfo.domain;
       this.$sharedWorker.port.postMessage({
         type: 2,
         data: {
@@ -831,103 +865,6 @@ export default {
           callback: 'getChatMsgList'
         }
       });
-      this.activeSession.messages = [
-        {
-          "msg_type": 0,
-          "timestamp": 1711211709000
-        },
-        {
-          "sender_uid": 123123123,
-          "receiver_type": 1,
-          "receiver_id": 271221082,
-          "msg_type": 1,
-          "content": {"content": "宝贝，请坐我的小板凳～来了就别走啦！我给你看我收藏的好东西(ू•ᴗ•ू❁)有啥想问的随时私信我！聊个5毛钱的哈哈哈哈哈"},
-          "timestamp": 1706546109000,
-          "msg_key": 11,
-          "msg_status": 0
-        },
-        {
-          "msg_type": 0,
-          "timestamp": 1709481909000
-        },
-        {
-          "sender_uid": 0,
-          "receiver_type": 1,
-          "receiver_id": 271221082,
-          "msg_type": 1,
-          "content": {"content": "桃哥，怎么开0.5的"},
-          "timestamp": 1672072266000,
-          "msg_key": 22,
-          "msg_status": 0
-        },
-        {
-          "msg_type": 0,
-          "timestamp": 1711730115671
-        },
-        {
-          "sender_uid": 123123123,
-          "receiver_type": 1,
-          "receiver_id": 271221082,
-          "msg_type": 1,
-          "content": {"content": "加下我qq<br> 2156058387"},
-          "timestamp": 1711730115671,
-          "msg_key": 33,
-          "msg_status": 0
-        },
-        {
-          "sender_uid": 123123123,
-          "receiver_type": 1,
-          "receiver_id": 271221082,
-          "msg_type": 1,
-          "content": {"content": "完了，BBQ了，停不下来了"},
-          "timestamp": 1711730115671,
-          "msg_key": 44,
-          "msg_status": 0
-        },
-        {
-          "sender_uid": 271221082,
-          "receiver_type": 1,
-          "receiver_id": 271221082,
-          "msg_type": 1,
-          "content": {"content": "再发两次就不发了"},
-          "timestamp": 1711730115671,
-          "msg_key": 55,
-          "msg_status": 0
-        },
-        {
-          "sender_uid": 271221082,
-          "receiver_type": 1,
-          "receiver_id": 271221082,
-          "msg_type": 1,
-          "content": {"content": "z最后一次，不发了"},
-          "timestamp": 1711730115671,
-          "msg_key": 66,
-          "msg_status": 0
-        },
-        {
-          "sender_uid": 123123123,
-          "receiver_type": 1,
-          "receiver_id": 271221082,
-          "msg_type": 1,
-          "content": {"content": "再发我就不干了"},
-          "timestamp": 1711730115671,
-          "msg_key": 77,
-          "msg_status": 0
-        },
-        {
-          "sender_uid": 123123123,
-          "receiver_type": 1,
-          "receiver_id": 271221082,
-          "msg_type": 2,
-          "content": {
-            "content": "图片",
-            'imageUrl': 'https://pic.netbian.com/uploads/allimg/240610/002738-171795045835b6.jpg'
-          },
-          "timestamp": 1711730115671,
-          "msg_key": 88,
-          "msg_status": 0
-        }
-      ];
     },
     getChatMsgList(chatMsgInfo) {
       // 判断获取消息记录的会话id和ws返回的消息id是否相同
@@ -939,7 +876,6 @@ export default {
   },
   watch: {
     'propsActiveMenu'(newVal, oldVal) {
-      console.log('menu: ', newVal, oldVal)
       if (newVal === this.activeMenu) {
         return;
       }

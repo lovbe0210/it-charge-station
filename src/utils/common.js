@@ -1,5 +1,3 @@
-import base64 from 'base-64';
-
 export default {
   /**
    * 主题刷新
@@ -61,7 +59,8 @@ export default {
    * @returns {string}
    */
   encodeSign(sourceStr) {
-    let encodeStr = base64.encode(sourceStr);
+    let buffer = Buffer.from(sourceStr);
+    let encodeStr = buffer.toString('base64');
     let charArr = Array.from(encodeStr);
     // 简单转码
     for (let i = 0; i < charArr.length; i++) {
@@ -78,6 +77,28 @@ export default {
     return sign;
   },
 
+  /**
+   * 签名解析
+   * @param sourceStr
+   * @returns {string}
+   */
+  decodeSign(sourceStr) {
+    let charArr = Array.from(sourceStr);
+    // 简单转码
+    for (let i = 0; i < charArr.length; i++) {
+      let uniCode = charArr[i].charCodeAt(0);
+      if (!this.isLetterOrDigit(uniCode)) {
+        continue;
+      }
+      let newChar = uniCode ^ 127;
+      if (this.isLetterOrDigit(newChar)) {
+        charArr[i] = String.fromCharCode(newChar);
+      }
+    }
+    let decodeStr = charArr.join('');
+    let msgBody = Buffer.from(decodeStr, 'base64').toString();
+    return msgBody;
+  },
   /**
    * 判断字符为字母或数字
    * @param code

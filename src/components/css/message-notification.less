@@ -338,7 +338,7 @@
 
             .session-list {
               width: 180px;
-              border-right: 1px solid #e9eaec;
+              border-right: 1px solid var(--border-color);
               position: relative;
 
               .list-container {
@@ -494,7 +494,6 @@
                     width: 100%;
                     height: 32px;
                     line-height: 32px;
-                    background-color: #fff;
                     color: #fb7299;
                     text-align: left;
                     padding: 0 17px;
@@ -592,10 +591,21 @@
                       .message {
                         position: relative;
                         float: right;
-                        color: #fff;
+                        display: flex;
+                        align-items: center;
+
+                        .message-send-status {
+                          margin-right: 5px;
+
+                          .iconfont {
+                            font-size: 17px;
+                            color: @grey-white-font-color;
+                          }
+                        }
 
                         .message-content {
                           background: #80b9f2;
+                          color: #fff;
                           border-radius: 16px 0 16px 16px;
                         }
                       }
@@ -605,7 +615,7 @@
 
                 .send-box {
                   height: 162px;
-                  border-top: 1px solid @grey-white-font-color;
+                  border-top: 1px solid var(--border-color);
                   border-bottom-right-radius: 4px;
                   -ms-flex-negative: 0;
                   flex-shrink: 0;

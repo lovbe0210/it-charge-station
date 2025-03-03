@@ -64,6 +64,7 @@
 
 <script>
   import {isEmpty} from '@/utils/emoji'
+  import { resetEmojiText } from '@/utils/hooks'
   import emoji from '@/assets/emoji/emoji.js';
   import MentionList from './MentionList'
   import EmojiSelector from "./EmojiSelector";
@@ -151,10 +152,20 @@
     methods: {
       // 提交评论的数据
       onSubmit() {
+        // content表情还原
+        let content = this.content;
+        if (this.content && this.content.indexOf('<img class="emoji"') !== -1) {
+          content = resetEmojiText(this.content)
+        }
+        // 限制字数1000
+        if (content?.length > 1000) {
+          this.$Message.warning((this.scene === 'message' ? '聊天' : '评论') + "字数过多，请删减至1000字或一下");
+          return;
+        }
         let comment = {
           parentId: this.parentId,
           address: null,
-          content: this.content,
+          content: content,
           replyUserId: (this.reply && this.parentId !== this.reply.uid) ? this.reply.userInfo.uid : null,
           createTime: Date.now(),
           contentImgFile: this.file
@@ -373,18 +384,15 @@
       insertEmoji(emojiVal) {
         let emoji;
         let emojiPath = this.c_emoji.allEmoji[emojiVal];
-        console.log(emojiVal, emojiPath)
+        // console.log(emojiVal, emojiPath)
         if (emojiPath) {
           // 当前输入对象为表情
           emoji = [
-            '<img src="',
+            '<img class="emoji" src="',
             emojiPath,
             '" width="18" height="18" alt="',
             emojiVal,
-            '" title="',
-            emojiVal,
-            '" style="margin: 0 1px; vertical-align: text-bottom"',
-            '/>'
+            '" style="margin: 0 1px; vertical-align: text-bottom"/>'
           ].join('');
           this.showEmojiSelector = false;
         } else {
