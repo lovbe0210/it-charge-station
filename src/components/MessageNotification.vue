@@ -670,7 +670,6 @@ export default {
     },
     formatTime,
     sendMessage(msgContent, clear) {
-      debugger
       // 清空输入框内容
       clear();
       // 发送消息
@@ -678,12 +677,12 @@ export default {
       let msgBody = {
         clientMsgId,
         sendId: this.userInfo.uid,
-        recvId: this.activeSession.session_id,
+        recvId: this.activeSession.session_user_id,
         recvType: 1,
         senderPlatformId: 1,
         // 100发送时间（前端展示） 101 文字消息 102图片 103站内文章 104链接 111撤回消息
         contentType: 101,
-        content: {content: msgContent.content},
+        content: JSON.stringify({content: msgContent.content}),
         sendTime: new Date().getTime()
       }
       this.$sharedWorker.port.postMessage({
@@ -716,6 +715,9 @@ export default {
         });
       }
 
+    },
+    messageConfirm(confirmContent) {
+      console.log(confirmContent);
     },
     sendImage(file) {
       // 生成base64格式进行显示
@@ -849,8 +851,9 @@ export default {
     },
     getSessionList(sessionList) {
       this.sessionList = sessionList;
-      let session = this.sessionList.length > 0 ? this.sessionList[0] : {};
-      this.changeActiveSession(session);
+      if (this.sessionList && this.sessionList.length > 0) {
+        this.changeActiveSession(this.sessionList[0]);
+      }
     },
     changeActiveSession(session) {
       this.activeSession.session_id = session.sessionId;
