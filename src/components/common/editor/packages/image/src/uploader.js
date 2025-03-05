@@ -148,7 +148,7 @@ export default class extends Plugin {
       name
     } = this.options.file
     const { parse } = this.options
-    const limitSize = this.options.file.limitSize || 5 * 1024 * 1024
+    const limitSize = this.options.file.limitSize || 10 * 1024 * 1024
 
     if (!Array.isArray(files) && typeof files !== "string") {
       const accepts = Array.isArray(this.extensionNames)

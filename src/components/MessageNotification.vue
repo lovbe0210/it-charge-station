@@ -219,7 +219,7 @@
             </ul>
             <ul class="tab-list-items" v-if="activeMenu === 'systemMessage'">
               <li class="tab-list-item"
-                  v-for="item in systemMsgList"
+                  v-for="item in msgNoticeList"
                   :key="item.id">
                 <div class="notification-item">
                   <div class="item-content">
@@ -261,8 +261,8 @@
                       <div class="name" :title="session.sessionUserInfo.username">
                         <div class="name-value">{{ session.sessionUserInfo.username }}</div>
                       </div>
-                      <div :title="session.last_msg?.content?.content" class="last-word">
-                        {{ session.last_msg?.content?.content }}
+                      <div :title="parseMsgContent(session.lastMsg?.content, false)" class="last-word">
+                        {{ parseMsgContent(session.lastMsg?.content, false) }}
                       </div>
                     </div>
                     <div class="close">
@@ -274,7 +274,7 @@
               <div class="session-box">
                 <div class="dialog" v-if="activeSession.session_id">
                   <div class="title">
-                    <div class="is-black" >
+                    <div class="is-black">
                       (&gt;﹏&lt;)该用户已经被你屏蔽啦
                     </div>
                     <span>{{ activeSession.session_user_name }}</span>
@@ -328,12 +328,19 @@
                           <div v-if="!msg.uid" class="message-send-status">
                             <span class="iconfont update-ing"></span>
                           </div>
-                          <div v-if="msg.contentType === 101" class="message-content" v-html="msg.content.content"></div>
+                          <div v-if="!msg.sendSuccess" class="message-send-status">
+                            <span class="iconfont err"></span>
+                          </div>
+                          <div v-if="msg.contentType === 101" class="message-content"
+                               v-html="parseMsgContent(msg.content, true)"></div>
                           <div v-if="msg.contentType === 102" class="message-content is-img">
-                            <img class="im-msg-item-img" title="[图片] 点击查看大图" alt="[图片] 点击查看大图"
-                                 :src="msg.content.imageUrl"
-                                 @click="previewImage(msg.content.imageUrl)"
-                                 style="max-width:112px;">
+                            <img class="im-msg-item-img"
+                                 title="[图片] 点击查看大图"
+                                 alt="[图片] 点击查看大图"
+                                 :id="msg.clientMsgId"
+                                 :src="parseMsgImage(msg.content)"
+                                 @click="previewImage(msg.clientMsgId)"
+                                 style="max-width:150px;">
                           </div>
                         </div>
                       </div>
@@ -464,7 +471,7 @@ import {cloneDeep} from "@/utils/emoji";
 import msgNoticeApi from "@/api/MsgNoticeApi";
 import UserCard from "@/components/common/UserCard.vue";
 import Vue from "vue";
-import { v4 as uuid } from 'uuid';
+import {v4 as uuid} from 'uuid';
 import CommonUtil from "@/utils/common";
 import emoji from '@/assets/emoji/emoji.js';
 
@@ -479,7 +486,6 @@ export default {
       total: 0,
       msgNoticeList: [],
       popoverContainer: null,
-      systemMsgList: [],
       sessionList: [],
       activeSession: {
         session_id: null,
@@ -643,7 +649,7 @@ export default {
           });
           break;
         case 'systemMessage':
-          this.systemMsgList = [
+          this.msgNoticeList = [
             {
               id: 1,
               content: '进来抽奖，即得100万现金红包瓜分资格! ',
@@ -654,18 +660,15 @@ export default {
           ]
           break;
         case 'chatMessage':
-          if (!this.isConnected || !this.$sharedWorker) {
-            this.retry = true;
-            this.wsInit();
-          } else {
-            this.$sharedWorker.port.postMessage({
-              type: 2,
-              data: {
-                type: 1,
-                callback: 'getSessionList'
+          msgNoticeApi.getMsgSessionList().then(data => {
+            if (data?.result) {
+              let jsonStr = CommonUtil.decodeSign(data?.data);
+              this.sessionList = JSON.parse(jsonStr);
+              if (this.sessionList?.length > 0) {
+                this.changeActiveSession(this.sessionList[0]);
               }
-            });
-          }
+            }
+          })
       }
     },
     formatTime,
@@ -693,31 +696,11 @@ export default {
           data: CommonUtil.encodeSign(JSON.stringify(msgBody))
         }
       });
-      this.addMsgTime(msgContent.createTime);
-      // 对特殊字符进行转义
-      let parseContent = msgContent.content?.replace(/[&<>"']/g, tag => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-      }[tag]));
-      // 需要将表情转换为img标签
-      parseContent = useEmojiParse(emoji.allEmoji, msgContent.content);
-      msgBody.content = {content: parseContent};
-      this.activeSession.messages.push(msgBody);
-      let messageScroll = this.$refs.messageScroll;
-      if (messageScroll) {
-        // 使用 setTimeout 来确保在 DOM 更新之后再进行滚动
-        this.$nextTick(() => {
-          // 将滚动位置设置为容器的滚动高度
-          messageScroll.scrollTop = messageScroll.scrollHeight;
+      this.pushNewMessage(msgBody)
+      this.sessionList.filter(session => session.sessionId === this.activeSession.session_id)
+        .forEach(session => {
+          session.lastMsg = msgBody;
         });
-      }
-
-    },
-    messageConfirm(confirmContent) {
-      console.log(confirmContent);
     },
     sendImage(file) {
       // 生成base64格式进行显示
@@ -725,39 +708,135 @@ export default {
       reader.onload = () => {
         // 读取文件完成后将结果设置为预览图URL
         let fileUrl = reader.result;
-        let now = Date.now();
-        this.addMsgTime(now);
         // 发送消息
-        setTimeout(() => {
-          this.activeSession.messages.push({
-            "sender_uid": this.userInfo.uid,
-            "receiver_type": 1,
-            "receiver_id": this.activeSession.session_id,
-            "msg_type": 2,
-            "content": {"content": "图片", "imageUrl": fileUrl},
-            "timestamp": now,
-            "msg_key": this.tmpId++,
-            "msg_status": 0
+        let clientMsgId = uuid()?.replaceAll('-', '');
+        let msgBody = {
+          clientMsgId,
+          sendId: this.userInfo.uid,
+          recvId: this.activeSession.session_user_id,
+          recvType: 1,
+          senderPlatformId: 1,
+          // 100发送时间（前端展示） 101 文字消息 102图片 103站内文章 104链接 111撤回消息
+          contentType: 102,
+          content: JSON.stringify({content: "[图片]", imageUrl: fileUrl}),
+          sendTime: Date.now()
+        }
+        this.pushNewMessage(msgBody);
+        this.sessionList.filter(session => session.sessionId === this.activeSession.session_id)
+          .forEach(session => {
+            session.lastMsg = msgBody;
           });
-          let messageScroll = this.$refs.messageScroll;
-          if (messageScroll) {
-            // 使用 setTimeout 来确保在 DOM 更新之后再进行滚动
-            this.$nextTick(() => {
-              // 将滚动位置设置为容器的滚动高度
-              messageScroll.scrollTop = messageScroll.scrollHeight;
+        // 通过文件接口上传图片，消息这里只保存地址即可
+        let chatFile = new FormData();
+        chatFile.append("file", file);
+        chatFile.append("pathPrefix", "chat");
+        msgNoticeApi.uploadFile(chatFile).then(data => {
+          if (data?.result) {
+            let msgBodyPic = {...msgBody, ...{content: JSON.stringify({content: "[图片]", imageUrl: data.data})}}
+            this.$sharedWorker.port.postMessage({
+              type: 2,
+              data: {
+                type: 2,
+                callback: 'sendMessage',
+                data: CommonUtil.encodeSign(JSON.stringify(msgBodyPic))
+              }
             });
           }
-        }, 500)
+        })
       };
       // 读取文件内容，这里使用DataURL格式
       reader.readAsDataURL(file);
+    },
+    messageConfirm(confirmContent) {
+      // 如果已经切换了会话，则不在进行消息确认
+      // debugger
+      if (this.activeSession.session_id !== confirmContent?.conversationId) {
+        return;
+      }
+      let messages = this.activeSession.messages;
+      if (messages?.length > 0) {
+        let index = messages.findIndex(msg => msg.clientMsgId === confirmContent?.clientMsgId);
+        if (index !== -1) {
+          messages.splice(index, 1, confirmContent);
+          return;
+        }
+      }
+      this.pushNewMessage(confirmContent);
+    },
+    recvMessage(recvMessage) {
+      console.log("recvMessage: ", recvMessage)
+      // 如果已经切换了会话，则不用添加新的消息
+      if (this.activeSession.session_id !== recvMessage?.conversationId) {
+        return;
+      }
+      this.pushNewMessage(recvMessage);
+    },
+    pushNewMessage(message) {
+      this.addMsgTime(message.sendTime);
+      this.activeSession.messages.push(message);
+      let messageScroll = this.$refs.messageScroll;
+      if (messageScroll) {
+        // 使用 setTimeout 来确保在 DOM 更新之后再进行滚动
+        this.$nextTick(() => {
+          // 将滚动位置设置为容器的滚动高度
+          setTimeout(() => {
+            messageScroll.scrollTop = messageScroll.scrollHeight + 150;
+          }, 100);
+        });
+      }
+    },
+    parseMsgContent(content, useEmoji) {
+      if (!content) {
+        return null;
+      }
+
+      let msgContent;
+      if (typeof content === 'object') {
+        msgContent = content.content;
+      } else {
+        let parse = JSON.parse(content);
+        msgContent = parse.content;
+      }
+      msgContent = msgContent.replaceAll("&nbsp;", "");
+      if (!useEmoji) {
+        return msgContent;
+      }
+
+      // 对特殊字符进行转义
+      let parseContent = msgContent?.replace(/[&<>"']/g, tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[tag]));
+      // 需要将表情转换为img标签
+      return useEmojiParse(emoji.allEmoji, parseContent);
+    },
+    parseMsgImage(content) {
+      if (!content) {
+        return null;
+      }
+      let msgImage;
+      if (typeof content === 'object') {
+        msgImage = content.imageUrl;
+      } else {
+        let parse = JSON.parse(content);
+        msgImage = parse.imageUrl;
+      }
+      // 如果是base64则直接显示，如果是url格式则需要加文件前缀
+      if (msgImage?.startsWith("data")) {
+        return msgImage;
+      } else {
+        return this.fileService + msgImage;
+      }
     },
     addMsgTime(now) {
       let sendTime = {
         contentType: 100,
         sendTime: now
       }
-      // 比较当前时间与最后一条数据的时间差
+      // 比较当前时间与最后一条数据的时间差,5分钟查一条时间提醒
       let size = this.activeSession.messages?.length;
       if (!size) {
         this.activeSession.messages = [sendTime];
@@ -776,7 +855,7 @@ export default {
         }
       })
     },
-    previewImage(currentUrl) {
+    previewImage(clientMsgId) {
       if (this.pswp === null) {
         this.pswp = new Pswp(null);
       }
@@ -789,7 +868,7 @@ export default {
       let currentIndex = 0;
       for (let i = 0; i < imgArray.length; i++) {
         let img = imgArray[i];
-        if (currentUrl === img.src) {
+        if (clientMsgId === img.id) {
           currentIndex = i;
         }
         imgItems.push({
@@ -851,25 +930,23 @@ export default {
     },
     getSessionList(sessionList) {
       this.sessionList = sessionList;
-      if (this.sessionList && this.sessionList.length > 0) {
-        this.changeActiveSession(this.sessionList[0]);
-      }
     },
     changeActiveSession(session) {
       this.activeSession.session_id = session.sessionId;
-      this.activeSession.session_user_id = session.sessionUserInfo.uid;
-      this.activeSession.session_user_name = session.sessionUserInfo.username;
-      this.activeSession.session_user_avatar = session.sessionUserInfo.avatarUrl;
-      this.activeSession.session_user_domain = session.sessionUserInfo.domain;
+      this.activeSession.session_user_id = session.sessionUserInfo?.uid;
+      this.activeSession.session_user_name = session.sessionUserInfo?.username;
+      this.activeSession.session_user_avatar = session.sessionUserInfo?.avatarUrl;
+      this.activeSession.session_user_domain = session.sessionUserInfo?.domain;
       this.$sharedWorker.port.postMessage({
         type: 2,
         data: {
-          type: 1,
-          callback: 'getChatMsgList'
+          type: 2,
+          callback: 'getChatLogs',
+          param: {}
         }
       });
     },
-    getChatMsgList(chatMsgInfo) {
+    getChatLogs(chatMsgInfo) {
       // 判断获取消息记录的会话id和ws返回的消息id是否相同
       let sessionId = chatMsgInfo.currentSessionId;
       if (this.activeSession.sessionId === sessionId) {

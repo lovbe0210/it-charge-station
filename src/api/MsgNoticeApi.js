@@ -89,8 +89,32 @@ export default {
       method: 'POST',
       data: sessionInfo
     });
-  }
+  },
 
+  /**
+   * 获取会话列表
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getMsgSessionList() {
+    return await Vue.prototype.$request({
+      url: "/sl/chat/session/list",
+      method: 'GET'
+    });
+  },
+
+  /**
+   * 上传聊天图片
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async uploadFile(file64) {
+    return await Vue.prototype.$request({
+      url: "/st/upload",
+      method: 'POST',
+      data: file64
+    });
+  }
 }
 
 

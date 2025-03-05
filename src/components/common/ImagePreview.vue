@@ -1,7 +1,8 @@
+<!--
 <template>
-  <!-- 图片预览容器，仅在预览打开时显示 -->
+  &lt;!&ndash; 图片预览容器，仅在预览打开时显示 &ndash;&gt;
   <div class="image-preview" v-if="isPreviewOpen" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave">
-    <!-- 图片元素，点击切换全屏预览状态，并根据是否放大调整样式 -->
+    &lt;!&ndash; 图片元素，点击切换全屏预览状态，并根据是否放大调整样式 &ndash;&gt;
     <img
       :src="src"
       :alt="alt"
@@ -94,3 +95,4 @@
   }
 
 </style>
+-->

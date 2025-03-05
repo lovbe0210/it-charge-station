@@ -28,7 +28,7 @@
   // uuid
   import { v4 as uuid } from 'uuid';
   import UserApi from "@/api/UserApi";
-  import preferenceApi from "./api/PreferenceApi";
+  import preferenceApi from "@/api/PreferenceApi";
 
 
   // 安装bootstrap和图标库
@@ -247,7 +247,7 @@
         let musicInfo = localData.musicInfo;
         let updateConfig = {
           customTheme: localData.customerSet,
-          musicPlay: {musicId: musicInfo.musicId}
+          musicPlay: {musicId: musicInfo?.musicId ? musicInfo?.musicId : null}
         };
         // 本地数据为主，更新至云端
         preferenceApi.updatePreferenceSetting(updateConfig);
