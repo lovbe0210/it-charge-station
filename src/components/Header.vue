@@ -240,7 +240,7 @@
            :footer-hide="true"
            :width="900"
            class-name="message-box">
-      <message-notification :propsActiveMenu="activeMenu"
+      <message-notification :propsActiveMenu="propsActiveMenu"
                             :unreadStatistic="unreadStatistic"
                             @changeModalStatus="showMessage = false"/>
     </Modal>
@@ -267,7 +267,10 @@ export default {
       flag: false,
       maxWidth: null,
       showMessage: false,
+      // 路由对应分类菜单
       activeMenu: null,
+      // 下拉菜单对应消息盒子菜单
+      propsActiveMenu: null,
       unreadStatistic: {
         commentCount: 0,
         likeCount: 0,
@@ -305,8 +308,8 @@ export default {
     },
     'chatMessage.activeSessionId'(val) {
       if (val) {
+        this.propsActiveMenu = 'chatMessage'
         this.showMessage = true;
-        this.activeMenu = 'chatMessage'
       }
     },
     'showMessage'(val) {
@@ -318,10 +321,6 @@ export default {
   methods: {
     disableNav(flag) {
       this.$store.commit('changeShowContext', flag)
-    },
-    // 选择消息类型并跳转到对应类型详情页面
-    chooseMessage(item) {
-      this.$router.push({name: item.menuKey})
     },
     login (quickLogin) {
       let loginBtnId = quickLogin ? 'quickLoginBtn' : 'pwdLoginBtn';
@@ -429,8 +428,9 @@ export default {
           break
       }
     },
+    // 选择消息类型并跳转到对应类型详情页面
     readMessage(itemName) {
-      this.activeMenu = itemName;
+      this.propsActiveMenu = itemName;
       this.showMessage = true;
     },
     search() {
