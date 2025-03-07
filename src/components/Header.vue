@@ -314,6 +314,7 @@ export default {
     },
     'showMessage'(val) {
       if (!val) {
+        this.propsActiveMenu = null;
         this.$store.commit("updateChatSession", null);
       }
     }

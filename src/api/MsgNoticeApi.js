@@ -114,7 +114,34 @@ export default {
       method: 'POST',
       data: file64
     });
+  },
+
+  /**
+   * 设置会话各中状态
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async updateSessionStatus(sessionStatus) {
+    return await Vue.prototype.$request({
+      url: "/sl/chat/session/update",
+      method: 'POST',
+      data: sessionStatus
+    });
+  },
+
+  /**
+   * 删除会话
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async deleteSession(sessionInfo) {
+    return await Vue.prototype.$request({
+      url: "/sl/chat/session/delete",
+      method: 'POST',
+      data: sessionInfo
+    });
   }
+
 }
 
 

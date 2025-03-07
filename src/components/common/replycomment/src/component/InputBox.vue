@@ -173,7 +173,10 @@
 
         this.$emit('submit', comment, () => {
           //清理输入框提交的数据
-          this.resetComment()
+          this.resetComment();
+          if (this.scene === 'message') {
+            this.editorRef?.focus();
+          }
         });
         this.$emit('hide');
       },
@@ -263,7 +266,7 @@
           selection.removeAllRanges()
           // 为空初始化光标
           if (!this.range) {
-            this.editorRef?.focus()
+            this.editorRef?.focus();
             this.range = selection.getRangeAt(0)
           }
 

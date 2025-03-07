@@ -265,8 +265,8 @@
                         {{ parseMsgContent(session.lastMsg?.content, false) }}
                       </div>
                     </div>
-                    <div class="close">
-                      <span class="iconfont remove"></span>
+                    <div class="close" @click="showDelModal(session.uid)">
+                      <span class="iconfont remove"/>
                     </div>
                   </div>
                 </div>
@@ -281,17 +281,23 @@
                     <div class="action-menu">
                       <Dropdown placement="bottom-end"
                                 trigger="click"
-                                transfer-class-name="dropdown-background dropdown-item-all-hover">
+                                transfer-class-name="dropdown-background dropdown-item-all-hover"
+                                @on-click="updateSession">
                         <a href="javascript:void(0)">
                           <div class="menu-btn">
                             <span class="iconfont operate"></span>
                           </div>
                         </a>
                         <DropdownMenu slot="list">
-                          <DropdownItem>置顶聊天</DropdownItem>
-                          <DropdownItem>开启免打扰</DropdownItem>
-                          <DropdownItem>屏蔽该用户</DropdownItem>
-                          <DropdownItem>举报</DropdownItem>
+                          <DropdownItem name="isPinned">
+                            {{sessionList?.find(s=>s.uid===activeSession.sessionId)?.isPinned ? '取消置顶' : '置顶聊天'}}
+                          </DropdownItem>
+                          <DropdownItem name="isNotDisturb">
+                            {{sessionList?.find(s=>s.uid===activeSession.sessionId)?.isNotDisturb ? '关闭免打扰' : '开启免打扰'}}
+                          </DropdownItem>
+                          <DropdownItem name="isShield">
+                            {{sessionList?.find(s=>s.uid===activeSession.sessionId)?.isShield ? '取消屏蔽' : '屏蔽该用户'}}
+                          </DropdownItem>
                         </DropdownMenu>
                       </Dropdown>
                     </div>
@@ -355,7 +361,6 @@
                   </div>
                 </div>
                 <div v-else class="lovbe-im-placeholder">
-                  <span class="iconfont empty-session"/>
                   <div class="tip">快找小伙伴聊天吧 ( ゜- ゜)つロ</div>
                 </div>
               </div>
@@ -456,6 +461,16 @@
         </div>
       </div>
     </div>
+    <Modal v-model="showDel"
+           :lock-scroll="true"
+           :width="370"
+           :styles="{top: '20%'}"
+           @on-ok="deleteSession"
+           class-name="delete-session">
+      <div style="padding-left: 10px;">
+        <span>删除后，将清空该聊天的消息记录</span>
+      </div>
+    </Modal>
   </div>
 </template>
 
@@ -502,7 +517,8 @@ export default {
         mentionColor: '#409eff'
       },
       EmojiSelectorPosition: null,
-      tmpId: 100,
+      showDel: false,
+      delSessionId: null,
       tmpMessageSetting: {
         newMsgDot: 1,
         // 新消息展示数量统计
@@ -521,8 +537,7 @@ export default {
       // 已建立连接
       isConnected: false,
       // 连接重连中
-      retry: false,
-      sharedWorker: null
+      retry: false
     }
   },
   props: {
@@ -705,6 +720,7 @@ export default {
         content: JSON.stringify({content: msgContent.content}),
         sendTime: new Date().getTime()
       }
+      this.checkSWStatus();
       this.$sharedWorker.port.postMessage({
         type: 2,
         data: {
@@ -750,6 +766,7 @@ export default {
         msgNoticeApi.uploadFile(chatFile).then(data => {
           if (data?.result) {
             let msgBodyPic = {...msgBody, ...{content: JSON.stringify({content: "[图片]", imageUrl: data.data})}}
+            this.checkSWStatus();
             this.$sharedWorker.port.postMessage({
               type: 2,
               data: {
@@ -939,6 +956,21 @@ export default {
       }
       this.pswp.open(imgItems, currentIndex)
     },
+    checkSWStatus() {
+      if (this.isConnected) {
+        this.retry = false;
+        return;
+      }
+      this.retry = true;
+      if (!this.$sharedWorker) {
+        Vue.prototype.$sharedWorker = new SharedWorker('../shared-worker.js', 'workerWs');
+        if (!this.$sharedWorker) {
+          this.$Message.info('此版本聊天系统暂不支持当前浏览器，请更换Chrom或Edge后重试');
+          return;
+        }
+      }
+      this.wsInit();
+    },
     wsInit() {
       let port = this.$sharedWorker.port;
       // 监听sharedWorker消息
@@ -971,6 +1003,7 @@ export default {
         if (data?.type === 3) {
           // ws连接已被关闭
           this.isConnected = false;
+          this.retry = true;
           return;
         }
         if (data?.type === 10) {
@@ -994,6 +1027,56 @@ export default {
       this.activeSession.sessionUserName = session.sessionUserInfo?.username;
       this.activeSession.sessionUserAvatar = session.sessionUserInfo?.avatarUrl;
       this.activeSession.sessionUserDomain = session.sessionUserInfo?.domain;
+    },
+    updateSession(sessionSetting) {
+      if (!this.activeSession.sessionId) {
+        return;
+      }
+      let find = this.sessionList?.find(session => session.uid === this.activeSession.sessionId);
+      if (!find) {
+        this.$Message.warning("会话不存在，请刷新后重试")
+        return;
+      }
+      let sessionStatus = {
+        sessionId: this.activeSession.sessionId
+      }
+      sessionStatus[sessionSetting] = find[sessionSetting] === 1 ? 0 : 1;
+      msgNoticeApi.updateSessionStatus(sessionStatus).then(data => {
+        if (data?.result) {
+          this.$Message.success("设置成功");
+        }
+      })
+    },
+    deleteSession() {
+      if (!this.delSessionId) {
+        return
+      }
+      let find = this.sessionList.find(s => s.uid === this.delSessionId);
+      if (!find) {
+        this.delSessionId = null;
+        return;
+      }
+      msgNoticeApi.deleteSession({sessionId: this.delSessionId}).then(data => {
+        if (data?.result) {
+          this.sessionList = this.sessionList.filter(s => s.uid !== this.delSessionId);
+          if (this.activeSession.sessionId === this.delSessionId) {
+            this.activeSession = {
+              sessionId: null,
+              sessionUserId: null,
+              sessionUserName: null,
+              sessionUserAvatar: null,
+              sessionUserDomain: null,
+              messages: []
+            };
+          }
+          this.$Message.success("删除成功");
+          this.delSessionId = null;
+        }
+      })
+    },
+    showDelModal(sessionId) {
+      this.delSessionId = sessionId;
+      this.showDel = true;
     }
   },
   watch: {
@@ -1004,9 +1087,12 @@ export default {
       this.activeMenu = newVal;
     },
     'activeSessionId'(newVal) {
-      /*if (!newVal) {
-        return;
+      if (newVal) {
+        this.activeMenu = null;
+        this.activeMenu = this.propsActiveMenu;
+        console.log('我先触发')
       }
+      /*
       console.log("watch-activeSessionId-getMsgSessionList: ", newVal)
       msgNoticeApi.getMsgSessionList().then(data => {
         if (data?.result) {
@@ -1027,10 +1113,14 @@ export default {
       })*/
     },
     'activeSession.sessionId'(newVal) {
+      if (!newVal) {
+        return;
+      }
       this.offset = 0;
       this.total = 0;
       this.hasMore = true;
       console.log("watch-activeSession.sessionId-getChatLogs: ", newVal)
+      this.checkSWStatus();
       this.$sharedWorker.port.postMessage({
         type: 2,
         data: {
@@ -1058,7 +1148,6 @@ export default {
       this.hasMore = true;
       console.log("watch-activeMenu-loadMsgNotify: ", newValue)
       this.loadMsgNotify(newValue);
-      this.$store.commit("updateChatSession", null);
     }
   },
   mounted() {
@@ -1068,7 +1157,7 @@ export default {
     // 初始化sharedWorker进行webSocket连接
     Vue.prototype.$sharedWorker = new SharedWorker('../shared-worker.js', 'workerWs');
     if (!this.$sharedWorker) {
-      console.error("sharedWorker启动失败，请换一个支持sharedWorker的浏览器访问吧")
+      this.$Message.info('此版本聊天系统暂不支持当前浏览器，请更换Chrom或Edge后重试');
       return;
     }
     this.wsInit();
