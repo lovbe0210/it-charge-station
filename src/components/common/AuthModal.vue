@@ -185,7 +185,7 @@
 
 <script>
 import SliderValidation from "@/components/common/SliderValidation";
-import {emailRegex, verifyTelLawful} from "@/utils/utils.js"
+import {emailRegex, verifyTelLawful} from "@/utils"
 import authApi from "@/api/AuthApi";
 import userApi from "@/api/UserApi";
 

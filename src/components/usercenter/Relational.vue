@@ -90,7 +90,7 @@
 
 <script>
   import UserCard from "@/components/common/UserCard.vue";
-  import socialApi from "../../api/SocialApi";
+  import socialApi from "@/api/SocialApi";
 
   export default {
     name: 'Relational',

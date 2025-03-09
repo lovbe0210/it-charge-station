@@ -177,8 +177,8 @@
 </template>
 <script>
 import { VueCropper } from 'vue-cropper'
-import { formatTime } from '@/utils/emoji'
-import { getRandomColor, dataURLtoFile } from '@/utils/utils'
+import { dataURLtoFile, formatTime2H } from '@/utils'
+import { getRandomColor } from '@/utils/common'
 import WriteCenterApi from "@/api/WriteCenterApi";
 
 export default {
@@ -343,7 +343,7 @@ export default {
     readPublicPermission(event) {
       event.preventDefault();
     },
-    formatTime
+    formatTime2H
   },
   created() {
     // 获取菜单分类

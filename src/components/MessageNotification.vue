@@ -76,12 +76,12 @@
                 消息设置
               </span>
             </span>
-            <span class="all-read-action" v-if="activeMenu !== 'messageSetting'">
+<!--            <span class="all-read-action" v-if="activeMenu !== 'messageSetting'">
               <span class="iconfont clean"></span>
               <span>
                 全部已读
               </span>
-            </span>
+            </span>-->
           </div>
           <div class="tabs-notify-holder beauty-scroll"
                v-if="activeMenu !== 'chatMessage' && activeMenu !== 'messageSetting'">
@@ -123,7 +123,7 @@
                             }}</span>
                         </b-link>
                       </div>
-                      <span class="msg-time">{{ formatTime(item.createTime) }}</span>
+                      <span class="msg-time">{{ formatTime2H(item.createTime) }}</span>
                     </div>
                     <p class="action-content" :title="item.noticeType === 1 ? item.commentContent : item.replyContent">
                       <span class="tip-content">
@@ -181,7 +181,7 @@
                       </div>
                     </div>
                     <p>
-                      <span class="msg-time">{{ formatTime(item.createTime) }}</span>
+                      <span class="msg-time">{{ formatTime2H(item.createTime) }}</span>
                     </p>
                   </div>
                 </div>
@@ -211,7 +211,7 @@
                       <Badge dot v-if="item.readStatus === 0 && messageSetting.newMsgDot" :offset="[-9, -1]"/>
                     </p>
                     <p>
-                      <span>{{ formatTime(item.createTime) }}</span>
+                      <span>{{ formatTime2H(item.createTime) }}</span>
                     </p>
                   </div>
                 </div>
@@ -261,9 +261,12 @@
                       <div class="name" :title="session.sessionUserInfo.username">
                         <div class="name-value">{{ session.sessionUserInfo.username }}</div>
                       </div>
-                      <div :title="parseMsgContent(session.lastMsg?.content, false)" class="last-word">
-                        {{ parseMsgContent(session.lastMsg?.content, false) }}
+                      <div :title="parseMsgContent(session.lastMsg, false, session.sessionUserInfo.username)" class="last-word">
+                        {{ parseMsgContent(session.lastMsg, false, session.sessionUserInfo.username) }}
                       </div>
+                    </div>
+                    <div class="un-read-count">
+                      <Badge dot v-if="session.unreadCount && tmpMessageSetting.newMsgDot" :offset="[2, -2]"/>
                     </div>
                     <div class="close" @click="showDelModal(session.uid)">
                       <span class="iconfont remove"/>
@@ -290,13 +293,13 @@
                         </a>
                         <DropdownMenu slot="list">
                           <DropdownItem name="isPinned">
-                            {{sessionList?.find(s=>s.uid===activeSession.sessionId)?.isPinned ? '取消置顶' : '置顶聊天'}}
+                            {{ sessionList?.find(s => s.uid === activeSession.sessionId)?.isPinned ? '取消置顶' : '置顶聊天' }}
                           </DropdownItem>
                           <DropdownItem name="isNotDisturb">
-                            {{sessionList?.find(s=>s.uid===activeSession.sessionId)?.isNotDisturb ? '关闭免打扰' : '开启免打扰'}}
+                            {{ sessionList?.find(s => s.uid === activeSession.sessionId)?.isNotDisturb ? '关闭免打扰' : '开启免打扰' }}
                           </DropdownItem>
                           <DropdownItem name="isShield">
-                            {{sessionList?.find(s=>s.uid===activeSession.sessionId)?.isShield ? '取消屏蔽' : '屏蔽该用户'}}
+                            {{ sessionList?.find(s => s.uid === activeSession.sessionId)?.isShield ? '取消屏蔽' : '屏蔽该用户' }}
                           </DropdownItem>
                         </DropdownMenu>
                       </Dropdown>
@@ -315,10 +318,11 @@
                         </span>
                       </div>
                       <div v-for="msg in activeSession.messages"
-                           :class="[msg.contentType === 100?'msg-time':'msg-item', msg.sendId === userInfo.uid?'is-me':'not-me']"
+                           :class="[msg.contentType === 100 || msg.contentType === 111?'msg-system':'msg-item', msg.sendId === userInfo.uid?'is-me':'not-me']"
                            :key="msg.clientMsgId">
-                        <span class="time" v-if="msg.contentType === 100">{{ formatTime(msg.sendTime) }}</span>
-                        <b-avatar v-if="msg.contentType !== 100"
+                        <span class="time" v-if="msg.contentType === 100">{{ formatTime2H(msg.sendTime) }}</span>
+                        <span class="rollback-tips" v-if="msg.contentType === 111">{{ (msg.sendId === userInfo.uid ? '你' : ('"' + activeSession.sessionUserName + '"')) + msg.content }}</span>
+                        <b-avatar v-if="msg.contentType !== 100 && msg.contentType !== 111"
                                   class="avatar"
                                   :src="fileUrl(msg.sendId === userInfo.uid ? userInfo.avatarUrl : activeSession.sessionUserAvatar)"
                                   :to="'/' + msg.sendId === userInfo.uid ? userInfo.domain : activeSession.sessionUserDomain"
@@ -330,12 +334,34 @@
                             {{ msg.sendId === userInfo.uid ? userInfo.username : activeSession.sessionUserName }}
                           </span>
                         </b-avatar>
-                        <div class="message" v-if="msg.contentType !== 100">
+                        <div class="message" v-if="msg.contentType !== 100 && msg.contentType !== 111">
                           <div v-if="msg.uid && !msg.sendSuccess" class="message-send-status">
                             <span class="iconfont publish-fail" :title="msg.errorReason"/>
                           </div>
+                          <div v-if="msg.uid && msg.sendSuccess" class="message-action">
+                            <span class="message-time">{{
+                                formatTime(new Date(msg.sendTime), 'yyyy-MM-dd HH:mm:ss')
+                              }}</span>
+                            <a-tooltip placement="top"
+                                       :getPopupContainer="()=>popoverContainer">
+                              <template slot="title">
+                                删除
+                              </template>
+                              <span class="iconfont delete"
+                                    @click="messageAction('delete', msg)"/>
+                            </a-tooltip>
+                            <a-tooltip placement="top"
+                                       v-if="msg.sendId === userInfo.uid"
+                                       :getPopupContainer="()=>popoverContainer">
+                              <template slot="title">
+                                撤回
+                              </template>
+                              <span class="iconfont rollback"
+                                    @click="messageAction('rollback', msg)"/>
+                            </a-tooltip>
+                          </div>
                           <div v-if="msg.contentType === 101" class="message-content"
-                               v-html="parseMsgContent(msg.content, true)"></div>
+                               v-html="parseMsgContent(msg, true)"></div>
                           <div v-if="msg.contentType === 102" class="message-content is-img">
                             <img class="im-msg-item-img"
                                  title="[图片] 点击查看大图"
@@ -475,16 +501,14 @@
 </template>
 
 <script>
-import {formatTime} from '@/utils/emoji';
-import {useEmojiParse} from '@/utils/hooks';
+import {formatTime, formatTime2H, cloneDeep, useEmojiParse} from '@/utils';
 import InputBox from "@/components/common/replycomment/src/component/InputBox";
 import Pswp from "@/components/common/imagepreview/index"
-import {cloneDeep} from "@/utils/emoji";
 import msgNoticeApi from "@/api/MsgNoticeApi";
 import UserCard from "@/components/common/UserCard.vue";
 import Vue from "vue";
 import {v4 as uuid} from 'uuid';
-import CommonUtil from "@/utils/common";
+import {decodeSign, encodeSign} from "@/utils/common";
 import emoji from '@/assets/emoji/emoji.js';
 
 export default {
@@ -681,7 +705,7 @@ export default {
         case 'chatMessage':
           msgNoticeApi.getMsgSessionList().then(data => {
             if (data?.result) {
-              let jsonStr = CommonUtil.decodeSign(data?.data);
+              let jsonStr = decodeSign(data?.data);
               this.sessionList = JSON.parse(jsonStr);
               if (this.sessionList?.length > 0) {
                 // 如果是通过外部名片点击进入则需要指定会话
@@ -694,6 +718,18 @@ export default {
                 }
                 if (this.activeSession.sessionId !== activeSession.uid) {
                   this.changeActiveSession(activeSession);
+                } else {
+                  // 需要重新下拉滚动条
+                  let messageScroll = this.$refs.messageScroll;
+                  if (messageScroll) {
+                    // 使用 setTimeout 来确保在 DOM 更新之后再进行滚动
+                    this.$nextTick(() => {
+                      // 将滚动位置设置为容器的滚动高度
+                      setTimeout(() => {
+                        messageScroll.scrollTop = messageScroll.scrollHeight + 150;
+                      }, 10);
+                    });
+                  }
                 }
               }
             }
@@ -704,6 +740,7 @@ export default {
       }
     },
     formatTime,
+    formatTime2H,
     sendMessage(msgContent, clear) {
       // 清空输入框内容
       clear();
@@ -726,12 +763,13 @@ export default {
         data: {
           type: 2,
           callback: 'sendMessage',
-          data: CommonUtil.encodeSign(JSON.stringify(msgBody))
+          data: encodeSign(JSON.stringify(msgBody))
         }
       });
       this.pushNewMessage(msgBody)
       this.sessionList.filter(session => session.uid === this.activeSession.sessionId)
         .forEach(session => {
+          console.log('没来', new Date().getTime())
           session.lastMsg = msgBody;
         });
     },
@@ -772,7 +810,7 @@ export default {
               data: {
                 type: 2,
                 callback: 'sendMessage',
-                data: CommonUtil.encodeSign(JSON.stringify(msgBodyPic))
+                data: encodeSign(JSON.stringify(msgBodyPic))
               }
             });
           }
@@ -782,6 +820,8 @@ export default {
       reader.readAsDataURL(file);
     },
     getSessionList(sessionList) {
+      console.log('来了', new Date().getTime())
+      console.log(sessionList)
       this.sessionList = sessionList;
     },
     messageConfirm(confirmContent) {
@@ -806,6 +846,28 @@ export default {
       }
       this.pushNewMessage(recvMessage);
     },
+    deleteMessage(actionResult) {
+      debugger
+      if (actionResult?.result) {
+        let index = this.activeSession.messages?.findIndex(msg => msg.uid === actionResult?.messageId);
+        if (index !== -1) {
+          this.activeSession.messages?.splice(index, 1);
+        }
+      } else if (actionResult?.reason) {
+        this.$Message.error(actionResult?.reason)
+      }
+    },
+    rollbackMessage(actionResult) {
+      if (actionResult?.result) {
+        let find = this.activeSession.messages?.find(msg => msg.uid === actionResult?.messageId);
+        if (find !== null) {
+          find.contentType = 111;
+          find.content = '撤回了一条消息';
+        }
+      } else if (actionResult?.reason) {
+        this.$Message.error(actionResult?.reason)
+      }
+    },
     getChatLogs(chatMsgInfo) {
       // 判断获取消息记录的会话id和ws返回的消息id是否相同
       if (this.activeSession.sessionId === chatMsgInfo.sessionId) {
@@ -825,7 +887,7 @@ export default {
               // 将滚动位置设置为容器的滚动高度
               setTimeout(() => {
                 messageScroll.scrollTop = messageScroll.scrollHeight + 150;
-              }, 100);
+              }, 10);
             });
           }
         }
@@ -845,16 +907,19 @@ export default {
         });
       }
     },
-    parseMsgContent(content, useEmoji) {
-      if (!content) {
+    parseMsgContent(message, useEmoji, sessionUsername) {
+      if (!message?.content) {
         return null;
+      }
+      if (message.contentType === 111) {
+        return (message.sendId === this.userInfo.uid ? '你' : ('"' + sessionUsername + '"')) + message.content;
       }
 
       let msgContent;
-      if (typeof content === 'object') {
-        msgContent = content.content;
+      if (typeof message.content === 'object') {
+        msgContent = message.content.content;
       } else {
-        let parse = JSON.parse(content);
+        let parse = JSON.parse(message.content);
         msgContent = parse.content;
       }
       msgContent = msgContent.replaceAll("&nbsp;", "");
@@ -989,7 +1054,7 @@ export default {
             // 心跳消息
           } else {
             // 1 会话相关 // 2消息相关，需要解密
-            let wsEncode = CommonUtil.decodeSign(wsData?.data);
+            let wsEncode = decodeSign(wsData?.data);
             let wsContent = JSON.parse(wsEncode);
             let callback = wsData?.callback;
             if (typeof this[callback] === "function") {
@@ -1077,6 +1142,28 @@ export default {
     showDelModal(sessionId) {
       this.delSessionId = sessionId;
       this.showDel = true;
+    },
+    messageAction(action, message) {
+      this.checkSWStatus();
+      if (action === 'delete') {
+        this.$sharedWorker.port.postMessage({
+          type: 2,
+          data: {
+            type: 2,
+            callback: 'deleteMessage',
+            data: message.uid
+          }
+        });
+      } else if (action === 'rollback') {
+        this.$sharedWorker.port.postMessage({
+          type: 2,
+          data: {
+            type: 2,
+            callback: 'rollbackMessage',
+            data: message.uid
+          }
+        });
+      }
     }
   },
   watch: {
@@ -1090,27 +1177,7 @@ export default {
       if (newVal) {
         this.activeMenu = null;
         this.activeMenu = this.propsActiveMenu;
-        console.log('我先触发')
       }
-      /*
-      console.log("watch-activeSessionId-getMsgSessionList: ", newVal)
-      msgNoticeApi.getMsgSessionList().then(data => {
-        if (data?.result) {
-          let jsonStr = CommonUtil.decodeSign(data?.data);
-          this.sessionList = JSON.parse(jsonStr);
-          if (this.sessionList?.length > 0) {
-            let index = this.sessionList.findIndex(session => session.uid === newVal);
-            if (index === -1) {
-              return;
-            }
-            let activeSession = this.sessionList[index];
-            if (this.activeSession.sessionId !== activeSession.uid) {
-              console.log("watch-activeSessionId-changeActiveSession: ", newVal)
-              this.changeActiveSession(activeSession);
-            }
-          }
-        }
-      })*/
     },
     'activeSession.sessionId'(newVal) {
       if (!newVal) {

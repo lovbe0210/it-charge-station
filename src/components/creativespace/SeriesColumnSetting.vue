@@ -249,12 +249,12 @@
                   </div>
                   <div class="create-time">
                     <span>
-                      {{ formatTime(noteItem.createTime) }}
+                      {{ formatTime2H(noteItem.createTime) }}
                     </span>
                   </div>
                   <div class="update-time">
                     <span>
-                      {{ formatTime(noteItem.updateTime) }}
+                      {{ formatTime2H(noteItem.updateTime) }}
                     </span>
                   </div>
                 </div>
@@ -425,11 +425,10 @@
 
 <script>
 import {VueCropper} from 'vue-cropper'
-import {formatTime} from '@/utils/emoji';
 import DragTree from "@/components/common/dragtree/DragTree";
 import ArticleSetting from "@/components/common/ArticleSetting"
 import WriteCenterApi from "@/api/WriteCenterApi";
-import {dataURLtoFile} from "@/utils/utils";
+import {dataURLtoFile, formatTime2H} from "@/utils";
 
 export default {
   name: 'SeriesColumnSetting',
@@ -717,7 +716,7 @@ export default {
         }
       })
     },
-    formatTime,
+    formatTime2H,
     reportParamBox(treeParamBox) {
       this.treeParamBox = treeParamBox;
     },

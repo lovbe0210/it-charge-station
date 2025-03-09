@@ -19,7 +19,7 @@
       <div class="list-wrapp" v-for="(item,index) in browseHistoryList" :key="index">
         <div class="time-line">
           <span class="iconfont history"></span>
-          {{formatDate(new Date(item.historyDate), 'yyyy-MM-dd')}}
+          {{formatTime(new Date(item.historyDate), 'yyyy-MM-dd')}}
         </div>
         <div class="view-list-item" v-for="viewItem in item.list" :key="viewItem.uid">
           <a class="item-header" :href="getRoutePath(viewItem)" :target="viewItem.targetType === 3 ? '' : '_blank'">
@@ -61,7 +61,7 @@
 <script>
   import ContentPicksApi from "@/api/ContentPicksApi";
   import UserCard from "@/components/common/UserCard.vue";
-  import { formatDate } from "@/utils/utils";
+  import { formatTime } from "@/utils";
 
   export default {
     name: 'RecentView',
@@ -81,7 +81,7 @@
       UserCard
     },
     methods: {
-      formatDate,
+      formatTime,
       search() {
         this.browseHistoryPage.limit = 20;
         this.browseHistoryPage.offset = 0;

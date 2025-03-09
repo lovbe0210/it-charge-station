@@ -264,9 +264,9 @@
 
 <script>
 import SliderValidation from "@/components/common/SliderValidation";
-import {verifyTelLawful, emailRegex, domainRegex} from "@/utils/utils";
+import {verifyTelLawful, emailRegex, domainRegex} from "@/utils";
 import userApi from "@/api/UserApi";
-import authApi from "../../api/AuthApi";
+import authApi from "@/api/AuthApi";
 
 export default {
   name: 'Account',

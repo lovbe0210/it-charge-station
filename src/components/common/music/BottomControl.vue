@@ -82,9 +82,9 @@
 </template>
 
 <script>
-import {handleMusicTime, returnSecond} from "@/utils/utils"
+import {handleMusicTime, returnSecond} from "@/utils"
 import MusicApi from '@/api/MusicApi'
-import preferenceApi from "../../../api/PreferenceApi";
+import preferenceApi from "@/api/PreferenceApi";
 
 export default {
   name: "BottomControl",

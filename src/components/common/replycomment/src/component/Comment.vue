@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import {cloneDeep} from '@/utils/emoji'
+import {cloneDeep} from '@/utils'
 import ContentBox from './ContentBox.vue'
 import socialApi from "@/api/SocialApi";
 

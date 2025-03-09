@@ -115,7 +115,7 @@
 <script>
   import UserCard from "@/components/common/UserCard.vue";
   import AuthModal from "@/components/common/AuthModal.vue";
-  import {needFormatDate} from '@/utils/emoji';
+  import {needFormatDate} from '@/utils';
   import Pswp from "@/components/common/imagepreview/index"
 
   export default {

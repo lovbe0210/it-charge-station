@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import {v4 as uuid} from "uuid";
-import commonUtil from "@/utils/common"
+import {encodeSign} from "@/utils/common"
 
 export default {
   /**
@@ -60,7 +60,7 @@ export default {
       tn: svToken
     }
     let signStr = JSON.stringify(signObj);
-    let sign = commonUtil.encodeSign(signStr);
+    let sign = encodeSign(signStr);
     let jsonData = {
       sign: sign,
       scene: codeScene
@@ -100,7 +100,7 @@ export default {
       tn: svToken
     }
     let signStr = JSON.stringify(signObj);
-    let sign = commonUtil.encodeSign(signStr);
+    let sign = encodeSign(signStr);
     let jsonData = {
       sign: sign,
       scene: codeScene
@@ -132,7 +132,7 @@ export default {
    * @returns {Promise<*>}
    */
   async updateAccount(scene, newValue) {
-    let sign = commonUtil.encodeSign(newValue);
+    let sign = encodeSign(newValue);
     let updateAccountReq = {
       scene: scene,
       sign

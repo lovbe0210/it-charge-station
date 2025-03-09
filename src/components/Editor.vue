@@ -68,7 +68,7 @@ import Toolbar from "./common/editor/packages/toolbar/src"
 import {plugins, cards, pluginConfig} from "./common/editor/config"
 import {getTocData, getParentNode} from "./common/editor/utils"
 import WriteCenterApi from "@/api/WriteCenterApi";
-import {debounce, cloneDeep} from '@/utils/emoji'
+import {debounce, cloneDeep} from '@/utils'
 
 export default {
   name: 'Editor',

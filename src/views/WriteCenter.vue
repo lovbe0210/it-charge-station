@@ -49,7 +49,7 @@
           </span>
           <span style="color: #d9d9d9;margin: 0 8px 0 8px;">|</span>
           <span class="update-time un-select">
-            最后更新于 {{ formatTime(articleInfo.updateTime) }}
+            最后更新于 {{ formatTime2H(articleInfo.updateTime) }}
             <span class="iconfont cloud" v-if="articleUpdateStatus === 0"/>
             <span class="iconfont update-ing" v-if="articleUpdateStatus === 1"/>
             <span class="iconfont cloud-fail" v-if="articleUpdateStatus === -1"/>
@@ -188,8 +188,8 @@
               <div class="label">文档信息</div>
               <div class="article-time">
                 <span>字数统计：{{ articleInfo.wordsNum }}</span>
-                <span>创建于：{{ formatTime(articleInfo.createTime) }}</span>
-                <span>更新于：{{ formatTime(articleInfo.updateTime) }}</span>
+                <span>创建于：{{ formatTime2H(articleInfo.createTime) }}</span>
+                <span>更新于：{{ formatTime2H(articleInfo.updateTime) }}</span>
               </div>
             </div>
           </div>
@@ -230,7 +230,7 @@
 
 <script>
 import Editor from '@/components/Editor'
-import {formatTime} from '@/utils/emoji'
+import {formatTime2H} from '@/utils'
 import ArticleSetting from "@/components/common/ArticleSetting"
 import ArticleVersion from "@/components/common/ArticleVersion"
 import WriteCenterApi from "@/api/WriteCenterApi";
@@ -331,7 +331,7 @@ export default {
         }
       })
     },
-    formatTime
+    formatTime2H
   },
   components: {
     Editor,

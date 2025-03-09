@@ -131,6 +131,7 @@
           <b-nav-item class="msg mr-2">
             <Dropdown placement="bottom"
                       trigger="click"
+                      @on-visible-change="updateUnreadStatistic"
                       :transfer-class-name="messageSetting.msgCount ? 'dropdown-background dropdown-item-all-hover show-count' : 'dropdown-background dropdown-item-all-hover'"
                       @on-click="readMessage">
               <a href="javascript:void(0)">
@@ -433,6 +434,17 @@ export default {
     readMessage(itemName) {
       this.propsActiveMenu = itemName;
       this.showMessage = true;
+    },
+    updateUnreadStatistic(visible) {
+      if (!visible) {
+        return;
+      }
+      // 获取未读通知
+      msgNoticeApi.getUnreadStatistic().then(data => {
+        if (data?.result) {
+          this.unreadStatistic = data.data;
+        }
+      })
     },
     search() {
       if (!this.keywords) {

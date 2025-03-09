@@ -63,8 +63,7 @@
 </template>
 
 <script>
-  import {isEmpty} from '@/utils/emoji'
-  import { resetEmojiText } from '@/utils/hooks'
+  import {isEmpty, resetEmojiText} from '@/utils'
   import emoji from '@/assets/emoji/emoji.js';
   import MentionList from './MentionList'
   import EmojiSelector from "./EmojiSelector";

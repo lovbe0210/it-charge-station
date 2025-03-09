@@ -36,7 +36,7 @@
                @on-enter="versionInputId = null"/>
       </div>
       <div class="doc-version-action">
-        <span class="doc-version-time">{{ formatTime(item.createTime) }}</span>
+        <span class="doc-version-time">{{ formatTime2H(item.createTime) }}</span>
         <div class="action-group">
           <Button size="small" type="text" @click="editVersionTag(item.id)">
             <span class="iconfont bianji"></span>
@@ -51,7 +51,7 @@
   </div>
 </template>
 <script>
-import {formatTime} from '@/utils/emoji'
+import {formatTime2H} from '@/utils'
 
 export default {
   name: 'ArticleVersion',
@@ -106,7 +106,7 @@ export default {
       });
       this.tmpVersionTag = null;
     },
-    formatTime
+    formatTime2H
   },
   mounted() {
     if (this.addNewVersion) {

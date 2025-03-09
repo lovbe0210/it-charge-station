@@ -40,7 +40,7 @@
         <div class="rambly-item" v-for="item in ramblyList" :key="item.uid">
           <div class="post-time un-select">
             <span>
-              发布于 {{ formatTime(item.createTime) }}
+              发布于 {{ formatTime2H(item.createTime) }}
               <Poptip confirm title="确认删除随笔?"
                       placement="right-end"
                       @on-ok="deleteRamblyJot(item.uid)">
@@ -150,7 +150,7 @@ import Toolbar from "@/components/common/editor/packages/toolbar/src"
 import {ramblyPlugins, ramblyCards, pluginConfig} from "@/components/common/editor/config"
 import Pswp from "@/components/common/imagepreview/index"
 import RamblyJotApi from "@/api/RamblyJotApi";
-import {formatTime} from "@/utils/emoji"
+import {formatTime2H} from "@/utils"
 
 export default {
   name: 'RamblyJot',
@@ -332,7 +332,7 @@ export default {
         this.pswp.open(imgItems, currentIndex)
       }
     },
-    formatTime
+    formatTime2H
   },
   components: {
     Toolbar

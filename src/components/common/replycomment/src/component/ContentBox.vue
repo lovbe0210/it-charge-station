@@ -109,7 +109,7 @@
 </template>
 
 <script>
-import {cloneDeep, needFormatDate} from '@/utils/emoji';
+import {cloneDeep, needFormatDate} from '@/utils';
 import InputBox from './InputBox';
 import Pswp from "@/components/common/imagepreview/index"
 import UserCard from "@/components/common/UserCard.vue";

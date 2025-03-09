@@ -64,7 +64,7 @@
 
 <script>
 import socialApi from "@/api/SocialApi";
-import msgNoticeApi from "../../api/MsgNoticeApi";
+import msgNoticeApi from "@/api/MsgNoticeApi";
 
 export default {
   name: "UserCard",

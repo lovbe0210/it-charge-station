@@ -85,7 +85,7 @@
 
 <script>
 import TreeNode from './TreeNode.vue';
-import {formatTime} from '@/utils/emoji';
+import {formatTime2H} from '@/utils';
 import WriteCenterApi from "@/api/WriteCenterApi";
 
 export default {
@@ -120,7 +120,7 @@ export default {
         onTreeChange: this.onTreeChange,
         // 文章显示信息
         articleShowInfo: this.articleShowInfo,
-        formatTime: formatTime,
+        formatTime2H: formatTime2H,
         // 复制节点
         copyNode: this.copyNode,
         // 新建节点

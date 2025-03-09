@@ -216,7 +216,7 @@ import contentPicksApi from "@/api/ContentPicksApi";
 import HotMap from "@/components/common/HotMap";
 import Engine from '@aomao/engine'
 import {domainPlugins, cards, pluginConfig} from "@/components/common/editor/config"
-import {cloneDeep} from "../utils/emoji";
+import {cloneDeep} from "../utils";
 import BackTop from "@/components/common/BackTop.vue";
 
 export default {

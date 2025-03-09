@@ -128,7 +128,7 @@
             <div class="action-box">
               <div class="post-time">
               <span>发布于
-                <span class="time">{{ formatTime(item.createTime) }}</span>
+                <span class="time">{{ formatTime2H(item.createTime) }}</span>
               </span>
               </div>
               <div class="action">
@@ -155,7 +155,7 @@ import Toolbar from "@/components/common/editor/packages/toolbar/src"
 import {ramblyPlugins, ramblyCards, pluginConfig} from "@/components/common/editor/config"
 import Pswp from "@/components/common/imagepreview/index"
 import UserCard from "@/components/common/UserCard.vue";
-import {formatTime, debounce} from "@/utils/emoji"
+import {formatTime2H, debounce} from "@/utils"
 import AuthModal from "@/components/common/AuthModal.vue";
 import ramblyJotApi from "@/api/RamblyJotApi";
 
@@ -350,7 +350,7 @@ export default {
         }
       })
     },
-    formatTime
+    formatTime2H
   },
   components: {
     Toolbar,

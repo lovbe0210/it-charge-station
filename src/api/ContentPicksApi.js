@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import commonUtil from "@/utils/common"
+import {encodeSign} from "@/utils/common"
 import {v4 as uuid} from "uuid";
 
 export default {
@@ -38,7 +38,7 @@ export default {
       targetId: _this.articleInfo.uid,
       unique_id: uniqueId
     }
-    let encodeStr = commonUtil.encodeSign(JSON.stringify(sourceData));
+    let encodeStr = encodeSign(JSON.stringify(sourceData));
     return await Vue.prototype.$request({
       url: "/cps/article/view?st=" + scrollTop + "&csh=" + canScrollHeight + "&sh=" + scrollHeight,
       method: 'GET',

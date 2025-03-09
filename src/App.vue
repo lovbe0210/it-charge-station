@@ -22,7 +22,7 @@
   import {
     Tooltip, Card, Popover, Tag, Checkbox, Skeleton, Empty
   } from 'ant-design-vue'
-  import commonUtil from "@/utils/common"
+  import {flushCustomerSet, getBrowerAgent} from "@/utils/common"
   // 引入弹幕模块
   import {vueBaberrage} from 'vue-baberrage'
   // uuid
@@ -171,7 +171,7 @@
       // 开启深度监视，然后实时刷新自定义主题
       customerSet: {
         handler() {
-          commonUtil.flushCustomerSet(this.customerSet);
+          flushCustomerSet(this.customerSet);
         },
         deep: true
       }
@@ -179,7 +179,7 @@
 
     mounted() {
       // 加载背景
-      commonUtil.flushCustomerSet(this.customerSet);
+      flushCustomerSet(this.customerSet);
     },
 
     destroyed() {
@@ -277,7 +277,7 @@
       unloadHandler() {
         this.$store.commit("updatePageState", "close");
         // 火狐浏览器关闭时只会触发unload事件
-        if (commonUtil.getBrowerAgent() === "Firefox") {
+        if (getBrowerAgent() === "Firefox") {
           this.$store.commit("updateMusicInfo", {isPlay: false});
           localStorage.setItem('store', JSON.stringify(this.$store.state))
           return;

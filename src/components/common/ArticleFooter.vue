@@ -78,12 +78,12 @@
             </div>
             <a-tooltip placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer">
               <template slot="title">
-                更新于 {{ formatDate(new Date(updateTime), 'yyyy-MM-dd HH:mm:ss') }}
+                更新于 {{ formatTime(new Date(updateTime), 'yyyy-MM-dd HH:mm:ss') }}
               </template>
               <div class="meta-item">
                 <span class="iconfont clock"></span>
                 <span class="item-text item-content">
-                  {{ formatTime(updateTime) }}
+                  {{ formatTime2H(updateTime) }}
                 </span>
               </div>
             </a-tooltip>
@@ -148,8 +148,7 @@
 
 <script>
   import UserCard from "@/components/common/UserCard.vue";
-  import { formatTime, formatNumber } from "@/utils/emoji"
-  import { formatDate } from "@/utils/utils.js"
+  import { formatTime, formatTime2H, formatNumber } from "@/utils"
 
   export default {
     name: "ArticleFooter",
@@ -186,8 +185,8 @@
           loginBtn.click();
         }
       },
+      formatTime2H,
       formatTime,
-      formatDate,
       formatNumber
     },
     mounted() {

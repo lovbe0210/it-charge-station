@@ -214,9 +214,9 @@
 
 <script>
 import {VueCropper} from 'vue-cropper'
-import {getRandomColor} from '@/utils/utils'
+import {getRandomColor} from '@/utils/common'
 import userApi from "@/api/UserApi";
-import {dataURLtoFile} from "@/utils/utils"
+import {dataURLtoFile} from "@/utils"
 
 export default {
   name: 'Profile',

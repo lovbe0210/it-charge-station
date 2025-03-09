@@ -75,7 +75,7 @@
 </template>
 
 <script>
-  import { formatNumber, debounce } from '@/utils/emoji/index.js'
+  import { formatNumber, debounce } from '@/utils'
   import UserCard from "@/components/common/UserCard.vue";
   import contentPicksApi from "@/api/ContentPicksApi";
   export default {

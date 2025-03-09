@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { formatNumber } from '@/utils/emoji/index.js'
+import { formatNumber } from '@/utils'
 import WriteCenterApi from "@/api/WriteCenterApi";
 import UserCard from "@/components/common/UserCard.vue";
 import ContentPicksApi from "@/api/ContentPicksApi";

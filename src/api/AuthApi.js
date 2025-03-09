@@ -1,5 +1,5 @@
 import {v4 as uuid} from 'uuid';
-import commonUtil from "@/utils/common"
+import {encodeSign} from "@/utils/common"
 import Vue from "vue";
 
 export default {
@@ -12,7 +12,7 @@ export default {
     let payloadType = _this.account.indexOf("@");
     let requestUri = "/auth/mobile/login";
       let jsonData = {
-      password: commonUtil.encodeSign(_this.password)
+      password: encodeSign(_this.password)
     };
     if (payloadType === -1) {
       jsonData.mobile = _this.account;
@@ -71,7 +71,7 @@ export default {
       timestamp: Date.now()
     }
     let requestStr = JSON.stringify(requestObj);
-    let sign = commonUtil.encodeSign(requestStr);
+    let sign = encodeSign(requestStr);
     let jsonData = {
       sign: sign,
       xt: uuid(),
@@ -103,7 +103,7 @@ export default {
       tn: svToken
     }
     let signStr = JSON.stringify(signObj);
-    let sign = commonUtil.encodeSign(signStr);
+    let sign = encodeSign(signStr);
     let jsonData = {
       sign: sign,
       scene: svScene
@@ -149,7 +149,7 @@ export default {
    */
   async resetPassword(_this) {
     let jsonData = {
-      password: commonUtil.encodeSign(_this.password),
+      password: encodeSign(_this.password),
       verifyCode: _this.verifyCode
     }
     if (_this.account.indexOf("@") !== -1) {

@@ -191,7 +191,7 @@
 </template>
 
 <script>
-import {formatDate} from '@/utils/utils.js'
+import {formatTime} from '@/utils'
 import ContentPicksApi from "@/api/ContentPicksApi";
 import socialApi from "@/api/SocialApi";
 
@@ -285,7 +285,7 @@ export default {
     },
     formatDateString(timestamp) {
       let fmt = 'yyyy-MM-dd HH:mm:ss';
-      return formatDate(new Date(timestamp), fmt);
+      return formatTime(new Date(timestamp), fmt);
     },
     clickCell(row, column) {
       // 收藏类型 1文章 2专栏

@@ -1,4 +1,5 @@
 @import "common-var";
+
 .layout-message-notification {
   box-sizing: border-box;
   margin: 0;
@@ -149,6 +150,7 @@
                 font-size: 12px;
                 animation: spin 25s linear infinite;
                 animation-delay: 0.8s;
+
                 &:before {
                   animation: spin 25s linear infinite;
                   animation-delay: 0.8s;
@@ -157,8 +159,12 @@
 
               /* disc动画 */
               @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
+                0% {
+                  transform: rotate(0deg);
+                }
+                100% {
+                  transform: rotate(360deg);
+                }
               }
             }
           }
@@ -300,7 +306,7 @@
                     width: 6px;
                   }
 
-                  .msg-time {
+                  .msg-system {
                     flex-shrink: 0; /* 禁止收缩 */
                     /* 可选：防止内容换行 */
                     white-space: nowrap;
@@ -407,6 +413,12 @@
                       white-space: nowrap;
                       text-overflow: ellipsis;
                     }
+                  }
+
+                  .un-read-count {
+                    position: absolute;
+                    right: 10px;
+                    top: 2px;
                   }
 
                   .close {
@@ -540,10 +552,11 @@
                       }
                     }
 
-                    .msg-time {
+                    .msg-system {
                       color: var(--title-color);
                       padding-bottom: 16px;
                       text-align: center;
+                      font-size: 13px;
                     }
 
                     .msg-item {
@@ -562,8 +575,28 @@
                         margin: 0 10px;
                         position: relative;
                         overflow: hidden;
+                        display: flex;
+                        flex-direction: row-reverse;
+
+                        .message-action {
+                          color: @light-font-color;
+                          font-size: 13.5px;
+                          margin-left: 8px;
+                          margin-bottom: 1px;
+                          align-self: flex-end;
+                          visibility: hidden;
+                          display: flex;
+                          flex-direction: row-reverse;
+
+                          .iconfont {
+                            font-size: 14px;
+                            margin-right: 4px;
+                            cursor: pointer;
+                          }
+                        }
 
                         .message-content {
+                          margin: auto;
                           line-height: 1.5;
                           min-height: 37px;
                           padding: 8px 16px;
@@ -583,6 +616,12 @@
                           padding: 0;
                           cursor: zoom-in;
                         }
+
+                        &:hover {
+                          .message-action {
+                            visibility: visible;
+                          }
+                        }
                       }
                     }
 
@@ -596,6 +635,7 @@
                         float: right;
                         display: flex;
                         align-items: center;
+                        flex-direction: row;
 
                         .message-send-status {
                           margin-right: 5px;
@@ -603,6 +643,20 @@
                           .iconfont {
                             font-size: 17px;
                             color: @grey-white-font-color;
+                          }
+                        }
+
+                        .message-action {
+                          margin-right: 6px;
+                          align-self: flex-end;
+                          flex-direction: row;
+
+                          .message-time {
+                            margin-right: 5px;
+                          }
+
+                          .iconfont {
+                            margin-right: 4px;
                           }
                         }
 
@@ -703,6 +757,7 @@
                 align-content: center;
                 justify-content: center;
                 height: -webkit-fill-available;
+
                 .empty-session {
                   font-size: 1.5rem;
                   color: @grey-white-font-color;

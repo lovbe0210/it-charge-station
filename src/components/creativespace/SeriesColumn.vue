@@ -128,7 +128,7 @@
                    class="column-summary-item">
                   <span class="column-summary-itemText">{{ article.title }}</span>
                   <span class="column-summary-itemTime">
-                  <span>{{ formatTime(article.updateTime) }}</span>
+                  <span>{{ formatTime2H(article.updateTime) }}</span>
                 </span>
                 </a>
               </li>
@@ -260,8 +260,8 @@
 
 <script>
 import WriteCenterApi from "@/api/WriteCenterApi";
-import {formatTime} from '@/utils/emoji'
-import preferenceApi from "../../api/PreferenceApi";
+import {formatTime2H} from '@/utils'
+import preferenceApi from "@/api/PreferenceApi";
 
 export default {
   name: 'SeriesColumn',
@@ -432,7 +432,7 @@ export default {
         uri: ''
       };
     },
-    formatTime
+    formatTime2H
   },
   watch: {
     "deleteColumn"(val) {

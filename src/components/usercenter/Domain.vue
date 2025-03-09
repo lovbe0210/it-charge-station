@@ -174,7 +174,7 @@ import {domainPlugins, cards, pluginConfig} from "@/components/common/editor/con
 import {getParentNode} from "../common/editor/utils";
 import socialApi from "@/api/SocialApi";
 import userApi from "@/api/UserApi";
-import {cloneDeep} from "@/utils/emoji";
+import {cloneDeep} from "@/utils";
 import contentPicksApi from "@/api/ContentPicksApi";
 import UserCard from "@/components/common/UserCard.vue";
 import HotMap from "@/components/common/HotMap";

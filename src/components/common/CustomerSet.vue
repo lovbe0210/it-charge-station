@@ -62,9 +62,7 @@
 </template>
 
 <script>
-  // import preferenceApi from "@/api/PreferenceApi";
-
-  import {deepEqual} from "@/utils/utils";
+  import {deepEqual} from "@/utils";
   import preferenceApi from "@/api/PreferenceApi";
 
   export default {

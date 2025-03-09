@@ -127,7 +127,7 @@ import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
 import UserCard from "@/components/common/UserCard.vue";
 import RamblyJotApi from "@/api/RamblyJotApi";
 import socialApi from "@/api/SocialApi";
-import {cloneDeep} from "@/utils/emoji";
+import {cloneDeep} from "@/utils";
 
 export default {
   name: 'RamblyJotContent',

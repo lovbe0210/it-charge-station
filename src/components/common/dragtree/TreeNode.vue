@@ -174,7 +174,7 @@
 
 <script>
 import draggable from 'vuedraggable';
-import WriteCenterApi from "../../../api/WriteCenterApi";
+import WriteCenterApi from "@/api/WriteCenterApi";
 
 export default {
   name: "TreeNode",

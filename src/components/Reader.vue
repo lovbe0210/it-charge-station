@@ -262,7 +262,7 @@
 import Engine, {$} from '@aomao/engine'
 import {plugins, cards, pluginConfig} from "./common/editor/config"
 import {getTocData} from "./common/editor/utils"
-import {debounce, cloneDeep} from '@/utils/emoji'
+import {debounce, cloneDeep} from '@/utils'
 import ReplyComment from "@/components/common/replycomment/src/ReplyComment"
 import ArticleFooter from "@/components/common/ArticleFooter"
 import ArticleSetting from "@/components/common/ArticleSetting"

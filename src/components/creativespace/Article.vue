@@ -95,8 +95,8 @@
               </span>
             </div>
             <div class="order-time">
-              <span class="note-status-module_text un-select" v-if="orderType == 1">更新于 {{formatTime(noteItem.updateTime)}}</span>
-              <span class="note-status-module_text un-select" v-if="orderType == 2">创建于 {{formatTime(noteItem.createTime)}}</span>
+              <span class="note-status-module_text un-select" v-if="orderType == 1">更新于 {{formatTime2H(noteItem.updateTime)}}</span>
+              <span class="note-status-module_text un-select" v-if="orderType == 2">创建于 {{formatTime2H(noteItem.createTime)}}</span>
               <a-tooltip placement="top" overlayClassName="normal-tooltip" :getPopupContainer="getTooltipContainer">
                 <template slot="title">
                   {{ noteItem.isPublic ? '互联网可访问' : '仅作者可访问' }}
@@ -223,8 +223,8 @@
 </template>
 
 <script>
-  import { getRandomColor } from '@/utils/utils'
-  import { debounce, formatTime } from '@/utils/emoji'
+  import { getRandomColor } from '@/utils/common'
+  import { debounce, formatTime2H } from '@/utils'
   import ArticleSetting from "@/components/common/ArticleSetting"
   import WriteCenterApi from "@/api/WriteCenterApi";
 
@@ -249,7 +249,7 @@
         // 当前操作的文章
         currentOperateArticle: null,
         debounceRequestArticleList: function () {},
-        formatTime
+        formatTime2H
       }
     },
     components: {

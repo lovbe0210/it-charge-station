@@ -45,8 +45,8 @@
 
 <script>
   import MusicApi from '@/api/MusicApi.js'
-  import { returnSecond } from "@/utils/utils"
-  import preferenceApi from "../../../api/PreferenceApi";
+  import { returnSecond } from "@/utils"
+  import preferenceApi from "@/api/PreferenceApi";
 
   export default {
     name: "PlayListAndSearch",

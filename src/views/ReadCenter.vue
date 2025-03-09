@@ -189,7 +189,7 @@
               </b-link>
               <div class="item-info">
                 <span class="time-label un-select">
-                  {{ formatDate(new Date(item.updateTime), 'yyyy-MM-dd HH:mm:ss') }}
+                  {{ formatTime(new Date(item.updateTime), 'yyyy-MM-dd HH:mm:ss') }}
                 </span>
                 <span class="provenance-label un-select"
                       :title="item.columnUri ? item.columnName : authorInfo.username">
@@ -232,7 +232,7 @@
 </template>
 
 <script>
-import {formatDate} from "@/utils/utils.js"
+import {formatTime} from "@/utils"
 import ContentPicksApi from "@/api/ContentPicksApi";
 import UserApi from "@/api/UserApi";
 import UserCard from "@/components/common/UserCard.vue";
@@ -355,7 +355,7 @@ export default {
     }
   },
   methods: {
-    formatDate,
+    formatTime,
     recursiveGetDirList(ListArray, dirData) {
       if (dirData.children && dirData.children.length > 0) {
         dirData.children.forEach(dir => {
