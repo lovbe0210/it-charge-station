@@ -79,6 +79,19 @@ export default {
   },
 
   /**
+   * 获取系统通知
+   * @param targetId
+   * @returns {Promise<void>}
+   */
+  async getSystemNotice(pageInfo) {
+    return await Vue.prototype.$request({
+      url: "/sl/notice/system",
+      method: 'POST',
+      data: pageInfo
+    });
+  },
+
+  /**
    * 开始新的私聊会话
    * @param targetId
    * @returns {Promise<void>}

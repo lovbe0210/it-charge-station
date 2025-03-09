@@ -8,31 +8,31 @@
       <template slot="content">
         <div class="user-card-body un-select">
           <div class="user-card-avatar">
-            <b-avatar :src="fileUrl(userInfo.avatarUrl)"
+            <b-avatar :src="fileUrl(userInfo?.avatarUrl)"
                       variant="light"
-                      :to="'/' + userInfo.domain"
+                      :to="'/' + userInfo?.domain"
                       size="2.8rem">
-              <span v-if="!userInfo.avatarUrl">{{ userInfo.username }}</span>
+              <span v-if="!userInfo?.avatarUrl">{{ userInfo?.username }}</span>
             </b-avatar>
           </div>
           <div class="user-card-userInfos">
-            <b-link class="username" :to="'/' + userInfo.domain">
-              <span class="name" :title="userInfo.username">{{ userInfo.username }}</span>
-              <span :class="['iconfont',  'icon-level' + userInfo.level]"></span>
+            <b-link class="username" :to="'/' + userInfo?.domain">
+              <span class="name" :title="userInfo?.username">{{ userInfo?.username }}</span>
+              <span :class="['iconfont',  'icon-level' + userInfo?.level]"></span>
             </b-link>
-            <div class="user-signature" :title="userInfo.introduction">
+            <div class="user-signature" :title="userInfo?.introduction">
               <span class="signature-text">
-                {{ userInfo.introduction }}
+                {{ userInfo?.introduction }}
               </span>
             </div>
             <div class="info-list" style="margin-top: 10px;">
-              <div class="info-item" v-if="userInfo.location" :title="userInfo.location">
+              <div class="info-item" v-if="userInfo?.location" :title="userInfo?.location">
                 <span class="iconfont location"/>
-                <span class="info-detail">{{ userInfo.location }}</span>
+                <span class="info-detail">{{ userInfo?.location }}</span>
               </div>
-              <div class="info-item" v-if="userInfo.industry" :title="userInfo.industry">
+              <div class="info-item" v-if="userInfo?.industry" :title="userInfo?.industry">
                 <span class="iconfont industry"/>
-                <span class="info-detail">{{ userInfo.industry }}</span>
+                <span class="info-detail">{{ userInfo?.industry }}</span>
               </div>
             </div>
           </div>
@@ -46,7 +46,7 @@
                 关注<span class="number">{{ followCount }}</span>
               </div>
             </div>
-            <div class="actions" v-if="loginUser.uid !== userInfo.uid">
+            <div class="actions" v-if="loginUser.uid !== userInfo?.uid">
               <Button @click="followAction">
                 <span>{{ followStatus }}</span>
               </Button>

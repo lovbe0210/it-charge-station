@@ -84,6 +84,9 @@
             </span>-->
           </div>
           <div class="tabs-notify-holder beauty-scroll"
+               v-infinite-scroll="debounceNoticeRequest"
+               :infinite-scroll-disabled="!hasMore"
+               :infinite-scroll-distance="100"
                v-if="activeMenu !== 'chatMessage' && activeMenu !== 'messageSetting'">
             <ul class="tab-list-items" v-if="activeMenu === 'commentReply'">
               <li class="tab-list-item"
@@ -220,7 +223,7 @@
             <ul class="tab-list-items" v-if="activeMenu === 'systemMessage'">
               <li class="tab-list-item"
                   v-for="item in msgNoticeList"
-                  :key="item.id">
+                  :key="item.uid">
                 <div class="notification-item">
                   <div class="item-content">
                     <p>
@@ -230,11 +233,11 @@
                       <a :href="item.url" target="_blank">
                         <span class="sys-msg-label">&nbsp;{{ item.label }}&nbsp;</span>
                       </a>
-                      <Badge dot v-if="item.read === 0 && messageSetting.newMsgDot" :offset="[-9, -5]"/>
+                      <Badge dot v-if="item.readStatus === 0 && messageSetting.newMsgDot" :offset="[-9, -5]"/>
                     </p>
-                    <time>
-                      <span>2023-03-16 14:58</span>
-                    </time>
+                    <p>
+                      <span>{{ formatTime2H(item.createTime) }}</span>
+                    </p>
                   </div>
                 </div>
               </li>
@@ -307,7 +310,7 @@
                       </Dropdown>
                     </div>
                   </div>
-                  <div class="message-list beauty-scroll" ref="messageScroll" @scroll="debounceRequest">
+                  <div class="message-list beauty-scroll" ref="messageScroll" @scroll="debounceChatRequest">
                     <div class="message-list-content" id="messageListContent">
                       <div class="msg-more">
                         <span class="loading" v-if="loadingMessage">
@@ -516,10 +519,9 @@ export default {
       // 图片预览
       pswp: null,
       offset: 0,
-      limit: 20,
+      limit: 10,
       hasMore: true,
       loadingMessage: true,
-      total: 0,
       msgNoticeList: [],
       popoverContainer: null,
       sessionList: [],
@@ -569,7 +571,8 @@ export default {
       isConnected: false,
       // 连接重连中
       retry: false,
-      debounceRequest: function () {}
+      debounceChatRequest: function () {},
+      debounceNoticeRequest: function () {}
     }
   },
   props: {
@@ -663,8 +666,8 @@ export default {
             limit: this.limit
           }).then(data => {
             if (data?.result) {
-              this.total = data.data.total;
               this.msgNoticeList.push(...data.data.list);
+              this.hasMore = this.msgNoticeList.length !== data.data.total && data.data.list.length !== 0;
             }
           });
           break;
@@ -674,8 +677,8 @@ export default {
             limit: this.limit
           }).then(data => {
             if (data?.result) {
-              this.total = data.data.total;
               this.msgNoticeList.push(...data.data.list);
+              this.hasMore = this.msgNoticeList.length !== data.data.total && data.data.list.length !== 0;
             }
           });
           break;
@@ -685,21 +688,21 @@ export default {
             limit: this.limit
           }).then(data => {
             if (data?.result) {
-              this.total = data.data.total;
               this.msgNoticeList.push(...data.data.list);
+              this.hasMore = this.msgNoticeList.length !== data.data.total && data.data.list.length !== 0;
             }
           });
           break;
         case 'systemMessage':
-          this.msgNoticeList = [
-            {
-              id: 1,
-              content: '进来抽奖，即得100万现金红包瓜分资格! ',
-              label: '点此查看',
-              url: 'http://www.baidu.com',
-              read: 0
+          msgNoticeApi.getSystemNotice({
+            offset: this.offset,
+            limit: this.limit
+          }).then(data => {
+            if (data?.result) {
+              this.msgNoticeList.push(...data.data.list);
+              this.hasMore = this.msgNoticeList.length !== data.data.total && data.data.list.length !== 0;
             }
-          ]
+          })
           break;
         case 'chatMessage':
           msgNoticeApi.getMsgSessionList().then(data => {
@@ -1250,6 +1253,10 @@ export default {
           });
         }
       }, 500)
+    },
+    handleReachBottom() {
+      this.offset = this.offset + this.limit;
+      this.loadMsgNotify(this.activeMenu);
     }
   },
   watch: {
@@ -1270,7 +1277,6 @@ export default {
         return;
       }
       this.offset = 0;
-      this.total = 0;
       this.hasMore = true;
       this.loadingMessage = false;
       console.log("watch-activeSession.sessionId-getChatLogs: ", newVal)
@@ -1303,18 +1309,24 @@ export default {
     'activeMenu'(newValue) {
       this.msgNoticeList = [];
       this.offset = 0;
-      this.total = 0;
       this.hasMore = true;
       this.loadingMessage = false;
       console.log("watch-activeMenu-loadMsgNotify: ", newValue)
       this.loadMsgNotify(newValue);
+      // 获取未读通知
+      msgNoticeApi.getUnreadStatistic().then(data => {
+        if (data?.result) {
+          this.unreadCount = data.data;
+        }
+      })
     }
   },
   mounted() {
     this.popoverContainer = this.$refs.popoverContainer;
   },
   created() {
-    this.debounceRequest = debounce(this.handleReachTop, 200, true);
+    this.debounceChatRequest = debounce(this.handleReachTop, 200, true);
+    this.debounceNoticeRequest = debounce(this.handleReachBottom, 500, true);
     // 初始化sharedWorker进行webSocket连接
     Vue.prototype.$sharedWorker = new SharedWorker('../shared-worker.js', 'workerWs');
     if (!this.$sharedWorker) {

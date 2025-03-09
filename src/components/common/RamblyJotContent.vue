@@ -6,7 +6,7 @@
     </div>
     <div class="rambly-info">
       <div class="content-title">
-        <span v-if="ramblyJot.userInfo.uid !== userInfo.uid">
+        <span v-if="ramblyJot.userInfo?.uid !== userInfo.uid">
           <user-card :userInfo="ramblyJot.userInfo" :popoverContainer="tooltipContainer" class="user-info-card-box">
             <slot>
               <b-link :to="'/' + ramblyJot.userInfo?.domain"
@@ -74,7 +74,7 @@
         <li v-for="user in ramblyJot.likeUserList" :key="user.uid">
           <user-card :userInfo="user" :popoverContainer="tooltipContainer" class="user-info-card-box">
             <slot>
-              <b-avatar :src="fileUrl(user.avatarUrl)" variant="light" href="javascript:void(0)" size="2.2rem">
+              <b-avatar :src="fileUrl(user?.avatarUrl)" variant="light" href="javascript:void(0)" size="2.2rem">
                 <span v-if="!user.avatarUrl">{{ user.username }}</span>
               </b-avatar>
             </slot>
@@ -102,7 +102,7 @@
               <li v-for="user in ramblyJot.likeUserList" :key="user.uid">
                 <user-card :userInfo="user" :popoverContainer="tooltipContainer" class="user-info-card-box">
                   <slot>
-                    <b-avatar :src="fileUrl(user.avatarUrl)" variant="light" href="javascript:void(0)" size="2.2rem">
+                    <b-avatar :src="fileUrl(user?.avatarUrl)" variant="light" href="javascript:void(0)" size="2.2rem">
                       <span v-if="!user.avatarUrl">{{ user.username }}</span>
                     </b-avatar>
                   </slot>
@@ -215,8 +215,7 @@ export default {
     ReplyComment
   },
   watch: {
-    'rjId'(newValue, old) {
-      // console.log(newValue, old)
+    'rjId'(newValue) {
       this.getRamblyJotInfo();
     }
   },
