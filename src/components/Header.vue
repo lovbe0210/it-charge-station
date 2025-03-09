@@ -242,7 +242,6 @@
            :width="900"
            class-name="message-box">
       <message-notification :propsActiveMenu="propsActiveMenu"
-                            :unreadStatistic="unreadStatistic"
                             @changeModalStatus="showMessage = false"/>
     </Modal>
   </b-row>

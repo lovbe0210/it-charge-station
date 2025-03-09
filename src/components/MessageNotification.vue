@@ -10,32 +10,32 @@
       <div class="menu-item" @click="routeNavigate('commentReply')">
         <div :class="['item', activeMenu === 'commentReply' ? 'active-menu' : '']">
           <span>回复我的</span>
-          <span class="count" v-if="messageSetting.msgCount">{{ unreadStatistic.commentCount }}</span>
+          <span class="count" v-if="messageSetting.msgCount">{{ unreadCount.commentCount }}</span>
         </div>
       </div>
       <div class="menu-item" @click="routeNavigate('likesReceived')">
         <div :class="['item', activeMenu === 'likesReceived' ? 'active-menu' : '']">
           <span>收到的赞</span>
-          <span class="count" v-if="messageSetting.msgCount">{{ unreadStatistic.likeCount }}</span>
+          <span class="count" v-if="messageSetting.msgCount">{{ unreadCount.likeCount }}</span>
         </div>
       </div>
       <div class="menu-item" @click="routeNavigate('newFans')">
         <div :class="['item', activeMenu === 'newFans' ? 'active-menu' : '']">
           <span>新增关注</span>
-          <span class="count" v-if="messageSetting.msgCount">{{ unreadStatistic.newFollowCount }}</span>
+          <span class="count" v-if="messageSetting.msgCount">{{ unreadCount.newFollowCount }}</span>
         </div>
       </div>
       <div class="menu-item" @click="routeNavigate('systemMessage')">
         <div :class="['item', activeMenu === 'systemMessage' ? 'active-menu' : '']">
           <span>系统消息</span>
-          <span class="count" v-if="messageSetting.msgCount">{{ unreadStatistic.systemMsgCount }}</span>
+          <span class="count" v-if="messageSetting.msgCount">{{ unreadCount.systemMsgCount }}</span>
         </div>
       </div>
       <div class="menu-item" @click="routeNavigate('chatMessage')">
         <div :class="['item', activeMenu === 'chatMessage' ? 'active-menu' : '']">
           <span>我的消息</span>
           <span class="count" v-if="messageSetting.msgCount">{{
-              unreadStatistic.chatMsgCount > 99 ? '99+' : unreadStatistic.chatMsgCount
+              unreadCount.chatMsgCount > 99 ? '99+' : unreadCount.chatMsgCount
             }}</span>
         </div>
       </div>
@@ -249,14 +249,19 @@
                     v-for="session in sessionList"
                     @click="changeActiveSession(session)"
                     :key="session.uid">
-                    <b-avatar class="avatar"
-                              :src="fileUrl(session.sessionUserInfo.avatarUrl)"
-                              variant="light"
-                              :to="'/' + session.sessionUserInfo.domain"
-                              target="_blank"
-                              size="2rem">
-                      <span v-if="!session.sessionUserInfo.username">{{ session.sessionUserInfo.username }}</span>
-                    </b-avatar>
+                    <div>
+                      <b-avatar class="avatar"
+                                :src="fileUrl(session.sessionUserInfo.avatarUrl)"
+                                variant="light"
+                                :to="'/' + session.sessionUserInfo.domain"
+                                target="_blank"
+                                size="2rem">
+                        <span v-if="!session.sessionUserInfo.username">{{ session.sessionUserInfo.username }}</span>
+                      </b-avatar>
+                      <Badge v-if="tmpMessageSetting.newMsgDot && session.uid !== activeSession.sessionId && session.unreadCount"
+                             :text="session.unreadCount < 9 ? (session.unreadCount+'') : '···'"
+                             class="un-read-count"/>
+                    </div>
                     <div class="name-box">
                       <div class="name" :title="session.sessionUserInfo.username">
                         <div class="name-value">{{ session.sessionUserInfo.username }}</div>
@@ -264,9 +269,6 @@
                       <div :title="parseMsgContent(session.lastMsg, false, session.sessionUserInfo.username)" class="last-word">
                         {{ parseMsgContent(session.lastMsg, false, session.sessionUserInfo.username) }}
                       </div>
-                    </div>
-                    <div class="un-read-count">
-                      <Badge dot v-if="session.unreadCount && tmpMessageSetting.newMsgDot" :offset="[2, -2]"/>
                     </div>
                     <div class="close" @click="showDelModal(session.uid)">
                       <span class="iconfont remove"/>
@@ -305,21 +307,17 @@
                       </Dropdown>
                     </div>
                   </div>
-                  <div class="message-list beauty-scroll" ref="messageScroll">
+                  <div class="message-list beauty-scroll" ref="messageScroll" @scroll="debounceRequest">
                     <div class="message-list-content" id="messageListContent">
                       <div class="msg-more">
-                        <span class="loading" style="display: none;">
-                          <div class="lds-spinner">
-                          </div>
-                        </span>
-                        <span class="error" style="display: none;">
-                          消息加载失败，
-                          <span class="reload">点击重新加载</span>
+                        <span class="loading" v-if="loadingMessage">
+                          <span class="reload">消息加载中</span>
                         </span>
                       </div>
                       <div v-for="msg in activeSession.messages"
                            :class="[msg.contentType === 100 || msg.contentType === 111?'msg-system':'msg-item', msg.sendId === userInfo.uid?'is-me':'not-me']"
-                           :key="msg.clientMsgId">
+                           :key="msg.clientMsgId"
+                           :id="'msg_' + msg.clientMsgId">
                         <span class="time" v-if="msg.contentType === 100">{{ formatTime2H(msg.sendTime) }}</span>
                         <span class="rollback-tips" v-if="msg.contentType === 111">{{ (msg.sendId === userInfo.uid ? '你' : ('"' + activeSession.sessionUserName + '"')) + msg.content }}</span>
                         <b-avatar v-if="msg.contentType !== 100 && msg.contentType !== 111"
@@ -501,7 +499,7 @@
 </template>
 
 <script>
-import {formatTime, formatTime2H, cloneDeep, useEmojiParse} from '@/utils';
+import {formatTime, formatTime2H, cloneDeep, useEmojiParse, debounce} from '@/utils';
 import InputBox from "@/components/common/replycomment/src/component/InputBox";
 import Pswp from "@/components/common/imagepreview/index"
 import msgNoticeApi from "@/api/MsgNoticeApi";
@@ -520,6 +518,7 @@ export default {
       offset: 0,
       limit: 20,
       hasMore: true,
+      loadingMessage: true,
       total: 0,
       msgNoticeList: [],
       popoverContainer: null,
@@ -558,10 +557,19 @@ export default {
         // 是否开启私聊消息 0否1是
         enableChatMessage: 1
       },
+      unreadCount: {
+        commentCount: 0,
+        likeCount: 0,
+        newFollowCount: 0,
+        systemMsgCount: 0,
+        chatMsgCount: 0,
+        unreadTotal: 0
+      },
       // 已建立连接
       isConnected: false,
       // 连接重连中
-      retry: false
+      retry: false,
+      debounceRequest: function () {}
     }
   },
   props: {
@@ -570,17 +578,7 @@ export default {
       default: 'commentReply'
     },
     unreadStatistic: {
-      type: Object,
-      default: () => {
-        return {
-          commentCount: 0,
-          likeCount: 0,
-          newFollowCount: 0,
-          systemMsgCount: 0,
-          chatMsgCount: 0,
-          unreadTotal: 0
-        }
-      }
+      type: Object
     }
   },
   computed: {
@@ -598,6 +596,7 @@ export default {
       return this.$store.state.chatMessage.activeSessionId;
     },
     isShield() {
+      // 判断当前用户是否被屏蔽
       if (this.activeSession.sessionId == null) {
         return false;
       }
@@ -823,6 +822,12 @@ export default {
       console.log('来了', new Date().getTime())
       console.log(sessionList)
       this.sessionList = sessionList;
+      let find = this.sessionList.find(session => session.uid === this.activeSession.sessionId);
+      if (find && find.unreadCount) {
+        let number = this.unreadCount.chatMsgCount - find.unreadCount;
+        this.unreadCount.chatMsgCount = number < 0 ? 0 : number;
+        find.unreadCount = 0;
+      }
     },
     messageConfirm(confirmContent) {
       // 如果已经切换了会话，则不在进行消息确认
@@ -847,7 +852,6 @@ export default {
       this.pushNewMessage(recvMessage);
     },
     deleteMessage(actionResult) {
-      debugger
       if (actionResult?.result) {
         let index = this.activeSession.messages?.findIndex(msg => msg.uid === actionResult?.messageId);
         if (index !== -1) {
@@ -868,10 +872,28 @@ export default {
         this.$Message.error(actionResult?.reason)
       }
     },
+    getUnreadCount(unreadCount) {
+      this.unreadCount = {...this.unreadCount, ...unreadCount};
+    },
     getChatLogs(chatMsgInfo) {
+      console.log('聊天记录来了', chatMsgInfo)
+      console.log('this.activeSession.sessionId', this.activeSession.sessionId)
       // 判断获取消息记录的会话id和ws返回的消息id是否相同
       if (this.activeSession.sessionId === chatMsgInfo.sessionId) {
+        this.loadingMessage = false;
+        this.hasMore = chatMsgInfo.list?.length === this.limit;
+        console.log('hasMore更新了', this.hasMore)
+        this.offset = this.offset + this.limit;
         if (chatMsgInfo.list?.length > 0) {
+          // 先保存最后一个消息id用于滚动条校正
+          let messageId = null;
+          for (let message of (this.activeSession.messages || [])) {
+            if (message.contentType !== 100) {
+              messageId = message.clientMsgId;
+              break;
+            }
+          }
+
           // 先创建一个临时队列
           let tmpMessages = [];
           chatMsgInfo.list.reverse().forEach(chatLog => {
@@ -879,16 +901,29 @@ export default {
             tmpMessages.push(chatLog);
           })
           // 将临时队列插入当前会话
-          this.activeSession.messages.push(...tmpMessages);
+          this.activeSession.messages.unshift(...tmpMessages);
           let messageScroll = this.$refs.messageScroll;
           if (messageScroll) {
-            // 使用 setTimeout 来确保在 DOM 更新之后再进行滚动
-            this.$nextTick(() => {
-              // 将滚动位置设置为容器的滚动高度
-              setTimeout(() => {
-                messageScroll.scrollTop = messageScroll.scrollHeight + 150;
-              }, 10);
-            });
+            // 如果是会话正在滚动当中，滚动到触发滚动的附近
+            if (this.offset > this.limit) {
+              let selector = messageScroll.querySelector('#msg_' + messageId);
+              if (selector) {
+                this.$nextTick(() => {
+                  // 将滚动位置设置为容器的滚动高度
+                  setTimeout(() => {
+                    messageScroll.scrollTop = selector.offsetTop - 60;
+                  }, 10);
+                });
+              }
+            } else {
+              // 滚动到底部
+              this.$nextTick(() => {
+                // 将滚动位置设置为容器的滚动高度
+                setTimeout(() => {
+                  messageScroll.scrollTop = messageScroll.scrollHeight + 150;
+                }, 10);
+              });
+            }
           }
         }
       }
@@ -1086,6 +1121,9 @@ export default {
       })
     },
     changeActiveSession(session) {
+      if (session.uid === this.activeSession.sessionId) {
+        return;
+      }
       this.activeSession.messages = [];
       this.activeSession.sessionId = session.uid;
       this.activeSession.sessionUserId = session.sessionUserInfo?.uid;
@@ -1108,6 +1146,7 @@ export default {
       sessionStatus[sessionSetting] = find[sessionSetting] === 1 ? 0 : 1;
       msgNoticeApi.updateSessionStatus(sessionStatus).then(data => {
         if (data?.result) {
+          find[sessionSetting] = sessionStatus[sessionSetting];
           this.$Message.success("设置成功");
         }
       })
@@ -1164,6 +1203,53 @@ export default {
           }
         });
       }
+    },
+    handleReachTop() {
+      setTimeout(() => {
+        console.log('hasMore判断', this.hasMore)
+        if (!this.hasMore) {
+          return;
+        }
+        // 获取当前滚动条
+        let scroll = this.$refs.messageScroll;
+        if (!scroll) {
+          return;
+        }
+        if (scroll.scrollTop === 0) {
+          setTimeout(() => {
+            if (scroll.scrollTop < 100) {
+              console.log("请求聊天记录", scroll.scrollTop);
+              this.loadingMessage = true;
+              this.$sharedWorker.port.postMessage({
+                type: 2,
+                data: {
+                  type: 2,
+                  callback: 'getChatLogs',
+                  param: {
+                    sessionId: this.activeSession.sessionId,
+                    offset: this.offset,
+                    limit: this.limit
+                  }
+                }
+              });
+            }
+          }, 200)
+        } else if (scroll.scrollTop < 100) {
+          console.log("请求聊天记录", scroll.scrollTop);
+          this.$sharedWorker.port.postMessage({
+            type: 2,
+            data: {
+              type: 2,
+              callback: 'getChatLogs',
+              param: {
+                sessionId: this.activeSession.sessionId,
+                offset: this.offset,
+                limit: this.limit
+              }
+            }
+          });
+        }
+      }, 500)
     }
   },
   watch: {
@@ -1186,6 +1272,7 @@ export default {
       this.offset = 0;
       this.total = 0;
       this.hasMore = true;
+      this.loadingMessage = false;
       console.log("watch-activeSession.sessionId-getChatLogs: ", newVal)
       this.checkSWStatus();
       this.$sharedWorker.port.postMessage({
@@ -1200,6 +1287,11 @@ export default {
           }
         }
       });
+      // 设置未读数
+      let find = this.sessionList.find(session => session.uid === newVal);
+      if (find && find.unreadCount) {
+        find.unreadCount = 0;
+      }
     },
     'loginStatus'(status) {
       if (!status && this.$sharedWorker) {
@@ -1213,6 +1305,7 @@ export default {
       this.offset = 0;
       this.total = 0;
       this.hasMore = true;
+      this.loadingMessage = false;
       console.log("watch-activeMenu-loadMsgNotify: ", newValue)
       this.loadMsgNotify(newValue);
     }
@@ -1221,6 +1314,7 @@ export default {
     this.popoverContainer = this.$refs.popoverContainer;
   },
   created() {
+    this.debounceRequest = debounce(this.handleReachTop, 200, true);
     // 初始化sharedWorker进行webSocket连接
     Vue.prototype.$sharedWorker = new SharedWorker('../shared-worker.js', 'workerWs');
     if (!this.$sharedWorker) {
@@ -1228,6 +1322,12 @@ export default {
       return;
     }
     this.wsInit();
+    // 获取未读通知
+    msgNoticeApi.getUnreadStatistic().then(data => {
+      if (data?.result) {
+        this.unreadCount = data.data;
+      }
+    })
   },
   beforeDestroy() {
     if (this.$sharedWorker) {

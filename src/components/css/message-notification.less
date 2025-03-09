@@ -417,8 +417,17 @@
 
                   .un-read-count {
                     position: absolute;
-                    right: 10px;
-                    top: 2px;
+                    left: 2.6rem;
+                    top: 10px;
+
+                    .ivu-badge-count {
+                      height: 15px;
+                      width: 15px;
+                      min-width: 15px;
+                      line-height: 15px;
+                      padding: 0;
+                      font-size: 11px;
+                    }
                   }
 
                   .close {
@@ -479,6 +488,7 @@
                 -ms-flex-align: stretch;
                 align-items: stretch;
                 height: 100%;
+                background-color: var(--rj-editor-bg-color);
 
                 .title {
                   height: 36px;
@@ -530,7 +540,6 @@
                   flex: 1;
                   position: relative;
                   overflow-x: hidden;
-                  background-color: var(--rj-editor-bg-color);
 
                   .message-list-content {
                     max-width: 555px;
@@ -673,7 +682,6 @@
                 .send-box {
                   height: 162px;
                   border-top: 1px solid @border-color_normal;
-                  background-color: var(--rj-editor-bg-color);
                   border-bottom-right-radius: 4px;
                   -ms-flex-negative: 0;
                   flex-shrink: 0;

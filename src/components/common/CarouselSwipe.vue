@@ -99,17 +99,10 @@ export default {
   },
   mounted() {
     this.swipeStyle = {
-      // width: this.imageWidth + 'rem',
       width: this.swipeWidth,
       height: this.swipeHeight
     }
     this.handleGo();
-    // document.getElementById('carousel_swipe' + this.id).style.width =
-    //   this.imageWidth + 'rem'
-    // document.getElementById('carousel_swipe' + this.id).style.height =
-    //   this.imageHeight + 'rem'
-    // document.getElementById('swipe_control' + this.id).style.top =
-    //   this.imageHeight / 2 - 1 + 'rem'
   },
   // 为了能在同一页面内多次使用轮播组件，每个组件的id都不一样，因此在组件创建的时候生成随机数作为id的一部分
   created() {
