@@ -16,7 +16,7 @@
             </b-avatar>
           </div>
           <div class="user-card-userInfos">
-            <b-link class="username" :to="'/' + userInfo?.domain">
+            <b-link class="username" :to="'/' + userInfo?.domain" target="_blank">
               <span class="name" :title="userInfo?.username">{{ userInfo?.username }}</span>
               <span :class="['iconfont',  'icon-level' + userInfo?.level]"></span>
             </b-link>

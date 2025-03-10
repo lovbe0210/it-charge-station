@@ -76,12 +76,12 @@
                 消息设置
               </span>
             </span>
-<!--            <span class="all-read-action" v-if="activeMenu !== 'messageSetting'">
-              <span class="iconfont clean"></span>
-              <span>
-                全部已读
-              </span>
-            </span>-->
+            <!--            <span class="all-read-action" v-if="activeMenu !== 'messageSetting'">
+                          <span class="iconfont clean"></span>
+                          <span>
+                            全部已读
+                          </span>
+                        </span>-->
           </div>
           <div class="tabs-notify-holder beauty-scroll"
                v-infinite-scroll="debounceNoticeRequest"
@@ -93,31 +93,34 @@
                   v-for="item in msgNoticeList"
                   :key="item.uid">
                 <div class="notification-item">
-                  <user-card :userInfo="item.actionUserInfo" :popoverContainer="popoverContainer">
-                    <slot>
-                      <b-avatar class="avatar"
-                                :src="fileUrl(item.actionUserInfo?.avatarUrl)"
-                                variant="light"
-                                :to="'/' + item.actionUserInfo?.domain"
-                                size="2rem">
-                        <span v-if="!item.actionUserInfo?.avatarUrl">{{ item.actionUserInfo?.username }}</span>
-                      </b-avatar>
-                    </slot>
-                  </user-card>
+                  <b-avatar class="avatar"
+                            :src="fileUrl(item.actionUserInfo?.avatarUrl)"
+                            variant="light"
+                            :to="'/' + item.actionUserInfo?.domain"
+                            target="_blank"
+                            size="2rem">
+                    <span v-if="!item.actionUserInfo?.avatarUrl">{{ item.actionUserInfo?.username }}</span>
+                  </b-avatar>
                   <div class="item-content">
                     <div class="action-info">
                       <div class="action">
-                        <b-link :to="'/' + item.actionUserInfo?.domain"
-                                target="_blank"
-                                class="context-actor">
-                          <span>
-                            {{ item.actionUserInfo?.username }}
-                          </span>
-                        </b-link>
-                        {{
-                          (item.noticeType === 1 ? '在' : item.noticeType === 2 ? '对' : '') +
-                          (item.targetType === 1 ? '文档' : item.targetType === 3 ? '随笔' : '')
-                        }}
+                        <user-card :userInfo="item.actionUserInfo" :popoverContainer="popoverContainer">
+                          <slot>
+                            <b-link :to="'/' + item.actionUserInfo?.domain"
+                                    target="_blank"
+                                    class="context-actor">
+                              <span>
+                                {{ item.actionUserInfo?.username }}
+                              </span>
+                            </b-link>
+                          </slot>
+                        </user-card>
+                        <span>
+                          {{
+                            (item.noticeType === 1 ? '在' : item.noticeType === 2 ? '对' : '') +
+                            (item.targetType === 1 ? '文档' : item.targetType === 3 ? '随笔' : '')
+                          }}
+                        </span>
                         <b-link @click="routePath(item)"
                                 class="context-subject"
                                 :title="item.targetType === 1 ? item.articleInfo?.title : item.targetType === 3 ? item.ramblyJot?.title : '已删除内容'">
@@ -149,29 +152,32 @@
                   v-for="item in msgNoticeList"
                   :key="item.uid">
                 <div class="notification-item">
-                  <user-card :userInfo="item.actionUserInfo" :popoverContainer="popoverContainer">
-                    <slot>
-                      <b-avatar class="avatar"
-                                :src="fileUrl(item.actionUserInfo?.avatarUrl)"
-                                variant="light"
-                                :to="'/' + item.actionUserInfo?.domain"
-                                size="2rem">
-                        <span v-if="!item.actionUserInfo?.avatarUrl">{{ item.actionUserInfo?.username }}</span>
-                      </b-avatar>
-                    </slot>
-                  </user-card>
+                  <b-avatar class="avatar"
+                            :src="fileUrl(item.actionUserInfo?.avatarUrl)"
+                            variant="light"
+                            :to="'/' + item.actionUserInfo?.domain"
+                            target="_blank"
+                            size="2rem">
+                    <span v-if="!item.actionUserInfo?.avatarUrl">{{ item.actionUserInfo?.username }}</span>
+                  </b-avatar>
                   <div class="item-content">
                     <div class="action-info">
                       <div class="action-content">
                         <div class="content-warp">
-                          <b-link :to="'/' + item.actionUserInfo?.domain"
-                                  target="_blank"
-                                  class="context-actor">
-                            {{ item.actionUserInfo?.username }}
-                          </b-link>
-                          赞了我的{{
-                            item.targetType == 1 ? '文章' : item.targetType == 3 ? '随笔' : item.targetType == 4 ? '评论' : '内容'
-                          }}
+                          <user-card :userInfo="item.actionUserInfo" :popoverContainer="popoverContainer">
+                            <slot>
+                              <b-link :to="'/' + item.actionUserInfo?.domain"
+                                      target="_blank"
+                                      class="context-actor">
+                                {{ item.actionUserInfo?.username }}
+                              </b-link>
+                            </slot>
+                          </user-card>
+                          <span>
+                            赞了我的{{
+                              item.targetType == 1 ? '文章' : item.targetType == 3 ? '随笔' : item.targetType == 4 ? '评论' : '内容'
+                            }}
+                          </span>
                           <b-link @click="routePath(item)"
                                   class="context-subject">
                           <span v-html="item.targetType === 1 ? item.articleInfo?.title :
@@ -195,21 +201,23 @@
                   v-for="item in msgNoticeList"
                   :key="item.uid">
                 <div class="notification-item">
-                  <user-card :userInfo="item.actionUserInfo" :popoverContainer="popoverContainer">
-                    <slot>
-                      <b-avatar class="avatar"
-                                :src="fileUrl(item.actionUserInfo?.avatarUrl)"
-                                variant="light"
-                                :to="'/' + item.actionUserInfo?.domain"
-                                size="2rem">
-                        <span v-if="!item.actionUserInfo?.avatarUrl">{{ item.actionUserInfo?.username }}</span>
-                      </b-avatar>
-                    </slot>
-                  </user-card>
+                  <b-avatar class="avatar"
+                            :src="fileUrl(item.actionUserInfo?.avatarUrl)"
+                            variant="light"
+                            target="_blank"
+                            :to="'/' + item.actionUserInfo?.domain"
+                            size="2rem">
+                    <span v-if="!item.actionUserInfo?.avatarUrl">{{ item.actionUserInfo?.username }}</span>
+                  </b-avatar>
                   <div class="item-content">
-                    <p>
-                      <a :href="'/' + item.actionUserInfo?.domain" target="_blank"
-                         class="context-actor">{{ item.actionUserInfo?.username }}</a>
+                    <p class="actor-info">
+                      <user-card :userInfo="item.actionUserInfo" :popoverContainer="popoverContainer">
+                        <slot>
+                          <span class="context-actor">
+                            {{ item.actionUserInfo?.username }}
+                          </span>
+                        </slot>
+                      </user-card>
                       关注了我
                       <Badge dot v-if="item.readStatus === 0 && messageSetting.newMsgDot" :offset="[-9, -1]"/>
                     </p>
@@ -261,15 +269,17 @@
                                 size="2rem">
                         <span v-if="!session.sessionUserInfo.username">{{ session.sessionUserInfo.username }}</span>
                       </b-avatar>
-                      <Badge v-if="tmpMessageSetting.newMsgDot && session.uid !== activeSession.sessionId && session.unreadCount"
-                             :text="session.unreadCount < 9 ? (session.unreadCount+'') : '···'"
-                             class="un-read-count"/>
+                      <Badge
+                        v-if="tmpMessageSetting.newMsgDot && session.uid !== activeSession.sessionId && session.unreadCount"
+                        :text="session.unreadCount < 9 ? (session.unreadCount+'') : '···'"
+                        class="un-read-count"/>
                     </div>
                     <div class="name-box">
                       <div class="name" :title="session.sessionUserInfo.username">
                         <div class="name-value">{{ session.sessionUserInfo.username }}</div>
                       </div>
-                      <div :title="parseMsgContent(session.lastMsg, false, session.sessionUserInfo.username)" class="last-word">
+                      <div :title="parseMsgContent(session.lastMsg, false, session.sessionUserInfo.username)"
+                           class="last-word">
                         {{ parseMsgContent(session.lastMsg, false, session.sessionUserInfo.username) }}
                       </div>
                     </div>
@@ -298,13 +308,19 @@
                         </a>
                         <DropdownMenu slot="list">
                           <DropdownItem name="isPinned">
-                            {{ sessionList?.find(s => s.uid === activeSession.sessionId)?.isPinned ? '取消置顶' : '置顶聊天' }}
+                            {{
+                              sessionList?.find(s => s.uid === activeSession.sessionId)?.isPinned ? '取消置顶' : '置顶聊天'
+                            }}
                           </DropdownItem>
                           <DropdownItem name="isNotDisturb">
-                            {{ sessionList?.find(s => s.uid === activeSession.sessionId)?.isNotDisturb ? '关闭免打扰' : '开启免打扰' }}
+                            {{
+                              sessionList?.find(s => s.uid === activeSession.sessionId)?.isNotDisturb ? '关闭免打扰' : '开启免打扰'
+                            }}
                           </DropdownItem>
                           <DropdownItem name="isShield">
-                            {{ sessionList?.find(s => s.uid === activeSession.sessionId)?.isShield ? '取消屏蔽' : '屏蔽该用户' }}
+                            {{
+                              sessionList?.find(s => s.uid === activeSession.sessionId)?.isShield ? '取消屏蔽' : '屏蔽该用户'
+                            }}
                           </DropdownItem>
                         </DropdownMenu>
                       </Dropdown>
@@ -322,7 +338,9 @@
                            :key="msg.clientMsgId"
                            :id="'msg_' + msg.clientMsgId">
                         <span class="time" v-if="msg.contentType === 100">{{ formatTime2H(msg.sendTime) }}</span>
-                        <span class="rollback-tips" v-if="msg.contentType === 111">{{ (msg.sendId === userInfo.uid ? '你' : ('"' + activeSession.sessionUserName + '"')) + msg.content }}</span>
+                        <span class="rollback-tips" v-if="msg.contentType === 111">{{
+                            (msg.sendId === userInfo.uid ? '你' : ('"' + activeSession.sessionUserName + '"')) + msg.content
+                          }}</span>
                         <b-avatar v-if="msg.contentType !== 100 && msg.contentType !== 111"
                                   class="avatar"
                                   :src="fileUrl(msg.sendId === userInfo.uid ? userInfo.avatarUrl : activeSession.sessionUserAvatar)"
@@ -338,6 +356,9 @@
                         <div class="message" v-if="msg.contentType !== 100 && msg.contentType !== 111">
                           <div v-if="msg.uid && !msg.sendSuccess" class="message-send-status">
                             <span class="iconfont publish-fail" :title="msg.errorReason"/>
+                          </div>
+                          <div v-if="!msg.uid" class="message-send-loading">
+                            <span class="iconfont update-ing"/>
                           </div>
                           <div v-if="msg.uid && msg.sendSuccess" class="message-action">
                             <span class="message-time">{{
@@ -519,7 +540,7 @@ export default {
       // 图片预览
       pswp: null,
       offset: 0,
-      limit: 10,
+      limit: 20,
       hasMore: true,
       loadingMessage: true,
       msgNoticeList: [],
@@ -571,8 +592,10 @@ export default {
       isConnected: false,
       // 连接重连中
       retry: false,
-      debounceChatRequest: function () {},
-      debounceNoticeRequest: function () {}
+      debounceChatRequest: function () {
+      },
+      debounceNoticeRequest: function () {
+      }
     }
   },
   props: {
@@ -582,6 +605,11 @@ export default {
     },
     unreadStatistic: {
       type: Object
+    },
+    // 消息盒子场景 index首页，readCenter阅读页
+    scene: {
+      type: String,
+      default: 'index'
     }
   },
   computed: {
@@ -630,9 +658,14 @@ export default {
           return;
         case 3:
           // 随笔，需要关闭消息提示框，在当前页面打开
-          this.$emit('changeModalStatus');
           let path = "/ramblyJot/" + noticeItem.ramblyJot?.uid;
-          this.$router.push({path});
+          if (this.scene === 'index') {
+            this.$emit('changeModalStatus');
+            this.$router.push({path});
+          } else {
+            let routeUrl = this.$router.resolve({path: path});
+            window.open(routeUrl.href, '_blank');
+          }
           return;
         case 4:
           // 评论，实际还是要走文章或随笔
@@ -645,9 +678,14 @@ export default {
             let routeUrl = this.$router.resolve({path: uri});
             window.open(routeUrl.href, '_blank');
           } else if (noticeItem.ramblyJot?.uid) {
-            this.$emit('changeModalStatus');
             let path = "/ramblyJot/" + noticeItem.ramblyJot?.uid;
-            this.$router.push({path});
+            if (this.scene === 'index') {
+              this.$emit('changeModalStatus');
+              this.$router.push({path});
+            } else {
+              let routeUrl = this.$router.resolve({path: path});
+              window.open(routeUrl.href, '_blank');
+            }
           }
       }
     },

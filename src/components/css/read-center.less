@@ -43,12 +43,16 @@
                 font-size: 14px;
                 font-weight: 600;
                 cursor: pointer;
-                color: #585A5A;
+                color: @dark-font-color;
                 flex: 1;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
                 line-height: 45px;
+
+                &:hover {
+                  color: @light-font-color;
+                }
               }
 
               .logo {
@@ -69,10 +73,6 @@
 
                 .iconfont {
                   margin: 0 5px;
-                }
-
-                *:hover {
-                  color: #262626;
                 }
               }
 
@@ -792,6 +792,17 @@
   }
 }
 
+
+/deep/.message-box {
+  .ivu-icon-ios-close {
+    font-size: 35px;
+  }
+
+  .ivu-modal-body {
+    padding: 0 0 0 16px;
+  }
+}
+
 .enable-background {
   .layout-module_directoryWrapper {
     background: unset !important;
@@ -801,6 +812,10 @@
     .layout-module_directory {
       .crumb-text {
         color: var(--font-color) !important;
+
+        &:hover {
+          color: var(--title-color) !important;
+        }
       }
 
       .search-bar {
@@ -1271,53 +1286,90 @@
   /deep/ .user-info-card-box .ant-popover-content .ant-popover-inner {
     background: #ffffff;
     border-color: @light-border-color;
+
+    .signature-text {
+      color: @light-font-color !important;
+    }
   }
+}
 
-  /*/deep/ .tabpane-tree {
-    padding: 0 10px 8px 10px;
+/deep/ .normal-background {
+  .layout-message-notification {
+    color: @dark-font-color;
 
-    .ivu-tree-children {
-      padding-left: 8px;
-      flex: 1;
-      font-size: 14px;
-      color: #262626;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      display: flex;
-      left: 0px;
-      cursor: pointer;
-      align-items: center;
-
-      li {
-        margin: unset !important;
-        width: 100%;
-      }
-
-      .ivu-tree-arrow {
-        padding: 6px 0;
-      }
-
-      .ivu-tree-title {
-        margin: 2px 0;
-        padding: 6px 0 6px 5px;
-        width: calc(~"100% - 15px");
-        border-radius: 4px;
-
-        &:hover {
-          background: @dropdown-item-hover;
+    .msg-notify-menu {
+      .menu-item {
+        .active-menu, .item:hover {
+          background: @editor-item-hover;
         }
-      }
 
-      .ivu-tree-title-selected {
-        background: @dropdown-item-hover;
-
-        &:hover {
-          cursor: pointer;
-          background: @dropdown-item-hover;
-          border-radius: 4px;
+        .line {
+          background: @border-004;
         }
       }
     }
-  }*/
+
+    .msg-notify-body {
+      .module-tabs-tabpane-active {
+        color: @dark-font-color;
+
+        .tabs-tabpane-head {
+          color: @dark-font-color;
+        }
+
+        .notification-item {
+          .context-actor, .action-content, .context-subject {
+            color: @dark-font-color !important;
+          }
+
+          .item-content, .content-warp {
+            color: @light-font-color !important;
+          }
+          &:hover {
+            background-color: @editor-item-hover !important;
+          }
+        }
+      }
+
+      .tabs-message-holder {
+        .session-list {
+          border-color: @border-004;
+
+          .list-container {
+            .list-item {
+
+            }
+
+            .list-item:hover, .active {
+              background-color: @editor-item-hover!important;
+            }
+          }
+        }
+      }
+
+      .session-box {
+        .dialog {
+          background-color: @dropdown-item-hover !important;
+
+          .title {
+            color: @dark-font-color !important;
+          }
+
+          .message-list {
+            .msg-system {
+              color: @light-font-color !important;
+            }
+
+            .message-action {
+              color: @light-font-color !important;
+            }
+          }
+
+          .is-black {
+            background-color: @dropdown-item-hover !important;
+          }
+        }
+      }
+    }
+  }
 }

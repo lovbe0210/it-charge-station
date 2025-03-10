@@ -17,7 +17,9 @@
                            class="user-info-card-box">
                   <slot>
                     <div class="action">
-                      <a :href="'/' + domain" class="crumb-text">{{ authorInfo.username }}</a>
+                      <a class="crumb-text">
+                        {{ authorInfo.username }}
+                      </a>
                     </div>
                   </slot>
                 </user-card>
@@ -211,9 +213,9 @@
              :lock-scroll="true"
              :footer-hide="true"
              :width="900"
-             class-name="message-box">
+             :class-name="docStyle.docThemeSync ? 'message-box' : 'message-box normal-background'">
         <message-notification :propsActiveMenu="activeMenu"
-                              :unreadStatistic="unreadStatistic"
+                              scene="readCenter"
                               @changeModalStatus="showMessage = false"/>
       </Modal>
     </div>
@@ -350,6 +352,7 @@ export default {
     },
     'showMessage'(val) {
       if (!val) {
+        this.activeMenu = null;
         this.$store.commit("updateChatSession", null);
       }
     }

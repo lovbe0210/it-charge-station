@@ -148,22 +148,13 @@
 
               .update-ing {
                 font-size: 12px;
-                animation: spin 25s linear infinite;
-                animation-delay: 0.8s;
+                color: @grey-white-font-color;
+                animation: spin 1s linear infinite;
+                display: inline-block;
 
                 &:before {
                   animation: spin 25s linear infinite;
                   animation-delay: 0.8s;
-                }
-              }
-
-              /* disc动画 */
-              @keyframes spin {
-                0% {
-                  transform: rotate(0deg);
-                }
-                100% {
-                  transform: rotate(360deg);
                 }
               }
             }
@@ -239,6 +230,27 @@
                       overflow: hidden;
                       text-overflow: ellipsis;
                       white-space: nowrap;
+                      display: flex;
+
+                      .user-card {
+                        margin-right: 5px;
+                        flex-shrink: 0; /* 禁止收缩 */
+                      }
+
+                      span {
+                        flex-shrink: 0; /* 禁止收缩 */
+                      }
+
+                      .context-subject {
+                        margin-left: 5px;
+                        flex: 1; /* 占据剩余空间 */
+                        min-width: 0; /* 重要：覆盖默认最小宽度 */
+
+                        /* 文字溢出处理 */
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                      }
                     }
 
                     .action-content {
@@ -249,10 +261,32 @@
                       white-space: nowrap;
 
                       .content-warp {
+                        color: var(--title-color);
                         max-width: 98.5%;
                         overflow: hidden;
                         white-space: nowrap;
                         text-overflow: ellipsis;
+                        display: flex;
+
+                        .user-card {
+                          margin-right: 5px;
+                          flex-shrink: 0; /* 禁止收缩 */
+                        }
+
+                        span {
+                          flex-shrink: 0; /* 禁止收缩 */
+                        }
+
+                        .context-subject {
+                          margin-left: 5px;
+                          flex: 1; /* 占据剩余空间 */
+                          min-width: 0; /* 重要：覆盖默认最小宽度 */
+
+                          /* 文字溢出处理 */
+                          white-space: nowrap;
+                          overflow: hidden;
+                          text-overflow: ellipsis;
+                        }
                       }
 
                       .ivu-badge {
@@ -272,6 +306,14 @@
                       overflow: hidden; /* 隐藏超出内容 */
                       text-overflow: ellipsis; /* 添加省略号 */
                       white-space: nowrap;
+                    }
+                  }
+
+                  .actor-info {
+                    display: flex;
+
+                    .user-card {
+                      margin-right: 5px;
                     }
                   }
 
@@ -646,6 +688,15 @@
                         align-items: center;
                         flex-direction: row;
 
+                        .message-send-loading {
+                          margin-right: 3px;
+                          .update-ing {
+                            color: @grey-white-font-color;
+                            animation: spin 1s linear infinite;
+                            display: inline-block;
+                          }
+                        }
+
                         .message-send-status {
                           margin-right: 5px;
 
@@ -839,4 +890,10 @@
       }
     }
   }
+}
+
+/* disc动画 */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

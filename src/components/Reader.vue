@@ -303,7 +303,7 @@ export default {
       // 样式相关
       docStyle: {},
       scrollTop: 0,
-      backTopHeight: 700,
+      backTopHeight: 300,
       backTopShow: false
     }
   },
