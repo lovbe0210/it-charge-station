@@ -3,9 +3,14 @@
  * @param themProperty
  */
 export function flushCustomerSet(themProperty) {
-  let url = themProperty.backgroundImg && themProperty.backgroundImg.startsWith('http')
-    ? themProperty.backgroundImg : (location.origin + themProperty.backgroundImg);
-  let backgroundImg = themProperty.backgroundImg ? ('url("' + url + '")') : undefined;
+  let backgroundImg;
+  if (themProperty.backgroundImg?.indexOf('linear-gradient') !== -1) {
+    backgroundImg = themProperty.backgroundImg;
+  } else {
+   let url = themProperty.backgroundImg && themProperty.backgroundImg.startsWith('http')
+      ? themProperty.backgroundImg : (location.origin + themProperty.backgroundImg);
+    backgroundImg = themProperty.backgroundImg ? ('url("' + url + '")') : undefined;
+  }
   let styleProperty =
     `--background-img: ${backgroundImg};` +
     `--background-color: ${themProperty.backgroundColor};` +
