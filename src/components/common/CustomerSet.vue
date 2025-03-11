@@ -23,16 +23,15 @@
         <span slot="close">Color</span>
       </i-switch>
       <Upload v-show="!gradientColor"
-              action="/api/st/upload" :show-upload-list="false"
+              :data="{uq: uq}"
+              action="/api/in/preference/upload" :show-upload-list="false"
               :format="['jpg','jpeg','png']" :max-size="10240" :on-progress="uploading"
               accept="image/png, image/jpeg" :disabled="uploadStatus === 1"
               :on-exceeded-size="handleMaxSize" :on-format-error="handleFormatError"
               :on-success="handleServerSuccess" :on-error="handleServerError">
         <div class="upload-icon align-items-center">
-          <span v-show="uploadStatus !== 1" class="iconfont upload-img"></span>
-      <!--    <Icon :type="uploadIcon" size="24" :color="uploadStatus===3?'#00AE9D':uploadStatus===2?'red': ''"
-                v-show="uploadStatus !== 1 && uploadStatus !== 0"/>-->
-          <b-spinner style="width: 1.1rem; height: 1.1rem;color: #00AE9D;" v-show="uploadStatus === 1"/>
+          <span v-show="uploadStatus !== 1" class="iconfont upload-img"/>
+          <span v-show="uploadStatus === 1" class="iconfont update-ing"/>
         </div>
       </Upload>
       <div class="gradient-color" v-show="gradientColor">
@@ -73,8 +72,6 @@
         gradientColor: false,
         // 0 未上传 1上传中 2上传错误 3上传成功
         uploadStatus: 0,
-        // 上传按钮图标
-        uploadIcon: 'md-cloud-upload',
         // 背景色设置
         editColors: {
           firstColor: '#FFFFFF',
@@ -93,6 +90,9 @@
           this.$store.commit('customerSet', value);
         }
       },
+      uq() {
+        return this.$store.state.uniqueId;
+      },
       showCustomer() {
         return this.$store.state.showCustomer;
       },
@@ -108,30 +108,27 @@
        */
       uploading() {
         this.uploadStatus = 1;
-        console.log('uploading...')
       },
       handleMaxSize() {
-        this.uploadIcon = 'md-close-circle';
-        this.uploadStatus = 2;
         this.$Message.warning('文件大小不得超过10MB！');
       },
       handleFormatError() {
-        this.uploadIcon = 'md-close-circle';
         this.uploadStatus = 2;
-        this.$Message.warning('文件格式错误，请上传正确的图片');
+        this.$Message.warning('文件格式错误，请选择图片进行上传');
       },
       handleServerSuccess(response) {
         if (response.result) {
           this.uploadStatus = 3;
           let baccObj = {
-            backgroundImg: 'url(' + response.data + ')'
+            backgroundImg: this.fileService + response.data
           }
           this.$store.commit('customerSet', baccObj)
+        } else {
+          this.$Message.error(response?.message)
+          this.uploadStatus = 2;
         }
       },
       handleServerError() {
-        this.uploadIcon = 'md-close-circle';
-        this.uploadStatus = 2;
         this.$Message.warning('网络错误，请稍后重试！');
       },
       /**
@@ -208,7 +205,7 @@
               themeColor: 'rgba(255,255,255,0.89)',
               fontColor: '#262626',
               titleColor: '#585A5A',
-              backgroundImg: 'url(https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg)',
+              backgroundImg: 'https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/9b60dd9ddaf3c7f84e4414f0cef8b151.jpg',
               borderColor: 'rgba(0,0,0,0.08)',
               dropdownBackgroundColor: 'rgba(255,255,255,0.95)',
               dropdownItemHover: '#E9E9E9',
@@ -288,7 +285,6 @@
         if (!flag) {
           // 自定义主题关闭时恢复一些状态设置
           this.uploadStatus = 0;
-          this.uploadIcon = 'md-cloud-upload';
         }
       }
     }

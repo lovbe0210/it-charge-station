@@ -40,7 +40,7 @@ import Lightblock, {LightblockComponent} from "./packages/lightblock/src";
 
 const FILE_SERVICE = "/oss";
 
-const DOMAIN = "/api/st";
+const DOMAIN = "/api/cpt";
 
 export const HightLightIcon = '<div class="hight-light-icon" style="display: flex; align-items: center; justify-content: center; width: 23px; height: 23px; border: 1px solid #e8e8e8;"><span class="iconfont icon-hight-light" style="font-size: 13px;line-height: 23px;color: #262626;font-weight: bold;"></span></div>';
 
@@ -145,24 +145,16 @@ export const pluginConfig = {
     enableScroll: true
   },
   [Image.pluginName]: {
-    maxHeight: 300,
-    onBeforeRender: (status, url) => {
-      if (url.startsWith("data:image/")) return url
-      return url
-    }
+    maxHeight: 300
   },
   [ImageUploader.pluginName]: {
     //图片上传
     file: {
-      action: `${DOMAIN}/upload`,
-      data: {pathPrefix: "article"}
+      action: `${DOMAIN}/content/upload/file`
     },
     //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
     remote: {
-      action: `${DOMAIN}/upload/url`,
-      data: {
-        pathPrefix: "article"
-      }
+      action: `${DOMAIN}/content/upload/url`
     },
     isRemote: src => src.indexOf(DOMAIN) < 0,
     parse: response => {
@@ -173,11 +165,12 @@ export const pluginConfig = {
     }
   },
   [FileUploader.pluginName]: {
-    action: `${DOMAIN}/upload/file`
+    action: `${DOMAIN}/content/upload/file`,
+    limitSize: 1024 * 1024 * 100
   },
   [VideoUploader.pluginName]: {
-    action: `${DOMAIN}/upload/video`,
-    limitSize: 1024 * 1024 * 50
+    action: `${DOMAIN}/content/upload/file`,
+    limitSize: 1024 * 1024 * 100
   },
   [Video.pluginName]: {
     onBeforeRender: (status, url) => {

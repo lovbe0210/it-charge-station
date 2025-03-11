@@ -3,8 +3,11 @@
  * @param themProperty
  */
 export function flushCustomerSet(themProperty) {
+  let url = themProperty.backgroundImg && themProperty.backgroundImg.startsWith('http')
+    ? themProperty.backgroundImg : (location.origin + themProperty.backgroundImg);
+  let backgroundImg = themProperty.backgroundImg ? ('url("' + url + '")') : undefined;
   let styleProperty =
-    `--background-img: ${themProperty.backgroundImg};` +
+    `--background-img: ${backgroundImg};` +
     `--background-color: ${themProperty.backgroundColor};` +
     `--theme-color: ${themProperty.themeColor};` +
     `--font-color: ${themProperty.fontColor};` +

@@ -809,7 +809,6 @@ export default {
       this.pushNewMessage(msgBody)
       this.sessionList.filter(session => session.uid === this.activeSession.sessionId)
         .forEach(session => {
-          console.log('没来', new Date().getTime())
           session.lastMsg = msgBody;
         });
     },
@@ -860,8 +859,6 @@ export default {
       reader.readAsDataURL(file);
     },
     getSessionList(sessionList) {
-      console.log('来了', new Date().getTime())
-      console.log(sessionList)
       this.sessionList = sessionList;
       let find = this.sessionList.find(session => session.uid === this.activeSession.sessionId);
       if (find && find.unreadCount) {
@@ -917,13 +914,10 @@ export default {
       this.unreadCount = {...this.unreadCount, ...unreadCount};
     },
     getChatLogs(chatMsgInfo) {
-      console.log('聊天记录来了', chatMsgInfo)
-      console.log('this.activeSession.sessionId', this.activeSession.sessionId)
       // 判断获取消息记录的会话id和ws返回的消息id是否相同
       if (this.activeSession.sessionId === chatMsgInfo.sessionId) {
         this.loadingMessage = false;
         this.hasMore = chatMsgInfo.list?.length === this.limit;
-        console.log('hasMore更新了', this.hasMore)
         this.offset = this.offset + this.limit;
         if (chatMsgInfo.list?.length > 0) {
           // 先保存最后一个消息id用于滚动条校正
@@ -1247,7 +1241,6 @@ export default {
     },
     handleReachTop() {
       setTimeout(() => {
-        console.log('hasMore判断', this.hasMore)
         if (!this.hasMore) {
           return;
         }
@@ -1259,7 +1252,6 @@ export default {
         if (scroll.scrollTop === 0) {
           setTimeout(() => {
             if (scroll.scrollTop < 100) {
-              console.log("请求聊天记录", scroll.scrollTop);
               this.loadingMessage = true;
               this.$sharedWorker.port.postMessage({
                 type: 2,
@@ -1276,7 +1268,6 @@ export default {
             }
           }, 200)
         } else if (scroll.scrollTop < 100) {
-          console.log("请求聊天记录", scroll.scrollTop);
           this.$sharedWorker.port.postMessage({
             type: 2,
             data: {
@@ -1317,7 +1308,6 @@ export default {
       this.offset = 0;
       this.hasMore = true;
       this.loadingMessage = false;
-      console.log("watch-activeSession.sessionId-getChatLogs: ", newVal)
       this.checkSWStatus();
       this.$sharedWorker.port.postMessage({
         type: 2,
@@ -1349,7 +1339,6 @@ export default {
       this.offset = 0;
       this.hasMore = true;
       this.loadingMessage = false;
-      console.log("watch-activeMenu-loadMsgNotify: ", newValue)
       this.loadMsgNotify(newValue);
       // 获取未读通知
       msgNoticeApi.getUnreadStatistic().then(data => {

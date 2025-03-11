@@ -123,7 +123,7 @@ export default {
    */
   async uploadFile(file64) {
     return await Vue.prototype.$request({
-      url: "/st/upload",
+      url: "/sl/chat/upload",
       method: 'POST',
       data: file64
     });

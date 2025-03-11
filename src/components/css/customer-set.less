@@ -164,6 +164,13 @@
 
         .iconfont {
           font-size: 1.5rem;
+          color: var(--title-color);
+        }
+
+        .update-ing {
+          font-size: 1.1rem;
+          animation: spin 1s linear infinite;
+          display: inline-block;
         }
       }
     }
@@ -287,5 +294,15 @@
 
   /deep/.ivu-color-picker-input {
     cursor: pointer;
+  }
+}
+
+/* 定义旋转动画 */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }

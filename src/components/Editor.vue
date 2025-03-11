@@ -333,11 +333,11 @@ export default {
       });
       // 设置显示成功消息UI，默认使用 console.log
       this.engine.messageSuccess = (msg) => {
-        console.log(msg);
+        this.$Message.success(msg)
       };
-      // 设置显示错误消息UI，默认使用 console.error
-      this.engine.messageError = (error) => {
-        console.log(error);
+      // 设置显示错误消息UI
+      this.engine.messageError = (type, error) => {
+        this.$Message.error(error)
       };
       //卡片最大化时设置编辑页面样式
       this.engine.on("card:maximize", () => {
