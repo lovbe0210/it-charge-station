@@ -82,7 +82,7 @@
               white-space: nowrap;
 
               &:hover {
-                color: @grey-white-font-color;
+                color: var(--title-color);
               }
             }
 
@@ -90,7 +90,7 @@
               font-size: 14px;
               line-height: 24px;
               display: -webkit-box;
-              max-height: 48px;
+              height: 48px;
               margin-bottom: 3px;
               color: var(--title-color);
               -webkit-box-orient: vertical;    /* 使盒子垂直排列子元素 */
@@ -120,7 +120,9 @@
           width: 100% !important;
 
           .post-content {
-            margin-bottom: 5px !important;
+            margin-bottom: 8px !important;
+            max-height: 48px;
+            height: unset !important;
           }
         }
 

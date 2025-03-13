@@ -48,6 +48,7 @@
           <b-nav-item class="avatar mr-2">
             <Dropdown placement="bottom"
                       @on-click="routeNavigate"
+                      @on-visible-change="updateUnreadStatistic"
                       transfer-class-name="dropdown-background"
                       trigger="click">
               <a href="javascript:void(0)">
@@ -83,16 +84,16 @@
                 </DropdownItem>
                 <DropdownItem>
                   <div class="counter quick-start-item">
-                    <div class="single-count-item" @click="routeNavigate('noteHome')">
-                      <div class="count-num">55</div>
+                    <div class="single-count-item" @click="routeNavigate('article')">
+                      <div class="count-num">{{ userStatistic.articleCount }}</div>
                       <div class="count-text">文章</div>
                     </div>
-                    <div class="single-count-item" @click="routeNavigate('concern')">
-                      <div class="count-num">32</div>
+                    <div class="single-count-item" @click="routeNavigate('follow')">
+                      <div class="count-num">{{ userStatistic.followCount }}</div>
                       <div class="count-text">关注</div>
                     </div>
                     <div class="single-count-item" @click="routeNavigate('fans')">
-                      <div class="count-num">110</div>
+                      <div class="count-num">{{ userStatistic.fansCount }}</div>
                       <div class="count-text">粉丝</div>
                     </div>
                   </div>
@@ -253,6 +254,7 @@ import AuthModal from "@/components/common/AuthModal.vue";
 import AuthApi from "@/api/AuthApi";
 import WriteCenterApi from "@/api/WriteCenterApi";
 import msgNoticeApi from "@/api/MsgNoticeApi";
+import userApi from "@/api/UserApi";
 
 export default {
   name: 'Header',
@@ -278,6 +280,12 @@ export default {
         systemMsgCount: 0,
         chatMsgCount: 0,
         unreadTotal: 0
+      },
+      userStatistic: {
+        articleCount: 0,
+        columnCount: 0,
+        fansCount: 0,
+        followCount: 0
       }
     }
   },
@@ -388,14 +396,14 @@ export default {
         case 'levelBar':
           this.$router.push({name: 'Grade'})
           break;
-        case 'noteHome':
-          this.$router.push({name: 'NoteHome'})
+        case 'article':
+          this.$router.push({name: 'Article'})
           break;
         case 'fans':
-          this.$router.push({path: '/dashboard/relational/fans'})
+          this.$router.push({path: '/user/relational/fans'})
           break;
-        case 'concern':
-          this.$router.push({path: '/dashboard/relational/concern'})
+        case 'follow':
+          this.$router.push({path: '/user/relational/follow'})
           break;
         case 'creativeSpace':
           this.$router.push({path: '/creative'})
@@ -445,6 +453,16 @@ export default {
         }
       })
     },
+    updateUserStatistic(visible) {
+      if (!visible) {
+        return;
+      }
+      userApi.getUserStatistic().then(data => {
+        if (data?.result) {
+          this.userStatistic = data?.data;
+        }
+      })
+    },
     search() {
       if (!this.keywords) {
         return;
@@ -487,6 +505,12 @@ export default {
     msgNoticeApi.getUnreadStatistic().then(data => {
       if (data?.result) {
         this.unreadStatistic = data.data;
+      }
+    })
+    // 获取统计信息
+    userApi.getUserStatistic().then(data => {
+      if (data?.result) {
+        this.userStatistic = data?.data;
       }
     })
   }

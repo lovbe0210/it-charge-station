@@ -13,30 +13,23 @@
       </p>
     </div>
     <Divider class="divider"/>
-    <div class="hot-list"
-         v-infinite-scroll="debounceRequestRank"
-         :infinite-scroll-disabled="!hasMore"
-         :infinite-scroll-distance="100">
+    <div class="hot-list">
       <div class="article-item-link"  v-for="(item,index) in authorList" :key="item.uid">
         <div class="author-item-wrap">
           <a class="author-item-left" :href="'/' + item.domain" target="_blank">
             <span :class="['iconfont', 'rank-' + (index+1), 'sort-number']" v-if="index <= 2"></span>
             <span class="sort-number" v-else>{{index}}</span>
-            <user-card :userInfo="item" :popoverContainer="popoverContainer">
-              <slot>
-                <b-avatar
-                  :src="fileUrl(item.avatarUrl)"
-                  size="2.5rem"
-                  class="author-avatar"
-                  :to="'/' + item.domain">
-                  <span v-if="!item.avatarUrl">{{item.username}}</span>
-                </b-avatar>
-              </slot>
-            </user-card>
-            <a href="/user/3468339576581548" class="author-info" target="_blank">
+            <b-avatar
+              :src="fileUrl(item.avatarUrl)"
+              size="2.5rem"
+              class="author-avatar"
+              href="javascript:void(0)">
+              <span v-if="!item.avatarUrl">{{item.username}}</span>
+            </b-avatar>
+            <div class="author-info">
               <user-card :userInfo="item" :popoverContainer="popoverContainer">
                 <slot>
-                  <b-link to="/lovbe0210" class="author-name">
+                  <b-link :to="'/' + item.domain" class="author-name">
                     <span class="author-name-text">{{item.username}}</span>
                     <span :class="['iconfont', 'icon-level' + item.level]"></span>
                   </b-link>
@@ -53,7 +46,7 @@
                   {{ formatNumber(item.fansCount) }} 粉丝
                 </div>
               </div>
-            </a>
+            </div>
           </a>
           <div class="author-right" v-if="1 === 0">
             <Button class="action-btn ghost-btn"
@@ -69,7 +62,7 @@
 </template>
 
 <script>
-  import { formatNumber, debounce } from '@/utils'
+  import { formatNumber } from '@/utils'
   import UserCard from "@/components/common/UserCard.vue";
   import contentPicksApi from "@/api/ContentPicksApi";
   import socialApi from "@/api/SocialApi";
@@ -79,10 +72,7 @@
     data() {
       return {
         popoverContainer: null,
-        hasMore: true,
-        offset: 0,
-        authorList: [],
-        debounceRequestRank: function () {}
+        authorList: []
       }
     },
     computed: {
@@ -101,20 +91,6 @@
       formatNumber,
       fileUrl(path) {
         return this.fileService + path;
-      },
-      loadMore() {
-        if (!this.hasMore) {
-          return;
-        }
-        contentPicksApi.getRankAuthor({offset: this.offset}).then(data => {
-          if (data?.result) {
-            this.authorList.push(...data.data.list);
-            this.hasMore = data.data.hasMore
-            if (data.data.hasMore) {
-              this.offset = this.offset + 20;
-            }
-          }
-        })
       },
       followAction(author) {
         // 未登录
@@ -142,7 +118,11 @@
     },
     created() {
       this.authorList = [];
-      this.debounceRequestRank = debounce(this.loadMore, 800, true);
+      contentPicksApi.getRankAuthor({offset: 0, limit: 30}).then(data => {
+        if (data?.result) {
+          this.authorList = data.data.list;
+        }
+      })
     }
   }
 </script>

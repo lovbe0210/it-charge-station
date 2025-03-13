@@ -34,18 +34,14 @@
                 </div>
               </div>
               <div class="article-author">
-                <a href="/user/3468339576581548" class="article-author-name" target="_blank">
-                  <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer">
-                    <slot>
-                      <b-avatar
-                        :src="fileUrl(item.userInfo.avatarUrl)"
-                        size="1.5rem"
-                        class="avatar"
-                        :to="'/' + item.userInfo.domain">
-                        <span v-if="!item.userInfo.avatarUrl">{{item.userInfo.username}}</span>
-                      </b-avatar>
-                    </slot>
-                  </user-card>
+                <div class="article-author-name">
+                  <b-avatar
+                    :src="fileUrl(item.userInfo.avatarUrl)"
+                    size="1.5rem"
+                    class="avatar"
+                    href="javascript:void(0)">
+                    <span v-if="!item.userInfo.avatarUrl">{{item.userInfo.username}}</span>
+                  </b-avatar>
                   <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer">
                     <slot>
                       <b-link :to="'/' + item.userInfo.domain">
@@ -53,7 +49,7 @@
                       </b-link>
                     </slot>
                   </user-card>
-                </a>
+                </div>
                 <div class="author-text">
                   {{ formatNumber(item.articleCount) }} 文档&nbsp;·&nbsp;
                 </div>
@@ -78,7 +74,7 @@
 </template>
 
 <script>
-  import { formatNumber, debounce } from '@/utils'
+  import { formatNumber } from '@/utils'
   import UserCard from "@/components/common/UserCard.vue";
   import contentPicksApi from "@/api/ContentPicksApi";
   export default {
@@ -86,10 +82,7 @@
     data() {
       return {
         popoverContainer: null,
-        hasMore: true,
-        offSet: 0,
-        columnList: [],
-        debounceRequestRank: function () {}
+        columnList: []
       }
     },
     components: {
@@ -99,20 +92,6 @@
       formatNumber,
       fileUrl(path) {
         return this.fileService + path;
-      },
-      loadMore() {
-        if (!this.hasMore) {
-          return;
-        }
-        contentPicksApi.getRankColumn({offset: this.offset}).then(data => {
-          if (data?.result) {
-            this.columnList.push(...data.data.list);
-            this.hasMore = data.data.hasMore
-            if (data.data.hasMore) {
-              this.offset = this.offset + 20;
-            }
-          }
-        })
       }
     },
     mounted() {
@@ -120,7 +99,11 @@
     },
     created() {
       this.columnList = [];
-      this.debounceRequestRank = debounce(this.loadMore, 800, true);
+      contentPicksApi.getRankColumn({offset: 0, limit: 30}).then(data => {
+        if (data?.result) {
+          this.columnList = data.data.list;
+        }
+      })
     }
   }
 </script>

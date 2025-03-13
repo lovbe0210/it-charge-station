@@ -169,11 +169,27 @@ export default {
     })
   },
 
+  /**
+   * 个人主页内容删除
+   * @param contentId
+   * @returns {Promise<*>}
+   */
   async deleteDomainContent(contentId) {
     return await Vue.prototype.$request({
       url: "/user/dmcontent/delete",
       method: 'POST',
       data: { contentId }
+    })
+  },
+
+  /**
+   * 获取统计信息
+   * @returns {Promise<*>}
+   */
+  async getUserStatistic() {
+    return await Vue.prototype.$request({
+      url: "/user/statistic",
+      method: 'GET'
     })
   }
 }

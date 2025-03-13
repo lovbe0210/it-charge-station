@@ -71,7 +71,7 @@
       <ul class="acquire-rule-wrapper">
         <li class="acquire-rule-wrapper-item-wrapper">
           <div class="acquire-rule-item">
-            <span class="acquire-rule-text">创建 1 篇文档</span>
+            <span class="acquire-rule-text">发表 1 篇文档</span>
             <span class="acquire-rule-count">
                       电池 +3 <span class="iconfont icon-battery"/>
                     </span>
@@ -79,9 +79,9 @@
         </li>
         <li class="acquire-rule-wrapper-item-wrapper">
           <div class="acquire-rule-item">
-            <span class="acquire-rule-text">文档获得 1 个赞</span>
+            <span class="acquire-rule-text">内容获得 1 个点赞</span>
             <span class="acquire-rule-count">
-                      电池 +3 <span class="iconfont icon-battery"/>
+                      电池 +2 <span class="iconfont icon-battery"/>
                     </span>
           </div>
         </li>
@@ -89,21 +89,21 @@
           <div class="acquire-rule-item">
             <span class="acquire-rule-text">文档获得 1 次精选</span>
             <span class="acquire-rule-count">
-                      电池 +3 <span class="iconfont icon-battery"/>
+                      电池 +5 <span class="iconfont icon-battery"/>
                     </span>
           </div>
         </li>
         <li class="acquire-rule-wrapper-item-wrapper">
           <div class="acquire-rule-item">
-            <span class="acquire-rule-text">评论 1 篇文档</span>
+            <span class="acquire-rule-text">内容获得 1 条评论</span>
             <span class="acquire-rule-count">
-                      电池 +3 <span class="iconfont icon-battery"/>
+                      电池 +1 <span class="iconfont icon-battery"/>
                     </span>
           </div>
         </li>
         <li class="acquire-rule-wrapper-item-wrapper">
           <div class="acquire-rule-item">
-            <span class="acquire-rule-text">关注 1 个用户</span>
+            <span class="acquire-rule-text">新增 1 个粉丝</span>
             <span class="acquire-rule-count">
                       电池 +3 <span class="iconfont icon-battery"/>
                     </span>

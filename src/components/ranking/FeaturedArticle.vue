@@ -13,10 +13,7 @@
       </p>
     </div>
     <Divider class="divider"/>
-    <div class="hot-list"
-         v-infinite-scroll="debounceRequestRank"
-         :infinite-scroll-disabled="!hasMore"
-         :infinite-scroll-distance="100">
+    <div class="hot-list">
       <a :href="toHref(item)"
          class="article-item-link"
          target="_blank"
@@ -32,20 +29,16 @@
               </div>
               <div class="article-author">
                 <a :href="'/' + item.userInfo.domain" class="article-author-name" target="_blank">
+                  <b-avatar
+                    :src="fileUrl(item.userInfo.avatarUrl)"
+                    size="1.5rem"
+                    class="avatar"
+                    href="javascript:void(0)">
+                    <span v-if="!item.userInfo.avatarUrl">{{item.userInfo.username}}</span>
+                  </b-avatar>
                   <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer">
                     <slot>
-                      <b-avatar
-                        :src="fileUrl(item.userInfo.avatarUrl)"
-                        size="1.5rem"
-                        class="avatar"
-                        :to="'/' + item.userInfo.domain">
-                        <span v-if="!item.userInfo.avatarUrl">{{item.userInfo.username}}</span>
-                      </b-avatar>
-                    </slot>
-                  </user-card>
-                  <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer">
-                    <slot>
-                      <b-link :to="'/' + item.userInfo.domain">
+                      <b-link :to="'/' + item.userInfo.domain" target="_blank">
                         <span class="article-author-name-text">{{item.userInfo.username}}&nbsp;·&nbsp;</span>
                       </b-link>
                     </slot>
@@ -75,7 +68,7 @@
 </template>
 
 <script>
-  import { formatNumber, debounce } from '@/utils'
+  import { formatNumber } from '@/utils'
   import UserCard from "@/components/common/UserCard.vue";
   import contentPicksApi from "@/api/ContentPicksApi";
   export default {
@@ -83,7 +76,6 @@
     data() {
       return {
         popoverContainer: null,
-        hasMore: true,
         articleList: [],
         debounceRequestRank: function () {}
       }
@@ -99,20 +91,6 @@
       },
       fileUrl(path) {
         return this.fileService + path;
-      },
-      loadMore() {
-        if (!this.hasMore) {
-          return;
-        }
-        contentPicksApi.getRankArticle({offset: this.offset}).then(data => {
-          if (data?.result) {
-            this.articleList.push(...data.data.list);
-            this.hasMore = data.data.hasMore
-            if (data.data.hasMore) {
-              this.offset = this.offset + 20;
-            }
-          }
-        })
       }
     },
     mounted() {
@@ -120,7 +98,11 @@
     },
     created() {
       this.articleList = [];
-      this.debounceRequestRank = debounce(this.loadMore, 800, true);
+      contentPicksApi.getRankArticle({offset: 0, limit: 30}).then(data => {
+        if (data?.result) {
+          this.articleList = data.data.list;
+        }
+      })
     }
   }
 </script>

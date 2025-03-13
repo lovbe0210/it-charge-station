@@ -276,6 +276,18 @@ export default {
       method: 'POST',
       data: browseHistoryPage
     });
+  },
+  /**
+   * 获取关注动态
+   * @param pageInfo
+   * @returns {Promise<*>}
+   */
+  async getCreateRecords(pageInfo) {
+    return await Vue.prototype.$request({
+      url: "/cps/follow/create/record",
+      method: 'POST',
+      data: pageInfo
+    })
   }
 
 }
