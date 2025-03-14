@@ -131,7 +131,7 @@ export default {
       }
       socialApi.followAction(attentionRequest).then(data => {
         if (data?.result) {
-          this.$Message.success(this.userInfo?.isFollow ? '已取消关注' : '关注成功');
+          this.$Message.success(attentionRequest.action ? '关注成功' : '已取消关注');
           this.isFollow = attentionRequest.action;
           if (attentionRequest.action === 1) {
             this.fansCount++;

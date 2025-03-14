@@ -84,7 +84,7 @@
                         </span>-->
           </div>
           <div class="tabs-notify-holder beauty-scroll"
-               v-infinite-scroll="debounceNoticeRequest"
+               v-infinite-scroll="handleReachBottom"
                :infinite-scroll-disabled="!hasMore"
                :infinite-scroll-distance="100"
                v-if="activeMenu !== 'chatMessage' && activeMenu !== 'messageSetting'">
@@ -238,9 +238,9 @@
                       <span class="context-subject">
                         {{ item.content }}
                       </span>
-                      <a :href="item.url" target="_blank">
+                      <b-link @click="routePath(item)">
                         <span class="sys-msg-label">&nbsp;{{ item.label }}&nbsp;</span>
-                      </a>
+                      </b-link>
                       <Badge dot v-if="item.readStatus === 0 && messageSetting.newMsgDot" :offset="[-9, -5]"/>
                     </p>
                     <p>
@@ -592,10 +592,7 @@ export default {
       isConnected: false,
       // 连接重连中
       retry: false,
-      debounceChatRequest: function () {
-      },
-      debounceNoticeRequest: function () {
-      }
+      debounceChatRequest: function () {}
     }
   },
   props: {
@@ -1353,7 +1350,6 @@ export default {
   },
   created() {
     this.debounceChatRequest = debounce(this.handleReachTop, 200, true);
-    this.debounceNoticeRequest = debounce(this.handleReachBottom, 500, true);
     // 初始化sharedWorker进行webSocket连接
     Vue.prototype.$sharedWorker = new SharedWorker('../shared-worker.js', 'workerWs');
     if (!this.$sharedWorker) {

@@ -39,7 +39,7 @@
             <span class="article-time">
               {{
                 treeParamBox.articleShowInfo === 'updateTime'
-                  ? treeParamBox.formatTime(treeNode.updateTime) : treeParamBox.formatTime(treeNode.createTime)
+                  ? treeParamBox.formatTime2H(treeNode.updateTime) : treeParamBox.formatTime2H(treeNode.createTime)
               }}
             </span>
             <Dropdown placement="bottom-end"

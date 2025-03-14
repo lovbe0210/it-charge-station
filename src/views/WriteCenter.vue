@@ -59,7 +59,7 @@
       <div class="editor-setting">
         <a-tooltip overlayClassName="read-header-tooltip" :getPopupContainer="()=>this.$refs.TooltipContainer">
           <template slot="title">
-            <span>{{docStyle.autoPublish === 1 ? '已开启自动发布，内容将自动更新至阅读页面，亦可手动点击更新' : '将最新内容更新至阅读页面'}}</span>
+            <span>{{docStyle.autoPublish === 1 ? '已开启自动发布，内容将会自动更新至阅读页面' : '将最新内容更新至阅读页面'}}</span>
           </template>
           <Button class="update-btn" type="success" @click="updateDocConten">
             发布
@@ -234,6 +234,7 @@ import {formatTime2H} from '@/utils'
 import ArticleSetting from "@/components/common/ArticleSetting"
 import ArticleVersion from "@/components/common/ArticleVersion"
 import WriteCenterApi from "@/api/WriteCenterApi";
+import preferenceApi from "../api/PreferenceApi";
 
 export default {
   name: 'WriteCenter',
@@ -340,6 +341,11 @@ export default {
   },
   created() {
     this.docStyle = {...this.docStyle, ...this.$store.state.docStyle};
+    preferenceApi.getPreferenceSetting().then(data => {
+      if (data?.result) {
+        this.docStyle = {...this.docStyle, ...data.data}
+      }
+    })
     WriteCenterApi.getArticleForEdit(this.uri).then(data => {
       if (data?.result) {
         this.articleInfo = data.data;
