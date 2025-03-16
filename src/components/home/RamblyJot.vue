@@ -259,10 +259,12 @@ export default {
       // 获取预览内容
       let text = this.engine?.model?.toText();
       let previewContent = '';
+      let wordsNum = 0;
       if (text) {
         text = text.replace(/\r\n/g, "");
         text = text.replace(/\n/g, "");
         text = text.replace(" ", "");
+        wordsNum = text.length;
         // 判断是否需要提取摘要
         if (text.length > 297) {
           previewContent = text.substr(0, 297);
@@ -298,7 +300,8 @@ export default {
       let ramblyInfo = {
         content: jsonValue,
         previewContent,
-        previewImg
+        previewImg,
+        wordsNum
       }
       ramblyJotApi.saveRamblyJot(ramblyInfo).then(data => {
         if (data?.result) {

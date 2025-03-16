@@ -18,7 +18,7 @@
         <div class="author-item-wrap">
           <a class="author-item-left" :href="'/' + item.domain" target="_blank">
             <span :class="['iconfont', 'rank-' + (index+1), 'sort-number']" v-if="index <= 2"></span>
-            <span class="sort-number" v-else>{{index}}</span>
+            <span class="sort-number" v-else>{{index+1}}</span>
             <b-avatar
               :src="fileUrl(item.avatarUrl)"
               size="2.5rem"

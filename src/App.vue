@@ -252,7 +252,7 @@
         };
         // 本地数据为主，更新至云端
         preferenceApi.updatePreferenceSetting(updateConfig);
-        if (musicInfo.musicList && musicInfo.musicList.length > 0) {
+        if (musicInfo?.musicList && musicInfo.musicList.length > 0) {
           preferenceApi.updateMusicPlayList(musicInfo.musicList);
         } else {
           preferenceApi.getMusicPlayList().then(data => {

@@ -372,7 +372,7 @@ router.beforeEach((to, from, next) => {
         // 专栏
         let newParam = {
           domain: params?.domain,
-          columnId: params?.articleId
+          columnUri: params?.articleUri
         }
         next({
           name: "SColumnReadHome",

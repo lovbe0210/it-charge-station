@@ -2070,7 +2070,8 @@
           }
 
           span:first-child {
-            background-color: #F4F5F5;
+            background-color: #EFF7F7;
+            outline: 1px solid #f1f1f1;
           }
 
           span:nth-child(2) {
@@ -2098,11 +2099,7 @@
 
     .hotmap {
       width: 100%;
-      overflow-x: hidden;
-
-      &:hover {
-        overflow-x: auto;
-      }
+      overflow-x: auto;
 
       &::-webkit-scrollbar-thumb {
         background-color: unset;
@@ -2140,13 +2137,9 @@
         dominant-baseline: text-before-edge;
       }
 
-      .hotmapRender-module_dayBox[data-level="-1"] {
-        fill: #FFFFFF;
-        outline: 1px solid #f5f5f5;
-      }
-
       .hotmapRender-module_dayBox[data-level="0"] {
-        fill: #F4F5F5;
+        fill: #EFF7F7;
+        outline: 1px solid #f1f1f1;
       }
 
       .hotmapRender-module_dayBox[data-level="1"] {

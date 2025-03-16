@@ -22,7 +22,7 @@
         <div class="article-item-wrap">
           <div class="article-item-left">
             <span :class="['iconfont', 'rank-' + (index+1), 'article-number']" v-if="index <= 2"></span>
-            <span class="article-number" v-else>{{index}}</span>
+            <span class="article-number" v-else>{{index+1}}</span>
             <div class="article-detail">
               <div :title="item.title" class="article-title">
                 {{item.title}}
