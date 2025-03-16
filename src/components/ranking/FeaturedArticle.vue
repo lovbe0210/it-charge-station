@@ -76,8 +76,7 @@
     data() {
       return {
         popoverContainer: null,
-        articleList: [],
-        debounceRequestRank: function () {}
+        articleList: []
       }
     },
     components: {

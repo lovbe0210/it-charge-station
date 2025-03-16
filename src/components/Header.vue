@@ -453,16 +453,6 @@ export default {
         }
       })
     },
-    updateUserStatistic(visible) {
-      if (!visible) {
-        return;
-      }
-      userApi.getUserStatistic().then(data => {
-        if (data?.result) {
-          this.userStatistic = data?.data;
-        }
-      })
-    },
     search() {
       if (!this.keywords) {
         return;

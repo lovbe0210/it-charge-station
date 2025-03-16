@@ -3,7 +3,7 @@
     <div class="data-stats-tip">
       <div class="data-center-title">
         <p class="title-welcome">
-          👋 布衣草人，这是你和小站相伴的第 850 天
+          👋 {{ userInfo?.username }}，这是你和小站相伴的第 {{ registerDays }} 天
         </p>
         <p class="title-desc">
           数据更新至 2023-08-08（每日上午更新昨日数据，"--"表示暂无数据）
@@ -62,16 +62,16 @@
           </div>
           <div class="myData-common-body">
             <div>
-              <p>22,071</p>
-              <p>总字数</p>
-            </div>
-            <div>
               <p>43</p>
               <p>文章</p>
             </div>
             <div>
               <p>1</p>
               <p>专栏</p>
+            </div>
+            <div>
+              <p>12</p>
+              <p>随笔</p>
             </div>
           </div>
           <div class="myData-book">
@@ -138,6 +138,25 @@
     components: {
       HotMap
     },
+    computed: {
+      userInfo() {
+        return this.$store.state.userInfo;
+      },
+      registerDays() {
+        if (!this.userInfo) {
+          return "--";
+        }
+        let regDate = new Date(this.userInfo.createTime);
+        const regUTCMidnight = Date.UTC(regDate.getUTCFullYear(), regDate.getUTCMonth(), regDate.getUTCDate());
+        // 获取当前时间的UTC午夜时间
+        const now = new Date();
+        const nowUTCMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+        // 计算天数差并加1（注册当天为第1天）
+        const diffMs = nowUTCMidnight - regUTCMidnight;
+        const diffDays = Math.floor(diffMs / 86400000) + 1; // 关键修正：+1
+        return Math.max(diffDays, 1); // 确保非负
+      }
+    },
     methods: {
       changeStatsOption(option) {
         if (this.statsOption === option) {
@@ -151,9 +170,10 @@
       }
     },
     mounted() {
-      if (this.tooltipContainer == null) {
-        this.tooltipContainer = this.$refs.tooltipContainer;
-      }
+      this.tooltipContainer = this.$refs.tooltipContainer;
+    },
+    created() {
+
     }
   }
 </script>

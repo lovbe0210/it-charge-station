@@ -282,7 +282,15 @@ export default {
       method: 'POST',
       data: operateInfo
     });
+  },
+
+  async getGrowthStatList(rangeType) {
+    return await Vue.prototype.$request({
+      url: "/cpt/growth/stats/" + rangeType,
+      method: 'GET'
+    });
   }
+
 }
 
 
