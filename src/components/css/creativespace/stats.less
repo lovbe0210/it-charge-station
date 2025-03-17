@@ -121,7 +121,7 @@
       }
 
       .detail-myData {
-        background: var(--on-theme-bg-color);
+        background: var(--modal-bg-color);
 
         .myData-common-body {
           margin-top: 32px;
@@ -195,11 +195,18 @@
             font-weight: 400;
             margin-top: 8px;
           }
+
+          .most-words-title {
+            max-width: 50%;
+            overflow: hidden; /* 隐藏超出内容 */
+            text-overflow: ellipsis; /* 添加省略号 */
+            white-space: nowrap;
+          }
         }
       }
 
       .detail-public {
-        background: var(--on-theme-bg-color);
+        background: var(--modal-bg-color);
 
         .public-data-title-info {
           display: flex;

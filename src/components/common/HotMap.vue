@@ -12,12 +12,12 @@
     </div>
     <div class="hotmap">
       <svg width="998.14" height="158.84000000000003" class="hotmap-module_hotmapSvg hotmap-svg">
-        <g :transform="'translate(' + (4+index*19.14) + ')'" v-for="(dayItem,index) in hotMap.dayBox"
+        <g :transform="'translate(' + (4+index*19.14) + ')'" v-for="(dayItem,index) in hotMap.yearLabel"
            :key="index">
           <a-tooltip overlayClassName="personal-center-tooltip" v-for="(item,index) in dayItem" :key="index"
                      :getPopupContainer="getTooltipContainer">
             <template slot="title">
-              {{item.day + ' ' + item.week}}
+              {{item.date + ' ' + item.week}}
             </template>
             <rect class="hotmapRender-module_dayBox" width="14" height="14" rx="2" ry="2"
                   x="0" :y="index * 19.14" :data-level="item.level">
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+    import writeCenterApi from "../../api/WriteCenterApi";
+
     export default {
         name: "HotMap",
         data() {
@@ -81,1929 +83,1929 @@
                     firstDayByWeek: 49
                   }
                 ],
-                dayBox: [
+                yearLabel: [
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: 4
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: 1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ],
                   [
                     {
-                      day: '2022-07-11',
-                      week: '周一',
-                      level: 1
-                    },
-                    {
-                      day: '2022-07-12',
-                      week: '周二',
-                      level: 3
-                    },
-                    {
-                      day: '2022-07-13',
-                      week: '周三',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-14',
-                      week: '周四',
-                      level: 5
-                    },
-                    {
-                      day: '2022-07-15',
-                      week: '周五',
+                      date: '',
+                      week: '',
                       level: 0
                     },
                     {
-                      day: '2022-07-16',
-                      week: '周六',
-                      level: -1
+                      date: '',
+                      week: '',
+                      level: 0
                     },
                     {
-                      day: '2022-07-17',
-                      week: '周日',
-                      level: -1
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
+                    },
+                    {
+                      date: '',
+                      week: '',
+                      level: 0
                     }
                   ]
                 ]
@@ -2016,9 +2018,14 @@
         }
       },
       mounted() {
-        if (this.tooltipContainer == null) {
-          this.tooltipContainer = this.$refs.tooltipContainer;
-        }
+        this.tooltipContainer = this.$refs.tooltipContainer;
+      },
+      created() {
+          writeCenterApi.getGrowthStatList().then(data => {
+            if (data?.result) {
+              this.hotMap = data.data;
+            }
+          })
       }
     }
 </script>
@@ -2070,7 +2077,7 @@
           }
 
           span:first-child {
-            background-color: #EFF7F7;
+            background-color: #ffffff;
             outline: 1px solid #f1f1f1;
           }
 
@@ -2138,7 +2145,7 @@
       }
 
       .hotmapRender-module_dayBox[data-level="0"] {
-        fill: #EFF7F7;
+        fill: #ffffff;
         outline: 1px solid #f1f1f1;
       }
 

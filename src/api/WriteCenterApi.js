@@ -284,9 +284,16 @@ export default {
     });
   },
 
-  async getGrowthStatList(rangeType) {
+  async getGrowthStatStatistic(rangeType) {
     return await Vue.prototype.$request({
       url: "/cpt/growth/stats/" + rangeType,
+      method: 'GET'
+    });
+  },
+
+  async getGrowthStatList() {
+    return await Vue.prototype.$request({
+      url: "/cpt/creation/index",
       method: 'GET'
     });
   }
