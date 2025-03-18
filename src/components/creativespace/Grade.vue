@@ -37,7 +37,7 @@
           <div class="daily-exp-box">
             <span class="iconfont icon-exp-complete"></span>
             <p class="daily-exp-info">每日浏览文章</p>
-            <p class="daily-exp-getexp">5经验值到手</p>
+            <p class="daily-exp-getexp">已获得0/10</p>
             <div class="h-line"></div>
           </div>
         </div>
@@ -45,7 +45,7 @@
           <div class="daily-exp-box">
             <span class="iconfont icon-wait-complete"></span>
             <p class="daily-exp-info">每日写作</p>
-            <p class="daily-exp-none">已获得0/10</p>
+            <p class="daily-exp-none">5经验值到手</p>
           </div>
         </div>
       </div>
