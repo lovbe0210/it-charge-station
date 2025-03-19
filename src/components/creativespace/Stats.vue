@@ -119,7 +119,7 @@
         </div>
       </div>
       <div class="data-center-hotmap">
-        <hot-map></hot-map>
+        <hot-map :domain="userInfo?.domain"></hot-map>
       </div>
     </div>
   </div>

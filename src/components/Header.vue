@@ -72,13 +72,13 @@
                       <span :class="`iconfont icon-level`+ userInfo.level"/>
                       <div class="progress-wrapp">
                         <div class="totalProgress">
-                          <div class="currentProgress" style="width: 40%"/>
+                          <div class="currentProgress" :style="{width : expPercent}"/>
                         </div>
                       </div>
-                      <span :class="`iconfont icon-level`+ (userInfo.level + 1)"/>
+                      <span :class="`iconfont icon-level`+ (userInfo.level === 6 ? 6 : (userInfo.level + 1))"/>
                     </div>
                     <div class="level-bar-text">
-                      当前成长{{ userInfo.growthValue }}，距离升级Lv.{{ userInfo.level + 1 }} 还需要12823
+                      当前成长{{ userInfo?.growthValue }}，距离升级Lv.{{ userInfo?.level + 1 }} 还需要{{ updateNeedExp }}
                     </div>
                   </div>
                 </DropdownItem>
@@ -281,6 +281,14 @@ export default {
         chatMsgCount: 0,
         unreadTotal: 0
       },
+      levelExp: {
+        level1: 100,
+        level2: 300,
+        level3: 900,
+        level4: 2800,
+        level5: 9000,
+        level6: 28800
+      },
       userStatistic: {
         articleCount: 0,
         columnCount: 0,
@@ -300,6 +308,24 @@ export default {
     loginStatus() {
       let userInfo = this.$store.state.userInfo
       return userInfo !== null && userInfo.token?.length === 32
+    },
+    updateNeedExp() {
+      let level = 'level' + (this.userInfo?.level + 1);
+      let willExp = this.levelExp[level];
+      if (!willExp) {
+        return 0;
+      }
+      return willExp - this.userInfo?.growthValue
+    },
+    expPercent() {
+      let growthValue = this.userInfo?.growthValue;
+      if (!growthValue) {
+        return '0%';
+      }
+      let level = 'level' + (this.userInfo?.level === 6 ? 6 : (this.userInfo?.level + 1));
+      let willExp = this.levelExp[level];
+      let percentage = growthValue / willExp * 100;
+      return Math.floor(percentage) + '%';
     },
     messageSetting() {
       return this.$store.state.messageSetting;
@@ -495,6 +521,12 @@ export default {
     msgNoticeApi.getUnreadStatistic().then(data => {
       if (data?.result) {
         this.unreadStatistic = data.data;
+      }
+    })
+    // 获取等级经验条
+    userApi.getLevelExp().then(data => {
+      if (data?.result) {
+        this.levelExp = data.data;
       }
     })
     // 获取统计信息

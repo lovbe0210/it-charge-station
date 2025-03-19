@@ -291,9 +291,9 @@ export default {
     });
   },
 
-  async getGrowthStatList() {
+  async getGrowthStatList(domain) {
     return await Vue.prototype.$request({
-      url: "/cpt/creation/index",
+      url: "/cpt/creation/index/" + domain,
       method: 'GET'
     });
   }

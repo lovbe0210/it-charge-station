@@ -3,22 +3,22 @@
     <h1 class="setting-title">成长等级</h1>
     <div class="layout-module_level layout-module_item">
       <div class="level-module_nickName">
-        <span class="nick-name">布衣草人</span>
+        <span class="nick-name">{{ userInfo?.username }}</span>
       </div>
       <div class="level-module_experienceBar">
               <span class="experience-bar-body">
                   <div class="progressBar">
-                    <span class="experience-bar-level">LV5</span>
+                    <span class="experience-bar-level">LV{{ userInfo?.level }}</span>
                     <span data-v-852cd7a8="" class="experience-bar-progress">
                       进度条
-                      <span data-v-852cd7a8="" class="experience-bar-upgo" style="width: 55.41%;"></span>
+                      <span data-v-852cd7a8="" class="experience-bar-upgo" :style="{width: expPercent}"></span>
                     </span>
                   </div>
-                  <span class="experience-bar-level-number">
-                    <i class="now-num">15947</i>
-                    <i class="num-icon">/</i>
-                    <i class="max-num">28800</i>
-                  </span>
+              </span>
+              <span class="experience-bar-level-number">
+                <i class="now-num">{{ userInfo?.growthValue }}</i>
+                <i class="num-icon">/</i>
+                <i class="max-num">{{ nextLevelExp }}</i>
               </span>
       </div>
     </div>
@@ -27,25 +27,31 @@
       <div class="dailyReward-module_exp">
         <div class="daily-exp-item">
           <div class="daily-exp-box">
-            <span class="iconfont icon-exp-complete"></span>
+            <span :class="['iconfont', dailyEncourage.hasLogin ? 'completed' : 'un-complete']"></span>
             <p class="daily-exp-info">每日登录</p>
-            <p class="daily-exp-getexp">5经验值到手</p>
+            <p :class="dailyEncourage.hasLogin ? 'daily-exp-getexp' : 'daily-exp-none'">
+              {{ dailyEncourage.loginExp }}经验值到手
+            </p>
             <div class="h-line"></div>
           </div>
         </div>
         <div class="daily-exp-item">
           <div class="daily-exp-box">
-            <span class="iconfont icon-exp-complete"></span>
+            <span :class="['iconfont', dailyEncourage.readSize === 0 ? 'un-complete' : dailyEncourage.readSize === dailyEncourage.maxRead ? 'completed' : 'completing']"></span>
             <p class="daily-exp-info">每日浏览文章</p>
-            <p class="daily-exp-getexp">已获得0/10</p>
+            <p :class="dailyEncourage.readSize === 0 ? 'daily-exp-none' : 'daily-exp-getexp'">
+              已获得{{ dailyEncourage.readSize * dailyEncourage.readExp + '/' + dailyEncourage.readExp * dailyEncourage.maxRead }}
+            </p>
             <div class="h-line"></div>
           </div>
         </div>
         <div class="daily-exp-item">
           <div class="daily-exp-box">
-            <span class="iconfont icon-wait-complete"></span>
+            <span :class="['iconfont', dailyEncourage.hasWrite ? 'completed' : 'un-complete']"></span>
             <p class="daily-exp-info">每日写作</p>
-            <p class="daily-exp-none">5经验值到手</p>
+            <p :class="dailyEncourage.hasLogin ? 'daily-exp-getexp' : 'daily-exp-none'">
+              {{ dailyEncourage.writeExp }}经验值到手
+            </p>
           </div>
         </div>
       </div>
@@ -53,7 +59,8 @@
     <h1 class="setting-title">充电激励</h1>
     <div class="layout-module_chargeIncentive layout-module_item">
       <div class="chargeIncentive-module_wrapper">
-        <img src="https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/charge.jpg" class="charge-incentive-left-img">
+        <img src="https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/charge.jpg"
+             class="charge-incentive-left-img">
         <div class="charge-incentive-content">
           <p class="charge-incentive-title">
             已获得
@@ -129,23 +136,24 @@
                   <div class="list-col list-col-14">
                     <p class="list-module_operate">
                       {{
-                      pointsGetItem.operateType === 1 ? '创建了文档' :
-                      pointsGetItem.operateType === 2 ? '关注了' :
-                      pointsGetItem.operateType === 3 ? '获得一个赞' :
-                      pointsGetItem.operateType === 4 ? '获得一条评论' :
-                      pointsGetItem.operateType === 5 ? '入选精选推荐' : ''
+                        pointsGetItem.operateType === 1 ? '创建了文档' :
+                          pointsGetItem.operateType === 2 ? '关注了' :
+                            pointsGetItem.operateType === 3 ? '获得一个赞' :
+                              pointsGetItem.operateType === 4 ? '获得一条评论' :
+                                pointsGetItem.operateType === 5 ? '入选精选推荐' : ''
                       }}
                       <span class="list-module_content">
                                 <span v-if="pointsGetItem.operateType === 2">
                                   <a :href="'/' + pointsGetItem.userDomain" target="_blank" class="doc-link"
                                      :title="pointsGetItem.content">
-                                    {{pointsGetItem.content}}
+                                    {{ pointsGetItem.content }}
                                   </a>
                                 </span>
                               <span v-else>
                                   《
                                   <a :href="'/readCenter/doc/' + pointsGetItem.docId" target="_blank" class="doc-link">
-                                    <span class="doc-title" :title="pointsGetItem.content">{{pointsGetItem.content}}</span>
+                                    <span class="doc-title"
+                                          :title="pointsGetItem.content">{{ pointsGetItem.content }}</span>
                                   </a>
                                   》
                                 </span>
@@ -166,7 +174,7 @@
           </div>
           <div class="history-list-pagination un-select">
             <div class="pagination-prefix">
-              <span>总共{{pageHolder.total}}条</span>
+              <span>总共{{ pageHolder.total }}条</span>
             </div>
             <b-pagination
               v-model="pageHolder.current"
@@ -191,13 +199,13 @@
                         @on-visible-change="visibleChange"
                         @on-click="changePageSize">
             <span class="pageSize-select">
-              {{pageHolder.pageSize}}条/页
+              {{ pageHolder.pageSize }}条/页
               <span :class="['iconfont', 'expand', showSelection ? 'rotate' : '']"></span>
             </span>
                 <DropdownMenu slot="list">
-                  <DropdownItem name="15" :selected="pageSize == 15">15条/页</DropdownItem>
-                  <DropdownItem name="30" :selected="pageSize == 30">30条/页</DropdownItem>
-                  <DropdownItem name="50" :selected="pageSize == 50">50条/页</DropdownItem>
+                  <DropdownItem name="15" :selected="pageHolder.pageSize == 15">15条/页</DropdownItem>
+                  <DropdownItem name="30" :selected="pageHolder.pageSize == 30">30条/页</DropdownItem>
+                  <DropdownItem name="50" :selected="pageHolder.pageSize == 50">50条/页</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </div>
@@ -214,146 +222,201 @@
 </template>
 
 <script>
-  export default {
-    name: 'Grade',
-    data() {
-      return {
-        showSelection: false,
-        pageHolder: {
-          pageSizeOptions: ['15', '30', '50'],
-          current: 1,
-          pageSize: 15,
-          total: 520
-        },
-        pointsHistory: {
-          total: 52,
-          list: [
-            {
-              id: 1234435364646,
-              operateType: 1,
-              content: '我的标题呢',
-              docId: 'asdasdasdas',
-              points: 3
-            },
-            {
-              id: 1234431364646,
-              operateType: 2,
-              content: '小黑bu惑',
-              userDomain: 'lovbe0210',
-              points: 1
-            },
-            {
-              id: 1234435364616,
-              operateType: 2,
-              content: '安木夕',
-              userDomain: 'lovbe0210',
-              points: 1
-            },
-            {
-              id: 1234435364642,
-              operateType: 1,
-              content: 'canal数据同步',
-              docId: 'asdasdasdas',
-              points: 1
-            },
-            {
-              id: 1274435364646,
-              operateType: 1,
-              content: 'es安装启动问题',
-              docId: 'asdasdasdas',
-              points: 3
-            },
-            {
-              id: 1234435364648,
-              operateType: 1,
-              content: '常用SQL语法',
-              docId: 'asdasdasdas',
-              points: 3
-            },
-            {
-              id: 1234435364606,
-              operateType: 3,
-              content: '3. linux系统软件安装',
-              docId: 'asdasdasdas',
-              points: 3
-            },
-            {
-              id: 1234435364640,
-              operateType: 3,
-              content: 'Redission',
-              docId: 'asdasdasdas',
-              points: 3
-            },
-            {
-              id: 1234435364546,
-              operateType: 3,
-              content: '浅谈Redis分布式锁(上)',
-              docId: 'asdasdasdas',
-              points: 3
-            },
-            {
-              id: 1234435364653,
-              operateType: 4,
-              content: '决策指挥大屏系统V4.30数据同步',
-              docId: 'asdasdasdas',
-              points: 3
-            },
-            {
-              id: 1234435364813,
-              operateType: 4,
-              docId: 'asdasdasdas',
-              content: '2. Spring中bean的初始化过程以及在Springboot中定制化的执行顺序',
-              points: 3
-            },
-            {
-              id: 1234435364610,
-              operateType: 5,
-              docId: 'asdasdasdas',
-              content: '2. Spring中bean的初始化过程以及在Springboot中定制化的执行顺序',
-              points: 3
-            },
-            {
-              id: 1234435361653,
-              operateType: 4,
-              content: '决策指挥大屏系统V4.30数据同步',
-              docId: 'asdasdasdas',
-              points: 3
-            },
-            {
-              id: 1234435360813,
-              operateType: 4,
-              docId: 'asdasdasdas',
-              content: '2. Spring中bean的初始化过程以及在Springboot中定制化的执行顺序',
-              points: 3
-            },
-            {
-              id: 1234435364690,
-              operateType: 5,
-              docId: 'asdasdasdas',
-              content: '2. Spring中bean的初始化过程以及在Springboot中定制化的执行顺序',
-              points: 3
-            }
-          ]
-        }
-      }
-    },
-    methods: {
-      onShowSizeChange(current, pageSize) {
-        this.pageHolder.pageSize = pageSize;
-        this.pageHolder.current = current;
-        this.onChange(current);
+import userApi from "@/api/UserApi";
+
+export default {
+  name: 'Grade',
+  data() {
+    return {
+      showSelection: false,
+      levelExp: {
+        level1: 100,
+        level2: 300,
+        level3: 900,
+        level4: 2800,
+        level5: 9000,
+        level6: 28800
       },
-      onChange(pageNumber) {
-        console.log('Page: ', pageNumber, 'Size: ', this.pageHolder.pageSize);
+      dailyEncourage: {
+        hasLogin: true,
+        loginExp: 5,
+        readSize: 0,
+        maxRead: 5,
+        readExp: 2,
+        hasWrite: false,
+        writeExp: 5
+
       },
-      changePageSize(selectPageSize) {
-        this.pageHolder.pageSize = selectPageSize;
+      pageHolder: {
+        pageSizeOptions: ['15', '30', '50'],
+        current: 1,
+        pageSize: 15,
+        total: 520
       },
-      visibleChange(visible) {
-        this.showSelection = visible;
+      pointsHistory: {
+        total: 52,
+        list: [
+          {
+            id: 1234435364646,
+            operateType: 1,
+            content: '我的标题呢',
+            docId: 'asdasdasdas',
+            points: 3
+          },
+          {
+            id: 1234431364646,
+            operateType: 2,
+            content: '小黑bu惑',
+            userDomain: 'lovbe0210',
+            points: 1
+          },
+          {
+            id: 1234435364616,
+            operateType: 2,
+            content: '安木夕',
+            userDomain: 'lovbe0210',
+            points: 1
+          },
+          {
+            id: 1234435364642,
+            operateType: 1,
+            content: 'canal数据同步',
+            docId: 'asdasdasdas',
+            points: 1
+          },
+          {
+            id: 1274435364646,
+            operateType: 1,
+            content: 'es安装启动问题',
+            docId: 'asdasdasdas',
+            points: 3
+          },
+          {
+            id: 1234435364648,
+            operateType: 1,
+            content: '常用SQL语法',
+            docId: 'asdasdasdas',
+            points: 3
+          },
+          {
+            id: 1234435364606,
+            operateType: 3,
+            content: '3. linux系统软件安装',
+            docId: 'asdasdasdas',
+            points: 3
+          },
+          {
+            id: 1234435364640,
+            operateType: 3,
+            content: 'Redission',
+            docId: 'asdasdasdas',
+            points: 3
+          },
+          {
+            id: 1234435364546,
+            operateType: 3,
+            content: '浅谈Redis分布式锁(上)',
+            docId: 'asdasdasdas',
+            points: 3
+          },
+          {
+            id: 1234435364653,
+            operateType: 4,
+            content: '决策指挥大屏系统V4.30数据同步',
+            docId: 'asdasdasdas',
+            points: 3
+          },
+          {
+            id: 1234435364813,
+            operateType: 4,
+            docId: 'asdasdasdas',
+            content: '2. Spring中bean的初始化过程以及在Springboot中定制化的执行顺序',
+            points: 3
+          },
+          {
+            id: 1234435364610,
+            operateType: 5,
+            docId: 'asdasdasdas',
+            content: '2. Spring中bean的初始化过程以及在Springboot中定制化的执行顺序',
+            points: 3
+          },
+          {
+            id: 1234435361653,
+            operateType: 4,
+            content: '决策指挥大屏系统V4.30数据同步',
+            docId: 'asdasdasdas',
+            points: 3
+          },
+          {
+            id: 1234435360813,
+            operateType: 4,
+            docId: 'asdasdasdas',
+            content: '2. Spring中bean的初始化过程以及在Springboot中定制化的执行顺序',
+            points: 3
+          },
+          {
+            id: 1234435364690,
+            operateType: 5,
+            docId: 'asdasdasdas',
+            content: '2. Spring中bean的初始化过程以及在Springboot中定制化的执行顺序',
+            points: 3
+          }
+        ]
       }
     }
+  },
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo;
+    },
+    nextLevelExp() {
+      let level = 'level' + (this.userInfo?.level === 6 ? 6 : (this.userInfo?.level + 1));
+      let willExp = this.levelExp[level];
+      return willExp;
+    },
+    expPercent() {
+      let growthValue = this.userInfo?.growthValue;
+      if (!growthValue) {
+        return '0%';
+      }
+      let level = 'level' + (this.userInfo?.level === 6 ? 6 : (this.userInfo?.level + 1));
+      let willExp = this.levelExp[level];
+      let percentage = growthValue / willExp * 100;
+      return Math.floor(percentage) + '%';
+    }
+  },
+  methods: {
+    onShowSizeChange(current, pageSize) {
+      this.pageHolder.pageSize = pageSize;
+      this.pageHolder.current = current;
+      this.onChange(current);
+    },
+    onChange(pageNumber) {
+      console.log('Page: ', pageNumber, 'Size: ', this.pageHolder.pageSize);
+    },
+    changePageSize(selectPageSize) {
+      this.pageHolder.pageSize = selectPageSize;
+    },
+    visibleChange(visible) {
+      this.showSelection = visible;
+    }
+  },
+  created() {
+    // 获取等级经验条
+    userApi.getLevelExp().then(data => {
+      if (data?.result) {
+        this.levelExp = data.data;
+      }
+    })
+
+    // 获取每日经验
+    userApi.getDailyEncourage().then(data => {
+      if (data?.result) {
+        this.dailyEncourage = data.data;
+      }
+    })
   }
+}
 </script>
 
 <style scoped lang="less">

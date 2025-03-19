@@ -120,9 +120,9 @@
               </div>
             </div>
             <div class="dataStats-module_hotMap">
-              <hot-map></hot-map>
+              <hot-map :domain="domain"></hot-map>
             </div>
-            <div v-if="1 === 2">
+            <div v-if="1 === 1">
               <p class="homepage-header" style="margin-bottom: 20px; margin-top: 50px;">更新</p>
               <div class="leastUpdate-module_cardList">
                 <div class="leastUpdate-module_cardItem" v-for="item in leastUpdateList" :key="item.articleId">

@@ -45,12 +45,13 @@
 
       .experience-bar-body {
         display: inline-block;
-        width: 684px;
+        width: auto;
         margin-top: 10px;
 
         .progressBar {
-          display: inline-block;
+          display: flex;
           position: relative;
+          align-items: center;
 
           .experience-bar-level {
             width: 48px;
@@ -91,26 +92,26 @@
             border-radius: 0 4px 4px 0;
           }
         }
+      }
 
-        .experience-bar-level-number {
-          height: 24px;
-          color: #99a2aa;
-          margin-left: 8px;
-          font-size: 12px;
-          line-height: 24px;
-          cursor: default;
+      .experience-bar-level-number {
+        height: 24px;
+        color: #99a2aa;
+        margin-left: 8px;
+        font-size: 12px;
+        line-height: 24px;
+        cursor: default;
 
-          i {
-            font-style: normal;
-          }
+        i {
+          font-style: normal;
+        }
 
-          .now-num {
-            //color: #222;
-          }
+        .now-num {
+          //color: #222;
+        }
 
-          .num-icon {
-            margin: 0 2px;
-          }
+        .num-icon {
+          margin: 0 2px;
         }
       }
     }

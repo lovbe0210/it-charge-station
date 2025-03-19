@@ -178,7 +178,7 @@ export default {
     return await Vue.prototype.$request({
       url: "/user/dmcontent/delete",
       method: 'POST',
-      data: { contentId }
+      data: {contentId}
     })
   },
 
@@ -189,6 +189,28 @@ export default {
   async getUserStatistic() {
     return await Vue.prototype.$request({
       url: "/user/statistic",
+      method: 'GET'
+    })
+  },
+
+  /**
+   * 获取等级经验条
+   * @returns {Promise<*>}
+   */
+  async getLevelExp() {
+    return await Vue.prototype.$request({
+      url: "/user/level/exp",
+      method: 'GET'
+    })
+  },
+
+  /**
+   * 获取每日经验
+   * @returns {Promise<*>}
+   */
+  async getDailyEncourage() {
+    return await Vue.prototype.$request({
+      url: "/user/encourage/daily",
       method: 'GET'
     })
   }

@@ -54,10 +54,6 @@
   content: "\e67c";
 }
 
-.icon-exp-complete:before {
-  content: "\e613";
-}
-
 .icon-wait-complete:before {
   content: "\e64f";
 }
