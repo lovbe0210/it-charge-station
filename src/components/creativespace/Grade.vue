@@ -15,7 +15,7 @@
                     </span>
                   </div>
               </span>
-              <span class="experience-bar-level-number">
+        <span class="experience-bar-level-number">
                 <i class="now-num">{{ userInfo?.growthValue }}</i>
                 <i class="num-icon">/</i>
                 <i class="max-num">{{ nextLevelExp }}</i>
@@ -37,10 +37,13 @@
         </div>
         <div class="daily-exp-item">
           <div class="daily-exp-box">
-            <span :class="['iconfont', dailyEncourage.readSize === 0 ? 'un-complete' : dailyEncourage.readSize === dailyEncourage.maxRead ? 'completed' : 'completing']"></span>
+            <span
+              :class="['iconfont', dailyEncourage.readSize === 0 ? 'un-complete' : dailyEncourage.readSize === dailyEncourage.maxRead ? 'completed' : 'completing']"></span>
             <p class="daily-exp-info">每日浏览文章</p>
             <p :class="dailyEncourage.readSize === 0 ? 'daily-exp-none' : 'daily-exp-getexp'">
-              已获得{{ dailyEncourage.readSize * dailyEncourage.readExp + '/' + dailyEncourage.readExp * dailyEncourage.maxRead }}
+              已获得{{
+                dailyEncourage.readSize * dailyEncourage.readExp + '/' + dailyEncourage.readExp * dailyEncourage.maxRead
+              }}
             </p>
             <div class="h-line"></div>
           </div>
@@ -76,96 +79,49 @@
     <h1 class="setting-title">获取规则</h1>
     <div class="layout-module_acquireRule">
       <ul class="acquire-rule-wrapper">
-        <li class="acquire-rule-wrapper-item-wrapper">
+        <li class="acquire-rule-wrapper-item-wrapper" v-for="(rule, index) in encourageRule" :key="index">
           <div class="acquire-rule-item">
-            <span class="acquire-rule-text">发表 1 篇文档</span>
+            <span class="acquire-rule-text">{{ rule.behaviorType }}</span>
             <span class="acquire-rule-count">
-                      电池 +3 <span class="iconfont icon-battery"/>
-                    </span>
-          </div>
-        </li>
-        <li class="acquire-rule-wrapper-item-wrapper">
-          <div class="acquire-rule-item">
-            <span class="acquire-rule-text">内容获得 1 个点赞</span>
-            <span class="acquire-rule-count">
-                      电池 +2 <span class="iconfont icon-battery"/>
-                    </span>
-          </div>
-        </li>
-        <li class="acquire-rule-wrapper-item-wrapper">
-          <div class="acquire-rule-item">
-            <span class="acquire-rule-text">文档获得 1 次精选</span>
-            <span class="acquire-rule-count">
-                      电池 +5 <span class="iconfont icon-battery"/>
-                    </span>
-          </div>
-        </li>
-        <li class="acquire-rule-wrapper-item-wrapper">
-          <div class="acquire-rule-item">
-            <span class="acquire-rule-text">内容获得 1 条评论</span>
-            <span class="acquire-rule-count">
-                      电池 +1 <span class="iconfont icon-battery"/>
-                    </span>
-          </div>
-        </li>
-        <li class="acquire-rule-wrapper-item-wrapper">
-          <div class="acquire-rule-item">
-            <span class="acquire-rule-text">新增 1 个粉丝</span>
-            <span class="acquire-rule-count">
-                      电池 +3 <span class="iconfont icon-battery"/>
-                    </span>
+                      电池 +{{ rule.encourageScore }} <span class="iconfont icon-battery"/>
+            </span>
           </div>
         </li>
       </ul>
     </div>
-    <h1 class="setting-title points">积分权益</h1>
+    <h1 class="setting-title points">激励权益</h1>
     <Tabs class="layout-module_pointsHistory layout-module_item" value="">
-      <TabPane label="积分记录" name="pointsHistory">
+      <TabPane label="激励明细" name="pointsHistory">
         <div class="points-history">
           <div class="history-list-header">
             <div class="list-row">
-              <div class="list-col list-col-14">操作</div>
-              <div class="list-col list-col-6">时间</div>
-              <div class="list-col list-col-3 list-module_tr">电池数</div>
+              <div class="list-col list-col-behavior">操作</div>
+              <div class="list-col list-col-time">时间</div>
+              <div class="list-col list-col-score list-module_tr">电池数</div>
             </div>
           </div>
           <div class="history-list-container">
             <ul class="history-list-items">
-              <li class="history-list-item" v-for="pointsGetItem in pointsHistory.list" :key="pointsGetItem.id">
+              <li class="history-list-item" v-for="encourageLog in encourageLogList" :key="encourageLog.uid">
                 <div class="list-row">
-                  <div class="list-col list-col-14">
+                  <div class="list-col list-col-behavior">
                     <p class="list-module_operate">
-                      {{
-                        pointsGetItem.operateType === 1 ? '创建了文档' :
-                          pointsGetItem.operateType === 2 ? '关注了' :
-                            pointsGetItem.operateType === 3 ? '获得一个赞' :
-                              pointsGetItem.operateType === 4 ? '获得一条评论' :
-                                pointsGetItem.operateType === 5 ? '入选精选推荐' : ''
-                      }}
-                      <span class="list-module_content">
-                                <span v-if="pointsGetItem.operateType === 2">
-                                  <a :href="'/' + pointsGetItem.userDomain" target="_blank" class="doc-link"
-                                     :title="pointsGetItem.content">
-                                    {{ pointsGetItem.content }}
-                                  </a>
-                                </span>
-                              <span v-else>
-                                  《
-                                  <a :href="'/readCenter/doc/' + pointsGetItem.docId" target="_blank" class="doc-link">
-                                    <span class="doc-title"
-                                          :title="pointsGetItem.content">{{ pointsGetItem.content }}</span>
-                                  </a>
-                                  》
-                                </span>
-                              </span>
+                      <span class="encourage-log-mark">
+                        {{ encourageLog.behaviorMark }}
+                      </span>
+
+                      <span :class="['encourage-log-title', encourageLog.behaviorType === 5 ? 'log-fans' : encourageLog.behaviorType === 4 ? 'log-comment' : '', ]"
+                            :title="encourageLog.targetName">
+                        {{ encourageLog.targetName }}
+                      </span>
                     </p>
                   </div>
-                  <div class="list-col list-col-6">
-                    2023-08-09 09:29
+                  <div class="list-col list-col-time">
+                    {{ formatTime2H(encourageLog.createTime) }}
                   </div>
-                  <div class="list-col list-col-3">
+                  <div class="list-col list-col-score">
                     <p class="list-module_tr">
-                      +3<span class="iconfont icon-battery"></span>
+                      +{{ encourageLog.encourageScore }}<span class="iconfont icon-battery"></span>
                     </p>
                   </div>
                 </div>
@@ -180,6 +136,7 @@
               v-model="pageHolder.current"
               :total-rows="pageHolder.total"
               :per-page="pageHolder.pageSize"
+              @change="onChange"
               first-number
               last-number>
               <template #prev-text>
@@ -223,6 +180,7 @@
 
 <script>
 import userApi from "@/api/UserApi";
+import {formatTime2H} from "@/utils"
 
 export default {
   name: 'Grade',
@@ -245,124 +203,15 @@ export default {
         readExp: 2,
         hasWrite: false,
         writeExp: 5
-
       },
+      encourageRule: [],
       pageHolder: {
         pageSizeOptions: ['15', '30', '50'],
         current: 1,
-        pageSize: 15,
-        total: 520
+        pageSize: 30,
+        total: 0
       },
-      pointsHistory: {
-        total: 52,
-        list: [
-          {
-            id: 1234435364646,
-            operateType: 1,
-            content: '我的标题呢',
-            docId: 'asdasdasdas',
-            points: 3
-          },
-          {
-            id: 1234431364646,
-            operateType: 2,
-            content: '小黑bu惑',
-            userDomain: 'lovbe0210',
-            points: 1
-          },
-          {
-            id: 1234435364616,
-            operateType: 2,
-            content: '安木夕',
-            userDomain: 'lovbe0210',
-            points: 1
-          },
-          {
-            id: 1234435364642,
-            operateType: 1,
-            content: 'canal数据同步',
-            docId: 'asdasdasdas',
-            points: 1
-          },
-          {
-            id: 1274435364646,
-            operateType: 1,
-            content: 'es安装启动问题',
-            docId: 'asdasdasdas',
-            points: 3
-          },
-          {
-            id: 1234435364648,
-            operateType: 1,
-            content: '常用SQL语法',
-            docId: 'asdasdasdas',
-            points: 3
-          },
-          {
-            id: 1234435364606,
-            operateType: 3,
-            content: '3. linux系统软件安装',
-            docId: 'asdasdasdas',
-            points: 3
-          },
-          {
-            id: 1234435364640,
-            operateType: 3,
-            content: 'Redission',
-            docId: 'asdasdasdas',
-            points: 3
-          },
-          {
-            id: 1234435364546,
-            operateType: 3,
-            content: '浅谈Redis分布式锁(上)',
-            docId: 'asdasdasdas',
-            points: 3
-          },
-          {
-            id: 1234435364653,
-            operateType: 4,
-            content: '决策指挥大屏系统V4.30数据同步',
-            docId: 'asdasdasdas',
-            points: 3
-          },
-          {
-            id: 1234435364813,
-            operateType: 4,
-            docId: 'asdasdasdas',
-            content: '2. Spring中bean的初始化过程以及在Springboot中定制化的执行顺序',
-            points: 3
-          },
-          {
-            id: 1234435364610,
-            operateType: 5,
-            docId: 'asdasdasdas',
-            content: '2. Spring中bean的初始化过程以及在Springboot中定制化的执行顺序',
-            points: 3
-          },
-          {
-            id: 1234435361653,
-            operateType: 4,
-            content: '决策指挥大屏系统V4.30数据同步',
-            docId: 'asdasdasdas',
-            points: 3
-          },
-          {
-            id: 1234435360813,
-            operateType: 4,
-            docId: 'asdasdasdas',
-            content: '2. Spring中bean的初始化过程以及在Springboot中定制化的执行顺序',
-            points: 3
-          },
-          {
-            id: 1234435364690,
-            operateType: 5,
-            docId: 'asdasdasdas',
-            content: '2. Spring中bean的初始化过程以及在Springboot中定制化的执行顺序',
-            points: 3
-          }
-        ]
-      }
+      encourageLogList: []
     }
   },
   computed: {
@@ -386,16 +235,23 @@ export default {
     }
   },
   methods: {
-    onShowSizeChange(current, pageSize) {
-      this.pageHolder.pageSize = pageSize;
-      this.pageHolder.current = current;
-      this.onChange(current);
-    },
+    formatTime2H,
     onChange(pageNumber) {
-      console.log('Page: ', pageNumber, 'Size: ', this.pageHolder.pageSize);
+      let queryPage = {
+        offset: (pageNumber - 1) * this.pageHolder.pageSize,
+        limit: this.pageHolder.pageSize
+      };
+      userApi.getEncourageLogList(queryPage).then(data => {
+        if (data?.result) {
+          this.pageHolder.total = data.data.total;
+          this.encourageLogList = data.data.list;
+        }
+      })
     },
     changePageSize(selectPageSize) {
       this.pageHolder.pageSize = selectPageSize;
+      this.pageHolder.current = 1;
+      this.onChange(1);
     },
     visibleChange(visible) {
       this.showSelection = visible;
@@ -415,10 +271,20 @@ export default {
         this.dailyEncourage = data.data;
       }
     })
+
+    // 获取激励规则
+    userApi.getEncourageRule().then(data => {
+      if (data?.result) {
+        this.encourageRule = data.data;
+      }
+    })
+
+    // 获取激励明细
+    this.onChange(this.pageHolder.current);
   }
 }
 </script>
 
 <style scoped lang="less">
-  @import '../css/creativespace/grade.less';
+@import '../css/creativespace/grade.less';
 </style>

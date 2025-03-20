@@ -39,6 +39,7 @@
     "@aomao/plugin-undo": "^2.10.0",
     "@aomao/plugin-unorderedlist": "^2.10.0",
     "@aomao/plugin-video": "^2.10.0",
+    "am-editor-codeblock-vue2": "^1.1.17",
     "am-editor-link-vue2": "^1.1.17",
     "ant-design-vue": "^1.7.8",
     "autosize": "^6.0.1",

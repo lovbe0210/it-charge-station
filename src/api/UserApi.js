@@ -213,6 +213,29 @@ export default {
       url: "/user/encourage/daily",
       method: 'GET'
     })
+  },
+
+  /**
+   * 获取激励规则
+   * @returns {Promise<*>}
+   */
+  async getEncourageRule() {
+    return await Vue.prototype.$request({
+      url: "/user/encourage/rule",
+      method: 'GET'
+    })
+  },
+
+  /**
+   * 获取激励规则
+   * @returns {Promise<*>}
+   */
+  async getEncourageLogList(queryPage) {
+    return await Vue.prototype.$request({
+      url: "/user/encourage/log",
+      method: 'POST',
+      data: queryPage
+    })
   }
 }
 

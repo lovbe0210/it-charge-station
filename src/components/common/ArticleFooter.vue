@@ -106,7 +106,7 @@
             </div>
           </div>
         </div>
-        <div class="social-share">
+        <div class="social-share" style="display: none;">
                 <span>
                   分享到：
                   <a-tooltip placement="top" :getPopupContainer="()=>this.$refs.tooltipContainer">

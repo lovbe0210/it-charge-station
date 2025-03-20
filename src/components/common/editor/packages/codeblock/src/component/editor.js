@@ -63,6 +63,7 @@ class CodeBlockEditor {
   }
 
   renderTemplate() {
+    debugger
     return '<div class="data-codeblock-container"><div class="data-codeblock-content"></div></div>'
   }
 
@@ -107,15 +108,26 @@ class CodeBlockEditor {
         ...options
       }
     )
-    this.codeMirror.on("focus", () => {
-      const { onFocus } = this.options
-      if (onFocus) onFocus()
-    })
+    let readOnly = this.codeMirror.options?.readOnly;
+    if (!readOnly) {
+      this.codeMirror.on("focus", () => {
+        const { onFocus } = this.options
+        if (onFocus) onFocus()
+      })
 
-    this.codeMirror.on("blur", () => {
-      const { onBlur } = this.options
-      if (onBlur) onBlur()
-    })
+      this.codeMirror.on("blur", () => {
+        const { onBlur } = this.options
+        if (onBlur) onBlur()
+      })
+
+      this.codeMirror.on(
+        "change",
+        debounce(() => {
+          if (!isEngine(this.editor)) return
+          this.save()
+        }, 50)
+      )
+    }
     if (isMobile) {
       this.codeMirror.on("touchstart", (_, event) => {
         const { onMouseDown } = this.options
@@ -128,13 +140,7 @@ class CodeBlockEditor {
         if (onMouseDown) onMouseDown(event)
       })
     }
-    this.codeMirror.on(
-      "change",
-      debounce(() => {
-        if (!isEngine(this.editor)) return
-        this.save()
-      }, 50)
-    )
+
 
     this.codeMirror.setOption("extraKeys", {
       Enter: mirror => {

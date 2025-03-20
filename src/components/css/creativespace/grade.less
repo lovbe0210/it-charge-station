@@ -275,7 +275,7 @@
   }
 
   .layout-module_pointsHistory {
-    max-width: 668px;
+    margin-right: 40px;
 
     /deep/ .ivu-tabs-ink-bar {
       background: #8A8F8D;
@@ -298,27 +298,26 @@
       .list-row {
         flex-flow: row wrap;
         display: flex;
-        margin-left: -15px;
-        margin-right: -15px;
+        margin-left: -5px;
         width: 100%;
         row-gap: 0px;
 
-        .list-col-14 {
+        .list-col-behavior {
           display: block;
-          flex: 0 0 58.33333333%;
-          max-width: 58.33333333%;
+          flex: 0 0 70%;
+          width: 70%;
         }
 
-        .list-col-6 {
+        .list-col-time {
           display: block;
-          flex: 0 0 25%;
-          max-width: 25%;
+          flex: 0 0 15%;
+          width: 15%;
         }
 
-        .list-col-3 {
+        .list-col-score {
           display: block;
-          flex: 0 0 12.5%;
-          max-width: 12.5%;
+          flex: 0 0 10%;
+          width: 10%;
         }
 
         .list-col {
@@ -365,21 +364,24 @@
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
-            }
 
-            .list-module_content {
+              .encourage-log-mark {
+                margin-right: 5px;
+              }
 
-              .doc-link {
+              .encourage-log-title {
                 color: var(--font-color);
-                font-weight: 600;
+                font-size: 14.5px;
+                font-weight: 500;
+              }
 
-                .doc-title {
-                  font-size: 14px;
-                  line-height: 21px;
-                  text-overflow: ellipsis;
-                  color: var(--font-color);
-                  font-weight: normal;
-                }
+              .log-fans {
+                font-weight: 600;
+              }
+
+              .log-comment {
+                font-size: 14px;
+                font-weight: 400;
               }
             }
           }

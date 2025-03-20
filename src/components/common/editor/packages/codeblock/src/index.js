@@ -15,19 +15,23 @@ import CodeBlockComponent, { CodeBlockEditor } from "./component"
 import locales from "./locales"
 
 const DATA_SYNTAX = "data-syntax"
+const PARSE_HTML = 'parse:html';
+const PASTE_SCHEMA = 'paste:schema';
+const PASTE_EACH = 'paste:each';
+const MARKDOWN_IT = 'markdown-it';
 export default class extends Plugin {
   static get pluginName() {
     return "codeblock"
   }
 
   init() {
-    this.editor.language.add(locales)
-
-    this.editor.on("parse:html", node => this.parseHtml(node))
-    this.editor.on("paste:schema", schema => this.pasteSchema(schema))
-    this.editor.on("paste:each", child => this.pasteHtml(child))
-    if (isEngine(this.editor)) {
-      this.editor.on("markdown-it", this.markdownIt)
+    const editor = this.editor;
+    editor.language.add(locales)
+    editor.on(PARSE_HTML, node => this.parseHtml(node))
+    editor.on(PASTE_SCHEMA, schema => this.pasteSchema(schema))
+    editor.on(PASTE_EACH, child => this.pasteHtml(child))
+    if (isEngine(editor)) {
+      this.editor.on(MARKDOWN_IT, this.markdownIt)
     }
   }
 

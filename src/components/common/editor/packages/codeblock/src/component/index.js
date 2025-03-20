@@ -76,6 +76,7 @@ class CodeBlcok extends Card {
         }
       },
       onUpFocus: event => {
+        debugger
         if (!isEngine(this.editor)) return
         event.preventDefault()
         const { change, card } = this.editor
@@ -96,6 +97,7 @@ class CodeBlcok extends Card {
         this.toolbarModel?.hide()
       },
       onDownFocus: event => {
+        debugger
         if (!isEngine(this.editor)) return
         event.preventDefault()
         const { change, card } = this.editor
@@ -116,6 +118,7 @@ class CodeBlcok extends Card {
         this.toolbarModel?.hide()
       },
       onLeftFocus: event => {
+        debugger
         if (!isEngine(this.editor)) return
         event.preventDefault()
         const { change } = this.editor
@@ -126,6 +129,7 @@ class CodeBlcok extends Card {
         this.toolbarModel?.hide()
       },
       onRightFocus: event => {
+        debugger
         if (!isEngine(this.editor)) return
         event.preventDefault()
         const { change } = this.editor
@@ -184,6 +188,7 @@ class CodeBlcok extends Card {
               this.codeEditor.mode || this.#modeNameMap[this.codeEditor.mode] || "plain",
               mode => {
                 setTimeout(() => {
+                  debugger
                   this.focusEditor()
                   this.codeEditor?.update(mode)
                 }, 10)
@@ -220,6 +225,7 @@ class CodeBlcok extends Card {
   }
 
   focusEditor() {
+    debugger
     this.codeEditor?.focus()
     this.editor.card.activate(this.root)
   }
@@ -257,6 +263,7 @@ class CodeBlcok extends Card {
   }
 
   render() {
+    debugger
     if (!this.codeEditor) return
     if (!this.codeEditor.container.inEditor()) {
       this.codeEditor.container = $(this.codeEditor.renderTemplate())

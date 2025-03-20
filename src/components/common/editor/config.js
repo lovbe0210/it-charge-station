@@ -34,8 +34,8 @@ import LineHeight from "@aomao/plugin-line-height"
 // import Mention, {MentionComponent} from "@aomao/plugin-mention"
 import {fontFamilyDefaultData, ToolbarPlugin, ToolbarComponent} from "./packages/toolbar/src"
 import Link from "./packages/link/index"
-import CodeBlock, {CodeBlockComponent} from "./packages/codeblock/src"
-
+// import CodeBlock, {CodeBlockComponent} from "./packages/codeblock/src"
+import CodeBlock, { CodeBlockComponent } from "am-editor-codeblock-vue2";
 import Lightblock, {LightblockComponent} from "./packages/lightblock/src";
 
 const FILE_SERVICE = "/oss";
