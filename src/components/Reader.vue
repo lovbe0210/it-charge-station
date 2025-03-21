@@ -446,7 +446,7 @@ export default {
           targetId: this.articleInfo.uid,
           targetType: 1
         }
-        ContentPicksApi.collectMark(collectTarget).then(data => {
+        socialApi.collectMark(collectTarget).then(data => {
           if (data?.result) {
             this.collectInfo.collectId = data.data;
             this.collectInfo.tags = [];
@@ -475,10 +475,7 @@ export default {
         tags: this.collectInfo.tags
       }
       // 更新收藏分类
-      ContentPicksApi.collectMark(collectInfo);
-      /* if (this.$refs.selectGroup) {
-         this.$refs.selectGroup.$forceUpdate();
-       }*/
+      socialApi.collectMark(collectInfo);
     },
     completeAddTag1() {
       let element = document.getElementById("newTagInput");
@@ -574,7 +571,7 @@ export default {
         }
       })
       // 收藏标签加载
-      if (this.userInfo.token) {
+      if (this.loginStatus) {
         ContentPicksApi.getCollectTagList().then(data => {
           if (data?.result) {
             this.collectTags = data.data;

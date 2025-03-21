@@ -242,23 +242,23 @@ export default {
           title: '名称',
           slot: 'name',
           sortable: 'custom',
-          width: 230
+          width: 220
         },
         {
           title: '归属',
           slot: 'belongName',
-          width: 220
+          width: 265
         },
         {
           title: '收藏时间',
           slot: 'createTime',
           sortable: 'custom',
-          width: 175
+          width: 145
         },
         {
           title: ' ',
           slot: 'action',
-          width: 50
+          width: 35
         }
       ],
       tooltipContainer: null
@@ -284,7 +284,7 @@ export default {
       this.selectCollectList();
     },
     formatDateString(timestamp) {
-      let fmt = 'yyyy-MM-dd HH:mm:ss';
+      let fmt = 'yyyy-MM-dd HH:mm';
       return formatTime(new Date(timestamp), fmt);
     },
     clickCell(row, column) {

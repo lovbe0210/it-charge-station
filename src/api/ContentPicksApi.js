@@ -6,12 +6,24 @@ export default {
 
   /**
    * 获取文档信息
-   * @param userId
+   * @param uri
    * @returns {Promise<void>}
    */
   async getArticleInfo(uri) {
     return await Vue.prototype.$request({
       url: "/cps/article/" + uri,
+      method: 'GET'
+    });
+  },
+
+  /**
+   * 获取专栏信息
+   * @param uri
+   * @returns {Promise<void>}
+   */
+  async getColumnInfo(uri) {
+    return await Vue.prototype.$request({
+      url: "/cps/column/" + uri,
       method: 'GET'
     });
   },
@@ -131,7 +143,7 @@ export default {
   async getFeaturedColumn() {
     return await Vue.prototype.$request({
       url: "/cps/column/featured",
-      method: 'GET'
+      method: 'POST'
     });
   },
 

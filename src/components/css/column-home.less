@@ -1,0 +1,263 @@
+@import "common-var";
+
+.reader-route-view {
+  padding: 64px 32px 0 32px;
+  min-height: 100vh;
+  position: relative;
+  color: @dark-font-color;
+  background: @background-color;
+
+  .ColumnOverview-module {
+    max-width: 70%;
+    border-radius: 12px;
+    padding: 32px;
+    min-height: calc(~"100vh - 64px");
+    margin: 0 auto;
+    background: @dropdown-background;
+
+    .ColumnOverview-module_columnHead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px; /* 可选间距 */
+
+      .ColumnOverview-module_bookTitle {
+        flex: 1; /* 占据剩余空间 */
+        min-width: 0; /* 关键：允许内容区域收缩 */
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        .ColumnOverview-module_bookIcon {
+          .book {
+            font-size: 28px;
+          }
+        }
+
+        .ColumnOverview-module_bookName {
+          font-size: 28px;
+          font-weight: 700;
+          margin-left: 18px;
+        }
+      }
+
+      .rename-title {
+        display: flex;
+        align-items: center;
+
+        .ivu-input-wrapper {
+          margin-left: 16px;
+
+          /deep/.ivu-input {
+            color: @dark-font-color;
+            font-weight: 700;
+            font-size: 25px;
+            height: 40px;
+          }
+        }
+      }
+
+      .ColumnOverview-module_action {
+        padding: 8px 0;
+        flex-shrink: 0;
+
+        .ColumnOverview-module_bookAction {
+          display: flex;
+          align-items: flex-start;
+
+          .action-collect {
+            display: flex;
+            align-items: center;
+            margin: 0 0 0 12px;
+
+            &:hover {
+              background: @dropdown-item-hover;
+            }
+
+            .ivu-poptip {
+              border: 1px solid @border-color_normal;
+              border-radius: 6px;
+              text-align: center;
+              padding: 7px 5px;
+              min-width: 72px;
+              height: 32px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-weight: 700;
+              font-size: 14px;
+              cursor: pointer;
+
+              .iconfont {
+                margin-right: 5px;
+              }
+            }
+          }
+
+          .action-more {
+            line-height: 16px;
+            padding: 4px;
+            border: 1px solid @border-color_normal;
+            border-radius: 6px;
+            text-align: center;
+            min-width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0 0 12px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+
+            &:hover {
+              background: @dropdown-item-hover;
+            }
+
+            .menu-btn {
+              color: @dark-font-color;
+            }
+          }
+
+          /deep/.ivu-select-dropdown {
+            padding: 5px 0;
+            border-radius: 8px;
+
+            .ivu-dropdown-menu {
+              min-width: 135px;
+              margin: 0;
+
+              .line {
+                height: 1px;
+                padding: 7px 0 !important;
+                .line-block {
+                  width: 100%;
+                  display: inline-block;
+                  height: 1px;
+                  background: @border-color_normal;
+                  margin-bottom: 15px;
+                }
+                &:hover {
+                  background: unset;
+                }
+              }
+
+              .ivu-dropdown-item {
+                padding: 8px 16px 8px 20px;
+                font-weight: 500;
+
+                .iconfont {
+                  margin-right: 5px;
+                }
+
+                .permissions {
+                  font-weight: 500;
+                }
+
+                .delete {
+                  color: red;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .ColumnOverview-module_statistics {
+      margin: 6px 0 6px 50px;
+
+      .ColumnOverview-module_docCount {
+        font-size: 14px;
+        color: @grey-white-font-color;
+        text-align: center;
+        margin-right: 33px;
+      }
+
+      .ColumnOverview-module_wordCount {
+        font-size: 14px;
+        color: @grey-white-font-color;
+        text-align: center;
+      }
+
+      .ColumnOverview-module_count {
+        color: @dark-font-color;
+        font-family: DIN Alternate Bold, Pingfang SC, Hiragino Sans GB, Helvetica, Droid Sans, Microsoft YaHei, Arial, sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+/deep/ .delete-warn {
+  color: @dark-font-color;
+
+  .warn-content {
+    display: flex;
+    background-color: #F9EFCD;
+    border: 1px solid #F5D480;
+    border-radius: 6px;
+    padding: 15px;
+
+    .warn {
+      font-size: 18px;
+      color: red;
+      margin-right: 5px;
+      margin-top: -2px;
+    }
+
+    .column-name {
+      color: red;
+    }
+  }
+
+  .warn-confirm {
+    margin: 20px 4px;
+    height: 80px;
+
+    .confirm-input {
+      margin: 10px 0 5px 0;
+    }
+
+    .cannot-delete {
+      .ivu-input {
+        border-color: red;
+      }
+    }
+
+    .tips {
+      color: red;
+    }
+  }
+
+  .warn-btn {
+    margin: 10px 4px;
+    width: 98.5%;
+    display: flex;
+    align-items: center;
+
+    & span {
+      width: 100%;
+    }
+
+    .column-name {
+      display: block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+/deep/ .normal-background {
+  .delete-warn {
+    .ivu-input {
+      color: @dark-font-color;
+    }
+
+    .ivu-input-icon {
+      color: @light-font-color;
+    }
+  }
+}

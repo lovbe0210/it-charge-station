@@ -335,9 +335,6 @@
     }
 
     .reader-route-view {
-      background: @dropdown-background;
-      color: @dark-font-color;
-
       /deep/ .operate-more {
         .ant-popover-arrow {
           display: none;
@@ -793,7 +790,7 @@
 }
 
 
-/deep/.message-box {
+/deep/ .message-box {
   .ivu-icon-ios-close {
     font-size: 35px;
   }
@@ -1291,6 +1288,19 @@
       color: @light-font-color !important;
     }
   }
+
+  /deep/ .dropdown-background {
+    background: @dropdown-background;
+    border: 1px solid @border-color_normal;
+
+    .ivu-dropdown-item {
+      color: @dark-font-color;
+
+      &:hover {
+        background: @editor-item-hover;
+      }
+    }
+  }
 }
 
 /deep/ .normal-background {
@@ -1325,6 +1335,7 @@
           .item-content, .content-warp {
             color: @light-font-color !important;
           }
+
           &:hover {
             background-color: @editor-item-hover !important;
           }
@@ -1341,7 +1352,7 @@
             }
 
             .list-item:hover, .active {
-              background-color: @editor-item-hover!important;
+              background-color: @editor-item-hover !important;
             }
           }
         }

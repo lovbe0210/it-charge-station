@@ -39,14 +39,14 @@
             <img :src="fileUrl(columnItem.coverUrl)"
                  :alt="columnItem.title">
           </a>
-          <a-tooltip :getPopupContainer="getTooltipContainer">
+<!--          <a-tooltip :getPopupContainer="getTooltipContainer">
             <template slot="title">
               修改封面
             </template>
             <div class="cover-edit">
               <span class="iconfont bianji"></span>
             </div>
-          </a-tooltip>
+          </a-tooltip>-->
         </div>
         <div class="column-card-body"
              :style="columnShowType == 1 ? 'border-radius: 0 0 8px 8px;border-top: 0;' : 'border-radius: 8px;'">
@@ -77,7 +77,7 @@
             </div>
           </div>
           <span class="column-hover-show"
-                :style="columnShowType == 1 ? 'bottom: 48px;' : 'top: 15px;'">
+                style="top: 16px;">
             <Dropdown placement="bottom-end"
                       transfer-class-name="dropdown-background dropdown-item-all-hover"
                       trigger="click">

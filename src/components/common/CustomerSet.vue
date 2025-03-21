@@ -163,7 +163,7 @@
               themeColor: 'rgba(255,255,255,1)',
               fontColor: '#262626',
               titleColor: '#585A5A',
-              backgroundImg: 'linear-gradient(45deg, #F4F5F7 0%, #F4F5F7 100%)',
+              backgroundImg: 'linear-gradient(45deg, #FAFAFA 0%, #FAFAFA 100%)',
               borderColor: 'rgba(0,0,0,0.08)',
               dropdownBackgroundColor: '#FFFFFF',
               dropdownItemHover: '#EFF0F0',

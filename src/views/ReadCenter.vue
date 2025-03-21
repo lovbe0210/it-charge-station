@@ -429,7 +429,9 @@ export default {
     routeNavigate(routeParam) {
       if (routeParam === 'columnIndex') {
         // 专栏首页
-        this.currentNode.selected = false;
+        if (this.currentNode) {
+          this.currentNode.selected = false;
+        }
         this.$router.push({path: '/' + this.domain + '/' + this.columnUri});
       } else {
         // 文章页面需要判断是专栏页面还是普通页面

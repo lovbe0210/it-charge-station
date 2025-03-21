@@ -67,7 +67,7 @@
         <div class="charge-incentive-content">
           <p class="charge-incentive-title">
             已获得
-            <span class="charge-incentive-count">142</span>
+            <span class="charge-incentive-count">{{pageHolder.total}}</span>
             节电池
           </p>
           <p class="charge-incentive-tip">
