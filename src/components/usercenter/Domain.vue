@@ -74,9 +74,9 @@
             <span class="iconfont bianji"/>
           </Button>
         </div>
-        <div :class="['editorBase-module_editor', isEditing ? 'editing' : '']">
+        <div :class="['editorBase-module_editor', isEditing ? 'editing' : '']" ref="toolbarUiAnchors">
           <div class="layout-mode-adapt">
-            <div class="toolbar-ui">
+            <div class="toolbar-ui" :class="fixedToolbarUi ? 'toolbar-ui-fixed' : ''">
               <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :key="isEditing"/>
             </div>
             <div class="editor-body">
@@ -234,7 +234,8 @@ export default {
       readmeEmpty: true,
       isEditing: false,
       domainContentDelWarn: false,
-      popoverContainer: null
+      popoverContainer: null,
+      fixedToolbarUi: false
     }
   },
   components: {
@@ -248,7 +249,7 @@ export default {
     },
     finalConfig() {
       let config = cloneDeep(pluginConfig);
-      // config.table.enableScroll = false;
+      config.table.enableScroll = false;
       return config;
     }
   },
@@ -370,6 +371,12 @@ export default {
         }
         this.engine = engine;
       }
+    },
+    handleScroll() {
+      const scrollbar = document.getElementById("app");
+      this.scrollTop = scrollbar.scrollTop;
+      let clientRect = this.$refs.toolbarUiAnchors?.getBoundingClientRect();
+      this.fixedToolbarUi = clientRect?.top < 10;
     }
   },
   mounted() {
@@ -443,7 +450,13 @@ export default {
         this.columnList = data.data;
       }
     })
-    this.readmeEmpty = !this.userInfo.contentId
+    this.readmeEmpty = !this.userInfo.contentId;
+    const scrollContainer = document.getElementById("app");
+    scrollContainer?.addEventListener('scroll', this.handleScroll);
+  },
+  beforeDestroy() {
+    const scrollContainer = document.getElementById("app");
+    scrollContainer?.removeEventListener('scroll', this.handleScroll);
   }
 }
 </script>

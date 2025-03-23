@@ -29,7 +29,7 @@
               <template slot="title">
                 {{ columnInfo.collectId != null ? '取消收藏' : '收藏' }}
               </template>
-              <div class="action-collect" @click="collectMark">
+              <div class="action-collect login-action-collect" @click="collectMark">
                 <Poptip :popper-class="parentDocStyle.docThemeSync ? 'enable-background' : 'normal-background'"
                         placement="bottom-end"
                         transfer="transfer"
@@ -135,9 +135,41 @@
       </div>
       <div class="ColumnOverview-module_content">
         <div class="ColumnOverview-module_userBoard">
-          <div ref="container"></div>
+          <div :class="['editorBase-module_editor', isEditing ? 'editing' : 'reading']" ref="toolbarUiAnchors">
+            <div class="layout-mode-adapt">
+              <div class="toolbar-ui" :class="fixedToolbarUi ? 'toolbar-ui-fixed' : ''">
+                <toolbar v-if="engine" :engine="engine" :items="items" id="toolbar" :key="isEditing"/>
+              </div>
+              <div class="editor-body">
+                <div class="editor-wrapper">
+                  <div class="editor-wrap-content">
+                    <div class="editor-outer-wrap-box">
+                      <div class="editor-wrap-box">
+                        <div class="readme-editor" ref="container"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="readme-submit_action" v-show="isEditing">
+            <Button type="success"
+                    class="readme-module_submitBtn"
+                    :disabled="editorValueIsEmpty"
+                    @click="submitContent">
+              <span>确定</span>
+            </Button>
+            <Button type="text" class="readme-module_cancel" @click="cancelEditContent">
+              <span>取消</span>
+            </Button>
+          </div>
         </div>
       </div>
+    </div>
+    <div :class="['back-top', parentDocStyle.docThemeSync === 1 ? 'enable-background-backTop' : '']"
+         v-show="backTopShow" @click="backTop">
+      <span class="iconfont to-top"/>
     </div>
     <Modal
       v-model="deleteColumn"
@@ -176,18 +208,20 @@
 
 <script>
 import socialApi from "@/api/SocialApi";
-import ContentPicksApi from "@/api/ContentPicksApi";
 import Engine from '@aomao/engine'
+import Toolbar from "@/components/common/editor/packages/toolbar/src"
 import {domainPlugins, cards, pluginConfig} from "@/components/common/editor/config"
 import {cloneDeep} from "@/utils";
-import contentPicksApi from "../../api/ContentPicksApi";
-import writeCenterApi from "../../api/WriteCenterApi";
-import WriteCenterApi from "../../api/WriteCenterApi";
+import contentPicksApi from "@/api/ContentPicksApi";
+import writeCenterApi from "@/api/WriteCenterApi";
+import {getParentNode} from "./editor/utils";
 
 export default {
   name: "SColumnReadHome",
   data() {
     return {
+      engine: null,
+      editorValue: null,
       // 工具栏内容：下拉面板、
       items: [
         [
@@ -230,7 +264,8 @@ export default {
           }
         ]
       ],
-      engine: null,
+      isEditing: false,
+      editorValueIsEmpty: true,
       collectPoptipShow: false,
       deleteColumn: false,
       cannotDelete: false,
@@ -243,7 +278,11 @@ export default {
       },
       collectTags: [],
       inputNewTag: false,
-      inputTagTmp: null
+      inputTagTmp: null,
+      scrollTop: 0,
+      backTopHeight: 300,
+      backTopShow: false,
+      fixedToolbarUi: false
     }
   },
   computed: {
@@ -260,6 +299,9 @@ export default {
       return config;
     }
   },
+  components: {
+    Toolbar
+  },
   props: ['columnUri', 'authorInfo', 'parentDocStyle'],
   methods: {
     collectMark() {
@@ -271,9 +313,9 @@ export default {
         this.collectPoptipShow = true;
       } else {
         let collectTarget = {
-          uid: this.articleInfo.collectId,
-          targetId: this.articleInfo.uid,
-          targetType: 1
+          uid: this.columnInfo.collectId,
+          targetId: this.columnInfo.uid,
+          targetType: 2
         }
         socialApi.collectMark(collectTarget).then(data => {
           if (data?.result) {
@@ -309,8 +351,8 @@ export default {
       }
       this.columnInfo.tags = tags;
       let collectInfo = {
-        targetId: this.articleInfo.uid,
-        targetType: 1,
+        targetId: this.columnInfo.uid,
+        targetType: 2,
         uid: this.columnInfo.collectId,
         tags: this.columnInfo.tags
       }
@@ -331,12 +373,12 @@ export default {
       let tagInfo = {
         title: this.inputTagTmp
       }
-      ContentPicksApi.createCollectTag(tagInfo).then(data => {
+      contentPicksApi.createCollectTag(tagInfo).then(data => {
         if (data?.result) {
           this.inputNewTag = false;
           this.inputTagTmp = null;
           // 刷新收藏分类
-          ContentPicksApi.getCollectTagList().then(data => {
+          contentPicksApi.getCollectTagList().then(data => {
             if (data?.result) {
               this.collectTags = data.data;
             }
@@ -360,12 +402,15 @@ export default {
           this.renameTitle = true;
           this.tmpTitle = this.columnInfo.title;
           this.$nextTick(() => {
-            console.log(this.$refs.renameInput[0])
-            console.log(this.$refs.renameInput[1])
             this.$refs.renameInput.focus({
               cursor: 'end'
             });
           })
+          break;
+        case "editor":
+          this.isEditing = true;
+          this.engine?.destroy();
+          this.initEngine(false);
           break;
         case "setting":
           this.$router.push({
@@ -387,7 +432,7 @@ export default {
       let columnInfo = new FormData();
       columnInfo.append("uid", this.columnInfo.uid)
       columnInfo.append("title", this.tmpTitle)
-      WriteCenterApi.updateColumnInfo(columnInfo).then(data => {
+      writeCenterApi.updateColumnInfo(columnInfo).then(data => {
         if (data?.result) {
           this.columnInfo.title = this.tmpTitle;
           this.tmpTitle = null;
@@ -400,8 +445,8 @@ export default {
       if (this.tmpValue !== this.columnInfo?.uri) {
         this.cannotDelete = true;
       } else {
-        let columnInfo = { uid: this.columnInfo.uid }
-        WriteCenterApi.deleteColumn(columnInfo).then(data => {
+        let columnInfo = {uid: this.columnInfo.uid}
+        writeCenterApi.deleteColumn(columnInfo).then(data => {
           if (data?.result) {
             this.deleteColumn = false;
             this.$Message.success('删除成功');
@@ -411,6 +456,108 @@ export default {
           }
         })
       }
+    },
+    submitContent() {
+      if (this.editorValueIsEmpty) {
+        return;
+      }
+      let contentUpdate = {
+        content: this.engine.getJsonValue(),
+        contentId: this.columnInfo.homeContentId,
+        targetId: this.columnInfo.uid
+      }
+      writeCenterApi.updateColumnContent(contentUpdate).then(data => {
+        if (data?.result) {
+          this.$Message.success("更新成功");
+          this.isEditing = false;
+          this.engine.destroy();
+          contentPicksApi.getColumnInfo(this.columnUri).then(data => {
+            if (data?.result) {
+              this.columnInfo = data.data;
+              this.initEngine(true)
+            }
+          })
+        }
+      })
+    },
+    cancelEditContent() {
+      this.isEditing = false;
+      this.engine?.destroy();
+      this.initEngine(true);
+    },
+    initEngine(readonly) {
+      if (!this.columnInfo.homeContentId && readonly) {
+        return;
+      }
+      const container = this.$refs.container;
+      if (container) {
+        //实例化引擎
+        const engine = new Engine(container, {
+          // 启用插件
+          plugins: domainPlugins,
+          // 启用卡片
+          cards,
+          // 所有的插件配置
+          config: this.finalConfig,
+          autoPrepend: false,
+          readonly: readonly,
+          // 文档提示语
+          placeholder: '开始设置专栏主页'
+        });
+
+        // 设置显示成功消息UI，默认使用 console.log
+        engine.messageSuccess = (msg) => {
+          console.log(msg);
+        };
+        // 设置显示错误消息UI，默认使用 console.error
+        engine.messageError = (error) => {
+          console.log(error);
+        };
+
+        // 监听编辑器值改变事件
+        engine.on("change", () => {
+          let range = engine.change.range.get();
+          let collapsed = range?.collapsed;
+          let startNode = collapsed ? range.startNode : range.endNode;
+          let parentNode = getParentNode(startNode);
+          // 处理status影响其他文字
+          let children = parentNode?.children("span[data-card-key=\"status\"]");
+          if (children !== undefined && children.length !== 0) {
+            // 给当前节点去掉样式
+            startNode.removeAttributes('style')
+            startNode.allChildren().forEach(child => child?.removeAttributes('style'))
+          }
+          this.editorValueIsEmpty = engine.isEmpty();
+        });
+        // 专栏首页自定义内容
+        if (this.columnInfo.homeContent?.length > 0) {
+          engine.setJsonValue(JSON.parse(this.columnInfo.homeContent));
+        }
+        this.engine = engine;
+      }
+    },
+    handleScroll() {
+      const scrollbar = document.getElementById("app");
+      this.scrollTop = scrollbar.scrollTop;
+      this.backTopShow = scrollbar.scrollTop > this.backTopHeight;
+      let clientRect = this.$refs.toolbarUiAnchors?.getBoundingClientRect();
+      this.fixedToolbarUi = clientRect?.top < 10;
+    },
+    backTop() {
+      let timer = null;
+      const varThis = this;
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        if (varThis.scrollTop > 0) {
+          varThis.scrollTop -= (varThis.scrollTop / 1000) * 120;
+          const scrollbar = document.getElementById("app");
+          scrollbar.scrollTop = varThis.scrollTop;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+          varThis.backTopShow = false;
+        }
+      });
     }
   },
   watch: {
@@ -433,57 +580,23 @@ export default {
     contentPicksApi.getColumnInfo(this.columnUri).then(data => {
       if (data?.result) {
         this.columnInfo = data.data;
-        if (!this.columnInfo.homeContentId) {
-          return;
-        }
-        const container = this.$refs.container;
-        if (container) {
-          //实例化引擎
-          const engine = new Engine(container, {
-            // 启用插件
-            plugins: domainPlugins,
-            // 启用卡片
-            cards,
-            // 所有的插件配置
-            config: this.finalConfig,
-            autoPrepend: false,
-            // 文档提示语
-            placeholder: '',
-            // 阅读模式
-            readonly: true
-          });
-          // 设置显示成功消息UI，默认使用 console.log
-          engine.messageSuccess = (msg) => {
-            console.log(msg);
-          };
-          // 设置显示错误消息UI，默认使用 console.error
-          engine.messageError = (error) => {
-            console.log(error);
-          };
-
-          // 获取专栏首页自定义内容
-          writeCenterApi.getArticleContent(this.columnInfo.homeContentId).then(data => {
-            if (data?.result) {
-              let content = data.data.content;
-              if (content?.length > 0) {
-                engine.setJsonValue(JSON.parse(content));
-              }
-            }
-          })
-          this.engine = engine;
-        }
+        this.initEngine(true)
       }
     })
     // 收藏标签加载
     if (this.loginStatus) {
-      ContentPicksApi.getCollectTagList().then(data => {
+      contentPicksApi.getCollectTagList().then(data => {
         if (data?.result) {
           this.collectTags = data.data;
         }
       })
     }
+    const scrollContainer = document.getElementById("app");
+    scrollContainer?.addEventListener('scroll', this.handleScroll);
   },
   beforeDestroy() {
+    const scrollContainer = document.getElementById("app");
+    scrollContainer?.removeEventListener('scroll', this.handleScroll);
   }
 }
 </script>

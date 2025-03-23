@@ -222,6 +222,7 @@
               :articleInfo="articleInfo"
               :docStylePageSize="docStyle.docStylePageSize"
               :docStyleDefaultFont="docStyle.docStyleDefaultFont"
+              :docThemeSync="docStyle.docThemeSync"
               ref="editorContainer">
       </editor>
     </b-row>
@@ -229,7 +230,7 @@
 </template>
 
 <script>
-import Editor from '@/components/Editor'
+import Editor from '@/components/common/editor/Editor'
 import {formatTime2H} from '@/utils'
 import ArticleSetting from "@/components/common/ArticleSetting"
 import ArticleVersion from "@/components/common/ArticleVersion"

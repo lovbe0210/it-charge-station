@@ -59,14 +59,17 @@
         </div>
       </div>
     </div>
+    <div :class="['back-top', docThemeSync === 1 ? 'enable-background-backTop' : '']" v-show="backTopShow" @click="backTop">
+      <span class="iconfont to-top"/>
+    </div>
   </b-container>
 </template>
 
 <script>
 import Engine, {$} from '@aomao/engine'
-import Toolbar from "./common/editor/packages/toolbar/src"
-import {plugins, cards, pluginConfig} from "./common/editor/config"
-import {getTocData, getParentNode} from "./common/editor/utils"
+import Toolbar from "./packages/toolbar/src"
+import {plugins, cards, pluginConfig} from "./config"
+import {getTocData, getParentNode} from "./utils"
 import WriteCenterApi from "@/api/WriteCenterApi";
 import {debounce, cloneDeep} from '@/utils'
 
@@ -86,6 +89,9 @@ export default {
       },
       tocData: [],
       currentTocId: '',
+      scrollTop: 0,
+      backTopHeight: 300,
+      backTopShow: false,
       // 大纲刷新的防抖函数
       debounceRefreshToc: function () {},
       engine: null,
@@ -130,7 +136,7 @@ export default {
       return config;
     }
   },
-  props: ['articleInfo', 'docStylePageSize', 'docStyleDefaultFont'],
+  props: ['articleInfo', 'docStylePageSize', 'docStyleDefaultFont', 'docThemeSync'],
   methods: {
     changeTitleHeight() {
       let _this = this
@@ -188,11 +194,28 @@ export default {
         top: title + 90
       });
     },
-
+    backTop() {
+      let timer = null;
+      const varThis = this;
+      cancelAnimationFrame(timer);
+      timer = requestAnimationFrame(function fn() {
+        if (varThis.scrollTop > 0) {
+          varThis.scrollTop -= (varThis.scrollTop / 1000) * 120;
+          varThis.$refs.scrollbarContext.scrollTop = varThis.scrollTop;
+          timer = requestAnimationFrame(fn);
+        } else {
+          cancelAnimationFrame(timer);
+          varThis.backTopShow = false;
+        }
+      });
+    },
     /**
      * 处理滚动条滚动事件
      */
     handleScrollForToc() {
+      let scrollbar = this.$refs.scrollbarContext;
+      this.scrollTop = scrollbar.scrollTop;
+      this.backTopShow = scrollbar.scrollTop > this.backTopHeight;
       if (this.tocData.length > 0) {
         let scrollbarRect = this.$refs.scrollbarContext?.getBoundingClientRect();
         if (scrollbarRect) {
@@ -267,7 +290,7 @@ export default {
         content: this.article.content,
         wordsNum: this.article.wordsNum,
         coverUrl: this.article.coverUrl,
-        articleId: this.articleInfo.uid
+        targetId: this.articleInfo.uid
       }
       if (this.articleInfo.autoSummary === 1) {
         contentDto.summary = this.article.summary;
@@ -425,5 +448,5 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "common/editor/css/editor.less";
+@import "css/editor.less";
 </style>

@@ -284,6 +284,24 @@ export default {
     });
   },
 
+  /**
+   * 专栏首页自定义内容编辑
+   * @param contentUpdate
+   * @returns {Promise<void>}
+   */
+  async updateColumnContent(contentUpdate) {
+    return await Vue.prototype.$request({
+      url: "/cpt/column/content/update",
+      method: 'POST',
+      data: contentUpdate
+    });
+  },
+
+  /**
+   * 获取成长统计
+   * @param rangeType
+   * @returns {Promise<*>}
+   */
   async getGrowthStatStatistic(rangeType) {
     return await Vue.prototype.$request({
       url: "/cpt/growth/stats/" + rangeType,
@@ -291,13 +309,17 @@ export default {
     });
   },
 
+  /**
+   * 获取成长轨迹
+   * @param domain
+   * @returns {Promise<*>}
+   */
   async getGrowthStatList(domain) {
     return await Vue.prototype.$request({
       url: "/cpt/creation/index/" + domain,
       method: 'GET'
     });
   }
-
 }
 
 

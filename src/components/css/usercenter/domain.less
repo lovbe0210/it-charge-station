@@ -318,6 +318,13 @@
           display: unset !important;
         }
 
+        .toolbar-ui-fixed {
+          position: fixed !important;
+          top: 0px;
+          background: var(--theme-color);
+          z-index: 2 !important;
+        }
+
         .readme-editor {
           padding: 10px 16px 8px 18px;
         }
@@ -480,8 +487,13 @@
       p {
         font-size: 14px;
         line-height: 30px;
+        margin-bottom: 2px;
       }
     }
+  }
+
+  /deep/.ivu-modal-footer {
+    border-color: var(--border-color);
   }
 }
 

@@ -145,7 +145,7 @@ export const pluginConfig = {
     enableScroll: true
   },
   [Image.pluginName]: {
-    maxHeight: 300
+    // maxHeight: 300
   },
   [ImageUploader.pluginName]: {
     //图片上传

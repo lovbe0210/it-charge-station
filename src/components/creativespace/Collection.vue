@@ -258,7 +258,8 @@ export default {
         {
           title: ' ',
           slot: 'action',
-          width: 35
+          width: 35,
+          className: 'action'
         }
       ],
       tooltipContainer: null

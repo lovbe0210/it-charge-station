@@ -241,7 +241,6 @@ import UserCard from "@/components/common/UserCard.vue";
 import AuthModal from "@/components/common/AuthModal.vue";
 import publicSearchApi from "@/api/PublicSearchApi";
 import MessageNotification from "@/components/MessageNotification.vue";
-import msgNoticeApi from "@/api/MsgNoticeApi";
 
 export default {
   name: 'ReadCenter',
@@ -277,16 +276,7 @@ export default {
       searchResult: [],
       emptySearchResult: false,
       // 样式相关
-      docStyle: {},
-      // 未读消息统计
-      unreadStatistic: {
-        commentCount: 0,
-        likeCount: 0,
-        newFollowCount: 0,
-        systemMsgCount: 0,
-        chatMsgCount: 0,
-        unreadTotal: 0
-      }
+      docStyle: {}
     }
   },
   props: ['domain', 'columnUri', 'articleUri'],
@@ -573,12 +563,6 @@ export default {
     if (this.isColumnView) {
       this.searchScope = 2;
     }
-    // 获取未读通知
-    msgNoticeApi.getUnreadStatistic().then(data => {
-      if (data?.result) {
-        this.unreadStatistic = data.data;
-      }
-    })
   },
   created() {
     this.docStyle = {...this.docStyle, ...this.$store.state.docStyle};

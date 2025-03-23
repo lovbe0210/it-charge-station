@@ -392,5 +392,6 @@
     color: var(--font-color);
     height: 100%;
     overflow-y: auto!important;
+    overflow-x: hidden!important;
   }
 </style>
