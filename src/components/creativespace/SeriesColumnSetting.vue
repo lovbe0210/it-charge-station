@@ -243,7 +243,7 @@
                       {{
                         noteItem.publishStatus === 0 ? '未发布' :
                           noteItem.publishStatus === 1 ? '审核中' :
-                            noteItem.publishStatus === 2 ? '审核失败' : '已发布'
+                            noteItem.publishStatus === 2 ? '发布失败' : '已发布'
                       }}
                     </span>
                   </div>

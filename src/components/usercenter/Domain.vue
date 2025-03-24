@@ -147,7 +147,7 @@
       </div>
     </div>
     <div class="dataStats-module_hotMap">
-      <hot-map></hot-map>
+      <hot-map :domain="userInfo.domain"></hot-map>
     </div>
     <Modal v-model="domainContentDelWarn"
            class="delete-modal"

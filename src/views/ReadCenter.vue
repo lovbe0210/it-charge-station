@@ -3,93 +3,100 @@
        ref="tooltipContainer">
     <div class="layout-module_wrapper">
       <div class="layout-module_directoryWrapper" :style="{ width: sidebarWidth + 'px' }">
-        <div class="layout-module_dragbar" @mousedown="startDrag"></div>
-        <div class="layout-module_directory un-select">
-          <div class="directory-header">
-            <div class="book-info">
-              <div class="crumb">
-                <a href="/" class="website-logo" target="_blank">
-                  <span class="iconfont logo"></span>
-                </a>
-                <span class="iconfont to-right"></span>
-                <user-card :userInfo="authorInfo"
-                           :popoverContainer="this.$refs.tooltipContainer"
-                           class="user-info-card-box">
-                  <slot>
-                    <div class="action">
-                      <a class="crumb-text">
-                        {{ authorInfo.username }}
-                      </a>
-                    </div>
-                  </slot>
-                </user-card>
+        <div class="layout-module_fixed">
+          <div class="layout-module_dragbar" @mousedown="startDrag"></div>
+          <div class="layout-module_directory un-select">
+            <div class="directory-header">
+              <div class="book-info">
+                <div class="crumb">
+                  <a href="/" class="website-logo" target="_blank">
+                    <span class="iconfont logo"></span>
+                  </a>
+                  <span class="iconfont to-right"></span>
+                  <user-card :userInfo="authorInfo"
+                             :popoverContainer="this.$refs.tooltipContainer"
+                             class="user-info-card-box">
+                    <slot>
+                      <div class="action">
+                        <a class="crumb-text">
+                          {{ authorInfo.username }}
+                        </a>
+                      </div>
+                    </slot>
+                  </user-card>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="directory-nav"
-               :style="{ width: sidebarWidth + 'px',
+            <div class="directory-nav"
+                 :style="{ width: sidebarWidth + 'px',
                'will-change': isDragging ? 'width' : null,
                transition: isDragging ? 'width 200ms cubic-bezier(0.1, 0, 0, 1) 0s' : null }">
-            <div class="search-nav">
-              <div class="search-bar" @click="modalSearch = true">
-                <span class="iconfont i-search"></span>
-                <span>搜索</span>
+              <div class="search-nav">
+                <div class="search-bar" @click="modalSearch = true">
+                  <span class="iconfont i-search"></span>
+                  <span>搜索</span>
+                </div>
               </div>
-            </div>
-            <div class="home-nav" v-if="columnUri !== undefined"
-                 @click="routeNavigate('columnIndex')">
-              <span class="iconfont home"></span>
-              <span>专栏首页</span>
-            </div>
-            <div class="nav-tabs">
-              <div class="tabs-bar">
+              <div :class="['home-nav', columnUri && !articleUri ? 'active-home' : '']"
+                   v-if="columnUri !== undefined"
+                   @click="routeNavigate('columnIndex')">
+                <span class="iconfont home"></span>
+                <span>专栏首页</span>
+              </div>
+              <div class="nav-tabs">
+                <div class="tabs-bar">
                 <span class="tab-title popover-trigger"
                       v-if="columnUri !== undefined"
                       @click="navShowType = isColumnView ? (navShowType === 'tree' ? 'list' : 'tree') : navShowType">
                   <span :class="['iconfont', navShowType === 'tree' ? 'nav-tree' : 'list']"></span>
                   <span>目录</span>
                 </span>
-                <span class="tab-list" v-else>
+                  <span class="tab-list" v-else>
                   <span class="iconfont list"></span>
                   <span>文章列表</span>
                 </span>
-                <div class="actions-cont" v-show="isColumnView && navShowType === 'tree'">
-                  <a-tooltip overlayClassName="read-nav-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
-                    <template slot="title">
-                      {{ openAllTree ? '全部折叠' : '全部展开' }}
-                    </template>
-                    <span class="action-item" @click="expandTreeNode()">
+                  <div class="actions-cont" v-show="isColumnView && navShowType === 'tree'">
+                    <a-tooltip overlayClassName="read-nav-tooltip" :getPopupContainer="()=>this.$refs.tooltipContainer">
+                      <template slot="title">
+                        {{ openAllTree ? '全部折叠' : '全部展开' }}
+                      </template>
+                      <span class="action-item" @click="expandTreeNode()">
                     <span :class="['iconfont', openAllTree ? 'nav-open' : 'nav-close']"></span>
                   </span>
-                  </a-tooltip>
-                </div>
-              </div>
-              <div class="tabs-content-holder">
-                <div class="tabs-content">
-                  <div class="tabs-tabpane" v-if="navShowType === 'list'">
-                    <div class="tabpane-list" :style="{ width: sidebarWidth + 'px' }">
-                      <List>
-                        <ListItem v-for="item in getListDirData" :key="item.uid"
-                                  :class="item.uri === articleUri ? 'current-article' : ''">
-                          <ListItemMeta>
-                            <template slot="description">
-                              <div class="article-item" @click="routeNavigate(item.uri)">
-                                <div class="title" :title="item.title">
-                                  {{ item.title }}
-                                </div>
-                                <div class="description" :title="item.summary">
-                                  {{ item.summary }}
-                                </div>
-                              </div>
-                            </template>
-                          </ListItemMeta>
-                        </ListItem>
-                      </List>
-                    </div>
+                    </a-tooltip>
                   </div>
-                  <div class="tabs-tabpane tree" v-show="isColumnView && navShowType === 'tree'">
-                    <Tree :data="dirData" @on-select-change="selectTreeNode" class="tabpane-tree">
-                    </Tree>
+                </div>
+                <div class="tabs-content-holder">
+                  <div class="tabs-content">
+                    <div class="tabs-tabpane" v-if="navShowType === 'list'">
+                      <div class="tabpane-list" :style="{ width: sidebarWidth + 'px' }">
+                        <List>
+                          <ListItem v-for="item in getListDirData" :key="item.uid"
+                                    :class="item.uri === articleUri ? 'current-article' : ''">
+                            <ListItemMeta>
+                              <template slot="description">
+                                <div class="article-item" @click="routeNavigate(item.uri)">
+                                  <div class="title" :title="item.title">
+                                    {{ item.title }}
+                                  </div>
+                                  <div class="description" :title="item.summary">
+                                    {{ item.summary }}
+                                  </div>
+                                </div>
+                              </template>
+                            </ListItemMeta>
+                          </ListItem>
+                        </List>
+                      </div>
+                    </div>
+                    <div class="tabs-tabpane tree" v-show="isColumnView && navShowType === 'tree'">
+                      <Tree :data="dirData"
+                            @on-select-change="selectTreeNode"
+                            @on-check-change="tt1"
+                            @on-toggle-expand="tt2"
+                            class="tabpane-tree">
+                      </Tree>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -247,10 +254,12 @@ export default {
   components: {MessageNotification, AuthModal, UserCard},
   data() {
     return {
+      tt: Date.now(),
       // 搜索框显示
       modalSearch: false,
       // 聊天框显示
       showMessage: false,
+      // 聊天框内菜单
       activeMenu: null,
       keywords: null,
       // 搜索状态是否正在进行中 0否1是
@@ -440,6 +449,7 @@ export default {
       this.$router.push(path);
     },
     selectTreeNode(selectNode, currentNode) {
+      debugger
       // 目录节点
       if (currentNode.type === 2) {
         currentNode.expand = !currentNode.expand
@@ -526,7 +536,19 @@ export default {
         ContentPicksApi.getColumnDir(this.columnUri).then(data => {
           if (data?.result) {
             this.columnInfo = data.data;
-            this.dirData = data.data?.dirContent;
+            let dirData = data.data?.dirContent;
+            /*if (dirData) {
+              for (let dirDatum of this.dirData) {
+                let selected = this.recursiveSelected(dirDatum);
+                if (selected) {
+                  if (dirDatum?.type === 2) {
+                    dirDatum.exp = true;
+                  }
+                  break;
+                }
+              }
+            }*/
+            this.dirData = dirData;
           }
         })
       } else {
@@ -544,6 +566,32 @@ export default {
           }
         })
       }
+    },
+    /**
+     * 递归选中当前节点
+     * @param dirNode
+     * @returns {boolean}
+     */
+    recursiveSelected(dirNode) {
+      if (!dirNode) {
+        return false;
+      }
+      if (dirNode?.type === 1) {
+       if (dirNode?.uri === this.articleUri) {
+         dirNode.selected = true;
+         return true;
+       }
+      } else if (dirNode?.type === 2 && dirNode?.children?.length > 0) {
+        for (let child of dirNode.children) {
+          let childSelected = this.recursiveSelected(child);
+          if (childSelected) {
+            dirNode.expand = true;
+            return true;
+          }
+        }
+        return false;
+      }
+      return false;
     },
     updateDocStyle(styleConfig) {
       this.docStyle = {...this.docStyle, ...styleConfig};

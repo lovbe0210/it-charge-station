@@ -14,6 +14,11 @@
       position: relative;
       border-right: 1px solid @light-border-color;
 
+      .layout-module_fixed {
+        height: 100vh;
+        position: fixed;
+      }
+
       .layout-module_directory {
 
         .directory-header {
@@ -119,7 +124,7 @@
             }
           }
 
-          .home-nav:hover {
+          .home-nav:hover, .active-home {
             background-color: #EFF0F0;
           }
 
@@ -405,7 +410,7 @@
       border-radius: 4px;
 
       &:hover {
-        background: @dropdown-item-hover;
+        background: @editor-item-hover;
       }
     }
 
@@ -801,10 +806,15 @@
 }
 
 .enable-background {
+  background: unset !important;
   .layout-module_directoryWrapper {
     background: unset !important;
     color: var(--font-color) !important;
     border-color: var(--border-color);
+
+    .layout-module_fixed {
+      background: var(--theme-color);
+    }
 
     .layout-module_directory {
       .crumb-text {
@@ -824,10 +834,8 @@
         }
       }
 
-      .home-nav {
-        &:hover {
+      .home-nav:hover, .active-home {
           background: var(--dropdown-item-hover) !important;
-        }
       }
 
       .nav-tabs {
@@ -873,8 +881,30 @@
   }
 
   .reader-route-view {
-    background: unset !important;
+    background: var(--theme-color) !important;
     color: var(--font-color) !important;
+
+    /deep/.ColumnOverview-module {
+      background: var(--theme-color);
+
+      .ColumnOverview-module_docCount, .ColumnOverview-module_wordCount {
+        color: var(--title-color);
+      }
+
+      .ColumnOverview-module_count {
+        color: var(--font-color) !important;
+      }
+
+      .action-more, .action-collect {
+        .menu-btn {
+          color: var(--font-color) !important;
+        }
+
+        &:hover {
+          background: var(--dropdown-item-hover) !important;
+        }
+      }
+    }
 
     /deep/ .operate-more {
       .ant-popover-inner {
@@ -932,7 +962,7 @@
 
   /deep/ .am-engine {
     background: unset !important;
-    color: var(--font-color);
+    color: var(--font-color) !important;
 
     .data-codeblock-container {
       .data-codeblock-content {
@@ -1245,11 +1275,26 @@
           background: var(--dropdown-item-hover);
         }
       }
+
+      .ivu-icon {
+        color: var(--font-color);
+      }
+    }
+  }
+
+  /deep/ .number-home {
+    .content {
+      background: var(--theme-color);
+
+      .ivu-btn {
+        background: var(--dropdown-item-hover);
+      }
     }
   }
 }
 
 .normal-background {
+  height: unset;
   /deep/ .input-lock {
     color: @dark-font-color;
     border: 1px solid @comment-reply-editor-background;

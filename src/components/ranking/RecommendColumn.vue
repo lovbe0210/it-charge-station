@@ -39,7 +39,8 @@
                     :src="fileUrl(item.userInfo.avatarUrl)"
                     size="1.5rem"
                     class="avatar"
-                    href="javascript:void(0)">
+                    target="_blank"
+                    :to="'/' + item.userInfo.domain">
                     <span v-if="!item.userInfo.avatarUrl">{{item.userInfo.username}}</span>
                   </b-avatar>
                   <user-card :userInfo="item.userInfo" :popoverContainer="popoverContainer">

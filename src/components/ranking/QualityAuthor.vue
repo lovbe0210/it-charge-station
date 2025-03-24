@@ -22,8 +22,9 @@
             <b-avatar
               :src="fileUrl(item.avatarUrl)"
               size="2.5rem"
+              target="_blank"
               class="author-avatar"
-              href="javascript:void(0)">
+              :to="'/' + item.userInfo.domain">
               <span v-if="!item.avatarUrl">{{item.username}}</span>
             </b-avatar>
             <div class="author-info">

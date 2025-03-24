@@ -18,17 +18,13 @@
              no-data-text="空空如也，快去首页看看吧">
         <template slot-scope="{ row }" slot="username">
           <div class="user-show-info">
-            <user-card :userInfo="row" :popoverContainer="popoverContainer" class="avatar">
-              <slot>
-                <b-avatar :src="fileUrl(row.avatarUrl)"
-                          variant="light"
-                          :to="'/' + row.domain"
-                          target="_blank"
-                          size="1.7rem">
-                  <span v-if="!row.avatarUrl">{{ row.username }}</span>
-                </b-avatar>
-              </slot>
-            </user-card>
+            <b-avatar :src="fileUrl(row.avatarUrl)"
+                      variant="light"
+                      :to="'/' + row.domain"
+                      target="_blank"
+                      size="1.7rem">
+              <span v-if="!row.avatarUrl">{{ row.username }}</span>
+            </b-avatar>
             <user-card :userInfo="row"
                        :popoverContainer="popoverContainer"
                        class="username">
