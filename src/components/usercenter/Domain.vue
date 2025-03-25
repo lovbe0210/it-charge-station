@@ -30,11 +30,11 @@
         <div class="userInfo-module_detail">
           <span class="index-module_meta" :title="userInfo.location">
             <span class="iconfont location"></span>
-            <span>{{ userInfo.location }}</span>
+            <span>{{ userInfo.location ?  userInfo.location : '未填写'}}</span>
           </span>
           <span class="index-module_meta" :title="userInfo.industry">
             <span class="iconfont industry"></span>
-            <span>{{ userInfo.industry }}</span>
+            <span>{{ userInfo.industry ? userInfo.industry : '未填写' }}</span>
           </span>
         </div>
         <div class="userInfo-module_followInfo">

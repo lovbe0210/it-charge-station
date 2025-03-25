@@ -643,6 +643,17 @@ export default {
     routePath(noticeItem) {
       let targetType = noticeItem.targetType;
       switch (targetType) {
+        case 0:
+          // 个人主页
+          let domainSetting = "/user/domain";
+          if (this.scene === 'index') {
+            this.$emit('changeModalStatus');
+            this.$router.push({path: domainSetting});
+          } else {
+            let domainUrl = this.$router.resolve({path: domainSetting});
+            window.open(domainUrl.href, '_blank');
+          }
+          return;
         case 1:
           // 文章
           let uri = "/" + noticeItem.articleInfo?.domain + "/";
@@ -652,6 +663,12 @@ export default {
           uri += noticeItem.articleInfo?.uri;
           let routeUrl = this.$router.resolve({path: uri});
           window.open(routeUrl.href, '_blank');
+          return;
+        case 2:
+          // 专栏
+          let columnUri = "/" + noticeItem.columnInfo?.userInfo?.domain + "/" + noticeItem.columnInfo?.uri;
+          let columnRouteUrl = this.$router.resolve({path: columnUri});
+          window.open(columnRouteUrl.href, '_blank');
           return;
         case 3:
           // 随笔，需要关闭消息提示框，在当前页面打开
@@ -1282,6 +1299,9 @@ export default {
     },
     handleReachBottom() {
       this.offset = this.offset + this.limit;
+      if (this.activeMenu !== 'chatMessage' && this.activeMenu !== 'messageSetting' && !this.hasMore) {
+        return;
+      }
       this.loadMsgNotify(this.activeMenu);
     }
   },
