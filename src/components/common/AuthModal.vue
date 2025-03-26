@@ -79,20 +79,20 @@
                   </Input>
                   <div class="error-text account-error">{{ accountError ? '请输入正确的手机号或邮箱' : '' }}</div>
                 </form>
-                  <Input v-model="verifyCode"
-                         maxlength="6"
-                         placeholder="请输入验证码"
-                         @on-change="checkALegitimacy(4)">
-                    <Button slot="suffix"
-                            type="text"
-                            ghost
-                            @click="getVerifyCode"
-                            class="verify-code-btn"
-                            :loading="codeLoading"
-                            :disabled="sendCodeSuccess">
-                      {{ btnValue }}
-                    </Button>
-                  </Input>
+                <Input v-model="verifyCode"
+                       maxlength="6"
+                       placeholder="请输入验证码"
+                       @on-change="checkALegitimacy(4)">
+                  <Button slot="suffix"
+                          type="text"
+                          ghost
+                          @click="getVerifyCode"
+                          class="verify-code-btn"
+                          :loading="codeLoading"
+                          :disabled="sendCodeSuccess">
+                    {{ btnValue }}
+                  </Button>
+                </Input>
                 <div class="error-text">{{ verifyCodeError ? '请输入正确的验证码' : '' }}</div>
               </div>
               <Button size="large"
@@ -160,9 +160,9 @@
         </div>
         <div class="agreement-box">
           注册登录即表示同意
-          <a href="/terms" target="_blank">用户协议</a>
+          <a href="/X5HkW-/pKTheQ" target="_blank">用户协议</a>
           和
-          <a href="/privacy" target="_blank">隐私政策</a>
+          <a href="/X5HkW-/Lt2bjP" target="_blank">隐私政策</a>
         </div>
       </div>
     </Modal>

@@ -170,11 +170,13 @@
                 <div class="tab-content-text">文档设置</div>
               </div>
               <Divider/>
-              <div class="doc-setting-btn" @click="drawerType = 2">
+<!--              <div class="doc-setting-btn" @click="drawerType = 2">-->
+              <div class="doc-setting-btn">
                 <span class="iconfont history"></span>
                 <div class="tab-content-text">查看历史版本</div>
               </div>
-              <div class="doc-setting-btn save-version" @click="addNewVersion">
+<!--              <div class="doc-setting-btn save-version" @click="addNewVersion">-->
+              <div class="doc-setting-btn save-version">
                 <div class="tab-content-text">保存为版本</div>
               </div>
               <Divider/>

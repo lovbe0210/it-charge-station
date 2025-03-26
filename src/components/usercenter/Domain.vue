@@ -110,6 +110,35 @@
         <span class="header-text">
           公开专栏
         </span>
+        <Dropdown placement="bottom-start"
+                  trigger="click"
+                  @on-click="updateColumnShowPreference"
+                  transfer-class-name="dropdown-background dropdown-item-all-hover">
+          <span class="operate-box">
+            <span class="tips">
+              {{preference.domaincolumn ? '在主页显示' : '不显示'}}
+            </span>
+            <spanc class="iconfont expand"/>
+          </span>
+          <DropdownMenu slot="list">
+            <DropdownItem :name=1>
+              <div class="operate-item">
+                <div style="min-width: 20px">
+                  <span class="iconfont true" v-if="preference.domaincolumn"></span>
+                </div>
+                在主页显示
+              </div>
+            </DropdownItem>
+            <DropdownItem :name=0>
+              <div class="operate-item">
+                <div style="min-width: 20px">
+                  <span class="iconfont true" v-if="!preference.domaincolumn"></span>
+                </div>
+                不显示
+              </div>
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </div>
       <div class="columns-module_column-list">
         <div v-if="columnList?.length === 0" class="column-empty">
@@ -147,6 +176,37 @@
       </div>
     </div>
     <div class="dataStats-module_hotMap">
+      <div class="hotMap-show">
+        <Dropdown placement="bottom-start"
+                  trigger="click"
+                  @on-click="updateHotMapShowPreference"
+                  transfer-class-name="dropdown-background dropdown-item-all-hover">
+          <span class="operate-box">
+            <span class="tips">
+              {{preference.domainHotmap ? '在主页显示' : '不显示'}}
+            </span>
+            <spanc class="iconfont expand"/>
+          </span>
+          <DropdownMenu slot="list">
+            <DropdownItem :name=1>
+              <div class="operate-item">
+                <div style="min-width: 20px">
+                  <span class="iconfont true" v-if="preference.domainHotmap"></span>
+                </div>
+                在主页显示
+              </div>
+            </DropdownItem>
+            <DropdownItem :name=0>
+              <div class="operate-item">
+                <div style="min-width: 20px">
+                  <span class="iconfont true" v-if="!preference.domainHotmap"></span>
+                </div>
+                不显示
+              </div>
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </div>
       <hot-map :domain="userInfo.domain"></hot-map>
     </div>
     <Modal v-model="domainContentDelWarn"
@@ -178,6 +238,7 @@ import {cloneDeep} from "@/utils";
 import contentPicksApi from "@/api/ContentPicksApi";
 import UserCard from "@/components/common/UserCard.vue";
 import HotMap from "@/components/common/HotMap";
+import preferenceApi from "../../api/PreferenceApi";
 
 export default {
   name: 'Domain',
@@ -235,7 +296,11 @@ export default {
       isEditing: false,
       domainContentDelWarn: false,
       popoverContainer: null,
-      fixedToolbarUi: false
+      fixedToolbarUi: false,
+      preference: {
+        domainHotmap: 1,
+        domaincolumn: 1
+      }
     }
   },
   components: {
@@ -377,6 +442,22 @@ export default {
       this.scrollTop = scrollbar.scrollTop;
       let clientRect = this.$refs.toolbarUiAnchors?.getBoundingClientRect();
       this.fixedToolbarUi = clientRect?.top < 10;
+    },
+    updateColumnShowPreference(value) {
+      this.preference.domaincolumn = value;
+      preferenceApi.updatePreferenceSetting({domainColumn: value}).then(data => {
+        if (data?.result) {
+          this.$Message.success('保存成功！');
+        }
+      })
+    },
+    updateHotMapShowPreference(value) {
+      this.preference.domainHotmap = value;
+      preferenceApi.updatePreferenceSetting({domainHotmap: value}).then(data => {
+        if (data?.result) {
+          this.$Message.success('保存成功！');
+        }
+      })
     }
   },
   mounted() {
@@ -451,6 +532,12 @@ export default {
       }
     })
     this.readmeEmpty = !this.userInfo.contentId;
+    // 获取个人主页显示专栏和创作指数
+    preferenceApi.getPreferenceSetting().then(data => {
+      if (data?.result) {
+        this.preference = {...this.preference, ...data.data}
+      }
+    })
     const scrollContainer = document.getElementById("app");
     scrollContainer?.addEventListener('scroll', this.handleScroll);
   },

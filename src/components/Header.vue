@@ -19,6 +19,9 @@
         <!-- 搜索框 -->
         <b-navbar-nav :fill="true" align="center">
           <div :class="{changeColor:changeBorderColor}" id="search_wrapp">
+            <form style="display: none">
+              <input/>
+            </form>
             <span class="index-module_input">
               <span class="iconfont i-search"></span>
               <input :placeholder="placeholder"

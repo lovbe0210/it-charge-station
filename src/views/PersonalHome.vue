@@ -119,10 +119,10 @@
                 </a-card>
               </div>
             </div>
-            <div class="dataStats-module_hotMap">
+            <div class="dataStats-module_hotMap" v-if="hotMapShow">
               <hot-map :domain="domain"></hot-map>
             </div>
-            <div v-if="1 === 1">
+            <div v-if="1 !== 1">
               <p class="homepage-header" style="margin-bottom: 20px; margin-top: 50px;">更新</p>
               <div class="leastUpdate-module_cardList">
                 <div class="leastUpdate-module_cardItem" v-for="item in leastUpdateList" :key="item.articleId">
@@ -270,6 +270,7 @@ export default {
       followCount: 0,
       fansCount: 0,
       isFollow: 0,
+      hotMapShow: 1,
       columnList: [],
       leastUpdateList: [
         {
@@ -373,11 +374,14 @@ export default {
           })
         }
         // 获取公开专栏
-        contentPicksApi.getDomainPublicColumn(this.userInfo.uid).then(data => {
-          if (data?.result) {
-            this.columnList = data.data;
-          }
-        })
+        if (data.data.domainColumn) {
+          contentPicksApi.getDomainPublicColumn(this.userInfo.uid).then(data => {
+            if (data?.result) {
+              this.columnList = data.data;
+            }
+          })
+        }
+        this.hotMapShow = data.data.domainHotmap;
         // 获取个人主页内容
         if (!this.userInfo.contentId) {
           return;
