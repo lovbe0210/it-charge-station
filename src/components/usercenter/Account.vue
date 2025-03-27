@@ -84,7 +84,7 @@
             <span>
               为了您的账号安全，请先验证身份。
               <b-link class="un-enable-tips"
-                      to="/icharge/02JBwY"
+                      to="/lovbe/help"
                       target="_blank">
                 {{bindingSettings.mobile && bindingSettings.email ? '手机邮箱均' : bindingSettings.mobile ? '手机号' : '邮箱号'}}不可用？
               </b-link>

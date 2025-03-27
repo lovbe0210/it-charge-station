@@ -160,9 +160,9 @@
         </div>
         <div class="agreement-box">
           注册登录即表示同意
-          <a href="/X5HkW-/pKTheQ" target="_blank">用户协议</a>
+          <a href="/lovbe/uagree" target="_blank">用户协议</a>
           和
-          <a href="/X5HkW-/Lt2bjP" target="_blank">隐私政策</a>
+          <a href="/lovbe/prypoy" target="_blank">隐私政策</a>
         </div>
       </div>
     </Modal>
