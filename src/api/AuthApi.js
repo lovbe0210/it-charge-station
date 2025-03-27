@@ -108,11 +108,11 @@ export default {
       sign: sign,
       scene: svScene
     };
-    let requestUri = "/auth/mobile/code";
+    let requestUri = "/user/mobile/code";
     if (_this.account.indexOf('@') !== -1) {
       // 发送邮箱验证码
       jsonData.email = _this.account;
-      requestUri = "/auth/email/code";
+      requestUri = "/user/email/code";
     } else {
       // 发送短信验证码
       jsonData.mobile = _this.account;
