@@ -513,7 +513,7 @@ export default {
         this.step = 2;
       } else {
         this.modalWidth = 400;
-        this.step = this.verifyResult ? 2 : 1;
+        this.step = 1;
       }
       this.showModal = true;
     },

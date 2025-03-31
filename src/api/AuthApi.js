@@ -169,11 +169,10 @@ export default {
 
   /**
    * 刷新token
-   * @param Vue
    * @param rfToken
    * @returns {Promise<void>}
    */
-  async refreshToken(_this, rfToken) {
+  async refreshToken(rfToken) {
     return await Vue.prototype.$request({
       url: "/auth/t/refresh",
       method: "POST",

@@ -1,9 +1,25 @@
-import Vue from 'vue'
 import axios from 'axios';
 import vuex from '@/store/index';
 import router from '@/router'
 import AuthApi from "@/api/AuthApi";
 import {Message} from 'view-design'
+
+let isRefreshing = false; // 是否正在刷新 Token
+let waitingQueue = []; // 请求队列，存储因 Token 过期而暂停的请求
+
+// 执行队列中的请求
+const processQueue = (error) => {
+  waitingQueue.forEach(({config, resolve, reject}) => {
+    if (error) {
+      reject(error);
+    } else {
+      // 直接重试请求，不需要手动设置token，因为已经在cookie中了
+      resolve(http(config));
+    }
+  });
+  // 清空队列
+  waitingQueue = [];
+};
 
 // 创建axios实例
 const http = axios.create({
@@ -51,12 +67,47 @@ http.interceptors.response.use(
 
       // 401 actoken过期
       if (data.code === 401) {
-        // 使用rftoken去刷新
-        let userInfo = vuex.state.userInfo;
-        if (!userInfo || !userInfo.rfToken) {
-          Message.error('登陆信息已过期，请重新登陆！');
+        const config = response.config;
+        if (!isRefreshing) {
+          isRefreshing = true;
+          // 使用rftoken去刷新
+          let userInfo = vuex.state.userInfo;
+          if (!userInfo || !userInfo.rfToken) {
+            Message.error('登陆信息已过期，请重新登陆！');
+          }
+
+          // 调用刷新token的接口
+          return AuthApi.refreshToken(userInfo.rfToken)
+            .then(() => {
+              // 刷新token成功，此时新的token已经在cookie中了
+              // 执行队列中的请求
+              processQueue(null);
+              // 重试当前请求
+              return http(config);
+            })
+            .catch(err => {
+              // refreshToken失败，可能是refreshToken过期
+              if (err.response?.data?.code === 403) {
+                Message.error('登陆信息已过期，请重新登陆！');
+                vuex.commit('clearUserInfo');
+                router.replace('/');
+              }
+              processQueue(err);
+              return Promise.reject(err);
+            })
+            .finally(() => {
+              isRefreshing = false;
+            });
+        } else {
+          // 返回一个pending状态的Promise，加入队列
+          return new Promise((resolve, reject) => {
+            waitingQueue.push({
+              config,
+              resolve,
+              reject
+            });
+          });
         }
-        AuthApi.refreshToken(new Vue(), userInfo.rfToken);
       } else if (data.code === 403) {
         // 如果rftoken也过期，那就直接重新登录了
         Message.error('登陆信息已过期，请重新登陆！');

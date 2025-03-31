@@ -125,7 +125,7 @@ export default {
   watch: {
     $route(to) {
       let activeMenu = to.name;
-      console.log('组件to.name: ', to.name, "to.params.relational: ", to.params.relational)
+      // console.log('组件to.name: ', to.name, "to.params.relational: ", to.params.relational)
       if (activeMenu === 'Relational') {
         this.activeMenu = to.params.relational;
       } else {

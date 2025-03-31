@@ -370,7 +370,7 @@ export default {
       }
     },
     onSelect(selectedKeys, info) {
-      console.log('selected', selectedKeys, info);
+      // console.log('selected', selectedKeys, info);
     },
     /**
      * 左侧目录拖动相关方法

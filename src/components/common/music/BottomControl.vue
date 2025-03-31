@@ -2,7 +2,7 @@
   <div ref="btoContainer"
        :class="[$store.state.musicInfo.isMusicDetailCardShow ? 'bottom-control detail-control' : 'bottom-control']">
     <audio
-      :src="musicUrl"
+      :src="getMusicPlayUrl"
       ref="audioPlayer"
       @play="changeState(true)"
       @pause="changeState(false)"
@@ -179,7 +179,7 @@ export default {
         return;
       }
       let willPlayInfo = {
-        currentIndex: 0,
+        currentIndex: null,
         musicId: null,
         isPlay: true
       };
@@ -370,15 +370,25 @@ export default {
     loginStatus() {
       let userInfo = this.$store.state.userInfo
       return userInfo !== null && userInfo.token?.length === 32
+    },
+    getMusicPlayUrl() {
+      if (!this.musicUrl) {
+        return;
+      }
+      let replace = this.musicUrl.replace("http:", "");
+      replace = replace.replace("https:", "");
+      return window.location.protocol + replace;
     }
   },
   mounted() {
-    // 根据list中的索引直接获取歌曲信息（这就要求其他地方必须同时更新currentIndex）
-    this.musicInfo = this.musicList[this.currentMusicIndex]
-    // 获取歌曲播放url
-    MusicApi.getMusicUrlById(this.musicInfo.musicId).then((data) => {
-      this.musicUrl = data;
-    });
+   if (this.currentMusicIndex) {
+     // 根据list中的索引直接获取歌曲信息（这就要求其他地方必须同时更新currentIndex）
+     this.musicInfo = this.musicList[this.currentMusicIndex]
+     // 获取歌曲播放url
+     MusicApi.getMusicUrlById(this.musicInfo.musicId).then((data) => {
+       this.musicUrl = data;
+     });
+   }
     // 判断用户是否喜欢当前音乐
     // this.getIsUserLikeCurrentMusic();
     // 播放时间重置，开始播放(如果首次进来时则不需要播放)

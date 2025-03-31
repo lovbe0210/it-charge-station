@@ -178,7 +178,7 @@
         let findIndex = this.playList.findIndex(
           (item) => item.musicId === this.currentMusicId
         );
-        this.$store.commit("updateMusicInfo", {currentIndex: findIndex === -1 ? 0 : findIndex});
+        this.$store.commit("updateMusicInfo", {currentIndex: findIndex === -1 ? null : findIndex});
       },
       handleScrollWheel(event) {
         // 如果list大于4时才进行滚动

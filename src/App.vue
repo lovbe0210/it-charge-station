@@ -212,7 +212,7 @@
         let musicPlay = remoteData.musicPlay;
         if (musicPlay) {
           localData.musicInfo = Object.assign(localData.musicInfo ? localData.musicInfo : {
-            currentIndex: 0,
+            currentIndex: null,
             currentTime: 0,
             currentVolume: 30,
             playType: "listLoop"
@@ -223,7 +223,7 @@
             localData.musicInfo.musicList = data.data;
           }
           let currentIndex = localData.musicInfo.musicList.findIndex(music => music.musicId === localData.musicInfo.musicId);
-          localData.musicInfo.currentIndex = currentIndex === -1 ? 0 : currentIndex;
+          localData.musicInfo.currentIndex = currentIndex === -1 ? null : currentIndex;
           this.$store.replaceState(
             Object.assign(
               {},

@@ -103,7 +103,7 @@ export default new Vuex.Store({
       // 当前播放音乐id
       musicId: null,
       // 正在播放的音乐在列表中的索引
-      currentIndex: 0,
+      currentIndex: null,
       // 实时播放时长
       currentTime: 0,
       // 当前设置的音量大小
@@ -289,7 +289,7 @@ export default new Vuex.Store({
       state.musicInfo = Object.assign(state.musicInfo, musicInfo);
       if (musicInfo.musicList && musicInfo.musicList.length > 0 && state.musicInfo.musicId) {
         let number = state.musicInfo.musicList.findIndex(mp => mp.musicId === state.musicInfo.musicId);
-        state.musicInfo.currentIndex = number === -1 ? 0 : number;
+        state.musicInfo.currentIndex = number === -1 ? null : number;
       }
     },
     /**

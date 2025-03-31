@@ -200,7 +200,10 @@
           <div class="setting-legacy-form-item-control-wrapper">
             <div class="update-editor-control">
               <span class="update-editor-control-content">
-                <Button type="success" @click="updateUserInfo" :disabled="cannotSubmit">
+                <Button type="success"
+                        :loading="submitLading"
+                        @click="updateUserInfo"
+                        :disabled="cannotSubmit">
                   <span>更新信息</span>
                 </Button>
               </span>
@@ -228,7 +231,9 @@ export default {
       avatarPreview: null,
       inputVisible: false,
       inputValue: '',
-      tagColor: 'red'
+      tagColor: 'red',
+      // 提交按钮loading
+      submitLading: false
     }
   },
   computed: {
@@ -270,7 +275,9 @@ export default {
       if (this.userInfo.industry) {
         userInfo.append('industry', this.userInfo.industry);
       }
+      this.submitLading = true;
       userApi.updateUserInfo(userInfo).then((data) => {
+        this.submitLading = false;
         if (data?.result) {
           this.$Message.success("更新成功");
           this.echoUpdateInfo();

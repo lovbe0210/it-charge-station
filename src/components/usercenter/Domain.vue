@@ -118,7 +118,7 @@
             <span class="tips">
               {{preference.domaincolumn ? '在主页显示' : '不显示'}}
             </span>
-            <spanc class="iconfont expand"/>
+            <span class="iconfont expand"/>
           </span>
           <DropdownMenu slot="list">
             <DropdownItem :name=1>
@@ -185,7 +185,7 @@
             <span class="tips">
               {{preference.domainHotmap ? '在主页显示' : '不显示'}}
             </span>
-            <spanc class="iconfont expand"/>
+            <span class="iconfont expand"/>
           </span>
           <DropdownMenu slot="list">
             <DropdownItem :name=1>
@@ -325,6 +325,7 @@ export default {
     editContent() {
       this.readmeEmpty = false;
       this.isEditing = true;
+      this.initEngine(false);
     },
     cancelEditContent() {
       this.isEditing = false;
@@ -379,6 +380,9 @@ export default {
       })
     },
     initEngine(readonly) {
+      if (readonly && this.readmeEmpty) {
+        return;
+      }
       const container = this.$refs.container;
       if (container) {
         //实例化引擎
@@ -462,8 +466,9 @@ export default {
   },
   mounted() {
     this.popoverContainer = this.$refs.popoverContainer;
-    const container = this.$refs.container;
-    if (container) {
+    this.initEngine(true);
+
+    /*if (container) {
       //实例化引擎
       const engine = new Engine(container, {
         // 启用插件
@@ -515,9 +520,10 @@ export default {
         })
       }
       this.engine = engine;
-    }
+    }*/
   },
   created() {
+    this.readmeEmpty = !this.userInfo.contentId;
     // 获取关注粉丝数量
     socialApi.getRelationshipCount(this.userInfo.uid).then(data => {
       if (data?.result) {
@@ -531,7 +537,6 @@ export default {
         this.columnList = data.data;
       }
     })
-    this.readmeEmpty = !this.userInfo.contentId;
     // 获取个人主页显示专栏和创作指数
     preferenceApi.getPreferenceSetting().then(data => {
       if (data?.result) {

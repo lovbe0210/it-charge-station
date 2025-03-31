@@ -179,7 +179,7 @@
       <div class="modal-delete-item" v-if="modalContentType === 5">
         <div class="delete-tips">
           <span class="iconfont i-warn"></span>
-          <span>确认删除 {{ currentOperateArticle?.title }} ？</span>
+          <span class="delete-tip-content">确认删除 {{ currentOperateArticle?.title }} ？</span>
         </div>
         <div>
           <span>
@@ -429,7 +429,6 @@
               this.$Message.success("发布成功")
             }
           })
-          return;
         } else if (operateType === 3) {
           if (this.columnList?.length === 0) {
             WriteCenterApi.getColumnList().then(data => {
@@ -438,9 +437,21 @@
               }
             })
           }
+          this.modalContentType = operateType;
+          this.showModal = true;
+        } else if (operateType === 5) {
+          let operateInfo = {
+            operateType: 5,
+            articleList: this.checkedList
+          }
+          WriteCenterApi.articleBatchOperate(operateInfo).then(data => {
+            if (data?.result) {
+              this.showModal = false;
+              this.$Message.success("删除成功")
+              this.initArticleList();
+            }
+          })
         }
-        this.modalContentType = operateType;
-        this.showModal = true;
       },
       moveArticleToColumn() {
         if (!this.tmpSelectColumnId) {

@@ -362,7 +362,7 @@ export default {
   },
   watch: {
     "rambly.title"(newVal) {
-      console.log(newVal);
+      // console.log(newVal);
       this.titleRows = this.rambly.title.split('\n').length;
     }
   },

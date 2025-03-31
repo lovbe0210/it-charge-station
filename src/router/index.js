@@ -336,9 +336,9 @@ const router = new VueRouter({
 router.afterEach((to, from) => {
   // 路由跳转后有些页面滚动条需要保持或回到顶部
   let fixed1 = from.name === 'RamblyJotContent' && to.name === 'RamblyJot';
-  let fixed2 = to.name === 'RamblyJotContent' && from.name === 'RamblyJot';
+  // let fixed2 = to.name === 'RamblyJotContent' && from.name === 'RamblyJot';
   let fixed3 = from.fullPath?.includes('/column/setting/') && to.fullPath === '/dashboard/seriesColumn';
-  console.log("f1: ", fixed1, "f2: ", fixed2, "f3: ", fixed3)
+  // console.log("f1: ", fixed1, "f2: ", fixed2, "f3: ", fixed3)
   let fixed = fixed1 || fixed3;
   if (fixed) {
     return;
