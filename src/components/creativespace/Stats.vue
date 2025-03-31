@@ -6,7 +6,7 @@
           👋 {{ userInfo?.username }}，这是你和小站相伴的第 {{ registerDays }} 天
         </p>
         <p class="title-desc">
-          数据更新至 {{ formatTime(new Date(creationStatistic?.updateTime), 'yyyy-MM-dd') }}（每日上午更新昨日数据，"--"表示暂无数据）
+          数据更新至 {{ creationStatistic?.updateTime ? formatTime(new Date(creationStatistic.updateTime), 'yyyy-MM-dd') : '--' }}（每日上午更新昨日数据，"--"表示暂无数据）
         </p>
       </div>
       <div class="data-center-overview">
@@ -78,9 +78,9 @@
             <img src="https://mdn.alipayobjects.com/huamei_0prmtq/afts/img/A*3GL9T4hyZBMAAAAAAAAAAAAADvuFAQ/original"
                  alt="">
             <div>
-              <p>其中字数最多的{{ creationStatistic?.mostColumnArticle !== null ? '专栏' : '文章' }}是</p>
+              <p>其中字数最多的{{ creationStatistic?.mostColumnArticle !== null ? '专栏' : '文章' }}是{{ creationStatistic?.mostWordsTitle ? '' : ' -- ' }}</p>
               <p class="most-words-title" :title="creationStatistic?.mostWordsTitle">{{ creationStatistic?.mostWordsTitle }}</p>
-              <p>共有{{ creationStatistic?.mostColumnArticle !== null ? (' ' + creationStatistic?.mostColumnArticle + ' 篇文档，') : '' }}{{ creationStatistic?.mostWords }} 字</p>
+              <p>共有{{ creationStatistic?.mostColumnArticle ? (' ' + creationStatistic.mostColumnArticle + ' 篇文档，') : ' -- 篇文档，' }}{{ creationStatistic?.mostWords || '-- ' }} 字</p>
             </div>
           </div>
         </div>
@@ -96,23 +96,23 @@
           </div>
           <div class="public-data-common-body">
             <div>
-              <p>{{ creationStatistic?.publicArticles }}</p>
+              <p>{{ creationStatistic?.publicArticles || '--'}}</p>
               <p>公开文档</p>
             </div>
             <div>
-              <p>{{ creationStatistic?.articleViews }}</p>
+              <p>{{ creationStatistic?.articleViews || '--' }}</p>
               <p>阅读量</p>
             </div>
             <div>
-              <p>{{ creationStatistic?.contentLikes }}</p>
+              <p>{{ creationStatistic?.contentLikes || '--' }}</p>
               <p>点赞量</p>
             </div>
             <div>
-              <p>{{ creationStatistic?.contentComments }}</p>
+              <p>{{ creationStatistic?.contentComments || '--' }}</p>
               <p>评论量</p>
             </div>
             <div>
-              <p>{{ creationStatistic?.articleFeatures }}</p>
+              <p>{{ creationStatistic?.articleFeatures ||  '--' }}</p>
               <p>收录精选</p>
             </div>
           </div>
