@@ -43,8 +43,11 @@ module.exports = {
     port: 80,
     proxy: {
       '/oss': {
-        target: 'http://10.2.2.13:1380',
-        changeOrigin: true
+        target: 'http://10.2.2.15:9000',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/oss': ''
+        }
       },
       '/api/music': {
         target: 'http://www.codeman.ink:3000',
@@ -60,7 +63,7 @@ module.exports = {
       },
       '/api': {
         // target: 'https://www.10020210.xyz',
-        target: 'http://10.2.2.13:1380',
+        target: 'http://10.2.2.17:10210',
         ws: false
       },
       'm7': {

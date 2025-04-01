@@ -77,7 +77,7 @@
           <div class="myData-book">
             <img src="https://mdn.alipayobjects.com/huamei_0prmtq/afts/img/A*3GL9T4hyZBMAAAAAAAAAAAAADvuFAQ/original"
                  alt="">
-            <div>
+            <div class="most-content">
               <p>其中字数最多的{{ creationStatistic?.mostColumnArticle !== null ? '专栏' : '文章' }}是{{ creationStatistic?.mostWordsTitle ? '' : ' -- ' }}</p>
               <p class="most-words-title" :title="creationStatistic?.mostWordsTitle">{{ creationStatistic?.mostWordsTitle }}</p>
               <p>共有{{ creationStatistic?.mostColumnArticle ? (' ' + creationStatistic.mostColumnArticle + ' 篇文档，') : ' -- 篇文档，' }}{{ creationStatistic?.mostWords || '-- ' }} 字</p>

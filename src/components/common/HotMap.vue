@@ -10,7 +10,7 @@
         <span class="hotmap-module_exhibitionDesc">活跃</span>
       </div>
     </div>
-    <div class="hotmap">
+    <div class="hotmap" ref="hotMapScroll">
       <svg width="998.14" height="158.84000000000003" class="hotmap-module_hotmapSvg hotmap-svg">
         <g :transform="'translate(' + (4+index*19.14) + ')'" v-for="(dayItem,index) in hotMap.yearLabel"
            :key="index">
@@ -57,6 +57,13 @@ export default {
   },
   mounted() {
     this.tooltipContainer = this.$refs.tooltipContainer;
+    let hotMapScroll = this.$refs.hotMapScroll;
+    if (hotMapScroll) {
+      this.$nextTick(() => {
+        // 滚动到最右侧
+        hotMapScroll.scrollLeft = hotMapScroll.scrollWidth - hotMapScroll.clientWidth;
+      });
+    }
   },
   created() {
     writeCenterApi.getGrowthStatList(this.domain).then(data => {

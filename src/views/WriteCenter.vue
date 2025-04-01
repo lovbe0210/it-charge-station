@@ -42,10 +42,10 @@
           {{ articleInfo.title === null || articleInfo.title.length === 0 ? '无标题文档' : articleInfo.title }}
         </b-list-group-item>
         <b-list-group-item class="author-info">
-          <a href="/">{{ userInfo.username }}</a>
-          <span v-if="articleInfo.columnId">
+          <a :href="'/' + userInfo?.domain">{{ userInfo.username }}</a>
+          <span v-if="articleInfo?.columnUri">
             <span style="color: #d9d9d9;margin: 0 8px 0 8px;">/</span>
-            <a href="">{{ articleInfo.columnName }}</a>
+            <a :href="'/' + articleInfo.columnUri">{{ articleInfo.columnName }}</a>
           </span>
           <span style="color: #d9d9d9;margin: 0 8px 0 8px;">|</span>
           <span class="update-time un-select">

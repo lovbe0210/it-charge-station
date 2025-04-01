@@ -439,115 +439,104 @@ class Image {
 
   render(loadingBg) {
     // 阅读模式不展示错误
-    const { container, display, enableResizer } = this.options
+    const { container, display, enableResizer } = this.options;
     if (display === CardType.BLOCK) {
-      this.root.addClass("data-image-blcok")
+      this.root.addClass('data-image-blcok');
     }
-    const editor = this.editor
+    const editor = this.editor;
     if (enableResizer === false) {
-      this.root.addClass("data-image-disable-resize")
+      this.root.addClass('data-image-disable-resize');
     }
-    if (this.status === "error" && isEngine(editor)) {
+    if (this.status === 'error' && isEngine(editor)) {
       this.root = $(
         this.renderTemplate(
-          this.message || editor.language.get("image", "uploadError")
+          this.message || editor.language.get('image', 'uploadError')
         )
-      )
-      this.bindErrorEvent(this.root)
-      container.empty().append(this.root)
-      this.progress.remove()
-      return
+      );
+      this.bindErrorEvent(this.root);
+      container.empty().append(this.root);
+      this.progress.remove();
+      return;
     }
-    if (this.status === "uploading") {
-      this.progress.show()
-      container.empty().append(this.root)
+    if (this.status === 'uploading') {
+      this.progress.show();
+      container.empty().append(this.root);
     } else {
-      this.progress.remove()
+      this.progress.remove();
     }
-    if (this.status === "done" && this.isLoad) {
-      const contentNode = this.root.find(".data-image-content")
-      contentNode.addClass("data-image-loaded")
-      contentNode.removeClass("data-image-loading")
+    if (this.status === 'done' && this.isLoad) {
+      const contentNode = this.root.find('.data-image-content');
+      contentNode.addClass('data-image-loaded');
+      contentNode.removeClass('data-image-loading');
     }
-    if (this.status === "done" && !this.isLoad) {
-      if (!this.root.inEditor()) container.empty().append(this.root)
+    if (this.status === 'done' && !this.isLoad) {
+      if (!this.root.inEditor()) container.empty().append(this.root);
     }
-    // 获取节点的最大宽度
-    // this.maxWidth = this.getMaxWidth()
-
-    let { width, height } = this.size
+    this.maxWidth = this.getMaxWidth();
+    let { width, height } = this.size;
     if ((width && height) || !this.src) {
-     /* if (width > this.maxWidth) {
-        width = this.maxWidth
-        height = Math.round((width * height) / this.size.width)
+      if (width > this.maxWidth) {
+        width = this.maxWidth;
+        height = Math.round((width * height) / this.size.width);
       } else if (!this.src && !width && !height) {
-        width = this.maxWidth
-        height = this.maxWidth / 2
-      }*/
-      if (height > this.maxHeight) {
-        height = this.maxHeight;
-        width = Math.round((height * width) / this.size.height)
-      } else if (!this.src && !width && !height) {
-        height = this.maxHeight
-        width = this.maxWidth / 2
+        width = this.maxWidth;
+        height = this.maxWidth / 2;
       }
-
-
       if (this.src) {
         if (this.options.enableResizer === false) {
           this.image.css({
-            width: "100%"
-          })
+            width: '100%'
+          });
         } else {
           this.image.css({
-            width: width + "px"
+            width: width + 'px'
             //height: height + 'px',
-          })
+          });
         }
 
-        const { onChange } = this.options
+        const { onChange } = this.options;
         if (width > 0 && height > 0) {
-          this.size = { ...this.size, width, height }
-          if (onChange) onChange(this.size)
+          this.size = { ...this.size, width, height };
+          if (onChange) onChange(this.size);
         }
       }
       if (this.options.enableResizer === false) {
         this.bg.css({
-          width: "100%"
-        })
+          width: '100%'
+        });
       } else {
         this.bg.css({
-          width: width + "px",
-          height: height + "px"
-        })
+          width: width + 'px',
+          height: height + 'px'
+        });
       }
 
       if (loadingBg) {
-        this.bg.css("background-image", `url(${loadingBg})`)
+        this.bg.css('background-image', `url(${loadingBg})`);
       }
     }
 
-    this.image.on("load", () => this.imageLoadCallback())
-    this.image.on("error", () => this.imageLoadError())
+    this.image.on('load', () => this.imageLoadCallback());
+    this.image.on('error', () => this.imageLoadError());
     if (!isMobile) {
-      this.root.on("mouseenter", () => {
-        this.maximize.show()
-      })
-      this.root.on("mouseleave", () => {
-        this.maximize.hide()
-      })
+      this.root.on('mouseenter', () => {
+        this.maximize.show();
+      });
+      this.root.on('mouseleave', () => {
+        this.maximize.hide();
+      });
     }
 
     if (!isEngine(editor) || editor.readonly) {
-      const link = this.image.closest("a")
+      const link = this.image.closest('a');
       // 无链接
       if (link.length === 0) {
-        this.image.on("click", this.openZoom)
+        this.image.on('click', this.openZoom);
       }
     }
-    this.maximize.on("click", this.openZoom)
+    this.maximize.on('click', this.openZoom);
     if (isEngine(editor) || !this.root.inEditor()) {
-      this.image.on("dblclick", this.openZoom)
+      this.image.on('dblclick', this.openZoom);
     }
   }
 }
