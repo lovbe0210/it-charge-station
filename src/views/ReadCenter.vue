@@ -92,8 +92,6 @@
                     <div class="tabs-tabpane tree" v-show="isColumnView && navShowType === 'tree'">
                       <Tree :data="dirData"
                             @on-select-change="selectTreeNode"
-                            @on-check-change="tt1"
-                            @on-toggle-expand="tt2"
                             class="tabpane-tree">
                       </Tree>
                     </div>
@@ -449,7 +447,6 @@ export default {
       this.$router.push(path);
     },
     selectTreeNode(selectNode, currentNode) {
-      debugger
       // 目录节点
       if (currentNode.type === 2) {
         currentNode.expand = !currentNode.expand

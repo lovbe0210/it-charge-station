@@ -651,8 +651,8 @@ export default {
     this.$nextTick(() => {
       setTimeout(() => {
         let scrollbar = this.$refs.scrollbarContext;
-        let canScrollHeight = scrollbar.scrollHeight - scrollbar.clientHeight;
-        if (canScrollHeight && ((canScrollHeight / scrollbar.scrollHeight) < 0.1)) {
+        let canScrollHeight = scrollbar?.scrollHeight - scrollbar?.clientHeight;
+        if (canScrollHeight && ((canScrollHeight / scrollbar?.scrollHeight) < 0.1)) {
           ContentPicksApi.reportView(this, scrollbar.scrollTop, canScrollHeight, scrollbar.scrollHeight).then()
         }
       }, 1000 * 10)

@@ -75,6 +75,15 @@ http.interceptors.response.use(
           if (!userInfo || !userInfo.rfToken) {
             Message.error('登陆信息已过期，请重新登陆！');
           }
+          // 将data解出，因为在发起重试时会重新包裹一层
+          if (config.data) {
+            try {
+              let originData = JSON.parse(config.data);
+              config.data = originData?.data;
+            } catch (exception) {
+              // 有些请求可能没有请求体
+            }
+          }
 
           // 调用刷新token的接口
           return AuthApi.refreshToken(userInfo.rfToken)
