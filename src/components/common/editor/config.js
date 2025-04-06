@@ -3,7 +3,6 @@ import Redo from "@aomao/plugin-redo"
 import Undo from "@aomao/plugin-undo"
 import Bold from "@aomao/plugin-bold"
 import Code from "@aomao/plugin-code"
-// import Code from "./packages/code/src"
 import Backcolor from "@aomao/plugin-backcolor"
 import Fontcolor from "@aomao/plugin-fontcolor"
 import Fontsize from "@aomao/plugin-fontsize"
@@ -24,6 +23,7 @@ import PaintFormat from "@aomao/plugin-paintformat"
 import RemoveFormat from "@aomao/plugin-removeformat"
 import SelectAll from "@aomao/plugin-selectall"
 import Image, {ImageComponent, ImageUploader} from "./packages/image/src"
+// import Image, {ImageComponent, ImageUploader} from "@aomao/plugin-image"
 // import Table, {TableComponent} from "@aomao/plugin-table"
 import Table, {TableComponent} from "./packages/table"
 import File, {FileComponent, FileUploader} from "@aomao/plugin-file"
@@ -45,7 +45,7 @@ import Lightblock, {LightblockComponent} from "./packages/lightblock/src";
 const FILE_PREFIX = "/oss";
 const FILE_SERVICE = "https://www.10020210.xyz";
 
-const DOMAIN = "/cpt";
+const DOMAIN = "/api/cpt";
 
 export const HightLightIcon = '<div class="hight-light-icon" style="display: flex; align-items: center; justify-content: center; width: 23px; height: 23px; border: 1px solid #e8e8e8;"><span class="iconfont icon-hight-light" style="font-size: 13px;line-height: 23px;color: #262626;font-weight: bold;"></span></div>';
 
@@ -166,7 +166,7 @@ export const pluginConfig = {
     parse: response => {
       return {
         result: response.result,
-        data: FILE_PREFIX + response.data
+        data: response.result ? (FILE_PREFIX + response.data) : response.message
       }
     }
   },
@@ -211,7 +211,7 @@ export const pluginConfig = {
     parse: response => {
       return {
         result: response.result,
-        data: response.data
+        data: response.result ? response.data : response.message
       }
     }
   },

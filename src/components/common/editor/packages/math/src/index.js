@@ -57,69 +57,47 @@ export default class Math extends Plugin {
   }
 
   query(key, code, success, failed) {
-    const {request, options, language} = this.editor;
+    const {request, language} = this.editor;
     const {action, type, contentType, parse, headers} = this.options;
     const data = this.options.data;
-    let newData = typeof data === 'function'
-      ? async () => {
-        const newData = await data();
-        return {...newData, content: code};
-      }
-      : {
-        ...data,
-        content: code
-      };
     this.#request[key]?.abort();
-    const axiosRequest = options?.request;
-    // 如果axios可用就用这个
-    if (axiosRequest) {
-      let formData = new FormData();
-      formData.append("content", code);
-      axiosRequest({
-        url: action,
-        method: 'PUT',
-        data: formData
-      }).then(data => {
-        if (data?.result) {
-          let svgBase64 = data.data;
-          success(svgBase64);
-        } else {
-          failed(data.message || language.get('image', 'uploadError'));
+    this.#request[key] = request.ajax({
+      url: action,
+      method: 'POST',
+      contentType: contentType || 'application/json',
+      type: type === undefined ? 'json' : type,
+      headers,
+      data: typeof data === 'function'
+        ? async () => {
+          const newData = await data();
+          return {...newData, content: code};
         }
-      }).catch(error => {
-        failed(error.message || language.get('image', 'uploadError'));
-      });
-    } else {
-      this.#request[key] = request.ajax({
-        url: action,
-        method: 'POST',
-        contentType: contentType || 'application/json',
-        type: type === undefined ? 'json' : type,
-        headers,
-        data: newData,
-        success: (response) => {
-          const url = response.url || (response.data && response.data.url);
-          const result = parse ? parse(response) : url ? {result: true, data: url} : {result: false};
-          if (result.result) {
-            const isUrl =
-              result.data.indexOf('http') === 0 ||
-              result.data.indexOf('/') === 0;
-            let url = result.data;
-            if (!isUrl) {
-              url = this.exConvertToPx(result.data);
-              url = (url.indexOf('data:') < 0 ? 'data:image/svg+xml,' : '') + url;
-              encodeURIComponent(url).replace(/'/g, '%27').replace(/"/g, '%22');
-            }
-            success(url);
-          } else {
-            failed(result.data);
-          }
+        : {
+          ...data,
+          content: code
         },
-        error: (error) => {
-          failed(error.message || language.get('image', 'uploadError'));
+      success: (response) => {
+        const url = response.url || (response.data && response.data.url);
+        const result = parse ? parse(response) : url ? {result: true, data: url} : {result: false};
+        if (result.result) {
+          const isUrl =
+            result.data.indexOf('http') === 0 ||
+            result.data.indexOf('/') === 0;
+          let url = result.data;
+          if (!isUrl) {
+            url = this.exConvertToPx(result.data);
+            url = (url.indexOf('data:') < 0 ? 'data:image/svg+xml,' : '') + url;
+            // encodeURIComponent(url).replace(/'/g, '%27').replace(/"/g, '%22');
+          }
+          success(url);
+        } else {
+          failed(result.data);
         }
-      });
-    }
+      },
+      error: (error) => {
+        failed(error.message || language.get('image', 'uploadError'));
+      }
+    });
   }
 
   exConvertToPx(svg) {

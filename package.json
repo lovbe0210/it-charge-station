@@ -19,6 +19,7 @@
     "@aomao/plugin-fontsize": "^2.10.0",
     "@aomao/plugin-heading": "^2.10.0",
     "@aomao/plugin-hr": "^2.10.0",
+    "@aomao/plugin-image": "^2.10.0",
     "@aomao/plugin-indent": "^2.10.0",
     "@aomao/plugin-italic": "^2.10.0",
     "@aomao/plugin-line-height": "^2.10.0",

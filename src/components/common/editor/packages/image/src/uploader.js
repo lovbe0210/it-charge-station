@@ -215,7 +215,7 @@ export default class extends Plugin {
             const imagePlugin = editor.plugin.findPlugin("image")
 
             image.onload = () => {
-              const { naturalWidth, naturalHeight, height, width } = image
+              const {naturalWidth, naturalHeight, height, width} = image
 
               let imageWidth = width
               let imageHeight = height
@@ -242,12 +242,12 @@ export default class extends Plugin {
               resolve()
             }
             image.onerror = () => {
-              insertCard({ src: "", status: "error" })
+              insertCard({src: "", status: "error"})
               resolve()
             }
           })
         },
-        onUploading: (file, { percent }) => {
+        onUploading: (file, {percent}) => {
           const component = this.cardComponents[file.uid || ""]
           if (!component) return
           component.setProgressPercent(percent)
@@ -256,15 +256,13 @@ export default class extends Plugin {
           const component = this.cardComponents[file.uid || ""]
           if (!component) return
           let src =
-            response.url ||
-            (response.data && response.data.url) ||
-            response.src ||
-            (response.data && response.data.src)
+            response.url || (response.data && response.data.url) ||
+            response.src || (response.data && response.data.src)
           const result = parse
             ? parse(response)
             : src
-              ? { result: true, data: src }
-              : { result: false }
+              ? {result: true, data: src}
+              : {result: false}
           if (!result.result) {
             card.update(component.id, {
               status: "error",
