@@ -3,6 +3,7 @@ import Redo from "@aomao/plugin-redo"
 import Undo from "@aomao/plugin-undo"
 import Bold from "@aomao/plugin-bold"
 import Code from "@aomao/plugin-code"
+// import Code from "./packages/code/src"
 import Backcolor from "@aomao/plugin-backcolor"
 import Fontcolor from "@aomao/plugin-fontcolor"
 import Fontsize from "@aomao/plugin-fontsize"
@@ -26,8 +27,11 @@ import Image, {ImageComponent, ImageUploader} from "./packages/image/src"
 // import Table, {TableComponent} from "@aomao/plugin-table"
 import Table, {TableComponent} from "./packages/table"
 import File, {FileComponent, FileUploader} from "@aomao/plugin-file"
+// import File, {FileComponent, FileUploader} from "./packages/file/src/index"
 import Video, {VideoComponent, VideoUploader} from "@aomao/plugin-video"
-import Math, {MathComponent} from "@aomao/plugin-math"
+// import Video, {VideoComponent, VideoUploader} from "./packages/video/src/index"
+// import Math, {MathComponent} from "@aomao/plugin-math"
+import Math, {MathComponent} from "./packages/math/src"
 import Fontfamily from "@aomao/plugin-fontfamily"
 import Status, {StatusComponent} from "@aomao/plugin-status"
 import LineHeight from "@aomao/plugin-line-height"
@@ -38,9 +42,10 @@ import Link from "./packages/link/index"
 import CodeBlock, { CodeBlockComponent } from "am-editor-codeblock-vue2";
 import Lightblock, {LightblockComponent} from "./packages/lightblock/src";
 
-const FILE_SERVICE = "/oss";
+const FILE_PREFIX = "/oss";
+const FILE_SERVICE = "https://www.10020210.xyz";
 
-const DOMAIN = "/api/cpt";
+const DOMAIN = "/cpt";
 
 export const HightLightIcon = '<div class="hight-light-icon" style="display: flex; align-items: center; justify-content: center; width: 23px; height: 23px; border: 1px solid #e8e8e8;"><span class="iconfont icon-hight-light" style="font-size: 13px;line-height: 23px;color: #262626;font-weight: bold;"></span></div>';
 
@@ -137,6 +142,7 @@ export const cards = [
 ]
 
 export const pluginConfig = {
+
   [Italic.pluginName]: {
     // 默认为 _ 下划线，这里修改为单个 * 号
     markdown: "*"
@@ -160,28 +166,53 @@ export const pluginConfig = {
     parse: response => {
       return {
         result: response.result,
-        data: FILE_SERVICE + response.data
+        data: FILE_PREFIX + response.data
       }
     }
   },
   [FileUploader.pluginName]: {
     action: `${DOMAIN}/content/upload/file`,
-    limitSize: 1024 * 1024 * 100
+    limitSize: 1024 * 1024 * 20,
+    //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
+    remote: {
+      action: `${DOMAIN}/content/upload/url`
+    },
+    isRemote: src => src.indexOf(DOMAIN) < 0,
+    parse: response => {
+      return {
+        result: response.result,
+        data: {
+          url: FILE_PREFIX + response.data,
+          preview: FILE_SERVICE + FILE_PREFIX + response.data,
+          download: FILE_SERVICE + FILE_PREFIX + response.data
+        }
+      }
+    }
   },
   [VideoUploader.pluginName]: {
     action: `${DOMAIN}/content/upload/file`,
-    limitSize: 1024 * 1024 * 100
-  },
-  [Video.pluginName]: {
-    onBeforeRender: (status, url) => {
-      return url + `?token=12323`
+    limitSize: 1024 * 1024 * 50,
+    //添加外网图片连接上传,上后端下载图片，并返回一个本地连接,比如图片复制
+    remote: {
+      action: `${DOMAIN}/content/upload/url`
+    },
+    isRemote: src => src.indexOf(DOMAIN) < 0,
+    parse: response => {
+      return {
+        result: response.result,
+        data: {
+          url: FILE_SERVICE + FILE_PREFIX + response.data
+        }
+      }
     }
   },
   [Math.pluginName]: {
-    action: `http://localhost:8080/math`,
-    parse: res => {
-      if (res.success) return {result: true, data: res.svg}
-      return {result: false}
+    action: `${DOMAIN}/content/math`,
+    parse: response => {
+      return {
+        result: response.result,
+        data: response.data
+      }
     }
   },
   [Fontsize.pluginName]: {

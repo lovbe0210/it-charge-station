@@ -135,7 +135,7 @@ export default class extends Plugin {
   async execute(files) {
     const editor = this.editor
     if (!isEngine(editor)) return
-    const { request, card, language } = editor
+    const { request, options, card, language } = editor
     const {
       action,
       data,
@@ -147,8 +147,10 @@ export default class extends Plugin {
       headers,
       name
     } = this.options.file
+    // eslint-disable-next-line no-unused-vars
+    const axiosRequest = options?.request;
     const { parse } = this.options
-    const limitSize = this.options.file.limitSize || 10 * 1024 * 1024
+    const limitSize = this.options.file.limitSize || 5 * 1024 * 1024
 
     if (!Array.isArray(files) && typeof files !== "string") {
       const accepts = Array.isArray(this.extensionNames)
@@ -293,7 +295,6 @@ export default class extends Plugin {
       files,
       name
     )
-
   }
 
   dropFiles = files => {

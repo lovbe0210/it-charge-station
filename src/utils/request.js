@@ -32,7 +32,7 @@ const http = axios.create({
 // axios拦截器
 http.interceptors.request.use(
   (config) => {
-    if (config.method.toUpperCase() !== 'POST' || config?.data instanceof FormData) {
+    if (config?.data instanceof FormData || config.method.toUpperCase() !== 'POST') {
       return config;
     }
     config.headers['Content-Type'] = 'application/json';

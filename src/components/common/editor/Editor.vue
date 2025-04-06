@@ -59,7 +59,9 @@
         </div>
       </div>
     </div>
-    <div :class="['back-top', docThemeSync === 1 ? 'enable-background-backTop' : '']" v-show="backTopShow" @click="backTop">
+    <div :class="['back-top', docThemeSync === 1 ? 'enable-background-backTop' : '']"
+         v-show="backTopShow"
+         @click="backTop">
       <span class="iconfont to-top"/>
     </div>
   </b-container>
@@ -351,7 +353,8 @@ export default {
         config: this.finalConfig,
         autoPrepend: false,
         // 文档提示语
-        placeholder: '输入 / 唤起更多'
+        placeholder: '输入 / 唤起更多',
+        request: this.$request
       });
       // 设置显示成功消息UI，默认使用 console.log
       this.engine.messageSuccess = (msg) => {
