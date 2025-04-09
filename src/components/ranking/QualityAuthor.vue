@@ -24,7 +24,7 @@
               size="2.5rem"
               target="_blank"
               class="author-avatar"
-              :to="'/' + item.userInfo.domain">
+              :to="'/' + item.userInfo?.domain">
               <span v-if="!item.avatarUrl">{{item.username}}</span>
             </b-avatar>
             <div class="author-info">

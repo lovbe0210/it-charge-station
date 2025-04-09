@@ -252,6 +252,8 @@ export default {
       items: [
         [
           'fontsize',
+          'undo',
+          'redo',
           'fontcolor',
           'backcolor',
           'bold'

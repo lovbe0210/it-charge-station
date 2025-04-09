@@ -103,6 +103,7 @@ export const ramblyPlugins = [
 export const domainPlugins = [
   Fontsize,
   Bold,
+  Redo,
   Undo,
   Image,
   ImageUploader,

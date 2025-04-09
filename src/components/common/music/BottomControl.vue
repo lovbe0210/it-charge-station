@@ -384,10 +384,12 @@ export default {
    if (this.currentMusicIndex) {
      // 根据list中的索引直接获取歌曲信息（这就要求其他地方必须同时更新currentIndex）
      this.musicInfo = this.musicList[this.currentMusicIndex]
-     // 获取歌曲播放url
-     MusicApi.getMusicUrlById(this.musicInfo.musicId).then((data) => {
-       this.musicUrl = data;
-     });
+     if (this.musicInfo) {
+       // 获取歌曲播放url
+       MusicApi.getMusicUrlById(this.musicInfo.musicId).then((data) => {
+         this.musicUrl = data;
+       });
+     }
    }
     // 判断用户是否喜欢当前音乐
     // this.getIsUserLikeCurrentMusic();

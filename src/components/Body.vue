@@ -1,5 +1,5 @@
 <template>
-  <b-row class="body-row">
+  <b-row class="body-row" ref="popoverContainer">
     <b-col :cols="adaptiveCols" class="enable-background top-show">
       <!--主体页面选择-->
       <router-view></router-view>
@@ -76,15 +76,23 @@
                         class="creator-avatar"
                         size="40px"/>
               <b-avatar v-else
-                        to="/"
+                        :to="'/' + item.domain"
                         class="creator-avatar"
-                        size="40px"/>
+                        size="40px">
+                <span>
+                  {{item.username}}
+                </span>
+              </b-avatar>
               <div class="info">
                 <b-row>
-                    <span class="nick-name">
-                      {{item.username}}
-                      <span :class="'iconfont icon-level' + item.level"/>
-                    </span>
+                    <user-card :userInfo="item" :popoverContainer="popoverContainer">
+                      <slot>
+                        <span class="nick-name">
+                          {{item.username}}
+                          <span :class="'iconfont icon-level' + item.level"/>
+                        </span>
+                      </slot>
+                    </user-card>
 
                 </b-row>
                 <span class="tag">
@@ -127,10 +135,10 @@
           </div>
           <div class="about">
             <span class="first">
-              <a href="" target="_blank">关于本站</a>
+              <a href="/lovbe/_4Mv9P" target="_blank">关于本站</a>
             </span>
             <span>
-              <a href="" target="_blank">BUG反馈</a>
+              <a href="/lovbe/tngG-C" target="_blank">BUG反馈</a>
             </span>
           </div>
           <div class="contact">
@@ -154,6 +162,7 @@
   import CarouselSwipe from '@/components/common/CarouselSwipe';
   import contentPicksApi from "@/api/ContentPicksApi";
   import preferenceApi from "@/api/PreferenceApi";
+  import UserCard from "@/components/common/UserCard.vue";
 
   export default {
     name: 'Body',
@@ -180,11 +189,13 @@
         focused: false,
         hovered: false,
         needFixed: false,
-        currentId: 0
+        currentId: 0,
+        popoverContainer: null
       }
     },
     components: {
-      CarouselSwipe
+      CarouselSwipe,
+      UserCard
     },
     computed: {
       // 判断页面是手机页面还是pc页面，如果是手机页面则进行全屏显示
@@ -284,6 +295,7 @@
       })
     },
     mounted() {
+      this.popoverContainer = this.$refs.popoverContainer;
       this.needFixed = false;
       // 从store中获取今日flag并赋值给flagContent
       this.flagContent = this.stateFlag.content;

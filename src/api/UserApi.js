@@ -151,7 +151,7 @@ export default {
    */
   async getDomainContent(contentId) {
     return await Vue.prototype.$request({
-      url: "/user/dmcontent/" + contentId,
+      url: "/user/domain/content/get/" + contentId,
       method: 'GET'
     });
   },
@@ -163,7 +163,7 @@ export default {
    */
   async updateDomainContent(domainContent) {
     return await Vue.prototype.$request({
-      url: "/user/dmcontent/update",
+      url: "/user/domain/content/update",
       method: 'POST',
       data: domainContent
     })
@@ -176,7 +176,7 @@ export default {
    */
   async deleteDomainContent(contentId) {
     return await Vue.prototype.$request({
-      url: "/user/dmcontent/delete",
+      url: "/user/domain/content/delete",
       method: 'POST',
       data: {contentId}
     })
