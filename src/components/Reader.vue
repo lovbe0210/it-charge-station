@@ -92,10 +92,10 @@
               </div>
             </div>
           </div>
-          <div id="contentWrapper"
-               class="layout-module_bookContentWrapper beauty-scroll"
-               ref="scrollbarContext">
-            <div class="bookReader-module_docContainer">
+          <div class="layout-module_bookContentWrapper">
+            <div id="contentWrapper"
+                 ref="scrollbarContext"
+                 class="bookReader-module_docContainer beauty-scroll">
               <div :class="['doc_header', docStyle.docStylePageSize ? 'reader-ultra-wide' : 'reader-standard-wide']">
                 <div class="doc_header_wrapper">
                   <h1 id="article-title" class="doc-article-title">
@@ -636,7 +636,7 @@ export default {
         // 所有的插件配置
         config: pluginConfig,
         // 滚动条节点
-        scrollNode: this.$refs.scrollbarContext.Node,
+        scrollNode: $("#contentWrapper"),
         // 阅读模式
         readonly: true
       });
@@ -645,7 +645,9 @@ export default {
     }
     window.addEventListener('resize', this.checkFullscreen);
     const scrollContainer = this.$refs.scrollbarContext;
-    scrollContainer?.addEventListener('scroll', this.handleScrollForToc);
+    scrollContainer?.addEventListener('scroll', this.handleScrollForToc, {
+      passive: true
+    });
     this.handleScrollForToc();
     // 文章很短时的进度汇报
     this.$nextTick(() => {

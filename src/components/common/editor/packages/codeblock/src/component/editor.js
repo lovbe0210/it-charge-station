@@ -63,7 +63,6 @@ class CodeBlockEditor {
   }
 
   renderTemplate() {
-    debugger
     return '<div class="data-codeblock-container"><div class="data-codeblock-content"></div></div>'
   }
 

@@ -31,7 +31,6 @@ export default class VideoPlugin extends Plugin {
   }
 
   execute(status, url, name, videoId, cover, size, download, naturalWidth, naturalHeight, width, height) {
-    debugger
     const value = {
       status,
       videoId,
@@ -53,7 +52,6 @@ export default class VideoPlugin extends Plugin {
   }
 
   async waiting(callback) {
-    debugger
     const {card} = this.editor;
     // 检测单个组件
     const check = (component) => {
@@ -115,7 +113,6 @@ export default class VideoPlugin extends Plugin {
   }
 
   pasteSchema = (schema) => {
-    debugger
     schema.add({
       type: 'block',
       name: 'div',
@@ -130,7 +127,6 @@ export default class VideoPlugin extends Plugin {
   };
 
   pasteHtml = (node) => {
-    debugger
     const editor = this.editor;
     if (!isEngine(editor)) return;
     if (node.isElement()) {
@@ -152,7 +148,6 @@ export default class VideoPlugin extends Plugin {
   };
 
   parseHtml = (root, callback) => {
-    debugger
     const results = [];
     root.find(
       `[${CARD_KEY}="${VideoComponent.cardName}"],[${READY_CARD_KEY}="${VideoComponent.cardName}"]`

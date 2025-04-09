@@ -39,7 +39,6 @@ export default class extends InlinePlugin {
   }
 
   execute(...args) {
-    debugger
     const editor = this.editor;
     if (!isEngine(editor)) return;
     const inlineNode = $(`<${this.tagName} />`);
@@ -67,7 +66,6 @@ export default class extends InlinePlugin {
   }
 
   parseHtml = (root) => {
-    debugger
     root.find(this.tagName).css({
       'font-family': 'monospace',
       'font-size': 'inherit',

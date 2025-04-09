@@ -89,7 +89,6 @@ self.onconnect = (e) => {
             retry("onerror");
           }
         } catch (e) {
-          debugger
           postAllMessage({
             type: 10,
             data: 'WebSocket创建连接失败:' + sockerUrl + '\n错误信息：' + e
