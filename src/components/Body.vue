@@ -145,7 +145,7 @@
             <b-link href="https://github.com/lovbe0210/it-charge-station" target="_blank">
               <span class="iconfont icon-github"/>
             </b-link>
-            <b-link href="https://gitee.com/lovbe0210/it-charge-station" target="_blank">
+            <b-link href="https://gitee.com/ichargehub/it-charge-station" target="_blank">
               <span class="iconfont icon-gitee"/>
             </b-link>
             <b-link href="https://qm.qq.com/q/hWb4PzdhxQ" target="_blank">
