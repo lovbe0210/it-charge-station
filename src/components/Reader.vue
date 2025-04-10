@@ -551,7 +551,9 @@ export default {
         this.tocData = [];
         let content = data.data.content;
         if (content?.length > 0) {
-          this.engine.setJsonValue(JSON.parse(content));
+          this.$nextTick(() => {
+            this.engine.setJsonValue(JSON.parse(content));
+          });
           const pattern = /h[1-6]/;
           let match = content.match(pattern);
           if (match) {
@@ -669,5 +671,5 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import 'css/article-reader.less';
+  @import 'css/article-reader.less';
 </style>

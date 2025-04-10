@@ -39,6 +39,7 @@ export default class extends Plugin {
   }
 
   async waiting(callback) {
+    debugger
     const {card} = this.editor
     // 检测单个组件
     const check = component => {
@@ -96,6 +97,7 @@ export default class extends Plugin {
   }
 
   parseHtml = (root, callback) => {
+    debugger
     const results = []
     const editor = this.editor
     root
