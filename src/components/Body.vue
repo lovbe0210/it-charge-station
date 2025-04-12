@@ -48,7 +48,7 @@
                     <span class="iconfont series-column"></span> {{ item.articleCount }}
                   </div>
                   <div v-if="item.uid">
-                    <span class="iconfont like"></span> {{ item.viewCount }}
+                    <span class="iconfont viewed"></span> {{ item.viewCount }}
                   </div>
                 </b-row>
               </b-list-group-item>

@@ -45,7 +45,7 @@
           <a :href="'/' + userInfo?.domain">{{ userInfo.username }}</a>
           <span v-if="articleInfo?.columnUri">
             <span style="color: #d9d9d9;margin: 0 8px 0 8px;">/</span>
-            <a :href="'/' + articleInfo.columnUri">{{ articleInfo.columnName }}</a>
+            <a :href="'/' + userInfo?.domain + '/' + articleInfo.columnUri">{{ articleInfo.columnName }}</a>
           </span>
           <span style="color: #d9d9d9;margin: 0 8px 0 8px;">|</span>
           <span class="update-time un-select">
