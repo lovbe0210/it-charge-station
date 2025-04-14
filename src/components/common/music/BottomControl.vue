@@ -12,20 +12,20 @@
     <!-- 左边 -->
     <div class="left">
       <div class="avatar" @click="showDetailCard()">
-        <img :src="musicInfo.musicCover" alt="" v-if="musicInfo.musicCover" :draggable="false"/>
+        <img :src="musicInfo.musicCover" alt="" v-if="musicInfo?.musicCover" :draggable="false"/>
         <img src="https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/test.jpg" alt="" v-else :draggable="false"/>
       </div>
       <div class="musicInfo">
         <div class="music-name"
-             v-show="musicInfo.musicName"
-             :title="musicInfo.musicName">
-          {{ musicInfo.musicName }}
+             v-show="musicInfo?.musicName"
+             :title="musicInfo?.musicName">
+          {{ musicInfo?.musicName }}
         </div>
         <div class="singer"
-             v-show="musicInfo.author"
-             :title="musicInfo.author"
+             v-show="musicInfo?.author"
+             :title="musicInfo?.author"
              @click="goToSingerDetail">
-          {{ musicInfo.author }}
+          {{ musicInfo?.author }}
         </div>
       </div>
     </div>
@@ -42,8 +42,8 @@
           <span class="iconfont previous"/>
         </span>
         <span @click="musicList.length != 0 ? changePlayState() : ''">
-          <span class="iconfont play" v-show="this.$store.state.musicInfo.isPlay"/>
-          <span class="iconfont paused" v-show="!this.$store.state.musicInfo.isPlay"/>
+          <span class="iconfont play" v-show="this.$store.state.musicInfo?.isPlay"/>
+          <span class="iconfont paused" v-show="!this.$store.state.musicInfo?.isPlay"/>
         </span>
         <span @click="musicList.length != 0 ? changeMusic('next') : ''">
           <span class="iconfont next"/>
@@ -74,7 +74,7 @@
           </div>
         </div>
         <span class="totalTime">
-          {{ handleMusicTime(musicInfo.duration) }}
+          {{ handleMusicTime(musicInfo?.duration) }}
         </span>
       </div>
     </div>
@@ -140,7 +140,7 @@ export default {
 
     // 点击播放键的回调
     changePlayState() {
-      this.$store.state.musicInfo.isPlay ? this.pauseMusic() : this.playMusic();
+      this.$store.state.musicInfo?.isPlay ? this.pauseMusic() : this.playMusic();
     },
     // 播放音乐的函数
     playMusic() {
@@ -301,10 +301,10 @@ export default {
 
     // 点击歌手名跳转至歌手页面的回调
     goToSingerDetail() {
-      if (this.$route.path === `/singerDetail/${this.musicInfo.ar[0].id}`) {
+      if (this.$route.path === `/singerDetail/${this.musicInfo?.ar[0].id}`) {
         this.$router.push({
           name: "singerDetail",
-          params: {id: this.musicInfo.ar[0].id}
+          params: {id: this.musicInfo?.ar[0].id}
         })
       }
       if (this.$store.state.ismusicInfoCardShow === true) {
@@ -314,25 +314,25 @@ export default {
 
     // 是否展示播放页面
     showDetailCard() {
-      if (this.musicInfo.name !== null) {
+      if (this.musicInfo?.name !== null) {
         this.$store.commit('updateMusicInfo', {'isMusicDetailCardShow': true})
       }
     }
   },
   computed: {
     duration() {
-      return this.musicInfo.duration / 1000;
+      return this.musicInfo?.duration / 1000;
     },
     currentTime: {
       get() {
-        return handleMusicTime(this.$store.state.musicInfo.currentTime);
+        return handleMusicTime(this.$store.state.musicInfo?.currentTime);
       },
       set(time) {
         this.$store.commit("updateMusicInfo", {currentTime: time});
       }
     },
     musicList() {
-      return this.$store.state.musicInfo.musicList;
+      return this.$store.state.musicInfo?.musicList;
     },
     volume: {
       get() {
@@ -351,17 +351,17 @@ export default {
       }
     },
     currentMusicIndex() {
-      return this.$store.state.musicInfo.currentIndex;
+      return this.$store.state.musicInfo?.currentIndex;
     },
     musicId() {
-      return this.$store.state.musicInfo.musicId;
+      return this.$store.state.musicInfo?.musicId;
     },
     isPlay() {
-      return this.$store.state.musicInfo.isPlay;
+      return this.$store.state.musicInfo?.isPlay;
     },
     playType: {
       get() {
-        return this.$store.state.musicInfo.playType;
+        return this.$store.state.musicInfo?.playType;
       },
       set(value) {
         this.$store.commit("updateMusicInfo", {playType: value});
@@ -386,7 +386,7 @@ export default {
      this.musicInfo = this.musicList[this.currentMusicIndex]
      if (this.musicInfo) {
        // 获取歌曲播放url
-       MusicApi.getMusicUrlById(this.musicInfo.musicId).then((data) => {
+       MusicApi.getMusicUrlById(this.musicInfo?.musicId).then((data) => {
          this.musicUrl = data;
        });
      }
@@ -394,7 +394,7 @@ export default {
     // 判断用户是否喜欢当前音乐
     // this.getIsUserLikeCurrentMusic();
     // 播放时间重置，开始播放(如果首次进来时则不需要播放)
-    this.$refs.audioPlayer.currentTime = this.$store.state.musicInfo.currentTime;
+    this.$refs.audioPlayer.currentTime = this.$store.state.musicInfo?.currentTime;
     // 设置音量
     let volume = this.isMuted ? 0 : this.volume;
     this.$refs.audioPlayer.volume = volume / 100;
@@ -422,14 +422,16 @@ export default {
       }
       // 根据list中的索引直接获取歌曲信息（这就要求其他地方必须同时更新currentIndex）
       this.musicInfo = this.musicList[this.currentMusicIndex]
-      // 获取歌曲播放url
-      MusicApi.getMusicUrlById(newVal).then((data) => {
-        this.musicUrl = data;
-      });
+      if (this.musicInfo) {
+        // 获取歌曲播放url
+        MusicApi.getMusicUrlById(newVal).then((data) => {
+          this.musicUrl = data;
+        });
+      }
       // 判断用户是否喜欢当前音乐
       // this.getIsUserLikeCurrentMusic();
       // 播放时间重置，开始播放(如果首次进来时则不需要播放)
-      this.$refs.audioPlayer.currentTime = this.$store.state.musicInfo.currentTime;
+      this.$refs.audioPlayer.currentTime = this.$store.state.musicInfo?.currentTime;
       // 设置音量
       let volume = this.isMuted ? 0 : this.volume;
       this.$refs.audioPlayer.volume = volume / 100;
