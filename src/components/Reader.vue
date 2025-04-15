@@ -553,12 +553,12 @@ export default {
         if (content?.length > 0) {
           this.$nextTick(() => {
             this.engine.setJsonValue(JSON.parse(content));
+            const pattern = /h[1-6]/;
+            let match = content.match(pattern);
+            if (match) {
+              this.renderTocData(this.engine);
+            }
           });
-          const pattern = /h[1-6]/;
-          let match = content.match(pattern);
-          if (match) {
-            this.renderTocData(this.engine);
-          }
         }
         this.spinShow = false;
         this.$nextTick(() => {

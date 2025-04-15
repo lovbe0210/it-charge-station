@@ -97,6 +97,8 @@ export default {
       // 大纲刷新的防抖函数
       debounceRefreshToc: function () {},
       engine: null,
+      // 编辑器是否初始化完成
+      inited: false,
       // 工具栏内容：下拉面板、
       items: [
         [
@@ -237,6 +239,10 @@ export default {
      * 编辑器内容变化
      */
     renderEditorData() {
+      if (!this.inited) {
+        this.inited = true;
+        return;
+      }
       // 文档内容解析
       if (this.engine.isEmpty()) {
         this.tocData = [];

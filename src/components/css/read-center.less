@@ -12,11 +12,11 @@
       color: @dark-font-color;
       overflow: hidden;
       position: relative;
-      border-right: 1px solid @light-border-color;
 
       .layout-module_fixed {
         height: 100vh;
         position: fixed;
+        border-right: 1px solid @light-border-color;
       }
 
       .layout-module_directory {
@@ -810,10 +810,11 @@
   .layout-module_directoryWrapper {
     background: unset !important;
     color: var(--font-color) !important;
-    border-color: var(--border-color);
+    //border-color: var(--border-color);
 
     .layout-module_fixed {
       background: var(--theme-color);
+      border-color: var(--border-color) !important;
     }
 
     .layout-module_directory {
@@ -827,10 +828,10 @@
 
       .search-bar {
         color: var(--font-color) !important;
-        background: var(--dropdown-bg-color) !important;
+        background: var(--rj-editor-bg-color) !important;
 
         &:hover {
-          background: var(--rj-editor-bg-color) !important;
+          background: var(--dropdown-item-hover) !important;
         }
       }
 
