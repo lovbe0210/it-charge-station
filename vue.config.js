@@ -57,9 +57,12 @@ module.exports = {
         }
       },
       '/socket': {
-        target: 'http://10.2.2.13:1380',
+        target: 'http://localhost:10215',
         changeOrigin: true,
-        ws: true
+        ws: true,
+        pathRewrite: {
+          '^/socket': '/api/sl/socket'
+        }
       },
       '/api': {
         // target: 'https://www.10020210.xyz',

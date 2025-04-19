@@ -190,6 +190,10 @@
             border-radius: 6px;
             color: var(--font-color);
             background-color: var(--dropdown-bg-color);
+
+            > div {
+              border-radius: 6px;
+            }
           }
 
           .theme {

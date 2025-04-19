@@ -344,7 +344,7 @@
                         <b-avatar v-if="msg.contentType !== 100 && msg.contentType !== 111"
                                   class="avatar"
                                   :src="fileUrl(msg.sendId === userInfo.uid ? userInfo.avatarUrl : activeSession.sessionUserAvatar)"
-                                  :to="'/' + msg.sendId === userInfo.uid ? userInfo.domain : activeSession.sessionUserDomain"
+                                  :to="'/' + (msg.sendId === userInfo.uid ? userInfo.domain : activeSession.sessionUserDomain)"
                                   target="_blank"
                                   variant="light"
                                   size="2rem">
@@ -531,7 +531,7 @@ import UserCard from "@/components/common/UserCard.vue";
 import Vue from "vue";
 import {v4 as uuid} from 'uuid';
 import {decodeSign, encodeSign} from "@/utils/common";
-import emoji from '@/assets/emoji/emoji.js';
+import emoji from '@/assets/emoji/emoji';
 
 export default {
   name: "MessageNotification",

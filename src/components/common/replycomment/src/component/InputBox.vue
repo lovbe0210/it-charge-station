@@ -25,6 +25,7 @@
                   :list="mentionList"
                   @insert="insertUser"/>
     <emoji-selector v-show="showEmojiSelector"
+                    ref="emojiSelector"
                     @addText="insertEmoji"
                     :style="`left: ${EmojiSelectorPosition.left}px; top: ${EmojiSelectorPosition.top}px`"/>
 
@@ -488,14 +489,43 @@
         this.initState = ++this.initState;
       },
       showEmoji() {
+        this.computeEmojiPosition();
+        this.showEmojiSelector = true;
+      },
+      computeEmojiPosition() {
         let emojiRect = this.$refs.emojiSelectorBtn?.getBoundingClientRect();
         if (emojiRect) {
-          this.EmojiSelectorPosition = {
-            left: emojiRect.left,
-            top: emojiRect.top + emojiRect.height + 10
+          let selector = this.$refs.emojiSelector?.$el;
+          let selectorRect = selector?.getBoundingClientRect();
+          if (selectorRect) {
+            const windowHeight = window.innerHeight;
+            // 临时显示选择器（隐藏但计算布局）
+            selector.style.position = 'fixed';
+            selector.style.visibility = 'hidden';
+            selector.style.display = 'block';
+            // 获取选择器的实际高度
+            const selectorHeight = selector.offsetHeight;
+            // 计算可用空间
+            const spaceBelow = windowHeight - emojiRect.bottom;
+            const spaceAbove = emojiRect.top;
+
+            // 决定显示方向
+            let topPosition;
+            if (spaceBelow >= selectorHeight || spaceBelow > spaceAbove) {
+              // 下方有足够空间，或下方空间比上方大
+              topPosition = emojiRect.bottom + 10;
+            } else {
+              // 显示在按钮上方
+              topPosition = emojiRect.top - selectorHeight;
+            }
+
+            selector.style.visibility = 'visible';
+            this.EmojiSelectorPosition = {
+              left: emojiRect.left,
+              top: topPosition - 5
+            }
           }
         }
-        this.showEmojiSelector = true;
       }
     },
     watch: {
@@ -536,13 +566,7 @@
             top: rangeRect.top + rangeRect.height + 10
           }
         }
-        let emojiRect = this.$refs.emojiSelectorBtn?.getBoundingClientRect();
-        if (emojiRect) {
-          this.EmojiSelectorPosition = {
-            left: emojiRect.left,
-            top: emojiRect.top + emojiRect.height + 10
-          }
-        }
+        this.computeEmojiPosition();
       },
       "range"(newVal, oldValue) {
         if (!newVal) return;

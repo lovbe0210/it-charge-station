@@ -109,11 +109,12 @@
 </template>
 
 <script>
-import {cloneDeep, needFormatDate} from '@/utils';
+import {cloneDeep, needFormatDate, useEmojiParse} from '@/utils';
 import InputBox from './InputBox';
 import Pswp from "@/components/common/imagepreview/index"
 import UserCard from "@/components/common/UserCard.vue";
 import socialApi from "@/api/SocialApi";
+import emoji from '@/assets/emoji/emoji';
 
 export default {
   name: 'ContentBox',
@@ -162,6 +163,18 @@ export default {
     },
     contentHtmlValue() {
       let content = this.commentReply.content;
+      if (content?.length > 0) {
+        // 对特殊字符进行转义
+        content = content?.replace(/[&<>"']/g, tag => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        }[tag]));
+        // 需要将表情转换为img标签
+        content = useEmojiParse(emoji.allEmoji, content);
+      }
       if (this.commentReply.replyUserInfo?.username) {
         content = `回复 <span style="color: #008Ac5;">@${this.commentReply.replyUserInfo.username}:</span> ${content}`;
       }

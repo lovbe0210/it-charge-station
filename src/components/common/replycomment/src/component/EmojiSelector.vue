@@ -67,9 +67,11 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import "../../../../css/common-var";
 .emoji-selector {
   position: fixed;
   z-index: 99;
+  border: 1px solid @border-color_normal;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   overflow-y: auto;
