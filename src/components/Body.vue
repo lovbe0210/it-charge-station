@@ -135,10 +135,10 @@
           </div>
           <div class="about">
             <span class="first">
-              <a href="/lovbe/_4Mv9P" target="_blank">关于本站</a>
+              <a href="/lovbe/about" target="_blank">关于本站</a>
             </span>
             <span>
-              <a href="/lovbe/tngG-C" target="_blank">BUG反馈</a>
+              <a href="/lovbe/bugfk" target="_blank">BUG反馈</a>
             </span>
           </div>
           <div class="contact">
