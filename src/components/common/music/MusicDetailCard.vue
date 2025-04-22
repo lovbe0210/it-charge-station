@@ -17,20 +17,20 @@
         <div class="disc" :class="[$store.state.musicInfo.isPlay ? '' : 'pause',
                                    $store.state.musicInfo.isMusicLoad ? '' : 'discAnimation']" ref="disc">
           <img src="https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/disc.png" alt=""/>
-          <img src="https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/test.jpg" alt="" class="musicAvatar" v-if="!musicInfo.musicCover"
+          <img src="https://lovbe-blog.oss-cn-chengdu.aliyuncs.com/sysconfig/background/test.jpg" alt="" class="musicAvatar" v-if="!musicInfo?.musicCover"
                ref="avatar"/>
-          <img :src="musicInfo.musicCover" alt="" class="musicAvatar" v-else ref="avatar" crossorigin="anonymous"/>
+          <img :src="musicInfo?.musicCover" alt="" class="musicAvatar" v-else ref="avatar" crossorigin="anonymous"/>
         </div>
       </div>
     </div>
     <div class="right">
       <div class="title">
         <div class="musicInfo">
-          <div class="music-name" :title="musicInfo.musicName">
+          <div class="music-name" :title="musicInfo?.musicName">
             {{ musicInfo.musicName }}
           </div>
-          <div class="singer" :title="musicInfo.musicName ? musicInfo.author : ''">
-            {{ musicInfo.musicName ? musicInfo.author : ""}}
+          <div class="singer" :title="musicInfo?.musicName ? musicInfo?.author : ''">
+            {{ musicInfo?.musicName ? musicInfo?.author : ""}}
           </div>
         </div>
       </div>
@@ -165,7 +165,7 @@
           setTimeout(() => {
             this.returnStatus = 0;
             this.background = this.getColor(this.$refs.avatar);
-            this.currentMusicId = this.musicInfo.musicId;
+            this.currentMusicId = this.musicInfo?.musicId;
           }, 2000);
         }
       },
@@ -176,13 +176,13 @@
           return;
         }
         // 更新当前歌曲信息
-        if (this.musicInfo.musicId === null) {
+        if (this.musicInfo?.musicId === null) {
           return;
         }
         // this.musicInfo = this.$store.state.musicInfo.musicList[this.$store.state.musicInfo.currentIndex];
         let currentTime = this.$store.state.musicInfo.currentTime;
         if (this.lyric.length === 1) {
-          MusicApi.getLyricById(this.musicInfo.musicId).then((data) => {
+          MusicApi.getLyricById(this.musicInfo?.musicId).then((data) => {
             this.lyric = data;
             // 歌词处理,直接跳转到当前播放歌词
             this.getCurrentLyricsIndex(currentTime);
@@ -198,14 +198,14 @@
         }
 
         // 重置背景色
-        if (this.musicInfo.musicId !== this.currentMusicId) {
+        if (this.musicInfo?.musicId !== this.currentMusicId) {
           this.background = "var(--dropdown-bg-color)";
           this.returnStatus = 1;
           setTimeout(() => {
             this.returnStatus = 0;
             let color = this.getColor(this.$refs.avatar);
             this.background = color;
-            this.currentMusicId = this.musicInfo.musicId;
+            this.currentMusicId = this.musicInfo?.musicId;
           }, 2000);
         }
       },
