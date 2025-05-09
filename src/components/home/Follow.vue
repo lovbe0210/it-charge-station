@@ -26,14 +26,16 @@
               <span class="post-type">
                 <span v-if="item.targetType === 1 ||  item.targetType === 3">发布了</span>
                 <span v-else>创建了</span>
-                <span :class="['item-type', item.targetType == 1 ? 'doc' : item.targetType == 2 ? 'colum' : 'rambly-jot']">
+                <span
+                  :class="['item-type', item.targetType == 1 ? 'doc' : item.targetType == 2 ? 'colum' : 'rambly-jot']">
                   {{ item.targetType === 1 ? '文章' : item.targetType === 2 ? '专栏' : '随笔' }}
                 </span>
               </span>
             </div>
             <div :class="['trend-content', item.targetType === 3 ? 'rambly' : '']">
               <div class="post-desc">
-                <b-link :href="getRouterPath(item)" :target="item.targetType === 1 || item.targetType === 2 ? 'black' : ''">
+                <b-link :href="getRouterPath(item)"
+                        :target="item.targetType === 1 || item.targetType === 2 ? 'black' : ''">
                   <p class="post-title" v-if="item.targetType === 1">{{ item.articleInfo?.title }}</p>
                   <p class="post-title" v-if="item.targetType === 2">{{ item.columnInfo?.title }}</p>
                   <p class="post-title" v-if="item.targetType === 3">{{ item.ramblyJotDo?.title }}</p>
@@ -59,13 +61,17 @@
                 <div class="action">
                 <span class="reply-btn">
                   <span :class="['iconfont', item.targetType === 1 || item.targetType === 2 ? 'viewed' : 'reply']"/>
-                  {{ item.targetType === 1 ? item.articleInfo?.viewCount :
-                     item.targetType === 2 ? item.columnInfo?.viewCount : item.ramblyJotDo?.commentCount }}
+                  {{
+                    item.targetType === 1 ? item.articleInfo?.viewCount :
+                      item.targetType === 2 ? item.columnInfo?.viewCount : item.ramblyJotDo?.commentCount
+                  }}
                 </span>
-                <span class="like-btn">
+                  <span class="like-btn">
                   <span :class="['iconfont', 'like', item.ifLike ? 'ilike' : '']"></span>
-                  {{ item.targetType === 1 ? item.articleInfo?.likeCount :
-                  item.targetType === 2 ? item.columnInfo?.likeCount : item.ramblyJotDo?.likeCount }}
+                  {{
+                      item.targetType === 1 ? item.articleInfo?.likeCount :
+                        item.targetType === 2 ? item.columnInfo?.likeCount : item.ramblyJotDo?.likeCount
+                    }}
                 </span>
                 </div>
               </div>
@@ -122,81 +128,88 @@
 </template>
 
 <script>
-  import UserCard from "@/components/common/UserCard.vue";
-  import AuthModal from "@/components/common/AuthModal.vue";
-  import {needFormatDate} from '@/utils';
-  import Pswp from "@/components/common/imagepreview/index"
-  import contentPicksApi from "@/api/ContentPicksApi";
+import UserCard from "@/components/common/UserCard.vue";
+import AuthModal from "@/components/common/AuthModal.vue";
+import {needFormatDate} from '@/utils';
+import Pswp from "@/components/common/imagepreview/index"
+import contentPicksApi from "@/api/ContentPicksApi";
 
-  export default {
-    name: 'Follow',
-    data() {
-      return {
-        popoverContainer: null,
-        // 图片预览
-        pswp: null,
-        hasMore: true,
-        offset: 0,
-        creatorTrend: null
+export default {
+  name: 'Follow',
+  data() {
+    return {
+      popoverContainer: null,
+      // 图片预览
+      pswp: null,
+      loading: false,
+      hasMore: true,
+      offset: 0,
+      creatorTrend: null
+    }
+  },
+  computed: {
+    userInfo() {
+      return this.$store.state.userInfo
+    }
+  },
+  components: {
+    UserCard,
+    AuthModal
+  },
+  methods: {
+    fileUrl(path) {
+      return this.fileService + path;
+    },
+    previewImage(trendItem, currentIndex) {
+      if (this.pswp === null) {
+        this.pswp = new Pswp(null);
       }
-    },
-    computed: {
-      userInfo() {
-        return this.$store.state.userInfo
-      }
-    },
-    components: {
-      UserCard,
-      AuthModal
-    },
-    methods: {
-      fileUrl(path) {
-        return this.fileService + path;
-      },
-      previewImage(trendItem, currentIndex) {
-        if (this.pswp === null) {
-          this.pswp = new Pswp(null);
+      let imgWrapp = document.getElementById(trendItem.targetId);
+      let imgBoxList = imgWrapp?.children;
+      if (imgBoxList) {
+        let imgItems = [];
+        for (let imgBox of imgBoxList) {
+          let img = imgBox.firstChild;
+          imgItems.push({
+            src: img.src,
+            msrc: img.src,
+            w: img.naturalWidth,
+            h: img.naturalHeight
+          })
         }
-        let imgWrapp = document.getElementById(trendItem.targetId);
-        let imgBoxList = imgWrapp?.children;
-        if (imgBoxList) {
-          let imgItems = [];
-          for (let imgBox of imgBoxList) {
-            let img = imgBox.firstChild;
-            imgItems.push({
-              src: img.src,
-              msrc: img.src,
-              w: img.naturalWidth,
-              h: img.naturalHeight
-            })
+        this.pswp.open(imgItems, currentIndex)
+      }
+    },
+    needFormatDate,
+    getRouterPath(trendItem) {
+      let routerPath = "/";
+      switch (trendItem.targetType) {
+        case 1:
+          routerPath += trendItem.userInfo?.domain;
+          if (trendItem.articleInfo?.columnUri) {
+            routerPath += ("/" + trendItem.articleInfo?.columnUri + "/" + trendItem.articleInfo?.uri);
+          } else {
+            routerPath += ("/" + trendItem.articleInfo?.uri);
           }
-          this.pswp.open(imgItems, currentIndex)
-        }
-      },
-      needFormatDate,
-      getRouterPath(trendItem) {
-        let routerPath = "/";
-        switch (trendItem.targetType) {
-          case 1:
-            routerPath += trendItem.userInfo?.domain;
-            if (trendItem.articleInfo?.columnUri) {
-              routerPath += ("/" + trendItem.articleInfo?.columnUri + "/" + trendItem.articleInfo?.uri);
-            } else {
-              routerPath += ("/" + trendItem.articleInfo?.uri);
-            }
-            break;
-          case 2:
-            routerPath += trendItem.userInfo?.domain;
-            routerPath += ("/" + trendItem.columnInfo?.uri);
-            break;
-          case 3:
-            routerPath += ("ramblyJot/" + trendItem.ramblyJotDo?.uid)
-            break
-        }
-        return routerPath;
-      },
-      loadMore() {
-        contentPicksApi.getCreateRecords({offset: this.offset}).then(data => {
+          break;
+        case 2:
+          routerPath += trendItem.userInfo?.domain;
+          routerPath += ("/" + trendItem.columnInfo?.uri);
+          break;
+        case 3:
+          routerPath += ("ramblyJot/" + trendItem.ramblyJotDo?.uid)
+          break
+      }
+      return routerPath;
+    },
+    loadMore() {
+      if (this.loading || !this.hasMore) {
+        return;
+      }
+      this.loading = true;
+      contentPicksApi.getCreateRecords({offset: this.offset})
+        .then(data => {
+          this.loading = false;
           if (data?.result) {
             this.creatorTrend.push(...data.data.list);
             this.hasMore = data.data.hasMore;
@@ -206,18 +219,21 @@
             this.offset += 20;
           }
         })
-      }
-    },
-    mounted() {
-      this.popoverContainer = this.$refs.popoverContainer;
-    },
-    created() {
-      this.creatorTrend = [];
+        .catch(() => {
+          this.loading = false;
+        })
     }
+  },
+  mounted() {
+    this.popoverContainer = this.$refs.popoverContainer;
+  },
+  created() {
+    this.creatorTrend = [];
   }
+}
 </script>
 
 <style scoped lang="less">
-  @import "../css/home/follow.less";
-  @import "../css/common-var";
+@import "../css/home/follow.less";
+@import "../css/common-var";
 </style>

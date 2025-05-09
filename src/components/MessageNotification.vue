@@ -133,10 +133,10 @@
                     </div>
                     <p class="action-content" :title="item.noticeType === 1 ? item.commentContent : item.replyContent">
                       <span class="tip-content">
-                        <span v-if="item.noticeType === 2" class="notice-tip">
+                        <span v-if="item.noticeType === 1" class="notice-tip">
                           发表了评论:&nbsp;
                         </span>
-                        <span v-if="item.noticeType === 1" class="notice-tip">
+                        <span v-if="item.noticeType === 2" class="notice-tip">
                           回复了我的评论:&nbsp;
                         </span>
                         <span v-html="item.noticeType === 1 ? item.commentContent : item.replyContent"/>

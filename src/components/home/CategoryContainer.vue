@@ -11,7 +11,7 @@
     <div class="category-module_list">
       <b-container fluid ref="popoverContainer">
         <b-list-group>
-          <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="busy" :infinite-scroll-distance="100">
+          <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="busy" :infinite-scroll-distance="200">
             <b-row v-for="item in data" :key="item.uid" fluid="true" class="item">
               <b-col :cols="isPhone || !item.coverUrl ? 12 : 8" class="text">
                 <b-link :to="toHref(item)" target="_blank">
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { formatNumber } from '@/utils'
+import {formatNumber} from '@/utils'
 import WriteCenterApi from "@/api/WriteCenterApi";
 import UserCard from "@/components/common/UserCard.vue";
 import ContentPicksApi from "@/api/ContentPicksApi";
@@ -80,6 +80,7 @@ export default {
   components: {UserCard},
   data() {
     return {
+      loading: false,
       firstMenu: null,
       secondMenuList: [],
       allMenuList: [],
@@ -100,23 +101,29 @@ export default {
   },
   methods: {
     loadMore() {
-      if (!this.hasMore || this.busy) {
+      if (this.loading || !this.hasMore || this.busy) {
         return;
       }
+      this.loading = true;
       let requestData = {
         offset: this.offset,
         firstCategory: this.firstMenu,
         secondCategory: this.activeMenu === '0' ? null : this.activeMenu
       };
-      ContentPicksApi.getCategoryArticleList(requestData).then(data => {
-        if (data?.result) {
-          this.hasMore = data.data.hasMore;
-          if (data.data.hasMore) {
-            this.offset = this.offset + 20;
+      ContentPicksApi.getCategoryArticleList(requestData)
+        .then(data => {
+          this.loading = false;
+          if (data?.result) {
+            this.hasMore = data.data.hasMore;
+            if (data.data.hasMore) {
+              this.offset = this.offset + 20;
+            }
+            this.data.push(...data.data.list);
           }
-          this.data.push(...data.data.list);
-        }
-      })
+        })
+        .catch(() => {
+          this.loading = false;
+        })
     },
     toHref(articleItem) {
       let href = '/' + articleItem?.userInfo?.domain + '/';
@@ -180,6 +187,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-  @import "../css/common-var.less";
-  @import "../css/home/category.less";
+@import "../css/common-var.less";
+@import "../css/home/category.less";
 </style>

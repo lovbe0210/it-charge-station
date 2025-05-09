@@ -1,7 +1,7 @@
 <template>
   <b-container fluid ref="popoverContainer">
     <b-list-group>
-      <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="busy" :infinite-scroll-distance="100">
+      <div v-infinite-scroll="loadMore" :infinite-scroll-disabled="busy" :infinite-scroll-distance="200">
         <b-row v-for="item in data" :key="item.uid" fluid="true" class="item">
           <b-col :cols="isPhone || !item.coverUrl ? 12 : 8" class="text">
             <b-link :to="toHref(item)" target="_blank">
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { formatNumber } from '@/utils'
+import {formatNumber} from '@/utils'
 import UserCard from "@/components/common/UserCard.vue";
 import ContentPicksApi from "@/api/ContentPicksApi";
 
@@ -101,18 +101,26 @@ export default {
   },
   methods: {
     loadMore() {
-      if (!this.hasMore || this.busy) {
+      if (this.loading || !this.hasMore || this.busy) {
         return;
       }
-      ContentPicksApi.getRecommendArticleList({offset: this.offset}).then(data => {
-        if (data?.result) {
-          this.hasMore = data.data.hasMore;
-          if (data.data.hasMore) {
-            this.offset = this.offset + 20;
+      this.loading = true;
+      ContentPicksApi.getRecommendArticleList({offset: this.offset})
+        .then(data => {
+          // 状态重置
+          this.loading = false;
+          if (data?.result) {
+            this.hasMore = data.data.hasMore;
+            if (data.data.hasMore) {
+              this.offset = this.offset + 20;
+            }
+            this.data.push(...data.data.list);
           }
-          this.data.push(...data.data.list);
-        }
-      })
+        })
+        .catch(() => {
+          // 状态重置
+          this.loading = false;
+        })
     },
     toHref(articleItem) {
       let href = '/' + articleItem?.userInfo?.domain + '/';
